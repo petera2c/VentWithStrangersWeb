@@ -1,0 +1,29 @@
+{
+	"name": "ventwithstrangers",
+	"version": "1.0.0",
+	"description": "New app to help people.",
+	"main": "index.js",
+	"scripts": {
+		"server": "nodemon index.js",
+		"FrontEnd": "npm run start --prefix FrontEnd",
+		"dev": "concurrently \"npm run server\" \"npm run FrontEnd\"",
+		"heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix FrontEnd && npm run build --prefix FrontEnd"
+	},
+	"author": "Peter Mirmotahari",
+	"license": "ISC",
+	"dependencies": {
+		"express": "^4.16.2",
+		"express-force-https": "^1.0.0",
+		"bcrypt-nodejs": "0.0.3",
+		"concurrently": "^3.6.0",
+		"connect-mongo": "^2.0.1",
+		"express-session": "^1.15.6",
+		"mongoose": "^5.1.6",
+		"cookie-parser": "^1.4.3",
+		"passport": "^0.4.0",
+		"passport-local": "^1.0.0",
+		"body-parser": "^1.18.2",
+		"morgan": "^1.9.0",
+		"nodemon": "^1.15.1"
+	}
+}
