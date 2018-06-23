@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const passport = require("passport");
-const keys = require("./config/keys");
+const keys = require("./Config/keys");
 const morgan = require("morgan");
 const secure = require("express-force-https");
 const session = require("express-session");
@@ -35,13 +35,16 @@ require("./routes")(app); // Routes
 
 // If using production then if a route is not found in express we send user to react routes
 if (process.env.NODE_ENV === "production") {
-	app.use(express.static("client/build"));
+	app.use(express.static("FrontEnd/build"));
 
 	const path = require("path");
 	app.get("*", (req, res) => {
-		res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+		console.log("here");
+		console.log(path.resolve(__dirname, "FrontEnd", "build", "index.html"));
+		res.sendFile(path.resolve(__dirname, "FrontEnd", "build", "index.html"));
 	});
 }
 
 const PORT = process.env.PORT || 5000;
+
 app.listen(PORT);

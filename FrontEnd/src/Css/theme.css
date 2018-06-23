@@ -1,0 +1,31 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins");
+
+:root {
+	--blue-theme-color: #4bcffa;
+	--green-theme-color: #86ff3b;
+	--purple-theme-color: #e056fd;
+	--orange-theme-color: #ff9f1a;
+
+	--light-blue-theme-color: #cffdff;
+	--light-green-theme-color: #92ff4f;
+
+	--dark-blue-theme-color: #0097e6;
+	--dark-green-theme-color: #44bd32;
+	--dark-purple-theme-color: #be2edd;
+
+	--black-theme-color: #000;
+	--white-theme-color: #fff;
+
+	--small-font-size: 9pt;
+	--regular-font-size: 11pt;
+	--large-font-size: 13pt;
+	--extra-large-font-size: 17pt;
+
+	--font-theme: "Poppins";
+}
+body {
+	margin: 0;
+	padding: 0;
+
+	font-family: var(--font-theme);
+}

@@ -4,10 +4,11 @@
 	"description": "New app to help people.",
 	"main": "index.js",
 	"scripts": {
+		"start": "node index.js",
 		"server": "nodemon index.js",
 		"FrontEnd": "npm run start --prefix FrontEnd",
 		"dev": "concurrently \"npm run server\" \"npm run FrontEnd\"",
-		"heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix FrontEnd && npm run build --prefix FrontEnd"
+		"heroku-postbuild": "npm install --prefix FrontEnd && npm run build --prefix FrontEnd"
 	},
 	"author": "Peter Mirmotahari",
 	"license": "ISC",
