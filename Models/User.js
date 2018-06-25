@@ -8,7 +8,8 @@ const userSchema = new Schema({
 	username: String,
 	timezone: String,
 	dateCreated: Date,
-	language: String
+	language: String,
+	type: String
 });
 
 userSchema.methods.generateHash = function(password) {

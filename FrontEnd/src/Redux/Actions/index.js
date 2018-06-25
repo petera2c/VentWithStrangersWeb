@@ -4,3 +4,10 @@ export const changePage = activePage => {
 		payload: activePage
 	};
 };
+
+export const setUser = user => {
+	return {
+		type: "USER_SELECTED",
+		payload: user
+	};
+};

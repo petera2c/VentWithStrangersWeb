@@ -1,13 +1,16 @@
 const express = require("express");
 const app = express();
-const mongoose = require("mongoose");
-const passport = require("passport");
+const mongoose = require("mongoose"); // Connect to mongo
+const passport = require("passport"); // For Login and Register
 const keys = require("./Config/keys");
-const morgan = require("morgan");
-const secure = require("express-force-https");
-const session = require("express-session");
-const MongoStore = require("connect-mongo")(session);
-const cookieParser = require("cookie-parser");
+const morgan = require("morgan"); // Every request is console logged
+const secure = require("express-force-https"); // force https so http does not work
+const session = require("express-session"); // Create sessions in backend
+const MongoStore = require("connect-mongo")(session); // Store sessions in mongo securely
+const cookieParser = require("cookie-parser"); // Needer for auth to read frontend cookies
+const bodyParser = require("body-parser"); // Read data in post requests from front end
+const schedule = require("node-schedule");
+const conversationFunctions = require("./BackEndFiles/conversationFunctions");
 
 require("./BackEndFiles/passport")(passport);
 
@@ -16,6 +19,9 @@ const db = mongoose.connection;
 
 app.use(morgan("dev")); // Prints all routes used to console
 app.use(cookieParser()); // Read cookies (needed for auth)
+
+app.use(bodyParser.json({ limit: "50mb" })); //Read data from html forms
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 app.use(
 	session({
@@ -46,5 +52,9 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const PORT = process.env.PORT || 5000;
+
+schedule.scheduleJob("* * * * * *", function(err) {
+	conversationFunctions.makeConversation();
+});
 
 app.listen(PORT);

@@ -1,8 +1,25 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
+import { createStore, applyMiddleware } from "redux";
+import { Provider } from "react-redux";
+import reducers from "./redux/reducers/";
+
 import MainPage from "./Pages/MainPage";
 import "./Css/";
 require("../public/favicon.ico");
 
-ReactDOM.render(<MainPage />, document.getElementById("root"));
+function logger({ getState }) {
+	return next => action => {
+		const returnValue = next(action);
+		return returnValue;
+	};
+}
+const store = createStore(reducers, applyMiddleware(logger));
+
+ReactDOM.render(
+	<Provider store={store}>
+		<MainPage />
+	</Provider>,
+	document.getElementById("root")
+);

@@ -8,9 +8,18 @@ function activePage(state = "", action) {
 			return state;
 	}
 }
+function activeUser(state = null, action) {
+	switch (action.type) {
+		case "USER_SELECTED":
+			return action.payload;
+		default:
+			return state;
+	}
+}
 
 const rootReducer = combineReducers({
-	activePage: activePage
+	activePage: activePage,
+	activeUser: activeUser
 });
 
 export default rootReducer;

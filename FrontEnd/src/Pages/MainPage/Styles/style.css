@@ -7,11 +7,11 @@
 	width: 100%;
 	min-height: 100vh;
 
-	background-color: var(--purple-theme-color);
+	background-color: var(--blue-theme-color);
 }
-.options-container {
+.center-container {
 	display: flex;
-	-webkit-display: flex;
+	display: -webkit-flex;
 
 	flex-grow: 1;
 
@@ -38,8 +38,34 @@
 
 	cursor: pointer;
 
-	background-color: var(--blue-theme-color);
+	background-color: var(--white-theme-color);
 }
 .option-container:hover {
+	color: var(--white-theme-color);
 	background-color: var(--dark-blue-theme-color);
+
+	transition: all 0.2s ease;
+	-webkit-transition: all 0.2s ease;
+}
+.side-small-box {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+
+	top: 40vh;
+	left: 5vw;
+
+	width: 15vw;
+	height: 20vh;
+	background-color: var(--white-theme-color);
+	border-radius: 10px;
+}
+.side-small-box:hover {
+	color: var(--white-theme-color);
+	background-color: var(--dark-blue-theme-color);
+
+	transition: all 0.2s ease;
+	-webkit-transition: all 0.2s ease;
+	cursor: pointer;
 }
