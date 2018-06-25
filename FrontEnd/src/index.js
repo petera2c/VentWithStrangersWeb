@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
-import reducers from "./redux/reducers/";
+import reducers from "./Redux/Reducers/";
 
 import MainPage from "./Pages/MainPage";
 import "./Css/";
