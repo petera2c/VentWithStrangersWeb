@@ -43,10 +43,10 @@ class Chat extends Component {
 			let { messages } = this.state;
 			messages.push(message);
 			this.setState({ messages });
+			this.scrollToBottom();
 		});
 		this.setState({ socket });
 	};
-	getMessages = () => {};
 	sendMessage = () => {
 		const { socket, message, conversation, messages } = this.state;
 		const { user } = this.props;
