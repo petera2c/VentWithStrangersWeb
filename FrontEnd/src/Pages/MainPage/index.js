@@ -3,7 +3,7 @@ import axios from "axios";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { setUser } from "../../Redux/actions/";
+import { setUser } from "../../Redux/Actions/";
 
 import Chat from "../../Components/Chat/";
 import Loader from "../../Components/Loader/";
