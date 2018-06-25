@@ -18,11 +18,11 @@ class MainPage extends Component {
 	};
 	componentDidMount() {
 		axios.get("/api/user").then(res => {
-			let { success, user, message } = res.data;
+			let { success, user, message, port } = res.data;
 
 			if (success) {
 				this.props.setUser(user);
-				this.setState({ saving: false, user });
+				this.setState({ saving: false, user, port });
 			} else {
 				alert(message);
 			}

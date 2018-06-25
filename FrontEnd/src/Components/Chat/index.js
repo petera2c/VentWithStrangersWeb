@@ -22,11 +22,10 @@ class Chat extends Component {
 		this.initSocket();
 	}
 	initSocket = () => {
-		const { user, listener } = this.props;
+		const { user, listener, port } = this.props;
 
 		let socket;
-		console.log(process.env.PORT);
-		if (process.env.PORT) socket = io();
+		if (port) socket = io();
 		else socket = io(socketUrl);
 
 		let type = "listener";
