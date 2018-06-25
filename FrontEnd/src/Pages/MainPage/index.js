@@ -18,11 +18,11 @@ class MainPage extends Component {
 	};
 	componentDidMount() {
 		axios.get("/api/user").then(res => {
-			let { success, user, message } = res.data;
+			let { success, user, message, port } = res.data;
 
 			if (success) {
 				this.props.setUser(user);
-				this.setState({ saving: false, user: user });
+				this.setState({ saving: false, user, port });
 			} else {
 				alert(message);
 			}
@@ -33,7 +33,7 @@ class MainPage extends Component {
 		axios.post("/api/user", { userChangesArray: [{ index: "type", value: "listener" }] }).then(res => {
 			const { user } = res.data;
 			this.props.setUser(user);
-			this.setState({ user: user });
+			this.setState({ user });
 			this.setState({ saving: false });
 		});
 	};
@@ -42,13 +42,13 @@ class MainPage extends Component {
 		axios.post("/api/user", { userChangesArray: [{ index: "type", value: "venter" }] }).then(res => {
 			const { user } = res.data;
 			this.props.setUser(user);
-			this.setState({ user: user });
+			this.setState({ user });
 			this.setState({ saving: false });
 		});
 	};
 
 	render() {
-		const { saving, venter, listener, user } = this.state;
+		const { saving, venter, listener, user, port } = this.state;
 
 		return (
 			<div className="master-container">
@@ -76,7 +76,7 @@ class MainPage extends Component {
 								Listen
 							</div>
 						)}
-						<Chat user={user} listener={listener} />
+						<Chat user={user} listener={listener} port={port} />
 					</div>
 				)}
 				{saving && <Loader />}

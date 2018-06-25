@@ -13,7 +13,7 @@ module.exports = app => {
 
 	// Get current user
 	app.get("/api/user", middleware, (req, res, next) => {
-		res.send({ success: true, user: req.user });
+		res.send({ success: true, user: req.user, port: process.env.PORT });
 	});
 	// Update user
 	app.post("/api/user", middleware, (req, res, next) => {

@@ -50,8 +50,6 @@ if (process.env.NODE_ENV === "production") {
 
 	const path = require("path");
 	app.get("*", (req, res) => {
-		console.log("here");
-		console.log(path.resolve(__dirname, "FrontEnd", "build", "index.html"));
 		res.sendFile(path.resolve(__dirname, "FrontEnd", "build", "index.html"));
 	});
 }
