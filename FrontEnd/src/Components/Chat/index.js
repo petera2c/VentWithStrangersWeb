@@ -36,6 +36,7 @@ class Chat extends Component {
 		socket.emit("find_conversation", { user, type });
 
 		socket.on("found_conversation", conversation => {
+			console.log(conversation);
 			this.setState({ conversation });
 		});
 
