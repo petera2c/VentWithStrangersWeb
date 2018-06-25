@@ -25,6 +25,7 @@ class Chat extends Component {
 		const { user, listener } = this.props;
 
 		let socket;
+		console.log(process.env.PORT);
 		if (process.env.PORT) socket = io();
 		else socket = io(socketUrl);
 
