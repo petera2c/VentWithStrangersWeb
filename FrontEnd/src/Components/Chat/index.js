@@ -13,24 +13,19 @@ class Chat extends Component {
 		message: "",
 		conversation: undefined,
 		messages: [],
-		socket: undefined,
-		socketUrl: "http://localhost:5000"
+		socket: undefined
 	};
 	componentDidUpdate() {
 		if (this.state.conversation) this.scrollToBottom();
 	}
 	componentDidMount() {
 		this.initSocket();
-		console.log("port env : " + process.env.PORT);
-
-		const { port } = this.props;
-		if (port) {
-			console.log("port :" + port);
-		}
 	}
 	initSocket = () => {
 		const { user, listener } = this.props;
-		const socket = io();
+		let socket;
+		if (process.env.PORT) socket = io();
+		else socket = io(socketUrl);
 		let type = "listener";
 
 		if (!listener) {
