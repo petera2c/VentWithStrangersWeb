@@ -55,8 +55,11 @@ class Chat extends Component {
 		messages.push({ body: message, author: user._id, conversationID: conversation._id });
 		this.setState({ messages, message: "" });
 	};
-	handleChange = (value, index) => {
-		this.setState({ [index]: value });
+	handleChange = (event, index) => {
+		if (event.key == "Enter") {
+			this.sendMessage();
+		}
+		this.setState({ [index]: event.target.value });
 	};
 	scrollToBottom = () => {
 		this.messagesEnd.scrollIntoView({ behavior: "smooth" });
@@ -99,7 +102,7 @@ class Chat extends Component {
 					<div className="send-message-container">
 						<textarea
 							className="send-message-textarea"
-							onChange={event => this.handleChange(event.target.value, "message")}
+							onChange={event => this.handleChange(event, "message")}
 							value={message}
 						/>
 						<button className="send-message" onClick={this.sendMessage}>
