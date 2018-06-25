@@ -3,12 +3,14 @@ const Conversation = require("../Models/Conversation");
 const Message = require("../Models/Message");
 
 module.exports = socket => {
+	let currentConversation;
 	socket.on("find_conversation", function(object) {
 		Conversation.findOne({ [object.type]: undefined }, function(err, conversation) {
 			if (conversation) {
 				conversation[object.type] = object.user._id;
 				conversation.save(function(err, result) {
 					if (result) {
+						currentConversation = result;
 						socket.join(result._id);
 
 						socket.broadcast.emit("found_conversation", result);
@@ -19,6 +21,7 @@ module.exports = socket => {
 				let conversation = new Conversation({ [object.type]: object.user._id });
 				conversation.save(function(err, result) {
 					if (result) {
+						currentConversation = result;
 						socket.join(result._id);
 					}
 				});
@@ -37,5 +40,9 @@ module.exports = socket => {
 				socket.broadcast.emit("receive_message", result);
 			}
 		});
+	});
+
+	socket.on("disconnect", function() {
+		if (currentConversation) currentConversation.remove();
 	});
 };
