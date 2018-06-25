@@ -1,8 +1,6 @@
 const passport = require("passport");
 const User = require("./Models/User");
 
-const queueFunctions = require("./BackEndFiles/queueFunctions");
-const conversationFunctions = require("./BackEndFiles/conversationFunctions");
 module.exports = app => {
 	// Middleware
 	let middleware = function(req, res, next) {
@@ -33,15 +31,6 @@ module.exports = app => {
 			});
 		});
 	});
-
-	app.get("/api/venter", middleware, (req, res) => queueFunctions.addVenterToQueue(req, res));
-	app.get("/api/listener", middleware, (req, res) => queueFunctions.addListenerToQueue(req, res));
-
-	app.get("/api/conversation", middleware, (req, res) => conversationFunctions.getConversation(req, res));
-	app.get("/api/messages/:conversationID", middleware, (req, res) =>
-		conversationFunctions.getConversationMessages(req, res)
-	);
-	app.post("/api/message", middleware, (req, res) => conversationFunctions.sendMessage(req, res));
 };
 
 function login(req, res, next) {

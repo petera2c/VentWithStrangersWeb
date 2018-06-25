@@ -14,8 +14,7 @@ class MainPage extends Component {
 		saving: true,
 		listener: false,
 		venter: false,
-		user: this.props.user,
-		conversation: undefined
+		user: this.props.user
 	};
 	componentDidMount() {
 		axios.get("/api/user").then(res => {
@@ -28,46 +27,28 @@ class MainPage extends Component {
 				alert(message);
 			}
 		});
-		this.findConversation();
 	}
 	becomeListener = () => {
-		this.setState({ saving: true, listener: true, venter: false, conversation: undefined });
+		this.setState({ saving: true, listener: true, venter: false });
 		axios.post("/api/user", { userChangesArray: [{ index: "type", value: "listener" }] }).then(res => {
 			const { user } = res.data;
 			this.props.setUser(user);
 			this.setState({ user: user });
-			axios.get("/api/listener").then(res => {
-				this.setState({ saving: false, conversation: undefined });
-				this.findConversation();
-			});
+			this.setState({ saving: false });
 		});
 	};
 	becomeVenter = () => {
-		this.setState({ saving: true, listener: false, venter: true, conversation: undefined });
+		this.setState({ saving: true, listener: false, venter: true });
 		axios.post("/api/user", { userChangesArray: [{ index: "type", value: "venter" }] }).then(res => {
 			const { user } = res.data;
 			this.props.setUser(user);
 			this.setState({ user: user });
-			axios.get("/api/venter").then(res => {
-				this.setState({ saving: false, conversation: undefined });
-				this.findConversation();
-			});
+			this.setState({ saving: false });
 		});
 	};
-	findConversation = () => {
-		axios.get("/api/conversation").then(res => {
-			const { success, conversation } = res.data;
-			if (success) {
-				this.setState({ conversation: conversation });
-			} else {
-				setTimeout(() => {
-					this.findConversation();
-				}, 3000);
-			}
-		});
-	};
+
 	render() {
-		const { saving, venter, listener, user, conversation } = this.state;
+		const { saving, venter, listener, user } = this.state;
 
 		return (
 			<div className="master-container">
@@ -95,7 +76,7 @@ class MainPage extends Component {
 								Person A
 							</div>
 						)}
-						<Chat conversation={conversation} user={user} />
+						<Chat user={user} listener={listener} />
 					</div>
 				)}
 				{saving && <Loader />}

@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const messageSchema = new Schema(
 	{
-		conversationId: {
+		conversationID: {
 			type: Schema.Types.ObjectId,
 			required: true
 		},

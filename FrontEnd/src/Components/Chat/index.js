@@ -1,43 +1,55 @@
 import React, { Component } from "react";
 import moment from "moment";
+import io from "socket.io-client";
 import axios from "axios";
 
 import SmallLoader from "../SmallLoader/";
 
 import "./Styles/";
 
-class Loader extends Component {
+const socketUrl = "http://localhost:5000";
+class Chat extends Component {
 	state = {
 		message: "",
-		conversation: this.props.conversation,
-		messages: []
+		conversation: undefined,
+		messages: [],
+		socket: undefined
 	};
-	componentWillReceiveProps(nextProps) {
-		this.setState({ conversation: nextProps.conversation });
-	}
 	componentDidUpdate() {
 		if (this.state.conversation) this.scrollToBottom();
 	}
-	getMessages = () => {
-		const { conversation } = this.state;
-		axios.get("/api/messages/" + conversation._id).then(res => {
-			const { success, messages } = res.data;
-			if (success) {
-				this.setState({ messages: messages });
-			} else {
-				setTimeout(() => {
-					this.findConversation();
-				}, 3000);
-			}
-		});
-	};
-	sendMessage = () => {
-		const { message, conversation } = this.state;
-		let { messages } = this.state;
+	componentDidMount() {
+		this.initSocket();
+	}
+	initSocket = () => {
+		const { user, listener } = this.props;
+		const socket = io(socketUrl);
+		let type = "listener";
 
-		axios.post("/api/message", { message: message, conversation: conversation }).then(res => {
-			this.getMessages();
+		if (!listener) {
+			type = "venter";
+		}
+		socket.emit("find_conversation", { user, type });
+
+		socket.on("found_conversation", conversation => {
+			this.setState({ conversation });
 		});
+
+		socket.on("receive_message", message => {
+			let { messages } = this.state;
+			messages.push(message);
+			this.setState({ messages });
+		});
+		this.setState({ socket });
+	};
+	getMessages = () => {};
+	sendMessage = () => {
+		const { socket, message, conversation, messages } = this.state;
+		const { user } = this.props;
+
+		socket.emit("send_message", { user, message, conversation });
+		messages.push({ body: message, author: user._id, conversationID: conversation._id });
+		this.setState({ messages });
 	};
 	handleChange = (value, index) => {
 		this.setState({ [index]: value });
@@ -45,6 +57,7 @@ class Loader extends Component {
 	scrollToBottom = () => {
 		this.messagesEnd.scrollIntoView({ behavior: "smooth" });
 	};
+	findConversation = () => {};
 	render() {
 		const { message, conversation, messages } = this.state;
 		const { user } = this.props;
@@ -95,4 +108,4 @@ class Loader extends Component {
 	}
 }
 
-export default Loader;
+export default Chat;

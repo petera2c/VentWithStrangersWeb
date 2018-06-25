@@ -1,0 +1,41 @@
+const User = require("../Models/User");
+const Conversation = require("../Models/Conversation");
+const Message = require("../Models/Message");
+
+module.exports = socket => {
+	socket.on("find_conversation", function(object) {
+		Conversation.findOne({ [object.type]: undefined }, function(err, conversation) {
+			if (conversation) {
+				conversation[object.type] = object.user._id;
+				conversation.save(function(err, result) {
+					if (result) {
+						socket.join(result._id);
+
+						socket.broadcast.emit("found_conversation", result);
+						socket.emit("found_conversation", result);
+					}
+				});
+			} else {
+				let conversation = new Conversation({ [object.type]: object.user._id });
+				conversation.save(function(err, result) {
+					if (result) {
+						socket.join(result._id);
+					}
+				});
+			}
+		});
+	});
+
+	socket.on("send_message", function(object) {
+		let message = new Message({
+			conversationID: object.conversation._id,
+			body: object.message,
+			author: object.user._id
+		});
+		message.save(function(err, result) {
+			if (result) {
+				socket.broadcast.emit("receive_message", result);
+			}
+		});
+	});
+};

@@ -9,8 +9,13 @@ const session = require("express-session"); // Create sessions in backend
 const MongoStore = require("connect-mongo")(session); // Store sessions in mongo securely
 const cookieParser = require("cookie-parser"); // Needer for auth to read frontend cookies
 const bodyParser = require("body-parser"); // Read data in post requests from front end
-const schedule = require("node-schedule");
-const conversationFunctions = require("./BackEndFiles/conversationFunctions");
+
+// Socket imports
+const path = require("path");
+const server = require("http").createServer(app);
+const io = require("socket.io")(server);
+const SocketManager = require("./BackEndFiles/SocketManager");
+io.on("connection", SocketManager);
 
 require("./BackEndFiles/passport")(passport);
 
@@ -53,8 +58,4 @@ if (process.env.NODE_ENV === "production") {
 
 const PORT = process.env.PORT || 5000;
 
-schedule.scheduleJob("* * * * * *", function(err) {
-	conversationFunctions.makeConversation();
-});
-
-app.listen(PORT);
+server.listen(PORT);
