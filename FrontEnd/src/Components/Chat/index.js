@@ -53,7 +53,7 @@ class Chat extends Component {
 
 		socket.emit("send_message", { user, message, conversation });
 		messages.push({ body: message, author: user._id, conversationID: conversation._id });
-		this.setState({ messages });
+		this.setState({ messages, message: "" });
 	};
 	handleChange = (value, index) => {
 		this.setState({ [index]: value });
