@@ -57,10 +57,10 @@ class MainPage extends Component {
 					!listener && (
 						<div className="center-container">
 							<div className="option-container" onClick={this.becomeListener}>
-								Person A
+								Listen
 							</div>
 							<div className="option-container" onClick={this.becomeVenter}>
-								Person B
+								Vent
 							</div>
 						</div>
 					)}
@@ -68,12 +68,12 @@ class MainPage extends Component {
 					<div className="center-container">
 						{listener && (
 							<div className="side-small-box" onClick={this.becomeVenter}>
-								Person B
+								Vent
 							</div>
 						)}
 						{venter && (
 							<div className="side-small-box" onClick={this.becomeListener}>
-								Person A
+								Listen
 							</div>
 						)}
 						<Chat user={user} listener={listener} />
