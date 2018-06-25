@@ -51,20 +51,24 @@ class Chat extends Component {
 		const { socket, message, conversation, messages } = this.state;
 		const { user } = this.props;
 
+		if (!message) return;
+
 		socket.emit("send_message", { user, message, conversation });
 		messages.push({ body: message, author: user._id, conversationID: conversation._id });
 		this.setState({ messages, message: "" });
 	};
 	handleChange = (event, index) => {
-		if (event.key == "Enter") {
+		this.setState({ [index]: event.target.value });
+	};
+	handleEnter = e => {
+		if (e.key == "Enter") {
 			this.sendMessage();
 		}
-		this.setState({ [index]: event.target.value });
 	};
 	scrollToBottom = () => {
 		this.messagesEnd.scrollIntoView({ behavior: "smooth" });
 	};
-	findConversation = () => {};
+
 	render() {
 		const { message, conversation, messages } = this.state;
 		const { user } = this.props;
@@ -103,6 +107,7 @@ class Chat extends Component {
 						<textarea
 							className="send-message-textarea"
 							onChange={event => this.handleChange(event, "message")}
+							onKeyPress={this.handleEnter}
 							value={message}
 						/>
 						<button className="send-message" onClick={this.sendMessage}>
