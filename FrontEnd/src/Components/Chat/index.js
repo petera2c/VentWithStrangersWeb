@@ -36,7 +36,6 @@ class Chat extends Component {
 		socket.emit("find_conversation", { user, type });
 
 		socket.on("found_conversation", conversation => {
-			console.log(conversation);
 			this.setState({ conversation });
 		});
 
@@ -44,6 +43,7 @@ class Chat extends Component {
 			let { messages } = this.state;
 			messages.push(message);
 			this.setState({ messages });
+
 			this.scrollToBottom();
 		});
 		this.setState({ socket });
@@ -57,17 +57,17 @@ class Chat extends Component {
 		socket.emit("send_message", { user, message, conversation });
 		messages.push({ body: message, author: user._id, conversationID: conversation._id });
 		this.setState({ messages, message: "" });
+		this.scrollToBottom();
 	};
-	handleChange = (event, index) => {
-		this.setState({ [index]: event.target.value });
-	};
-	handleEnter = e => {
-		if (e.key == "Enter") {
+	handleChange = (value, index) => {
+		if (value[value.length - 1] === "\n") {
 			this.sendMessage();
+			return;
 		}
+		this.setState({ [index]: value });
 	};
 	scrollToBottom = () => {
-		this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+		this.messagesEnd.scrollIntoView();
 	};
 
 	render() {
@@ -107,8 +107,7 @@ class Chat extends Component {
 					<div className="send-message-container">
 						<textarea
 							className="send-message-textarea"
-							onChange={event => this.handleChange(event, "message")}
-							onKeyPress={this.handleEnter}
+							onChange={event => this.handleChange(event.target.value, "message")}
 							value={message}
 						/>
 						<button className="send-message" onClick={this.sendMessage}>
