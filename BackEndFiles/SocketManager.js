@@ -45,4 +45,8 @@ module.exports = socket => {
 	socket.on("disconnect", function() {
 		if (currentConversation) currentConversation.remove();
 	});
+
+	socket.on("user_reported", function() {
+		// Laugh at snowflakes
+	});
 };

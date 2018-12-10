@@ -34,6 +34,7 @@ module.exports = {
 	devServer: {
 		proxy: {
 			"/api/*": "http://localhost:5000"
-		}
+		},
+		disableHostCheck: true // That solved it
 	}
 };
