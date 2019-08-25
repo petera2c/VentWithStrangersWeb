@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose"); // Connect to mongo
 const passport = require("passport"); // For Login and Register
-const keys = require("./Config/keys");
+const keys = require("./config1/keys");
 const morgan = require("morgan"); // Every request is console logged
 const session = require("express-session"); // Create sessions in backend
 const MongoStore = require("connect-mongo")(session); // Store sessions in mongo securely
@@ -21,10 +21,10 @@ app.use(allowCrossDomain);
 const path = require("path");
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
-const SocketManager = require("./BackEndFiles/SocketManager");
+const SocketManager = require("./routeFunctions/SocketManager");
 io.on("connection", SocketManager);
 
-require("./BackEndFiles/passport")(passport);
+require("./routeFunctions/passport")(passport);
 
 mongoose.connect(keys.mongoDevelopentURI);
 const db = mongoose.connection;

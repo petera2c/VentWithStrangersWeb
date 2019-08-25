@@ -1,6 +1,6 @@
-const User = require("../Models/User");
-const Conversation = require("../Models/Conversation");
-const Message = require("../Models/Message");
+const User = require("../models/User");
+const Conversation = require("../models/Conversation");
+const Message = require("../models/Message");
 
 module.exports = socket => {
 	let currentConversation;
