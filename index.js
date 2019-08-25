@@ -7,6 +7,7 @@ const session = require("express-session"); // Create sessions in backend
 const MongoStore = require("connect-mongo")(session); // Store sessions in mongo securely
 const cookieParser = require("cookie-parser"); // Needer for auth to read client cookies
 const bodyParser = require("body-parser"); // Read data in post requests from front end
+const passport = require("passport"); // For Login and Register
 
 var allowCrossDomain = function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -15,6 +16,8 @@ var allowCrossDomain = function(req, res, next) {
   next();
 };
 app.use(allowCrossDomain);
+
+require("./routeFunctions/passport")(passport);
 
 // Socket imports
 const path = require("path");
@@ -40,6 +43,9 @@ app.use(
     store: new MongoStore({ mongooseConnection: db })
   })
 );
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 require("./routes")(app); // Routes
 
