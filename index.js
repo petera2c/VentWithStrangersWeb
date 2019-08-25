@@ -6,7 +6,7 @@ const keys = require("./config/keys");
 const morgan = require("morgan"); // Every request is console logged
 const session = require("express-session"); // Create sessions in backend
 const MongoStore = require("connect-mongo")(session); // Store sessions in mongo securely
-const cookieParser = require("cookie-parser"); // Needer for auth to read frontend cookies
+const cookieParser = require("cookie-parser"); // Needer for auth to read client cookies
 const bodyParser = require("body-parser"); // Read data in post requests from front end
 
 var allowCrossDomain = function(req, res, next) {
@@ -51,11 +51,11 @@ require("./routes")(app); // Routes
 
 // If using production then if a route is not found in express we send user to react routes
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static("FrontEnd/build"));
+  app.use(express.static("client/build"));
 
   const path = require("path");
   app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "FrontEnd", "build", "index.html"));
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
 }
 

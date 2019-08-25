@@ -6,9 +6,9 @@
   "scripts": {
     "start": "node index.js",
     "server": "nodemon index.js",
-    "FrontEnd": "npm run start --prefix FrontEnd",
-    "dev": "concurrently \"npm run server\" \"npm run FrontEnd\"",
-    "heroku-postbuild": "npm install --prefix FrontEnd && npm run build --prefix FrontEnd"
+    "client": "npm run start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "npm install --prefix client && npm run build --prefix client"
   },
   "author": "Peter Mirmotahari",
   "license": "ISC",
