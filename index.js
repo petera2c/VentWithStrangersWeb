@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose"); // Connect to mongo
-const passport = require("passport"); // For Login and Register
 const keys = require("./config/keys");
 const morgan = require("morgan"); // Every request is console logged
 const session = require("express-session"); // Create sessions in backend
@@ -24,8 +23,6 @@ const io = require("socket.io")(server);
 const SocketManager = require("./routeFunctions/SocketManager");
 io.on("connection", SocketManager);
 
-require("./routeFunctions/passport")(passport);
-
 mongoose.connect(keys.mongoDevelopentURI);
 const db = mongoose.connection;
 
@@ -43,9 +40,6 @@ app.use(
     store: new MongoStore({ mongooseConnection: db })
   })
 );
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 require("./routes")(app); // Routes
 

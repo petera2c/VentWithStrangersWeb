@@ -1,0 +1,90 @@
+.text-test-mode {
+  background-color: blue;
+}
+
+.white {
+  color: var(--white-color);
+  fill: var(--white-color);
+}
+.ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.tac {
+  text-align: center;
+}
+.tar {
+  text-align: right;
+}
+.tal {
+  text-align: left;
+}
+.taj {
+  text-align: justify;
+}
+.bold {
+  font-weight: bold;
+}
+.bold-600 {
+  font-weight: 600;
+}
+
+h1 {
+  color: var(--four-blue-color);
+  margin: 0;
+  padding: 0;
+
+  font-weight: 100;
+  font-size: var(--thirty-two-font-size);
+}
+h2 {
+  color: var(--primary-font-color);
+  margin: 0;
+  font-weight: 100;
+
+  font-size: var(--thirty-two-font-size);
+}
+h3 {
+  color: var(--four-blue-color);
+  margin: 0;
+  padding: 0;
+  font-size: var(--twenty-font-size);
+  font-weight: 100;
+}
+h4 {
+  color: var(--primary-font-color);
+  margin: 0;
+  text-align: left;
+  font-weight: 100;
+
+  font-size: var(--twenty-font-size);
+}
+h5 {
+  color: var(--four-blue-color);
+  margin: 0;
+  font-weight: 100;
+
+  font-size: var(--sixteen-font-size);
+}
+h6 {
+  color: var(--primary-font-color);
+  margin: 0;
+  font-weight: 100;
+
+  font-size: var(--sixteen-font-size);
+}
+
+p {
+  margin: 0;
+  color: var(--primary-font-color);
+  text-align: left;
+  font-size: var(--fourteen-font-size);
+  font-weight: 100;
+}
+
+text {
+  font-size: var(--fourteen-font-size);
+  fill: var(--primary-font-color);
+}

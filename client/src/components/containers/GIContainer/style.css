@@ -1,0 +1,192 @@
+.main-container {
+  flex-shrink: 0;
+  position: relative;
+  display: flex;
+
+  transition: all 0.2s ease;
+}
+.full-screen {
+  max-height: 100vh;
+  min-height: 100vh;
+}
+
+.block {
+  display: block;
+}
+.float-left {
+  float: left;
+}
+.float-right {
+  float: right;
+}
+.x-wrap {
+  flex-shrink: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+.column {
+  flex-direction: column;
+}
+
+.x-fill {
+  width: 100%;
+}
+.y-50 {
+  min-height: 20vh;
+}
+.fill-parent {
+  width: 100%;
+  height: 100%;
+}
+
+.full-center {
+  justify-content: center;
+  align-items: center;
+}
+
+.align-start {
+  align-items: flex-start;
+}
+.justify-start {
+  justify-content: flex-start;
+}
+.justify-center {
+  justify-content: center;
+}
+.align-center {
+  align-items: center;
+}
+.align-end {
+  align-items: flex-end;
+}
+.justify-end {
+  justify-content: flex-end;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.align-between {
+  align-items: space-between;
+}
+
+.container-box {
+  position: relative;
+  overflow: hidden;
+}
+
+.container-box.tinier {
+  min-width: 150px;
+  max-height: 150px;
+}
+.container-box.tiny {
+  min-width: 250px;
+}
+.container-box.twentyvw {
+  min-width: 250px;
+  width: 20vw;
+}
+.container-box.small {
+  min-width: 250px;
+  width: 25vw;
+}
+.container-box.medium {
+  min-width: 250px;
+  width: 35vw;
+  flex-basis: auto;
+}
+.container-box.large {
+  min-width: 250px;
+  width: 50vw;
+}
+.container-box.extra-large {
+  min-width: 250px;
+  width: 75vw;
+  max-width: 1400px;
+}
+
+.container-box.y-30vw {
+  height: 30vw;
+  min-height: 200px;
+}
+
+.ov-hidden {
+  overflow: hidden;
+}
+.ov-auto {
+  overflow: auto;
+}
+.ov-visible {
+  overflow: visible;
+}
+.fill-flex {
+  flex: 1;
+}
+.reverse {
+  flex-direction: row-reverse;
+}
+.common-border {
+  border: 1px solid var(--grey-theme-color);
+}
+.common-border.light {
+  border: 1px solid var(--light-grey-theme-color);
+}
+.common-border.dark {
+  border-color: var(--grey-font-color);
+}
+.common-border.font-color {
+  border-color: var(--primary-font-color);
+}
+.common-border.thick {
+  border-width: 2px;
+}
+.light-scrollbar::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.light-scrollbar::-webkit-scrollbar-button {
+  display: none;
+  height: 0;
+  width: 0;
+}
+.light-scrollbar::-webkit-scrollbar-thumb {
+  background-color: hsla(0, 0%, 0%, 0.35);
+  background-clip: padding-box;
+  border: 3px solid rgba(0, 0, 0, 0);
+  border-radius: 6px;
+  min-height: 36px;
+}
+.light-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: hsla(0, 0%, 0%, 0.4);
+}
+
+.bg-white {
+  background-color: var(--white-color);
+}
+.bg-blue {
+  background-color: var(--blue-color);
+}
+.bg-grey {
+  background-color: var(--grey-color);
+}
+.bg-purple {
+  background-color: var(--purple-color);
+}
+.shadow-1 {
+  box-shadow: 0px 10px 40px -10px rgba(0, 64, 128, 0.2);
+}
+
+.sticky {
+  position: sticky;
+  z-index: 10;
+}
+.sticky.top-0 {
+  top: 0;
+}
+.test-mode {
+  background-color: red;
+}

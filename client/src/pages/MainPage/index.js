@@ -1,13 +1,10 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { setUser } from "../../Redux/Actions/";
-
 import Chat from "../../Components/Chat/";
 import Loader from "../../Components/Loader/";
-import "./Styles/";
+
+import "./style.css";
 
 class MainPage extends Component {
   state = {
@@ -16,43 +13,20 @@ class MainPage extends Component {
     venter: false,
     user: this.props.user
   };
-  componentDidMount() {
-    axios.get("/api/user").then(res => {
-      let { success, user, message, port } = res.data;
 
-      if (success) {
-        this.props.setUser(user);
-        this.setState({ saving: false, user, port });
-      } else {
-        alert(message);
-      }
-    });
-  }
   becomeListener = () => {
     this.setState({ saving: true, listener: true, venter: false });
-    axios
-      .post("/api/user", {
-        userChangesArray: [{ index: "type", value: "listener" }]
-      })
-      .then(res => {
-        const { user } = res.data;
-        this.props.setUser(user);
-        this.setState({ user });
-        this.setState({ saving: false });
-      });
+    axios.post("/api/conversation/", {}).then(res => {
+      const { success } = res.data;
+      this.setState({ saving: false });
+    });
   };
   becomeVenter = () => {
     this.setState({ saving: true, listener: false, venter: true });
-    axios
-      .post("/api/user", {
-        userChangesArray: [{ index: "type", value: "venter" }]
-      })
-      .then(res => {
-        const { user } = res.data;
-        this.props.setUser(user);
-        this.setState({ user });
-        this.setState({ saving: false });
-      });
+    axios.post("/api/conversation", {}).then(res => {
+      const { success } = res.data;
+      this.setState({ saving: false });
+    });
   };
 
   render() {
@@ -91,13 +65,4 @@ class MainPage extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return { user: state.user };
-}
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ setUser: setUser }, dispatch);
-}
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MainPage);
+export default MainPage;
