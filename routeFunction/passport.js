@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt-nodejs");
 const LocalStrategy = require("passport-local").Strategy;
 
-const keys = require("../config1/keys");
+const keys = require("../config/keys");
 
 const User = require("../models/User");
 
