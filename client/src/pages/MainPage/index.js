@@ -4,16 +4,28 @@ import axios from "axios";
 import Chat from "../../Components/Chat/";
 import Loader from "../../Components/Loader/";
 
+import { extraContext } from "../../context";
+
 import "./style.css";
 
 class MainPage extends Component {
   state = {
     saving: true,
     listener: false,
-    venter: false,
-    user: this.props.user
+    venter: false
   };
+  componentDidMount() {
+    axios.get("/api/user").then(res => {
+      let { success, user, message, port } = res.data;
 
+      if (success) {
+        this.props.setUser(user);
+        this.setState({ saving: false, user, port });
+      } else {
+        alert(message);
+      }
+    });
+  }
   becomeListener = () => {
     this.setState({ saving: true, listener: true, venter: false });
     axios.post("/api/conversation/", {}).then(res => {
@@ -64,5 +76,7 @@ class MainPage extends Component {
     );
   }
 }
+
+MainPage.contextType = extraContext;
 
 export default MainPage;

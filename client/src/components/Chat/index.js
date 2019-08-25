@@ -5,7 +5,7 @@ import axios from "axios";
 
 import SmallLoader from "../SmallLoader";
 
-import "./styles.css";
+import "./style.css";
 
 const socketUrl = "http://localhost:5000";
 class Chat extends Component {
