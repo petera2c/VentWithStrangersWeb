@@ -9,7 +9,7 @@ const cookieParser = require("cookie-parser"); // Needer for auth to read client
 const bodyParser = require("body-parser"); // Read data in post requests from front end
 const passport = require("passport"); // For Login and Register
 
-var allowCrossDomain = function(req, res, next) {
+const allowCrossDomain = (req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
   res.header("Access-Control-Allow-Headers", "Content-Type");
@@ -24,6 +24,8 @@ const path = require("path");
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 const SocketManager = require("./routeFunctions/SocketManager");
+const passportSocketIo = require("passport.socketio");
+
 io.on("connection", SocketManager);
 
 mongoose.connect(keys.mongoDevelopentURI);
@@ -35,12 +37,14 @@ app.use(cookieParser()); // Read cookies (needed for auth)
 app.use(bodyParser.json({ limit: "50mb" })); //Read data from html forms
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
+const sessionStore = new MongoStore({ mongooseConnection: db });
+
 app.use(
   session({
     secret: keys.cookieKey,
     resave: true,
     saveUninitialized: true,
-    store: new MongoStore({ mongooseConnection: db })
+    store: sessionStore
   })
 );
 
@@ -62,3 +66,24 @@ if (process.env.NODE_ENV === "production") {
 const PORT = process.env.PORT || 5000;
 
 server.listen(PORT);
+
+io.use(
+  passportSocketIo.authorize({
+    passport,
+    cookieParser,
+    key: "connect.sid",
+    secret: keys.cookieKey,
+    store: sessionStore,
+    success: onAuthorizeSuccess,
+    fail: onAuthorizeFail
+  })
+);
+
+function onAuthorizeSuccess(data, accept) {
+  accept();
+}
+
+function onAuthorizeFail(data, message, error, accept) {
+  console.log("failed connection to socket.io:", data, message);
+  if (error) accept(new Error(message));
+}

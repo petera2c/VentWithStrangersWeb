@@ -26,7 +26,7 @@ login = (req, res, next) => {
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       dateCreated: new Date()
     });
-    user.save().then(savedUser => {
+    newUser.save().then(savedUser => {
       req.logIn(savedUser, err => {
         if (err)
           res.send({

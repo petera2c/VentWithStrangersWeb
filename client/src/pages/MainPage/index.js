@@ -6,69 +6,61 @@ import Loader from "../../Components/Loader/";
 
 import { extraContext } from "../../context";
 
+import { initSocket } from "./util";
+
 import "./style.css";
 
 class MainPage extends Component {
   state = {
-    saving: true,
     listener: false,
+    saving: true,
+    socket: undefined,
+    user: undefined,
     venter: false
   };
   componentDidMount() {
     axios.get("/api/user").then(res => {
-      let { success, user, message, port } = res.data;
+      const { success, user, message, port } = res.data;
 
       if (success) {
-        this.props.setUser(user);
-        this.setState({ saving: false, user, port });
+        this.setState({ saving: false, user });
+        initSocket(this.handleChange, port);
       } else {
         alert(message);
       }
     });
   }
-  becomeListener = () => {
-    this.setState({ saving: true, listener: true, venter: false });
-    axios.post("/api/conversation/", {}).then(res => {
-      const { success } = res.data;
-      this.setState({ saving: false });
-    });
+  handleChange = stateObj => {
+    this.setState(stateObj);
   };
-  becomeVenter = () => {
-    this.setState({ saving: true, listener: false, venter: true });
-    axios.post("/api/conversation", {}).then(res => {
-      const { success } = res.data;
-      this.setState({ saving: false });
-    });
+  something = (socket, type) => {
+    socket.emit("find_conversation", { type });
   };
 
   render() {
-    const { saving, venter, listener, user, port } = this.state;
+    const { listener, saving, socket, user, venter } = this.state;
 
     return (
       <div className="master-container">
         {user && !venter && !listener && (
           <div className="center-container">
-            <div className="option-container" onClick={this.becomeListener}>
+            <div
+              className="option-container"
+              onClick={() => this.something(socket, "listener")}
+            >
               Help a Stranger
             </div>
-            <div className="option-container" onClick={this.becomeVenter}>
+            <div
+              className="option-container"
+              onClick={() => this.something(socket, "venter")}
+            >
               Vent to a Stranger
             </div>
           </div>
         )}
         {(venter || listener) && (
           <div className="center-container">
-            {listener && (
-              <div className="side-small-box" onClick={this.becomeVenter}>
-                Vent to a Stranger
-              </div>
-            )}
-            {venter && (
-              <div className="side-small-box" onClick={this.becomeListener}>
-                Help a Stranger
-              </div>
-            )}
-            <Chat user={user} listener={listener} port={port} />
+            <Chat user={user} listener={listener} />
           </div>
         )}
         {saving && <Loader />}

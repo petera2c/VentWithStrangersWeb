@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import moment from "moment";
-import io from "socket.io-client";
 import axios from "axios";
 
 import SmallLoader from "../SmallLoader";
 
+import { messageInit } from "./util";
+
 import "./style.css";
 
-const socketUrl = "http://localhost:5000";
 class Chat extends Component {
   state = {
     message: "",
@@ -15,50 +15,32 @@ class Chat extends Component {
     messages: [],
     socket: undefined
   };
+  componentDidMount() {
+    this.newMessageInit();
+  }
   componentDidUpdate() {
     if (this.state.conversation) this.scrollToBottom();
   }
-  componentDidMount() {
-    this.initSocket();
-  }
-  initSocket = () => {
-    const { user, listener, port } = this.props;
-
-    let socket;
-    if (port) socket = io();
-    else socket = io(socketUrl);
-
-    let type = "listener";
-
-    if (!listener) {
-      type = "venter";
-    }
-    socket.emit("find_conversation", { user, type });
-
-    socket.on("found_conversation", conversation => {
-      this.setState({ conversation });
-    });
+  newMessageInit = () => {
+    const { socket } = this.props;
 
     socket.on("receive_message", message => {
-      let { messages } = this.state;
       messages.push(message);
       this.setState({ messages });
 
       this.scrollToBottom();
     });
-    this.setState({ socket });
   };
+
   sendMessage = () => {
-    const { socket, message, conversation, messages } = this.state;
-    const { user } = this.props;
+    const { message, messages } = this.state;
+    const { socket, user } = this.props;
 
     if (!message) return;
 
-    socket.emit("send_message", { user, message, conversation });
+    socket.emit("send_message", { user, message });
     messages.push({
-      body: message,
-      author: user._id,
-      conversationID: conversation._id
+      body: message
     });
     this.setState({ messages, message: "" });
     this.scrollToBottom();
@@ -75,7 +57,7 @@ class Chat extends Component {
   };
 
   render() {
-    const { message, conversation, messages } = this.state;
+    const { conversation, message, messages } = this.state;
     const { user } = this.props;
 
     let messageDivs = [];
