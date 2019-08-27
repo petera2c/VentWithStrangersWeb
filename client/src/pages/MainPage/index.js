@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-import Chat from "../../Components/Chat/";
-import Loader from "../../Components/Loader/";
+import Chat from "../../components/Chat/";
+import Loader from "../../components/Loader/";
 
 import { extraContext } from "../../context";
 
