@@ -11,6 +11,7 @@ module.exports = app => {
 
   // Get current user
   app.get("/api/user", middleware, (req, res, next) => {
+    console.log(process.env.PORT);
     res.send({ success: true, user: req.user, port: process.env.PORT });
   });
 };

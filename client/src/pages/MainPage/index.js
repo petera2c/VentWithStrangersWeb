@@ -22,6 +22,7 @@ class MainPage extends Component {
   componentDidMount() {
     axios.get("/api/user").then(res => {
       const { success, user, message, port } = res.data;
+      console.log(port);
 
       if (success) {
         this.setState({ saving: false, user });
