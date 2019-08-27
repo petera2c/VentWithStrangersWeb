@@ -26,7 +26,7 @@ const io = require("socket.io")(server);
 const SocketManager = require("./routeFunctions/SocketManager");
 const passportSocketIo = require("passport.socketio");
 
-io.on("connection", SocketManager);
+io.on("connection", SocketManager(io));
 
 mongoose.connect(keys.mongoDevelopentURI);
 const db = mongoose.connection;

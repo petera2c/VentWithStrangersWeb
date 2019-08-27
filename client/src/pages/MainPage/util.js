@@ -6,9 +6,13 @@ export const initSocket = (callback, port) => {
   if (port) socket = io();
   else socket = io(socketUrl);
 
-  socket.on("found_conversation", conversation => {
-    callback({ conversation });
+  socket.on("user_joined_chat", stateObj => {
+    callback(stateObj);
   });
 
   callback({ socket });
+};
+
+export const findConversation = (socket, type) => {
+  socket.emit("find_conversation", { type });
 };

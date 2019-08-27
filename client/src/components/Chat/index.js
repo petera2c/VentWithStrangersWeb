@@ -11,7 +11,6 @@ import "./style.css";
 class Chat extends Component {
   state = {
     message: "",
-    conversation: undefined,
     messages: [],
     socket: undefined
   };
@@ -19,12 +18,14 @@ class Chat extends Component {
     this.newMessageInit();
   }
   componentDidUpdate() {
-    if (this.state.conversation) this.scrollToBottom();
+    if (this.props.conversation) this.scrollToBottom();
   }
   newMessageInit = () => {
     const { socket } = this.props;
+    const { messages } = this.state;
 
     socket.on("receive_message", message => {
+      console.log(message);
       messages.push(message);
       this.setState({ messages });
 
@@ -34,14 +35,16 @@ class Chat extends Component {
 
   sendMessage = () => {
     const { message, messages } = this.state;
-    const { socket, user } = this.props;
+    const { socket } = this.props;
 
     if (!message) return;
 
-    socket.emit("send_message", { user, message });
+    socket.emit("send_message", { message });
+
     messages.push({
       body: message
     });
+
     this.setState({ messages, message: "" });
     this.scrollToBottom();
   };
@@ -53,12 +56,12 @@ class Chat extends Component {
     this.setState({ [index]: value });
   };
   scrollToBottom = () => {
-    this.messagesEnd.scrollIntoView();
+    if (this.messagesEnd) this.messagesEnd.scrollIntoView();
   };
 
   render() {
-    const { conversation, message, messages } = this.state;
-    const { user } = this.props;
+    const { message, messages } = this.state;
+    const { conversation, user } = this.props;
 
     let messageDivs = [];
     for (let index in messages) {
@@ -80,7 +83,7 @@ class Chat extends Component {
 
     return (
       <div className="chat-container">
-        {conversation && (
+        {conversation.venter && conversation.listener && (
           <div className="messages-container">
             {messageDivs}
             <div
@@ -91,8 +94,8 @@ class Chat extends Component {
             />
           </div>
         )}
-        {!conversation && <SmallLoader />}
-        {conversation && (
+        {(!conversation.venter || !conversation.listener) && <SmallLoader />}
+        {conversation.venter && conversation.listener && (
           <div className="send-message-container">
             <textarea
               className="send-message-textarea"
