@@ -12,22 +12,11 @@ require("../public/favicon.ico");
 
 const rootElement = document.getElementById("root");
 
-if (!rootElement.hasChildNodes()) {
-  hydrate(
-    <GIProvider>
-      <Router>
-        <MainPage />
-      </Router>
-    </GIProvider>,
-    rootElement
-  );
-} else {
-  render(
-    <GIProvider>
-      <Router>
-        <MainPage />
-      </Router>
-    </GIProvider>,
-    rootElement
-  );
-}
+render(
+  <GIProvider>
+    <Router>
+      <MainPage />
+    </Router>
+  </GIProvider>,
+  rootElement
+);

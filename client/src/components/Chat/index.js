@@ -25,7 +25,6 @@ class Chat extends Component {
     const { messages } = this.state;
 
     socket.on("receive_message", message => {
-      console.log(message);
       messages.push(message);
       this.setState({ messages });
 
@@ -35,13 +34,14 @@ class Chat extends Component {
 
   sendMessage = () => {
     const { message, messages } = this.state;
-    const { socket } = this.props;
+    const { socket, user } = this.props;
 
     if (!message) return;
 
     socket.emit("send_message", { message });
 
     messages.push({
+      author: user._id,
       body: message
     });
 
