@@ -68,7 +68,8 @@ class Chat extends Component {
       let direction = "left";
       let message = messages[index];
 
-      if (message.author === user._id) direction = "right";
+      if (message.author.toString() === user._id.toString())
+        direction = "right";
       //					<div className="message-time">{new moment(message.createdAt).format("HH:mm")}</div>
 
       messageDivs.push(

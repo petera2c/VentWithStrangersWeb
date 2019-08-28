@@ -3,8 +3,6 @@ import { Helmet } from "react-helmet";
 import ReactGA from "react-ga";
 import { withRouter } from "react-router-dom";
 
-import Header from "../../navigations/Header";
-
 import GIContainer from "../GIContainer";
 
 import "./style.css";
@@ -15,7 +13,7 @@ class Page extends Component {
     const activePage = props.location.pathname;
 
     if (process.env.NODE_ENV !== "development") {
-      ReactGA.initialize("UA-140815372-1");
+      ReactGA.initialize("UA-140815372-2");
       ReactGA.pageview(activePage);
     }
   }
@@ -60,10 +58,7 @@ class Page extends Component {
           <meta property="og:image" content={image} />
         </Helmet>
 
-        <GIContainer className={"x-fill " + className}>
-          <Header />
-          {children}
-        </GIContainer>
+        <GIContainer className={"x-fill " + className}>{children}</GIContainer>
       </GIContainer>
     );
   }

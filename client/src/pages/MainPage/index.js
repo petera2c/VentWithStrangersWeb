@@ -4,7 +4,7 @@ import axios from "axios";
 import Chat from "../../components/Chat/";
 import Loader from "../../components/Loader/";
 
-import { extraContext } from "../../context";
+import Page from "../../components/containers/Page";
 
 import { findConversation, initSocket } from "./util";
 
@@ -22,13 +22,12 @@ class MainPage extends Component {
   componentDidMount() {
     axios.get("/api/user").then(res => {
       const { success, user, message, port } = res.data;
-      console.log(port);
 
       if (success) {
         this.setState({ saving: false, user });
         initSocket(this.handleChange, port);
       } else {
-        alert(message);
+        alert("Can't get user");
       }
     });
   }
@@ -39,7 +38,12 @@ class MainPage extends Component {
     const { conversation, listener, saving, socket, user, venter } = this.state;
 
     return (
-      <div className="master-container">
+      <Page
+        className="master-container"
+        description="Vent with strangers :)"
+        keywords="Vent, strangers, help"
+        title="Home"
+      >
         {user && !conversation && (
           <div className="center-container">
             <div
@@ -68,11 +72,9 @@ class MainPage extends Component {
           </div>
         )}
         {saving && <Loader />}
-      </div>
+      </Page>
     );
   }
 }
-
-MainPage.contextType = extraContext;
 
 export default MainPage;
