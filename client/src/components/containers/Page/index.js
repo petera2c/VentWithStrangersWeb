@@ -49,9 +49,9 @@ class Page extends Component {
       >
         <Helmet>
           <meta charSet="utf-8" />
-          <title>{`${title} | FlakyPeople`}</title>
-          <meta name="title" content={`${title} | FlakyPeople`} />
-          <meta name="og:title" content={`${title} | FlakyPeople`} />
+          <title>{`${title} | VentWithStrangers`}</title>
+          <meta name="title" content={`${title} | VentWithStrangers`} />
+          <meta name="og:title" content={`${title} | VentWithStrangers`} />
           <meta name="description" content={description} />
           <meta name="og:description" content={description} />
           <meta property="image" content={image} />
