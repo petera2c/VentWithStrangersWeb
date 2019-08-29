@@ -21,11 +21,11 @@ class MainPage extends Component {
   };
   componentDidMount() {
     axios.get("/api/user").then(res => {
-      const { success, user, message, port } = res.data;
+      const { success, user, message } = res.data;
 
       if (success) {
         this.setState({ saving: false, user });
-        initSocket(this.handleChange, port);
+        initSocket(this.handleChange);
       } else {
         alert("Can't get user");
       }

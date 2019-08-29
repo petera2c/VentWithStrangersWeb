@@ -4,8 +4,6 @@ import axios from "axios";
 
 import SmallLoader from "../SmallLoader";
 
-import { messageInit } from "./util";
-
 import "./style.css";
 
 class Chat extends Component {

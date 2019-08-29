@@ -1,10 +1,10 @@
 import io from "socket.io-client";
-const socketUrl = "http://localhost:5000";
 
-export const initSocket = (callback, port) => {
+export const initSocket = callback => {
   let socket;
-  if (port) socket = io();
-  else socket = io(socketUrl);
+  if (process.env.NODE_ENV === "development")
+    socket = io("http://localhost:5000");
+  else socket = io();
 
   socket.on("user_joined_chat", stateObj => {
     callback(stateObj);
