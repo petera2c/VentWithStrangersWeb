@@ -12,6 +12,7 @@ class GIProvider extends Component {
       type: "danger"
     },
     saving: false,
+    socket: undefined,
     user: undefined
   };
   componentDidMount() {
@@ -37,7 +38,7 @@ class GIProvider extends Component {
     if (this._ismounted) this.setState(stateObject);
   };
   render() {
-    const { notification, saving, user } = this.state;
+    const { notification, saving, socket, user } = this.state;
 
     return (
       <Provider
@@ -45,6 +46,7 @@ class GIProvider extends Component {
           handleChange: this.handleChange,
           notify: this.notify,
           saving,
+          socket,
           user
         }}
       >

@@ -5,7 +5,7 @@ const User = require("./models/User");
 module.exports = app => {
   // Middleware
   const middleware = (req, res, next) => {
-    if (!req.user) return login(req, res, next);
+    if (!req.user) return randomLogin(req, res, next);
     else next();
   };
 
@@ -15,7 +15,7 @@ module.exports = app => {
   });
 };
 
-login = (req, res, next) => {
+randomLogin = (req, res, next) => {
   passport.authenticate("local-login", (err, user, message) => {
     const password = Math.floor(Math.random() * 1000000000);
 

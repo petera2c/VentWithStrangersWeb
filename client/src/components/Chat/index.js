@@ -2,15 +2,16 @@ import React, { Component } from "react";
 import moment from "moment";
 import axios from "axios";
 
-import SmallLoader from "../SmallLoader";
+import Consumer, { ExtraContext } from "../../context";
+
+import SmallLoader from "../notifications/SmallLoader";
 
 import "./style.css";
 
 class Chat extends Component {
   state = {
     message: "",
-    messages: [],
-    socket: undefined
+    messages: []
   };
   componentDidMount() {
     this.newMessageInit();
@@ -19,7 +20,7 @@ class Chat extends Component {
     if (this.props.conversation) this.scrollToBottom();
   }
   newMessageInit = () => {
-    const { socket } = this.props;
+    const { socket } = this.context;
     const { messages } = this.state;
 
     socket.on("receive_message", message => {
@@ -32,7 +33,7 @@ class Chat extends Component {
 
   sendMessage = () => {
     const { message, messages } = this.state;
-    const { socket, user } = this.props;
+    const { socket, user } = this.context;
 
     if (!message) return;
 
@@ -48,8 +49,7 @@ class Chat extends Component {
   };
   handleChange = (value, index) => {
     if (value[value.length - 1] === "\n") {
-      this.sendMessage();
-      return;
+      return this.sendMessage();
     }
     this.setState({ [index]: value });
   };
@@ -59,7 +59,8 @@ class Chat extends Component {
 
   render() {
     const { message, messages } = this.state;
-    const { conversation, user } = this.props;
+    const { conversation } = this.props;
+    const { user } = this.context;
 
     let messageDivs = [];
     for (let index in messages) {
@@ -81,36 +82,44 @@ class Chat extends Component {
     }
 
     return (
-      <div className="chat-container">
-        {conversation.venter && conversation.listener && (
-          <div className="messages-container">
-            {messageDivs}
-            <div
-              style={{ float: "left", clear: "both" }}
-              ref={el => {
-                this.messagesEnd = el;
-              }}
-            />
+      <Consumer>
+        {context => (
+          <div className="chat-container">
+            {conversation.venter && conversation.listener && (
+              <div className="messages-container">
+                {messageDivs}
+                <div
+                  style={{ float: "left", clear: "both" }}
+                  ref={el => {
+                    this.messagesEnd = el;
+                  }}
+                />
+              </div>
+            )}
+            {(!conversation.venter || !conversation.listener) && (
+              <SmallLoader />
+            )}
+            {conversation.venter && conversation.listener && (
+              <div className="send-message-container">
+                <textarea
+                  className="send-message-textarea"
+                  onChange={event =>
+                    this.handleChange(event.target.value, "message")
+                  }
+                  value={message}
+                />
+                <button className="send-message" onClick={this.sendMessage}>
+                  Send
+                </button>
+              </div>
+            )}
           </div>
         )}
-        {(!conversation.venter || !conversation.listener) && <SmallLoader />}
-        {conversation.venter && conversation.listener && (
-          <div className="send-message-container">
-            <textarea
-              className="send-message-textarea"
-              onChange={event =>
-                this.handleChange(event.target.value, "message")
-              }
-              value={message}
-            />
-            <button className="send-message" onClick={this.sendMessage}>
-              Send
-            </button>
-          </div>
-        )}
-      </div>
+      </Consumer>
     );
   }
 }
+
+Chat.contextType = ExtraContext;
 
 export default Chat;

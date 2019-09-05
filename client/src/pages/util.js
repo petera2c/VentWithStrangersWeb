@@ -6,13 +6,5 @@ export const initSocket = callback => {
     socket = io("http://localhost:5000");
   else socket = io();
 
-  socket.on("user_joined_chat", stateObj => {
-    callback(stateObj);
-  });
-
   callback({ socket });
-};
-
-export const findConversation = (socket, type) => {
-  socket.emit("find_conversation", { type });
 };

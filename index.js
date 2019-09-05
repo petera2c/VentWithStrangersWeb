@@ -53,7 +53,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-require("./routes")(app); // Routes
+require("./routeFunctions")(app); // Routes
 
 // If using production then if a route is not found in express we send user to react routes
 if (process.env.NODE_ENV === "production") {
