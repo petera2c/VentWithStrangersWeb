@@ -11,15 +11,14 @@ import GIContainer from "../../components/containers/GIContainer";
 import GIText from "../../components/views/GIText";
 import GIButton from "../../components/views/GIButton";
 
-import Consumer from "../../context";
+import Consumer, { ExtraContext } from "../../context";
 
 let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 class RegisterPage extends Component {
   state = {
-    fullName: "",
     email: "",
-    userName: "",
+    displayName: "",
     timezone: timezone ? timezone : "America/Vancouver",
     password: "",
     passwordConfirm: ""
@@ -30,7 +29,7 @@ class RegisterPage extends Component {
     const { user } = this.context; // Variables
     const { notify } = this.context; // Functions
 
-    if (user) {
+    if (user && user.displayName && user.displayName.match(/[a-z]/i)) {
       history.push("/home");
       notify({
         message: "You are already logged in!",
@@ -48,12 +47,11 @@ class RegisterPage extends Component {
     event.preventDefault();
 
     const {
-      fullName,
       email,
       timezone,
       password,
       passwordConfirm,
-      userName
+      displayName
     } = this.state;
 
     if (!validateEmail(email)) {
@@ -61,25 +59,28 @@ class RegisterPage extends Component {
       return;
     }
 
-    if (fullName && email && userName && timezone && password) {
+    if (email && displayName && timezone && password) {
       if (password !== passwordConfirm) {
         alert("Passwords do not match.");
         return;
       }
       axios
         .post("/api/register", {
-          fullName,
           email: email.toLowerCase(),
-          userName,
+          displayName,
           timezone,
           password
         })
         .then(res => {
           const { success, user, message } = res.data;
+          const { handleChange, notify } = this.context;
+          const { history } = this.props;
 
-          if (success && user) this.context.handleChange({ user });
-          else {
-            context.notify({
+          if (success && user) {
+            handleChange({ user });
+            history.push("/home");
+          } else {
+            notify({
               message,
               type: "danger",
               title: "Error"
@@ -87,7 +88,7 @@ class RegisterPage extends Component {
           }
         });
     } else {
-      if (!fullName || !email || !userName || !password) {
+      if (!email || !displayName || !password) {
         alert("Please make sure each text field is filled in.");
       } else if (!timezone) {
         alert(
@@ -98,7 +99,7 @@ class RegisterPage extends Component {
   };
 
   render() {
-    const { fullName, email, password, passwordConfirm, userName } = this.state;
+    const { email, password, passwordConfirm, displayName } = this.state;
 
     return (
       <Consumer>
@@ -112,15 +113,14 @@ class RegisterPage extends Component {
             <GIContainer className="column x-50 bg-white pa64 br16">
               <input
                 className="py8 px16 mb8 br4"
-                value={fullName}
+                value={displayName}
                 onChange={event =>
-                  this.handleChange("fullName", event.target.value)
+                  this.handleChange("displayName", event.target.value)
                 }
                 type="text"
-                placeholder="Company Name"
+                placeholder="Display Name"
                 required
               />
-
               <input
                 className="py8 px16 mb8 br4"
                 value={email}
@@ -129,17 +129,6 @@ class RegisterPage extends Component {
                 }
                 type="text"
                 placeholder="Email"
-                required
-              />
-
-              <input
-                className="py8 px16 mb8 br4"
-                value={userName}
-                onChange={event =>
-                  this.handleChange("userName", event.target.value)
-                }
-                type="text"
-                placeholder="Website"
                 required
               />
 
@@ -182,5 +171,7 @@ class RegisterPage extends Component {
     );
   }
 }
+
+RegisterPage.contextType = ExtraContext;
 
 export default withRouter(RegisterPage);

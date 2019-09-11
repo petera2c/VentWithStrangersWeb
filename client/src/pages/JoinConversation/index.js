@@ -37,7 +37,7 @@ class JoinConversation extends Component {
             className="full-center full-screen"
             description="Vent with strangers :)"
             keywords="Vent, strangers, help"
-            title="Home"
+            title="Find Stranger"
           >
             {context.user && !conversation && (
               <div className="center-container">

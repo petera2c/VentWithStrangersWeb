@@ -20,15 +20,15 @@ module.exports = function(passport) {
     "local-login",
     new LocalStrategy(
       {
-        // by default, local strategy uses username and password, we will override with email
-        usernameField: "email",
+        // by default, local strategy uses displayName and password, we will override with email
+        displayNameField: "email",
         passwordField: "password"
       },
-      function(email, password, done) {
+      (email, password, done) => {
         // Use lower-case e-mails to avoid case-sensitive e-mail matching
         if (email) email = email.toLowerCase();
 
-        User.findOne({ email: email }, function(err, user) {
+        User.findOne({ email: email }, (err, user) => {
           if (err) {
             return done(
               false,
@@ -71,9 +71,14 @@ module.exports = function(passport) {
         usernameField: "email",
         passReqToCallback: true
       },
-      function(req, email, password, done) {
-        if (!req.user) {
-          User.findOne({ email: email }, function(err, existingUser) {
+      (req, email, password, done) => {
+        if (
+          (req.user &&
+            req.user.displayName &&
+            !req.user.displayName.match(/[a-z]/i)) ||
+          !req.user
+        ) {
+          User.findOne({ email }, (err, existingUser) => {
             if (err) {
               return done(false, false, "An error occured :(");
             } else if (existingUser) {
@@ -83,17 +88,8 @@ module.exports = function(passport) {
                 "A user with this email already exists!"
               );
             } else {
-              let newUser = new User();
-              newUser.role = "demo";
-              newUser.plan = { id: "none", name: "none" };
-              newUser.writer = { id: "none", name: "none" };
-              newUser.email = email;
+              let newUser = new User(req.body);
               newUser.password = newUser.generateHash(req.body.password);
-              newUser.fullName = req.body.fullName;
-              newUser.country = req.body.country;
-              newUser.timezone = req.body.timezone;
-              newUser.website = req.body.website;
-              newUser.dateCreated = new Date();
 
               newUser.save().then(user => done(null, user, "Success!"));
             }

@@ -21,7 +21,7 @@ class LoginPage extends Component {
     const { user } = this.context; // Variables
     const { notify } = this.context; // Functions
 
-    if (user) {
+    if (user && user.displayName && user.displayName.match(/[a-z]/i)) {
       history.push("/home");
       notify({
         message: "You are already logged in!",
@@ -65,10 +65,10 @@ class LoginPage extends Component {
       <Consumer>
         {context => (
           <Page
-            title="Sign In"
+            className="column align-center py32 mt64"
             description="Sign in"
             keywords=""
-            className="column align-center py32 mt64"
+            title="Sign In"
           >
             <GIContainer className="column x-50 bg-white pa64 br16">
               <GIInput

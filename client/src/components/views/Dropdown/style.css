@@ -30,13 +30,6 @@
 .dropdown.center {
   left: 50%;
 }
-.absolute-child-center {
-  position: relative;
-  left: -50%;
-  background-color: var(--white-color);
-  overflow: auto;
-  max-height: 60vh;
-}
 .dropdown-title {
   flex: 1;
   font-size: inherit;

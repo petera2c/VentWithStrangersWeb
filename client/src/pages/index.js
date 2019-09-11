@@ -7,6 +7,7 @@ import Consumer, { ExtraContext } from "../context";
 import Loader from "../components/notifications/Loader";
 import GIContainer from "../components/containers/GIContainer";
 
+import HomePage from "./Home";
 import JoinConversationPage from "./JoinConversation";
 import SignInPage from "./SignIn";
 import SignUpPage from "./SignUp";
@@ -55,7 +56,8 @@ class Routes extends Component {
               />
               <Route path="/sign-in/" component={SignInPage} />
               <Route path="/sign-up/" component={SignUpPage} />
-              <Route component={JoinConversationPage} />
+              <Route path="/home/" component={HomePage} />
+              <Route component={HomePage} />
             </Switch>
           </GIContainer>
         )}

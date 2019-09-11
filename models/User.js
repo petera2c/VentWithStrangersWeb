@@ -6,10 +6,11 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema(
   {
     conversationID: { type: Schema.Types.ObjectId },
+    displayName: { required: true, type: String },
+    email: String,
     language: String,
-    password: String,
-    timezone: String,
-    username: String
+    password: { required: true, type: String },
+    timezone: String
   },
   {
     timestamps: true // Saves createdAt and updatedAt as dates. createdAt will be our timestamp.

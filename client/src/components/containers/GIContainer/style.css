@@ -8,6 +8,12 @@
 .full-screen {
   min-height: 100vh;
 }
+.absolute {
+  position: absolute;
+}
+.absolute.right-0 {
+  right: 0;
+}
 
 .block {
   display: block;
