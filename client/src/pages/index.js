@@ -8,7 +8,8 @@ import Loader from "../components/notifications/Loader";
 import GIContainer from "../components/containers/GIContainer";
 
 import HomePage from "./Home";
-import JoinConversationPage from "./JoinConversation";
+import FindStrangerPage from "./FindStranger";
+import NewProblemPage from "./NewProblem";
 import SignInPage from "./SignIn";
 import SignUpPage from "./SignUp";
 
@@ -50,10 +51,7 @@ class Routes extends Component {
           >
             <Header />
             <Switch>
-              <Route
-                path="/new-conversation/"
-                component={JoinConversationPage}
-              />
+              <Route path="/new-conversation/" component={FindStrangerPage} />
               <Route path="/sign-in/" component={SignInPage} />
               <Route path="/sign-up/" component={SignUpPage} />
               <Route path="/home/" component={HomePage} />
