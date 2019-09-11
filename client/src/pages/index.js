@@ -8,6 +8,8 @@ import Loader from "../components/notifications/Loader";
 import GIContainer from "../components/containers/GIContainer";
 
 import JoinConversationPage from "./JoinConversation";
+import SignInPage from "./SignIn";
+import SignUpPage from "./SignUp";
 
 import Header from "../components/Header";
 
@@ -41,10 +43,18 @@ class Routes extends Component {
     return (
       <Consumer>
         {context => (
-          <GIContainer className="main-wrapper">
+          <GIContainer
+            className="column full-screen"
+            style={{ backgroundColor: "var(--blue-color)" }}
+          >
             <Header />
             <Switch>
-              <Route path="/dashboard/" component={JoinConversationPage} />
+              <Route
+                path="/new-conversation/"
+                component={JoinConversationPage}
+              />
+              <Route path="/sign-in/" component={SignInPage} />
+              <Route path="/sign-up/" component={SignUpPage} />
               <Route component={JoinConversationPage} />
             </Switch>
           </GIContainer>

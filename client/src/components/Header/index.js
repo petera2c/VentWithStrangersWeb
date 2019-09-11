@@ -1,6 +1,7 @@
 import React, { Component } from "react";
+import { Link, withRouter } from "react-router-dom";
 
-import Consumer, { ExtraContext } from "../context";
+import Consumer, { ExtraContext } from "../../context";
 
 import GIContainer from "../containers/GIContainer";
 
@@ -9,8 +10,16 @@ class Header extends Component {
     return (
       <Consumer>
         {context => (
-          <GIContainer className="fixed top-0 x-fill" testMode>
-            hello world
+          <GIContainer
+            className="sticky top-0 x-fill justify-end bg-blue py16"
+            style={{ borderBottom: "1px solid white" }}
+          >
+            <Link className="white mx16" to="/sign-in">
+              Sign In
+            </Link>
+            <Link className="white mx16" to="/sign-up">
+              Sign Up
+            </Link>
           </GIContainer>
         )}
       </Consumer>
@@ -18,4 +27,4 @@ class Header extends Component {
   }
 }
 
-export default Header;
+export default withRouter(Header);

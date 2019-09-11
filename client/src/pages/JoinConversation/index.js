@@ -34,7 +34,7 @@ class JoinConversation extends Component {
       <Consumer>
         {context => (
           <Page
-            className="master-container"
+            className="full-center full-screen"
             description="Vent with strangers :)"
             keywords="Vent, strangers, help"
             title="Home"

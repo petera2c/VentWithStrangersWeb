@@ -12,7 +12,7 @@
 	height: 90vh;
 	width: 50vw;
 
-	background-color: var(--white-theme-color);
+	background-color: var(--white-color);
 
 	border-radius: 10px;
 }
@@ -40,7 +40,7 @@
 .left {
 	float: left;
 
-	border: 1px solid var(--blue-theme-color);
+	border: 1px solid var(--blue-color);
 }
 .right {
 	float: right;
@@ -71,7 +71,7 @@
 	outline: 0;
 	resize: none;
 	border: none;
-	border-top: 2px solid var(--blue-theme-color);
+	border-top: 2px solid var(--blue-color);
 	border-radius: 0 0 10px 10px;
 
 	font-size: var(--large-font-size);
@@ -93,8 +93,8 @@
 	border: none;
 	border-radius: 10px;
 
-	color: var(--white-theme-color);
+	color: var(--white-color);
 
-	background-color: var(--blue-theme-color);
+	background-color: var(--blue-color);
 	cursor: pointer;
 }
