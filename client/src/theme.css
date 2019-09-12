@@ -21,6 +21,20 @@
   --large-font-size: 13pt;
   --extra-large-font-size: 17pt;
 
+  --thirteen-font-size: 13px;
+  --fourteen-font-size: 14px;
+  --fifteen-font-size: 15px;
+
+  --sixteen-font-size: 16px;
+  --eighteen-font-size: 18px;
+  --twenty-font-size: 20px;
+
+  --twenty-two-font-size: 22px;
+  --twenty-four-font-size: 24px;
+  --twenty-six-font-size: 26px;
+  --thirty-two-font-size: 32px;
+  --forty-font-size: 40px;
+
   --font-theme: "Poppins";
 }
 

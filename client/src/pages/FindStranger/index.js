@@ -7,6 +7,7 @@ import Chat from "../../components/Chat/";
 import Loader from "../../components/notifications/Loader/";
 
 import Page from "../../components/containers/Page";
+import GIContainer from "../../components/containers/GIContainer";
 
 import { findConversation, initUserJoined } from "./util";
 
@@ -62,9 +63,9 @@ class JoinConversation extends Component {
               </div>
             )}
             {conversation && (
-              <div className="center-container">
+              <GIContainer className="">
                 <Chat conversation={conversation} />
-              </div>
+              </GIContainer>
             )}
           </Page>
         )}

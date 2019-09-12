@@ -10,21 +10,26 @@ import GIContainer from "../components/containers/GIContainer";
 import HomePage from "./Home";
 import FindStrangerPage from "./FindStranger";
 import NewProblemPage from "./NewProblem";
+import ProblemPage from "./Problem";
 import SignInPage from "./SignIn";
 import SignUpPage from "./SignUp";
 
 import Header from "../components/Header";
 
-import { initSocket } from "./util";
+import { getProblems, initSocket } from "./util";
 
 class Routes extends Component {
   state = {
     datebaseConnection: false
   };
   componentDidMount() {
+    const { handleChange } = this.context;
+
+    getProblems(problems => {
+      handleChange({ problems });
+    });
     axios.get("/api/user").then(res => {
       const { success, user, message } = res.data;
-      const { handleChange } = this.context;
 
       if (success) {
         initSocket(stateObj => {
@@ -36,6 +41,15 @@ class Routes extends Component {
       }
     });
   }
+  createProblemPages = problems => {
+    return problems.map((problem, index) => (
+      <Route
+        path={"/problems/" + problem.title + "/"}
+        key={index}
+        render={props => <ProblemPage problem={problem} />}
+      />
+    ));
+  };
 
   render() {
     const { datebaseConnection } = this.state;
@@ -54,7 +68,8 @@ class Routes extends Component {
               <Route path="/new-conversation/" component={FindStrangerPage} />
               <Route path="/sign-in/" component={SignInPage} />
               <Route path="/sign-up/" component={SignUpPage} />
-              <Route path="/home/" component={HomePage} />
+              <Route path="/post-a-problem/" component={NewProblemPage} />
+              {this.createProblemPages(context.problems)}
               <Route component={HomePage} />
             </Switch>
           </GIContainer>

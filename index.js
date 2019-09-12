@@ -56,15 +56,39 @@ app.use(passport.session());
 require("./routeFunctions")(app); // Routes
 
 // If using production then if a route is not found in express we send user to react routes
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/build"));
 
-  const path = require("path");
+// If using production then if a route is not found in express we send user to react routes
+if (process.env.NODE_ENV === "production") {
+  const injectMetaData = (req, res) => {
+    const filePath = path.resolve(__dirname, "./client", "build", "index.html");
+
+    fs.readFile(filePath, "utf8", (err, data) => {
+      if (err) {
+        return console.log(err);
+      }
+
+      getMetaInformation(req.originalUrl, metaObj => {
+        const { metaDescription, metaImage, metaTitle } = metaObj;
+
+        data = data.replace(/\$OG_TITLE/g, metaTitle);
+        data = data.replace(/\$OG_DESCRIPTION/g, metaDescription);
+        data = data.replace(/\$OG_IMAGE/g, metaImage);
+
+        res.send(data);
+      });
+    });
+  };
+
+  app.get("/", (req, res) => {
+    injectMetaData(req, res);
+  });
+
+  app.use(express.static(path.resolve(__dirname, "./client", "build")));
+
   app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+    injectMetaData(req, res);
   });
 }
-
 const PORT = process.env.PORT || 5000;
 
 server.listen(PORT);

@@ -1,6 +1,7 @@
 const passport = require("passport");
 const mongoose = require("mongoose");
 const User = require("../models/User");
+const problemFunctions = require("./problemFunctions");
 
 module.exports = app => {
   // Middleware
@@ -13,6 +14,13 @@ module.exports = app => {
   app.get("/api/user", middleware, (req, res, next) => {
     res.send({ success: true, user: req.user, port: process.env.PORT });
   });
+  app.post("/api/new-problem", middleware, (req, res) =>
+    problemFunctions.saveProblem(req, res)
+  );
+
+  app.get("/api/problems", (req, res) =>
+    problemFunctions.getProblems(req, res)
+  );
   // Login user
   app.post("/api/login", (req, res, next) => {
     passport.authenticate("local-login", (err, user, message) => {
