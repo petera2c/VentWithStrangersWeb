@@ -21,7 +21,7 @@ class Header extends Component {
             <Link className="white mx16" to="/post-a-problem">
               Post a Problem
             </Link>
-            <Link className="white mx16" to="/new-conversation">
+            <Link className="white mx16" to="/vent-to-a-stranger">
               Vent with a Stranger
             </Link>
             {context.user &&

@@ -65,7 +65,7 @@ class Routes extends Component {
           >
             <Header />
             <Switch>
-              <Route path="/new-conversation/" component={FindStrangerPage} />
+              <Route path="/vent-to-a-stranger/" component={FindStrangerPage} />
               <Route path="/sign-in/" component={SignInPage} />
               <Route path="/sign-up/" component={SignUpPage} />
               <Route path="/post-a-problem/" component={NewProblemPage} />

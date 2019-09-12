@@ -10,9 +10,11 @@ const bodyParser = require("body-parser"); // Read data in post requests from fr
 const passport = require("passport"); // For Login and Register
 const secure = require("express-force-https"); // force https so http does not work
 const fs = require("fs");
+const schedule = require("node-schedule");
 
-const { getMetaInformation } = require("./util");
+const { createSiteMap, getMetaInformation } = require("./util");
 
+mongoose.set("useCreateIndex", true);
 const allowCrossDomain = (req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
@@ -33,7 +35,7 @@ const passportSocketIo = require("passport.socketio");
 
 io.on("connection", SocketManager(io));
 
-mongoose.connect(keys.mongoDevelopentURI);
+mongoose.connect(keys.mongoDevelopentURI, { useNewUrlParser: true });
 const db = mongoose.connection;
 
 app.use(morgan("dev")); // Prints all routes used to console
@@ -58,7 +60,9 @@ app.use(passport.session());
 
 require("./routeFunctions")(app); // Routes
 
-// If using production then if a route is not found in express we send user to react routes
+schedule.scheduleJob("0 0 * * *", () => {
+  createSiteMap();
+});
 
 // If using production then if a route is not found in express we send user to react routes
 if (process.env.NODE_ENV === "production") {
