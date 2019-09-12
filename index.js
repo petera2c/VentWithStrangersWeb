@@ -11,6 +11,8 @@ const passport = require("passport"); // For Login and Register
 const secure = require("express-force-https"); // force https so http does not work
 const fs = require("fs");
 
+const { getMetaInformation } = require("./util");
+
 const allowCrossDomain = (req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
