@@ -10,15 +10,29 @@ import GIButton from "../../components/views/GIButton";
 import GIInput from "../../components/views/GIInput";
 import Consumer from "../../context";
 
+import { addComment, getComments } from "./util";
+
 class ProblemPage extends Component {
+  state = { comment: "", comments: this.props.problem.comments };
+  handleChange = stateObject => {
+    this.setState(stateObject);
+  };
+  createComment = comment => {
+    const problemID = this.props.problem._id;
+    addComment(
+      (comments, success) => {
+        if (success) {
+          this.setState({ comment: "", comments });
+        } else
+          alert("Something went wrong :( Please reload the page and try again");
+      },
+      comment,
+      problemID
+    );
+  };
   render() {
-    const {
-      author,
-      comments = [],
-      createdAt,
-      description,
-      title
-    } = this.props.problem;
+    const { author, createdAt, description, title } = this.props.problem;
+    const { comment, comments = [] } = this.state;
     return (
       <Page
         className="column align-center py32"
@@ -27,7 +41,7 @@ class ProblemPage extends Component {
         title="Problem"
       >
         <GIContainer className="column x-50">
-          <GIContainer className="column x-fill bg-white py32 px64 br16">
+          <GIContainer className="column x-fill bg-white pa32 br16">
             <GIText className="tac mb16" text={title} type="h4" />
             <GIText className="x-fill mb16" text={description} type="p" />
           </GIContainer>
@@ -42,10 +56,29 @@ class ProblemPage extends Component {
             type="p"
           />
         </GIContainer>
+        <GIContainer className="column x-50 mb16">
+          <TextArea
+            className="x-fill bg-white pa16 mb8 br8"
+            onChange={event =>
+              this.handleChange({ comment: event.target.value })
+            }
+            placeholder="Type a helpful message here :) ..."
+            style={{ minHeight: "100px" }}
+            value={comment}
+          />
+          <GIContainer className="x-fill justify-end">
+            <GIButton
+              className="bg-white py4 px8 br8"
+              onClick={() => this.createComment(comment)}
+              text="Submit"
+            />
+          </GIContainer>
+        </GIContainer>
+
         {comments.length > 0 && (
-          <GIContainer className="column x-50 bg-white py32 px64 br16">
+          <GIContainer className="column x-50 bg-white pa32 br16">
             {comments.map((comment, index) => (
-              <GIContainer>{comment.text}</GIContainer>
+              <GIContainer key={index}>{comment.text}</GIContainer>
             ))}
           </GIContainer>
         )}

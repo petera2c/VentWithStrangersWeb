@@ -21,6 +21,10 @@ module.exports = app => {
   app.get("/api/problems", (req, res) =>
     problemFunctions.getProblems(req, res)
   );
+
+  app.post("/api/new-comment", (req, res) =>
+    problemFunctions.newComment(req, res)
+  );
   // Login user
   app.post("/api/login", (req, res, next) => {
     passport.authenticate("local-login", (err, user, message) => {
