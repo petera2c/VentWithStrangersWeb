@@ -9,6 +9,7 @@ const cookieParser = require("cookie-parser"); // Needer for auth to read client
 const bodyParser = require("body-parser"); // Read data in post requests from front end
 const passport = require("passport"); // For Login and Register
 const secure = require("express-force-https"); // force https so http does not work
+const fs = require("fs");
 
 const allowCrossDomain = (req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
