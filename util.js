@@ -1,3 +1,5 @@
+const Problem = require("./models/Problem");
+
 const getMetaInformation = (url, callback) => {
   const defaultMetaDescription = "Vent with Strangers";
   const defaultMetaImage = "";
