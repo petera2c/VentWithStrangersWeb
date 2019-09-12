@@ -10,7 +10,7 @@ const getMetaInformation = (url, callback) => {
     metaTitle: defaultMetaTitle
   };
   if (url.substring(0, 10) === "/problems/") {
-    Problems.find({}, (err, problems) => {
+    Problem.find({}, (err, problems) => {
       for (let index in problems) {
         const problem = problems[index];
         const { contentArray = [] } = problem;
