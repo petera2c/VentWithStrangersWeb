@@ -16,9 +16,7 @@ class Chat extends Component {
   componentDidMount() {
     this.newMessageInit();
   }
-  componentDidUpdate() {
-    if (this.props.conversation) this.scrollToBottom();
-  }
+
   newMessageInit = () => {
     const { socket } = this.context;
     const { messages } = this.state;
@@ -34,10 +32,11 @@ class Chat extends Component {
   sendMessage = () => {
     const { message, messages } = this.state;
     const { socket, user } = this.context;
+    const { conversation } = this.props;
 
     if (!message) return;
 
-    socket.emit("send_message", { message });
+    socket.emit("send_message", { message, conversationID: conversation._id });
 
     messages.push({
       author: user._id,

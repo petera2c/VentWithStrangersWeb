@@ -75,6 +75,7 @@ class RegisterPage extends Component {
           const { success, user, message } = res.data;
           const { handleChange, notify } = this.context;
           const { history } = this.props;
+          console.log(res.data);
 
           if (success && user) {
             handleChange({ user });

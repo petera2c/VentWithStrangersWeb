@@ -44,6 +44,7 @@ class LoginPage extends Component {
         .post("/api/login", { email: email.toLowerCase(), password })
         .then(res => {
           const { message, success, user } = res.data;
+          console.log(res.data);
 
           if (success) {
             context.handleChange({ user });

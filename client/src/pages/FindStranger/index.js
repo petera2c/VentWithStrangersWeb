@@ -8,6 +8,7 @@ import Loader from "../../components/notifications/Loader/";
 
 import Page from "../../components/containers/Page";
 import GIContainer from "../../components/containers/GIContainer";
+import GIText from "../../components/views/GIText";
 
 import { findConversation, initUserJoined } from "./util";
 
@@ -16,6 +17,8 @@ import "./style.css";
 class JoinConversation extends Component {
   state = {
     conversation: undefined,
+    conversationsWithListener: [],
+    conversationsWithVenter: [],
     listener: false,
     saving: true,
     venter: false
@@ -23,44 +26,63 @@ class JoinConversation extends Component {
   componentDidMount() {
     const { socket } = this.context;
     initUserJoined(this.handleChange, socket);
+    socket.on("users_waiting", stateObj => {
+      this.handleChange(stateObj);
+    });
   }
 
   handleChange = stateObj => {
     this.setState(stateObj);
   };
   render() {
-    const { conversation, listener, saving, venter } = this.state;
+    const {
+      conversation,
+      conversationsWithListener,
+      conversationsWithVenter,
+      listener,
+      saving,
+      venter
+    } = this.state;
 
     return (
       <Consumer>
         {context => (
           <Page
-            className="full-center full-screen"
+            className="full-screen column full-center"
             description="Vent with strangers :)"
             keywords="Vent, strangers, help"
             title="Find Stranger"
           >
+            <GIText
+              text={`Listeners waiting: ${conversationsWithListener.length}`}
+              type="h4"
+            />
+
+            <GIText
+              text={`Venters waiting: ${conversationsWithVenter.length}`}
+              type="h4"
+            />
             {context.user && !conversation && (
-              <div className="center-container">
-                <div
-                  className="option-container"
+              <GIContainer className="center-container">
+                <GIContainer
+                  className="option-container pa64"
                   onClick={() => {
                     this.handleChange({ conversation: true });
                     findConversation(context.socket, "listener");
                   }}
                 >
                   Help a Stranger
-                </div>
-                <div
-                  className="option-container"
+                </GIContainer>
+                <GIContainer
+                  className="option-container pa64"
                   onClick={() => {
                     this.handleChange({ conversation: true });
                     findConversation(context.socket, "venter");
                   }}
                 >
                   Vent to a Stranger
-                </div>
-              </div>
+                </GIContainer>
+              </GIContainer>
             )}
             {conversation && (
               <GIContainer className="">

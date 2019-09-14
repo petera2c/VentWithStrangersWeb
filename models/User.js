@@ -5,7 +5,6 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
   {
-    conversationID: { type: Schema.Types.ObjectId },
     displayName: { required: true, type: String },
     email: String,
     language: String,

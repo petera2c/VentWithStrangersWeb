@@ -22,16 +22,18 @@ const createConversation = (socket, type, io) => {
 };
 const joinConversation = (conversation, socket, type, io) => {
   socket.leaveAll();
-  socket.join(conversation._id);
+  socket.join(String(conversation._id));
+  console.log(conversation._id);
 
   User.findOne({ _id: conversation[type] }, (err, user) => {
     if (user) {
       user.conversationID = conversation._id;
       user.save((err, savedUser) => {
-        console.log("finishing");
-
+        console.log(savedUser.conversationID);
         socket.emit("user_joined_chat", { conversation, user: savedUser });
-        socket.to(conversation._id).emit("user_joined_chat", { conversation });
+        socket
+          .to(String(conversation._id))
+          .emit("user_joined_chat", { conversation });
       });
     }
   });
@@ -39,10 +41,31 @@ const joinConversation = (conversation, socket, type, io) => {
 
 module.exports = io => {
   return socket => {
+    setInterval(() => {
+      Conversation.find(
+        { venter: undefined },
+        (err, conversationsWithListener) => {
+          Conversation.find(
+            { listener: undefined },
+            (err, conversationsWithVenter) => {
+              socket.emit("users_waiting", {
+                conversationsWithListener,
+                conversationsWithVenter
+              });
+            }
+          );
+        }
+      );
+    }, 5000);
+
     socket.on("find_conversation", object => {
-      console.log("starting");
       Conversation.findOne(
-        { _id: socket.request.user.conversationID },
+        {
+          $or: [
+            { venter: socket.request.user._id },
+            { listener: socket.request.user._id }
+          ]
+        },
         (err, conversation) => {
           if (conversation)
             conversation.remove(() => {
@@ -60,20 +83,25 @@ module.exports = io => {
 
     socket.on("send_message", object => {
       let message = new Message({
-        conversationID: socket.request.user.conversationID,
+        conversationID: object.conversationID,
         body: object.message,
         author: socket.request.user._id
       });
       message.save((err, result) => {
         if (result) {
-          socket.broadcast.emit("receive_message", result);
+          socket.to(object.conversationID).emit("receive_message", result);
         }
       });
     });
 
     socket.on("disconnect", () => {
       Conversation.findOne(
-        { _id: socket.request.user.conversationID },
+        {
+          $or: [
+            { venter: socket.request.user._id },
+            { listener: socket.request.user._id }
+          ]
+        },
         (err, conversation) => {
           socket.leaveAll();
           if (conversation) conversation.remove();
