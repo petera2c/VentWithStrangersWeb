@@ -13,9 +13,17 @@ import Consumer from "../../context";
 import { addComment, getComments } from "./util";
 
 class ProblemPage extends Component {
-  state = { comment: "", comments: this.props.problem.comments };
+  state = { comment: "", comments: [] };
+  componentDidMount() {
+    this._ismounted = true;
+    const problemID = this.props.problem._id;
+    getComments(this.handleChange, problemID);
+  }
+  componentWillUnmount() {
+    this._ismounted = false;
+  }
   handleChange = stateObject => {
-    this.setState(stateObject);
+    if (this._ismounted) this.setState(stateObject);
   };
   createComment = comment => {
     const problemID = this.props.problem._id;

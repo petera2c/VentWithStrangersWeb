@@ -2,6 +2,8 @@ const Conversation = require("../models/Conversation");
 const Message = require("../models/Message");
 const User = require("../models/User");
 
+const { otherType } = require("./util");
+
 const createConversation = (socket, type, io) => {
   Conversation.findOne({ [type]: undefined }, (err, foundConversation) => {
     if (foundConversation) {
@@ -21,43 +23,64 @@ const createConversation = (socket, type, io) => {
   });
 };
 const joinConversation = (conversation, socket, type, io) => {
+  emitWaitingConversations(socket);
+
   socket.leaveAll();
-  socket.join(String(conversation._id));
-  console.log(conversation._id);
+  socket.join(conversation._id);
 
   User.findOne({ _id: conversation[type] }, (err, user) => {
-    if (user) {
-      user.conversationID = conversation._id;
-      user.save((err, savedUser) => {
-        console.log(savedUser.conversationID);
-        socket.emit("user_joined_chat", { conversation, user: savedUser });
-        socket
-          .to(String(conversation._id))
-          .emit("user_joined_chat", { conversation });
-      });
-    }
+    User.findOne({ _id: conversation[otherType(type)] }, (err, user2) => {
+      if (user) {
+        user.conversationID = conversation._id;
+        user.save((err, savedUser) => {
+          socket.emit("user_joined_chat", {
+            chatPartner: user2,
+            conversation,
+            user: savedUser
+          });
+          socket
+            .to(conversation._id)
+            .emit("user_joined_chat", { chatPartner: savedUser, conversation });
+        });
+      }
+    });
   });
+};
+const emitWaitingConversations = socket => {
+  Conversation.find({ venter: undefined }, (err, conversationsWithListener) => {
+    Conversation.find(
+      { listener: undefined },
+      (err, conversationsWithVenter) => {
+        socket.emit("users_waiting", {
+          conversationsWithListener,
+          conversationsWithVenter
+        });
+        socket.broadcast.emit("users_waiting", {
+          conversationsWithListener,
+          conversationsWithVenter
+        });
+      }
+    );
+  });
+};
+const leaveChat = socket => {
+  Conversation.findOne(
+    {
+      $or: [
+        { venter: socket.request.user._id },
+        { listener: socket.request.user._id }
+      ]
+    },
+    (err, conversation) => {
+      socket.leaveAll();
+      if (conversation) conversation.remove();
+    }
+  );
 };
 
 module.exports = io => {
   return socket => {
-    setInterval(() => {
-      Conversation.find(
-        { venter: undefined },
-        (err, conversationsWithListener) => {
-          Conversation.find(
-            { listener: undefined },
-            (err, conversationsWithVenter) => {
-              socket.emit("users_waiting", {
-                conversationsWithListener,
-                conversationsWithVenter
-              });
-            }
-          );
-        }
-      );
-    }, 5000);
-
+    socket.on("get_users_waiting", () => emitWaitingConversations(socket));
     socket.on("find_conversation", object => {
       Conversation.findOne(
         {
@@ -93,21 +116,9 @@ module.exports = io => {
         }
       });
     });
+    socket.on("user_left_chat", () => leaveChat(socket));
 
-    socket.on("disconnect", () => {
-      Conversation.findOne(
-        {
-          $or: [
-            { venter: socket.request.user._id },
-            { listener: socket.request.user._id }
-          ]
-        },
-        (err, conversation) => {
-          socket.leaveAll();
-          if (conversation) conversation.remove();
-        }
-      );
-    });
+    socket.on("disconnect", () => leaveChat(socket));
 
     socket.on("user_reported", () => {
       // Laugh at snowflakes

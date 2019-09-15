@@ -41,7 +41,7 @@ class Routes extends Component {
       }
     });
   }
-  createProblemPages = problems => {
+  createProblemPages = (problems = []) => {
     return problems.map((problem, index) => (
       <Route
         path={"/problems/" + problem.title + "/"}

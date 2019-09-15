@@ -28,7 +28,7 @@ module.exports = function(passport) {
         // Use lower-case e-mails to avoid case-sensitive e-mail matching
         if (email) email = email.toLowerCase();
 
-        User.findOne({ email: email }, (err, user) => {
+        User.findOne({ email }, (err, user) => {
           if (err) {
             return done(
               false,
@@ -68,32 +68,20 @@ module.exports = function(passport) {
     "local-signup",
     new LocalStrategy(
       {
-        usernameField: "email",
+        usernameField: "displayName",
         passReqToCallback: true
       },
-      (req, email, password, done) => {
+      (req, displayName, password, done) => {
         if (
           (req.user &&
             req.user.displayName &&
             !req.user.displayName.match(/[a-z]/i)) ||
           !req.user
         ) {
-          User.findOne({ email }, (err, existingUser) => {
-            if (err) {
-              return done(false, false, "An error occured :(");
-            } else if (existingUser) {
-              return done(
-                false,
-                false,
-                "A user with this email already exists!"
-              );
-            } else {
-              let newUser = new User(req.body);
-              newUser.password = newUser.generateHash(req.body.password);
+          let newUser = new User(req.body);
+          newUser.password = newUser.generateHash(req.body.password);
 
-              newUser.save().then(user => done(null, user, "Success!"));
-            }
-          });
+          newUser.save().then(user => done(null, user, "Success!"));
         } else {
           return done(null, null, "User already logged in!");
         }

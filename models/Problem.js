@@ -5,14 +5,12 @@ const Schema = mongoose.Schema;
 const problemSchema = new Schema(
   {
     author: {
-      id: { require: true, type: Schema.Types.ObjectId },
-      name: { require: true, type: String }
+      id: { require: true, type: Schema.Types.ObjectId }
     },
     comments: [
       {
         author: {
-          id: { require: true, type: Schema.Types.ObjectId },
-          name: { require: true, type: String }
+          id: { require: true, type: Schema.Types.ObjectId }
         },
         text: { require: true, type: String }
       },

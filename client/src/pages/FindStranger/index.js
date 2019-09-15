@@ -16,6 +16,7 @@ import "./style.css";
 
 class JoinConversation extends Component {
   state = {
+    chatPartner: undefined,
     conversation: undefined,
     conversationsWithListener: [],
     conversationsWithVenter: [],
@@ -24,18 +25,23 @@ class JoinConversation extends Component {
     venter: false
   };
   componentDidMount() {
+    this._ismounted = true;
     const { socket } = this.context;
     initUserJoined(this.handleChange, socket);
     socket.on("users_waiting", stateObj => {
       this.handleChange(stateObj);
     });
   }
+  componentWillUnmount() {
+    this._ismounted = false;
+  }
 
   handleChange = stateObj => {
-    this.setState(stateObj);
+    if (this._ismounted) this.setState(stateObj);
   };
   render() {
     const {
+      chatPartner,
       conversation,
       conversationsWithListener,
       conversationsWithVenter,
@@ -86,7 +92,7 @@ class JoinConversation extends Component {
             )}
             {conversation && (
               <GIContainer className="">
-                <Chat conversation={conversation} />
+                <Chat chatPartner={chatPartner} conversation={conversation} />
               </GIContainer>
             )}
           </Page>

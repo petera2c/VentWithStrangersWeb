@@ -4,6 +4,8 @@ import axios from "axios";
 
 import Consumer, { ExtraContext } from "../../context";
 
+import GIContainer from "../containers/GIContainer";
+import GIText from "../views/GIText";
 import SmallLoader from "../notifications/SmallLoader";
 
 import "./style.css";
@@ -14,8 +16,17 @@ class Chat extends Component {
     messages: []
   };
   componentDidMount() {
+    this._ismounted = true;
     this.newMessageInit();
   }
+  componentWillUnmount() {
+    this._ismounted = false;
+    const { socket } = this.context;
+    socket.emit("user_left_chat");
+  }
+  handleChange = stateObj => {
+    if (this._ismounted) this.setState(stateObj);
+  };
 
   newMessageInit = () => {
     const { socket } = this.context;
@@ -23,7 +34,7 @@ class Chat extends Component {
 
     socket.on("receive_message", message => {
       messages.push(message);
-      this.setState({ messages });
+      this.handleChange({ messages });
 
       this.scrollToBottom();
     });
@@ -46,19 +57,13 @@ class Chat extends Component {
     this.setState({ messages, message: "" });
     this.scrollToBottom();
   };
-  handleChange = (value, index) => {
-    if (value[value.length - 1] === "\n") {
-      return this.sendMessage();
-    }
-    this.setState({ [index]: value });
-  };
   scrollToBottom = () => {
     if (this.messagesEnd) this.messagesEnd.scrollIntoView();
   };
 
   render() {
     const { message, messages } = this.state;
-    const { conversation } = this.props;
+    const { chatPartner, conversation } = this.props;
     const { user } = this.context;
 
     let messageDivs = [];
@@ -96,14 +101,30 @@ class Chat extends Component {
               </div>
             )}
             {(!conversation.venter || !conversation.listener) && (
-              <SmallLoader />
+              <GIContainer className="column full-center">
+                <SmallLoader />
+                <GIText
+                  className="tac"
+                  text={`Looking for ${
+                    conversation.listener
+                      ? "someone who needs help"
+                      : "someone to help you "
+                  }. Estimated wait time 5 minutes.`}
+                  type="h4"
+                />
+              </GIContainer>
+            )}
+            {chatPartner && (
+              <GIContainer>
+                You are chatting with {chatPartner.displayName}
+              </GIContainer>
             )}
             {conversation.venter && conversation.listener && (
               <div className="send-message-container">
                 <textarea
                   className="send-message-textarea"
                   onChange={event =>
-                    this.handleChange(event.target.value, "message")
+                    this.handleChange({ message: event.target.value })
                   }
                   value={message}
                 />

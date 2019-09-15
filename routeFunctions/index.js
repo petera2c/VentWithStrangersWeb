@@ -18,12 +18,15 @@ module.exports = app => {
     problemFunctions.saveProblem(req, res)
   );
 
-  app.get("/api/problems", (req, res) =>
+  app.get("/api/problems", middleware, (req, res) =>
     problemFunctions.getProblems(req, res)
   );
 
-  app.post("/api/new-comment", (req, res) =>
+  app.post("/api/new-comment", middleware, (req, res) =>
     problemFunctions.newComment(req, res)
+  );
+  app.post("/api/comments", middleware, (req, res) =>
+    problemFunctions.getComments(req, res)
   );
   // Login user
   app.post("/api/login", (req, res, next) => {
