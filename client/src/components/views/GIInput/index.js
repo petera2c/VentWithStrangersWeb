@@ -8,6 +8,7 @@ class GIInput extends Component {
       autoCapitalize,
       autoCorrect,
       className,
+      id,
       name,
       onChange,
       placeholder,
@@ -21,6 +22,7 @@ class GIInput extends Component {
         autoCapitalize={autoCapitalize}
         autoCorrect={autoCorrect}
         className={className}
+        id={id}
         name={name}
         onChange={onChange}
         placeholder={placeholder}

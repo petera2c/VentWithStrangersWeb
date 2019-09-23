@@ -19,6 +19,7 @@ const problemSchema = new Schema(
       }
     ],
     description: { require: true, type: String },
+    tags: [{ id: { type: Schema.Types.ObjectId } }],
     title: { require: true, type: String }
   },
   {

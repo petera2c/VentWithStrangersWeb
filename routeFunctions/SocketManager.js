@@ -73,7 +73,8 @@ const leaveChat = socket => {
     },
     (err, conversation) => {
       socket.leaveAll();
-      if (conversation) conversation.remove();
+      if (conversation)
+        conversation.remove((err, result) => emitWaitingConversations(socket));
     }
   );
 };
@@ -122,6 +123,10 @@ module.exports = io => {
 
     socket.on("user_reported", () => {
       // Laugh at snowflakes
+    });
+
+    socket.on("something", (tags, fn) => {
+      fn(tags);
     });
   };
 };

@@ -27,10 +27,12 @@ class JoinConversation extends Component {
   componentDidMount() {
     this._ismounted = true;
     const { socket } = this.context;
-    initUserJoined(this.handleChange, socket);
-    socket.on("users_waiting", stateObj => {
-      this.handleChange(stateObj);
-    });
+    if (socket) {
+      initUserJoined(this.handleChange, socket);
+      socket.on("users_waiting", stateObj => {
+        this.handleChange(stateObj);
+      });
+    }
   }
   componentWillUnmount() {
     this._ismounted = false;

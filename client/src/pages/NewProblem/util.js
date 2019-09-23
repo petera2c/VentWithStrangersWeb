@@ -12,3 +12,15 @@ export const saveProblem = (callback, problemObject) => {
     }
   });
 };
+
+export const updateTags = (tags, socket) => {
+  let something = "";
+  for (let i = tags.length - 1; i >= 0; i--) {
+    if (tags[i] !== ",") {
+      something += tags[i];
+    } else break;
+  }
+  socket.emit("something", something, res => {
+    console.log(res);
+  });
+};

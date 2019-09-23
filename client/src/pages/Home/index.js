@@ -19,15 +19,16 @@ class HomePage extends Component {
             title="Home"
           >
             <GIText className="mb16" text="Recent Problems" type="h1" />
-            {context.problems.map((problem, index) => (
-              <Link
-                className="x-50 bg-white py16 px32 br8"
-                key={index}
-                to={"/problems/" + problem.title}
-              >
-                {problem.title}
-              </Link>
-            ))}
+            {context.problems &&
+              context.problems.map((problem, index) => (
+                <Link
+                  className="x-50 bg-white py16 px32 br8"
+                  key={index}
+                  to={"/problems/" + problem.title}
+                >
+                  {problem.title}
+                </Link>
+              ))}
           </Page>
         )}
       </Consumer>

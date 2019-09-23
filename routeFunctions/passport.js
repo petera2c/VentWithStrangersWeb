@@ -68,16 +68,11 @@ module.exports = function(passport) {
     "local-signup",
     new LocalStrategy(
       {
-        usernameField: "displayName",
+        usernameField: "email",
         passReqToCallback: true
       },
-      (req, displayName, password, done) => {
-        if (
-          (req.user &&
-            req.user.displayName &&
-            !req.user.displayName.match(/[a-z]/i)) ||
-          !req.user
-        ) {
+      (req, email, password, done) => {
+        if ((req.user && !req.user.email) || !req.user) {
           let newUser = new User(req.body);
           newUser.password = newUser.generateHash(req.body.password);
 
