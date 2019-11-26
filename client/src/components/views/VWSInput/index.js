@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import "./style.css";
 
-class GIInput extends Component {
+class VWSInput extends Component {
   render() {
     const {
       autoCapitalize,
@@ -35,4 +35,4 @@ class GIInput extends Component {
   }
 }
 
-export default GIInput;
+export default VWSInput;

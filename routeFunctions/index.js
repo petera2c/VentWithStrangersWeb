@@ -2,6 +2,7 @@ const passport = require("passport");
 const mongoose = require("mongoose");
 const User = require("../models/User");
 const problemFunctions = require("./problemFunctions");
+const names = require("./names");
 
 module.exports = app => {
   // Middleware
@@ -79,14 +80,12 @@ module.exports = app => {
 
 randomLogin = (req, res, next) => {
   passport.authenticate("local-login", (err, user, message) => {
-    const password = Math.floor(Math.random() * 1000000000);
+    const randomIndex = Math.floor(Math.random() * 1999);
 
     const newUser = new User({
-      password,
-      displayName: password,
+      displayName: names[randomIndex],
       language: "english",
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      dateCreated: new Date()
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
     });
     newUser.save().then(savedUser => {
       req.logIn(savedUser, err => {
@@ -96,7 +95,10 @@ randomLogin = (req, res, next) => {
             message:
               "Could not log you in! :( Please refresh the page and try again :)"
           });
-        else res.send({ success: true, user: savedUser });
+        else {
+          next();
+          res.send({ success: true, user: savedUser });
+        }
       });
     });
   })(req, res, next);

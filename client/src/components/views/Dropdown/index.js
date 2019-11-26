@@ -4,8 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-light-svg-icons";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
-import GIContainer from "../../containers/GIContainer";
-import GIText from "../GIText";
+import VWSContainer from "../../containers/VWSContainer";
+import VWSText from "../VWSText";
 
 import { isActiveItem } from "./util";
 
@@ -48,7 +48,7 @@ class Dropdown extends Component {
     const { handleParentChange } = this.props; // Functions
 
     return (
-      <GIContainer
+      <VWSContainer
         className={`button ${className}  ${
           showDropdown ? dropdownActiveDisplayClassName : ""
         }`}
@@ -56,18 +56,18 @@ class Dropdown extends Component {
         forwardedRef={this.setWrapperRef}
         testMode={testMode}
       >
-        <GIContainer className="dropdown-title-container align-center pr8">
+        <VWSContainer className="dropdown-title-container align-center pr8">
           {title}
           <FontAwesomeIcon
             className="five-blue mx8"
             icon={faAngleDown}
             size={size}
           />
-        </GIContainer>
+        </VWSContainer>
         {showDropdown && (
-          <GIContainer className={`dropdown ${dropdownClassName}`}>
+          <VWSContainer className={`dropdown ${dropdownClassName}`}>
             {dropdownItems.map((item, index) => (
-              <GIText
+              <VWSText
                 className={`flex align-center border-top px16 py8 ${isActiveItem(
                   activeItem,
                   index
@@ -78,18 +78,18 @@ class Dropdown extends Component {
               >
                 {item}
                 {isActiveItem(activeItem, index) && (
-                  <GIContainer className="fill-flex justify-end">
+                  <VWSContainer className="fill-flex justify-end">
                     <FontAwesomeIcon
                       className="round-icon-medium round bg-five-blue white pa4"
                       icon={faCheck}
                     />
-                  </GIContainer>
+                  </VWSContainer>
                 )}
-              </GIText>
+              </VWSText>
             ))}
-          </GIContainer>
+          </VWSContainer>
         )}
-      </GIContainer>
+      </VWSContainer>
     );
   }
 }

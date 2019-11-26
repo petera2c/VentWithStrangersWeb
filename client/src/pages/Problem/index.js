@@ -3,11 +3,11 @@ import moment from "moment-timezone";
 import TextArea from "react-textarea-autosize";
 
 import Page from "../../components/containers/Page";
-import GIContainer from "../../components/containers/GIContainer";
+import VWSContainer from "../../components/containers/VWSContainer";
 
-import GIText from "../../components/views/GIText";
-import GIButton from "../../components/views/GIButton";
-import GIInput from "../../components/views/GIInput";
+import VWSText from "../../components/views/VWSText";
+import VWSButton from "../../components/views/VWSButton";
+import VWSInput from "../../components/views/VWSInput";
 import Consumer from "../../context";
 
 import { addComment, getComments } from "./util";
@@ -48,23 +48,23 @@ class ProblemPage extends Component {
         keywords=""
         title="Problem"
       >
-        <GIContainer className="column x-50">
-          <GIContainer className="column x-fill bg-white pa32 br16">
-            <GIText className="tac mb16" text={title} type="h4" />
-            <GIText className="x-fill mb16" text={description} type="p" />
-          </GIContainer>
-          <GIText
+        <VWSContainer className="column x-50">
+          <VWSContainer className="column x-fill bg-white pa32 br16">
+            <VWSText className="tac mb16" text={title} type="h4" />
+            <VWSText className="x-fill mb16" text={description} type="p" />
+          </VWSContainer>
+          <VWSText
             className="x-fill tar white mb16"
             text={`Created at ${new moment(createdAt).format("LLLL")}`}
             type="p"
           />
-          <GIText
+          <VWSText
             className="x-fill tar white mb16"
             text={`By ${author.name}`}
             type="p"
           />
-        </GIContainer>
-        <GIContainer className="column x-50 mb16">
+        </VWSContainer>
+        <VWSContainer className="column x-50 mb16">
           <TextArea
             className="x-fill bg-white pa16 mb8 br8"
             onChange={event =>
@@ -74,21 +74,21 @@ class ProblemPage extends Component {
             style={{ minHeight: "100px" }}
             value={comment}
           />
-          <GIContainer className="x-fill justify-end">
-            <GIButton
+          <VWSContainer className="x-fill justify-end">
+            <VWSButton
               className="bg-white py4 px8 br8"
               onClick={() => this.createComment(comment)}
               text="Submit"
             />
-          </GIContainer>
-        </GIContainer>
+          </VWSContainer>
+        </VWSContainer>
 
         {comments.length > 0 && (
-          <GIContainer className="column x-50 bg-white pa32 br16">
+          <VWSContainer className="column x-50 bg-white pa32 br16">
             {comments.map((comment, index) => (
-              <GIContainer key={index}>{comment.text}</GIContainer>
+              <VWSContainer key={index}>{comment.text}</VWSContainer>
             ))}
-          </GIContainer>
+          </VWSContainer>
         )}
       </Page>
     );

@@ -4,11 +4,11 @@ import { Link, withRouter } from "react-router-dom";
 import axios from "axios";
 
 import Page from "../../components/containers/Page";
-import GIContainer from "../../components/containers/GIContainer";
+import VWSContainer from "../../components/containers/VWSContainer";
 
-import GIText from "../../components/views/GIText";
-import GIButton from "../../components/views/GIButton";
-import GIInput from "../../components/views/GIInput";
+import VWSText from "../../components/views/VWSText";
+import VWSButton from "../../components/views/VWSButton";
+import VWSInput from "../../components/views/VWSInput";
 import Consumer from "../../context";
 
 class LoginPage extends Component {
@@ -71,8 +71,8 @@ class LoginPage extends Component {
             keywords=""
             title="Sign In"
           >
-            <GIContainer className="column x-50 bg-white pa64 br16">
-              <GIInput
+            <VWSContainer className="column x-50 bg-white pa64 br16">
+              <VWSInput
                 className="py8 px16 mb8 br4"
                 value={email}
                 onChange={event =>
@@ -83,7 +83,7 @@ class LoginPage extends Component {
                 placeholder="Email"
                 required
               />
-              <GIInput
+              <VWSInput
                 className="py8 px16 mb8 br4"
                 value={password}
                 onChange={e => this.handleChange("password", e.target.value)}
@@ -92,12 +92,12 @@ class LoginPage extends Component {
                 placeholder="Password"
                 required
               />
-              <GIButton
+              <VWSButton
                 className="bg-blue white py8 mb8 br4"
                 onClick={e => this.login(context, e)}
                 text="Sign In"
               />
-            </GIContainer>
+            </VWSContainer>
             <Link className="white mt16" to="/sign-up">
               Sign Up Now
             </Link>

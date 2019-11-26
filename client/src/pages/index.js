@@ -5,7 +5,7 @@ import { Route, Switch, withRouter } from "react-router-dom";
 import Consumer, { ExtraContext } from "../context";
 
 import Loader from "../components/notifications/Loader";
-import GIContainer from "../components/containers/GIContainer";
+import VWSContainer from "../components/containers/VWSContainer";
 
 import HomePage from "./Home";
 import FindStrangerPage from "./FindStranger";
@@ -13,6 +13,7 @@ import NewProblemPage from "./NewProblem";
 import ProblemPage from "./Problem";
 import SignInPage from "./SignIn";
 import SignUpPage from "./SignUp";
+import NotFoundPage from "./NotFound";
 
 import Header from "../components/Header";
 
@@ -25,11 +26,12 @@ class Routes extends Component {
   componentDidMount() {
     const { handleChange } = this.context;
 
-    getProblems(problems => {
-      handleChange({ problems });
-    });
     axios.get("/api/user").then(res => {
       const { success, user, message } = res.data;
+
+      getProblems(problems => {
+        handleChange({ problems });
+      });
 
       if (success) {
         initSocket(stateObj => {
@@ -59,20 +61,25 @@ class Routes extends Component {
     return (
       <Consumer>
         {context => (
-          <GIContainer
+          <VWSContainer
             className="column full-screen"
             style={{ backgroundColor: "var(--blue-color)" }}
           >
             <Header />
             <Switch>
+              <Route path="/" component={HomePage} />
+              <Route path="/trending/" component={HomePage} />
+              <Route path="/recents/" component={HomePage} />
+              <Route path="/popular/" component={HomePage} />
+              <Route path="/random/" component={HomePage} />
               <Route path="/vent-to-a-stranger/" component={FindStrangerPage} />
-              <Route path="/sign-in/" component={SignInPage} />
+              <Route path="/login/" component={SignInPage} />
               <Route path="/sign-up/" component={SignUpPage} />
               <Route path="/post-a-problem/" component={NewProblemPage} />
               {this.createProblemPages(context.problems)}
-              <Route component={HomePage} />
+              <Route component={NotFoundPage} />
             </Switch>
-          </GIContainer>
+          </VWSContainer>
         )}
       </Consumer>
     );

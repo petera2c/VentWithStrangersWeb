@@ -1,7 +1,7 @@
-@import url("https://fonts.googleapis.com/css?family=Poppins");
+@import url("https://fonts.googleapis.com/css?family=Nunito+Sans");
 
 :root {
-  --blue-color: #4bcffa;
+  --blue-color: #2096f2;
   --green-theme-color: #86ff3b;
   --purple-theme-color: #e056fd;
   --orange-theme-color: #ff9f1a;
@@ -15,6 +15,9 @@
 
   --black-color: #000;
   --white-color: #fff;
+
+  --grey-color-1: #8d96a7;
+  --grey-color-2: #f8f8f8;
 
   --small-font-size: 9pt;
   --regular-font-size: 11pt;
@@ -35,7 +38,7 @@
   --thirty-two-font-size: 32px;
   --forty-font-size: 40px;
 
-  --font-theme: "Poppins";
+  --font-theme: "Nunito Sans";
 }
 
 .pa64 {

@@ -6,10 +6,10 @@ import axios from "axios";
 import { validateEmail } from "./util";
 
 import Page from "../../components/containers/Page";
-import GIContainer from "../../components/containers/GIContainer";
+import VWSContainer from "../../components/containers/VWSContainer";
 
-import GIText from "../../components/views/GIText";
-import GIButton from "../../components/views/GIButton";
+import VWSText from "../../components/views/VWSText";
+import VWSButton from "../../components/views/VWSButton";
 
 import Consumer, { ExtraContext } from "../../context";
 
@@ -111,7 +111,7 @@ class RegisterPage extends Component {
             keywords=""
             title="Sign Up"
           >
-            <GIContainer className="column x-50 bg-white pa64 br16">
+            <VWSContainer className="column x-50 bg-white pa64 br16">
               <input
                 className="py8 px16 mb8 br4"
                 value={displayName}
@@ -162,8 +162,8 @@ class RegisterPage extends Component {
               >
                 Register
               </button>
-            </GIContainer>
-            <Link className="white mt16" to="/sign-in">
+            </VWSContainer>
+            <Link className="white mt16" to="/login">
               Sign In Now
             </Link>
           </Page>

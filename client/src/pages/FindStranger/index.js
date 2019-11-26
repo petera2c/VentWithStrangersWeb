@@ -7,8 +7,8 @@ import Chat from "../../components/Chat/";
 import Loader from "../../components/notifications/Loader/";
 
 import Page from "../../components/containers/Page";
-import GIContainer from "../../components/containers/GIContainer";
-import GIText from "../../components/views/GIText";
+import VWSContainer from "../../components/containers/VWSContainer";
+import VWSText from "../../components/views/VWSText";
 
 import { findConversation, initUserJoined } from "./util";
 
@@ -61,18 +61,18 @@ class JoinConversation extends Component {
             keywords="Vent, strangers, help"
             title="Find Stranger"
           >
-            <GIText
+            <VWSText
               text={`Listeners waiting: ${conversationsWithListener.length}`}
               type="h4"
             />
 
-            <GIText
+            <VWSText
               text={`Venters waiting: ${conversationsWithVenter.length}`}
               type="h4"
             />
             {context.user && !conversation && (
-              <GIContainer className="center-container">
-                <GIContainer
+              <VWSContainer className="center-container">
+                <VWSContainer
                   className="option-container pa64"
                   onClick={() => {
                     this.handleChange({ conversation: true });
@@ -80,8 +80,8 @@ class JoinConversation extends Component {
                   }}
                 >
                   Help a Stranger
-                </GIContainer>
-                <GIContainer
+                </VWSContainer>
+                <VWSContainer
                   className="option-container pa64"
                   onClick={() => {
                     this.handleChange({ conversation: true });
@@ -89,13 +89,13 @@ class JoinConversation extends Component {
                   }}
                 >
                   Vent to a Stranger
-                </GIContainer>
-              </GIContainer>
+                </VWSContainer>
+              </VWSContainer>
             )}
             {conversation && (
-              <GIContainer className="">
+              <VWSContainer className="">
                 <Chat chatPartner={chatPartner} conversation={conversation} />
-              </GIContainer>
+              </VWSContainer>
             )}
           </Page>
         )}

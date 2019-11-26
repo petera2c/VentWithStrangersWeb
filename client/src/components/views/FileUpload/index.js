@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 
-import GIContainer from "../../containers/GIContainer";
+import VWSContainer from "../../containers/VWSContainer";
 
 import { isImage, isVideo, showFiles, removeFile } from "./util";
 import "./style.css";
@@ -27,9 +27,9 @@ class FileUpload extends Component {
     } = this.props; // Variables
 
     return (
-      <GIContainer className="align-center wrap x-fill" testMode={testMode}>
+      <VWSContainer className="align-center wrap x-fill" testMode={testMode}>
         {!hideUploadButton && currentFiles.length < fileLimit && canEdit && (
-          <GIContainer className={className}>
+          <VWSContainer className={className}>
             <label
               htmlFor={id}
               className="br4 shadow-blue-4 bg-blue-fade-4 white xy-64px clickable full-center flex"
@@ -51,12 +51,12 @@ class FileUpload extends Component {
               }
               multiple
             />
-          </GIContainer>
+          </VWSContainer>
         )}
-        <GIContainer className="fill-flex justify-end">
+        <VWSContainer className="fill-flex justify-end">
           {currentFiles.map((file, index) => {
             return (
-              <GIContainer
+              <VWSContainer
                 className={`relative uploaded-file ${imageContainerClassName} ma2`}
                 key={index}
               >
@@ -88,11 +88,11 @@ class FileUpload extends Component {
                     }
                   />
                 )}
-              </GIContainer>
+              </VWSContainer>
             );
           })}
-        </GIContainer>
-      </GIContainer>
+        </VWSContainer>
+      </VWSContainer>
     );
   }
 }

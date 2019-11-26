@@ -1,0 +1,50 @@
+.blue-fade {
+  padding: 8px;
+  padding-right: 16px;
+  padding-left: 16px;
+  border-radius: 4px;
+  box-shadow: 0 5px 12px 0 rgba(5, 164, 255, 0.27);
+  background-image: linear-gradient(283deg, #1ba5f9, #04c5fb);
+}
+.grey-button {
+  border: 1px solid var(--grey-font-color);
+  color: var(--grey-font-color) !important;
+  background-color: var(--white-color);
+}
+.transparent-button.active {
+  color: var(--four-blue-color);
+}
+.no-border-button {
+  color: var(--grey-color-1);
+}
+.no-border-button:hover,
+.no-border-button.active {
+  color: var(--blue-color);
+}
+button.purple {
+  color: var(--seven-purple-color);
+  background-color: var(--one-half-purple-color);
+}
+button.purple:hover {
+  color: var(--five-purple-color);
+  background-color: var(--one-half-purple-color);
+}
+button {
+  color: var(--primary-font-color);
+  font-family: var(--font-theme);
+  font-size: var(--sixteen-font-size);
+
+  cursor: pointer;
+  outline: 0;
+
+  border: none;
+  background-color: transparent;
+  pointer-events: auto;
+  box-sizing: border-box;
+}
+
+a {
+  color: var(--four-blue-color);
+  font-weight: bold;
+  text-decoration: none;
+}

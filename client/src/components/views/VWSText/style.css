@@ -6,6 +6,10 @@
   color: var(--white-color);
   fill: var(--white-color);
 }
+.grey-1 {
+  color: var(--grey-color-1);
+  fill: var(--grey-color-1);
+}
 .ellipsis {
   text-overflow: ellipsis;
   white-space: nowrap;

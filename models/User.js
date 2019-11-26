@@ -8,7 +8,7 @@ const userSchema = new Schema(
     displayName: { required: true, type: String },
     email: { type: String, unique: true },
     language: String,
-    password: { required: true, type: String },
+    password: { type: String },
     timezone: String
   },
   {

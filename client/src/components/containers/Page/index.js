@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import ReactGA from "react-ga";
 import { withRouter } from "react-router-dom";
 
-import GIContainer from "../GIContainer";
+import VWSContainer from "../VWSContainer";
 
 import "./style.css";
 
@@ -42,7 +42,7 @@ class Page extends Component {
     );
 
     return (
-      <GIContainer
+      <VWSContainer
         className="screen-container"
         style={style}
         testMode={testMode}
@@ -58,8 +58,8 @@ class Page extends Component {
           <meta property="og:image" content={image} />
         </Helmet>
 
-        <GIContainer className={"x-fill " + className}>{children}</GIContainer>
-      </GIContainer>
+        <VWSContainer className={"x-fill " + className}>{children}</VWSContainer>
+      </VWSContainer>
     );
   }
 }
