@@ -96,7 +96,6 @@ randomLogin = (req, res, next) => {
               "Could not log you in! :( Please refresh the page and try again :)"
           });
         else {
-          next();
           res.send({ success: true, user: savedUser });
         }
       });

@@ -61,13 +61,9 @@ class Routes extends Component {
     return (
       <Consumer>
         {context => (
-          <VWSContainer
-            className="column full-screen"
-            style={{ backgroundColor: "var(--blue-color)" }}
-          >
+          <VWSContainer className="column full-screen">
             <Header />
             <Switch>
-              <Route path="/" component={HomePage} />
               <Route path="/trending/" component={HomePage} />
               <Route path="/recents/" component={HomePage} />
               <Route path="/popular/" component={HomePage} />

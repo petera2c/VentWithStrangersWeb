@@ -29,5 +29,5 @@ input[type="file"] {
   display: none;
 }
 ::placeholder {
-  color: var(--divider-color);
+  color: var(--grey-color-3);
 }

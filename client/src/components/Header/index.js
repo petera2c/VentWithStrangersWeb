@@ -77,34 +77,29 @@ class Header extends Component {
               />
             </VWSContainer>
 
-            {context.user &&
-              context.user.displayName &&
-              !context.user.displayName.match(/[a-z]/i) && (
-                <Link className="no-border-button mx16" to="/login">
-                  Login
-                </Link>
-              )}
-            {context.user &&
-              context.user.displayName &&
-              !context.user.displayName.match(/[a-z]/i) && (
-                <Link className="no-border-button mx16" to="/sign-up">
-                  Sign Up
-                </Link>
-              )}
-            {context.user &&
-              context.user.displayName &&
-              context.user.displayName.match(/[a-z]/i) && (
-                <VWSText
-                  className="absolute right-0  mr16"
-                  text={`Hello, ${context.user.displayName}`}
-                  type="p"
-                />
-              )}
+            {context.user && !context.user.password && (
+              <Link className="no-border-button mx16" to="/login">
+                Login
+              </Link>
+            )}
+            {context.user && !context.user.password && (
+              <Link className="no-border-button mx16" to="/sign-up">
+                Sign Up
+              </Link>
+            )}
+            {context.user && context.user.password && (
+              <VWSText
+                className="absolute right-0  mr16"
+                text={`Hello, ${context.user.password}`}
+                type="p"
+              />
+            )}
           </VWSContainer>
         )}
       </Consumer>
     );
   }
 }
+Header.contextType = ExtraContext;
 
 export default withRouter(Header);

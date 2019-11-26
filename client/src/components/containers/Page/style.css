@@ -7,17 +7,5 @@
 .page-container {
   height: 100%;
 
-  border-top-left-radius: 20px;
   overflow: hidden;
-}
-.website-page {
-  display: flex;
-  flex-direction: column;
-
-  min-height: 100vh;
-}
-
-.login-background {
-  background-color: transparent;
-  background: linear-gradient(transparent 50%, var(--five-blue-color) 50%);
 }
