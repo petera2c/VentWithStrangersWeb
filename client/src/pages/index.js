@@ -68,9 +68,8 @@ class Routes extends Component {
               <Route path="/recents/" component={HomePage} />
               <Route path="/popular/" component={HomePage} />
               <Route path="/random/" component={HomePage} />
+              <Route path="/search/" component={HomePage} />
               <Route path="/vent-to-a-stranger/" component={FindStrangerPage} />
-              <Route path="/login/" component={SignInPage} />
-              <Route path="/sign-up/" component={SignUpPage} />
               <Route path="/post-a-problem/" component={NewProblemPage} />
               {this.createProblemPages(context.problems)}
               <Route component={NotFoundPage} />

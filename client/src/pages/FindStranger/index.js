@@ -56,47 +56,45 @@ class JoinConversation extends Component {
       <Consumer>
         {context => (
           <Page
-            className="full-screen column full-center"
+            className="column bg-grey align-center"
             description="Vent with strangers :)"
             keywords="Vent, strangers, help"
             title="Find Stranger"
           >
-            <VWSText
-              text={`Listeners waiting: ${conversationsWithListener.length}`}
-              type="h4"
-            />
-
-            <VWSText
-              text={`Venters waiting: ${conversationsWithVenter.length}`}
-              type="h4"
-            />
-            {context.user && !conversation && (
-              <VWSContainer className="center-container">
-                <VWSContainer
-                  className="option-container pa64"
-                  onClick={() => {
-                    this.handleChange({ conversation: true });
-                    findConversation(context.socket, "listener");
-                  }}
-                >
-                  Help a Stranger
+            <VWSContainer className="container-box large column mt16">
+              <VWSText className="py16" text="Vent with a Stranger" type="h4" />
+              {context.user && !conversation && (
+                <VWSContainer className="center-container">
+                  <VWSContainer
+                    className="column option-container pa64"
+                    onClick={() => {
+                      this.handleChange({ conversation: true });
+                      findConversation(context.socket, "listener");
+                    }}
+                  >
+                    Help a Stranger
+                    <VWSText text="Listeners Waiting" type="p" />
+                    <VWSText text={conversationsWithListener.length} type="p" />
+                  </VWSContainer>
+                  <VWSContainer
+                    className="column option-container pa64"
+                    onClick={() => {
+                      this.handleChange({ conversation: true });
+                      findConversation(context.socket, "venter");
+                    }}
+                  >
+                    Vent to a Stranger
+                    <VWSText text="Venters Waiting" type="p" />
+                    <VWSText text={conversationsWithVenter.length} type="p" />
+                  </VWSContainer>
                 </VWSContainer>
-                <VWSContainer
-                  className="option-container pa64"
-                  onClick={() => {
-                    this.handleChange({ conversation: true });
-                    findConversation(context.socket, "venter");
-                  }}
-                >
-                  Vent to a Stranger
+              )}
+              {conversation && (
+                <VWSContainer className="">
+                  <Chat chatPartner={chatPartner} conversation={conversation} />
                 </VWSContainer>
-              </VWSContainer>
-            )}
-            {conversation && (
-              <VWSContainer className="">
-                <Chat chatPartner={chatPartner} conversation={conversation} />
-              </VWSContainer>
-            )}
+              )}
+            </VWSContainer>
           </Page>
         )}
       </Consumer>

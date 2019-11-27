@@ -19,6 +19,12 @@
   --grey-color-1: #8d96a7;
   --grey-color-2: #f8f8f8;
   --grey-color-3: #8c96a6;
+  --grey-color-4: #f2f5f9;
+  --grey-color-5: #a9b1b6;
+  --grey-color-6: #dddddd;
+  --grey-color-7: #e1e6ea;
+
+  --primary-font-color: #3a4046;
 
   --small-font-size: 9pt;
   --regular-font-size: 11pt;
@@ -389,6 +395,36 @@
 }
 .br20 {
   border-radius: 20px;
+}
+
+.border-all {
+  border: 1px solid var(--grey-color-1);
+}
+.border-top {
+  border-top: 1px solid var(--grey-color-1);
+}
+.border-right {
+  border-right: 1px solid var(--grey-color-1);
+}
+.border-bottom {
+  border-bottom: 1px solid var(--grey-color-1);
+}
+.border-left {
+  border-left: 1px solid var(--grey-color-1);
+}
+.border-all.active,
+.border-top.active,
+.border-right.active,
+.border-bottom.active,
+.border-left.active {
+  border-color: var(--blue-color);
+}
+.border-all.large,
+.border-top.large,
+.border-right.large,
+.border-bottom.large,
+.border-left.large {
+  border-width: 4px;
 }
 
 body {

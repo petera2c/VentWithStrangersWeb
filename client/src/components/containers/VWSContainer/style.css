@@ -192,6 +192,9 @@
 .bg-grey {
   background-color: var(--grey-color-2);
 }
+.bg-grey-4 {
+  background-color: var(--grey-color-4);
+}
 .bg-purple {
   background-color: var(--purple-color);
 }

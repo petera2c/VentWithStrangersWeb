@@ -6,9 +6,16 @@
   color: var(--white-color);
   fill: var(--white-color);
 }
+.blue {
+  color: var(--blue-color);
+  fill: var(--blue-color);
+}
 .grey-1 {
   color: var(--grey-color-1);
   fill: var(--grey-color-1);
+}
+.grey-5 {
+  color: var(--grey-color-5);
 }
 .ellipsis {
   text-overflow: ellipsis;
@@ -28,13 +35,15 @@
 .taj {
   text-align: justify;
 }
-.bold {
-  font-weight: bold;
+.fw-300 {
+  font-weight: 300;
 }
 .bold-600 {
   font-weight: 600;
 }
-
+.bold {
+  font-weight: bold;
+}
 h1 {
   color: var(--four-blue-color);
   margin: 0;
@@ -61,7 +70,7 @@ h4 {
   color: var(--primary-font-color);
   margin: 0;
   text-align: left;
-  font-weight: 100;
+  font-weight: 600;
 
   font-size: var(--twenty-font-size);
 }
