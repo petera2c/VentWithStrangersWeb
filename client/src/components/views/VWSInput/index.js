@@ -9,6 +9,8 @@ class VWSInput extends Component {
       autoCorrect,
       className,
       id,
+      min,
+      max,
       name,
       onChange,
       placeholder,
@@ -23,6 +25,8 @@ class VWSInput extends Component {
         autoCorrect={autoCorrect}
         className={className}
         id={id}
+        min={min}
+        max={max}
         name={name}
         onChange={onChange}
         placeholder={placeholder}

@@ -38,14 +38,14 @@
 .fw-300 {
   font-weight: 300;
 }
-.bold-600 {
+.fw-600 {
   font-weight: 600;
 }
 .bold {
   font-weight: bold;
 }
 h1 {
-  color: var(--four-blue-color);
+  color: var(--grey-color-1);
   margin: 0;
   padding: 0;
 
@@ -60,7 +60,7 @@ h2 {
   font-size: var(--thirty-two-font-size);
 }
 h3 {
-  color: var(--four-blue-color);
+  color: var(--grey-color-1);
   margin: 0;
   padding: 0;
   font-size: var(--twenty-font-size);
@@ -75,7 +75,7 @@ h4 {
   font-size: var(--twenty-font-size);
 }
 h5 {
-  color: var(--four-blue-color);
+  color: var(--grey-color-1);
   margin: 0;
   font-weight: 100;
 

@@ -398,19 +398,19 @@
 }
 
 .border-all {
-  border: 1px solid var(--grey-color-1);
+  border: 1px solid var(--grey-color-7);
 }
 .border-top {
-  border-top: 1px solid var(--grey-color-1);
+  border-top: 1px solid var(--grey-color-7);
 }
 .border-right {
-  border-right: 1px solid var(--grey-color-1);
+  border-right: 1px solid var(--grey-color-7);
 }
 .border-bottom {
-  border-bottom: 1px solid var(--grey-color-1);
+  border-bottom: 1px solid var(--grey-color-7);
 }
 .border-left {
-  border-left: 1px solid var(--grey-color-1);
+  border-left: 1px solid var(--grey-color-7);
 }
 .border-all.active,
 .border-top.active,
@@ -424,7 +424,11 @@
 .border-right.large,
 .border-bottom.large,
 .border-left.large {
-  border-width: 4px;
+  border-width: 2px;
+}
+
+.clickable {
+  cursor: pointer;
 }
 
 body {
