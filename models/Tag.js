@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const tagSchema = new Schema(
   {
-    name: { require: true, type: String },
+    name: { require: true, type: String, unique: true },
     uses: { require: true, type: Number }
   },
   {

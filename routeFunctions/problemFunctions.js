@@ -1,5 +1,6 @@
 const Problem = require("../models/Problem");
 const User = require("../models/User");
+const Tag = require("../models/Tag");
 
 const getComments = (req, res) => {
   const { problemID } = req.body;
@@ -53,11 +54,39 @@ const newComment = (req, res) => {
   });
 };
 const saveProblem = (req, res) => {
-  const newProblem = new Problem(req.body);
-  newProblem.author = { id: req.user._id };
-  newProblem.save((err, newProblem) => {
-    if (!err && newProblem) res.send({ success: true });
-    else res.send({ success: false });
-  });
+  const { description, gender, tags, title } = req.body;
+
+  let counter = 0;
+  const tagIDArray = [];
+  for (let index in tags) {
+    const tag = tags[index].toLowerCase();
+    counter++;
+    Tag.findOne({ name: tags[index] }, (err, tagFromDB) => {
+      counter--;
+      if (tagFromDB) {
+        tagIDArray.push(tagFromDB._id);
+
+        tagFromDB.uses += 1;
+        tagFromDB.save();
+      } else {
+        const newTag = new Tag({ name: tag, uses: 1 });
+        tagIDArray.push(newTag._id);
+        newTag.save();
+      }
+      if (counter === 0) {
+        const newProblem = new Problem({
+          description,
+          gender,
+          tags: tagIDArray,
+          title
+        });
+        newProblem.author = { id: req.user._id };
+        newProblem.save((err, newProblem) => {
+          if (!err && newProblem) res.send({ success: true });
+          else res.send({ success: false });
+        });
+      }
+    });
+  }
 };
 module.exports = { getComments, getProblems, newComment, saveProblem };

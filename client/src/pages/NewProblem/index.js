@@ -155,8 +155,28 @@ class NewProblemPage extends Component {
                       <VWSButton
                         className="bg-blue white px64 py8 mb8 br4"
                         onClick={() => {
+                          const {
+                            description,
+                            gender,
+                            tags,
+                            title
+                          } = this.state;
+
                           if (description && tags && title) {
                             this.handleChange({ saving: true });
+
+                            const tagsArray = [];
+                            let word = "";
+
+                            for (let index in tags) {
+                              if (tags[index] === "," || tags[index] === " ") {
+                                if (word !== "") {
+                                  tagsArray.push(word);
+                                  word = "";
+                                }
+                              } else word += tags[index];
+                            }
+                            if (word) tagsArray.push(word);
                             saveProblem(
                               () => {
                                 this.handleChange({ saving: false });
@@ -165,7 +185,7 @@ class NewProblemPage extends Component {
 
                                 window.location.reload();
                               },
-                              { description, gender, tags, title }
+                              { description, gender, tags: tagsArray, title }
                             );
                           } else alert("One or more fields is missing.");
                         }}
