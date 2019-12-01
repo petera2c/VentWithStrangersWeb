@@ -2,6 +2,50 @@ const Problem = require("../models/Problem");
 const User = require("../models/User");
 const Tag = require("../models/Tag");
 
+const addUsersAndTagsToProblems = (callback, problemsConvertedToJSON) => {
+  let counter = 0;
+
+  for (let index in problemsConvertedToJSON) {
+    counter++;
+    User.findOne(
+      { _id: problemsConvertedToJSON[index].author.id },
+      { displayName: 1 },
+      (err, user) => {
+        counter--;
+        if (!user) return;
+        problemsConvertedToJSON[index].author.name = user.displayName;
+        if (counter === 0) callback(problemsConvertedToJSON);
+      }
+    );
+  }
+
+  for (let index in problemsConvertedToJSON) {
+    const problem = problemsConvertedToJSON[index];
+
+    for (let index2 in problem.tags) {
+      const tag = problem.tags[index2];
+      counter++;
+      Tag.findOne({ _id: tag.id }, { name: 1 }, (err, tag) => {
+        counter--;
+        if (!tag) return;
+
+        problemsConvertedToJSON[index].tags[index2].name = tag.name;
+        if (counter === 0) callback(problemsConvertedToJSON);
+      });
+    }
+  }
+};
+const returnProblemsFunction = (
+  err,
+  problems,
+  problemsConvertedToJSON,
+  res
+) => {
+  if (!err && problems)
+    res.send({ success: true, problems: problemsConvertedToJSON });
+  else res.send({ success: false });
+};
+
 const getComments = (req, res) => {
   const { problemID } = req.body;
 
@@ -11,32 +55,53 @@ const getComments = (req, res) => {
   });
 };
 
-const getProblems = (req, res) => {
+const getPopularProblems = (req, res) => {
   Problem.find({}, (err, problems) => {
     const problemsConvertedToJSON = JSON.parse(JSON.stringify(problems));
-    const returnFunction = () => {
-      if (!err && problems)
-        res.send({ success: true, problems: problemsConvertedToJSON });
-      else res.send({ success: false });
-    };
 
     if (problems && problems.length === 0) {
-      returnFunction();
-    }
-
-    let counter = 0;
-    for (let index in problemsConvertedToJSON) {
-      counter++;
-      User.findOne(
-        { _id: problemsConvertedToJSON[index].author.id },
-        (err, user) => {
-          counter--;
-          problemsConvertedToJSON[index].author.name = user.displayName;
-          if (counter === 0) returnFunction();
-        }
+      return returnProblemsFunction(undefined, undefined, undefined, res);
+    } else
+      return addUsersAndTagsToProblems(
+        problemsConvertedToJSON =>
+          returnProblemsFunction(err, problems, problemsConvertedToJSON, res),
+        problemsConvertedToJSON
       );
-    }
-  }).sort({ createdAt: -1 });
+  })
+    .sort({ upVotes: -1 })
+    .limit(10);
+};
+const getRecentProblems = (req, res) => {
+  Problem.find({}, (err, problems) => {
+    const problemsConvertedToJSON = JSON.parse(JSON.stringify(problems));
+
+    if (problems && problems.length === 0) {
+      return returnProblemsFunction(undefined, undefined, undefined, res);
+    } else
+      return addUsersAndTagsToProblems(
+        problemsConvertedToJSON =>
+          returnProblemsFunction(err, problems, problemsConvertedToJSON, res),
+        problemsConvertedToJSON
+      );
+  })
+    .sort({ createdAt: -1 })
+    .limit(10);
+};
+const getTrendingProblems = (req, res) => {
+  Problem.find({}, (err, problems) => {
+    const problemsConvertedToJSON = JSON.parse(JSON.stringify(problems));
+
+    if (problems && problems.length === 0) {
+      return returnProblemsFunction(undefined, undefined, undefined, res);
+    } else
+      return addUsersAndTagsToProblems(
+        problemsConvertedToJSON =>
+          returnProblemsFunction(err, problems, problemsConvertedToJSON, res),
+        problemsConvertedToJSON
+      );
+  })
+    .sort({ dailyUpvotes: -1 })
+    .limit(10);
 };
 const newComment = (req, res) => {
   const { comment, problemID } = req.body;
@@ -64,21 +129,23 @@ const saveProblem = (req, res) => {
     Tag.findOne({ name: tags[index] }, (err, tagFromDB) => {
       counter--;
       if (tagFromDB) {
-        tagIDArray.push(tagFromDB._id);
+        tagIDArray.push({ id: tagFromDB._id });
 
         tagFromDB.uses += 1;
         tagFromDB.save();
       } else {
         const newTag = new Tag({ name: tag, uses: 1 });
-        tagIDArray.push(newTag._id);
+        tagIDArray.push({ id: newTag._id });
         newTag.save();
       }
       if (counter === 0) {
         const newProblem = new Problem({
           description,
           gender,
+          dailyUpvotes: 0,
           tags: tagIDArray,
-          title
+          title,
+          upVotes: 0
         });
         newProblem.author = { id: req.user._id };
         newProblem.save((err, newProblem) => {
@@ -89,4 +156,11 @@ const saveProblem = (req, res) => {
     });
   }
 };
-module.exports = { getComments, getProblems, newComment, saveProblem };
+module.exports = {
+  getComments,
+  getPopularProblems,
+  getRecentProblems,
+  getTrendingProblems,
+  newComment,
+  saveProblem
+};

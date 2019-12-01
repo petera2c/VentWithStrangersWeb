@@ -7,7 +7,9 @@ import Consumer, { ExtraContext } from "../context";
 import Loader from "../components/notifications/Loader";
 import VWSContainer from "../components/containers/VWSContainer";
 
-import HomePage from "./Home";
+import TrendingPage from "./Trending";
+import PopularPage from "./Popular";
+import RecentPage from "./Recent";
 import FindStrangerPage from "./FindStranger";
 import NewProblemPage from "./NewProblem";
 import ProblemPage from "./Problem";
@@ -17,7 +19,7 @@ import NotFoundPage from "./NotFound";
 
 import Header from "../components/Header";
 
-import { getProblems, initSocket } from "./util";
+import { initSocket } from "./util";
 
 class Routes extends Component {
   state = {
@@ -28,10 +30,6 @@ class Routes extends Component {
 
     axios.get("/api/user").then(res => {
       const { success, user, message } = res.data;
-
-      getProblems(problems => {
-        handleChange({ problems });
-      });
 
       if (success) {
         initSocket(stateObj => {
@@ -64,11 +62,9 @@ class Routes extends Component {
           <VWSContainer className="column full-screen">
             <Header />
             <Switch>
-              <Route path="/trending/" component={HomePage} />
-              <Route path="/recents/" component={HomePage} />
-              <Route path="/popular/" component={HomePage} />
-              <Route path="/random/" component={HomePage} />
-              <Route path="/search/" component={HomePage} />
+              <Route path="/trending/" component={TrendingPage} />
+              <Route path="/recent/" component={RecentPage} />
+              <Route path="/popular/" component={PopularPage} />
               <Route path="/vent-to-a-stranger/" component={FindStrangerPage} />
               <Route path="/post-a-problem/" component={NewProblemPage} />
               {this.createProblemPages(context.problems)}

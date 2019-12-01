@@ -44,6 +44,17 @@
   flex-direction: column;
 }
 
+.round-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 24px;
+  height: 24px;
+
+  border-radius: 50%;
+}
+
 .x-fill {
   width: 100%;
 }

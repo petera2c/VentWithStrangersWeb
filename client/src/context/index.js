@@ -11,7 +11,9 @@ class GIProvider extends Component {
       message: "",
       type: "danger"
     },
-    problems: [],
+    recentProblems: [],
+    popularProblems: [],
+    trendingProblems: [],
     saving: false,
     socket: undefined,
     user: undefined
@@ -39,14 +41,24 @@ class GIProvider extends Component {
     if (this._ismounted) this.setState(stateObject);
   };
   render() {
-    const { notification, problems, saving, socket, user } = this.state;
+    const {
+      notification,
+      popularProblems,
+      recentProblems,
+      trendingProblems,
+      saving,
+      socket,
+      user
+    } = this.state;
 
     return (
       <Provider
         value={{
           handleChange: this.handleChange,
           notify: this.notify,
-          problems,
+          popularProblems,
+          recentProblems,
+          trendingProblems,
           saving,
           socket,
           user

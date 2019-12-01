@@ -40,17 +40,13 @@ class Header extends Component {
               <FontAwesomeIcon className="mr8" icon={faChartLine} />
               Trending
             </Link>
-            <Link className="no-border-button mx16" to="/recents">
+            <Link className="no-border-button mx16" to="/recent">
               <FontAwesomeIcon className="mr8" icon={faClock} />
               Recents
             </Link>
-            <Link className="no-border-button mx16" to="/popular">
+            <Link className="no-border-button ml16 mr64" to="/popular">
               <FontAwesomeIcon className="mr8" icon={faStar} />
               Popular
-            </Link>
-            <Link className="no-border-button ml16 mr64" to="/random">
-              <FontAwesomeIcon className="mr8" icon={faRedo} />
-              Random
             </Link>
 
             <VWSContainer className="border-all active py4 mr16 br4">

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import moment from "moment";
+import moment from "moment-timezone";
 import axios from "axios";
 
 import Consumer, { ExtraContext } from "../../context";

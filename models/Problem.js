@@ -19,9 +19,12 @@ const problemSchema = new Schema(
       }
     ],
     description: { require: true, type: String },
+    dailyUpvotes: { require: true, type: Number },
     gender: { require: true, type: Number },
     tags: [{ id: { type: Schema.Types.ObjectId } }],
-    title: { require: true, type: String }
+    title: { require: true, type: String },
+    upVotes: { require: true, type: Number },
+    upVotesList: [{ id: { type: Schema.Types.ObjectId } }]
   },
   {
     timestamps: true // Saves createdAt and updatedAt as dates. createdAt will be our timestamp.

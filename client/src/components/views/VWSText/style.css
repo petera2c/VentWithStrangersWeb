@@ -17,6 +17,9 @@
 .grey-5 {
   color: var(--grey-color-5);
 }
+.grey-8 {
+  color: var(--grey-color-8);
+}
 .ellipsis {
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -90,8 +93,9 @@ h6 {
 }
 
 p {
+  color: var(--grey-color-1);
+
   margin: 0;
-  color: var(--primary-font-color);
   text-align: left;
   font-size: var(--fourteen-font-size);
   font-weight: 100;

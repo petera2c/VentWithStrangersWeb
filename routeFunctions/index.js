@@ -19,8 +19,14 @@ module.exports = app => {
     problemFunctions.saveProblem(req, res)
   );
 
-  app.get("/api/problems", middleware, (req, res) =>
-    problemFunctions.getProblems(req, res)
+  app.get("/api/problems/popular", middleware, (req, res) =>
+    problemFunctions.getPopularProblems(req, res)
+  );
+  app.get("/api/problems/recent", middleware, (req, res) =>
+    problemFunctions.getRecentProblems(req, res)
+  );
+  app.get("/api/problems/trending", middleware, (req, res) =>
+    problemFunctions.getTrendingProblems(req, res)
   );
 
   app.post("/api/new-comment", middleware, (req, res) =>
