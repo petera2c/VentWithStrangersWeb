@@ -1,8 +1,7 @@
 import React, { Component } from "react";
+import axios from "axios";
 import { Link, withRouter } from "react-router-dom";
 import Consumer from "../../../context";
-
-import axios from "axios";
 
 import VWSContainer from "../../containers/VWSContainer";
 import VWSText from "../../views/VWSText";
@@ -31,12 +30,12 @@ class LoginPage extends Component {
     }
   }
 
-  handleChange = (index, value) => {
-    this.setState({ [index]: value });
+  handleChange = stateObj => {
+    this.setState(stateObj);
   };
 
   login = (context, event) => {
-    event.preventDefault();
+    return;
     const { email, password } = this.state;
 
     if (email && password) {
@@ -61,6 +60,7 @@ class LoginPage extends Component {
 
   render() {
     const { email, errorMessage, password } = this.state;
+    const { close, openSignUpModal } = this.props;
 
     return (
       <Consumer>
@@ -79,50 +79,63 @@ class LoginPage extends Component {
                   <VWSText text={errorMessage} type="h6" />
                 </VWSContainer>
               )}
-              <VWSContainer className="x-fill column px32">
-                <VWSText className="tac border-bottom py16" text="" type="p">
-                  Don't have an account?&nbsp;
-                  <VWSText className="blue" type="span">
-                    Create One
+              <VWSContainer className="x-fill column">
+                <VWSContainer className="x-fill full-center px32">
+                  <VWSText className="x-fill tac border-bottom py16" type="p">
+                    Don't have an account?&nbsp;
+                    <VWSText
+                      className="clickable blue"
+                      onClick={() => openSignUpModal()}
+                      type="span"
+                    >
+                      Create One
+                    </VWSText>
                   </VWSText>
-                </VWSText>
-
-                <VWSContainer className="x-fill column py16">
-                  <VWSText className="mb8" text="Email Address" type="h5" />
-                  <VWSInput
-                    className="py8 px16 mb8 br4"
-                    value={email}
-                    onChange={event =>
-                      this.handleChange("email", event.target.value)
-                    }
-                    type="text"
-                    name="email"
-                    placeholder="Email"
-                    required
-                  />
-                  <VWSText className="mb8" text="Password" type="h5" />
-                  <VWSInput
-                    className="py8 px16 mb8 br4"
-                    value={password}
-                    onChange={e =>
-                      this.handleChange("password", e.target.value)
-                    }
-                    name="password"
-                    type="password"
-                    placeholder="Password"
-                    required
-                  />
                 </VWSContainer>
-              </VWSContainer>
-              <VWSContainer className="x-fill full-center px32 py16">
-                <VWSButton
-                  className="x-fill bg-blue white py8 br4"
-                  onClick={e => this.login(context, e)}
-                  text="Log in"
-                />
+                <form
+                  className="x-fill column"
+                  onSubmit={e => e.preventDefault()}
+                >
+                  <VWSContainer className="x-fill column px32 py16">
+                    <VWSText className="mb8" text="Email Address" type="h5" />
+                    <VWSInput
+                      className="py8 px16 mb8 br4"
+                      value={email}
+                      onChange={event =>
+                        this.handleChange({ email: event.target.value })
+                      }
+                      type="text"
+                      name="email"
+                      placeholder="Email"
+                      required
+                    />
+                    <VWSText className="mb8" text="Password" type="h5" />
+                    <VWSInput
+                      className="py8 px16 mb8 br4"
+                      value={password}
+                      onChange={e =>
+                        this.handleChange({ password: e.target.value })
+                      }
+                      name="password"
+                      type="password"
+                      placeholder="Password"
+                      required
+                    />
+                  </VWSContainer>
+                  <VWSContainer className="x-fill full-center border-top px32 py16">
+                    <VWSButton
+                      className="x-fill bg-blue white py8 br4"
+                      onClick={e => this.login(context, e)}
+                      text="Log in"
+                    />
+                  </VWSContainer>
+                </form>
               </VWSContainer>
             </VWSContainer>
-            <VWSContainer className="modal-background" />
+            <VWSContainer
+              className="modal-background"
+              onClick={() => close()}
+            />
           </VWSContainer>
         )}
       </Consumer>

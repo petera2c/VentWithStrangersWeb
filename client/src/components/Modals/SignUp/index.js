@@ -1,19 +1,18 @@
 import React, { Component } from "react";
+import axios from "axios";
 import { Link, withRouter } from "react-router-dom";
 import Consumer, { ExtraContext } from "../../../context";
 
-import axios from "axios";
-
 import VWSContainer from "../../containers/VWSContainer";
-
 import VWSText from "../../views/VWSText";
 import VWSButton from "../../views/VWSButton";
+import VWSInput from "../../views/VWSInput";
 
 import { validateEmail } from "./util";
 
 let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-class RegisterPage extends Component {
+class SignUpModal extends Component {
   state = {
     email: "",
     displayName: "",
@@ -27,7 +26,7 @@ class RegisterPage extends Component {
     const { user } = this.context; // Variables
     const { notify } = this.context; // Functions
 
-    if (user && user.displayName && user.displayName.match(/[a-z]/i)) {
+    if (user && user.password) {
       history.push("/home");
       notify({
         message: "You are already logged in!",
@@ -37,12 +36,12 @@ class RegisterPage extends Component {
     }
   }
 
-  handleChange = (index, value) => {
-    this.setState({ [index]: value });
+  handleChange = stateObj => {
+    this.setState(stateObj);
   };
 
   register = (context, event) => {
-    event.preventDefault();
+    return;
 
     const {
       email,
@@ -77,7 +76,7 @@ class RegisterPage extends Component {
 
           if (success && user) {
             handleChange({ user });
-            history.push("/home");
+            history.push("/trending");
           } else {
             notify({
               message,
@@ -98,72 +97,126 @@ class RegisterPage extends Component {
   };
 
   render() {
-    const { email, password, passwordConfirm, displayName } = this.state;
+    const {
+      displayName,
+      email,
+      errorMessage,
+      password,
+      passwordConfirm
+    } = this.state;
+    const { close, openLoginModal } = this.props;
 
     return (
       <Consumer>
         {context => (
-          <VWSContainer
-            className="column align-center mt64"
-            description="Sign Up"
-            keywords=""
-            title="Sign Up"
-          >
-            <VWSContainer className="column x-50 bg-white pa64 br16">
-              <input
-                className="py8 px16 mb8 br4"
-                value={displayName}
-                onChange={event =>
-                  this.handleChange("displayName", event.target.value)
-                }
-                type="text"
-                placeholder="Display Name"
-                required
-              />
-              <input
-                className="py8 px16 mb8 br4"
-                value={email}
-                onChange={event =>
-                  this.handleChange("email", event.target.value)
-                }
-                type="text"
-                placeholder="Email"
-                required
-              />
+          <VWSContainer className="modal-container full-center">
+            <VWSContainer className="modal container-box medium column align-center bg-white br4">
+              <VWSContainer className="x-fill justify-center bg-blue py16">
+                <VWSText
+                  className="tac white"
+                  text="Create an Account"
+                  type="h4"
+                />
+              </VWSContainer>
+              {errorMessage && (
+                <VWSContainer>
+                  <VWSText text={errorMessage} type="h6" />
+                </VWSContainer>
+              )}
+              <VWSContainer className="x-fill column">
+                <VWSContainer className="x-fill full-center px32">
+                  <VWSText className="x-fill tac border-bottom py16" type="p">
+                    Don't have an account?&nbsp;
+                    <VWSText
+                      className="clickable blue"
+                      onClick={() => openLoginModal()}
+                      type="span"
+                    >
+                      Create One
+                    </VWSText>
+                  </VWSText>
+                </VWSContainer>
 
-              <input
-                className="py8 px16 mb8 br4"
-                value={password}
-                onChange={event =>
-                  this.handleChange("password", event.target.value)
-                }
-                placeholder="Password"
-                type="password"
-                required
-              />
-
-              <input
-                className="py8 px16 mb8 br4"
-                value={passwordConfirm}
-                onChange={event =>
-                  this.handleChange("passwordConfirm", event.target.value)
-                }
-                placeholder="Confirm Password"
-                type="password"
-                required
-              />
-
-              <button
-                className="bg-blue white py8 mb8 br4"
-                onClick={e => this.register(context, e)}
-                type="submit"
-              >
-                Register
-              </button>
+                <form
+                  className="x-fill column"
+                  onSubmit={e => e.preventDefault()}
+                >
+                  <VWSContainer className="x-fill column px32 py16">
+                    <VWSText className="mb8" text="Display Name" type="h5" />
+                    <VWSInput
+                      className="py8 px16 mb8 br4"
+                      value={displayName}
+                      onChange={event =>
+                        this.handleChange({ displayName: event.target.value })
+                      }
+                      type="text"
+                      name="email"
+                      placeholder="Bunny_Smith"
+                      required
+                    />
+                    <VWSText className="mb8" text="Email Address" type="h5" />
+                    <VWSInput
+                      className="py8 px16 mb8 br4"
+                      value={email}
+                      onChange={e =>
+                        this.handleChange({ email: e.target.value })
+                      }
+                      name="email"
+                      type="text"
+                      placeholder="bunnysmith@gmail.com"
+                      required
+                    />
+                    <VWSContainer>
+                      <VWSContainer className="fill-flex column mr16">
+                        <VWSText className="mb8" text="Password" type="h5" />
+                        <VWSInput
+                          className="py8 px16 mb8 br4"
+                          value={password}
+                          onChange={e =>
+                            this.handleChange({ password: e.target.value })
+                          }
+                          name="password"
+                          type="password"
+                          placeholder="********"
+                          required
+                        />
+                      </VWSContainer>
+                      <VWSContainer className="fill-flex column">
+                        <VWSText
+                          className="mb8"
+                          text="Confirm Password"
+                          type="h5"
+                        />
+                        <VWSInput
+                          className="py8 px16 mb8 br4"
+                          value={passwordConfirm}
+                          onChange={e =>
+                            this.handleChange({
+                              passwordConfirm: e.target.value
+                            })
+                          }
+                          name="passwordConfirm"
+                          type="passwordConfirm"
+                          placeholder="********"
+                          required
+                        />
+                      </VWSContainer>
+                    </VWSContainer>
+                  </VWSContainer>
+                  <VWSContainer className="x-fill full-center border-top px32 py16">
+                    <VWSButton
+                      className="x-fill bg-blue white py8 br4"
+                      onClick={e => this.register(context, e)}
+                      text="Create Account"
+                    />
+                  </VWSContainer>
+                </form>
+              </VWSContainer>
             </VWSContainer>
-            <Link className="white mt16" to="/login">
-              Sign In Now
-            </Link>
+            <VWSContainer
+              className="modal-background"
+              onClick={() => close()}
+            />
           </VWSContainer>
         )}
       </Consumer>
@@ -171,6 +224,6 @@ class RegisterPage extends Component {
   }
 }
 
-RegisterPage.contextType = ExtraContext;
+SignUpModal.contextType = ExtraContext;
 
-export default withRouter(RegisterPage);
+export default withRouter(SignUpModal);

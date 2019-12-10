@@ -23,7 +23,7 @@ import SignUpModal from "../Modals/SignUp";
 class Header extends Component {
   state = {
     loginModalBoolean: false,
-    signUpModalBoolean: false,
+    signUpModalBoolean: true,
     searchPostString: ""
   };
   componentDidMount() {
@@ -35,12 +35,14 @@ class Header extends Component {
   handleChange = stateObj => {
     if (this._ismounted) this.setState(stateObj);
   };
+
   render() {
     const {
       loginModalBoolean,
       signUpModalBoolean,
       searchPostString
     } = this.state;
+
     return (
       <Consumer>
         {context => (
@@ -107,11 +109,23 @@ class Header extends Component {
             {loginModalBoolean && (
               <LoginModal
                 close={() => this.handleChange({ loginModalBoolean: false })}
+                openSignUpModal={() =>
+                  this.handleChange({
+                    signUpModalBoolean: true,
+                    loginModalBoolean: false
+                  })
+                }
               />
             )}
             {signUpModalBoolean && (
               <SignUpModal
                 close={() => this.handleChange({ signUpModalBoolean: false })}
+                openLoginModal={() =>
+                  this.handleChange({
+                    signUpModalBoolean: false,
+                    loginModalBoolean: true
+                  })
+                }
               />
             )}
           </VWSContainer>
