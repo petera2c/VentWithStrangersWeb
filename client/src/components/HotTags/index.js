@@ -1,42 +1,57 @@
 import React, { Component } from "react";
+import Consumer, { ExtraContext } from "../../context";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
+import { faFire } from "@fortawesome/free-solid-svg-icons/faFire";
+
+import LoadingHeart from "../../components/loaders/Heart";
 
 import VWSContainer from "../../components/containers/VWSContainer";
 import VWSText from "../../components/views/VWSText";
 
-import Consumer, { ExtraContext } from "../../context";
+import { capitolizeFirstChar } from "../../util";
 
-const hotTags = [
-  { name: "depression", useCount: 100 },
-  { name: "school", useCount: 100 },
-  { name: "advice", useCount: 100 },
-  { name: "religion", useCount: 100 },
-  { name: "drugs", useCount: 100 },
-  { name: "studies", useCount: 100 },
-  { name: "games", useCount: 100 }
-];
+import { getTrendingTags } from "./util";
 
 class HotTags extends Component {
   componentDidMount() {
     this.ismounted = true;
+    const { handleChange } = this.context;
+
+    getTrendingTags(tags => handleChange({ hotTags: tags }));
   }
   render() {
+    const { hotTags = [] } = this.context;
+
     return (
       <Consumer>
         {context => (
-          <VWSContainer className="column bg-white pa16 br8">
-            <VWSText text="Hot Tags" type="h1" />
+          <VWSContainer className="x-25 column align-center bg-white br8">
+            <VWSContainer className="x-fill border-bottom py16">
+              <VWSContainer className="align-center border-left active large px16">
+                <FontAwesomeIcon className="blue mr8" icon={faFire} />
+                <VWSText className="blue fw-300" text="Hot Tags" type="h4" />
+              </VWSContainer>
+            </VWSContainer>
             {hotTags.map((hotTag, index) => (
-              <VWSContainer key={index}>
-                <VWSText className="pa16" text={index} type="p" />
+              <VWSContainer
+                className={`x-fill align-center ${
+                  index !== hotTags.length - 1 ? "border-bottom" : ""
+                } px16`}
+                key={index}
+              >
+                <VWSText
+                  className="round-icon bg-light-blue blue fs-12"
+                  text={index}
+                  type="p"
+                />
                 <VWSContainer className="column pa16">
-                  <VWSText text={hotTag.name} type="p" />
-                  <VWSText text={hotTag.useCount} type="p" />
+                  <VWSText text={capitolizeFirstChar(hotTag.name)} type="p" />
+                  <VWSText className="grey-5" text={hotTag.uses} type="p" />
                 </VWSContainer>
               </VWSContainer>
             ))}
+            {hotTags.length === 0 && <LoadingHeart />}
           </VWSContainer>
         )}
       </Consumer>

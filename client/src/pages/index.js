@@ -13,8 +13,6 @@ import RecentPage from "./Recent";
 import FindStrangerPage from "./FindStranger";
 import NewProblemPage from "./NewProblem";
 import ProblemPage from "./Problem";
-import SignInPage from "./SignIn";
-import SignUpPage from "./SignUp";
 import NotFoundPage from "./NotFound";
 
 import Header from "../components/Header";

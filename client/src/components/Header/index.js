@@ -17,8 +17,13 @@ import VWSText from "../views/VWSText";
 import VWSInput from "../views/VWSInput";
 import VWSButton from "../views/VWSButton";
 
+import LoginModal from "../Modals/Login";
+import SignUpModal from "../Modals/SignUp";
+
 class Header extends Component {
   state = {
+    loginModalBoolean: false,
+    signUpModalBoolean: false,
     searchPostString: ""
   };
   componentDidMount() {
@@ -31,7 +36,11 @@ class Header extends Component {
     if (this._ismounted) this.setState(stateObj);
   };
   render() {
-    const { searchPostString } = this.state;
+    const {
+      loginModalBoolean,
+      signUpModalBoolean,
+      searchPostString
+    } = this.state;
     return (
       <Consumer>
         {context => (
@@ -78,14 +87,14 @@ class Header extends Component {
               <VWSButton
                 className="blue fw-300 mx32"
                 text="Login"
-                onClick={() => {}}
+                onClick={() => this.handleChange({ loginModalBoolean: true })}
               />
             )}
             {context.user && !context.user.password && (
               <VWSButton
                 className="white blue-fade px32 py8 br4"
                 text="Sign Up"
-                onClick={() => {}}
+                onClick={() => this.handleChange({ signUpModalBoolean: true })}
               />
             )}
             {context.user && context.user.password && (
@@ -93,6 +102,16 @@ class Header extends Component {
                 className="absolute right-0  mr16"
                 text={`Hello, ${context.user.password}`}
                 type="p"
+              />
+            )}
+            {loginModalBoolean && (
+              <LoginModal
+                close={() => this.handleChange({ loginModalBoolean: false })}
+              />
+            )}
+            {signUpModalBoolean && (
+              <SignUpModal
+                close={() => this.handleChange({ signUpModalBoolean: false })}
               />
             )}
           </VWSContainer>

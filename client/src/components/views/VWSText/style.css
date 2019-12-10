@@ -20,6 +20,9 @@
 .grey-8 {
   color: var(--grey-color-8);
 }
+.grey-9 {
+  color: var(--grey-color-9);
+}
 .ellipsis {
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -46,6 +49,9 @@
 }
 .bold {
   font-weight: bold;
+}
+.fs-12 {
+  font-size: var(--twelve-font-size);
 }
 h1 {
   color: var(--grey-color-1);

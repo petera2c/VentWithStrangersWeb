@@ -5,6 +5,7 @@ const { Provider, Consumer } = ExtraContext;
 
 class GIProvider extends Component {
   state = {
+    hotTags: [],
     notification: {
       on: false,
       title: "Something went wrong!",
@@ -42,6 +43,7 @@ class GIProvider extends Component {
   };
   render() {
     const {
+      hotTags,
       notification,
       popularProblems,
       recentProblems,
@@ -55,6 +57,7 @@ class GIProvider extends Component {
       <Provider
         value={{
           handleChange: this.handleChange,
+          hotTags,
           notify: this.notify,
           popularProblems,
           recentProblems,

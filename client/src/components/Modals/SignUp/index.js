@@ -1,17 +1,15 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
+import Consumer, { ExtraContext } from "../../../context";
 
 import axios from "axios";
 
+import VWSContainer from "../../containers/VWSContainer";
+
+import VWSText from "../../views/VWSText";
+import VWSButton from "../../views/VWSButton";
+
 import { validateEmail } from "./util";
-
-import Page from "../../components/containers/Page";
-import VWSContainer from "../../components/containers/VWSContainer";
-
-import VWSText from "../../components/views/VWSText";
-import VWSButton from "../../components/views/VWSButton";
-
-import Consumer, { ExtraContext } from "../../context";
 
 let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -105,7 +103,7 @@ class RegisterPage extends Component {
     return (
       <Consumer>
         {context => (
-          <Page
+          <VWSContainer
             className="column align-center mt64"
             description="Sign Up"
             keywords=""
@@ -166,7 +164,7 @@ class RegisterPage extends Component {
             <Link className="white mt16" to="/login">
               Sign In Now
             </Link>
-          </Page>
+          </VWSContainer>
         )}
       </Consumer>
     );

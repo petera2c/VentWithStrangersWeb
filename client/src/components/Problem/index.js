@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock } from "@fortawesome/free-regular-svg-icons/faClock";
 import { faHeart } from "@fortawesome/free-regular-svg-icons/faHeart";
 import { faComment } from "@fortawesome/free-regular-svg-icons/faComment";
+import { faEllipsisV } from "@fortawesome/free-solid-svg-icons/faEllipsisV";
 
 import VWSContainer from "../containers/VWSContainer";
 import VWSButton from "../views/VWSButton";
@@ -22,7 +23,7 @@ class Problem extends Component {
 
     return (
       <VWSContainer className="container-large column bg-white mb16 br8">
-        <VWSContainer className="border-bottom justify-between py16 px32">
+        <VWSContainer className="border-bottom justify-between py16 pl32 pr16">
           <VWSContainer>
             <VWSText
               className="round-icon bg-blue white mr8"
@@ -34,13 +35,14 @@ class Problem extends Component {
               type="h5"
             />
           </VWSContainer>
-          <VWSContainer>
+          <VWSContainer className="align-center">
             {problem.tags.map((tag, index) => (
               <VWSText key={index} text={tag.name} type="p" />
             ))}
+            <FontAwesomeIcon className="grey-9 ml16" icon={faEllipsisV} />
           </VWSContainer>
         </VWSContainer>
-        <VWSContainer className="column border-bottom py16 mx32">
+        <VWSContainer className="column border-bottom py16 px32">
           <VWSText className="mb8 grey-8" text={problem.title} type="h5" />
           <VWSContainer className="mb8">
             <FontAwesomeIcon className="grey-5 mr8" icon={faClock} />

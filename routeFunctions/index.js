@@ -2,6 +2,7 @@ const passport = require("passport");
 const mongoose = require("mongoose");
 const User = require("../models/User");
 const problemFunctions = require("./problemFunctions");
+const tagFunctions = require("./tagFunctions");
 const names = require("./names");
 
 module.exports = app => {
@@ -27,6 +28,10 @@ module.exports = app => {
   );
   app.get("/api/problems/trending", middleware, (req, res) =>
     problemFunctions.getTrendingProblems(req, res)
+  );
+
+  app.get("/api/tags/trending", middleware, (req, res) =>
+    tagFunctions.getTrendingTags(req, res)
   );
 
   app.post("/api/new-comment", middleware, (req, res) =>

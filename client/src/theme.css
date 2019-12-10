@@ -6,6 +6,8 @@
   --purple-theme-color: #e056fd;
   --orange-theme-color: #ff9f1a;
 
+  --light-blue-color: #ebf5fe;
+
   --light-blue-theme-color: #cffdff;
   --light-green-theme-color: #92ff4f;
 
@@ -24,14 +26,15 @@
   --grey-color-6: #dddddd;
   --grey-color-7: #e1e6ea;
   --grey-color-8: #6e7981;
+  --grey-color-9: #859097;
 
   --primary-font-color: #3a4046;
+  --blue-font-color: #1f96f2;
 
-  --small-font-size: 9pt;
-  --regular-font-size: 11pt;
   --large-font-size: 13pt;
   --extra-large-font-size: 17pt;
 
+  --twelve-font-size: 12px;
   --thirteen-font-size: 13px;
   --fourteen-font-size: 14px;
   --fifteen-font-size: 15px;
