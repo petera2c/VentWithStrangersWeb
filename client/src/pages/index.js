@@ -5,7 +5,7 @@ import { Route, Switch, withRouter } from "react-router-dom";
 import Consumer, { ExtraContext } from "../context";
 
 import Loader from "../components/notifications/Loader";
-import VWSContainer from "../components/containers/VWSContainer";
+import Container from "../components/containers/Container";
 
 import TrendingPage from "./Trending";
 import PopularPage from "./Popular";
@@ -57,7 +57,7 @@ class Routes extends Component {
     return (
       <Consumer>
         {context => (
-          <VWSContainer className="column full-screen">
+          <Container className="column full-screen">
             <Header />
             <Switch>
               <Route path="/trending/" component={TrendingPage} />
@@ -68,7 +68,7 @@ class Routes extends Component {
               {this.createProblemPages(context.problems)}
               <Route component={NotFoundPage} />
             </Switch>
-          </VWSContainer>
+          </Container>
         )}
       </Consumer>
     );

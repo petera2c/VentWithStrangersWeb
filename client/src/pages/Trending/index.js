@@ -7,8 +7,8 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 import LoadingHeart from "../../components/loaders/Heart";
 
 import Page from "../../components/containers/Page";
-import VWSContainer from "../../components/containers/VWSContainer";
-import VWSText from "../../components/views/VWSText";
+import Container from "../../components/containers/Container";
+import Text from "../../components/views/Text";
 import HotTags from "../../components/HotTags";
 import Filters from "../../components/Filters";
 import Problem from "../../components/Problem";
@@ -38,21 +38,21 @@ class TrendingPage extends Component {
             keywords=""
             title="Home"
           >
-            <VWSContainer className="container-box large column align-center pa16 mr32">
-              <VWSContainer className="x-fill justify-between mb16">
-                <VWSText className="" text="Trending Problems" type="h2" />
+            <Container className="container large column align-center pa16 mr32">
+              <Container className="x-fill justify-between mb16">
+                <Text className="" text="Trending Problems" type="h2" />
                 <Filters />
-              </VWSContainer>
+              </Container>
               {trendingProblems.length > 0 && (
-                <VWSContainer className="x-fill column">
+                <Container className="x-fill column">
                   {context.trendingProblems &&
                     context.trendingProblems.map((problem, index) => (
                       <Problem key={index} problem={problem} />
                     ))}
-                </VWSContainer>
+                </Container>
               )}
               {trendingProblems.length === 0 && <LoadingHeart />}
-            </VWSContainer>
+            </Container>
 
             <HotTags />
           </Page>

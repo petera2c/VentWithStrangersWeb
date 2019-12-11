@@ -5,8 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 
 import Page from "../../components/containers/Page";
-import VWSContainer from "../../components/containers/VWSContainer";
-import VWSText from "../../components/views/VWSText";
+import Container from "../../components/containers/Container";
+import Text from "../../components/views/Text";
 import HotTags from "../../components/HotTags";
 
 import Consumer, { ExtraContext } from "../../context";
@@ -31,22 +31,22 @@ class HomePage extends Component {
             keywords=""
             title="Home"
           >
-            <VWSContainer className="container-box large column pa16">
-              <VWSContainer className="justify-between mb16">
-                <VWSText
+            <Container className="container large column pa16">
+              <Container className="justify-between mb16">
+                <Text
                   className=""
                   text={`${capitolizeFirstChar(title)} Problems`}
                   type="h1"
                 />
-                <VWSContainer className="full-center">
-                  <VWSText className="mr8" text={`Filters`} type="h6" />
+                <Container className="full-center">
+                  <Text className="mr8" text="Filters" type="h6" />
                   <FontAwesomeIcon className="mr16" icon={faChevronDown} />
-                  <VWSText className="mr8" text={`Tags`} type="h6" />
+                  <Text className="mr8" text={`Tags`} type="h6" />
                   <FontAwesomeIcon className="mr16" icon={faChevronDown} />
-                </VWSContainer>
-              </VWSContainer>
+                </Container>
+              </Container>
 
-              <VWSContainer className="column mr32">
+              <Container className="column mr32">
                 {context.problems &&
                   context.problems.map((problem, index) => (
                     <Link
@@ -57,8 +57,8 @@ class HomePage extends Component {
                       {problem.title}
                     </Link>
                   ))}
-              </VWSContainer>
-            </VWSContainer>
+              </Container>
+            </Container>
             <HotTags />
           </Page>
         )}

@@ -7,8 +7,8 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 import Consumer, { ExtraContext } from "../../context";
 
 import Page from "../../components/containers/Page";
-import VWSContainer from "../../components/containers/VWSContainer";
-import VWSText from "../../components/views/VWSText";
+import Container from "../../components/containers/Container";
+import Text from "../../components/views/Text";
 import HotTags from "../../components/HotTags";
 import Filters from "../../components/Filters";
 
@@ -35,13 +35,13 @@ class RecentPage extends Component {
             keywords=""
             title="Home"
           >
-            <VWSContainer className="container-box large column pa16">
-              <VWSContainer className="justify-between mb16">
-                <VWSText className="" text="Recent Problems" type="h2" />
+            <Container className="container large column pa16">
+              <Container className="justify-between mb16">
+                <Text className="" text="Recent Problems" type="h2" />
                 <Filters />
-              </VWSContainer>
+              </Container>
 
-              <VWSContainer className="column mr32">
+              <Container className="column mr32">
                 {context.recentProblems &&
                   context.recentProblems.map((problem, index) => (
                     <Link
@@ -52,8 +52,8 @@ class RecentPage extends Component {
                       {problem.title}
                     </Link>
                   ))}
-              </VWSContainer>
-            </VWSContainer>
+              </Container>
+            </Container>
             <HotTags />
           </Page>
         )}

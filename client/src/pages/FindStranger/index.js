@@ -7,8 +7,8 @@ import Chat from "../../components/Chat/";
 import Loader from "../../components/notifications/Loader/";
 
 import Page from "../../components/containers/Page";
-import VWSContainer from "../../components/containers/VWSContainer";
-import VWSText from "../../components/views/VWSText";
+import Container from "../../components/containers/Container";
+import Text from "../../components/views/Text";
 
 import { findConversation, initUserJoined } from "./util";
 
@@ -61,11 +61,11 @@ class JoinConversation extends Component {
             keywords="Vent, strangers, help"
             title="Find Stranger"
           >
-            <VWSContainer className="container-box large column mt16">
-              <VWSText className="py16" text="Vent with a Stranger" type="h4" />
+            <Container className="container large column mt16">
+              <Text className="py16" text="Vent with a Stranger" type="h4" />
               {context.user && !conversation && (
-                <VWSContainer className="center-container">
-                  <VWSContainer
+                <Container className="center-container">
+                  <Container
                     className="column option-container pa64"
                     onClick={() => {
                       this.handleChange({ conversation: true });
@@ -73,10 +73,10 @@ class JoinConversation extends Component {
                     }}
                   >
                     Help a Stranger
-                    <VWSText text="Listeners Waiting" type="p" />
-                    <VWSText text={conversationsWithListener.length} type="p" />
-                  </VWSContainer>
-                  <VWSContainer
+                    <Text text="Listeners Waiting" type="p" />
+                    <Text text={conversationsWithListener.length} type="p" />
+                  </Container>
+                  <Container
                     className="column option-container pa64"
                     onClick={() => {
                       this.handleChange({ conversation: true });
@@ -84,17 +84,17 @@ class JoinConversation extends Component {
                     }}
                   >
                     Vent to a Stranger
-                    <VWSText text="Venters Waiting" type="p" />
-                    <VWSText text={conversationsWithVenter.length} type="p" />
-                  </VWSContainer>
-                </VWSContainer>
+                    <Text text="Venters Waiting" type="p" />
+                    <Text text={conversationsWithVenter.length} type="p" />
+                  </Container>
+                </Container>
               )}
               {conversation && (
-                <VWSContainer className="">
+                <Container className="">
                   <Chat chatPartner={chatPartner} conversation={conversation} />
-                </VWSContainer>
+                </Container>
               )}
-            </VWSContainer>
+            </Container>
           </Page>
         )}
       </Consumer>

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import "./style.css";
 
-class VWSButton extends Component {
+class Button extends Component {
   render() {
     const {
       children,
@@ -28,4 +28,4 @@ class VWSButton extends Component {
   }
 }
 
-export default VWSButton;
+export default Button;

@@ -6,8 +6,8 @@ import { faFire } from "@fortawesome/free-solid-svg-icons/faFire";
 
 import LoadingHeart from "../../components/loaders/Heart";
 
-import VWSContainer from "../../components/containers/VWSContainer";
-import VWSText from "../../components/views/VWSText";
+import Container from "../../components/containers/Container";
+import Text from "../../components/views/Text";
 
 import { capitolizeFirstChar } from "../../util";
 
@@ -26,33 +26,33 @@ class HotTags extends Component {
     return (
       <Consumer>
         {context => (
-          <VWSContainer className="x-25 column align-center bg-white br8">
-            <VWSContainer className="x-fill border-bottom py16">
-              <VWSContainer className="align-center border-left active large px16">
+          <Container className="x-25 column align-center bg-white br8">
+            <Container className="x-fill border-bottom py16">
+              <Container className="align-center border-left active large px16">
                 <FontAwesomeIcon className="blue mr8" icon={faFire} />
-                <VWSText className="blue fw-300" text="Hot Tags" type="h4" />
-              </VWSContainer>
-            </VWSContainer>
+                <Text className="blue fw-300" text="Hot Tags" type="h4" />
+              </Container>
+            </Container>
             {hotTags.map((hotTag, index) => (
-              <VWSContainer
+              <Container
                 className={`x-fill align-center ${
                   index !== hotTags.length - 1 ? "border-bottom" : ""
                 } px16`}
                 key={index}
               >
-                <VWSText
+                <Text
                   className="round-icon bg-light-blue blue fs-12"
                   text={index}
                   type="p"
                 />
-                <VWSContainer className="column pa16">
-                  <VWSText text={capitolizeFirstChar(hotTag.name)} type="p" />
-                  <VWSText className="grey-5" text={hotTag.uses} type="p" />
-                </VWSContainer>
-              </VWSContainer>
+                <Container className="column pa16">
+                  <Text text={capitolizeFirstChar(hotTag.name)} type="p" />
+                  <Text className="grey-5" text={hotTag.uses} type="p" />
+                </Container>
+              </Container>
             ))}
             {hotTags.length === 0 && <LoadingHeart />}
-          </VWSContainer>
+          </Container>
         )}
       </Consumer>
     );

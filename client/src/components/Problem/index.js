@@ -8,9 +8,9 @@ import { faHeart } from "@fortawesome/free-regular-svg-icons/faHeart";
 import { faComment } from "@fortawesome/free-regular-svg-icons/faComment";
 import { faEllipsisV } from "@fortawesome/free-solid-svg-icons/faEllipsisV";
 
-import VWSContainer from "../containers/VWSContainer";
-import VWSButton from "../views/VWSButton";
-import VWSText from "../views/VWSText";
+import Container from "../containers/Container";
+import Button from "../views/Button";
+import Text from "../views/Text";
 
 import { capitolizeFirstChar } from "../../util";
 
@@ -22,51 +22,51 @@ class Problem extends Component {
     const { problem } = this.props; // Variabless
 
     return (
-      <VWSContainer className="container-large column bg-white mb16 br8">
-        <VWSContainer className="border-bottom justify-between py16 pl32 pr16">
-          <VWSContainer>
-            <VWSText
+      <Container className="container-large column bg-white mb16 br8">
+        <Container className="border-bottom justify-between py16 pl32 pr16">
+          <Container>
+            <Text
               className="round-icon bg-blue white mr8"
               text={capitolizeFirstChar(problem.author.name[0])}
               type="h6"
             />
-            <VWSText
+            <Text
               text={capitolizeFirstChar(problem.author.name)}
               type="h5"
             />
-          </VWSContainer>
-          <VWSContainer className="align-center">
+          </Container>
+          <Container className="align-center">
             {problem.tags.map((tag, index) => (
-              <VWSText key={index} text={tag.name} type="p" />
+              <Text key={index} text={tag.name} type="p" />
             ))}
             <FontAwesomeIcon className="grey-9 ml16" icon={faEllipsisV} />
-          </VWSContainer>
-        </VWSContainer>
-        <VWSContainer className="column border-bottom py16 px32">
-          <VWSText className="mb8 grey-8" text={problem.title} type="h5" />
-          <VWSContainer className="mb8">
+          </Container>
+        </Container>
+        <Container className="column border-bottom py16 px32">
+          <Text className="mb8 grey-8" text={problem.title} type="h5" />
+          <Container className="mb8">
             <FontAwesomeIcon className="grey-5 mr8" icon={faClock} />
-            <VWSText
+            <Text
               className="grey-5"
               text={moment(problem.createdAt)
                 .subtract(1, "minute")
                 .fromNow()}
               type="p"
             />
-          </VWSContainer>
-          <VWSText className="" text={problem.description} type="p" />
-        </VWSContainer>
-        <VWSContainer className="py16 px32">
+          </Container>
+          <Text className="" text={problem.description} type="p" />
+        </Container>
+        <Container className="py16 px32">
           <FontAwesomeIcon className="blue mr4" icon={faComment} />
-          <VWSText
+          <Text
             className="blue mr8"
             text={problem.comments.length}
             type="p"
           />
           <FontAwesomeIcon className="grey-5 mr4" icon={faHeart} />
-          <VWSText className="grey-5" text={problem.upVotes} type="p" />
-        </VWSContainer>
-      </VWSContainer>
+          <Text className="grey-5" text={problem.upVotes} type="p" />
+        </Container>
+      </Container>
     );
   }
 }

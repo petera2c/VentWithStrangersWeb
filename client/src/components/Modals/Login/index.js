@@ -3,10 +3,10 @@ import axios from "axios";
 import { Link, withRouter } from "react-router-dom";
 import Consumer from "../../../context";
 
-import VWSContainer from "../../containers/VWSContainer";
-import VWSText from "../../views/VWSText";
-import VWSButton from "../../views/VWSButton";
-import VWSInput from "../../views/VWSInput";
+import Container from "../../containers/Container";
+import Text from "../../views/Text";
+import Button from "../../views/Button";
+import Input from "../../views/Input";
 
 import "./style.css";
 
@@ -65,40 +65,40 @@ class LoginPage extends Component {
     return (
       <Consumer>
         {context => (
-          <VWSContainer className="modal-container full-center">
-            <VWSContainer className="modal container-box medium column align-center bg-white br4">
-              <VWSContainer className="x-fill justify-center bg-blue py16">
-                <VWSText
+          <Container className="modal-container full-center">
+            <Container className="modal container medium column align-center bg-white br4">
+              <Container className="x-fill justify-center bg-blue py16">
+                <Text
                   className="tac white"
                   text="Log in to your Account"
                   type="h4"
                 />
-              </VWSContainer>
+              </Container>
               {errorMessage && (
-                <VWSContainer>
-                  <VWSText text={errorMessage} type="h6" />
-                </VWSContainer>
+                <Container>
+                  <Text text={errorMessage} type="h6" />
+                </Container>
               )}
-              <VWSContainer className="x-fill column">
-                <VWSContainer className="x-fill full-center px32">
-                  <VWSText className="x-fill tac border-bottom py16" type="p">
+              <Container className="x-fill column">
+                <Container className="x-fill full-center px32">
+                  <Text className="x-fill tac border-bottom py16" type="p">
                     Don't have an account?&nbsp;
-                    <VWSText
+                    <Text
                       className="clickable blue"
                       onClick={() => openSignUpModal()}
                       type="span"
                     >
                       Create One
-                    </VWSText>
-                  </VWSText>
-                </VWSContainer>
+                    </Text>
+                  </Text>
+                </Container>
                 <form
                   className="x-fill column"
                   onSubmit={e => e.preventDefault()}
                 >
-                  <VWSContainer className="x-fill column px32 py16">
-                    <VWSText className="mb8" text="Email Address" type="h5" />
-                    <VWSInput
+                  <Container className="x-fill column px32 py16">
+                    <Text className="mb8" text="Email Address" type="h5" />
+                    <Input
                       className="py8 px16 mb8 br4"
                       value={email}
                       onChange={event =>
@@ -109,8 +109,8 @@ class LoginPage extends Component {
                       placeholder="Email"
                       required
                     />
-                    <VWSText className="mb8" text="Password" type="h5" />
-                    <VWSInput
+                    <Text className="mb8" text="Password" type="h5" />
+                    <Input
                       className="py8 px16 mb8 br4"
                       value={password}
                       onChange={e =>
@@ -121,22 +121,22 @@ class LoginPage extends Component {
                       placeholder="Password"
                       required
                     />
-                  </VWSContainer>
-                  <VWSContainer className="x-fill full-center border-top px32 py16">
-                    <VWSButton
+                  </Container>
+                  <Container className="x-fill full-center border-top px32 py16">
+                    <Button
                       className="x-fill bg-blue white py8 br4"
                       onClick={e => this.login(context, e)}
                       text="Log in"
                     />
-                  </VWSContainer>
+                  </Container>
                 </form>
-              </VWSContainer>
-            </VWSContainer>
-            <VWSContainer
+              </Container>
+            </Container>
+            <Container
               className="modal-background"
               onClick={() => close()}
             />
-          </VWSContainer>
+          </Container>
         )}
       </Consumer>
     );

@@ -12,18 +12,18 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
 
 import Consumer, { ExtraContext } from "../../context";
 
-import VWSContainer from "../containers/VWSContainer";
-import VWSText from "../views/VWSText";
-import VWSInput from "../views/VWSInput";
-import VWSButton from "../views/VWSButton";
+import Container from "../containers/Container";
+import Text from "../views/Text";
+import Input from "../views/Input";
+import Button from "../views/Button";
 
-import LoginModal from "../Modals/Login";
-import SignUpModal from "../Modals/SignUp";
+import LoginModal from "../modals/Login";
+import SignUpModal from "../modals/SignUp";
 
 class Header extends Component {
   state = {
     loginModalBoolean: false,
-    signUpModalBoolean: true,
+    signUpModalBoolean: false,
     searchPostString: ""
   };
   componentDidMount() {
@@ -46,7 +46,7 @@ class Header extends Component {
     return (
       <Consumer>
         {context => (
-          <VWSContainer className="sticky top-0 x-fill full-center bg-white border-top large active py8">
+          <Container className="sticky top-0 x-fill full-center bg-white border-top large active py8">
             <Link className="no-border-button mx16" to="/trending">
               <FontAwesomeIcon className="mr8" icon={faChartLine} />
               Trending
@@ -60,7 +60,7 @@ class Header extends Component {
               Popular
             </Link>
 
-            <VWSContainer className="border-all active py4 mr16 br4">
+            <Container className="border-all active py4 mr16 br4">
               <Link
                 className="border-right active blue px8"
                 to="/post-a-problem"
@@ -70,11 +70,11 @@ class Header extends Component {
               <Link className="blue px8" to="/vent-to-a-stranger">
                 <FontAwesomeIcon className="" icon={faComments} />
               </Link>
-            </VWSContainer>
+            </Container>
 
-            <VWSContainer className="full-center bg-grey-4 py4 px8 br4">
+            <Container className="full-center bg-grey-4 py4 px8 br4">
               <FontAwesomeIcon className="grey-5 mr8" icon={faSearch} />
-              <VWSInput
+              <Input
                 className="no-border bg-grey-4 br4"
                 onChange={e =>
                   this.handleChange({ searchPostString: e.target.value })
@@ -83,24 +83,24 @@ class Header extends Component {
                 type="text"
                 value={searchPostString}
               />
-            </VWSContainer>
+            </Container>
 
             {context.user && !context.user.password && (
-              <VWSButton
+              <Button
                 className="blue fw-300 mx32"
                 text="Login"
                 onClick={() => this.handleChange({ loginModalBoolean: true })}
               />
             )}
             {context.user && !context.user.password && (
-              <VWSButton
+              <Button
                 className="white blue-fade px32 py8 br4"
                 text="Sign Up"
                 onClick={() => this.handleChange({ signUpModalBoolean: true })}
               />
             )}
             {context.user && context.user.password && (
-              <VWSText
+              <Text
                 className="absolute right-0  mr16"
                 text={`Hello, ${context.user.password}`}
                 type="p"
@@ -128,7 +128,7 @@ class Header extends Component {
                 }
               />
             )}
-          </VWSContainer>
+          </Container>
         )}
       </Consumer>
     );

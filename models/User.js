@@ -9,6 +9,7 @@ const userSchema = new Schema(
     email: { sparse: true, type: String, unique: true },
     language: String,
     password: { type: String },
+    recentTags: [{ require: true, type: Schema.Types.ObjectId }],
     timezone: String
   },
   {

@@ -4,9 +4,9 @@ import Picker from "emoji-picker-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSmileBeam } from "@fortawesome/free-regular-svg-icons/faSmileBeam";
 
-import VWSContainer from "../containers/VWSContainer";
+import Container from "../containers/Container";
 
-import VWSButton from "../views/VWSButton";
+import Button from "../views/Button";
 
 class Emoji extends Component {
   state = {
@@ -18,14 +18,14 @@ class Emoji extends Component {
     const { handleChange } = this.props;
 
     return (
-      <VWSContainer className="column relative pa8 mx8">
-        <VWSButton
+      <Container className="column relative pa8 mx8">
+        <Button
           onClick={() =>
             this.setState({ displayEmojiDropdown: !displayEmojiDropdown })
           }
         >
           <FontAwesomeIcon className="grey-5" icon={faSmileBeam} />
-        </VWSButton>
+        </Button>
         <div
           style={{
             position: "absolute",
@@ -41,7 +41,7 @@ class Emoji extends Component {
             }}
           />
         </div>
-      </VWSContainer>
+      </Container>
     );
   }
 }

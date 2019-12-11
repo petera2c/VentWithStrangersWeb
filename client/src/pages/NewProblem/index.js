@@ -8,11 +8,11 @@ import { faVenus } from "@fortawesome/free-solid-svg-icons/faVenus";
 import { faGenderless } from "@fortawesome/free-solid-svg-icons/faGenderless";
 
 import Page from "../../components/containers/Page";
-import VWSContainer from "../../components/containers/VWSContainer";
+import Container from "../../components/containers/Container";
 
-import VWSText from "../../components/views/VWSText";
-import VWSButton from "../../components/views/VWSButton";
-import VWSInput from "../../components/views/VWSInput";
+import Text from "../../components/views/Text";
+import Button from "../../components/views/Button";
+import Input from "../../components/views/Input";
 
 import Emoji from "../../components/Emoji";
 
@@ -43,32 +43,32 @@ class NewProblemPage extends Component {
             keywords=""
             title="Problem"
           >
-            <VWSContainer className="container-box large ov-visible column">
-              <VWSText
+            <Container className="container large ov-visible column">
+              <Text
                 className="fw-600 mb16"
                 text="Post Your Problem"
                 type="h4"
               />
 
-              <VWSContainer className="column bg-white">
-                <VWSContainer className="column py32 px32 br4">
-                  <VWSText className="mb8" text="Title" type="h5" />
+              <Container className="column bg-white">
+                <Container className="column py32 px32 br4">
+                  <Text className="mb8" text="Title" type="h5" />
 
-                  <VWSInput
+                  <Input
                     className="py8 px16 mb8 br4"
                     onChange={e => this.handleChange({ title: e.target.value })}
                     placeholder="Sed malesuada sagittis risus, id pharetra est scelerisque sed"
                     type="text"
                     value={title}
                   />
-                  <VWSContainer className="column relative mb8">
-                    <VWSText
+                  <Container className="column relative mb8">
+                    <Text
                       className="mb8"
                       text="Tag this problem"
                       type="h5"
                     />
 
-                    <VWSInput
+                    <Input
                       className="py8 px16 br4"
                       onChange={e => {
                         //updateTags(e.target.value, context.socket);
@@ -78,12 +78,12 @@ class NewProblemPage extends Component {
                       type="text"
                       value={tags}
                     />
-                  </VWSContainer>
-                  <VWSContainer>
-                    <VWSContainer className="fill-flex column mb8">
-                      <VWSText className="mb8" text="Gender" type="h5" />
-                      <VWSContainer className="fill-flex">
-                        <VWSText
+                  </Container>
+                  <Container>
+                    <Container className="fill-flex column mb8">
+                      <Text className="mb8" text="Gender" type="h5" />
+                      <Container className="fill-flex">
+                        <Text
                           className={`tac fill-flex clickable border-all large ${
                             gender === 0 ? "active blue" : ""
                           } pa8`}
@@ -100,8 +100,8 @@ class NewProblemPage extends Component {
                             icon={faGenderless}
                           />
                           Everyone
-                        </VWSText>
-                        <VWSText
+                        </Text>
+                        <Text
                           className={`tac fill-flex clickable border-all large ${
                             gender === 1 ? "active blue" : ""
                           } pa8`}
@@ -114,8 +114,8 @@ class NewProblemPage extends Component {
                         >
                           <FontAwesomeIcon className="mr8" icon={faVenus} />
                           Female
-                        </VWSText>
-                        <VWSText
+                        </Text>
+                        <Text
                           className={`tac fill-flex clickable border-all large ${
                             gender === 2 ? "active blue" : ""
                           } pa8`}
@@ -129,11 +129,11 @@ class NewProblemPage extends Component {
                         >
                           <FontAwesomeIcon className="mr8" icon={faMars} />
                           Male
-                        </VWSText>
-                      </VWSContainer>
-                    </VWSContainer>
-                  </VWSContainer>
-                  <VWSText className="mb8" text="Description" type="h5" />
+                        </Text>
+                      </Container>
+                    </Container>
+                  </Container>
+                  <Text className="mb8" text="Description" type="h5" />
                   <TextArea
                     className="no-border py8 px16 mb8 br4"
                     onChange={event =>
@@ -142,7 +142,7 @@ class NewProblemPage extends Component {
                     placeholder="Aliquam semper vel mi eu sodales. Quisque nec massa eget elit placerat fermentum eu quis eros. Cras at felis nec arcu maximus congue ut a lectus. Fusce luctus dolor ac dolor vestibulum, eu lobortis nibh finibus. Morbi est risus, interdum non molestie vel, consectetur nec velit. Donec posuere ex et nibh lobortis, et fermentum sapien laoreet. Vestibulum in tincidunt purus, aliquet vestibulum turpis. Nunc dapibus erat in risus posuere, vitae tempus enim vulputate. Maecenas quis pellentesque augue. Fusce non vestibulum arcu."
                     value={description}
                   />
-                  <VWSContainer className="justify-end">
+                  <Container className="justify-end">
                     <Emoji
                       handleChange={emoji => {
                         this.handleChange({
@@ -152,7 +152,7 @@ class NewProblemPage extends Component {
                     />
 
                     {!saving && (
-                      <VWSButton
+                      <Button
                         className="bg-blue white px64 py8 mb8 br4"
                         onClick={() => {
                           const {
@@ -192,23 +192,23 @@ class NewProblemPage extends Component {
                         text="Submit"
                       />
                     )}
-                  </VWSContainer>
-                </VWSContainer>
-                <VWSContainer
+                  </Container>
+                </Container>
+                <Container
                   className="column pa32"
                   style={{ borderTop: "2px solid var(--grey-color-2)" }}
                 >
-                  <VWSText
+                  <Text
                     text="If you or someone you know  is in danger, call your local emergency services or police."
                     type="p"
                   />
-                  <VWSText
+                  <Text
                     text="National Suicide Prevention Lifeline (1-800-273-TALK [8255])."
                     type="p"
                   />
-                </VWSContainer>
-              </VWSContainer>
-            </VWSContainer>
+                </Container>
+              </Container>
+            </Container>
           </Page>
         )}
       </Consumer>

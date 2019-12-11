@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 import Page from "../../components/containers/Page";
-import VWSContainer from "../../components/containers/VWSContainer";
-import VWSText from "../../components/views/VWSText";
+import Container from "../../components/containers/Container";
+import Text from "../../components/views/Text";
 
 import Consumer, { ExtraContext } from "../../context";
 
@@ -18,7 +18,7 @@ class NotFoundPage extends Component {
             keywords=""
             title="Home"
           >
-            <VWSText className="mb16" text="Page Not Found" type="h1" />
+            <Text className="mb16" text="Page Not Found" type="h1" />
           </Page>
         )}
       </Consumer>

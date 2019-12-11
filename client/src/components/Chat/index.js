@@ -4,8 +4,8 @@ import axios from "axios";
 
 import Consumer, { ExtraContext } from "../../context";
 
-import VWSContainer from "../containers/VWSContainer";
-import VWSText from "../views/VWSText";
+import Container from "../containers/Container";
+import Text from "../views/Text";
 import SmallLoader from "../notifications/SmallLoader";
 
 import "./style.css";
@@ -101,9 +101,9 @@ class Chat extends Component {
               </div>
             )}
             {(!conversation.venter || !conversation.listener) && (
-              <VWSContainer className="column full-center">
+              <Container className="column full-center">
                 <SmallLoader />
-                <VWSText
+                <Text
                   className="tac"
                   text={`Looking for ${
                     conversation.listener
@@ -112,12 +112,12 @@ class Chat extends Component {
                   }. Estimated wait time 5 minutes.`}
                   type="h4"
                 />
-              </VWSContainer>
+              </Container>
             )}
             {chatPartner && (
-              <VWSContainer>
+              <Container>
                 You are chatting with {chatPartner.displayName}
-              </VWSContainer>
+              </Container>
             )}
             {conversation.venter && conversation.listener && (
               <div className="send-message-container">

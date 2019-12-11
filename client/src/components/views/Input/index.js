@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import "./style.css";
 
-class VWSInput extends Component {
+class Input extends Component {
   render() {
     const {
       autoCapitalize,
@@ -39,4 +39,4 @@ class VWSInput extends Component {
   }
 }
 
-export default VWSInput;
+export default Input;
