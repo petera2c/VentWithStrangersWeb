@@ -20,13 +20,13 @@ module.exports = app => {
     problemFunctions.saveProblem(req, res)
   );
 
-  app.get("/api/problems/popular", middleware, (req, res) =>
+  app.post("/api/problems/popular", middleware, (req, res) =>
     problemFunctions.getPopularProblems(req, res)
   );
-  app.get("/api/problems/recent", middleware, (req, res) =>
+  app.post("/api/problems/recent", middleware, (req, res) =>
     problemFunctions.getRecentProblems(req, res)
   );
-  app.get("/api/problems/trending", middleware, (req, res) =>
+  app.post("/api/problems/trending", middleware, (req, res) =>
     problemFunctions.getTrendingProblems(req, res)
   );
 

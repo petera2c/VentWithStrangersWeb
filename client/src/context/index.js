@@ -1,4 +1,6 @@
 import React, { Component, createContext } from "react";
+import axios from "axios";
+import { withRouter } from "react-router-dom";
 
 const ExtraContext = createContext();
 const { Provider, Consumer } = ExtraContext;
@@ -12,9 +14,7 @@ class GIProvider extends Component {
       message: "",
       type: "danger"
     },
-    recentProblems: [],
-    popularProblems: [],
-    trendingProblems: [],
+    problems: [],
     saving: false,
     socket: undefined,
     user: undefined
@@ -41,13 +41,33 @@ class GIProvider extends Component {
   handleChange = stateObject => {
     if (this._ismounted) this.setState(stateObject);
   };
+
+  getProblems = (pathname, search) => {
+    let tagTemp = "";
+    let tags = [];
+
+    for (let index in search) {
+      if (search[index] == "?") continue;
+      else if (search[index] == "+") {
+        tags.push(tagTemp);
+        tagTemp = "";
+      } else tagTemp += search[index];
+    }
+    tags.push(tagTemp);
+
+    axios.post("/api/problems" + pathname, { tags }).then(res => {
+      const { success, problems } = res.data;
+      if (success) this.handleChange({ problems });
+      else {
+        // TODO: handle error
+      }
+    });
+  };
   render() {
     const {
       hotTags,
       notification,
-      popularProblems,
-      recentProblems,
-      trendingProblems,
+      problems,
       saving,
       socket,
       user
@@ -56,12 +76,11 @@ class GIProvider extends Component {
     return (
       <Provider
         value={{
+          getProblems: this.getProblems,
           handleChange: this.handleChange,
           hotTags,
           notify: this.notify,
-          popularProblems,
-          recentProblems,
-          trendingProblems,
+          problems,
           saving,
           socket,
           user
@@ -75,4 +94,4 @@ class GIProvider extends Component {
 
 export { GIProvider, ExtraContext };
 
-export default Consumer;
+export default withRouter(Consumer);

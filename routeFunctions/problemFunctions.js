@@ -25,7 +25,7 @@ const addUsersAndTagsToProblems = (callback, problemsConvertedToJSON) => {
     for (let index2 in problem.tags) {
       const tag = problem.tags[index2];
       counter++;
-      Tag.findOne({ _id: tag.id }, { name: 1 }, (err, tag) => {
+      Tag.findOne({ name: tag.name }, { name: 1 }, (err, tag) => {
         counter--;
         if (!tag) return;
 
@@ -88,17 +88,21 @@ const getRecentProblems = (req, res) => {
     .limit(10);
 };
 const getTrendingProblems = (req, res) => {
+  const { tags } = req.body;
+  // "tags.name": tags
   Problem.find({}, (err, problems) => {
-    const problemsConvertedToJSON = JSON.parse(JSON.stringify(problems));
+    if (problems) {
+      const problemsConvertedToJSON = JSON.parse(JSON.stringify(problems));
 
-    if (problems && problems.length === 0) {
-      return returnProblemsFunction(undefined, undefined, undefined, res);
-    } else
-      return addUsersAndTagsToProblems(
-        problemsConvertedToJSON =>
-          returnProblemsFunction(err, problems, problemsConvertedToJSON, res),
-        problemsConvertedToJSON
-      );
+      if (problems && problems.length === 0) {
+        return returnProblemsFunction(undefined, undefined, undefined, res);
+      } else
+        return addUsersAndTagsToProblems(
+          problemsConvertedToJSON =>
+            returnProblemsFunction(err, problems, problemsConvertedToJSON, res),
+          problemsConvertedToJSON
+        );
+    } else res.send({ success: false });
   })
     .sort({ dailyUpvotes: -1 })
     .limit(10);
@@ -122,20 +126,20 @@ const saveProblem = (req, res) => {
   const { description, gender, tags, title } = req.body;
 
   let counter = 0;
-  const tagIDArray = [];
+  const tagNameArray = [];
   for (let index in tags) {
     const tag = tags[index].toLowerCase();
     counter++;
     Tag.findOne({ name: tags[index] }, (err, tagFromDB) => {
       counter--;
       if (tagFromDB) {
-        tagIDArray.push({ id: tagFromDB._id });
+        tagNameArray.push({ name: tagFromDB.name });
 
         tagFromDB.uses += 1;
         tagFromDB.save();
       } else {
         const newTag = new Tag({ name: tag, uses: 1 });
-        tagIDArray.push({ id: newTag._id });
+        tagNameArray.push({ name: newTag.name });
         newTag.save();
       }
       if (counter === 0) {
@@ -143,7 +147,7 @@ const saveProblem = (req, res) => {
           description,
           gender,
           dailyUpvotes: 0,
-          tags: tagIDArray,
+          tags: tagNameArray,
           title,
           upVotes: 0
         });

@@ -53,7 +53,7 @@ class Header extends Component {
             </Link>
             <Link className="no-border-button mx16" to="/recent">
               <FontAwesomeIcon className="mr8" icon={faClock} />
-              Recents
+              Recent
             </Link>
             <Link className="no-border-button ml16 mr64" to="/popular">
               <FontAwesomeIcon className="mr8" icon={faStar} />

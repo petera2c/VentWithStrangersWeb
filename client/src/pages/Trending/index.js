@@ -13,21 +13,14 @@ import HotTags from "../../components/HotTags";
 import Filters from "../../components/Filters";
 import Problem from "../../components/Problem";
 
-import { getTrendingProblems } from "./util";
 import { capitolizeFirstChar } from "../../util";
 
 class TrendingPage extends Component {
   componentDidMount() {
     this.ismounted = true;
-
-    const { handleChange } = this.context;
-
-    getTrendingProblems(trendingProblems => {
-      handleChange({ trendingProblems });
-    });
   }
   render() {
-    const { trendingProblems = [] } = this.context;
+    const { problems = [] } = this.context;
 
     return (
       <Consumer>
@@ -43,15 +36,15 @@ class TrendingPage extends Component {
                 <Text className="" text="Trending Problems" type="h2" />
                 <Filters />
               </Container>
-              {trendingProblems.length > 0 && (
+              {problems.length > 0 && (
                 <Container className="x-fill column">
-                  {context.trendingProblems &&
-                    context.trendingProblems.map((problem, index) => (
+                  {context.problems &&
+                    context.problems.map((problem, index) => (
                       <Problem key={index} problem={problem} />
                     ))}
                 </Container>
               )}
-              {trendingProblems.length === 0 && <LoadingHeart />}
+              {problems.length === 0 && <LoadingHeart />}
             </Container>
 
             <HotTags />

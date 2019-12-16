@@ -1,6 +1,7 @@
 const Conversation = require("../models/Conversation");
 const Message = require("../models/Message");
 const User = require("../models/User");
+const Tag = require("../models/Tag");
 
 const { otherType } = require("./util");
 
@@ -127,6 +128,12 @@ module.exports = io => {
 
     socket.on("something", (tags, fn) => {
       fn(tags);
+    });
+    socket.on("search_tags", tag => {
+      console.log(tag);
+      Tag.find({}, (err, tags) => {
+        console.log(tags);
+      });
     });
   };
 };

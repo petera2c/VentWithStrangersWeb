@@ -24,7 +24,7 @@ class Routes extends Component {
     datebaseConnection: false
   };
   componentDidMount() {
-    const { handleChange } = this.context;
+    const { getProblems, handleChange } = this.context;
 
     axios.get("/api/user").then(res => {
       const { success, user, message } = res.data;
@@ -38,6 +38,27 @@ class Routes extends Component {
         alert("Can't get user");
       }
     });
+    const { pathname, search } = this.props.location;
+
+    if (
+      pathname === "/popular" ||
+      pathname === "/recent" ||
+      pathname === "/trending"
+    ) {
+      getProblems(pathname, search);
+    }
+
+    this.unlisten = this.props.history.listen((location, action) => {
+      const { pathname, search } = location;
+      console.log("change url");
+
+      if (
+        pathname === "/popular" ||
+        pathname === "/recent" ||
+        pathname === "/trending"
+      )
+        getProblems(pathname, search);
+    });
   }
   createProblemPages = (problems = []) => {
     return problems.map((problem, index) => (
@@ -48,6 +69,9 @@ class Routes extends Component {
       />
     ));
   };
+  componentWillUnmount() {
+    this.unlisten();
+  }
 
   render() {
     const { datebaseConnection } = this.state;
