@@ -12,14 +12,9 @@ import Button from "../../../components/views/Button";
 
 import Consumer, { ExtraContext } from "../../../context";
 
+import { addTagsToPage } from "../../../util";
+
 //https://www.youtube.com/trending?search_query=test
-const recentTags = [
-  { name: "hello" },
-  { name: "hello" },
-  { name: "hello" },
-  { name: "hello" },
-  { name: "hello" }
-];
 
 import { getWordsFromSearch, updateRecentTags } from "./util";
 
@@ -184,20 +179,11 @@ class TagsModal extends Component {
               className="white bg-blue px32 py8 br4"
               text="Apply"
               onClick={() => {
-                const { browser, history, location } = this.props;
-                let searchPathname = location.pathname;
-
-                for (let index in selectedTags) {
-                  if (index == 0)
-                    searchPathname += "?" + selectedTags[index].name;
-                  else searchPathname += "+" + selectedTags[index].name;
-                }
-
                 updateRecentTags(
                   user => this.context.handleChange({ user }),
                   selectedTags
                 );
-                history.push(searchPathname);
+                addTagsToPage(this.props, selectedTags);
                 close();
               }}
             />

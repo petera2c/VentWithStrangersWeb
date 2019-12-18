@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Consumer, { ExtraContext } from "../../context";
+import { withRouter } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFire } from "@fortawesome/free-solid-svg-icons/faFire";
@@ -12,6 +13,8 @@ import Text from "../../components/views/Text";
 import { capitolizeFirstChar } from "../../util";
 
 import { getTrendingTags } from "./util";
+
+import { addTagsToPage } from "../../util";
 
 class HotTags extends Component {
   componentDidMount() {
@@ -35,10 +38,11 @@ class HotTags extends Component {
             </Container>
             {hotTags.map((hotTag, index) => (
               <Container
-                className={`x-fill align-center ${
+                className={`clickable x-fill align-center ${
                   index !== hotTags.length - 1 ? "border-bottom" : ""
                 } px16`}
                 key={index}
+                onClick={() => addTagsToPage(this.props, [hotTag])}
               >
                 <Text
                   className="round-icon bg-light-blue blue fs-12"
@@ -61,4 +65,4 @@ class HotTags extends Component {
 
 HotTags.contextType = ExtraContext;
 
-export default HotTags;
+export default withRouter(HotTags);

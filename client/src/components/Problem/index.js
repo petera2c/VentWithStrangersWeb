@@ -1,6 +1,7 @@
 import React, { Component, useState } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment-timezone";
+import { withRouter } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock } from "@fortawesome/free-regular-svg-icons/faClock";
@@ -13,6 +14,7 @@ import Button from "../views/Button";
 import Text from "../views/Text";
 
 import { capitolizeFirstChar } from "../../util";
+import { addTagsToPage } from "../../util";
 
 class Problem extends Component {
   state = {};
@@ -30,14 +32,17 @@ class Problem extends Component {
               text={capitolizeFirstChar(problem.author.name[0])}
               type="h6"
             />
-            <Text
-              text={capitolizeFirstChar(problem.author.name)}
-              type="h5"
-            />
+            <Text text={capitolizeFirstChar(problem.author.name)} type="h5" />
           </Container>
-          <Container className="align-center">
+          <Container className="x-wrap align-center">
             {problem.tags.map((tag, index) => (
-              <Text key={index} text={tag.name} type="p" />
+              <Text
+                className="clickable mr8"
+                key={index}
+                onClick={() => addTagsToPage(this.props, [tag])}
+                text={tag.name}
+                type="p"
+              />
             ))}
             <FontAwesomeIcon className="grey-9 ml16" icon={faEllipsisV} />
           </Container>
@@ -58,11 +63,7 @@ class Problem extends Component {
         </Container>
         <Container className="py16 px32">
           <FontAwesomeIcon className="blue mr4" icon={faComment} />
-          <Text
-            className="blue mr8"
-            text={problem.comments.length}
-            type="p"
-          />
+          <Text className="blue mr8" text={problem.comments.length} type="p" />
           <FontAwesomeIcon className="grey-5 mr4" icon={faHeart} />
           <Text className="grey-5" text={problem.upVotes} type="p" />
         </Container>
@@ -71,4 +72,4 @@ class Problem extends Component {
   }
 }
 
-export default Problem;
+export default withRouter(Problem);

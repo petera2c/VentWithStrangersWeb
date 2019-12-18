@@ -36,6 +36,13 @@ class Header extends Component {
     if (this._ismounted) this.setState(stateObj);
   };
 
+  searchPosts = searchString => {
+    const { socket } = this.context;
+
+    this.handleChange({ searchString });
+    socket.emit("search_problems", searchString, problems => {});
+  };
+
   render() {
     const {
       loginModalBoolean,
@@ -76,9 +83,7 @@ class Header extends Component {
               <FontAwesomeIcon className="grey-5 mr8" icon={faSearch} />
               <Input
                 className="no-border bg-grey-4 br4"
-                onChange={e =>
-                  this.handleChange({ searchPostString: e.target.value })
-                }
+                onChange={e => searchPosts(e.target.value)}
                 placeholder="Search"
                 type="text"
                 value={searchPostString}

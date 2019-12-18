@@ -57,7 +57,7 @@ class GIProvider extends Component {
     if (tagTemp) tags.push(tagTemp);
 
     axios.post("/api/problems" + pathname, { tags }).then(res => {
-      const { success, problems } = res.data;
+      const { problems = [], success } = res.data;
       if (success) this.handleChange({ problems });
       else {
         // TODO: handle error

@@ -6,3 +6,14 @@ export function capitolizeFirstChar(string) {
   if (string) return string.charAt(0).toUpperCase() + string.slice(1);
   else return;
 }
+
+export const addTagsToPage = (props, selectedTags) => {
+  const { browser, history, location } = props;
+  let searchPathname = location.pathname;
+
+  for (let index in selectedTags) {
+    if (index == 0) searchPathname += "?" + selectedTags[index].name;
+    else searchPathname += "+" + selectedTags[index].name;
+  }
+  history.push(searchPathname);
+};

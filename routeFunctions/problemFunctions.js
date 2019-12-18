@@ -64,7 +64,7 @@ const getPopularProblems = (req, res) => {
       const problemsConvertedToJSON = JSON.parse(JSON.stringify(problems));
 
       if (problems && problems.length === 0) {
-        return returnProblemsFunction(undefined, undefined, undefined, res);
+        return returnProblemsFunction(undefined, [], undefined, res);
       } else
         return addUsersAndTagsToProblems(
           problemsConvertedToJSON =>
@@ -85,7 +85,7 @@ const getRecentProblems = (req, res) => {
       const problemsConvertedToJSON = JSON.parse(JSON.stringify(problems));
 
       if (problems && problems.length === 0) {
-        return returnProblemsFunction(undefined, undefined, undefined, res);
+        return returnProblemsFunction(undefined, [], undefined, res);
       } else
         return addUsersAndTagsToProblems(
           problemsConvertedToJSON =>
@@ -107,7 +107,7 @@ const getTrendingProblems = (req, res) => {
         const problemsConvertedToJSON = JSON.parse(JSON.stringify(problems));
 
         if (problems && problems.length === 0) {
-          return returnProblemsFunction(undefined, undefined, undefined, res);
+          return returnProblemsFunction(undefined, [], undefined, res);
         } else
           return addUsersAndTagsToProblems(
             problemsConvertedToJSON =>
