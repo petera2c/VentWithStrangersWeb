@@ -11,6 +11,7 @@ import Input from "../../../components/views/Input";
 import Button from "../../../components/views/Button";
 
 import Consumer, { ExtraContext } from "../../../context";
+
 //https://www.youtube.com/trending?search_query=test
 const recentTags = [
   { name: "hello" },
@@ -20,10 +21,13 @@ const recentTags = [
   { name: "hello" }
 ];
 
+import { getWordsFromSearch, updateRecentTags } from "./util";
+
 class TagsModal extends Component {
   state = {
+    searchedTags: [],
     searchString: "",
-    selectedTags: [{ id: 435, name: "test1" }, { id: 435, name: "test" }]
+    selectedTags: getWordsFromSearch(this.props.location.search)
   };
   componentDidMount() {
     this.ismounted = true;
@@ -34,21 +38,23 @@ class TagsModal extends Component {
   handleChange = stateObj => {
     if (this.ismounted) this.setState(stateObj);
   };
-  addSelectedTag = index => {
+  addSelectedTag = tag => {
     let { selectedTags } = this.state;
 
-    if (selectedTags.find(tag => tag.id === recentTags[index].id))
-      this.context.notify({
+    const { notify } = this.context;
+
+    if (selectedTags.find(selectedtag => selectedtag._id === tag._id))
+      notify({
         message: "You already have this tag selected!",
         type: "danger"
       });
     else if (selectedTags.length >= 2)
-      this.context.notify({
+      notify({
         message: "You can not have more than two tags!",
         type: "danger"
       });
     else {
-      selectedTags.push(recentTags[index]);
+      selectedTags.push(tag);
       this.handleChange({ selectedTags });
     }
   };
@@ -60,13 +66,17 @@ class TagsModal extends Component {
   };
   searchTags = tag => {
     const { socket } = this.context;
+
     this.handleChange({ searchString: event.target.value });
-    socket.emit("search_tags", tag);
+    socket.emit("search_tags", tag, tags =>
+      this.handleChange({ searchedTags: tags })
+    );
   };
 
   render() {
-    const { searchString, selectedTags } = this.state;
+    const { searchedTags, searchString, selectedTags } = this.state;
     const { close } = this.props;
+    const { user } = this.context;
 
     return (
       <Container className="modal-container">
@@ -95,17 +105,36 @@ class TagsModal extends Component {
                 text="Reset Tags"
               />
             </Container>
-            <Text className="grey-8 mb8" text="Recent Tags" type="h6" />
-            <Container className="x-fill grid-1 mb8">
-              {recentTags.map((tag, index) => (
-                <Button
-                  className="grey-1 tac fw-300 border-all px16 py8 br4"
-                  key={index}
-                  onClick={() => this.addSelectedTag(index)}
-                  text={tag.name}
-                />
-              ))}
-            </Container>
+            {searchedTags.length > 0 && (
+              <Text className="grey-8 mb8" text="Searched Tags" type="h6" />
+            )}
+            {searchedTags.length > 0 && (
+              <Container className="x-fill x-wrap">
+                {searchedTags.map((tag, index) => (
+                  <Button
+                    className="grey-1 tac fw-300 border-all px16 py8 mr8 mb8 br4"
+                    key={index}
+                    onClick={() => this.addSelectedTag(tag)}
+                    text={tag.name}
+                  />
+                ))}
+              </Container>
+            )}
+            {user.recentTags.length > 0 && (
+              <Text className="grey-8 mb8" text="Recent Tags" type="h6" />
+            )}
+            {user.recentTags.length > 0 && (
+              <Container className="x-fill x-wrap">
+                {user.recentTags.map((tag, index) => (
+                  <Button
+                    className="grey-1 tac fw-300 border-all px16 py8 mr8 mb8 br4"
+                    key={index}
+                    onClick={() => this.addSelectedTag(tag)}
+                    text={tag.name}
+                  />
+                ))}
+              </Container>
+            )}
             {selectedTags.length > 0 && (
               <Text
                 className="border-bottom grey-8 py8 mb16"
@@ -114,11 +143,11 @@ class TagsModal extends Component {
               />
             )}
             {selectedTags.length > 0 && (
-              <Container className="x-fill grid-2">
+              <Container className="x-fill x-wrap">
                 {selectedTags.map((tag, index) => (
                   <Container
                     key={index}
-                    className="clickable"
+                    className="clickable mr8 mb8"
                     onClick={() => this.removeSelectedTag(index)}
                   >
                     <Text
@@ -164,8 +193,12 @@ class TagsModal extends Component {
                   else searchPathname += "+" + selectedTags[index].name;
                 }
 
+                updateRecentTags(
+                  user => this.context.handleChange({ user }),
+                  selectedTags
+                );
                 history.push(searchPathname);
-                //close();
+                close();
               }}
             />
           </Container>

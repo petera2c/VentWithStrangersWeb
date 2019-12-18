@@ -129,11 +129,21 @@ module.exports = io => {
     socket.on("something", (tags, fn) => {
       fn(tags);
     });
-    socket.on("search_tags", tag => {
-      console.log(tag);
-      Tag.find({}, (err, tags) => {
-        console.log(tags);
-      });
+    socket.on("search_tags", (tag, callback) => {
+      Tag.find({ name: { $regex: tag + ".*" } }, (err, tags) =>
+        callback(tags)
+      ).limit(10);
     });
   };
 };
+
+/*  Tag.find(
+    { $text: { $search: tag } },
+    { score: { $meta: "textScore" } },
+    (err, tags) => {
+      console.log(tags);
+    }
+  )
+    .sort({ score: { $meta: "textScore" } })
+    .limit(10);
+});*/

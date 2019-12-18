@@ -8,12 +8,10 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
 
-import FiltersModal from "../modals/Filters";
 import TagsModal from "../modals/Tags";
 
 class Filters extends Component {
   state = {
-    filtersModal: false,
     tagsModal: false
   };
   componentDidMount() {
@@ -27,7 +25,7 @@ class Filters extends Component {
   };
 
   render() {
-    const { filtersModal, tagsModal } = this.state;
+    const { tagsModal } = this.state;
     return (
       <Container className="grey-1 full-center">
         <Container
@@ -37,11 +35,7 @@ class Filters extends Component {
           <Text className="grey-1 mr8" text="Tags" type="h6" />
           <FontAwesomeIcon className="grey-5" icon={faChevronDown} />
         </Container>
-        {filtersModal && (
-          <FiltersModal
-            close={() => this.handleChange({ filtersModal: false })}
-          />
-        )}
+
         {tagsModal && (
           <TagsModal close={() => this.handleChange({ tagsModal: false })} />
         )}

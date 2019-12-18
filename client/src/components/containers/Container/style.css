@@ -7,19 +7,6 @@
   transition: all 0.2s ease;
 }
 
-.grid-1 {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
-}
-
-.grid-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
-}
 .full-screen {
   min-height: 100vh;
 }

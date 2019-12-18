@@ -56,42 +56,11 @@ const getComments = (req, res) => {
 };
 
 const getPopularProblems = (req, res) => {
-  Problem.find({}, (err, problems) => {
-    const problemsConvertedToJSON = JSON.parse(JSON.stringify(problems));
+  const { tags = [] } = req.body;
 
-    if (problems && problems.length === 0) {
-      return returnProblemsFunction(undefined, undefined, undefined, res);
-    } else
-      return addUsersAndTagsToProblems(
-        problemsConvertedToJSON =>
-          returnProblemsFunction(err, problems, problemsConvertedToJSON, res),
-        problemsConvertedToJSON
-      );
-  })
-    .sort({ upVotes: -1 })
-    .limit(10);
-};
-const getRecentProblems = (req, res) => {
-  Problem.find({}, (err, problems) => {
-    const problemsConvertedToJSON = JSON.parse(JSON.stringify(problems));
-
-    if (problems && problems.length === 0) {
-      return returnProblemsFunction(undefined, undefined, undefined, res);
-    } else
-      return addUsersAndTagsToProblems(
-        problemsConvertedToJSON =>
-          returnProblemsFunction(err, problems, problemsConvertedToJSON, res),
-        problemsConvertedToJSON
-      );
-  })
-    .sort({ createdAt: -1 })
-    .limit(10);
-};
-const getTrendingProblems = (req, res) => {
-  const { tags } = req.body;
-  // "tags.name": tags
-  Problem.find({}, (err, problems) => {
-    if (problems) {
+  Problem.find(
+    tags.length > 0 ? { "tags.name": tags } : {},
+    (err, problems) => {
       const problemsConvertedToJSON = JSON.parse(JSON.stringify(problems));
 
       if (problems && problems.length === 0) {
@@ -102,8 +71,57 @@ const getTrendingProblems = (req, res) => {
             returnProblemsFunction(err, problems, problemsConvertedToJSON, res),
           problemsConvertedToJSON
         );
-    } else res.send({ success: false });
-  })
+    }
+  )
+    .sort({ upVotes: -1 })
+    .limit(10);
+};
+const getRecentProblems = (req, res) => {
+  const { tags = [] } = req.body;
+
+  Problem.find(
+    tags.length > 0 ? { "tags.name": tags } : {},
+    (err, problems) => {
+      const problemsConvertedToJSON = JSON.parse(JSON.stringify(problems));
+
+      if (problems && problems.length === 0) {
+        return returnProblemsFunction(undefined, undefined, undefined, res);
+      } else
+        return addUsersAndTagsToProblems(
+          problemsConvertedToJSON =>
+            returnProblemsFunction(err, problems, problemsConvertedToJSON, res),
+          problemsConvertedToJSON
+        );
+    }
+  )
+    .sort({ createdAt: -1 })
+    .limit(10);
+};
+const getTrendingProblems = (req, res) => {
+  const { tags = [] } = req.body;
+
+  Problem.find(
+    tags.length > 0 ? { "tags.name": tags } : {},
+    (err, problems) => {
+      if (problems) {
+        const problemsConvertedToJSON = JSON.parse(JSON.stringify(problems));
+
+        if (problems && problems.length === 0) {
+          return returnProblemsFunction(undefined, undefined, undefined, res);
+        } else
+          return addUsersAndTagsToProblems(
+            problemsConvertedToJSON =>
+              returnProblemsFunction(
+                err,
+                problems,
+                problemsConvertedToJSON,
+                res
+              ),
+            problemsConvertedToJSON
+          );
+      } else res.send({ success: false });
+    }
+  )
     .sort({ dailyUpvotes: -1 })
     .limit(10);
 };

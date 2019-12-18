@@ -33,6 +33,9 @@ module.exports = app => {
   app.get("/api/tags/trending", middleware, (req, res) =>
     tagFunctions.getTrendingTags(req, res)
   );
+  app.post("/api/tags/recent/update", middleware, (req, res) =>
+    tagFunctions.updateRecentTags(req, res)
+  );
 
   app.post("/api/new-comment", middleware, (req, res) =>
     problemFunctions.newComment(req, res)

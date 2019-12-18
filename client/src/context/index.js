@@ -29,6 +29,7 @@ class GIProvider extends Component {
   notify = newNotification => {
     newNotification.on = true;
     this.setState({ notification: newNotification });
+    alert(newNotification.message);
 
     if (newNotification.on) {
       setTimeout(() => {
@@ -53,7 +54,7 @@ class GIProvider extends Component {
         tagTemp = "";
       } else tagTemp += search[index];
     }
-    tags.push(tagTemp);
+    if (tagTemp) tags.push(tagTemp);
 
     axios.post("/api/problems" + pathname, { tags }).then(res => {
       const { success, problems } = res.data;
