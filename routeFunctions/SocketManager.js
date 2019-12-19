@@ -2,6 +2,7 @@ const Conversation = require("../models/Conversation");
 const Message = require("../models/Message");
 const User = require("../models/User");
 const Tag = require("../models/Tag");
+const Problem = require("../models/Problem");
 
 const { otherType } = require("./util");
 
@@ -134,16 +135,27 @@ module.exports = io => {
         callback(tags)
       ).limit(10);
     });
+    socket.on("search_problems", (searchPostString, callback) => {
+      const doesStringHaveSpaceChar = searchPostString.search(" ");
+
+      if (doesStringHaveSpaceChar === -1) {
+        Problem.find(
+          { title: { $regex: searchPostString + ".*" } },
+          (err, problems) => {
+            callback(problems);
+          }
+        ).limit(10);
+      } else {
+        Problem.find(
+          { $text: { $search: searchPostString } },
+          { score: { $meta: "textScore" } },
+          (err, problems) => {
+            callback(problems);
+          }
+        )
+          .sort({ score: { $meta: "textScore" } })
+          .limit(10);
+      }
+    });
   };
 };
-
-/*  Tag.find(
-    { $text: { $search: tag } },
-    { score: { $meta: "textScore" } },
-    (err, tags) => {
-      console.log(tags);
-    }
-  )
-    .sort({ score: { $meta: "textScore" } })
-    .limit(10);
-});*/

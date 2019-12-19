@@ -7,6 +7,7 @@ import Consumer, { ExtraContext } from "../context";
 import Loader from "../components/notifications/Loader";
 import Container from "../components/containers/Container";
 
+import SearchPage from "./Search";
 import TrendingPage from "./Trending";
 import PopularPage from "./Popular";
 import RecentPage from "./Recent";
@@ -38,19 +39,12 @@ class Routes extends Component {
         alert("Can't get user");
       }
     });
-    const { pathname, search } = this.props.location;
-
-    if (
-      pathname === "/popular" ||
-      pathname === "/recent" ||
-      pathname === "/trending"
-    ) {
-      getProblems(pathname, search);
-    }
 
     this.unlisten = this.props.history.listen((location, action) => {
-      const { pathname, search } = location;
-      console.log("change url");
+      let { pathname, search } = location;
+      const { socket } = this.context;
+
+      search = search.slice(1, search.length);
 
       if (
         pathname === "/popular" ||
@@ -58,6 +52,10 @@ class Routes extends Component {
         pathname === "/trending"
       )
         getProblems(pathname, search);
+      else if (pathname === "/search")
+        socket.emit("search_problems", search, problems => {
+          //handleChange({ problems });
+        });
     });
   }
   createProblemPages = (problems = []) => {
@@ -84,6 +82,7 @@ class Routes extends Component {
           <Container className="column full-screen">
             <Header />
             <Switch>
+              <Route path="/search/" component={SearchPage} />
               <Route path="/trending/" component={TrendingPage} />
               <Route path="/recent/" component={RecentPage} />
               <Route path="/popular/" component={PopularPage} />

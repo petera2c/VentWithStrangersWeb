@@ -30,5 +30,6 @@ const problemSchema = new Schema(
     timestamps: true // Saves createdAt and updatedAt as dates. createdAt will be our timestamp.
   }
 );
+problemSchema.index({ title: "text" });
 
 module.exports = mongoose.model("problems", problemSchema);

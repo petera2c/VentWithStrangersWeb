@@ -23,13 +23,13 @@ class PopularPage extends Component {
       <Consumer>
         {context => (
           <Page
-            className="justify-center bg-grey py32"
+            className="justify-center align-start bg-grey py32"
             description="Home"
             keywords=""
             title="Home"
           >
-            <Container className="container large column pa16">
-              <Container className="justify-between mb16">
+            <Container className="container large column align-center pa16 mr32">
+              <Container className="x-fill justify-between mb16">
                 <Text className="" text="Popular Problems" type="h2" />
                 <Filters />
               </Container>
@@ -42,7 +42,9 @@ class PopularPage extends Component {
                     ))}
                 </Container>
               )}
+              {problems.length === 0 && <LoadingHeart />}
             </Container>
+
             <HotTags />
           </Page>
         )}

@@ -48,8 +48,7 @@ class GIProvider extends Component {
     let tags = [];
 
     for (let index in search) {
-      if (search[index] == "?") continue;
-      else if (search[index] == "+") {
+      if (search[index] == "+") {
         tags.push(tagTemp);
         tagTemp = "";
       } else tagTemp += search[index];

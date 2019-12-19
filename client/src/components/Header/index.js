@@ -36,11 +36,12 @@ class Header extends Component {
     if (this._ismounted) this.setState(stateObj);
   };
 
-  searchPosts = searchString => {
+  searchPosts = searchPostString => {
     const { socket } = this.context;
+    const { history } = this.props;
 
-    this.handleChange({ searchString });
-    socket.emit("search_problems", searchString, problems => {});
+    this.handleChange({ searchPostString });
+    history.push("/search?" + searchPostString);
   };
 
   render() {
@@ -83,7 +84,7 @@ class Header extends Component {
               <FontAwesomeIcon className="grey-5 mr8" icon={faSearch} />
               <Input
                 className="no-border bg-grey-4 br4"
-                onChange={e => searchPosts(e.target.value)}
+                onChange={e => this.searchPosts(e.target.value)}
                 placeholder="Search"
                 type="text"
                 value={searchPostString}

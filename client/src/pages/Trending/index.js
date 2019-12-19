@@ -16,9 +16,6 @@ import Problem from "../../components/Problem";
 import { capitolizeFirstChar } from "../../util";
 
 class TrendingPage extends Component {
-  componentDidMount() {
-    this.ismounted = true;
-  }
   render() {
     const { problems = [] } = this.context;
 
@@ -36,6 +33,7 @@ class TrendingPage extends Component {
                 <Text className="" text="Trending Problems" type="h2" />
                 <Filters />
               </Container>
+
               {problems.length > 0 && (
                 <Container className="x-fill column">
                   {context.problems &&

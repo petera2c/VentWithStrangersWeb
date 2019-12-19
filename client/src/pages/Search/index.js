@@ -15,7 +15,7 @@ import Problem from "../../components/Problem";
 
 import { capitolizeFirstChar } from "../../util";
 
-class RecentPage extends Component {
+class TrendingPage extends Component {
   render() {
     const { problems = [] } = this.context;
 
@@ -30,7 +30,7 @@ class RecentPage extends Component {
           >
             <Container className="container large column align-center pa16 mr32">
               <Container className="x-fill justify-between mb16">
-                <Text className="" text="Recent Problems" type="h2" />
+                <Text className="" text="Trending Problems" type="h2" />
                 <Filters />
               </Container>
 
@@ -38,14 +38,12 @@ class RecentPage extends Component {
                 <Container className="x-fill column">
                   {context.problems &&
                     context.problems.map((problem, index) => (
-                      <Problem key={index} problem={problem} />
+                      <Container key={index}>{problem.title}</Container>
                     ))}
                 </Container>
               )}
               {problems.length === 0 && <LoadingHeart />}
             </Container>
-
-            <HotTags />
           </Page>
         )}
       </Consumer>
@@ -53,6 +51,6 @@ class RecentPage extends Component {
   }
 }
 
-RecentPage.contextType = ExtraContext;
+TrendingPage.contextType = ExtraContext;
 
-export default RecentPage;
+export default TrendingPage;
