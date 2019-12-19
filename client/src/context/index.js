@@ -14,7 +14,7 @@ class GIProvider extends Component {
       message: "",
       type: "danger"
     },
-    problems: [],
+    problems: undefined,
     saving: false,
     socket: undefined,
     user: undefined
@@ -44,6 +44,7 @@ class GIProvider extends Component {
   };
 
   getProblems = (pathname, search) => {
+    this.handleChange({ problems: undefined });
     let tagTemp = "";
     let tags = [];
 
@@ -56,7 +57,8 @@ class GIProvider extends Component {
     if (tagTemp) tags.push(tagTemp);
 
     axios.post("/api/problems" + pathname, { tags }).then(res => {
-      const { problems = [], success } = res.data;
+      const { problems, success } = res.data;
+
       if (success) this.handleChange({ problems });
       else {
         // TODO: handle error

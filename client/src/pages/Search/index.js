@@ -15,9 +15,9 @@ import Problem from "../../components/Problem";
 
 import { capitolizeFirstChar } from "../../util";
 
-class TrendingPage extends Component {
+class SearchPage extends Component {
   render() {
-    const { problems = [] } = this.context;
+    const { problems } = this.context;
 
     return (
       <Consumer>
@@ -30,19 +30,25 @@ class TrendingPage extends Component {
           >
             <Container className="container large column align-center pa16 mr32">
               <Container className="x-fill justify-between mb16">
-                <Text className="" text="Trending Problems" type="h2" />
                 <Filters />
               </Container>
 
-              {problems.length > 0 && (
+              {problems && (
                 <Container className="x-fill column">
                   {context.problems &&
                     context.problems.map((problem, index) => (
-                      <Container key={index}>{problem.title}</Container>
+                      <Problem
+                        key={index}
+                        previewMode={true}
+                        problem={problem}
+                      />
                     ))}
                 </Container>
               )}
-              {problems.length === 0 && <LoadingHeart />}
+              {!problems && <LoadingHeart />}
+              {problems && problems.length === 0 && (
+                <Text text="No problems found." type="h2" />
+              )}
             </Container>
           </Page>
         )}
@@ -51,6 +57,6 @@ class TrendingPage extends Component {
   }
 }
 
-TrendingPage.contextType = ExtraContext;
+SearchPage.contextType = ExtraContext;
 
-export default TrendingPage;
+export default SearchPage;

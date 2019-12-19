@@ -6,6 +6,8 @@ const Problem = require("../models/Problem");
 
 const { otherType } = require("./util");
 
+const { addUsersAndTagsToProblems } = require("./problemFunctions");
+
 const createConversation = (socket, type, io) => {
   Conversation.findOne({ [type]: undefined }, (err, foundConversation) => {
     if (foundConversation) {
@@ -142,7 +144,16 @@ module.exports = io => {
         Problem.find(
           { title: { $regex: searchPostString + ".*" } },
           (err, problems) => {
-            callback(problems);
+            const problemsConvertedToJSON = JSON.parse(
+              JSON.stringify(problems)
+            );
+            if (problems && problems.length === 0) {
+              return callback([]);
+            } else
+              return addUsersAndTagsToProblems(
+                problemsConvertedToJSON => callback(problemsConvertedToJSON),
+                problemsConvertedToJSON
+              );
           }
         ).limit(10);
       } else {
@@ -150,7 +161,16 @@ module.exports = io => {
           { $text: { $search: searchPostString } },
           { score: { $meta: "textScore" } },
           (err, problems) => {
-            callback(problems);
+            const problemsConvertedToJSON = JSON.parse(
+              JSON.stringify(problems)
+            );
+            if (problems && problems.length === 0) {
+              return callback([]);
+            } else
+              return addUsersAndTagsToProblems(
+                problemsConvertedToJSON => callback(problemsConvertedToJSON),
+                problemsConvertedToJSON
+              );
           }
         )
           .sort({ score: { $meta: "textScore" } })
@@ -158,4 +178,14 @@ module.exports = io => {
       }
     });
   };
+  socket.on("like_problem", (problemID, callback) => {
+    console.log("hereS");
+    return;
+    console.log(socket.request.user);
+    Problem.findById(problemID, (err, problem) => {
+      if (problem) {
+        const test = problem.upVotesList;
+      }
+    });
+  });
 };

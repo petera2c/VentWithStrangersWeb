@@ -179,6 +179,7 @@ const saveProblem = (req, res) => {
   }
 };
 module.exports = {
+  addUsersAndTagsToProblems,
   getComments,
   getPopularProblems,
   getRecentProblems,

@@ -25,7 +25,7 @@ class Routes extends Component {
     datebaseConnection: false
   };
   componentDidMount() {
-    const { getProblems, handleChange } = this.context;
+    const { handleChange } = this.context;
 
     axios.get("/api/user").then(res => {
       const { success, user, message } = res.data;
@@ -34,31 +34,34 @@ class Routes extends Component {
         initSocket(stateObj => {
           handleChange({ ...stateObj, user });
           this.setState({ datebaseConnection: true });
+          this.getDataNeededForPage(this.props.location);
         });
       } else {
         alert("Can't get user");
       }
     });
 
-    this.unlisten = this.props.history.listen((location, action) => {
-      let { pathname, search } = location;
-      const { socket } = this.context;
-
-      search = search.slice(1, search.length);
-
-      if (
-        pathname === "/popular" ||
-        pathname === "/recent" ||
-        pathname === "/trending"
-      )
-        getProblems(pathname, search);
-      else if (pathname === "/search")
-        socket.emit("search_problems", search, problems => {
-          //handleChange({ problems });
-        });
-    });
+    this.unlisten = this.props.history.listen(this.getDataNeededForPage);
   }
-  createProblemPages = (problems = []) => {
+  getDataNeededForPage = (location, action) => {
+    let { pathname, search } = location;
+    const { getProblems, handleChange, socket } = this.context;
+
+    search = search.slice(1, search.length);
+
+    if (
+      pathname === "/popular" ||
+      pathname === "/recent" ||
+      pathname === "/trending"
+    )
+      getProblems(pathname, search);
+    else if (pathname === "/search")
+      socket.emit("search_problems", search, problems => {
+        handleChange({ problems });
+      });
+  };
+  createProblemPages = problems => {
+    return;
     return problems.map((problem, index) => (
       <Route
         path={"/problems/" + problem.title + "/"}

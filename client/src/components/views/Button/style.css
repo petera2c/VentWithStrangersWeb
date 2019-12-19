@@ -16,6 +16,12 @@
 .no-border-button.active {
   color: var(--blue-color);
 }
+.button-1:hover {
+  text-decoration: underline;
+}
+.heart:hover {
+  color: red;
+}
 button.purple {
   color: var(--seven-purple-color);
   background-color: var(--one-half-purple-color);

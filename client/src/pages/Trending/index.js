@@ -17,7 +17,7 @@ import { capitolizeFirstChar } from "../../util";
 
 class TrendingPage extends Component {
   render() {
-    const { problems = [] } = this.context;
+    const { problems } = this.context;
 
     return (
       <Consumer>
@@ -34,7 +34,7 @@ class TrendingPage extends Component {
                 <Filters />
               </Container>
 
-              {problems.length > 0 && (
+              {problems && (
                 <Container className="x-fill column">
                   {context.problems &&
                     context.problems.map((problem, index) => (
@@ -42,7 +42,10 @@ class TrendingPage extends Component {
                     ))}
                 </Container>
               )}
-              {problems.length === 0 && <LoadingHeart />}
+              {!problems && <LoadingHeart />}
+              {problems && problems.length === 0 && (
+                <Text text="No problems found." type="h2" />
+              )}
             </Container>
 
             <HotTags />

@@ -50,7 +50,7 @@ class HotTags extends Component {
                   type="p"
                 />
                 <Container className="column pa16">
-                  <Text text={capitolizeFirstChar(hotTag.name)} type="p" />
+                  <Text className="button-1" text={hotTag.name} type="p" />
                   <Text className="grey-5" text={hotTag.uses} type="p" />
                 </Container>
               </Container>
