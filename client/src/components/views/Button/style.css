@@ -19,6 +19,14 @@
 .button-1:hover {
   text-decoration: underline;
 }
+.button-2 {
+  color: var(--blue-color);
+  border: 1px solid var(--blue-color);
+}
+.button-2:hover {
+  color: var(--white-color);
+  background-color: var(--blue-color);
+}
 .heart:hover {
   color: red;
 }

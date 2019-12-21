@@ -26,6 +26,13 @@ class GIProvider extends Component {
     this._ismounted = false;
   }
 
+  addComment = (comment, problemIndex) => {
+    let { problems } = this.state;
+    problems[problemIndex].comments.unshift(comment);
+
+    this.handleChange({ problems });
+  };
+
   notify = newNotification => {
     newNotification.on = true;
     this.setState({ notification: newNotification });
@@ -65,6 +72,11 @@ class GIProvider extends Component {
       }
     });
   };
+  updateProblem = (problem, problemIndex) => {
+    let { problems } = this.state;
+    problems[problemIndex] = problem;
+    this.handleChange({ problems });
+  };
   render() {
     const {
       hotTags,
@@ -85,6 +97,7 @@ class GIProvider extends Component {
           problems,
           saving,
           socket,
+          updateProblem: this.updateProblem,
           user
         }}
       >

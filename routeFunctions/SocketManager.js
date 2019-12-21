@@ -1,4 +1,5 @@
 const Conversation = require("../models/Conversation");
+const Comment = require("../models/Comment");
 const Message = require("../models/Message");
 const User = require("../models/User");
 const Tag = require("../models/Tag");
@@ -177,15 +178,53 @@ module.exports = io => {
           .limit(10);
       }
     });
-  };
-  socket.on("like_problem", (problemID, callback) => {
-    console.log("hereS");
-    return;
-    console.log(socket.request.user);
-    Problem.findById(problemID, (err, problem) => {
-      if (problem) {
-        const test = problem.upVotesList;
-      }
+    socket.on("like_problem", (problemID, callback) => {
+      const userID = socket.request.user._id;
+
+      Problem.findById(problemID, (err, problem) => {
+        if (problem) {
+          if (problem.upVotesList.find(upVote => upVote.userID === userID))
+            callback({ message: "Already liked post.", success: false });
+          else {
+            problem.upVotes += 1;
+            problem.dailyUpvotes += 1;
+            problem.upVotesList.unshift({ userID });
+            problem.save((err, result) => {
+              callback({ problem: result, success: true });
+            });
+          }
+        } else callback({ message: "Problem not found.", success: false });
+      });
     });
-  });
+
+    socket.on("comment_problem", (commentString, problemID, callback) => {
+      const userID = socket.request.user._id;
+
+      const comment = new Comment({
+        authorID: userID,
+        problemID,
+        text: commentString,
+        upVotes: 0,
+        upVotesList: []
+      });
+
+      Problem.update(
+        { _id: problemID },
+        {
+          $unshift: {
+            comments: {
+              id: comment._id
+            }
+          }
+        },
+        (err, saveData) => {
+          if (saveData)
+            comment.save((err, comment) => {
+              callback({ comment, success: true });
+            });
+          else callback({ success: false });
+        }
+      );
+    });
+  };
 };

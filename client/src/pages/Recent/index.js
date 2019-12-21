@@ -38,12 +38,16 @@ class RecentPage extends Component {
                 <Container className="x-fill column">
                   {context.problems &&
                     context.problems.map((problem, index) => (
-                      <Problem key={index} problem={problem} />
+                      <Problem
+                        key={index}
+                        problem={problem}
+                        problemIndex={index}
+                      />
                     ))}
                 </Container>
               )}
               {!problems && <LoadingHeart />}
-              {problems &&problems.length === 0 && (
+              {problems && problems.length === 0 && (
                 <Text text="No problems found." type="h2" />
               )}
             </Container>

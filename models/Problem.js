@@ -9,10 +9,10 @@ const problemSchema = new Schema(
     },
     comments: [
       {
-        author: {
-          id: { require: true, type: Schema.Types.ObjectId }
-        },
-        text: { require: true, type: String }
+        id: {
+          require: true,
+          type: Schema.Types.ObjectId
+        }
       },
       {
         timestamps: true // Saves createdAt and updatedAt as dates. createdAt will be our timestamp.
@@ -24,7 +24,7 @@ const problemSchema = new Schema(
     tags: [{ name: { type: String } }],
     title: { require: true, type: String },
     upVotes: { require: true, type: Number },
-    upVotesList: [{ id: { type: Schema.Types.ObjectId } }]
+    upVotesList: [{ userID: { type: Schema.Types.ObjectId } }]
   },
   {
     timestamps: true // Saves createdAt and updatedAt as dates. createdAt will be our timestamp.

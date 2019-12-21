@@ -1,6 +1,9 @@
 .no-border {
   border: none;
 }
+.no-resize {
+  resize: none;
+}
 
 textarea,
 input {

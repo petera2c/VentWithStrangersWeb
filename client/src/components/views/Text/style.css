@@ -6,6 +6,9 @@
   color: var(--white-color);
   fill: var(--white-color);
 }
+.red {
+  color: var(--red-color);
+}
 .blue {
   color: var(--blue-color);
   fill: var(--blue-color);

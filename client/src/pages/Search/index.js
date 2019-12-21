@@ -41,6 +41,7 @@ class SearchPage extends Component {
                         key={index}
                         previewMode={true}
                         problem={problem}
+                        problemIndex={index}
                       />
                     ))}
                 </Container>

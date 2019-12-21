@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment-timezone";
 import { withRouter } from "react-router-dom";
+import TextArea from "react-textarea-autosize";
+
 import { ExtraContext } from "../../context";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,89 +19,155 @@ import Text from "../views/Text";
 
 import { capitolizeFirstChar } from "../../util";
 import { addTagsToPage } from "../../util";
-import { likeProblem } from "./util";
+import { commentProblem, hasLikedProblem, likeProblem } from "./util";
 
 class Problem extends Component {
-  state = {};
+  state = { commentString: "", displayCommentField: true };
+
+  componentDidMount() {
+    this.ismounted = true;
+  }
+  componentWillUnmount() {
+    this.ismounted = false;
+  }
+  handleChange = stateObj => {
+    if (this.ismounted) this.setState(stateObj);
+  };
 
   render() {
+    const { commentString, displayCommentField } = this.state;
     const { handleChange } = this.props; // Functions
-    const { previewMode, problem } = this.props; // Variabless
+    const { previewMode, problem, problemIndex } = this.props; // Variabless
 
     return (
-      <Container
-        className="container-large column clickable bg-white mb16 br8"
-        onClick={() => this.props.history.push("/problems?id=" + problem._id)}
-      >
+      <Container className="container-large column mb16">
         <Container
-          className="border-bottom justify-between py16 pl32 pr16"
-          onClick={e => {}}
+          className="x-fill column clickable bg-white mb8 br8"
+          onClick={() => this.props.history.push("/problems?id=" + problem._id)}
         >
-          <Container>
-            <Text
-              className="round-icon bg-blue white mr8"
-              text={capitolizeFirstChar(problem.author.name[0])}
-              type="h6"
-            />
-            <Text text={capitolizeFirstChar(problem.author.name)} type="h5" />
-          </Container>
-          <Container className="x-wrap align-center">
-            {problem.tags.map((tag, index) => (
+          <Container
+            className="border-bottom justify-between py16 pl32 pr16"
+            onClick={e => {}}
+          >
+            <Container>
               <Text
-                className="button-1 clickable mr8"
-                key={index}
-                onClick={e => {
-                  e.stopPropagation();
-                  addTagsToPage(this.props, [tag]);
-                }}
-                text={tag.name}
+                className="round-icon bg-blue white mr8"
+                text={capitolizeFirstChar(problem.author.name[0])}
+                type="h6"
+              />
+              <Text text={capitolizeFirstChar(problem.author.name)} type="h5" />
+            </Container>
+            <Container className="x-wrap align-center">
+              {problem.tags.map((tag, index) => (
+                <Text
+                  className="button-1 clickable mr8"
+                  key={index}
+                  onClick={e => {
+                    e.stopPropagation();
+                    addTagsToPage(this.props, [tag]);
+                  }}
+                  text={tag.name}
+                  type="p"
+                />
+              ))}
+              <FontAwesomeIcon className="grey-9 ml16" icon={faEllipsisV} />
+            </Container>
+          </Container>
+          <Container
+            className={`column ${previewMode ? "" : "border-bottom"} py16 px32`}
+          >
+            <Text className="mb8 grey-8" text={problem.title} type="h5" />
+            <Container className="mb8">
+              <FontAwesomeIcon className="grey-5 mr8" icon={faClock} />
+              <Text
+                className="grey-5"
+                text={moment(problem.createdAt)
+                  .subtract(1, "minute")
+                  .fromNow()}
                 type="p"
               />
-            ))}
-            <FontAwesomeIcon className="grey-9 ml16" icon={faEllipsisV} />
-          </Container>
-        </Container>
-        <Container
-          className={`column ${previewMode ? "" : "border-bottom"} py16 px32`}
-        >
-          <Text className="mb8 grey-8" text={problem.title} type="h5" />
-          <Container className="mb8">
-            <FontAwesomeIcon className="grey-5 mr8" icon={faClock} />
+            </Container>
             <Text
-              className="grey-5"
-              text={moment(problem.createdAt)
-                .subtract(1, "minute")
-                .fromNow()}
+              className=""
+              text={
+                previewMode
+                  ? problem.description.slice(0, 100)
+                  : problem.description
+              }
               type="p"
             />
           </Container>
-          <Text
-            className=""
-            text={
-              previewMode
-                ? problem.description.slice(0, 100)
-                : problem.description
-            }
-            type="p"
-          />
+          {!previewMode && (
+            <Container className="py16 px32">
+              <FontAwesomeIcon
+                className="blue mr4"
+                icon={faComment}
+                onClick={e => {
+                  e.stopPropagation();
+                  this.handleChange({ displayCommentField: true });
+                }}
+              />
+              <Text
+                className="blue mr8"
+                text={problem.comments.length}
+                type="p"
+              />
+              <FontAwesomeIcon
+                className={`heart ${
+                  hasLikedProblem(problem, this.context.user) ? "red" : "grey-5"
+                } mr4`}
+                icon={
+                  hasLikedProblem(problem, this.context.user)
+                    ? faHeart2
+                    : faHeart
+                }
+                onClick={e => {
+                  e.stopPropagation();
+                  likeProblem(this.context, problem, problemIndex);
+                }}
+              />
+              <Text className="grey-5" text={problem.upVotes} type="p" />
+            </Container>
+          )}
         </Container>
-        {!previewMode && (
-          <Container className="py16 px32">
-            <FontAwesomeIcon className="blue mr4" icon={faComment} />
-            <Text
-              className="blue mr8"
-              text={problem.comments.length}
-              type="p"
-            />
-            <FontAwesomeIcon
-              className="grey-5 heart mr4"
-              icon={faHeart}
-              onClick={e => {
-                e.stopPropagation();
-                likeProblem(problem._id, this.context.socket);
-              }}
-            />
-            <Text className="grey-5" text={problem.upVotes} type="p" />
+        {!previewMode && displayCommentField && (
+          <Container className="column bg-white py16 br8">
+            <Container className="border-bottom pb16 mb16">
+              <Container className="align-center border-left active large px16">
+                <FontAwesomeIcon className="blue mr8" icon={faComment} />
+                <Text
+                  className="blue fw-300"
+                  text="Give your advice or supporting message"
+                  type="h6"
+                />
+              </Container>
+            </Container>
+            <Container className="x-fill px16">
+              <Container className="column x-fill align-end border-all pa8 br8">
+                <TextArea
+                  className="x-fill no-border no-resize"
+                  onChange={e =>
+                    this.handleChange({ commentString: e.target.value })
+                  }
+                  placeholder="Type a helpful message here..."
+                  style={{ minHeight: "100px" }}
+                  value={commentString}
+                />
+                <Button
+                  className="button-2 px32 py8 br4"
+                  onClick={() => {
+                    commentProblem(
+                      commentString,
+                      this.context,
+                      problem,
+                      problemIndex
+                    );
+                    //this.handleChange({ commentString: "" });
+                  }}
+                  text="Send"
+                />
+              </Container>
+            </Container>
           </Container>
         )}
       </Container>
