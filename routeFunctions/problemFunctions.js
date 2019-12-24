@@ -60,6 +60,7 @@ const getPopularProblems = (req, res) => {
 
   Problem.find(
     tags.length > 0 ? { "tags.name": tags } : {},
+    { comments: 0 },
     (err, problems) => {
       const problemsConvertedToJSON = JSON.parse(JSON.stringify(problems));
 
@@ -81,6 +82,7 @@ const getRecentProblems = (req, res) => {
 
   Problem.find(
     tags.length > 0 ? { "tags.name": tags } : {},
+    { comments: 0 },
     (err, problems) => {
       const problemsConvertedToJSON = JSON.parse(JSON.stringify(problems));
 
@@ -102,6 +104,7 @@ const getTrendingProblems = (req, res) => {
 
   Problem.find(
     tags.length > 0 ? { "tags.name": tags } : {},
+    { comments: 0 },
     (err, problems) => {
       if (problems) {
         const problemsConvertedToJSON = JSON.parse(JSON.stringify(problems));

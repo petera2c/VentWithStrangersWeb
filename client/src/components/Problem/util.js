@@ -15,13 +15,27 @@ export const commentProblem = (
     }
   );
 };
+export const getProblemComments = (context, problem, problemIndex) => {
+  context.socket.emit("get_problem_comments", problem._id, returnObj => {
+    const { comments, message, success } = returnObj;
 
+    console.log(comments);
+  });
+};
 export const likeProblem = (context, problem1, problemIndex) => {
   context.socket.emit("like_problem", problem1._id, returnObj => {
     let { message, problem, success } = returnObj;
-    problem.author = problem1.author;
+    if (success) {
+      problem.author = problem1.author;
 
-    context.updateProblem(problem, problemIndex);
+      context.updateProblem(problem, problemIndex);
+    } else {
+      context.notify({
+        message,
+        type: "danger",
+        title: "Something went wrong!"
+      });
+    }
   });
 };
 

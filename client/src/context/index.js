@@ -28,6 +28,7 @@ class GIProvider extends Component {
 
   addComment = (comment, problemIndex) => {
     let { problems } = this.state;
+    if (!problems[problemIndex].comments) problems[problemIndex].comments = [];
     problems[problemIndex].comments.unshift(comment);
 
     this.handleChange({ problems });
@@ -90,6 +91,7 @@ class GIProvider extends Component {
     return (
       <Provider
         value={{
+          addComment: this.addComment,
           getProblems: this.getProblems,
           handleChange: this.handleChange,
           hotTags,

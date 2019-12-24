@@ -13,16 +13,27 @@ import { faHeart as faHeart2 } from "@fortawesome/free-solid-svg-icons/faHeart";
 import { faComment } from "@fortawesome/free-regular-svg-icons/faComment";
 import { faEllipsisV } from "@fortawesome/free-solid-svg-icons/faEllipsisV";
 
+import LoadingHeart from "../loaders/Heart";
+
 import Container from "../containers/Container";
 import Button from "../views/Button";
 import Text from "../views/Text";
 
 import { capitolizeFirstChar } from "../../util";
 import { addTagsToPage } from "../../util";
-import { commentProblem, hasLikedProblem, likeProblem } from "./util";
+import {
+  commentProblem,
+  getProblemComments,
+  hasLikedProblem,
+  likeProblem
+} from "./util";
 
 class Problem extends Component {
-  state = { commentString: "", displayCommentField: true };
+  state = {
+    comments: undefined,
+    commentString: "",
+    displayCommentField: false
+  };
 
   componentDidMount() {
     this.ismounted = true;
@@ -37,7 +48,9 @@ class Problem extends Component {
   render() {
     const { commentString, displayCommentField } = this.state;
     const { handleChange } = this.props; // Functions
-    const { previewMode, problem, problemIndex } = this.props; // Variabless
+    const { previewMode, problem, problemIndex } = this.props; // Variables
+
+    if (problem.comments) console.log(problem);
 
     return (
       <Container className="container-large column mb16">
@@ -105,11 +118,13 @@ class Problem extends Component {
                 onClick={e => {
                   e.stopPropagation();
                   this.handleChange({ displayCommentField: true });
+                  if (!displayCommentField)
+                    getProblemComments(this.context, problem, problemIndex);
                 }}
               />
               <Text
                 className="blue mr8"
-                text={problem.comments.length}
+                text={problem.comments ? problem.comments.length : 0}
                 type="p"
               />
               <FontAwesomeIcon
@@ -124,6 +139,9 @@ class Problem extends Component {
                 onClick={e => {
                   e.stopPropagation();
                   likeProblem(this.context, problem, problemIndex);
+                  if (hasLikedProblem(problem, this.context.user)) {
+                  } else {
+                  }
                 }}
               />
               <Text className="grey-5" text={problem.upVotes} type="p" />
@@ -162,12 +180,24 @@ class Problem extends Component {
                       problem,
                       problemIndex
                     );
-                    //this.handleChange({ commentString: "" });
+                    this.handleChange({ commentString: "" });
                   }}
                   text="Send"
                 />
               </Container>
             </Container>
+          </Container>
+        )}
+        {displayCommentField && problem.comments && (
+          <Container>
+            {problem.comments.map((comment, index) => {
+              return <Text key={index} text={comment.text} type="p" />;
+            })}
+          </Container>
+        )}
+        {displayCommentField && !problem.comments && (
+          <Container>
+            <LoadingHeart />
           </Container>
         )}
       </Container>

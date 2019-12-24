@@ -183,7 +183,11 @@ module.exports = io => {
 
       Problem.findById(problemID, (err, problem) => {
         if (problem) {
-          if (problem.upVotesList.find(upVote => upVote.userID === userID))
+          if (
+            problem.upVotesList.find(
+              upVote => String(upVote.userID) === String(userID)
+            )
+          )
             callback({ message: "Already liked post.", success: false });
           else {
             problem.upVotes += 1;
@@ -225,6 +229,17 @@ module.exports = io => {
           else callback({ success: false });
         }
       );
+    });
+
+    socket.on("get_problem_comments", (problemID, callback) => {
+      Problem.findById(problemID, { comments: 1 }, (err, problem) => {
+        let counter = 0;
+        let commentList = [];
+        for (let index in problem.comments) {
+          Comment.findById(problem.comments[index].id, (err, comment) => {});
+        }
+        console.log(problem);
+      });
     });
   };
 };
