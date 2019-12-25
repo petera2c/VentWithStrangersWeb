@@ -2,25 +2,25 @@ const Problem = require("../models/Problem");
 const User = require("../models/User");
 const Tag = require("../models/Tag");
 
-const addUsersAndTagsToProblems = (callback, problemsConvertedToJSON) => {
+const addUsersAndTagsToProblems = (callback, problems) => {
   let counter = 0;
 
-  for (let index in problemsConvertedToJSON) {
+  for (let index in problems) {
     counter++;
     User.findOne(
-      { _id: problemsConvertedToJSON[index].author.id },
+      { _id: problems[index].author.id },
       { displayName: 1 },
       (err, user) => {
         counter--;
         if (!user) return;
-        problemsConvertedToJSON[index].author.name = user.displayName;
-        if (counter === 0) callback(problemsConvertedToJSON);
+        problems[index].author.name = user.displayName;
+        if (counter === 0) callback(problems);
       }
     );
   }
 
-  for (let index in problemsConvertedToJSON) {
-    const problem = problemsConvertedToJSON[index];
+  for (let index in problems) {
+    const problem = problems[index];
 
     for (let index2 in problem.tags) {
       const tag = problem.tags[index2];
@@ -29,20 +29,14 @@ const addUsersAndTagsToProblems = (callback, problemsConvertedToJSON) => {
         counter--;
         if (!tag) return;
 
-        problemsConvertedToJSON[index].tags[index2].name = tag.name;
-        if (counter === 0) callback(problemsConvertedToJSON);
+        problems[index].tags[index2].name = tag.name;
+        if (counter === 0) callback(problems);
       });
     }
   }
 };
-const returnProblemsFunction = (
-  err,
-  problems,
-  problemsConvertedToJSON,
-  res
-) => {
-  if (!err && problems)
-    res.send({ success: true, problems: problemsConvertedToJSON });
+const returnProblemsFunction = (err, problems, res) => {
+  if (!err && problems) res.send({ success: true, problems });
   else res.send({ success: false });
 };
 
@@ -62,20 +56,18 @@ const getPopularProblems = (req, res) => {
     tags.length > 0 ? { "tags.name": tags } : {},
     { comments: 0 },
     (err, problems) => {
-      const problemsConvertedToJSON = JSON.parse(JSON.stringify(problems));
-
       if (problems && problems.length === 0) {
-        return returnProblemsFunction(undefined, [], undefined, res);
+        return returnProblemsFunction(undefined, [], res);
       } else
         return addUsersAndTagsToProblems(
-          problemsConvertedToJSON =>
-            returnProblemsFunction(err, problems, problemsConvertedToJSON, res),
-          problemsConvertedToJSON
+          problems => returnProblemsFunction(err, problems, res),
+          problems
         );
     }
   )
     .sort({ upVotes: -1 })
-    .limit(10);
+    .limit(10)
+    .lean();
 };
 const getRecentProblems = (req, res) => {
   const { tags = [] } = req.body;
@@ -84,20 +76,18 @@ const getRecentProblems = (req, res) => {
     tags.length > 0 ? { "tags.name": tags } : {},
     { comments: 0 },
     (err, problems) => {
-      const problemsConvertedToJSON = JSON.parse(JSON.stringify(problems));
-
       if (problems && problems.length === 0) {
-        return returnProblemsFunction(undefined, [], undefined, res);
+        return returnProblemsFunction(undefined, [], res);
       } else
         return addUsersAndTagsToProblems(
-          problemsConvertedToJSON =>
-            returnProblemsFunction(err, problems, problemsConvertedToJSON, res),
-          problemsConvertedToJSON
+          problems => returnProblemsFunction(err, problems, res),
+          problems
         );
     }
   )
     .sort({ createdAt: -1 })
-    .limit(10);
+    .limit(10)
+    .lean();
 };
 const getTrendingProblems = (req, res) => {
   const { tags = [] } = req.body;
@@ -107,26 +97,19 @@ const getTrendingProblems = (req, res) => {
     { comments: 0 },
     (err, problems) => {
       if (problems) {
-        const problemsConvertedToJSON = JSON.parse(JSON.stringify(problems));
-
         if (problems && problems.length === 0) {
-          return returnProblemsFunction(undefined, [], undefined, res);
+          return returnProblemsFunction(undefined, [], res);
         } else
           return addUsersAndTagsToProblems(
-            problemsConvertedToJSON =>
-              returnProblemsFunction(
-                err,
-                problems,
-                problemsConvertedToJSON,
-                res
-              ),
-            problemsConvertedToJSON
+            problems => returnProblemsFunction(err, problems, res),
+            problems
           );
       } else res.send({ success: false });
     }
   )
     .sort({ dailyUpvotes: -1 })
-    .limit(10);
+    .limit(10)
+    .lean();
 };
 const newComment = (req, res) => {
   const { comment, problemID } = req.body;

@@ -138,9 +138,9 @@ class Problem extends Component {
                 }
                 onClick={e => {
                   e.stopPropagation();
-                  likeProblem(this.context, problem, problemIndex);
                   if (hasLikedProblem(problem, this.context.user)) {
                   } else {
+                    likeProblem(this.context, problem, problemIndex);
                   }
                 }}
               />

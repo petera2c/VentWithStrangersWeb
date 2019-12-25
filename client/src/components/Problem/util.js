@@ -19,7 +19,10 @@ export const getProblemComments = (context, problem, problemIndex) => {
   context.socket.emit("get_problem_comments", problem._id, returnObj => {
     const { comments, message, success } = returnObj;
 
-    console.log(comments);
+    if (success) {
+      problem.comments = comments;
+    }
+    context.updateProblem(problem, problemIndex);
   });
 };
 export const likeProblem = (context, problem1, problemIndex) => {

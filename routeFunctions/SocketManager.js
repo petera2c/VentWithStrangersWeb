@@ -145,37 +145,34 @@ module.exports = io => {
         Problem.find(
           { title: { $regex: searchPostString + ".*" } },
           (err, problems) => {
-            const problemsConvertedToJSON = JSON.parse(
-              JSON.stringify(problems)
-            );
             if (problems && problems.length === 0) {
               return callback([]);
             } else
               return addUsersAndTagsToProblems(
-                problemsConvertedToJSON => callback(problemsConvertedToJSON),
-                problemsConvertedToJSON
+                problems => callback(problems),
+                problems
               );
           }
-        ).limit(10);
+        )
+          .limit(10)
+          .lean();
       } else {
         Problem.find(
           { $text: { $search: searchPostString } },
           { score: { $meta: "textScore" } },
           (err, problems) => {
-            const problemsConvertedToJSON = JSON.parse(
-              JSON.stringify(problems)
-            );
             if (problems && problems.length === 0) {
               return callback([]);
             } else
               return addUsersAndTagsToProblems(
-                problemsConvertedToJSON => callback(problemsConvertedToJSON),
-                problemsConvertedToJSON
+                problems => callback(problems),
+                problems
               );
           }
         )
           .sort({ score: { $meta: "textScore" } })
-          .limit(10);
+          .limit(10)
+          .lean();
       }
     });
     socket.on("like_problem", (problemID, callback) => {
@@ -215,14 +212,14 @@ module.exports = io => {
       Problem.update(
         { _id: problemID },
         {
-          $unshift: {
+          $push: {
             comments: {
               id: comment._id
             }
           }
         },
         (err, saveData) => {
-          if (saveData)
+          if (saveData && !err)
             comment.save((err, comment) => {
               callback({ comment, success: true });
             });
@@ -235,10 +232,27 @@ module.exports = io => {
       Problem.findById(problemID, { comments: 1 }, (err, problem) => {
         let counter = 0;
         let commentList = [];
-        for (let index in problem.comments) {
-          Comment.findById(problem.comments[index].id, (err, comment) => {});
+
+        for (let index = 0; index < problem.comments.length; index++) {
+          counter++;
+          Comment.findById(problem.comments[index].id, (err, comment) => {
+            if (comment)
+              User.findById(
+                comment.authorID,
+                { displayName: 1 },
+                (err, author) => {
+                  comment.author = author;
+                  commentList.push(comment);
+                  counter--;
+                  console.log(commentList);
+
+                  if (counter === 0) {
+                    return callback({ comments: commentList, success: true });
+                  }
+                }
+              );
+          }).lean();
         }
-        console.log(problem);
       });
     });
   };
