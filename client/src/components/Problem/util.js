@@ -20,8 +20,9 @@ export const getProblemComments = (context, problem, problemIndex) => {
     const { comments, message, success } = returnObj;
 
     if (success) {
-      problem.comments = comments;
+      problem.commentsArray = comments;
     }
+    console.log(comments);
     context.updateProblem(problem, problemIndex);
   });
 };
@@ -40,8 +41,4 @@ export const likeProblem = (context, problem1, problemIndex) => {
       });
     }
   });
-};
-
-export const hasLikedProblem = (problem, user) => {
-  return problem.upVotes.find(upVote => upVote.userID === user._id);
 };

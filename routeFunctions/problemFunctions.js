@@ -2,7 +2,7 @@ const Problem = require("../models/Problem");
 const User = require("../models/User");
 const Tag = require("../models/Tag");
 
-const getAggregate = (tags, userID) => [
+const getAggregate = (sort, tags, userID) => [
   {
     $match:
       tags.length !== 0
@@ -11,15 +11,18 @@ const getAggregate = (tags, userID) => [
   },
   {
     $project: {
-      comments: { $size: "$comments" },
       author: "$author",
+      comments: { $size: "$comments" },
+      createdAt: "$createdAt",
       dailyUpvotes: "$dailyUpvotes",
       description: "$description",
       tags: "$tags",
       upVotes: { $size: "$upVotes" },
       hasLiked: { $in: [userID, "$upVotes.userID"] }
     }
-  }
+  },
+  { $sort: sort },
+  { $limit: 10 }
 ];
 
 const addUsersAndTagsToProblems = (callback, problems) => {
@@ -71,44 +74,10 @@ const getComments = (req, res) => {
 
 const getPopularProblems = (req, res) => {
   const { tags = [] } = req.body;
-  Problem.aggregate(getAggregate(tags, req.user._id), (err, results) => {
-    console.log(results);
-  });
 
-  Problem.aggregate(getAggregate(tags, req.user._id), (err, problems) => {
-    if (problems && problems.length === 0) {
-      return returnProblemsFunction(undefined, [], res);
-    } else
-      return addUsersAndTagsToProblems(
-        problems => returnProblemsFunction(err, problems, res),
-        problems
-      );
-  })
-    .sort({ upVotes: -1 })
-    .limit(10)
-    .lean();
-};
-const getRecentProblems = (req, res) => {
-  const { tags = [] } = req.body;
-
-  Problem.aggregate(getAggregate(tags, req.user._id), (err, problems) => {
-    if (problems && problems.length === 0) {
-      return returnProblemsFunction(undefined, [], res);
-    } else
-      return addUsersAndTagsToProblems(
-        problems => returnProblemsFunction(err, problems, res),
-        problems
-      );
-  })
-    .sort({ createdAt: -1 })
-    .limit(10)
-    .lean();
-};
-const getTrendingProblems = (req, res) => {
-  const { tags = [] } = req.body;
-
-  Problem.aggregate(getAggregate(tags, req.user._id), (err, problems) => {
-    if (problems) {
+  Problem.aggregate(
+    getAggregate({ upVotes: -1 }, tags, req.user._id),
+    (err, problems) => {
       if (problems && problems.length === 0) {
         return returnProblemsFunction(undefined, [], res);
       } else
@@ -116,11 +85,42 @@ const getTrendingProblems = (req, res) => {
           problems => returnProblemsFunction(err, problems, res),
           problems
         );
-    } else res.send({ success: false });
-  })
-    .sort({ dailyUpvotes: -1 })
-    .limit(10)
-    .lean();
+    }
+  );
+};
+const getRecentProblems = (req, res) => {
+  const { tags = [] } = req.body;
+
+  Problem.aggregate(
+    getAggregate({ createdAt: -1 }, tags, req.user._id),
+    (err, problems) => {
+      if (problems && problems.length === 0) {
+        return returnProblemsFunction(undefined, [], res);
+      } else
+        return addUsersAndTagsToProblems(
+          problems => returnProblemsFunction(err, problems, res),
+          problems
+        );
+    }
+  );
+};
+const getTrendingProblems = (req, res) => {
+  const { tags = [] } = req.body;
+
+  Problem.aggregate(
+    getAggregate({ dailyUpvotes: -1 }, tags, req.user._id),
+    (err, problems) => {
+      if (problems) {
+        if (problems && problems.length === 0) {
+          return returnProblemsFunction(undefined, [], res);
+        } else
+          return addUsersAndTagsToProblems(
+            problems => returnProblemsFunction(err, problems, res),
+            problems
+          );
+      } else res.send({ success: false });
+    }
+  );
 };
 const newComment = (req, res) => {
   const { comment, problemID } = req.body;

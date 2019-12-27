@@ -21,12 +21,7 @@ import Text from "../views/Text";
 
 import { capitolizeFirstChar } from "../../util";
 import { addTagsToPage } from "../../util";
-import {
-  commentProblem,
-  getProblemComments,
-  hasLikedProblem,
-  likeProblem
-} from "./util";
+import { commentProblem, getProblemComments, likeProblem } from "./util";
 
 class Problem extends Component {
   state = {
@@ -49,8 +44,6 @@ class Problem extends Component {
     const { commentString, displayCommentField } = this.state;
     const { handleChange } = this.props; // Functions
     const { previewMode, problem, problemIndex } = this.props; // Variables
-
-    if (problem.comments) console.log(problem);
 
     return (
       <Container className="container-large column mb16">
@@ -128,23 +121,17 @@ class Problem extends Component {
                 type="p"
               />
               <FontAwesomeIcon
-                className={`heart ${
-                  hasLikedProblem(problem, this.context.user) ? "red" : "grey-5"
-                } mr4`}
-                icon={
-                  hasLikedProblem(problem, this.context.user)
-                    ? faHeart2
-                    : faHeart
-                }
+                className={`heart ${problem.hasLiked ? "red" : "grey-5"} mr4`}
+                icon={problem.hasLiked ? faHeart2 : faHeart}
                 onClick={e => {
                   e.stopPropagation();
-                  if (hasLikedProblem(problem, this.context.user)) {
+                  if (problem.hasLiked) {
                   } else {
                     likeProblem(this.context, problem, problemIndex);
                   }
                 }}
               />
-              <Text className="grey-5" text={problem.upVotesTotal} type="p" />
+              <Text className="grey-5" text={problem.upVotes} type="p" />
             </Container>
           )}
         </Container>
