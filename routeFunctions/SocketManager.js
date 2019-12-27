@@ -181,15 +181,14 @@ module.exports = io => {
       Problem.findById(problemID, (err, problem) => {
         if (problem) {
           if (
-            problem.upVotesList.find(
+            problem.upVotes.find(
               upVote => String(upVote.userID) === String(userID)
             )
           )
             callback({ message: "Already liked post.", success: false });
           else {
-            problem.upVotes += 1;
             problem.dailyUpvotes += 1;
-            problem.upVotesList.unshift({ userID });
+            problem.upVotes.unshift({ userID });
             problem.save((err, result) => {
               callback({ problem: result, success: true });
             });
@@ -206,7 +205,7 @@ module.exports = io => {
         problemID,
         text: commentString,
         upVotes: 0,
-        upVotesList: []
+        upVotes: []
       });
 
       Problem.update(
@@ -244,7 +243,6 @@ module.exports = io => {
                   comment.author = author;
                   commentList.push(comment);
                   counter--;
-                  console.log(commentList);
 
                   if (counter === 0) {
                     return callback({ comments: commentList, success: true });

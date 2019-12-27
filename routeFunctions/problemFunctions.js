@@ -2,6 +2,26 @@ const Problem = require("../models/Problem");
 const User = require("../models/User");
 const Tag = require("../models/Tag");
 
+const getAggregate = (tags, userID) => [
+  {
+    $match:
+      tags.length !== 0
+        ? { tags: { $elemMatch: { name: { $all: tags } } } }
+        : {}
+  },
+  {
+    $project: {
+      comments: { $size: "$comments" },
+      author: "$author",
+      dailyUpvotes: "$dailyUpvotes",
+      description: "$description",
+      tags: "$tags",
+      upVotes: { $size: "$upVotes" },
+      hasLiked: { $in: [userID, "$upVotes.userID"] }
+    }
+  }
+];
+
 const addUsersAndTagsToProblems = (callback, problems) => {
   let counter = 0;
 
@@ -51,20 +71,19 @@ const getComments = (req, res) => {
 
 const getPopularProblems = (req, res) => {
   const { tags = [] } = req.body;
+  Problem.aggregate(getAggregate(tags, req.user._id), (err, results) => {
+    console.log(results);
+  });
 
-  Problem.find(
-    tags.length > 0 ? { "tags.name": tags } : {},
-    { comments: 0 },
-    (err, problems) => {
-      if (problems && problems.length === 0) {
-        return returnProblemsFunction(undefined, [], res);
-      } else
-        return addUsersAndTagsToProblems(
-          problems => returnProblemsFunction(err, problems, res),
-          problems
-        );
-    }
-  )
+  Problem.aggregate(getAggregate(tags, req.user._id), (err, problems) => {
+    if (problems && problems.length === 0) {
+      return returnProblemsFunction(undefined, [], res);
+    } else
+      return addUsersAndTagsToProblems(
+        problems => returnProblemsFunction(err, problems, res),
+        problems
+      );
+  })
     .sort({ upVotes: -1 })
     .limit(10)
     .lean();
@@ -72,19 +91,15 @@ const getPopularProblems = (req, res) => {
 const getRecentProblems = (req, res) => {
   const { tags = [] } = req.body;
 
-  Problem.find(
-    tags.length > 0 ? { "tags.name": tags } : {},
-    { comments: 0 },
-    (err, problems) => {
-      if (problems && problems.length === 0) {
-        return returnProblemsFunction(undefined, [], res);
-      } else
-        return addUsersAndTagsToProblems(
-          problems => returnProblemsFunction(err, problems, res),
-          problems
-        );
-    }
-  )
+  Problem.aggregate(getAggregate(tags, req.user._id), (err, problems) => {
+    if (problems && problems.length === 0) {
+      return returnProblemsFunction(undefined, [], res);
+    } else
+      return addUsersAndTagsToProblems(
+        problems => returnProblemsFunction(err, problems, res),
+        problems
+      );
+  })
     .sort({ createdAt: -1 })
     .limit(10)
     .lean();
@@ -92,21 +107,17 @@ const getRecentProblems = (req, res) => {
 const getTrendingProblems = (req, res) => {
   const { tags = [] } = req.body;
 
-  Problem.find(
-    tags.length > 0 ? { "tags.name": tags } : {},
-    { comments: 0 },
-    (err, problems) => {
-      if (problems) {
-        if (problems && problems.length === 0) {
-          return returnProblemsFunction(undefined, [], res);
-        } else
-          return addUsersAndTagsToProblems(
-            problems => returnProblemsFunction(err, problems, res),
-            problems
-          );
-      } else res.send({ success: false });
-    }
-  )
+  Problem.aggregate(getAggregate(tags, req.user._id), (err, problems) => {
+    if (problems) {
+      if (problems && problems.length === 0) {
+        return returnProblemsFunction(undefined, [], res);
+      } else
+        return addUsersAndTagsToProblems(
+          problems => returnProblemsFunction(err, problems, res),
+          problems
+        );
+    } else res.send({ success: false });
+  })
     .sort({ dailyUpvotes: -1 })
     .limit(10)
     .lean();
@@ -152,11 +163,12 @@ const saveProblem = (req, res) => {
           gender,
           dailyUpvotes: 0,
           tags: tagNameArray,
-          title,
-          upVotes: 0
+          title
         });
         newProblem.author = { id: req.user._id };
         newProblem.save((err, newProblem) => {
+          console.log(err);
+
           if (!err && newProblem) res.send({ success: true });
           else res.send({ success: false });
         });

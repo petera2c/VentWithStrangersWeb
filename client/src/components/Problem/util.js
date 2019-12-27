@@ -43,5 +43,5 @@ export const likeProblem = (context, problem1, problemIndex) => {
 };
 
 export const hasLikedProblem = (problem, user) => {
-  return problem.upVotesList.find(upVote => upVote.userID === user._id);
+  return problem.upVotes.find(upVote => upVote.userID === user._id);
 };

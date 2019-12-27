@@ -144,7 +144,7 @@ class Problem extends Component {
                   }
                 }}
               />
-              <Text className="grey-5" text={problem.upVotes} type="p" />
+              <Text className="grey-5" text={problem.upVotesTotal} type="p" />
             </Container>
           )}
         </Container>

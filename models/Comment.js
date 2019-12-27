@@ -11,7 +11,7 @@ const commentSchema = new Schema(
     },
     text: { require: true, type: String },
     upVotes: { require: true, type: Number },
-    upVotesList: [{ userID: { type: Schema.Types.ObjectId } }]
+    upVotes: [{ userID: { type: Schema.Types.ObjectId } }]
   },
   {
     timestamps: true // Saves createdAt and updatedAt as dates. createdAt will be our timestamp.
