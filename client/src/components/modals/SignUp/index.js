@@ -41,8 +41,6 @@ class SignUpModal extends Component {
   };
 
   register = (context, event) => {
-    return;
-
     const {
       email,
       timezone,
@@ -71,12 +69,11 @@ class SignUpModal extends Component {
         .then(res => {
           const { success, user, message } = res.data;
           const { handleChange, notify } = this.context;
-          const { history } = this.props;
-          console.log(res.data);
+          const { close, history } = this.props;
 
           if (success && user) {
             handleChange({ user });
-            history.push("/trending");
+            close();
           } else {
             notify({
               message,
@@ -196,7 +193,7 @@ class SignUpModal extends Component {
                             })
                           }
                           name="passwordConfirm"
-                          type="passwordConfirm"
+                          type="password"
                           placeholder="********"
                           required
                         />
@@ -213,10 +210,7 @@ class SignUpModal extends Component {
                 </form>
               </Container>
             </Container>
-            <Container
-              className="modal-background"
-              onClick={() => close()}
-            />
+            <Container className="modal-background" onClick={() => close()} />
           </Container>
         )}
       </Consumer>

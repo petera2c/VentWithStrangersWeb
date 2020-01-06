@@ -108,7 +108,7 @@ class Header extends Component {
             {context.user && context.user.password && (
               <Text
                 className="absolute right-0  mr16"
-                text={`Hello, ${context.user.password}`}
+                text={`Hello, ${context.user.displayName}`}
                 type="p"
               />
             )}

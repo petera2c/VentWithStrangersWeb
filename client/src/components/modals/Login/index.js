@@ -35,18 +35,18 @@ class LoginPage extends Component {
   };
 
   login = (context, event) => {
-    return;
     const { email, password } = this.state;
+    const { close } = this.props;
 
     if (email && password) {
       axios
-        .post("/api/login", { email: email.toLowerCase(), password })
+        .post("/api/login", { username: email.toLowerCase(), password })
         .then(res => {
           const { message, success, user } = res.data;
-          console.log(res.data);
 
           if (success) {
             context.handleChange({ user });
+            close();
           } else {
             context.notify({
               message,
@@ -55,6 +55,12 @@ class LoginPage extends Component {
             });
           }
         });
+    } else {
+      context.notify({
+        message: "missing email or password",
+        type: "danger",
+        title: "Something went wrong!"
+      });
     }
   };
 
@@ -132,10 +138,7 @@ class LoginPage extends Component {
                 </form>
               </Container>
             </Container>
-            <Container
-              className="modal-background"
-              onClick={() => close()}
-            />
+            <Container className="modal-background" onClick={() => close()} />
           </Container>
         )}
       </Consumer>

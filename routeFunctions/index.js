@@ -1,9 +1,11 @@
 const passport = require("passport");
 const mongoose = require("mongoose");
-const User = require("../models/User");
 const problemFunctions = require("./problemFunctions");
 const tagFunctions = require("./tagFunctions");
 const names = require("./names");
+
+const User = require("../models/User");
+const Tag = require("../models/Tag");
 
 module.exports = app => {
   // Middleware
@@ -70,25 +72,31 @@ module.exports = app => {
   });
   // Register user
   app.post("/api/register", (req, res, next) => {
-    passport.authenticate("local-signup", (notUsed, user, message) => {
-      let success = true;
-      if (!user) success = false;
-      if (success) {
-        const login = () => {
-          req.logIn(user, err => {
-            if (err) {
-              success = false;
-              message =
-                "Could not log you in! :( Please refresh the page and try again :)";
-            }
-            res.send({ success, user, message });
-          });
-        };
-        login();
-      } else {
-        res.send({ success, message });
+    User.findOne({ email: req.body.email }, (err, user) => {
+      if (!user)
+        passport.authenticate("local-signup", (notUsed, user, message) => {
+          let success = true;
+          if (!user) success = false;
+          if (success) {
+            const login = () => {
+              req.logIn(user, err => {
+                if (err) {
+                  success = false;
+                  message =
+                    "Could not log you in! :( Please refresh the page and try again :)";
+                }
+                res.send({ success, user, message });
+              });
+            };
+            login();
+          } else {
+            res.send({ success, message });
+          }
+        })(req, res, next);
+      else {
+        res.send({ success: false, message: "Email already in use" });
       }
-    })(req, res, next);
+    });
   });
 };
 
