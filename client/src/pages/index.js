@@ -60,6 +60,7 @@ class Routes extends Component {
       socket.emit("search_problems", search, problems => {
         handleChange({ problems });
       });
+    else if (pathname === "/") getProblems("/trending", search);
   };
   createProblemPages = problems => {
     return;
@@ -91,7 +92,7 @@ class Routes extends Component {
               <Route path="/settings/" component={AccountPage} />
               <Route path="/search/" component={SearchPage} />
               <Route path="/trending/" component={TrendingPage} />
-              <Route path="/" component={TrendingPage} />
+              <Route path="/" component={TrendingPage} exact />
               <Route path="/recent/" component={RecentPage} />
               <Route path="/popular/" component={PopularPage} />
               <Route path="/vent-to-a-stranger/" component={FindStrangerPage} />
