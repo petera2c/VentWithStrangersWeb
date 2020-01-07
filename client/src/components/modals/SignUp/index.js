@@ -67,13 +67,12 @@ class SignUpModal extends Component {
           password
         })
         .then(res => {
-          const { success, user, message } = res.data;
+          const { success, message } = res.data;
           const { handleChange, notify } = this.context;
           const { close, history } = this.props;
 
-          if (success && user) {
-            handleChange({ user });
-            close();
+          if (success) {
+            window.location.reload();
           } else {
             notify({
               message,
@@ -147,7 +146,7 @@ class SignUpModal extends Component {
                         this.handleChange({ displayName: event.target.value })
                       }
                       type="text"
-                      name="email"
+                      name="name"
                       placeholder="Bunny_Smith"
                       required
                     />

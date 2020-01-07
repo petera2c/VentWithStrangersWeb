@@ -72,28 +72,20 @@ module.exports = app => {
   });
   // Register user
   app.post("/api/register", (req, res, next) => {
+    const { displayName, email, password } = req.body;
+
     User.findOne({ email: req.body.email }, (err, user) => {
-      if (!user)
-        passport.authenticate("local-signup", (notUsed, user, message) => {
-          let success = true;
-          if (!user) success = false;
-          if (success) {
-            const login = () => {
-              req.logIn(user, err => {
-                if (err) {
-                  success = false;
-                  message =
-                    "Could not log you in! :( Please refresh the page and try again :)";
-                }
-                res.send({ success, user, message });
-              });
-            };
-            login();
-          } else {
-            res.send({ success, message });
-          }
-        })(req, res, next);
-      else {
+      if (!user) {
+        User.findById(req.user._id, (err, user) => {
+          user.displayName = displayName;
+          user.email = email;
+          user.password = user.generateHash(password);
+          user.save((err, result) => {
+            if (!err && result) res.send({ success: true });
+            else res.send({ message: err, success: false });
+          });
+        });
+      } else {
         res.send({ success: false, message: "Email already in use" });
       }
     });
