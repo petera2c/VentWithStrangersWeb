@@ -54,16 +54,14 @@ module.exports = app => {
       if (!user) success = false;
 
       if (success) {
-        req.session.destroy(() => {
-          res.clearCookie("connect.sid");
-          req.logIn(user, err => {
-            if (err) {
-              success = false;
-              message =
-                "Could not log you in! :( Please refresh the page and try again :)";
-            }
-            res.send({ success, user, message });
-          });
+        req.logIn(user, err => {
+          if (err) {
+            success = false;
+            message =
+              "Could not log you in! :( Please refresh the page and try again :)";
+          }
+          console.log("jere");
+          res.send({ success, user, message });
         });
       } else {
         res.send({ success, message });
@@ -101,9 +99,9 @@ randomLogin = (req, res, next) => {
       language: "english",
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
     });
-    newUser.save().then(savedUser => {
-      req.logIn(savedUser, err => {
-        if (err)
+    newUser.save((err, savedUser) =>
+      req.logIn(savedUser, err2 => {
+        if (err || err2)
           res.send({
             success: false,
             message:
@@ -112,7 +110,7 @@ randomLogin = (req, res, next) => {
         else {
           res.send({ success: true, user: savedUser });
         }
-      });
-    });
+      })
+    );
   })(req, res, next);
 };

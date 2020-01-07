@@ -209,7 +209,7 @@ class SignUpModal extends Component {
                 </form>
               </Container>
             </Container>
-            <Container className="modal-background" onClick={() => close()} />
+            <Container className="modal-background" onClick={close} />
           </Container>
         )}
       </Consumer>

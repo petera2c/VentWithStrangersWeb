@@ -36,7 +36,6 @@ class LoginPage extends Component {
 
   login = (context, event) => {
     const { email, password } = this.state;
-    const { close } = this.props;
 
     if (email && password) {
       axios
@@ -45,8 +44,7 @@ class LoginPage extends Component {
           const { message, success, user } = res.data;
 
           if (success) {
-            context.handleChange({ user });
-            close();
+            window.location.reload();
           } else {
             context.notify({
               message,
@@ -138,7 +136,7 @@ class LoginPage extends Component {
                 </form>
               </Container>
             </Container>
-            <Container className="modal-background" onClick={() => close()} />
+            <Container className="modal-background" onClick={close} />
           </Container>
         )}
       </Consumer>
