@@ -227,7 +227,7 @@ class Problem extends Component {
           </Container>
         )}
         {displayCommentField && !problem.commentsArray && (
-          <Container>
+          <Container className="x-fill full-center">
             <LoadingHeart />
           </Container>
         )}

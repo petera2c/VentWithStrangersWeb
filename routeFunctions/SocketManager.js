@@ -246,35 +246,15 @@ module.exports = io => {
             { $limit: 10 }
           ],
           (err, comments) => {
-            if (comments && comments.length === 0) {
-              return callback({ success: false });
-            } else
-              return addUserToObject(
+            if (comments && comments.length === 0)
+              callback({ success: true, comments });
+            else
+              addUserToObject(
                 comments => callback({ success: true, comments }),
                 comments
               );
           }
         );
-        /*
-        for (let index = 0; index < problem.comments.length; index++) {
-          counter++;
-          Comment.findById(problem.comments[index].id, (err, comment) => {
-            if (comment)
-              User.findById(
-                comment.authorID,
-                { displayName: 1 },
-                (err, author) => {
-                  comment.author = author;
-                  commentList.push(comment);
-                  counter--;
-
-                  if (counter === 0) {
-                    return callback({ comments: commentList, success: true });
-                  }
-                }
-              );
-          }).lean();
-        }*/
       });
     });
   };
