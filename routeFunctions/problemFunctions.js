@@ -11,51 +11,37 @@ const getAggregate = (sort, tags, userID) => [
   },
   {
     $project: {
-      author: "$author",
-      comments: { $size: "$comments" },
+      authorID: "$authorID",
+      commentsSize: { $size: "$comments" },
       createdAt: "$createdAt",
       dailyUpvotes: "$dailyUpvotes",
       description: "$description",
+      hasLiked: { $in: [userID, "$upVotes.userID"] },
       tags: "$tags",
-      upVotes: { $size: "$upVotes" },
-      hasLiked: { $in: [userID, "$upVotes.userID"] }
+      title: "$title",
+      upVotes: { $size: "$upVotes" }
     }
   },
   { $sort: sort },
   { $limit: 10 }
 ];
 
-const addUsersAndTagsToProblems = (callback, problems) => {
+const addUserToObject = (callback, objects) => {
   let counter = 0;
 
-  for (let index in problems) {
+  for (let index in objects) {
     counter++;
     User.findOne(
-      { _id: problems[index].author.id },
+      { _id: objects[index].authorID },
       { displayName: 1 },
       (err, user) => {
         counter--;
-        if (!user) return;
-        problems[index].author.name = user.displayName;
-        if (counter === 0) callback(problems);
+        if (user) objects[index].author = user.displayName;
+        objects[index].authorID = undefined;
+
+        if (counter === 0) callback(objects);
       }
     );
-  }
-
-  for (let index in problems) {
-    const problem = problems[index];
-
-    for (let index2 in problem.tags) {
-      const tag = problem.tags[index2];
-      counter++;
-      Tag.findOne({ name: tag.name }, { name: 1 }, (err, tag) => {
-        counter--;
-        if (!tag) return;
-
-        problems[index].tags[index2].name = tag.name;
-        if (counter === 0) callback(problems);
-      });
-    }
   }
 };
 const returnProblemsFunction = (err, problems, res) => {
@@ -81,7 +67,7 @@ const getPopularProblems = (req, res) => {
       if (problems && problems.length === 0) {
         return returnProblemsFunction(undefined, [], res);
       } else
-        return addUsersAndTagsToProblems(
+        return addUserToObject(
           problems => returnProblemsFunction(err, problems, res),
           problems
         );
@@ -97,7 +83,7 @@ const getRecentProblems = (req, res) => {
       if (problems && problems.length === 0) {
         return returnProblemsFunction(undefined, [], res);
       } else
-        return addUsersAndTagsToProblems(
+        return addUserToObject(
           problems => returnProblemsFunction(err, problems, res),
           problems
         );
@@ -114,7 +100,7 @@ const getTrendingProblems = (req, res) => {
         if (problems && problems.length === 0) {
           return returnProblemsFunction(undefined, [], res);
         } else
-          return addUsersAndTagsToProblems(
+          return addUserToObject(
             problems => returnProblemsFunction(err, problems, res),
             problems
           );
@@ -165,7 +151,7 @@ const saveProblem = (req, res) => {
           tags: tagNameArray,
           title
         });
-        newProblem.author = { id: req.user._id };
+        newProblem.authorID = req.user._id;
         newProblem.save((err, newProblem) => {
           console.log(err);
 
@@ -177,7 +163,7 @@ const saveProblem = (req, res) => {
   }
 };
 module.exports = {
-  addUsersAndTagsToProblems,
+  addUserToObject,
   getComments,
   getPopularProblems,
   getRecentProblems,

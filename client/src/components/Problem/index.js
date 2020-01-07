@@ -58,10 +58,10 @@ class Problem extends Component {
             <Container>
               <Text
                 className="round-icon bg-blue white mr8"
-                text={capitolizeFirstChar(problem.author.name[0])}
+                text={capitolizeFirstChar(problem.author[0])}
                 type="h6"
               />
-              <Text text={capitolizeFirstChar(problem.author.name)} type="h5" />
+              <Text text={capitolizeFirstChar(problem.author)} type="h5" />
             </Container>
             <Container className="x-wrap align-center">
               {problem.tags.map((tag, index) => (
@@ -115,11 +115,7 @@ class Problem extends Component {
                     getProblemComments(this.context, problem, problemIndex);
                 }}
               />
-              <Text
-                className="blue mr8"
-                text={problem.comments ? problem.comments.length : 0}
-                type="p"
-              />
+              <Text className="blue mr8" text={problem.commentsSize} type="p" />
               <FontAwesomeIcon
                 className={`heart ${problem.hasLiked ? "red" : "grey-5"} mr4`}
                 icon={problem.hasLiked ? faHeart2 : faHeart}
@@ -136,7 +132,7 @@ class Problem extends Component {
           )}
         </Container>
         {!previewMode && displayCommentField && (
-          <Container className="column bg-white py16 br8">
+          <Container className="column bg-white py16 mb16 br8">
             <Container className="border-bottom pb16 mb16">
               <Container className="align-center border-left active large px16">
                 <FontAwesomeIcon className="blue mr8" icon={faComment} />
@@ -175,14 +171,62 @@ class Problem extends Component {
             </Container>
           </Container>
         )}
-        {displayCommentField && problem.comments && (
-          <Container>
-            {problem.comments.map((comment, index) => {
-              return <Text key={index} text={comment.text} type="p" />;
-            })}
+        {displayCommentField && problem.commentsArray && (
+          <Container className="column pl16 mb16">
+            {problem.commentsArray.map((comment, index) => (
+              <Container
+                className="x-fill column clickable bg-white mt1"
+                key={index}
+                style={{
+                  borderTopLeftRadius: index === 0 ? "8px" : "",
+                  borderTopRightRadius: index === 0 ? "8px" : "",
+                  borderBottomLeftRadius:
+                    problem.commentsArray.length - 1 === index ? "8px" : "",
+                  borderBottomRightRadius:
+                    problem.commentsArray.length - 1 === index ? "8px" : ""
+                }}
+              >
+                <Container className="justify-between py16 pl32 pr16">
+                  <Container className="align-center">
+                    <Text
+                      className="round-icon bg-blue white mr8"
+                      text={capitolizeFirstChar(comment.author[0])}
+                      type="h6"
+                    />
+                    <Text
+                      text={capitolizeFirstChar(comment.author)}
+                      type="h5"
+                    />
+                  </Container>
+                  <Container className="mb8">
+                    <FontAwesomeIcon className="grey-5 mr8" icon={faClock} />
+                    <Text
+                      className="grey-5"
+                      text={moment(comment.createdAt)
+                        .subtract(1, "minute")
+                        .fromNow()}
+                      type="p"
+                    />
+                  </Container>
+                </Container>
+                <Text className="px32" text={comment.text} type="p" />
+                {!previewMode && (
+                  <Container className="py16 px32">
+                    <FontAwesomeIcon
+                      className={`heart ${
+                        problem.hasLiked ? "red" : "grey-5"
+                      } mr4`}
+                      icon={comment.hasLiked ? faHeart2 : faHeart}
+                      onClick={e => {}}
+                    />
+                    <Text className="grey-5" text={comment.upVotes} type="p" />
+                  </Container>
+                )}
+              </Container>
+            ))}
           </Container>
         )}
-        {displayCommentField && !problem.comments && (
+        {displayCommentField && !problem.commentsArray && (
           <Container>
             <LoadingHeart />
           </Container>

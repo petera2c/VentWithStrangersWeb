@@ -7,7 +7,7 @@ const Problem = require("../models/Problem");
 
 const { otherType } = require("./util");
 
-const { addUsersAndTagsToProblems } = require("./problemFunctions");
+const { addUserToObject } = require("./problemFunctions");
 
 const createConversation = (socket, type, io) => {
   Conversation.findOne({ [type]: undefined }, (err, foundConversation) => {
@@ -148,10 +148,7 @@ module.exports = io => {
             if (problems && problems.length === 0) {
               return callback([]);
             } else
-              return addUsersAndTagsToProblems(
-                problems => callback(problems),
-                problems
-              );
+              return addUserToObject(problems => callback(problems), problems);
           }
         )
           .limit(10)
@@ -164,10 +161,7 @@ module.exports = io => {
             if (problems && problems.length === 0) {
               return callback([]);
             } else
-              return addUsersAndTagsToProblems(
-                problems => callback(problems),
-                problems
-              );
+              return addUserToObject(problems => callback(problems), problems);
           }
         )
           .sort({ score: { $meta: "textScore" } })
@@ -190,7 +184,7 @@ module.exports = io => {
             problem.dailyUpvotes += 1;
             problem.upVotes.unshift({ userID });
             problem.save((err, result) => {
-              callback({ problem: result, success: true });
+              callback({ success: true });
             });
           }
         } else callback({ message: "Problem not found.", success: false });
@@ -228,10 +222,40 @@ module.exports = io => {
     });
 
     socket.on("get_problem_comments", (problemID, callback) => {
+      const userID = socket.request.user._id;
+
       Problem.findById(problemID, { comments: 1 }, (err, problem) => {
         let counter = 0;
         let commentList = [];
 
+        Comment.aggregate(
+          [
+            {
+              $match: { problemID: problem._id }
+            },
+            {
+              $project: {
+                authorID: "$authorID",
+                createdAt: "$createdAt",
+                hasLiked: { $in: [userID, "$upVotes.userID"] },
+                text: "$text",
+                upVotes: { $size: "$upVotes" }
+              }
+            },
+            { $sort: { createdAt: -1 } },
+            { $limit: 10 }
+          ],
+          (err, comments) => {
+            if (comments && comments.length === 0) {
+              return callback({ success: false });
+            } else
+              return addUserToObject(
+                comments => callback({ success: true, comments }),
+                comments
+              );
+          }
+        );
+        /*
         for (let index = 0; index < problem.comments.length; index++) {
           counter++;
           Comment.findById(problem.comments[index].id, (err, comment) => {
@@ -250,7 +274,7 @@ module.exports = io => {
                 }
               );
           }).lean();
-        }
+        }*/
       });
     });
   };

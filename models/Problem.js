@@ -4,8 +4,9 @@ const Schema = mongoose.Schema;
 
 const problemSchema = new Schema(
   {
-    author: {
-      id: { require: true, type: Schema.Types.ObjectId }
+    authorID: {
+      require: true,
+      type: Schema.Types.ObjectId
     },
     comments: [
       {

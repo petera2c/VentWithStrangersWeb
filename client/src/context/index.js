@@ -27,9 +27,13 @@ class GIProvider extends Component {
   }
 
   addComment = (comment, problemIndex) => {
-    let { problems } = this.state;
-    if (!problems[problemIndex].comments) problems[problemIndex].comments = [];
-    problems[problemIndex].comments.unshift(comment);
+    let { problems, user } = this.state;
+    comment.author = user.displayName;
+
+    if (!problems[problemIndex].commentsArray)
+      problems[problemIndex].commentsArray = [];
+
+    problems[problemIndex].commentsArray.unshift(comment);
 
     this.handleChange({ problems });
   };

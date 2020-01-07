@@ -10,7 +10,6 @@ const commentSchema = new Schema(
       type: Schema.Types.ObjectId
     },
     text: { require: true, type: String },
-    upVotes: { require: true, type: Number },
     upVotes: [{ userID: { type: Schema.Types.ObjectId } }]
   },
   {

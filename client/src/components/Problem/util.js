@@ -22,15 +22,17 @@ export const getProblemComments = (context, problem, problemIndex) => {
     if (success) {
       problem.commentsArray = comments;
     }
-    console.log(comments);
     context.updateProblem(problem, problemIndex);
   });
 };
-export const likeProblem = (context, problem1, problemIndex) => {
-  context.socket.emit("like_problem", problem1._id, returnObj => {
-    let { message, problem, success } = returnObj;
+export const likeProblem = (context, problem, problemIndex) => {
+  context.socket.emit("like_problem", problem._id, returnObj => {
+    const { message, success } = returnObj;
+
     if (success) {
-      problem.author = problem1.author;
+      problem.upVotes++;
+      problem.dailyUpvotes++;
+      problem.hasLiked = true;
 
       context.updateProblem(problem, problemIndex);
     } else {

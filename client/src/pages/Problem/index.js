@@ -60,7 +60,7 @@ class ProblemPage extends Component {
           />
           <Text
             className="x-fill tar white mb16"
-            text={`By ${author.name}`}
+            text={`By ${author}`}
             type="p"
           />
         </Container>

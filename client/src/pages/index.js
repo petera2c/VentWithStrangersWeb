@@ -7,6 +7,7 @@ import Consumer, { ExtraContext } from "../context";
 import Loader from "../components/notifications/Loader";
 import Container from "../components/containers/Container";
 
+import AccountPage from "./Account";
 import SearchPage from "./Search";
 import TrendingPage from "./Trending";
 import PopularPage from "./Popular";
@@ -85,6 +86,9 @@ class Routes extends Component {
           <Container className="column full-screen">
             <Header />
             <Switch>
+              <Route path="/account/" component={AccountPage} />
+              <Route path="/activity/" component={AccountPage} />
+              <Route path="/settings/" component={AccountPage} />
               <Route path="/search/" component={SearchPage} />
               <Route path="/trending/" component={TrendingPage} />
               <Route path="/recent/" component={RecentPage} />

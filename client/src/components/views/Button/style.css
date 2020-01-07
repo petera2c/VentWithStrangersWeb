@@ -9,13 +9,6 @@
 .transparent-button.active {
   color: var(--four-blue-color);
 }
-.no-border-button {
-  color: var(--grey-color-1);
-}
-.no-border-button:hover,
-.no-border-button.active {
-  color: var(--blue-color);
-}
 .button-1:hover {
   text-decoration: underline;
 }
@@ -26,6 +19,13 @@
 .button-2:hover {
   color: var(--white-color);
   background-color: var(--blue-color);
+}
+.button-3 {
+  color: var(--grey-color-1);
+}
+.button-3:hover,
+.button-3.active {
+  color: var(--blue-color);
 }
 .heart:hover {
   color: red;

@@ -17,3 +17,8 @@ export const addTagsToPage = (props, selectedTags) => {
   }
   history.push(searchPathname);
 };
+
+export const isPageActive = (page, pathname) => {
+  if (page === pathname) return "active";
+  else return "";
+};

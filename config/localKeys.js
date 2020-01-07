@@ -1,5 +1,5 @@
 module.exports = {
   mongoDevelopentURI:
-    "mongodb://vent_database_user:RoadHouseBlack12*@ds115931.mlab.com:15931/vent_database",
+    "mongodb://peter:tester123@ds059722.mlab.com:59722/vent_db",
   cookieKey: "dlsfsadhfhwhlnasdds87"
 };

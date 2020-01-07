@@ -20,6 +20,8 @@ import Button from "../views/Button";
 import LoginModal from "../modals/Login";
 import SignUpModal from "../modals/SignUp";
 
+import { isPageActive } from "../../util";
+
 class Header extends Component {
   state = {
     loginModalBoolean: false,
@@ -50,20 +52,33 @@ class Header extends Component {
       signUpModalBoolean,
       searchPostString
     } = this.state;
+    const { location } = this.props;
+    const { pathname } = location;
 
     return (
       <Consumer>
         {context => (
           <Container className="sticky top-0 x-fill full-center bg-white border-top large active py8">
-            <Link className="no-border-button mx16" to="/trending">
+            <Link
+              className={"button-3 mx16 " + isPageActive("/trending", pathname)}
+              to="/trending"
+            >
               <FontAwesomeIcon className="mr8" icon={faChartLine} />
               Trending
             </Link>
-            <Link className="no-border-button mx16" to="/recent">
+            <Link
+              className={"button-3 mx16 " + isPageActive("/recent", pathname)}
+              to="/recent"
+            >
               <FontAwesomeIcon className="mr8" icon={faClock} />
               Recent
             </Link>
-            <Link className="no-border-button ml16 mr64" to="/popular">
+            <Link
+              className={
+                "button-3 ml16 mr64 " + isPageActive("/popular", pathname)
+              }
+              to="/popular"
+            >
               <FontAwesomeIcon className="mr8" icon={faStar} />
               Popular
             </Link>
@@ -106,11 +121,12 @@ class Header extends Component {
               />
             )}
             {context.user && context.user.password && (
-              <Text
-                className="absolute right-0  mr16"
-                text={`Hello, ${context.user.displayName}`}
-                type="p"
-              />
+              <Link
+                className="absolute right-0 mr16"
+                to={"/account?" + context.user._id}
+              >
+                <Text text={`Hello, ${context.user.displayName}`} type="p" />
+              </Link>
             )}
             {loginModalBoolean && (
               <LoginModal

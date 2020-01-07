@@ -390,6 +390,30 @@
   margin-left: 2px;
 }
 
+.ma1 {
+  margin: 1px;
+}
+.mx1 {
+  margin-right: 1px;
+  margin-left: 1px;
+}
+.my1 {
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
+.mt1 {
+  margin-top: 1px;
+}
+.mr1 {
+  margin-right: 1px;
+}
+.mb1 {
+  margin-bottom: 1px;
+}
+.ml1 {
+  margin-left: 1px;
+}
+
 .br4 {
   border-radius: 4px;
 }
