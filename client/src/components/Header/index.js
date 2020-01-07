@@ -60,7 +60,11 @@ class Header extends Component {
         {context => (
           <Container className="sticky top-0 x-fill full-center bg-white border-top large active py8">
             <Link
-              className={"button-3 mx16 " + isPageActive("/trending", pathname)}
+              className={
+                "button-3 mx16 " +
+                isPageActive("/trending", pathname) +
+                isPageActive("/", pathname)
+              }
               to="/trending"
             >
               <FontAwesomeIcon className="mr8" icon={faChartLine} />

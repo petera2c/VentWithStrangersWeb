@@ -19,6 +19,6 @@ export const addTagsToPage = (props, selectedTags) => {
 };
 
 export const isPageActive = (page, pathname) => {
-  if (page === pathname) return "active";
+  if (page === pathname) return " active ";
   else return "";
 };
