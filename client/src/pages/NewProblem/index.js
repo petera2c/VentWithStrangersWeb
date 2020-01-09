@@ -18,7 +18,7 @@ import Emoji from "../../components/Emoji";
 
 import Consumer, { ExtraContext } from "../../context";
 
-import { saveProblem, updateTags } from "./util";
+import { saveProblem } from "./util";
 
 class NewProblemPage extends Component {
   state = {
@@ -62,16 +62,11 @@ class NewProblemPage extends Component {
                     value={title}
                   />
                   <Container className="column relative mb8">
-                    <Text
-                      className="mb8"
-                      text="Tag this problem"
-                      type="h5"
-                    />
+                    <Text className="mb8" text="Tag this problem" type="h5" />
 
                     <Input
                       className="py8 px16 br4"
                       onChange={e => {
-                        //updateTags(e.target.value, context.socket);
                         this.handleChange({ tags: e.target.value });
                       }}
                       placeholder="Depression, Relationship, Bullying"

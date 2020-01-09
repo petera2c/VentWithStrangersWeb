@@ -39,7 +39,6 @@ class Header extends Component {
   };
 
   searchPosts = searchPostString => {
-    const { socket } = this.context;
     const { history } = this.props;
 
     this.handleChange({ searchPostString });
@@ -58,10 +57,10 @@ class Header extends Component {
     return (
       <Consumer>
         {context => (
-          <Container className="sticky top-0 x-fill full-center bg-white border-top large active py8">
+          <Container className="sticky top-0 x-fill full-center bg-white border-top large active">
             <Link
               className={
-                "button-3 mx16 " +
+                "button-3 py16 mx16 " +
                 isPageActive("/trending", pathname) +
                 isPageActive("/", pathname)
               }
@@ -71,7 +70,9 @@ class Header extends Component {
               Trending
             </Link>
             <Link
-              className={"button-3 mx16 " + isPageActive("/recent", pathname)}
+              className={
+                "button-3 py16 mx16 " + isPageActive("/recent", pathname)
+              }
               to="/recent"
             >
               <FontAwesomeIcon className="mr8" icon={faClock} />
@@ -79,7 +80,7 @@ class Header extends Component {
             </Link>
             <Link
               className={
-                "button-3 ml16 mr64 " + isPageActive("/popular", pathname)
+                "button-3 py16 ml16 mr64 " + isPageActive("/popular", pathname)
               }
               to="/popular"
             >

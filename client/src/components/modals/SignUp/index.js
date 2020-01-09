@@ -30,8 +30,7 @@ class SignUpModal extends Component {
       history.push("/home");
       notify({
         message: "You are already logged in!",
-        type: "danger",
-        title: "Hello there"
+        type: "danger"
       });
     }
   }
@@ -76,8 +75,7 @@ class SignUpModal extends Component {
           } else {
             notify({
               message,
-              type: "danger",
-              title: "Error"
+              type: "danger"
             });
           }
         });

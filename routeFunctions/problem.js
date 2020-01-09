@@ -44,20 +44,6 @@ const addUserToObject = (callback, objects) => {
     );
   }
 };
-const returnProblemsFunction = (err, problems, res) => {
-  if (!err && problems) res.send({ success: true, problems });
-  else res.send({ success: false });
-};
-
-const getComments = (req, res) => {
-  const { problemID } = req.body;
-
-  Problem.findOne({ _id: problemID }, { comments: 1 }, (err, problem) => {
-    if (problem) res.send({ comments: problem.comments });
-    else res.send({ comments: [], success: false });
-  });
-};
-
 const getPopularProblems = (req, res) => {
   const { tags = [] } = req.body;
 
@@ -108,6 +94,26 @@ const getTrendingProblems = (req, res) => {
     }
   );
 };
+const likeProblem = (problemID, callback, socket) => {
+  const userID = socket.request.user._id;
+
+  Problem.findById(problemID, (err, problem) => {
+    if (problem) {
+      if (
+        problem.upVotes.find(upVote => String(upVote.userID) === String(userID))
+      )
+        callback({ message: "Already liked post.", success: false });
+      else {
+        problem.dailyUpvotes += 1;
+        problem.upVotes.unshift({ userID });
+        problem.save((err, result) => {
+          callback({ success: true });
+        });
+      }
+    } else callback({ message: "Problem not found.", success: false });
+  });
+};
+
 const newComment = (req, res) => {
   const { comment, problemID } = req.body;
 
@@ -123,6 +129,12 @@ const newComment = (req, res) => {
     });
   });
 };
+
+const returnProblemsFunction = (err, problems, res) => {
+  if (!err && problems) res.send({ success: true, problems });
+  else res.send({ success: false });
+};
+
 const saveProblem = (req, res) => {
   const { description, gender, tags, title } = req.body;
 
@@ -162,12 +174,42 @@ const saveProblem = (req, res) => {
     });
   }
 };
+const searchProblem = (searchPostString, callback) => {
+  const doesStringHaveSpaceChar = searchPostString.search(" ");
+
+  if (doesStringHaveSpaceChar === -1) {
+    Problem.find(
+      { title: { $regex: searchPostString + ".*" } },
+      (err, problems) => {
+        if (problems && problems.length === 0) {
+          return callback([]);
+        } else return addUserToObject(problems => callback(problems), problems);
+      }
+    )
+      .limit(10)
+      .lean();
+  } else {
+    Problem.find(
+      { $text: { $search: searchPostString } },
+      { score: { $meta: "textScore" } },
+      (err, problems) => {
+        if (problems && problems.length === 0) {
+          return callback([]);
+        } else return addUserToObject(problems => callback(problems), problems);
+      }
+    )
+      .sort({ score: { $meta: "textScore" } })
+      .limit(10)
+      .lean();
+  }
+};
 module.exports = {
   addUserToObject,
-  getComments,
   getPopularProblems,
   getRecentProblems,
   getTrendingProblems,
+  likeProblem,
   newComment,
-  saveProblem
+  saveProblem,
+  searchProblem
 };

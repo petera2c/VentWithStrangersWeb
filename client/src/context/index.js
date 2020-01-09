@@ -10,7 +10,6 @@ class GIProvider extends Component {
     hotTags: [],
     notification: {
       on: false,
-      title: "Something went wrong!",
       message: "",
       type: "danger"
     },

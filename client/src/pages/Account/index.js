@@ -1,6 +1,15 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
+import { faChartNetwork } from "@fortawesome/pro-solid-svg-icons/faChartNetwork";
+import { faCog } from "@fortawesome/free-solid-svg-icons/faCog";
+
+import Account from "./Account";
+import Activity from "./Activity";
+import Settings from "./Settings";
+
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
@@ -15,9 +24,11 @@ class AccountPage extends Component {
     let search = { location };
     search = location.search.slice(1, search.length);
   }
+
   render() {
     const { location } = this.props;
-    const { pathname } = location;
+    const { pathname, search } = location;
+
     return (
       <Consumer>
         {context => (
@@ -27,31 +38,55 @@ class AccountPage extends Component {
             keywords=""
             title="Account"
           >
-            <Container className="x-25 column align-center bg-white br8">
-              <Container className="clickable x-fill align-center border-bottom pa16">
-                <Text
-                  className={"button-3 " + isPageActive("/account", pathname)}
-                  text="Account"
-                  type="p"
-                />
-              </Container>
-              <Container className="clickable x-fill align-center border-bottom pa16">
-                <Text
-                  className={"button-3 " + isPageActive("/activity", pathname)}
-                  text="Activity"
-                  type="p"
-                />
-              </Container>
-              <Container className="clickable x-fill align-center border-bottom pa16">
-                <Text
-                  className={"button-3 " + isPageActive("/settings", pathname)}
-                  text="Settings"
-                  type="p"
-                />
-              </Container>
+            <Container className="x-25 column align-center bg-white px16 br8">
+              <Link className="x-fill" to={"/account" + search}>
+                <Container
+                  className={
+                    "test2 button-4 clickable x-fill align-center border-bottom py16" +
+                    isPageActive("/account", pathname)
+                  }
+                >
+                  <Container className="flex x-fill full-center">
+                    <FontAwesomeIcon icon={faUser} />
+                  </Container>
+                  <Text text="Account" type="p" />
+                </Container>
+              </Link>
+              <Link className="x-fill" to={"/activity" + search}>
+                <Container
+                  className={
+                    "test2 button-4 clickable x-fill align-center border-bottom py16" +
+                    isPageActive("/activity", pathname)
+                  }
+                >
+                  <Container className="flex x-fill full-center">
+                    <FontAwesomeIcon icon={faChartNetwork} />
+                  </Container>
+                  <Text text="Activity" type="p" />
+                </Container>
+              </Link>
+              <Link className="x-fill" to={"/settings" + search}>
+                <Container
+                  className={
+                    "test2 button-4 clickable x-fill align-center border-bottom py16" +
+                    isPageActive("/settings", pathname)
+                  }
+                >
+                  <Container className="flex x-fill full-center">
+                    <FontAwesomeIcon icon={faCog} />
+                  </Container>
+                  <Text text="Settings" type="p" />
+                </Container>
+              </Link>
+
               <Container className="clickable x-fill align-center pa16">
                 <Text className="button-1" text="Sign Out" type="p" />
               </Container>
+            </Container>
+            <Container className="ml16">
+              {pathname === "/account" && <Account />}
+              {pathname === "/activity" && <Activity />}
+              {pathname === "/settings" && <Settings />}
             </Container>
           </Page>
         )}

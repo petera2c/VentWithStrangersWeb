@@ -22,10 +22,33 @@
 }
 .button-3 {
   color: var(--grey-color-1);
+  border-bottom: 2px solid transparent;
 }
 .button-3:hover,
 .button-3.active {
   color: var(--blue-color);
+  border-bottom: 2px solid var(--blue-color);
+}
+
+.button-4 {
+  color: var(--grey-color-1);
+}
+.button-4:hover,
+.button-4.active {
+  color: var(--blue-color);
+}
+.button-5 {
+  background-color: var(--blue-color);
+  border: 1px solid transparent;
+  color: var(--white-color);
+}
+.button-5:hover {
+  background-color: var(--blue-color);
+  border-color: var(--blue-color);
+}
+.cancel {
+  color: var(--grey-color-1);
+  border: 1px solid var(--grey-color-1);
 }
 .heart:hover {
   color: red;

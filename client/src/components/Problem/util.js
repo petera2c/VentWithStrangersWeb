@@ -38,8 +38,7 @@ export const likeProblem = (context, problem, problemIndex) => {
     } else {
       context.notify({
         message,
-        type: "danger",
-        title: "Something went wrong!"
+        type: "danger"
       });
     }
   });

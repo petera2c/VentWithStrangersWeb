@@ -54,6 +54,10 @@
   --font-theme: "Nunito Sans";
 }
 
+.test2 {
+  display: grid;
+  grid-template-columns: 32px 5fr;
+}
 .pa64 {
   padding: 64px;
 }
@@ -466,6 +470,7 @@ body {
   padding: 0;
 
   font-family: var(--font-theme);
+  color: var(--grey-color-1);
 }
 a {
   font-weight: normal;

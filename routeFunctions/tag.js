@@ -8,6 +8,11 @@ const getTrendingTags = (req, res) => {
     .sort({ uses: -1 })
     .limit(8);
 };
+const searchTags = (tag, callback) => {
+  Tag.find({ name: { $regex: tag + ".*" } }, (err, tags) =>
+    callback(tags)
+  ).limit(10);
+};
 const updateRecentTags = (req, res) => {
   const { selectedTags } = req.body;
   const { user } = req;
@@ -40,5 +45,6 @@ const updateRecentTags = (req, res) => {
 };
 module.exports = {
   getTrendingTags,
+  searchTags,
   updateRecentTags
 };

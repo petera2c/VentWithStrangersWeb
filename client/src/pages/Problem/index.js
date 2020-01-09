@@ -10,14 +10,13 @@ import Button from "../../components/views/Button";
 import Input from "../../components/views/Input";
 import Consumer from "../../context";
 
-import { addComment, getComments } from "./util";
+import { addComment } from "./util";
 
 class ProblemPage extends Component {
   state = { comment: "", comments: [] };
   componentDidMount() {
     this._ismounted = true;
     const problemID = this.props.problem._id;
-    getComments(this.handleChange, problemID);
   }
   componentWillUnmount() {
     this._ismounted = false;

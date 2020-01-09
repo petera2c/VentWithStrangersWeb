@@ -24,8 +24,7 @@ class LoginPage extends Component {
       history.push("/home");
       notify({
         message: "You are already logged in!",
-        type: "danger",
-        title: "Hello there"
+        type: "danger"
       });
     }
   }
@@ -48,16 +47,14 @@ class LoginPage extends Component {
           } else {
             context.notify({
               message,
-              type: "danger",
-              title: "Something went wrong!"
+              type: "danger"
             });
           }
         });
     } else {
       context.notify({
         message: "missing email or password",
-        type: "danger",
-        title: "Something went wrong!"
+        type: "danger"
       });
     }
   };
