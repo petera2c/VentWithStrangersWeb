@@ -38,51 +38,55 @@ class AccountPage extends Component {
             keywords=""
             title="Account"
           >
-            <Container className="x-25 column align-center bg-white px16 br8">
-              <Link className="x-fill" to={"/account" + search}>
-                <Container
-                  className={
-                    "test2 button-4 clickable x-fill align-center border-bottom py16" +
-                    isPageActive("/account", pathname)
-                  }
-                >
-                  <Container className="flex x-fill full-center">
-                    <FontAwesomeIcon icon={faUser} />
+            {!search && (
+              <Container className="x-25 column align-center bg-white px16 br8">
+                <Link className="x-fill" to="/account">
+                  <Container
+                    className={
+                      "test2 button-4 clickable x-fill align-center border-bottom py16" +
+                      isPageActive("/account", pathname)
+                    }
+                  >
+                    <Container className="flex x-fill full-center">
+                      <FontAwesomeIcon icon={faUser} />
+                    </Container>
+                    <Text text="Account" type="p" />
                   </Container>
-                  <Text text="Account" type="p" />
-                </Container>
-              </Link>
-              <Link className="x-fill" to={"/activity" + search}>
-                <Container
-                  className={
-                    "test2 button-4 clickable x-fill align-center border-bottom py16" +
-                    isPageActive("/activity", pathname)
-                  }
-                >
-                  <Container className="flex x-fill full-center">
-                    <FontAwesomeIcon icon={faChartNetwork} />
-                  </Container>
-                  <Text text="Activity" type="p" />
-                </Container>
-              </Link>
-              <Link className="x-fill" to={"/settings" + search}>
-                <Container
-                  className={
-                    "test2 button-4 clickable x-fill align-center border-bottom py16" +
-                    isPageActive("/settings", pathname)
-                  }
-                >
-                  <Container className="flex x-fill full-center">
-                    <FontAwesomeIcon icon={faCog} />
-                  </Container>
-                  <Text text="Settings" type="p" />
-                </Container>
-              </Link>
+                </Link>
 
-              <Container className="clickable x-fill align-center pa16">
-                <Text className="button-1" text="Sign Out" type="p" />
+                <Link className="x-fill" to={"/activity" + search}>
+                  <Container
+                    className={
+                      "test2 button-4 clickable x-fill align-center border-bottom py16" +
+                      isPageActive("/activity", pathname)
+                    }
+                  >
+                    <Container className="flex x-fill full-center">
+                      <FontAwesomeIcon icon={faChartNetwork} />
+                    </Container>
+                    <Text text="Activity" type="p" />
+                  </Container>
+                </Link>
+
+                <Link className="x-fill" to="/settings">
+                  <Container
+                    className={
+                      "test2 button-4 clickable x-fill align-center border-bottom py16" +
+                      isPageActive("/settings", pathname)
+                    }
+                  >
+                    <Container className="flex x-fill full-center">
+                      <FontAwesomeIcon icon={faCog} />
+                    </Container>
+                    <Text text="Settings" type="p" />
+                  </Container>
+                </Link>
+
+                <Container className="clickable x-fill align-center pa16">
+                  <Text className="button-1" text="Sign Out" type="p" />
+                </Container>
               </Container>
-            </Container>
+            )}
             <Container className="ml16">
               {pathname === "/account" && <Account />}
               {pathname === "/activity" && <Activity />}

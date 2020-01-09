@@ -37,7 +37,6 @@ const addUserToObject = (callback, objects) => {
       (err, user) => {
         counter--;
         if (user) objects[index].author = user.displayName;
-        objects[index].authorID = undefined;
 
         if (counter === 0) callback(objects);
       }

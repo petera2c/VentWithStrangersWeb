@@ -87,9 +87,9 @@ class Routes extends Component {
           <Container className="column full-screen">
             <Header />
             <Switch>
-              <Route path="/account/" component={AccountPage} />
+              <Route path="/account/" component={AccountPage} exact />
               <Route path="/activity/" component={AccountPage} />
-              <Route path="/settings/" component={AccountPage} />
+              <Route path="/settings/" component={AccountPage} exact />
               <Route path="/search/" component={SearchPage} />
               <Route path="/trending/" component={TrendingPage} />
               <Route path="/" component={TrendingPage} exact />

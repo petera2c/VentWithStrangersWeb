@@ -42,27 +42,33 @@ class Problem extends Component {
 
   render() {
     const { commentString, displayCommentField } = this.state;
-    const { handleChange } = this.props; // Functions
+    const { handleChange, history } = this.props; // Functions
     const { previewMode, problem, problemIndex } = this.props; // Variables
 
     return (
       <Container className="container-large column mb16">
-        <Container
-          className="x-fill column clickable bg-white mb8 br8"
-          onClick={() => this.props.history.push("/problems?id=" + problem._id)}
-        >
+        <Container className="x-fill column bg-white mb8 br8">
           <Container
-            className="border-bottom justify-between py16 pl32 pr16"
-            onClick={e => {}}
+            className="clickable border-bottom justify-between py16 pl32 pr16"
+            onClick={() => history.push("/problems?" + problem._id)}
           >
-            <Container>
-              <Text
-                className="round-icon bg-blue white mr8"
-                text={capitolizeFirstChar(problem.author[0])}
-                type="h6"
-              />
-              <Text text={capitolizeFirstChar(problem.author)} type="h5" />
-            </Container>
+            <Link
+              onClick={e => e.stopPropagation()}
+              to={"/activity?" + problem.authorID}
+            >
+              <Container>
+                <Text
+                  className="round-icon bg-blue white mr8"
+                  text={capitolizeFirstChar(problem.author[0])}
+                  type="h6"
+                />
+                <Text
+                  className="button-1"
+                  text={capitolizeFirstChar(problem.author)}
+                  type="h5"
+                />
+              </Container>
+            </Link>
             <Container className="x-wrap align-center">
               {problem.tags.map((tag, index) => (
                 <Text

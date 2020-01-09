@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChartLine } from "@fortawesome/free-solid-svg-icons/faChartLine";
-import { faClock } from "@fortawesome/free-solid-svg-icons/faClock";
-import { faStar } from "@fortawesome/free-solid-svg-icons/faStar";
+import { faSnowmobile } from "@fortawesome/pro-solid-svg-icons/faSnowmobile";
+import { faConciergeBell } from "@fortawesome/pro-solid-svg-icons/faConciergeBell";
+import { faFireAlt } from "@fortawesome/pro-solid-svg-icons/faFireAlt";
 import { faRedo } from "@fortawesome/free-solid-svg-icons/faRedo";
 import { faPen } from "@fortawesome/free-solid-svg-icons/faPen";
 import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
@@ -66,7 +66,7 @@ class Header extends Component {
               }
               to="/trending"
             >
-              <FontAwesomeIcon className="mr8" icon={faChartLine} />
+              <FontAwesomeIcon className="mr8" icon={faSnowmobile} />
               Trending
             </Link>
             <Link
@@ -75,7 +75,7 @@ class Header extends Component {
               }
               to="/recent"
             >
-              <FontAwesomeIcon className="mr8" icon={faClock} />
+              <FontAwesomeIcon className="mr8" icon={faConciergeBell} />
               Recent
             </Link>
             <Link
@@ -84,7 +84,7 @@ class Header extends Component {
               }
               to="/popular"
             >
-              <FontAwesomeIcon className="mr8" icon={faStar} />
+              <FontAwesomeIcon className="mr8" icon={faFireAlt} />
               Popular
             </Link>
 
@@ -126,10 +126,7 @@ class Header extends Component {
               />
             )}
             {context.user && context.user.password && (
-              <Link
-                className="absolute right-0 mr16"
-                to={"/account?" + context.user._id}
-              >
+              <Link className="absolute right-0 mr16" to="/account">
                 <Text text={`Hello, ${context.user.displayName}`} type="p" />
               </Link>
             )}

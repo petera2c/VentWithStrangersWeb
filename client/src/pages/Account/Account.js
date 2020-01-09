@@ -50,10 +50,10 @@ class AccountSection extends Component {
       "update_user",
       { confirmPassword, displayName, email, oldPassword, newPassword },
       result => {
-        const { message, success } = result;
+        const { message, success, user } = result;
 
         if (success) {
-          notify({ message, type: "success" });
+          notify({ message: "Done!", type: "success" });
           handleChange({ user });
         } else notify({ message, type: "danger" });
       }
