@@ -2,9 +2,10 @@ import axios from "axios";
 
 export const saveProblem = (callback, problemObject) => {
   axios.post("/api/new-problem", problemObject).then(res => {
-    const { success } = res.data;
+    const { problemID, success } = res.data;
+
     if (success) {
-      callback();
+      callback(problemID);
     } else {
       alert(
         "An unkown error has occured. Please reload the page and try again."

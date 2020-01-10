@@ -173,10 +173,12 @@ class NewProblemPage extends Component {
                             }
                             if (word) tagsArray.push(word);
                             saveProblem(
-                              () => {
+                              problemID => {
                                 this.handleChange({ saving: false });
                                 const { history } = this.props;
-                                history.push("/problems/" + title);
+                                history.push(
+                                  "/problem/" + title + "?" + problemID
+                                );
 
                                 window.location.reload();
                               },

@@ -101,7 +101,7 @@ const getProblem = (id, callback, socket) => {
     (err, problems) => {
       if (problems && problems.length !== 0)
         addUserToObject(
-          problems => callback({ problem: problems[0], success: true }),
+          problems => callback({ problems, success: true }),
           problems
         );
       else
@@ -156,7 +156,7 @@ const returnProblemsFunction = (err, problems, res) => {
 };
 
 const saveProblem = (req, res) => {
-  const { description, gender, tags, title } = req.body;
+  const { description, tags, title } = req.body;
 
   let counter = 0;
   const tagNameArray = [];
@@ -178,7 +178,6 @@ const saveProblem = (req, res) => {
       if (counter === 0) {
         const newProblem = new Problem({
           description,
-          gender,
           dailyUpvotes: 0,
           tags: tagNameArray,
           title
@@ -187,7 +186,8 @@ const saveProblem = (req, res) => {
         newProblem.save((err, newProblem) => {
           console.log(err);
 
-          if (!err && newProblem) res.send({ success: true });
+          if (!err && newProblem)
+            res.send({ problemID: newProblem._id, success: true });
           else res.send({ success: false });
         });
       }

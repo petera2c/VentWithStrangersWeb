@@ -27,11 +27,16 @@ class Problem extends Component {
   state = {
     comments: undefined,
     commentString: "",
-    displayCommentField: false
+    displayCommentField: this.props.displayCommentField
   };
 
   componentDidMount() {
     this.ismounted = true;
+    const { displayCommentField } = this.props;
+    const { problem, problemIndex } = this.props; // Variables
+
+    if (displayCommentField)
+      getProblemComments(this.context, problem, problemIndex);
   }
   componentWillUnmount() {
     this.ismounted = false;
@@ -42,7 +47,7 @@ class Problem extends Component {
 
   render() {
     const { commentString, displayCommentField } = this.state;
-    const { handleChange, history } = this.props; // Functions
+    const { history } = this.props; // Functions
     const { previewMode, problem, problemIndex } = this.props; // Variables
 
     return (
@@ -120,12 +125,7 @@ class Problem extends Component {
                   e.stopPropagation();
                   this.handleChange({ displayCommentField: true });
                   if (!displayCommentField)
-                    getProblemComments(
-                      this.context,
-                      problem,
-                      problemIndex,
-                      handleChange
-                    );
+                    getProblemComments(this.context, problem, problemIndex);
                 }}
               />
               <Text className="blue mr8" text={problem.commentsSize} type="p" />
@@ -136,12 +136,7 @@ class Problem extends Component {
                   e.stopPropagation();
                   if (problem.hasLiked) {
                   } else {
-                    likeProblem(
-                      this.context,
-                      problem,
-                      problemIndex,
-                      handleChange
-                    );
+                    likeProblem(this.context, problem, problemIndex);
                   }
                 }}
               />
@@ -179,8 +174,7 @@ class Problem extends Component {
                       commentString,
                       this.context,
                       problem,
-                      problemIndex,
-                      handleChange
+                      problemIndex
                     );
                     this.handleChange({ commentString: "" });
                   }}
@@ -218,7 +212,10 @@ class Problem extends Component {
                     />
                   </Container>
                   <Container className="mb8">
-                    <FontAwesomeIcon className="grey-5 mr8" icon={faClock} />
+                    <FontAwesomeIcon
+                      className="clickable grey-5 mr8"
+                      icon={faClock}
+                    />
                     <Text
                       className="grey-5"
                       text={moment(comment.createdAt)
@@ -232,7 +229,7 @@ class Problem extends Component {
                 {!previewMode && (
                   <Container className="py16 px32">
                     <FontAwesomeIcon
-                      className={`heart ${
+                      className={`clickbale heart ${
                         problem.hasLiked ? "red" : "grey-5"
                       } mr4`}
                       icon={comment.hasLiked ? faHeart2 : faHeart}
