@@ -55,7 +55,6 @@ class GIProvider extends Component {
   };
 
   getProblems = (pathname, search) => {
-    this.handleChange({ problems: undefined });
     let tagTemp = "";
     let tags = [];
 

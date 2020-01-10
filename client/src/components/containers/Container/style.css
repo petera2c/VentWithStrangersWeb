@@ -148,7 +148,7 @@
 }
 
 .ov-hidden {
-  overflow: hidden;
+  overflow: hidden !important;
 }
 .ov-auto {
   overflow: auto;

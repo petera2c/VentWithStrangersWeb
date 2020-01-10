@@ -43,47 +43,47 @@ class AccountPage extends Component {
                 <Link className="x-fill" to="/account">
                   <Container
                     className={
-                      "test2 button-4 clickable x-fill align-center border-bottom py16" +
+                      "grid-1 button-4 clickable x-fill align-center py16" +
                       isPageActive("/account", pathname)
                     }
                   >
                     <Container className="flex x-fill full-center">
                       <FontAwesomeIcon icon={faUser} />
                     </Container>
-                    <Text text="Account" type="p" />
+                    <Text text="Account" type="h5" />
                   </Container>
                 </Link>
 
                 <Link className="x-fill" to={"/activity" + search}>
                   <Container
                     className={
-                      "test2 button-4 clickable x-fill align-center border-bottom py16" +
+                      "grid-1 button-4 clickable x-fill align-center py16" +
                       isPageActive("/activity", pathname)
                     }
                   >
                     <Container className="flex x-fill full-center">
                       <FontAwesomeIcon icon={faChartNetwork} />
                     </Container>
-                    <Text text="Activity" type="p" />
+                    <Text text="Activity" type="h5" />
                   </Container>
                 </Link>
 
                 <Link className="x-fill" to="/settings">
                   <Container
                     className={
-                      "test2 button-4 clickable x-fill align-center border-bottom py16" +
+                      "grid-1 button-4 clickable x-fill align-center py16" +
                       isPageActive("/settings", pathname)
                     }
                   >
                     <Container className="flex x-fill full-center">
                       <FontAwesomeIcon icon={faCog} />
                     </Container>
-                    <Text text="Settings" type="p" />
+                    <Text text="Settings" type="h5" />
                   </Container>
                 </Link>
 
                 <Container className="clickable x-fill align-center pa16">
-                  <Text className="button-1" text="Sign Out" type="p" />
+                  <Text className="button-1" text="Sign Out" type="h5" />
                 </Container>
               </Container>
             )}

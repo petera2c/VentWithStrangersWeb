@@ -182,7 +182,8 @@ class NewProblemPage extends Component {
 
                                 window.location.reload();
                               },
-                              { description, gender, tags: tagsArray, title }
+                              { description, gender, tags: tagsArray, title },
+                              context.notify
                             );
                           } else alert("One or more fields is missing.");
                         }}

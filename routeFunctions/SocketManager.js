@@ -1,10 +1,8 @@
-const {
-  addUserToObject,
-  getProblem,
-  likeProblem,
-  searchProblem
-} = require("./problem");
+const { searchTags } = require("./tag");
+const { updateUser } = require("./user");
+
 const { commentProblem, getProblemComments } = require("./comment");
+
 const {
   createConversation,
   emitWaitingConversations,
@@ -13,8 +11,13 @@ const {
   sendMessage
 } = require("./conversation");
 
-const { searchTags } = require("./tag");
-const { updateUser } = require("./user");
+const {
+  addUserToObject,
+  getProblem,
+  getUsersPosts,
+  likeProblem,
+  searchProblem
+} = require("./problem");
 
 module.exports = io => {
   return socket => {
@@ -48,6 +51,9 @@ module.exports = io => {
     );
     socket.on("get_problem", (id, callback) =>
       getProblem(id, callback, socket)
+    );
+    socket.on("get_users_posts", (dataObj, callback) =>
+      getUsersPosts(dataObj, callback)
     );
   };
 };

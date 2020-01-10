@@ -63,13 +63,11 @@ h1 {
   margin: 0;
   padding: 0;
 
-  font-weight: 100;
   font-size: var(--thirty-two-font-size);
 }
 h2 {
   color: var(--primary-font-color);
   margin: 0;
-  font-weight: 100;
 
   font-size: var(--thirty-two-font-size);
 }
@@ -77,26 +75,22 @@ h3 {
   margin: 0;
   padding: 0;
   font-size: var(--twenty-font-size);
-  font-weight: 100;
 }
 h4 {
   color: var(--primary-font-color);
   margin: 0;
   text-align: left;
-  font-weight: 600;
 
   font-size: var(--twenty-font-size);
 }
 h5 {
   margin: 0;
-  font-weight: 100;
 
   font-size: var(--sixteen-font-size);
 }
 h6 {
   color: var(--primary-font-color);
   margin: 0;
-  font-weight: 100;
 
   font-size: var(--sixteen-font-size);
 }
@@ -104,7 +98,6 @@ p {
   margin: 0;
   text-align: left;
   font-size: var(--fourteen-font-size);
-  font-weight: 100;
 }
 
 text {

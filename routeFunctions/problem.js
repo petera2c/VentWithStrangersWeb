@@ -3,6 +3,20 @@ const Problem = require("../models/Problem");
 const User = require("../models/User");
 const Tag = require("../models/Tag");
 
+const project = {
+  $project: {
+    authorID: "$authorID",
+    commentsSize: { $size: "$comments" },
+    createdAt: "$createdAt",
+    dailyUpvotes: "$dailyUpvotes",
+    description: "$description",
+    hasLiked: { $in: [userID, "$upVotes"] },
+    tags: "$tags",
+    title: "$title",
+    upVotes: { $size: "$upVotes" }
+  }
+};
+
 const getAggregate = (sort, tags, userID) => [
   {
     $match:
@@ -10,19 +24,7 @@ const getAggregate = (sort, tags, userID) => [
         ? { tags: { $elemMatch: { name: { $all: tags } } } }
         : {}
   },
-  {
-    $project: {
-      authorID: "$authorID",
-      commentsSize: { $size: "$comments" },
-      createdAt: "$createdAt",
-      dailyUpvotes: "$dailyUpvotes",
-      description: "$description",
-      hasLiked: { $in: [userID, "$upVotes.userID"] },
-      tags: "$tags",
-      title: "$title",
-      upVotes: { $size: "$upVotes" }
-    }
-  },
+  project,
   { $sort: sort },
   { $limit: 10 }
 ];
@@ -31,19 +33,7 @@ const getAggregateSingle = (userID, problemID) => [
   {
     $match: { _id: mongoose.Types.ObjectId(problemID) }
   },
-  {
-    $project: {
-      authorID: "$authorID",
-      commentsSize: { $size: "$comments" },
-      createdAt: "$createdAt",
-      dailyUpvotes: "$dailyUpvotes",
-      description: "$description",
-      hasLiked: { $in: [userID, "$upVotes.userID"] },
-      tags: "$tags",
-      title: "$title",
-      upVotes: { $size: "$upVotes" }
-    }
-  }
+  project
 ];
 
 const addUserToObject = (callback, objects) => {
@@ -112,6 +102,23 @@ const getProblem = (id, callback, socket) => {
     }
   );
 };
+const getUsersPosts = (dataObj, callback) => {
+  const { userID } = dataObj;
+  Problem.aggregate(
+    getAggregate({ dailyUpvotes: -1 }, tags, req.user._id),
+    (err, problems) => {
+      if (problems) {
+        if (problems && problems.length === 0) {
+          return returnProblemsFunction(undefined, [], res);
+        } else
+          return addUserToObject(
+            problems => returnProblemsFunction(err, problems, res),
+            problems
+          );
+      } else res.send({ success: false });
+    }
+  );
+};
 const getTrendingProblems = (req, res) => {
   const { tags = [] } = req.body;
 
@@ -136,12 +143,14 @@ const likeProblem = (problemID, callback, socket) => {
   Problem.findById(problemID, (err, problem) => {
     if (problem) {
       if (
-        problem.upVotes.find(upVote => String(upVote.userID) === String(userID))
+        problem.upVotes.find(
+          upVoteUserID => String(upVoteUserID) === String(userID)
+        )
       )
         callback({ message: "Already liked post.", success: false });
       else {
         problem.dailyUpvotes += 1;
-        problem.upVotes.unshift({ userID });
+        problem.upVotes.unshift(userID);
         problem.save((err, result) => {
           callback({ success: true });
         });
@@ -156,7 +165,7 @@ const returnProblemsFunction = (err, problems, res) => {
 };
 
 const saveProblem = (req, res) => {
-  const { description, tags, title } = req.body;
+  const { description, gender, tags, title } = req.body;
 
   let counter = 0;
   const tagNameArray = [];
@@ -179,15 +188,20 @@ const saveProblem = (req, res) => {
         const newProblem = new Problem({
           description,
           dailyUpvotes: 0,
+          gender,
           tags: tagNameArray,
           title
         });
         newProblem.authorID = req.user._id;
         newProblem.save((err, newProblem) => {
-          console.log(err);
-
           if (!err && newProblem)
             res.send({ problemID: newProblem._id, success: true });
+          else if (err && err.code === 11000)
+            res.send({
+              message:
+                "This title has already been used, please try something different!",
+              success: false
+            });
           else res.send({ success: false });
         });
       }

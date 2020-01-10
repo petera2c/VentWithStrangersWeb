@@ -16,5 +16,6 @@ const commentSchema = new Schema(
     timestamps: true // Saves createdAt and updatedAt as dates. createdAt will be our timestamp.
   }
 );
+commentSchema.index({ authorID: -1, problemID: -1 });
 
 module.exports = mongoose.model("comments", commentSchema);

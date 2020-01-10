@@ -54,7 +54,7 @@
   --font-theme: "Nunito Sans";
 }
 
-.test2 {
+.grid-1 {
   display: grid;
   grid-template-columns: 32px 5fr;
 }

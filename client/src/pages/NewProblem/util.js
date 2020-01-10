@@ -1,15 +1,13 @@
 import axios from "axios";
 
-export const saveProblem = (callback, problemObject) => {
+export const saveProblem = (callback, problemObject, notify) => {
   axios.post("/api/new-problem", problemObject).then(res => {
-    const { problemID, success } = res.data;
+    const { message, problemID, success } = res.data;
 
     if (success) {
       callback(problemID);
     } else {
-      alert(
-        "An unkown error has occured. Please reload the page and try again."
-      );
+      notify({ message, type: "danger" });
     }
   });
 };

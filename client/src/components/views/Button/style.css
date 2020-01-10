@@ -32,10 +32,12 @@
 
 .button-4 {
   color: var(--grey-color-1);
+  border-bottom: 1px solid var(--grey-color-7);
 }
 .button-4:hover,
 .button-4.active {
   color: var(--blue-color);
+  border-color: var(--blue-color);
 }
 .button-5 {
   background-color: var(--blue-color);

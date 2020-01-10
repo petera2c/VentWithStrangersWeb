@@ -41,7 +41,6 @@ class ProblemPage extends Component {
     const { location } = this.props;
     const { handleChange, notify, socket } = this.context;
     const { search } = location;
-    handleChange({ problems: undefined });
 
     socket.emit("get_problem", search.slice(1, search.length), result => {
       const { message, problems, success } = result;
@@ -50,7 +49,13 @@ class ProblemPage extends Component {
         handleChange({
           problems
         });
-      else notify({ message, type: "danger" });
+      else if (message) notify({ message, type: "danger" });
+      else
+        notify({
+          message:
+            "Something unexpected has happened, please refresh the page and try again.",
+          type: "danger"
+        });
     });
   }
   componentWillUnmount() {

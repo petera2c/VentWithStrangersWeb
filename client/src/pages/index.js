@@ -47,6 +47,7 @@ class Routes extends Component {
   getDataNeededForPage = (location, action) => {
     let { pathname, search } = location;
     const { getProblems, handleChange, socket } = this.context;
+    handleChange({ problems: undefined });
 
     search = search.slice(1, search.length);
 
