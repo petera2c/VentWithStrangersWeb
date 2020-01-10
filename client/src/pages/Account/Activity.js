@@ -19,37 +19,48 @@ class ActivitySection extends Component {
     comments: false,
     posts: true
   };
+
   componentDidMount() {
     this._ismounted = true;
+
+    this.getUserPosts();
   }
   componentWillUnmount() {
     this._ismounted = false;
   }
+
   handleChange = stateObj => {
     if (this._ismounted) this.setState(stateObj);
   };
+
   isActive = test => {
     if (test) return " active";
     else return "";
   };
+
   getUserPosts = () => {
-    const { socket } = this.context;
-
+    const { handleChange, notify, socket, user } = this.context;
     const { location } = this.props;
-    const search = { location };
-    const userID = location.search.slice(1, search.length);
+    const { search } = location;
 
-    socket.emit("get_users_posts", { userID }, result => {
-      console.log(result);
+    let searchID = user._id;
+    if (search) searchID = location.search.slice(1, search.length);
+
+    socket.emit("get_users_posts", { searchID }, result => {
+      const { message, problems, success } = result;
+
+      if (success) handleChange({ problems });
+      else notify({ message, type: "danger" });
     });
   };
+
   getUserComments = () => {
     const { socket } = this.context;
     const { location } = this.props;
     const search = { location };
     const userID = location.search.slice(1, search.length);
 
-    socket.emit("get_users_posts", { userID }, () => {});
+    //socket.emit("get_users_posts", { userID }, () => {});
   };
 
   render() {

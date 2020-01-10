@@ -53,7 +53,7 @@ module.exports = io => {
       getProblem(id, callback, socket)
     );
     socket.on("get_users_posts", (dataObj, callback) =>
-      getUsersPosts(dataObj, callback)
+      getUsersPosts(dataObj, callback, socket)
     );
   };
 };

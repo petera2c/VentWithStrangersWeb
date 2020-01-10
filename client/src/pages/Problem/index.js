@@ -13,27 +13,7 @@ import Text from "../../components/views/Text";
 import Button from "../../components/views/Button";
 import Input from "../../components/views/Input";
 import Consumer from "../../context";
-/*
 
-
-[
-  {
-    _id: "5e17cb91c64eefa7a4fdafe2",
-    authorID: "5e14e921a9d6f26fa452b864",
-    commentsSize: 0,
-    createdAt: "2020-01-10T00:55:45.384Z",
-    dailyUpvotes: 0,
-    description: "2354345",
-    hasLiked: false,
-    tags: [{ _id: "5e17cb91c64eefa7a4fdafe3", name: "2534543" }],
-    title: "523454",
-    upVotes: 0,
-    author: "peter101"
-  }
-]
-
-
-*/
 class ProblemPage extends Component {
   componentDidMount() {
     this._ismounted = true;

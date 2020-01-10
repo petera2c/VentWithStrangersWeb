@@ -30,7 +30,7 @@ class RecentPage extends Component {
           >
             <Container className="container large column align-center pa16 mr32">
               <Container className="x-fill justify-between mb16">
-                <Text className="" text="Recent Problems" type="h2" />
+                <Text className="fw-400" text="Recent Problems" type="h2" />
                 <Filters />
               </Container>
 

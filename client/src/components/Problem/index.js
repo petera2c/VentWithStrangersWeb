@@ -63,14 +63,14 @@ class Problem extends Component {
               onClick={e => e.stopPropagation()}
               to={"/activity?" + problem.authorID}
             >
-              <Container>
+              <Container className="full-center">
                 <Text
                   className="round-icon bg-blue white mr8"
                   text={capitolizeFirstChar(problem.author[0])}
                   type="h6"
                 />
                 <Text
-                  className="button-1"
+                  className="button-1 fw-400"
                   text={capitolizeFirstChar(problem.author)}
                   type="h5"
                 />
@@ -95,7 +95,11 @@ class Problem extends Component {
           <Container
             className={`column ${previewMode ? "" : "border-bottom"} py16 px32`}
           >
-            <Text className="mb8 grey-8" text={problem.title} type="h5" />
+            <Text
+              className="fw-400 grey-8 mb8"
+              text={problem.title}
+              type="h5"
+            />
             <Container className="mb8">
               <FontAwesomeIcon className="grey-5 mr8" icon={faClock} />
               <Text

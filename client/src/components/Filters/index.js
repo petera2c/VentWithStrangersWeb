@@ -26,13 +26,14 @@ class Filters extends Component {
 
   render() {
     const { tagsModal } = this.state;
+
     return (
       <Container className="grey-1 full-center">
         <Container
           className="full-center clickable"
           onClick={() => this.handleChange({ tagsModal: true })}
         >
-          <Text className="grey-1 mr8" text="Tags" type="h6" />
+          <Text className="grey-1 fw-400 mr8" text="Tags" type="h6" />
           <FontAwesomeIcon className="grey-5" icon={faChevronDown} />
         </Container>
 

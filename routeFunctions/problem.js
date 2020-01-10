@@ -3,28 +3,27 @@ const Problem = require("../models/Problem");
 const User = require("../models/User");
 const Tag = require("../models/Tag");
 
-const project = {
-  $project: {
-    authorID: "$authorID",
-    commentsSize: { $size: "$comments" },
-    createdAt: "$createdAt",
-    dailyUpvotes: "$dailyUpvotes",
-    description: "$description",
-    hasLiked: { $in: [userID, "$upVotes"] },
-    tags: "$tags",
-    title: "$title",
-    upVotes: { $size: "$upVotes" }
-  }
+const project = userID => {
+  return {
+    $project: {
+      authorID: "$authorID",
+      commentsSize: { $size: "$comments" },
+      createdAt: "$createdAt",
+      dailyUpvotes: "$dailyUpvotes",
+      description: "$description",
+      hasLiked: { $in: [userID, "$upVotes"] },
+      tags: "$tags",
+      title: "$title",
+      upVotes: { $size: "$upVotes" }
+    }
+  };
 };
 
-const getAggregate = (sort, tags, userID) => [
+const getAggregate = (sort, match, userID) => [
   {
-    $match:
-      tags.length !== 0
-        ? { tags: { $elemMatch: { name: { $all: tags } } } }
-        : {}
+    $match: match
   },
-  project,
+  project(userID),
   { $sort: sort },
   { $limit: 10 }
 ];
@@ -33,7 +32,7 @@ const getAggregateSingle = (userID, problemID) => [
   {
     $match: { _id: mongoose.Types.ObjectId(problemID) }
   },
-  project
+  project(userID)
 ];
 
 const addUserToObject = (callback, objects) => {
@@ -55,9 +54,13 @@ const addUserToObject = (callback, objects) => {
 };
 const getPopularProblems = (req, res) => {
   const { tags = [] } = req.body;
+  const match = {};
+
+  if (tags.length !== 0)
+    match = { tags: { $elemMatch: { name: { $all: tags } } } };
 
   Problem.aggregate(
-    getAggregate({ upVotes: -1 }, tags, req.user._id),
+    getAggregate({ upVotes: -1 }, match, req.user._id),
     (err, problems) => {
       if (problems && problems.length === 0) {
         return returnProblemsFunction(undefined, [], res);
@@ -71,9 +74,13 @@ const getPopularProblems = (req, res) => {
 };
 const getRecentProblems = (req, res) => {
   const { tags = [] } = req.body;
+  const match = {};
+
+  if (tags.length !== 0)
+    match = { tags: { $elemMatch: { name: { $all: tags } } } };
 
   Problem.aggregate(
-    getAggregate({ createdAt: -1 }, tags, req.user._id),
+    getAggregate({ createdAt: -1 }, match, req.user._id),
     (err, problems) => {
       if (problems && problems.length === 0) {
         return returnProblemsFunction(undefined, [], res);
@@ -102,28 +109,15 @@ const getProblem = (id, callback, socket) => {
     }
   );
 };
-const getUsersPosts = (dataObj, callback) => {
-  const { userID } = dataObj;
-  Problem.aggregate(
-    getAggregate({ dailyUpvotes: -1 }, tags, req.user._id),
-    (err, problems) => {
-      if (problems) {
-        if (problems && problems.length === 0) {
-          return returnProblemsFunction(undefined, [], res);
-        } else
-          return addUserToObject(
-            problems => returnProblemsFunction(err, problems, res),
-            problems
-          );
-      } else res.send({ success: false });
-    }
-  );
-};
 const getTrendingProblems = (req, res) => {
   const { tags = [] } = req.body;
+  const match = {};
+
+  if (tags.length !== 0)
+    match = { tags: { $elemMatch: { name: { $all: tags } } } };
 
   Problem.aggregate(
-    getAggregate({ dailyUpvotes: -1 }, tags, req.user._id),
+    getAggregate({ dailyUpvotes: -1 }, match, req.user._id),
     (err, problems) => {
       if (problems) {
         if (problems && problems.length === 0) {
@@ -137,6 +131,24 @@ const getTrendingProblems = (req, res) => {
     }
   );
 };
+
+const getUsersPosts = (dataObj, callback, socket) => {
+  const { searchID } = dataObj;
+
+  Problem.aggregate(
+    getAggregate(
+      { createdAt: -1 },
+      { authorID: mongoose.Types.ObjectId(searchID) },
+      socket.request.user._id
+    ),
+    (err, problems) => {
+      if (problems) {
+        callback({ problems, success: true });
+      } else callback({ message: "Unable to get posts.", success: false });
+    }
+  );
+};
+
 const likeProblem = (problemID, callback, socket) => {
   const userID = socket.request.user._id;
 
@@ -160,7 +172,7 @@ const likeProblem = (problemID, callback, socket) => {
 };
 
 const returnProblemsFunction = (err, problems, res) => {
-  if (!err && problems) res.send({ success: true, problems });
+  if (!err && problems) res.send({ problems, success: true });
   else res.send({ success: false });
 };
 
@@ -243,6 +255,7 @@ module.exports = {
   getProblem,
   getRecentProblems,
   getTrendingProblems,
+  getUsersPosts,
   likeProblem,
   saveProblem,
   searchProblem
