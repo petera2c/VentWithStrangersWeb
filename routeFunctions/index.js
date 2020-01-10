@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const problem = require("./problem");
 const tag = require("./tag");
-const names = require("./names");
 
 const User = require("../models/User");
 const Tag = require("../models/Tag");
@@ -40,9 +39,6 @@ module.exports = app => {
     tag.updateRecentTags(req, res)
   );
 
-  app.post("/api/new-comment", middleware, (req, res) =>
-    problem.newComment(req, res)
-  );
   // Login user
   app.post("/api/login", login);
   // Register user

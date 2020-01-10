@@ -1,22 +1,36 @@
 import React, { Component } from "react";
 import moment from "moment-timezone";
 import TextArea from "react-textarea-autosize";
+import { ExtraContext } from "../../context";
 
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
+import Problem from "../../components/Problem";
+
+import LoadingHeart from "../../components/loaders/Heart";
 
 import Text from "../../components/views/Text";
 import Button from "../../components/views/Button";
 import Input from "../../components/views/Input";
 import Consumer from "../../context";
 
-import { addComment } from "./util";
-
 class ProblemPage extends Component {
-  state = { comment: "", comments: [] };
+  state = {
+    problem: undefined
+  };
   componentDidMount() {
     this._ismounted = true;
-    const problemID = this.props.problem._id;
+
+    const { location } = this.props;
+    const { notify, socket } = this.context;
+    const { search } = location;
+
+    socket.emit("get_problem", search.slice(1, search.length), result => {
+      const { message, problem, success } = result;
+
+      if (success) this.handleChange({ problem });
+      else notify({ message, type: "danger" });
+    });
   }
   componentWillUnmount() {
     this._ismounted = false;
@@ -24,74 +38,26 @@ class ProblemPage extends Component {
   handleChange = stateObject => {
     if (this._ismounted) this.setState(stateObject);
   };
-  createComment = comment => {
-    const problemID = this.props.problem._id;
-    addComment(
-      (comments, success) => {
-        if (success) {
-          this.setState({ comment: "", comments });
-        } else
-          alert("Something went wrong :( Please reload the page and try again");
-      },
-      comment,
-      problemID
-    );
-  };
   render() {
-    const { author, createdAt, description, title } = this.props.problem;
-    const { comment, comments = [] } = this.state;
+    const { problem } = this.state;
+
     return (
       <Page
-        className="column align-center py32"
+        className="justify-center align-start bg-grey py32"
         description="Problem"
         keywords=""
         title="Problem"
       >
-        <Container className="column x-50">
-          <Container className="column x-fill bg-white pa32 br16">
-            <Text className="tac mb16" text={title} type="h4" />
-            <Text className="x-fill mb16" text={description} type="p" />
-          </Container>
-          <Text
-            className="x-fill tar white mb16"
-            text={`Created at ${new moment(createdAt).format("LLLL")}`}
-            type="p"
-          />
-          <Text
-            className="x-fill tar white mb16"
-            text={`By ${author}`}
-            type="p"
-          />
-        </Container>
-        <Container className="column x-50 mb16">
-          <TextArea
-            className="x-fill bg-white pa16 mb8 br8"
-            onChange={event =>
-              this.handleChange({ comment: event.target.value })
-            }
-            placeholder="Type a helpful message here :) ..."
-            style={{ minHeight: "100px" }}
-            value={comment}
-          />
-          <Container className="x-fill justify-end">
-            <Button
-              className="bg-white py4 px8 br8"
-              onClick={() => this.createComment(comment)}
-              text="Submit"
-            />
-          </Container>
-        </Container>
-
-        {comments.length > 0 && (
-          <Container className="column x-50 bg-white pa32 br16">
-            {comments.map((comment, index) => (
-              <Container key={index}>{comment.text}</Container>
-            ))}
+        {problem && problem._id && (
+          <Container className="x-fill column">
+            <Problem handleChange={this.handleChange} problem={problem} />
           </Container>
         )}
+        {!problem && <LoadingHeart />}
       </Page>
     );
   }
 }
+ProblemPage.contextType = ExtraContext;
 
 export default ProblemPage;

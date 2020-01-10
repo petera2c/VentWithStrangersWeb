@@ -62,16 +62,6 @@ class Routes extends Component {
       });
     else if (pathname === "/") getProblems("/trending", search);
   };
-  createProblemPages = problems => {
-    return;
-    return problems.map((problem, index) => (
-      <Route
-        path={"/problems/" + problem.title + "/"}
-        key={index}
-        render={props => <ProblemPage problem={problem} />}
-      />
-    ));
-  };
   componentWillUnmount() {
     this.unlisten();
   }
@@ -97,7 +87,7 @@ class Routes extends Component {
               <Route path="/popular/" component={PopularPage} />
               <Route path="/vent-to-a-stranger/" component={FindStrangerPage} />
               <Route path="/post-a-problem/" component={NewProblemPage} />
-              {this.createProblemPages(context.problems)}
+              <Route path="/problem/" component={ProblemPage} />
               <Route component={NotFoundPage} />
             </Switch>
           </Container>

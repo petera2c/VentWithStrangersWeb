@@ -1,4 +1,9 @@
-const { addUserToObject, likeProblem, searchProblem } = require("./problem");
+const {
+  addUserToObject,
+  getProblem,
+  likeProblem,
+  searchProblem
+} = require("./problem");
 const { commentProblem, getProblemComments } = require("./comment");
 const {
   createConversation,
@@ -40,6 +45,9 @@ module.exports = io => {
 
     socket.on("update_user", (dataObj, callback) =>
       updateUser(dataObj, callback, socket)
+    );
+    socket.on("get_problem", (id, callback) =>
+      getProblem(id, callback, socket)
     );
   };
 };

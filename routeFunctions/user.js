@@ -3,6 +3,8 @@ const passport = require("passport");
 
 const User = require("../models/User");
 
+const names = require("./names");
+
 const login = (req, res, next) => {
   passport.authenticate("local-login", (err, user, message) => {
     let success = true;

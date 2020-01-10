@@ -46,11 +46,13 @@ class Problem extends Component {
     const { previewMode, problem, problemIndex } = this.props; // Variables
 
     return (
-      <Container className="container-large column mb16">
+      <Container className="x-fill column mb16">
         <Container className="x-fill column bg-white mb8 br8">
           <Container
             className="clickable border-bottom justify-between py16 pl32 pr16"
-            onClick={() => history.push("/problems?" + problem._id)}
+            onClick={() =>
+              history.push("/problem/" + problem.title + "?" + problem._id)
+            }
           >
             <Link
               onClick={e => e.stopPropagation()}
@@ -118,7 +120,12 @@ class Problem extends Component {
                   e.stopPropagation();
                   this.handleChange({ displayCommentField: true });
                   if (!displayCommentField)
-                    getProblemComments(this.context, problem, problemIndex);
+                    getProblemComments(
+                      this.context,
+                      problem,
+                      problemIndex,
+                      handleChange
+                    );
                 }}
               />
               <Text className="blue mr8" text={problem.commentsSize} type="p" />
@@ -129,7 +136,12 @@ class Problem extends Component {
                   e.stopPropagation();
                   if (problem.hasLiked) {
                   } else {
-                    likeProblem(this.context, problem, problemIndex);
+                    likeProblem(
+                      this.context,
+                      problem,
+                      problemIndex,
+                      handleChange
+                    );
                   }
                 }}
               />
@@ -167,7 +179,8 @@ class Problem extends Component {
                       commentString,
                       this.context,
                       problem,
-                      problemIndex
+                      problemIndex,
+                      handleChange
                     );
                     this.handleChange({ commentString: "" });
                   }}

@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Problem = require("../models/Problem");
 const User = require("../models/User");
 const Tag = require("../models/Tag");
@@ -24,6 +25,25 @@ const getAggregate = (sort, tags, userID) => [
   },
   { $sort: sort },
   { $limit: 10 }
+];
+
+const getAggregateSingle = (userID, problemID) => [
+  {
+    $match: { _id: mongoose.Types.ObjectId(problemID) }
+  },
+  {
+    $project: {
+      authorID: "$authorID",
+      commentsSize: { $size: "$comments" },
+      createdAt: "$createdAt",
+      dailyUpvotes: "$dailyUpvotes",
+      description: "$description",
+      hasLiked: { $in: [userID, "$upVotes.userID"] },
+      tags: "$tags",
+      title: "$title",
+      upVotes: { $size: "$upVotes" }
+    }
+  }
 ];
 
 const addUserToObject = (callback, objects) => {
@@ -75,6 +95,23 @@ const getRecentProblems = (req, res) => {
     }
   );
 };
+const getProblem = (id, callback, socket) => {
+  Problem.aggregate(
+    getAggregateSingle(socket.request.user._id, id),
+    (err, problems) => {
+      if (problems && problems.length !== 0)
+        addUserToObject(
+          problems => callback({ problem: problems[0], success: true }),
+          problems
+        );
+      else
+        callback({
+          message: "Incorrect ID, unable to find a post.",
+          success: false
+        });
+    }
+  );
+};
 const getTrendingProblems = (req, res) => {
   const { tags = [] } = req.body;
 
@@ -110,22 +147,6 @@ const likeProblem = (problemID, callback, socket) => {
         });
       }
     } else callback({ message: "Problem not found.", success: false });
-  });
-};
-
-const newComment = (req, res) => {
-  const { comment, problemID } = req.body;
-
-  Problem.findOne({ _id: problemID }, (err, problem) => {
-    problem.comments.push({
-      author: { id: req.user._id },
-      text: comment
-    });
-    problem.save((err, savedProblem) => {
-      if (!err && savedProblem)
-        res.send({ comments: savedProblem.comments, success: true });
-      else res.send({ success: false });
-    });
   });
 };
 
@@ -205,10 +226,10 @@ const searchProblem = (searchPostString, callback) => {
 module.exports = {
   addUserToObject,
   getPopularProblems,
+  getProblem,
   getRecentProblems,
   getTrendingProblems,
   likeProblem,
-  newComment,
   saveProblem,
   searchProblem
 };
