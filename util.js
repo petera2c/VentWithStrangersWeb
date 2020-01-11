@@ -7,17 +7,17 @@ const createSiteMap = () => {
     let siteMapString =
       '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n';
     siteMapString +=
-      "<url>\n  <loc>https://www.ventwithstrangers.com/</loc>\n  <lastmod>2019-09-12</lastmod>\n  <changefreq>yearly\n  <priority>0.9</priority>\n</url>\n\n";
+      "<url>\n  <loc>https://www.ventwithstrangers.com/</loc>\n  <lastmod>2019-09-12</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
     siteMapString +=
-      "<url>\n  <loc>https://www.ventwithstrangers.com/post-a-problem</loc>\n  <lastmod>2019-09-12</lastmod>\n  <changefreq>yearly\n  <priority>0.9</priority>\n</url>\n\n";
+      "<url>\n  <loc>https://www.ventwithstrangers.com/post-a-problem</loc>\n  <lastmod>2019-09-12</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
     siteMapString +=
-      "<url>\n  <loc>https://www.ventwithstrangers.com/vent-to-a-stranger</loc>\n  <lastmod>2019-09-12</lastmod>\n  <changefreq>yearly\n  <priority>0.9</priority>\n</url>\n\n";
+      "<url>\n  <loc>https://www.ventwithstrangers.com/vent-to-a-stranger</loc>\n  <lastmod>2019-09-12</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
     siteMapString +=
-      "<url>\n  <loc>https://www.ventwithstrangers.com/popular</loc>\n  <lastmod>2019-09-12</lastmod>\n  <changefreq>yearly\n  <priority>0.9</priority>\n</url>\n\n";
+      "<url>\n  <loc>https://www.ventwithstrangers.com/popular</loc>\n  <lastmod>2019-09-12</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
     siteMapString +=
-      "<url>\n  <loc>https://www.ventwithstrangers.com/recent</loc>\n  <lastmod>2019-09-12</lastmod>\n  <changefreq>yearly\n  <priority>0.9</priority>\n</url>\n\n";
+      "<url>\n  <loc>https://www.ventwithstrangers.com/recent</loc>\n  <lastmod>2019-09-12</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
     siteMapString +=
-      "<url>\n  <loc>https://www.ventwithstrangers.com/trending</loc>\n  <lastmod>2019-09-12</lastmod>\n  <changefreq>yearly\n  <priority>0.9</priority>\n</url>\n\n";
+      "<url>\n  <loc>https://www.ventwithstrangers.com/trending</loc>\n  <lastmod>2019-09-12</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
 
     for (let index in problems) {
       const problem = problems[index];
@@ -28,7 +28,7 @@ const createSiteMap = () => {
         problem._id +
         "</loc>\n  <lastmod>" +
         new moment(problem.updatedAt).format("YYYY-MM-DD") +
-        "</lastmod>\n  <changefreq>yearly\n  <priority>0.4</priority>\n</url>\n\n";
+        "</lastmod>\n  <changefreq>yearly\n</changefreq>  <priority>0.4</priority>\n</url>\n\n";
     }
     siteMapString += "</urlset>";
     fs.writeFileSync(`${__dirname}/client/public/sitemap.xml`, siteMapString);
