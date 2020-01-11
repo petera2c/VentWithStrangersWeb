@@ -30,7 +30,7 @@ class TrendingPage extends Component {
           >
             <Container className="container large column align-center pa16 mr32">
               <Container className="x-fill justify-between mb16">
-                <Text className="fw-400" text="Trending Problems" type="h2" />
+                <Text className="" text="Trending Problems" type="h4" />
                 <Filters />
               </Container>
 

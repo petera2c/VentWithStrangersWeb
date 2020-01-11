@@ -56,12 +56,12 @@ class JoinConversation extends Component {
       <Consumer>
         {context => (
           <Page
-            className="column bg-grey align-center"
+            className="column bg-grey align-center py32"
             description="Vent with strangers :)"
             keywords="Vent, strangers, help"
             title="Find Stranger"
           >
-            <Container className="container large column mt16">
+            <Container className="container large column">
               <Text className="py16" text="Vent with a Stranger" type="h4" />
               {context.user && !conversation && (
                 <Container className="center-container">
