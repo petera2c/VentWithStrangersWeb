@@ -9,7 +9,7 @@ import { GIProvider } from "./context";
 import "./theme.css";
 
 // font is marmelad for favicon
-require("../public/favicon.ico");
+require("../static/favicon.ico");
 
 const rootElement = document.getElementById("root");
 

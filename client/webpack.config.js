@@ -9,6 +9,7 @@ module.exports = (env, argv) => {
   if (argv.mode === "development")
     plugins = [
       new HtmlWebpackPlugin({ template: "./public/index.html" }),
+      new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /de|en/),
       new webpack.DefinePlugin({
         "process.env": {
           NODE_ENV: '"development"'
@@ -18,6 +19,7 @@ module.exports = (env, argv) => {
   else {
     plugins = [
       new HtmlWebpackPlugin({ template: "./public/index.html" }),
+      new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /de|en/),
       new CopyWebpackPlugin([{ from: "./static" }])
     ];
   }

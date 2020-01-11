@@ -21,17 +21,28 @@ const createSiteMap = () => {
 
     for (let index in problems) {
       const problem = problems[index];
-      siteMapString +=
-        "<url>\n  <loc>https://www.ventwithstrangers.com/" +
-        problem.title.replace(/ /g, "%20") +
+
+      let url =
+        "https://www.ventwithstrangers.com/" +
+        problem.title +
         "?" +
-        problem._id +
+        problem._id;
+      url = url.replace(/ /g, "%20");
+      url = url.replace(/</g, "&lt;");
+      url = url.replace(/>/g, "&gt;");
+      url = url.replace(/&/g, "&amp;");
+      url = url.replace(/'/g, "&apos;");
+      url = url.replace(/""/g, "&quot;");
+
+      siteMapString +=
+        "<url>\n  <loc>" +
+        url +
         "</loc>\n  <lastmod>" +
         new moment(problem.updatedAt).format("YYYY-MM-DD") +
         "</lastmod>\n  <changefreq>yearly\n</changefreq>  <priority>0.4</priority>\n</url>\n\n";
     }
     siteMapString += "</urlset>";
-    fs.writeFileSync(`${__dirname}/client/public/sitemap.xml`, siteMapString);
+    fs.writeFileSync(`${__dirname}/client/static/sitemap.xml`, siteMapString);
   });
 };
 
