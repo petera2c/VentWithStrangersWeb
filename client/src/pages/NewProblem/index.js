@@ -41,7 +41,7 @@ class NewProblemPage extends Component {
             className="column align-center bg-grey py32"
             description="Problem"
             keywords=""
-            title="Problem"
+            title="Post Problem"
           >
             <Container className="container large ov-visible column py16">
               <Text

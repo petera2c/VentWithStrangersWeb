@@ -17,31 +17,28 @@ import Problem from "../../components/Problem";
 
 import { capitolizeFirstChar } from "../../util";
 
-class TrendingPage extends Component {
+class Problems extends Component {
   render() {
     const { problems } = this.context;
     const { location } = this.props;
     const { pathname } = location;
+
+    let title = capitolizeFirstChar(pathname.slice(1, pathname.length));
+
+    if (!pathname || pathname === "/") title = "Trending";
 
     return (
       <Consumer>
         {context => (
           <Page
             className="justify-center align-start bg-grey py32"
-            description="Home"
+            description={title}
             keywords=""
-            title="Home"
+            title={title}
           >
             <Container className="container large column align-center pa16 mr32">
               <Container className="x-fill justify-between mb16">
-                <Text
-                  className=""
-                  text={
-                    capitolizeFirstChar(pathname.slice(1, pathname.length)) +
-                    " Problems"
-                  }
-                  type="h4"
-                />
+                <Text className="" text={title + " Problems"} type="h4" />
                 <Filters />
               </Container>
 
@@ -71,6 +68,6 @@ class TrendingPage extends Component {
   }
 }
 
-TrendingPage.contextType = ExtraContext;
+Problems.contextType = ExtraContext;
 
-export default withRouter(TrendingPage);
+export default withRouter(Problems);

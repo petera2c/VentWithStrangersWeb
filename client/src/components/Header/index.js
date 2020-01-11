@@ -9,6 +9,7 @@ import { faRedo } from "@fortawesome/free-solid-svg-icons/faRedo";
 import { faPen } from "@fortawesome/free-solid-svg-icons/faPen";
 import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
 import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 
 import Consumer, { ExtraContext } from "../../context";
 
@@ -20,7 +21,7 @@ import Button from "../views/Button";
 import LoginModal from "../modals/Login";
 import SignUpModal from "../modals/SignUp";
 
-import { isPageActive } from "../../util";
+import { capitolizeFirstChar, isPageActive } from "../../util";
 
 class Header extends Component {
   state = {
@@ -126,8 +127,22 @@ class Header extends Component {
               />
             )}
             {context.user && context.user.password && (
-              <Link className="absolute right-0 mr16" to="/activity">
-                <Text text={`Hello, ${context.user.displayName}`} type="p" />
+              <Link className="absolute right-0 mr32" to="/activity">
+                <Container className="full-center">
+                  <Text
+                    className="round-icon bg-blue white mr8"
+                    text={capitolizeFirstChar(context.user.displayName[0])}
+                    type="h6"
+                  />
+                  <Text
+                    className="mr8"
+                    text={`Hello, ${capitolizeFirstChar(
+                      context.user.displayName
+                    )}`}
+                    type="p"
+                  />
+                  <FontAwesomeIcon icon={faChevronDown} />
+                </Container>
               </Link>
             )}
             {loginModalBoolean && (

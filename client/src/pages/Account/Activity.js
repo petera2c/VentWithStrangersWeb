@@ -81,8 +81,6 @@ class ActivitySection extends Component {
     const { comments, commentsSection, postsSection } = this.state;
     const { problems } = this.context;
 
-    console.log(comments);
-
     return (
       <Container className="container large column pa16">
         <Text className="mb16" text="Activity" type="h4" />

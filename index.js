@@ -15,6 +15,7 @@ const schedule = require("node-schedule");
 const { createSiteMap, getMetaInformation } = require("./util");
 
 mongoose.set("useCreateIndex", true);
+
 const allowCrossDomain = (req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
@@ -76,7 +77,7 @@ if (process.env.NODE_ENV === "production") {
 
       getMetaInformation(req.originalUrl, metaObj => {
         const { metaDescription, metaImage, metaTitle } = metaObj;
-
+        console.log(metaObj);
         data = data.replace(/\$OG_TITLE/g, metaTitle);
         data = data.replace(/\$OG_DESCRIPTION/g, metaDescription);
         data = data.replace(/\$OG_IMAGE/g, metaImage);

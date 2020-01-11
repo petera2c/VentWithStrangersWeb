@@ -37,16 +37,12 @@ class Page extends Component {
     } = this.props; // Variables
     const activePage = location.pathname;
 
-    const { style, title, description, image } = this.checkPropsVariables(
+    const { description, image, style, title } = this.checkPropsVariables(
       activePage
     );
 
     return (
-      <Container
-        className="screen-container"
-        style={style}
-        testMode={testMode}
-      >
+      <Container className="screen-container" style={style} testMode={testMode}>
         <Helmet>
           <meta charSet="utf-8" />
           <title>{`${title} | VentWithStrangers`}</title>

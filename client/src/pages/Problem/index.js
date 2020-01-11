@@ -43,13 +43,19 @@ class ProblemPage extends Component {
   }
   render() {
     const { problems } = this.context;
+    let title = "";
+    let description = "";
+
+    if (problems && problems[0] && problems[0].title) title = problems[0].title;
+    if (problems && problems[0] && problems[0].description)
+      description = problems[0].description;
 
     return (
       <Page
         className="justify-center align-start bg-grey py32"
-        description="Problem"
+        description={description}
         keywords=""
-        title="Problem"
+        title={title}
       >
         {problems && (
           <Container className="container large column">

@@ -58,8 +58,8 @@ class JoinConversation extends Component {
           <Page
             className="column bg-grey align-center py32"
             description="Vent with strangers :)"
-            keywords="Vent, strangers, help"
-            title="Find Stranger"
+            keywords="vent, strangers, help"
+            title="Vent or Help Now"
           >
             <Container className="container large column">
               <Text className="py16" text="Vent with a Stranger" type="h4" />
