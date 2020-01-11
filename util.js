@@ -32,7 +32,11 @@ const createSiteMap = () => {
     }
     siteMapString += "</urlset>";
     //fs.writeFileSync(`${__dirname}/client/public/sitemap.xml`, siteMapString);
-    fs.writeFileSync(`${__dirname}/sitemap.xml`, siteMapString);
+    //fs.writeFileSync(`${__dirname}/sitemap.xml`, siteMapString);
+    fs.writeFile(`${__dirname}/sitemap.xml`, siteMapString, err => {
+      if (err) console.log(err);
+      console.log("File is created successfully.");
+    });
   });
 };
 
