@@ -31,7 +31,8 @@ const createSiteMap = () => {
         "</lastmod>\n  <changefreq>yearly\n  <priority>0.4</priority>\n</url>\n\n";
     }
     siteMapString += "</urlset>";
-    fs.writeFileSync(`${__dirname}/client/public/sitemap.xml`, siteMapString);
+    //fs.writeFileSync(`${__dirname}/client/public/sitemap.xml`, siteMapString);
+    fs.writeFileSync(`${__dirname}/sitemap.xml`, siteMapString);
   });
 };
 
