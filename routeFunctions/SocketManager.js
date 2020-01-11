@@ -1,7 +1,11 @@
 const { searchTags } = require("./tag");
 const { updateUser } = require("./user");
 
-const { commentProblem, getProblemComments } = require("./comment");
+const {
+  commentProblem,
+  getProblemComments,
+  getUsersComments
+} = require("./comment");
 
 const {
   createConversation,
@@ -54,6 +58,9 @@ module.exports = io => {
     );
     socket.on("get_users_posts", (dataObj, callback) =>
       getUsersPosts(dataObj, callback, socket)
+    );
+    socket.on("get_users_comments", (dataObj, callback) =>
+      getUsersComments(dataObj, callback, socket)
     );
   };
 };

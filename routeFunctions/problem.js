@@ -52,50 +52,6 @@ const addUserToObject = (callback, objects) => {
     );
   }
 };
-const getPopularProblems = (req, res) => {
-  const { tags = [] } = req.body;
-  const match = {};
-
-  if (tags.length !== 0)
-    match = { tags: { $elemMatch: { name: { $all: tags } } } };
-
-  Problem.aggregate(
-    getAggregate({ upVotes: -1 }, match, req.user._id),
-    (err, problems) => {
-      if (problems) {
-        if (problems && problems.length === 0) {
-          return returnProblemsFunction(undefined, [], res);
-        } else
-          return addUserToObject(
-            problems => returnProblemsFunction(err, problems, res),
-            problems
-          );
-      } else res.send({ success: false });
-    }
-  );
-};
-const getRecentProblems = (req, res) => {
-  const { tags = [] } = req.body;
-  const match = {};
-
-  if (tags.length !== 0)
-    match = { tags: { $elemMatch: { name: { $all: tags } } } };
-
-  Problem.aggregate(
-    getAggregate({ createdAt: -1 }, match, req.user._id),
-    (err, problems) => {
-      if (problems) {
-        if (problems && problems.length === 0) {
-          return returnProblemsFunction(undefined, [], res);
-        } else
-          return addUserToObject(
-            problems => returnProblemsFunction(err, problems, res),
-            problems
-          );
-      } else res.send({ success: false });
-    }
-  );
-};
 const getProblem = (id, callback, socket) => {
   Problem.aggregate(
     getAggregateSingle(socket.request.user._id, id),
@@ -113,15 +69,20 @@ const getProblem = (id, callback, socket) => {
     }
   );
 };
-const getTrendingProblems = (req, res) => {
-  const { tags = [] } = req.body;
-  const match = {};
 
-  if (tags.length !== 0)
-    match = { tags: { $elemMatch: { name: { $all: tags } } } };
+const getProblems = (req, res) => {
+  const { page, tags = [] } = req.body;
+  const match = {};
+  const sort = {};
+
+  if (page === "popular") sort.upVotes = -1;
+  else if (page === "recent") sort.createdAt = -1;
+  else if (page === "trending") sort.dailyUpvotes = -1;
+
+  if (tags.length !== 0) match.tags = { $elemMatch: { name: { $all: tags } } };
 
   Problem.aggregate(
-    getAggregate({ dailyUpvotes: -1 }, match, req.user._id),
+    getAggregate(sort, match, req.user._id),
     (err, problems) => {
       if (problems) {
         if (problems && problems.length === 0) {
@@ -135,7 +96,6 @@ const getTrendingProblems = (req, res) => {
     }
   );
 };
-
 const getUsersPosts = (dataObj, callback, socket) => {
   const { searchID } = dataObj;
 
@@ -260,10 +220,8 @@ const searchProblem = (searchPostString, callback) => {
 };
 module.exports = {
   addUserToObject,
-  getPopularProblems,
   getProblem,
-  getRecentProblems,
-  getTrendingProblems,
+  getProblems,
   getUsersPosts,
   likeProblem,
   saveProblem,

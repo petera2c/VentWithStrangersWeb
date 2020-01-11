@@ -40,20 +40,6 @@ class AccountPage extends Component {
           >
             {!search && (
               <Container className="x-25 column align-center bg-white px16 br8">
-                <Link className="x-fill" to="/account">
-                  <Container
-                    className={
-                      "grid-1 button-4 clickable x-fill align-center py16" +
-                      isPageActive("/account", pathname)
-                    }
-                  >
-                    <Container className="flex x-fill full-center">
-                      <FontAwesomeIcon icon={faUser} />
-                    </Container>
-                    <Text text="Account" type="h5" />
-                  </Container>
-                </Link>
-
                 <Link className="x-fill" to={"/activity" + search}>
                   <Container
                     className={
@@ -65,6 +51,20 @@ class AccountPage extends Component {
                       <FontAwesomeIcon icon={faChartNetwork} />
                     </Container>
                     <Text text="Activity" type="h5" />
+                  </Container>
+                </Link>
+
+                <Link className="x-fill" to="/account">
+                  <Container
+                    className={
+                      "grid-1 button-4 clickable x-fill align-center py16" +
+                      isPageActive("/account", pathname)
+                    }
+                  >
+                    <Container className="flex x-fill full-center">
+                      <FontAwesomeIcon icon={faUser} />
+                    </Container>
+                    <Text text="Account" type="h5" />
                   </Container>
                 </Link>
 

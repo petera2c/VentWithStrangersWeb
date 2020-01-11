@@ -126,7 +126,7 @@ class Header extends Component {
               />
             )}
             {context.user && context.user.password && (
-              <Link className="absolute right-0 mr16" to="/account">
+              <Link className="absolute right-0 mr16" to="/activity">
                 <Text text={`Hello, ${context.user.displayName}`} type="p" />
               </Link>
             )}

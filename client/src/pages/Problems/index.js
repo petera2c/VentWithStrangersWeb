@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
+
 import Consumer, { ExtraContext } from "../../context";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,9 +17,11 @@ import Problem from "../../components/Problem";
 
 import { capitolizeFirstChar } from "../../util";
 
-class RecentPage extends Component {
+class TrendingPage extends Component {
   render() {
     const { problems } = this.context;
+    const { location } = this.props;
+    const { pathname } = location;
 
     return (
       <Consumer>
@@ -30,7 +34,14 @@ class RecentPage extends Component {
           >
             <Container className="container large column align-center pa16 mr32">
               <Container className="x-fill justify-between mb16">
-                <Text className="" text="Recent Problems" type="h4" />
+                <Text
+                  className=""
+                  text={
+                    capitolizeFirstChar(pathname.slice(1, pathname.length)) +
+                    " Problems"
+                  }
+                  type="h4"
+                />
                 <Filters />
               </Container>
 
@@ -48,7 +59,7 @@ class RecentPage extends Component {
               )}
               {!problems && <LoadingHeart />}
               {problems && problems.length === 0 && (
-                <Text className="fw-400" text="No problems found." type="h4" />
+                <Text text="No problems found." type="h2" />
               )}
             </Container>
 
@@ -60,6 +71,6 @@ class RecentPage extends Component {
   }
 }
 
-RecentPage.contextType = ExtraContext;
+TrendingPage.contextType = ExtraContext;
 
-export default RecentPage;
+export default withRouter(TrendingPage);

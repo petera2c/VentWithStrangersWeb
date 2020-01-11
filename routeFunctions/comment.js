@@ -1,7 +1,25 @@
+const mongoose = require("mongoose");
 const Comment = require("../models/Comment");
 const Problem = require("../models/Problem");
 
 const { addUserToObject } = require("./problem");
+
+const getAggregate = (match, userID) => [
+  {
+    $match: match
+  },
+  {
+    $project: {
+      authorID: "$authorID",
+      createdAt: "$createdAt",
+      hasLiked: { $in: [userID, "$upVotes"] },
+      text: "$text",
+      upVotes: { $size: "$upVotes" }
+    }
+  },
+  { $sort: { createdAt: -1 } },
+  { $limit: 10 }
+];
 
 const commentProblem = (commentString, problemID, callback, socket) => {
   const userID = socket.request.user._id;
@@ -41,22 +59,7 @@ const getProblemComments = (problemID, callback, socket) => {
     let commentList = [];
 
     Comment.aggregate(
-      [
-        {
-          $match: { problemID: problem._id }
-        },
-        {
-          $project: {
-            authorID: "$authorID",
-            createdAt: "$createdAt",
-            hasLiked: { $in: [userID, "$upVotes.userID"] },
-            text: "$text",
-            upVotes: { $size: "$upVotes" }
-          }
-        },
-        { $sort: { createdAt: -1 } },
-        { $limit: 10 }
-      ],
+      getAggregate({ problemID: problem._id }, userID),
       (err, comments) => {
         if (comments && comments.length === 0)
           callback({ success: true, comments });
@@ -69,4 +72,26 @@ const getProblemComments = (problemID, callback, socket) => {
     );
   });
 };
-module.exports = { commentProblem, getProblemComments };
+
+const getUsersComments = (dataObj, callback, socket) => {
+  const { searchID } = dataObj;
+
+  Comment.aggregate(
+    getAggregate(
+      { authorID: mongoose.Types.ObjectId(searchID) },
+      socket.request.user._id
+    ),
+    (err, comments) => {
+      if (comments) {
+        if (comments.length === 0) callback({ comments, success: true });
+        else
+          addUserToObject(
+            comments => callback({ comments, success: true }),
+            comments
+          );
+      } else callback({ message: "Unable to get posts.", success: false });
+    }
+  );
+};
+
+module.exports = { commentProblem, getProblemComments, getUsersComments };

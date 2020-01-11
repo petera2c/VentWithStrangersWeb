@@ -14,6 +14,7 @@ import { faComment } from "@fortawesome/free-regular-svg-icons/faComment";
 import { faEllipsisV } from "@fortawesome/free-solid-svg-icons/faEllipsisV";
 
 import LoadingHeart from "../loaders/Heart";
+import Comment from "../Comment";
 
 import Container from "../containers/Container";
 import Button from "../views/Button";
@@ -193,58 +194,12 @@ class Problem extends Component {
         {displayCommentField && problem.commentsArray && (
           <Container className="column pl16 mb16">
             {problem.commentsArray.map((comment, index) => (
-              <Container
-                className="x-fill column clickable bg-white mt1"
+              <Comment
+                arrayLength={problem.commentsArray.length}
+                comment={comment}
                 key={index}
-                style={{
-                  borderTopLeftRadius: index === 0 ? "8px" : "",
-                  borderTopRightRadius: index === 0 ? "8px" : "",
-                  borderBottomLeftRadius:
-                    problem.commentsArray.length - 1 === index ? "8px" : "",
-                  borderBottomRightRadius:
-                    problem.commentsArray.length - 1 === index ? "8px" : ""
-                }}
-              >
-                <Container className="justify-between py16 pl32 pr16">
-                  <Container className="align-center">
-                    <Text
-                      className="round-icon bg-blue white mr8"
-                      text={capitolizeFirstChar(comment.author[0])}
-                      type="h6"
-                    />
-                    <Text
-                      text={capitolizeFirstChar(comment.author)}
-                      type="h5"
-                    />
-                  </Container>
-                  <Container className="mb8">
-                    <FontAwesomeIcon
-                      className="clickable grey-5 mr8"
-                      icon={faClock}
-                    />
-                    <Text
-                      className="grey-5"
-                      text={moment(comment.createdAt)
-                        .subtract(1, "minute")
-                        .fromNow()}
-                      type="p"
-                    />
-                  </Container>
-                </Container>
-                <Text className="px32" text={comment.text} type="p" />
-                {!previewMode && (
-                  <Container className="py16 px32">
-                    <FontAwesomeIcon
-                      className={`clickbale heart ${
-                        problem.hasLiked ? "red" : "grey-5"
-                      } mr4`}
-                      icon={comment.hasLiked ? faHeart2 : faHeart}
-                      onClick={e => {}}
-                    />
-                    <Text className="grey-5" text={comment.upVotes} type="p" />
-                  </Container>
-                )}
-              </Container>
+                index={index}
+              />
             ))}
           </Container>
         )}

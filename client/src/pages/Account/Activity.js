@@ -13,6 +13,7 @@ import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
 
 import Problem from "../../components/Problem";
+import Comment from "../../components/Comment";
 
 import { ExtraContext } from "../../context";
 
@@ -20,6 +21,7 @@ import { capitolizeFirstChar } from "../../util";
 
 class ActivitySection extends Component {
   state = {
+    comments: undefined,
     commentsSection: false,
     postsSection: true
   };
@@ -27,7 +29,8 @@ class ActivitySection extends Component {
   componentDidMount() {
     this._ismounted = true;
 
-    this.getUserPosts();
+    this.getUsersPosts();
+    this.getUsersComments();
   }
   componentWillUnmount() {
     this._ismounted = false;
@@ -42,7 +45,7 @@ class ActivitySection extends Component {
     else return "";
   };
 
-  getUserPosts = () => {
+  getUsersPosts = () => {
     const { handleChange, notify, socket, user } = this.context;
     const { location } = this.props;
     const { search } = location;
@@ -58,19 +61,28 @@ class ActivitySection extends Component {
     });
   };
 
-  getUserComments = () => {
-    const { socket } = this.context;
+  getUsersComments = () => {
+    const { handleChange, notify, socket, user } = this.context;
     const { location } = this.props;
-    const search = { location };
-    const userID = location.search.slice(1, search.length);
+    const { search } = location;
 
-    //socket.emit("get_users_posts", { userID }, () => {});
+    let searchID = user._id;
+    if (search) searchID = location.search.slice(1, search.length);
+
+    socket.emit("get_users_comments", { searchID }, result => {
+      const { comments, message, success } = result;
+
+      if (success) this.handleChange({ comments });
+      else notify({ message, type: "danger" });
+    });
   };
 
   render() {
-    const { commentsSection, postsSection } = this.state;
+    const { comments, commentsSection, postsSection } = this.state;
     const { problems } = this.context;
-    let comments;
+
+    console.log(comments);
+
     return (
       <Container className="container large column pa16">
         <Text className="mb16" text="Activity" type="h4" />
@@ -96,7 +108,10 @@ class ActivitySection extends Component {
                 this.isActive(commentsSection)
               }
               onClick={() =>
-                this.handleChange({ postsSection: false, comments: true })
+                this.handleChange({
+                  postsSection: false,
+                  commentsSection: true
+                })
               }
             >
               <Text className="tac" text="Comments" type="h5" />
@@ -117,15 +132,20 @@ class ActivitySection extends Component {
         {commentsSection && (
           <Container className="x-fill column">
             {comments &&
-              comments.map((problem, index) => (
-                <Comment key={index} comment={comment} />
+              comments.map((comment, index) => (
+                <Comment
+                  arrayLength={comments.length}
+                  comment={comment}
+                  key={index}
+                  index={index}
+                />
               ))}
             {comments && comments.length === 0 && (
               <Text className="fw-400" text="No comments found." type="h4" />
             )}
           </Container>
         )}
-        {!problems && (
+        {(!problems || !comments) && (
           <Container className="x-fill full-center">
             <LoadingHeart />
           </Container>

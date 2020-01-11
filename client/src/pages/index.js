@@ -9,9 +9,7 @@ import Container from "../components/containers/Container";
 
 import AccountPage from "./Account";
 import SearchPage from "./Search";
-import TrendingPage from "./Trending";
-import PopularPage from "./Popular";
-import RecentPage from "./Recent";
+import ProblemsPage from "./Problems";
 import FindStrangerPage from "./FindStranger";
 import NewProblemPage from "./NewProblem";
 import ProblemPage from "./Problem";
@@ -82,10 +80,10 @@ class Routes extends Component {
               <Route path="/activity/" component={AccountPage} />
               <Route path="/settings/" component={AccountPage} exact />
               <Route path="/search/" component={SearchPage} />
-              <Route path="/trending/" component={TrendingPage} />
-              <Route path="/" component={TrendingPage} exact />
-              <Route path="/recent/" component={RecentPage} />
-              <Route path="/popular/" component={PopularPage} />
+              <Route path="/" component={ProblemsPage} exact />
+              <Route path="/trending/" component={ProblemsPage} />
+              <Route path="/recent/" component={ProblemsPage} />
+              <Route path="/popular/" component={ProblemsPage} />
               <Route path="/vent-to-a-stranger/" component={FindStrangerPage} />
               <Route path="/post-a-problem/" component={NewProblemPage} />
               <Route path="/problem/" component={ProblemPage} />

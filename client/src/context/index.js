@@ -66,14 +66,16 @@ class GIProvider extends Component {
     }
     if (tagTemp) tags.push(tagTemp);
 
-    axios.post("/api/problems" + pathname, { tags }).then(res => {
-      const { problems, success } = res.data;
+    axios
+      .post("/api/problems", { page: pathname.slice(1, pathname.length), tags })
+      .then(res => {
+        const { problems, success } = res.data;
 
-      if (success) this.handleChange({ problems });
-      else {
-        // TODO: handle error
-      }
-    });
+        if (success) this.handleChange({ problems });
+        else {
+          // TODO: handle error
+        }
+      });
   };
   updateProblem = (problem, problemIndex) => {
     let { problems } = this.state;
