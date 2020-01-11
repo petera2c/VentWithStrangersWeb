@@ -61,9 +61,7 @@ app.use(passport.session());
 
 require("./routeFunctions")(app); // Routes
 
-schedule.scheduleJob("0 0 * * *", () => {
-  createSiteMap();
-});
+createSiteMap();
 
 // If using production then if a route is not found in express we send user to react routes
 if (process.env.NODE_ENV === "production") {
@@ -77,7 +75,7 @@ if (process.env.NODE_ENV === "production") {
 
       getMetaInformation(req.originalUrl, metaObj => {
         const { metaDescription, metaImage, metaTitle } = metaObj;
-        console.log(metaObj);
+
         data = data.replace(/\$OG_TITLE/g, metaTitle);
         data = data.replace(/\$OG_DESCRIPTION/g, metaDescription);
         data = data.replace(/\$OG_IMAGE/g, metaImage);
