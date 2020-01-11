@@ -123,7 +123,7 @@ class Problem extends Component {
           {!previewMode && (
             <Container className="py16 px32">
               <FontAwesomeIcon
-                className="blue mr4"
+                className="clickable blue mr4"
                 icon={faComment}
                 onClick={e => {
                   e.stopPropagation();
@@ -134,7 +134,9 @@ class Problem extends Component {
               />
               <Text className="blue mr8" text={problem.commentsSize} type="p" />
               <FontAwesomeIcon
-                className={`heart ${problem.hasLiked ? "red" : "grey-5"} mr4`}
+                className={`clickable heart ${
+                  problem.hasLiked ? "red" : "grey-5"
+                } mr4`}
                 icon={problem.hasLiked ? faHeart2 : faHeart}
                 onClick={e => {
                   e.stopPropagation();

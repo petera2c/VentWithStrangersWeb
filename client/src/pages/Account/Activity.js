@@ -6,9 +6,13 @@ import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faChartNetwork } from "@fortawesome/pro-solid-svg-icons/faChartNetwork";
 import { faCog } from "@fortawesome/free-solid-svg-icons/faCog";
 
+import LoadingHeart from "../../components/loaders/Heart";
+
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
+
+import Problem from "../../components/Problem";
 
 import { ExtraContext } from "../../context";
 
@@ -16,8 +20,8 @@ import { capitolizeFirstChar } from "../../util";
 
 class ActivitySection extends Component {
   state = {
-    comments: false,
-    posts: true
+    commentsSection: false,
+    postsSection: true
   };
 
   componentDidMount() {
@@ -64,8 +68,9 @@ class ActivitySection extends Component {
   };
 
   render() {
-    const { comments, posts } = this.state;
-
+    const { commentsSection, postsSection } = this.state;
+    const { problems } = this.context;
+    let comments;
     return (
       <Container className="container large column pa16">
         <Text className="mb16" text="Activity" type="h4" />
@@ -74,10 +79,13 @@ class ActivitySection extends Component {
             <Container
               className={
                 "x-50 button-4 clickable full-center py16" +
-                this.isActive(posts)
+                this.isActive(postsSection)
               }
               onClick={() =>
-                this.handleChange({ comments: false, posts: true })
+                this.handleChange({
+                  commentsSection: false,
+                  postsSection: true
+                })
               }
             >
               <Text className="tac" text="Posts" type="h5" />
@@ -85,17 +93,43 @@ class ActivitySection extends Component {
             <Container
               className={
                 "x-50 button-4 clickable full-center py16" +
-                this.isActive(comments)
+                this.isActive(commentsSection)
               }
               onClick={() =>
-                this.handleChange({ posts: false, comments: true })
+                this.handleChange({ postsSection: false, comments: true })
               }
             >
               <Text className="tac" text="Comments" type="h5" />
             </Container>
           </Container>
         </Container>
-        <Container className="ov-hidden column bg-white mb16 br4"></Container>
+        {postsSection && (
+          <Container className="x-fill column">
+            {problems &&
+              problems.map((problem, index) => (
+                <Problem key={index} problem={problem} problemIndex={index} />
+              ))}
+            {problems && problems.length === 0 && (
+              <Text className="fw-400" text="No problems found." type="h4" />
+            )}
+          </Container>
+        )}
+        {commentsSection && (
+          <Container className="x-fill column">
+            {comments &&
+              comments.map((problem, index) => (
+                <Comment key={index} comment={comment} />
+              ))}
+            {comments && comments.length === 0 && (
+              <Text className="fw-400" text="No comments found." type="h4" />
+            )}
+          </Container>
+        )}
+        {!problems && (
+          <Container className="x-fill full-center">
+            <LoadingHeart />
+          </Container>
+        )}
       </Container>
     );
   }

@@ -98,7 +98,11 @@ class LoginPage extends Component {
                   onSubmit={e => e.preventDefault()}
                 >
                   <Container className="x-fill column px32 py16">
-                    <Text className="mb8" text="Email Address" type="h5" />
+                    <Text
+                      className="fw-400 mb8"
+                      text="Email Address"
+                      type="h5"
+                    />
                     <Input
                       className="py8 px16 mb8 br4"
                       value={email}
@@ -110,7 +114,7 @@ class LoginPage extends Component {
                       placeholder="Email"
                       required
                     />
-                    <Text className="mb8" text="Password" type="h5" />
+                    <Text className="fw-400 mb8" text="Password" type="h5" />
                     <Input
                       className="py8 px16 mb8 br4"
                       value={password}

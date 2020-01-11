@@ -62,13 +62,15 @@ const getPopularProblems = (req, res) => {
   Problem.aggregate(
     getAggregate({ upVotes: -1 }, match, req.user._id),
     (err, problems) => {
-      if (problems && problems.length === 0) {
-        return returnProblemsFunction(undefined, [], res);
-      } else
-        return addUserToObject(
-          problems => returnProblemsFunction(err, problems, res),
-          problems
-        );
+      if (problems) {
+        if (problems && problems.length === 0) {
+          return returnProblemsFunction(undefined, [], res);
+        } else
+          return addUserToObject(
+            problems => returnProblemsFunction(err, problems, res),
+            problems
+          );
+      } else res.send({ success: false });
     }
   );
 };
@@ -82,13 +84,15 @@ const getRecentProblems = (req, res) => {
   Problem.aggregate(
     getAggregate({ createdAt: -1 }, match, req.user._id),
     (err, problems) => {
-      if (problems && problems.length === 0) {
-        return returnProblemsFunction(undefined, [], res);
-      } else
-        return addUserToObject(
-          problems => returnProblemsFunction(err, problems, res),
-          problems
-        );
+      if (problems) {
+        if (problems && problems.length === 0) {
+          return returnProblemsFunction(undefined, [], res);
+        } else
+          return addUserToObject(
+            problems => returnProblemsFunction(err, problems, res),
+            problems
+          );
+      } else res.send({ success: false });
     }
   );
 };
@@ -143,7 +147,12 @@ const getUsersPosts = (dataObj, callback, socket) => {
     ),
     (err, problems) => {
       if (problems) {
-        callback({ problems, success: true });
+        if (problems.length === 0) callback({ problems, success: true });
+        else
+          addUserToObject(
+            problems => callback({ problems, success: true }),
+            problems
+          );
       } else callback({ message: "Unable to get posts.", success: false });
     }
   );

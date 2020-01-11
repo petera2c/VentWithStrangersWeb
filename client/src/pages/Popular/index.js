@@ -48,7 +48,7 @@ class PopularPage extends Component {
               )}
               {!problems && <LoadingHeart />}
               {problems && problems.length === 0 && (
-                <Text text="No problems found." type="h2" />
+                <Text className="fw-400" text="No problems found." type="h4" />
               )}
             </Container>
 

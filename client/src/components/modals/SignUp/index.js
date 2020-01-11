@@ -136,7 +136,11 @@ class SignUpModal extends Component {
                   onSubmit={e => e.preventDefault()}
                 >
                   <Container className="x-fill column px32 py16">
-                    <Text className="mb8" text="Display Name" type="h5" />
+                    <Text
+                      className="fw-400 mb8"
+                      text="Display Name"
+                      type="h5"
+                    />
                     <Input
                       className="py8 px16 mb8 br4"
                       value={displayName}
@@ -148,7 +152,11 @@ class SignUpModal extends Component {
                       placeholder="Bunny_Smith"
                       required
                     />
-                    <Text className="mb8" text="Email Address" type="h5" />
+                    <Text
+                      className="fw-400 mb8"
+                      text="Email Address"
+                      type="h5"
+                    />
                     <Input
                       className="py8 px16 mb8 br4"
                       value={email}
@@ -162,7 +170,11 @@ class SignUpModal extends Component {
                     />
                     <Container>
                       <Container className="fill-flex column mr16">
-                        <Text className="mb8" text="Password" type="h5" />
+                        <Text
+                          className="fw-400 mb8"
+                          text="Password"
+                          type="h5"
+                        />
                         <Input
                           className="py8 px16 mb8 br4"
                           value={password}
@@ -177,7 +189,7 @@ class SignUpModal extends Component {
                       </Container>
                       <Container className="fill-flex column">
                         <Text
-                          className="mb8"
+                          className="fw-400 mb8"
                           text="Confirm Password"
                           type="h5"
                         />
