@@ -94,4 +94,32 @@ const getUsersComments = (dataObj, callback, socket) => {
   );
 };
 
-module.exports = { commentProblem, getProblemComments, getUsersComments };
+const likeComment = (dataObj, callback, socket) => {
+  const userID = socket.request.user._id;
+  const { commentID } = dataObj;
+
+  Comment.findById(commentID, (err, comment) => {
+    if (comment) {
+      if (
+        comment.upVotes.find(
+          upVoteUserID => String(upVoteUserID) === String(userID)
+        )
+      )
+        callback({ message: "Already liked post.", success: false });
+      else {
+        comment.dailyUpvotes += 1;
+        comment.upVotes.unshift(userID);
+        comment.save((err, result) => {
+          callback({ success: true });
+        });
+      }
+    } else callback({ message: "Problem not found.", success: false });
+  });
+};
+
+module.exports = {
+  commentProblem,
+  getProblemComments,
+  getUsersComments,
+  likeComment
+};

@@ -1,4 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Nunito+Sans");
+.cool-colors {
+  background-color: #53f4ff;
+}
 
 :root {
   --blue-color: #2096f2;

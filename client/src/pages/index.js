@@ -33,7 +33,7 @@ class Routes extends Component {
         initSocket(stateObj => {
           handleChange({ ...stateObj, user });
           this.setState({ datebaseConnection: true });
-          this.getDataNeededForPage(this.props.location);
+          this.getDataNeededForPage(this.props.location, undefined, true);
         });
       } else {
         alert("Can't get user");
@@ -42,9 +42,17 @@ class Routes extends Component {
 
     this.unlisten = this.props.history.listen(this.getDataNeededForPage);
   }
-  getDataNeededForPage = (location, action) => {
+  getDataNeededForPage = (location, action, initialPageLoad) => {
     let { pathname, search } = location;
     const { getProblems, handleChange, socket } = this.context;
+
+    if (
+      pathname + search ===
+        this.props.location.pathname + this.props.location.search &&
+      !initialPageLoad
+    )
+      return;
+
     handleChange({ problems: undefined });
 
     search = search.slice(1, search.length);

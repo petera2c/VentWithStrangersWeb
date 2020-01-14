@@ -4,7 +4,8 @@ const { updateUser } = require("./user");
 const {
   commentProblem,
   getProblemComments,
-  getUsersComments
+  getUsersComments,
+  likeComment
 } = require("./comment");
 
 const {
@@ -45,6 +46,9 @@ module.exports = io => {
 
     socket.on("comment_problem", (commentString, problemID, callback) =>
       commentProblem(commentString, problemID, callback, socket)
+    );
+    socket.on("like_comment", (dateObj, callback) =>
+      likeComment(dateObj, callback, socket)
     );
     socket.on("get_problem_comments", (problemID, callback) =>
       getProblemComments(problemID, callback, socket)

@@ -37,23 +37,6 @@ class GIProvider extends Component {
     this.handleChange({ problems });
   };
 
-  notify = newNotification => {
-    newNotification.on = true;
-    this.setState({ notification: newNotification });
-    alert(newNotification.message);
-
-    if (newNotification.on) {
-      setTimeout(() => {
-        let { notification } = this.state;
-        notification.on = false;
-        this.setState({ notification });
-      }, 5000);
-    }
-  };
-  handleChange = stateObject => {
-    if (this._ismounted) this.setState(stateObject);
-  };
-
   getProblems = (pathname, search) => {
     let tagTemp = "";
     let tags = [];
@@ -76,6 +59,23 @@ class GIProvider extends Component {
           // TODO: handle error
         }
       });
+  };
+  handleChange = stateObject => {
+    if (this._ismounted) this.setState(stateObject);
+  };
+
+  notify = newNotification => {
+    newNotification.on = true;
+    this.setState({ notification: newNotification });
+    alert(newNotification.message);
+
+    if (newNotification.on) {
+      setTimeout(() => {
+        let { notification } = this.state;
+        notification.on = false;
+        this.setState({ notification });
+      }, 5000);
+    }
   };
   updateProblem = (problem, problemIndex) => {
     let { problems } = this.state;

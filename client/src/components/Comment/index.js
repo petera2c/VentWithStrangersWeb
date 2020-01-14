@@ -15,6 +15,7 @@ import Container from "../containers/Container";
 import Text from "../views/Text";
 
 import { capitolizeFirstChar } from "../../util";
+import { likeComment } from "./util";
 
 class Comment extends Component {
   render() {
@@ -61,7 +62,7 @@ class Comment extends Component {
               comment.hasLiked ? "red" : "grey-5"
             } mr4`}
             icon={comment.hasLiked ? faHeart2 : faHeart}
-            onClick={e => {}}
+            onClick={() => likeComment(this.context, comment, index)}
           />
           <Text className="grey-5" text={comment.upVotes} type="p" />
         </Container>
