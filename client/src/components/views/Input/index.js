@@ -14,7 +14,8 @@ class Input extends Component {
       min,
       max,
       name,
-      onChange,
+      onChange = () => {},
+      onClick = () => {},
       placeholder,
       required,
       tabIndex,
@@ -33,6 +34,7 @@ class Input extends Component {
         max={max}
         name={name}
         onChange={onChange}
+        onClick={onClick}
         placeholder={placeholder}
         required={required}
         tabIndex={tabIndex}

@@ -37,10 +37,10 @@ class AccountSection extends Component {
       } = settings;
 
       this.handleChange({
-        adultContent: true,
-        postCommented: true,
-        postLiked: true,
-        receiveEmails: true
+        adultContent,
+        postCommented,
+        postLiked,
+        receiveEmails
       });
     });
   }
@@ -64,8 +64,9 @@ class AccountSection extends Component {
       { adultContent, postCommented, postLiked, receiveEmails },
       result => {
         const { message, success } = result;
-        if (success) notify({ message, type: "danger" });
-        else this.handleChange({ somethingChanged: false });
+
+        if (success) this.handleChange({ somethingChanged: false });
+        else notify({ message, type: "danger" });
       }
     );
   };
@@ -96,7 +97,7 @@ class AccountSection extends Component {
             <Input
               className="mr8"
               defaultChecked={postLiked}
-              onChange={() =>
+              onClick={() =>
                 this.handleChange({
                   postLiked: !postLiked,
                   somethingChanged: true
@@ -114,7 +115,7 @@ class AccountSection extends Component {
             <Input
               className="mr8"
               defaultChecked={postCommented}
-              onChange={() =>
+              onClick={() =>
                 this.handleChange({
                   postCommented: !postCommented,
                   somethingChanged: true
@@ -132,7 +133,7 @@ class AccountSection extends Component {
             <Input
               className="mr8"
               defaultChecked={receiveEmails}
-              onChange={() =>
+              onClick={() =>
                 this.handleChange({
                   receiveEmails: !receiveEmails,
                   somethingChanged: true
@@ -155,7 +156,7 @@ class AccountSection extends Component {
             <Input
               className="mr8"
               defaultChecked={adultContent}
-              onChange={() =>
+              onClick={() =>
                 this.handleChange({
                   adultContent: !adultContent,
                   somethingChanged: true
