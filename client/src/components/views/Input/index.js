@@ -7,7 +7,9 @@ class Input extends Component {
     const {
       autoCapitalize,
       autoCorrect,
+      checked,
       className,
+      defaultChecked,
       id,
       min,
       max,
@@ -23,7 +25,9 @@ class Input extends Component {
       <input
         autoCapitalize={autoCapitalize}
         autoCorrect={autoCorrect}
+        checked={checked}
         className={className}
+        defaultChecked={defaultChecked}
         id={id}
         min={min}
         max={max}

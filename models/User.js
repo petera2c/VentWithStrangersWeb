@@ -10,6 +10,7 @@ const userSchema = new Schema(
     language: String,
     password: { type: String },
     recentTags: [{ name: String }],
+    settingsID: { require: true, type: Schema.Types.ObjectId, unique: true },
     timezone: String
   },
   {

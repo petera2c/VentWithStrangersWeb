@@ -27,7 +27,7 @@ class SignUpModal extends Component {
     const { notify } = this.context; // Functions
 
     if (user && user.password) {
-      history.push("/home");
+      history.push("/");
       notify({
         message: "You are already logged in!",
         type: "danger"
@@ -158,7 +158,7 @@ class SignUpModal extends Component {
                       type="h5"
                     />
                     <Input
-                      className="py8 px16 mb8 br4"
+                      className="py8 px16 br4"
                       value={email}
                       onChange={e =>
                         this.handleChange({ email: e.target.value })
@@ -168,8 +168,13 @@ class SignUpModal extends Component {
                       placeholder="bunnysmith@gmail.com"
                       required
                     />
-                    <Container>
-                      <Container className="fill-flex column mr16">
+                    <Text
+                      className="fw-400 mb8"
+                      text="(Your Email Address will never be shown to anyone.)"
+                      type="p"
+                    />
+                    <Container className="x-fill">
+                      <Container className="x-50 column pr8">
                         <Text
                           className="fw-400 mb8"
                           text="Password"
@@ -187,7 +192,7 @@ class SignUpModal extends Component {
                           required
                         />
                       </Container>
-                      <Container className="fill-flex column">
+                      <Container className="x-50 column pl8">
                         <Text
                           className="fw-400 mb8"
                           text="Confirm Password"

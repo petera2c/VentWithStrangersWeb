@@ -24,7 +24,7 @@ class Routes extends Component {
     datebaseConnection: false
   };
   componentDidMount() {
-    const { handleChange } = this.context;
+    const { handleChange, notify } = this.context;
 
     axios.get("/api/user").then(res => {
       const { success, user, message } = res.data;
@@ -36,7 +36,7 @@ class Routes extends Component {
           this.getDataNeededForPage(this.props.location, undefined, true);
         });
       } else {
-        alert("Can't get user");
+        notify({ message, type: "danger" });
       }
     });
 

@@ -24,6 +24,8 @@ const {
   searchProblem
 } = require("./problem");
 
+const { getSettings, saveSettings } = require("./settings");
+
 module.exports = io => {
   return socket => {
     socket.on("get_users_waiting", () => emitWaitingConversations(socket));
@@ -65,6 +67,11 @@ module.exports = io => {
     );
     socket.on("get_users_comments", (dataObj, callback) =>
       getUsersComments(dataObj, callback, socket)
+    );
+
+    socket.on("get_settings", callback => getSettings(callback, socket));
+    socket.on("save_settings", (dataObj, callback) =>
+      saveSettings(dataObj, callback, socket)
     );
   };
 };

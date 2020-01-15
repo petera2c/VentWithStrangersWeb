@@ -79,11 +79,11 @@ class NewProblemPage extends Component {
                     />
                   </Container>
                   <Container>
-                    <Container className="fill-flex column mb8">
+                    <Container className="flex-fill column mb8">
                       <Text className="fw-400 mb8" text="Gender" type="h5" />
-                      <Container className="fill-flex">
+                      <Container className="flex-fill">
                         <Text
-                          className={`fw-400 tac fill-flex clickable border-all large ${
+                          className={`fw-400 tac flex-fill clickable border-all large ${
                             gender === 0 ? "active blue" : ""
                           } pa8`}
                           onClick={() => this.handleChange({ gender: 0 })}
@@ -101,7 +101,7 @@ class NewProblemPage extends Component {
                           Everyone
                         </Text>
                         <Text
-                          className={`fw-400 tac fill-flex clickable border-all large ${
+                          className={`fw-400 tac flex-fill clickable border-all large ${
                             gender === 1 ? "active blue" : ""
                           } pa8`}
                           onClick={() => this.handleChange({ gender: 1 })}
@@ -115,7 +115,7 @@ class NewProblemPage extends Component {
                           Female
                         </Text>
                         <Text
-                          className={`fw-400 tac fill-flex clickable border-all large ${
+                          className={`fw-400 tac flex-fill clickable border-all large ${
                             gender === 2 ? "active blue" : ""
                           } pa8`}
                           onClick={() => this.handleChange({ gender: 2 })}

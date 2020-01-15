@@ -20,9 +20,13 @@ import { capitolizeFirstChar, isPageActive } from "../../util";
 
 class AccountPage extends Component {
   componentDidMount() {
-    const { location } = this.props;
+    const { history, location } = this.props;
+    const { user } = this.context;
+
     let search = { location };
     search = location.search.slice(1, search.length);
+
+    if (!search && !user.password) history.push("/");
   }
 
   render() {

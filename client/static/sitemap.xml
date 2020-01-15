@@ -42,25 +42,4 @@
   <priority>0.9</priority>
 </url>
 
-<url>
-  <loc>https://www.ventwithstrangers.com/test?5e18104ca2b4fca4942d699d</loc>
-  <lastmod>2020-01-14</lastmod>
-  <changefreq>yearly
-</changefreq>  <priority>0.4</priority>
-</url>
-
-<url>
-  <loc>https://www.ventwithstrangers.com/hello%20world?5e18aef5a46135aeb8ee264a</loc>
-  <lastmod>2020-01-14</lastmod>
-  <changefreq>yearly
-</changefreq>  <priority>0.4</priority>
-</url>
-
-<url>
-  <loc>https://www.ventwithstrangers.com/mi%20ex%20novio%20es%20demasiado%20malo!!!!!!!!!!!!!!!?5e1a86d6c617b700150627b3</loc>
-  <lastmod>2020-01-14</lastmod>
-  <changefreq>yearly
-</changefreq>  <priority>0.4</priority>
-</url>
-
 </urlset>

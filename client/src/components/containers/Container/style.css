@@ -156,7 +156,7 @@
 .ov-visible {
   overflow: visible;
 }
-.fill-flex {
+.flex-fill {
   flex: 1;
 }
 .reverse {

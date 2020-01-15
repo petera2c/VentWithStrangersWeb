@@ -82,10 +82,10 @@ class TagsModal extends Component {
           </Container>
           <Container className="x-fill column border-bottom large px32 py16">
             <Container className="justify-between align-center border-bottom mb16">
-              <Container className="fill-flex align-center">
+              <Container className="flex-fill align-center">
                 <FontAwesomeIcon icon={faSearch} />
                 <Input
-                  className="fill-flex no-border py8 px16 br4"
+                  className="flex-fill no-border py8 px16 br4"
                   onChange={event => this.searchTags(event.target.value)}
                   type="text"
                   placeholder="Search"
@@ -147,7 +147,7 @@ class TagsModal extends Component {
                     onClick={() => this.removeSelectedTag(index)}
                   >
                     <Text
-                      className="fill-flex tac fw-300 border-all blue active large px16 py8"
+                      className="flex-fill tac fw-300 border-all blue active large px16 py8"
                       style={{
                         marginRight: "1px",
                         borderTopLeftRadius: "4px",

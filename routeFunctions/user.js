@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt-nodejs");
 const passport = require("passport");
 
+const Settings = require("../models/Settings");
 const User = require("../models/User");
 
 const names = require("./names");
@@ -19,7 +20,6 @@ const login = (req, res, next) => {
           message =
             "Could not log you in! :( Please refresh the page and try again :)";
         }
-        console.log("jere");
         res.send({ success, user, message });
       });
     } else {
@@ -32,24 +32,35 @@ const randomLogin = (req, res, next) => {
   passport.authenticate("local-login", (err, user, message) => {
     const randomIndex = Math.floor(Math.random() * 1999);
 
+    const newSettings = new Settings({
+      adultContent: false,
+      postCommented: true,
+      postLiked: true,
+      receiveEmails: true
+    });
     const newUser = new User({
       displayName: names[randomIndex],
       language: "english",
+      settingsID: newSettings._id,
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
     });
-    newUser.save((err, savedUser) =>
-      req.logIn(savedUser, err2 => {
-        if (err || err2)
-          res.send({
-            success: false,
-            message:
-              "Could not log you in! :( Please refresh the page and try again :)"
-          });
-        else {
-          res.send({ success: true, user: savedUser });
-        }
-      })
-    );
+
+    newSettings.userID = newUser._id;
+    newSettings.save((err, savedSettings) => {
+      newUser.save((err2, savedUser) =>
+        req.logIn(savedUser, err3 => {
+          if (err || err2 || err3)
+            res.send({
+              success: false,
+              message:
+                "Could not log you in! :( Please refresh the page and try again :)"
+            });
+          else {
+            res.send({ success: true, user: savedUser });
+          }
+        })
+      );
+    });
   })(req, res, next);
 };
 

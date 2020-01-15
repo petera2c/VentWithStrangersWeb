@@ -21,7 +21,7 @@ class LoginPage extends Component {
     const { notify } = this.context; // Functions
 
     if (user && user.displayName && user.displayName.match(/[a-z]/i)) {
-      history.push("/home");
+      history.push("/");
       notify({
         message: "You are already logged in!",
         type: "danger"
