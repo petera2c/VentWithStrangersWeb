@@ -24,9 +24,8 @@ class AccountSection extends Component {
     somethingChanged: false
   };
   componentDidMount() {
-    this._ismounted = true;
-
     const { socket } = this.context;
+    this._ismounted = true;
 
     socket.emit("get_settings", result => {
       const { settings, success } = result;
@@ -49,13 +48,7 @@ class AccountSection extends Component {
     this._ismounted = false;
   }
   handleChange = stateObj => {
-    stateObj.somethingChanged = true;
-
-    console.log(this._ismounted);
-    if (this.ismounted) {
-      console.log("here");
-      this.setState(stateObj);
-    }
+    if (this._ismounted) this.setState(stateObj);
   };
   updateSettings = () => {
     const {
@@ -100,10 +93,15 @@ class AccountSection extends Component {
         >
           <Text className="blue bold mb16" text="Notifications" type="h6" />
           <Container className="mb8">
-            <input
+            <Input
               className="mr8"
               defaultChecked={postLiked}
-              onChange={() => this.handleChange({ postLiked: !postLiked })}
+              onChange={() =>
+                this.handleChange({
+                  postLiked: !postLiked,
+                  somethingChanged: true
+                })
+              }
               type="checkbox"
             />
             <Text
@@ -113,11 +111,14 @@ class AccountSection extends Component {
             />
           </Container>
           <Container className="mb16">
-            <input
+            <Input
               className="mr8"
               defaultChecked={postCommented}
               onChange={() =>
-                this.handleChange({ postCommented: !postCommented })
+                this.handleChange({
+                  postCommented: !postCommented,
+                  somethingChanged: true
+                })
               }
               type="checkbox"
             />
@@ -128,17 +129,20 @@ class AccountSection extends Component {
             />
           </Container>
           <Container className="mb16">
-            <input
+            <Input
               className="mr8"
               defaultChecked={receiveEmails}
               onChange={() =>
-                this.handleChange({ receiveEmails: !receiveEmails })
+                this.handleChange({
+                  receiveEmails: !receiveEmails,
+                  somethingChanged: true
+                })
               }
               type="checkbox"
             />
             <Text
               className=""
-              text="Receive very rare emails on important mental health issues"
+              text="Receive periodic emails on important issues"
               type="p"
             />
           </Container>
@@ -148,15 +152,22 @@ class AccountSection extends Component {
             type="h6"
           />
           <Container className="mb16">
-            <input
+            <Input
               className="mr8"
               defaultChecked={adultContent}
               onChange={() =>
-                this.handleChange({ adultContent: !adultContent })
+                this.handleChange({
+                  adultContent: !adultContent,
+                  somethingChanged: true
+                })
               }
               type="checkbox"
             />
-            <Text className="" text="View adult content" type="p" />
+            <Text
+              className=""
+              text="View sensitive/offensive content"
+              type="p"
+            />
           </Container>
           <Text
             className="mb16"

@@ -120,13 +120,13 @@ class SignUpModal extends Component {
               <Container className="x-fill column">
                 <Container className="x-fill full-center px32">
                   <Text className="x-fill tac border-bottom py16" type="p">
-                    Don't have an account?&nbsp;
+                    Already have an account?&nbsp;
                     <Text
                       className="clickable blue"
                       onClick={() => openLoginModal()}
                       type="span"
                     >
-                      Create One
+                      Login
                     </Text>
                   </Text>
                 </Container>
@@ -149,7 +149,7 @@ class SignUpModal extends Component {
                       }
                       type="text"
                       name="name"
-                      placeholder="Bunny_Smith"
+                      placeholder="Art Vandalay"
                       required
                     />
                     <Text
@@ -165,7 +165,7 @@ class SignUpModal extends Component {
                       }
                       name="email"
                       type="text"
-                      placeholder="bunnysmith@gmail.com"
+                      placeholder="artvandalay@gmail.com"
                       required
                     />
                     <Text

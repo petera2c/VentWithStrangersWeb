@@ -95,7 +95,7 @@ class AccountSection extends Component {
                   onChange={e =>
                     this.handleChange({ displayName: e.target.value })
                   }
-                  placeholder="batman360"
+                  placeholder="Art Vandalay"
                   type="text"
                   value={displayName}
                 />
@@ -108,7 +108,7 @@ class AccountSection extends Component {
                 <Input
                   className="no-border bg-grey-4 br4"
                   onChange={e => this.handleChange({ email: e.target.value })}
-                  placeholder="batman360@gmail.com"
+                  placeholder="artvandalay@gmail.com"
                   type="text"
                   value={email}
                 />
