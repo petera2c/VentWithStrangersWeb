@@ -18,8 +18,8 @@ class JoinConversation extends Component {
   state = {
     chatPartner: undefined,
     conversation: undefined,
-    conversationsWithListener: [],
-    conversationsWithVenter: [],
+    listenersWaiting: 0,
+    ventersWaiting: 0,
     listener: false,
     saving: true,
     venter: false
@@ -45,8 +45,8 @@ class JoinConversation extends Component {
     const {
       chatPartner,
       conversation,
-      conversationsWithListener,
-      conversationsWithVenter,
+      listenersWaiting,
+      ventersWaiting,
       listener,
       saving,
       venter
@@ -74,7 +74,7 @@ class JoinConversation extends Component {
                   >
                     Help a Stranger
                     <Text text="Listeners Waiting" type="p" />
-                    <Text text={conversationsWithListener.length} type="p" />
+                    <Text text={listenersWaiting} type="p" />
                   </Container>
                   <Container
                     className="column option-container pa64"
@@ -85,7 +85,7 @@ class JoinConversation extends Component {
                   >
                     Vent to a Stranger
                     <Text text="Venters Waiting" type="p" />
-                    <Text text={conversationsWithVenter.length} type="p" />
+                    <Text text={ventersWaiting} type="p" />
                   </Container>
                 </Container>
               )}

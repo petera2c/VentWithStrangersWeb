@@ -50,7 +50,7 @@ class Chat extends Component {
     socket.emit("send_message", { message, conversationID: conversation._id });
 
     messages.push({
-      author: user._id,
+      authorID: user._id,
       body: message
     });
 
@@ -70,8 +70,7 @@ class Chat extends Component {
     for (let index in messages) {
       let direction = "left";
       let message = messages[index];
-
-      if (message.author.toString() === user._id.toString())
+      if (message.authorID.toString() === user._id.toString())
         direction = "right";
       //					<div className="message-time">{new moment(message.createdAt).format("HH:mm")}</div>
 
@@ -115,9 +114,7 @@ class Chat extends Component {
               </Container>
             )}
             {chatPartner && (
-              <Container>
-                You are chatting with {chatPartner.displayName}
-              </Container>
+              <Container>You are chatting with {chatPartner}</Container>
             )}
             {conversation.venter && conversation.listener && (
               <div className="send-message-container">

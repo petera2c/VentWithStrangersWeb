@@ -9,7 +9,6 @@ const {
 } = require("./comment");
 
 const {
-  createConversation,
   emitWaitingConversations,
   findConversation,
   leaveChat,
@@ -29,8 +28,8 @@ const { getSettings, saveSettings } = require("./settings");
 module.exports = io => {
   return socket => {
     socket.on("get_users_waiting", () => emitWaitingConversations(socket));
-    socket.on("find_conversation", dataObj =>
-      findConversation(dataObj, socket)
+    socket.on("find_conversation", (dataObj, callback) =>
+      findConversation(dataObj, callback, socket)
     );
 
     socket.on("send_message", dataObj => sendMessage(dataObj, socket));
