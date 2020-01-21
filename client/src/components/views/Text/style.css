@@ -17,6 +17,10 @@
   color: var(--grey-color-1);
   fill: var(--grey-color-1);
 }
+.grey-3 {
+  color: var(--grey-color-3);
+  fill: var(--grey-color-3);
+}
 .grey-5 {
   color: var(--grey-color-5);
 }
@@ -25,6 +29,9 @@
 }
 .grey-9 {
   color: var(--grey-color-9);
+}
+.grey-11 {
+  color: var(--grey-color-11);
 }
 .ellipsis {
   text-overflow: ellipsis;

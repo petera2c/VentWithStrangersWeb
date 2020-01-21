@@ -4,9 +4,14 @@ import axios from "axios";
 
 import Consumer, { ExtraContext } from "../../context";
 
-import Container from "../containers/Container";
-import Text from "../views/Text";
 import SmallLoader from "../notifications/SmallLoader";
+
+import Container from "../containers/Container";
+
+import Button from "../views/Button";
+import Text from "../views/Text";
+
+import { capitolizeFirstChar } from "../../util";
 
 import "./style.css";
 
@@ -63,33 +68,51 @@ class Chat extends Component {
 
   render() {
     const { message, messages } = this.state;
-    const { chatPartner, conversation } = this.props;
+    const { chatPartner = "jason", conversation } = this.props;
     const { user } = this.context;
+    //					<div className="message-time">{new moment(message.createdAt).format("HH:mm")}</div>
 
     let messageDivs = [];
     for (let index in messages) {
-      let direction = "left";
-      let message = messages[index];
+      const message = messages[index];
       if (message.authorID.toString() === user._id.toString())
-        direction = "right";
-      //					<div className="message-time">{new moment(message.createdAt).format("HH:mm")}</div>
-
-      messageDivs.push(
-        <div
-          className={"message-container " + direction}
-          key={index + "message"}
-        >
-          <div className="message-body">{message.body}</div>
-        </div>
-      );
+        messageDivs.push(
+          <Container className="x-fill justify-end" key={index}>
+            <Container className="message-container bg-blue white px16 py8 mb8 br4">
+              {message.body}
+            </Container>
+          </Container>
+        );
+      else
+        messageDivs.push(
+          <Container className="x-fill wrap" key={index}>
+            <Container className="message-container grey-1 bg-grey-10 px16 py8 mb8 br4">
+              {message.body}
+            </Container>
+          </Container>
+        );
     }
 
     return (
       <Consumer>
         {context => (
-          <div className="chat-container">
+          <Container
+            className="column full-center bg-white ov-hidden br4"
+            style={{ width: "50vw", height: "80vh" }}
+          >
+            {chatPartner && (
+              <Container className="x-fill border-bottom pa16">
+                <Text
+                  className="fw-400"
+                  text={`You are chatting with ${capitolizeFirstChar(
+                    chatPartner
+                  )}`}
+                  type="h5"
+                />
+              </Container>
+            )}
             {conversation.venter && conversation.listener && (
-              <div className="messages-container">
+              <Container className="column x-fill flex-fill ov-auto pa16">
                 {messageDivs}
                 <div
                   style={{ float: "left", clear: "both" }}
@@ -97,7 +120,7 @@ class Chat extends Component {
                     this.messagesEnd = el;
                   }}
                 />
-              </div>
+              </Container>
             )}
             {(!conversation.venter || !conversation.listener) && (
               <Container className="column full-center">
@@ -113,24 +136,29 @@ class Chat extends Component {
                 />
               </Container>
             )}
-            {chatPartner && (
-              <Container>You are chatting with {chatPartner}</Container>
-            )}
             {conversation.venter && conversation.listener && (
-              <div className="send-message-container">
+              <Container
+                className="x-fill align-center border-top pr16"
+                style={{
+                  minHeight: "80px"
+                }}
+              >
                 <textarea
-                  className="send-message-textarea"
+                  className="send-message-textarea light-scrollbar pa16"
                   onChange={event =>
                     this.handleChange({ message: event.target.value })
                   }
+                  placeholder="Type a helpful message here..."
                   value={message}
                 />
-                <button className="send-message" onClick={this.sendMessage}>
-                  Send
-                </button>
-              </div>
+                <Button
+                  className="button-2 px32 py8 br4"
+                  onClick={this.sendMessage}
+                  text="Send"
+                />
+              </Container>
             )}
-          </div>
+          </Container>
         )}
       </Consumer>
     );

@@ -31,11 +31,24 @@ const findConversation = (object, callback, socket) => {
       Conversation.findById(
         chatQueuePerson.conversationID,
         (err, conversation) => {
-          conversation[type] = userID;
-          conversation.save((err, conversation) => {
-            emitWaitingConversations(socket);
-            joinRoom(conversation, socket);
-          });
+          User.findById(
+            chatQueuePerson.userID,
+            { displayName: 1 },
+            (err, chatPartner) => {
+              if (chatPartner) {
+                conversation[type] = userID;
+                conversation.save((err, conversation) => {
+                  emitWaitingConversations(socket);
+                  joinRoom(
+                    conversation,
+                    socket,
+                    socket.request.user.displayName,
+                    chatPartner.displayName
+                  );
+                });
+              }
+            }
+          );
         }
       );
     } else {
@@ -55,16 +68,21 @@ const findConversation = (object, callback, socket) => {
     .limit(1);
 };
 
-const joinRoom = (conversation, socket) => {
+const joinRoom = (
+  conversation,
+  socket,
+  myDisplayName,
+  chatPartnerDisplayName
+) => {
   socket.leaveAll();
   socket.join(conversation._id);
 
   socket.emit("user_joined_chat", {
-    chatPartner: "chat1DisplayName",
+    chatPartner: chatPartnerDisplayName,
     conversation
   });
   socket.to(conversation._id).emit("user_joined_chat", {
-    chatPartner: "chat2DisplayName",
+    chatPartner: myDisplayName,
     conversation
   });
 };

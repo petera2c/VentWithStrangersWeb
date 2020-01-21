@@ -3,6 +3,11 @@ import axios from "axios";
 
 import Consumer, { ExtraContext } from "../../context";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+faWalkieTalkie;
+import { faHandsHelping } from "@fortawesome/pro-duotone-svg-icons/faHandsHelping";
+import { faWalkieTalkie } from "@fortawesome/pro-duotone-svg-icons/faWalkieTalkie";
+
 import Chat from "../../components/Chat/";
 import Loader from "../../components/notifications/Loader/";
 
@@ -56,36 +61,78 @@ class JoinConversation extends Component {
       <Consumer>
         {context => (
           <Page
-            className="column bg-grey align-center py32"
+            className="column bg-grey align-center py16"
             description="Vent with strangers :)"
             keywords="vent, strangers, help"
             title="Vent or Help Now"
           >
-            <Container className="container large column">
-              <Text className="py16" text="Vent with a Stranger" type="h4" />
+            <Container className="column">
+              <Text className="pa16" text="Vent with a Stranger" type="h4" />
               {context.user && !conversation && (
-                <Container className="center-container">
+                <Container className="wrap mt16">
                   <Container
-                    className="column option-container pa64"
+                    className="button-6 column bg-white container small mx16 br4"
                     onClick={() => {
                       this.handleChange({ conversation: true });
                       findConversation(context.socket, "listener");
                     }}
                   >
-                    Help a Stranger
-                    <Text text="Listeners Waiting" type="p" />
-                    <Text text={listenersWaiting} type="p" />
+                    <Container className="column x-fill flex-fill full-center border-bottom py64">
+                      <FontAwesomeIcon
+                        className="blue mb8"
+                        icon={faHandsHelping}
+                        size="2x"
+                      />
+                      <Text
+                        className="grey-11 fw-300 tac"
+                        text="Help a Stranger"
+                        type="h3"
+                      />
+                    </Container>
+                    <Container className="column x-fill full-center py16">
+                      <Text
+                        className="grey-3 fw-300 tac"
+                        text="Listeners Waiting"
+                        type="h5"
+                      />
+                      <Text
+                        className="grey-5 tac"
+                        text={listenersWaiting + " People"}
+                        type="p"
+                      />
+                    </Container>
                   </Container>
                   <Container
-                    className="column option-container pa64"
+                    className="button-6 column bg-white container small mx16 br4"
                     onClick={() => {
                       this.handleChange({ conversation: true });
                       findConversation(context.socket, "venter");
                     }}
                   >
-                    Vent to a Stranger
-                    <Text text="Venters Waiting" type="p" />
-                    <Text text={ventersWaiting} type="p" />
+                    <Container className="column x-fill flex-fill full-center border-bottom py64">
+                      <FontAwesomeIcon
+                        className="blue mb8"
+                        icon={faWalkieTalkie}
+                        size="2x"
+                      />
+                      <Text
+                        className="grey-11 fw-300 tac"
+                        text="Vent to a Stranger"
+                        type="h3"
+                      />
+                    </Container>
+                    <Container className="column x-fill full-center py16">
+                      <Text
+                        className="grey-3 fw-300 tac"
+                        text="Venters Waiting"
+                        type="h5"
+                      />
+                      <Text
+                        className="grey-5 tac"
+                        text={ventersWaiting + " People"}
+                        type="p"
+                      />
+                    </Container>
                   </Container>
                 </Container>
               )}

@@ -10,9 +10,11 @@
   color: var(--four-blue-color);
 }
 .button-1:hover {
+  cursor: pointer;
   text-decoration: underline;
 }
 .button-2 {
+  cursor: pointer;
   color: var(--blue-color);
   border: 1px solid var(--blue-color);
 }
@@ -21,6 +23,7 @@
   background-color: var(--blue-color);
 }
 .button-3 {
+  cursor: pointer;
   color: var(--grey-color-1);
   border-bottom: 2px solid transparent;
 }
@@ -31,6 +34,7 @@
 }
 
 .button-4 {
+  cursor: pointer;
   color: var(--grey-color-1);
   border-bottom: 1px solid var(--grey-color-7);
 }
@@ -40,6 +44,7 @@
   border-color: var(--blue-color);
 }
 .button-5 {
+  cursor: pointer;
   background-color: var(--blue-color);
   border: 1px solid transparent;
   color: var(--white-color);
@@ -47,6 +52,15 @@
 .button-5:hover {
   background-color: var(--blue-color);
   border-color: var(--blue-color);
+}
+.button-6 {
+  cursor: pointer;
+  border: 4px solid transparent;
+}
+.button-6:hover,
+.button-6:hover h3 {
+  border-color: var(--blue-color);
+  color: var(--blue-color) !important;
 }
 .cancel {
   color: var(--grey-color-1);
