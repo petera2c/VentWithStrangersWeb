@@ -21,7 +21,7 @@ import "./style.css";
 class JoinConversation extends Component {
   state = {
     chatPartner: undefined,
-    conversation: true,
+    conversation: false,
     listenersWaiting: 0,
     ventersWaiting: 0,
     listener: false,
