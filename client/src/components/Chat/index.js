@@ -97,7 +97,7 @@ class Chat extends Component {
         {context => (
           <Container
             className="column full-center bg-white ov-hidden br4"
-            style={{ width: "50vw", height: "80vh" }}
+            style={{ width: "50vw" }}
           >
             {chatPartner && (
               <Container className="x-fill border-bottom pa16">

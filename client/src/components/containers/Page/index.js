@@ -42,7 +42,11 @@ class Page extends Component {
     );
 
     return (
-      <Container className="screen-container" style={style} testMode={testMode}>
+      <Container
+        className={"x-fill flex-fill " + className}
+        style={style}
+        testMode={testMode}
+      >
         <Helmet>
           <meta charSet="utf-8" />
           <title>{`${title} | VentWithStrangers`}</title>
@@ -54,7 +58,7 @@ class Page extends Component {
           <meta property="og:image" content={image} />
         </Helmet>
 
-        <Container className={"x-fill " + className}>{children}</Container>
+        {children}
       </Container>
     );
   }

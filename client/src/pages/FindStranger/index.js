@@ -21,7 +21,7 @@ import "./style.css";
 class JoinConversation extends Component {
   state = {
     chatPartner: undefined,
-    conversation: false,
+    conversation: true,
     listenersWaiting: 0,
     ventersWaiting: 0,
     listener: false,
@@ -61,14 +61,14 @@ class JoinConversation extends Component {
       <Consumer>
         {context => (
           <Page
-            className="column bg-grey align-center py16"
+            className="bg-grey justify-center py32"
             description="Vent with strangers :)"
             keywords="vent, strangers, help"
             title="Vent or Help Now"
           >
             <Container className="column">
               <Text
-                className="py16"
+                className="pb16"
                 text={
                   conversation
                     ? conversation.listener === user._id
@@ -147,7 +147,7 @@ class JoinConversation extends Component {
                 </Container>
               )}
               {conversation && (
-                <Container className="">
+                <Container className="flex-fill">
                   <Chat chatPartner={chatPartner} conversation={conversation} />
                 </Container>
               )}

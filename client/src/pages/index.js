@@ -86,7 +86,7 @@ class Routes extends Component {
     return (
       <Consumer>
         {context => (
-          <Container className="column full-screen">
+          <Container className="screen-container column">
             <Header />
             <Switch>
               <Route path="/account/" component={AccountPage} exact />

@@ -7,9 +7,6 @@
   transition: all 0.2s ease;
 }
 
-.full-screen {
-  min-height: 100vh;
-}
 .absolute {
   position: absolute;
 }
