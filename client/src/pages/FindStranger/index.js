@@ -9,7 +9,6 @@ import { faHandsHelping } from "@fortawesome/pro-duotone-svg-icons/faHandsHelpin
 import { faWalkieTalkie } from "@fortawesome/pro-duotone-svg-icons/faWalkieTalkie";
 
 import Chat from "../../components/Chat/";
-import Loader from "../../components/notifications/Loader/";
 
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
@@ -22,7 +21,7 @@ import "./style.css";
 class JoinConversation extends Component {
   state = {
     chatPartner: undefined,
-    conversation: undefined,
+    conversation: false,
     listenersWaiting: 0,
     ventersWaiting: 0,
     listener: false,
@@ -67,11 +66,11 @@ class JoinConversation extends Component {
             title="Vent or Help Now"
           >
             <Container className="column">
-              <Text className="pa16" text="Vent with a Stranger" type="h4" />
+              <Text className="py16" text="Vent with a Stranger" type="h4" />
               {context.user && !conversation && (
                 <Container className="wrap mt16">
                   <Container
-                    className="button-6 column bg-white container small mx16 br4"
+                    className="button-6 column bg-white container small mr32 br4"
                     onClick={() => {
                       this.handleChange({ conversation: true });
                       findConversation(context.socket, "listener");

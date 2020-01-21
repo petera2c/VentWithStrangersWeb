@@ -4,7 +4,7 @@ import axios from "axios";
 
 import Consumer, { ExtraContext } from "../../context";
 
-import SmallLoader from "../notifications/SmallLoader";
+import LoadingHeart from "../loaders/Heart";
 
 import Container from "../containers/Container";
 
@@ -50,7 +50,7 @@ class Chat extends Component {
     const { socket, user } = this.context;
     const { conversation } = this.props;
 
-    if (!message) return;
+    if (!message || !conversation.venter || !conversation.listener) return;
 
     socket.emit("send_message", { message, conversationID: conversation._id });
 
@@ -68,9 +68,8 @@ class Chat extends Component {
 
   render() {
     const { message, messages } = this.state;
-    const { chatPartner = "jason", conversation } = this.props;
+    const { chatPartner, conversation } = this.props;
     const { user } = this.context;
-    //					<div className="message-time">{new moment(message.createdAt).format("HH:mm")}</div>
 
     let messageDivs = [];
     for (let index in messages) {
@@ -111,6 +110,15 @@ class Chat extends Component {
                 />
               </Container>
             )}
+            {!chatPartner && (
+              <Container className="x-fill border-bottom pa16">
+                <Text
+                  className="fw-400"
+                  text="Waiting Connection..."
+                  type="h5"
+                />
+              </Container>
+            )}
             {conversation.venter && conversation.listener && (
               <Container className="column x-fill flex-fill ov-auto pa16">
                 {messageDivs}
@@ -123,41 +131,45 @@ class Chat extends Component {
               </Container>
             )}
             {(!conversation.venter || !conversation.listener) && (
-              <Container className="column full-center">
-                <SmallLoader />
+              <Container className="column x-fill flex-fill full-center ov-auto pa16">
+                <LoadingHeart />
                 <Text
-                  className="tac"
+                  className="fw-400 tac blue"
                   text={`Looking for ${
                     conversation.listener
                       ? "someone who needs help"
                       : "someone to help you "
-                  }. Estimated wait time 5 minutes.`}
+                  }.`}
                   type="h4"
                 />
-              </Container>
-            )}
-            {conversation.venter && conversation.listener && (
-              <Container
-                className="x-fill align-center border-top pr16"
-                style={{
-                  minHeight: "80px"
-                }}
-              >
-                <textarea
-                  className="send-message-textarea light-scrollbar pa16"
-                  onChange={event =>
-                    this.handleChange({ message: event.target.value })
-                  }
-                  placeholder="Type a helpful message here..."
-                  value={message}
-                />
-                <Button
-                  className="button-2 px32 py8 br4"
-                  onClick={this.sendMessage}
-                  text="Send"
+                <Text
+                  className="fw-400 tac"
+                  text="Estimated wait time 5 minutes."
+                  type="h5"
                 />
               </Container>
             )}
+
+            <Container
+              className="x-fill align-center border-top pr16"
+              style={{
+                minHeight: "80px"
+              }}
+            >
+              <textarea
+                className="send-message-textarea light-scrollbar pa16"
+                onChange={event =>
+                  this.handleChange({ message: event.target.value })
+                }
+                placeholder="Type a helpful message here..."
+                value={message}
+              />
+              <Button
+                className="button-2 px32 py8 br4"
+                onClick={this.sendMessage}
+                text="Send"
+              />
+            </Container>
           </Container>
         )}
       </Consumer>

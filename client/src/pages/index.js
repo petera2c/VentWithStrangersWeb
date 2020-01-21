@@ -4,7 +4,7 @@ import { Route, Switch, withRouter } from "react-router-dom";
 
 import Consumer, { ExtraContext } from "../context";
 
-import Loader from "../components/notifications/Loader";
+import LoadingHeart from "../components/loaders/Heart";
 import Container from "../components/containers/Container";
 
 import AccountPage from "./Account";
@@ -21,7 +21,7 @@ import { initSocket } from "./util";
 
 class Routes extends Component {
   state = {
-    datebaseConnection: false
+    databaseConnection: false
   };
   componentDidMount() {
     const { handleChange, notify } = this.context;
@@ -32,7 +32,7 @@ class Routes extends Component {
       if (success) {
         initSocket(stateObj => {
           handleChange({ ...stateObj, user });
-          this.setState({ datebaseConnection: true });
+          this.setState({ databaseConnection: true });
           this.getDataNeededForPage(this.props.location, undefined, true);
         });
       } else {
@@ -74,9 +74,14 @@ class Routes extends Component {
   }
 
   render() {
-    const { datebaseConnection } = this.state;
+    const { databaseConnection } = this.state;
 
-    if (!datebaseConnection) return <Loader />;
+    if (!databaseConnection)
+      return (
+        <Container className="x-fill justify-end pr32">
+          <LoadingHeart />
+        </Container>
+      );
 
     return (
       <Consumer>
