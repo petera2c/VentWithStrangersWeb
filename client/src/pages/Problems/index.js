@@ -15,6 +15,7 @@ import HotTags from "../../components/HotTags";
 import Filters from "../../components/Filters";
 import Problem from "../../components/Problem";
 
+import { isMobileOrTablet } from "../../util";
 import { capitolizeFirstChar } from "../../util";
 
 class Problems extends Component {
@@ -22,6 +23,8 @@ class Problems extends Component {
     const { problems } = this.context;
     const { location } = this.props;
     const { pathname } = location;
+
+    console.log(isMobileOrTablet());
 
     let title = capitolizeFirstChar(pathname.slice(1, pathname.length));
 
@@ -44,6 +47,13 @@ class Problems extends Component {
 
               {problems && (
                 <Container className="x-fill column">
+                  {problems && problems.length === 0 && (
+                    <Text
+                      className="fw-400"
+                      text="No problems found."
+                      type="h4"
+                    />
+                  )}
                   {context.problems &&
                     context.problems.map((problem, index) => (
                       <Problem
@@ -55,9 +65,6 @@ class Problems extends Component {
                 </Container>
               )}
               {!problems && <LoadingHeart />}
-              {problems && problems.length === 0 && (
-                <Text text="No problems found." type="h2" />
-              )}
             </Container>
 
             <HotTags />
