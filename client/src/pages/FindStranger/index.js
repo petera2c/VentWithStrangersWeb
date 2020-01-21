@@ -55,6 +55,7 @@ class JoinConversation extends Component {
       saving,
       venter
     } = this.state;
+    const { user } = this.context;
 
     return (
       <Consumer>
@@ -66,7 +67,17 @@ class JoinConversation extends Component {
             title="Vent or Help Now"
           >
             <Container className="column">
-              <Text className="py16" text="Vent with a Stranger" type="h4" />
+              <Text
+                className="py16"
+                text={
+                  conversation
+                    ? conversation.listener === user._id
+                      ? "Helping"
+                      : "Venting"
+                    : "Chat"
+                }
+                type="h4"
+              />
               {context.user && !conversation && (
                 <Container className="wrap mt16">
                   <Container
