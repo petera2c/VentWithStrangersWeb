@@ -18,7 +18,7 @@ export const addTagsToPage = (props, selectedTags) => {
   history.push(searchPathname);
 };
 
-export const isMobileOrTablet = () => window.screen.width > 940;
+export const isMobileOrTablet = () => window.screen.width < 940;
 
 export const isPageActive = (page, pathname) => {
   if (page === pathname) return " active ";

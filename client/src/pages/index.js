@@ -16,7 +16,9 @@ import ProblemPage from "./Problem";
 import NotFoundPage from "./NotFound";
 
 import Header from "../components/Header";
+import MobileHeader from "../components/Header/MobileHeader";
 
+import { isMobileOrTablet } from "../util";
 import { initSocket } from "./util";
 
 class Routes extends Component {
@@ -87,7 +89,8 @@ class Routes extends Component {
       <Consumer>
         {context => (
           <Container className="screen-container column">
-            <Header />
+            {!isMobileOrTablet() && <Header />}
+            {isMobileOrTablet() && <MobileHeader />}
             <Switch>
               <Route path="/account/" component={AccountPage} exact />
               <Route path="/activity/" component={AccountPage} />

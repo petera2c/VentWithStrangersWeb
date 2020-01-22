@@ -24,8 +24,13 @@
   position: sticky;
   z-index: 1;
 }
+
 .sticky.top-0 {
   top: 0;
+}
+.fixed {
+  position: fixed;
+  z-index: 1;
 }
 .float-left {
   float: left;

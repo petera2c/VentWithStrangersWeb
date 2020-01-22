@@ -24,8 +24,6 @@ class Problems extends Component {
     const { location } = this.props;
     const { pathname } = location;
 
-    console.log(isMobileOrTablet());
-
     let title = capitolizeFirstChar(pathname.slice(1, pathname.length));
 
     if (!pathname || pathname === "/") title = "Trending";
