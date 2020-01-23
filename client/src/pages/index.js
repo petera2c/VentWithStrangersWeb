@@ -15,9 +15,6 @@ import NewProblemPage from "./NewProblem";
 import ProblemPage from "./Problem";
 import NotFoundPage from "./NotFound";
 
-import Header from "../components/Header";
-import MobileHeader from "../components/Header/MobileHeader";
-
 import { isMobileOrTablet } from "../util";
 import { initSocket } from "./util";
 
@@ -88,24 +85,20 @@ class Routes extends Component {
     return (
       <Consumer>
         {context => (
-          <Container className="screen-container column">
-            {!isMobileOrTablet() && <Header />}
-            {isMobileOrTablet() && <MobileHeader />}
-            <Switch>
-              <Route path="/account/" component={AccountPage} exact />
-              <Route path="/activity/" component={AccountPage} />
-              <Route path="/settings/" component={AccountPage} exact />
-              <Route path="/search/" component={SearchPage} />
-              <Route path="/" component={ProblemsPage} exact />
-              <Route path="/trending/" component={ProblemsPage} />
-              <Route path="/recent/" component={ProblemsPage} />
-              <Route path="/popular/" component={ProblemsPage} />
-              <Route path="/vent-to-a-stranger/" component={FindStrangerPage} />
-              <Route path="/post-a-problem/" component={NewProblemPage} />
-              <Route path="/problem/" component={ProblemPage} />
-              <Route component={NotFoundPage} />
-            </Switch>
-          </Container>
+          <Switch>
+            <Route path="/account/" component={AccountPage} exact />
+            <Route path="/activity/" component={AccountPage} />
+            <Route path="/settings/" component={AccountPage} exact />
+            <Route path="/search/" component={SearchPage} />
+            <Route path="/" component={ProblemsPage} exact />
+            <Route path="/trending/" component={ProblemsPage} />
+            <Route path="/recent/" component={ProblemsPage} />
+            <Route path="/popular/" component={ProblemsPage} />
+            <Route path="/vent-to-a-stranger/" component={FindStrangerPage} />
+            <Route path="/post-a-problem/" component={NewProblemPage} />
+            <Route path="/problem/" component={ProblemPage} />
+            <Route component={NotFoundPage} />
+          </Switch>
         )}
       </Consumer>
     );

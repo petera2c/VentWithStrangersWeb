@@ -11,23 +11,135 @@ import Container from "../containers/Container";
 import Button from "../views/Button";
 import Text from "../views/Text";
 
-import { capitolizeFirstChar } from "../../util";
+import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
 
 import "./style.css";
 
 class Chat extends Component {
   state = {
     message: "",
-    messages: []
+    messages: [
+      {
+        _id: "5e29f4b71ee1f7629c788683",
+        conversationID: "5e29f4af1ee1f7629c78867f",
+        body: "asdfdf",
+        authorID: "5e29f4b11ee1f7629c788682",
+        createdAt: "2020-01-23T19:32:07.929Z",
+        updatedAt: "2020-01-23T19:32:07.929Z",
+        __v: 0
+      },
+      {
+        _id: "5e29f4b81ee1f7629c788684",
+        conversationID: "5e29f4af1ee1f7629c78867f",
+        body: "asdf",
+        authorID: "5e29f4b11ee1f7629c788682",
+        createdAt: "2020-01-23T19:32:08.724Z",
+        updatedAt: "2020-01-23T19:32:08.724Z",
+        __v: 0
+      },
+      {
+        _id: "5e29f4b81ee1f7629c788685",
+        conversationID: "5e29f4af1ee1f7629c78867f",
+        body: "\ndf",
+        authorID: "5e29f4b11ee1f7629c788682",
+        createdAt: "2020-01-23T19:32:08.935Z",
+        updatedAt: "2020-01-23T19:32:08.935Z",
+        __v: 0
+      },
+      {
+        _id: "5e29f4b91ee1f7629c788686",
+        conversationID: "5e29f4af1ee1f7629c78867f",
+        body: "\nfd",
+        authorID: "5e29f4b11ee1f7629c788682",
+        createdAt: "2020-01-23T19:32:09.136Z",
+        updatedAt: "2020-01-23T19:32:09.136Z",
+        __v: 0
+      },
+      {
+        _id: "5e29f4b91ee1f7629c788687",
+        conversationID: "5e29f4af1ee1f7629c78867f",
+        body: "\nfasd",
+        authorID: "5e29f4b11ee1f7629c788682",
+        createdAt: "2020-01-23T19:32:09.342Z",
+        updatedAt: "2020-01-23T19:32:09.342Z",
+        __v: 0
+      },
+      {
+        _id: "5e29f4b91ee1f7629c788688",
+        conversationID: "5e29f4af1ee1f7629c78867f",
+        body: "\nfasd",
+        authorID: "5e29f4b11ee1f7629c788682",
+        createdAt: "2020-01-23T19:32:09.629Z",
+        updatedAt: "2020-01-23T19:32:09.629Z",
+        __v: 0
+      },
+      {
+        _id: "5e29f4b91ee1f7629c788689",
+        conversationID: "5e29f4af1ee1f7629c78867f",
+        body: "\nf",
+        authorID: "5e29f4b11ee1f7629c788682",
+        createdAt: "2020-01-23T19:32:09.684Z",
+        updatedAt: "2020-01-23T19:32:09.684Z",
+        __v: 0
+      },
+      {
+        _id: "5e29f4b91ee1f7629c78868a",
+        conversationID: "5e29f4af1ee1f7629c78867f",
+        body: "\nsadf",
+        authorID: "5e29f4b11ee1f7629c788682",
+        createdAt: "2020-01-23T19:32:09.792Z",
+        updatedAt: "2020-01-23T19:32:09.792Z",
+        __v: 0
+      },
+      {
+        _id: "5e29f4b91ee1f7629c78868b",
+        conversationID: "5e29f4af1ee1f7629c78867f",
+        body: "\nasd",
+        authorID: "5e29f4b11ee1f7629c788682",
+        createdAt: "2020-01-23T19:32:09.951Z",
+        updatedAt: "2020-01-23T19:32:09.951Z",
+        __v: 0
+      },
+      {
+        _id: "5e29f4ba1ee1f7629c78868c",
+        conversationID: "5e29f4af1ee1f7629c78867f",
+        body: "\ndfasd",
+        authorID: "5e29f4b11ee1f7629c788682",
+        createdAt: "2020-01-23T19:32:10.119Z",
+        updatedAt: "2020-01-23T19:32:10.119Z",
+        __v: 0
+      },
+      {
+        _id: "5e29f4ba1ee1f7629c78868d",
+        conversationID: "5e29f4af1ee1f7629c78867f",
+        body: "\nas",
+        authorID: "5e29f4b11ee1f7629c788682",
+        createdAt: "2020-01-23T19:32:10.387Z",
+        updatedAt: "2020-01-23T19:32:10.387Z",
+        __v: 0
+      },
+      {
+        _id: "5e29f4bb1ee1f7629c78868e",
+        conversationID: "5e29f4af1ee1f7629c78867f",
+        body: "\ndf",
+        authorID: "5e29f4b11ee1f7629c788682",
+        createdAt: "2020-01-23T19:32:11.510Z",
+        updatedAt: "2020-01-23T19:32:11.510Z",
+        __v: 0
+      }
+    ]
   };
   componentDidMount() {
     this._ismounted = true;
     this.newMessageInit();
+
+    window.addEventListener("keypress", this.submitByEnterKey);
   }
   componentWillUnmount() {
     this._ismounted = false;
     const { socket } = this.context;
     socket.emit("user_left_chat");
+    window.removeEventListener("keypress", this.submitByEnterKey);
   }
   handleChange = stateObj => {
     if (this._ismounted) this.setState(stateObj);
@@ -45,6 +157,9 @@ class Chat extends Component {
     });
   };
 
+  scrollToBottom = () => {
+    if (this.messagesEnd) this.messagesEnd.scrollIntoView();
+  };
   sendMessage = () => {
     const { message, messages } = this.state;
     const { socket, user } = this.context;
@@ -62,10 +177,12 @@ class Chat extends Component {
     this.setState({ messages, message: "" });
     this.scrollToBottom();
   };
-  scrollToBottom = () => {
-    if (this.messagesEnd) this.messagesEnd.scrollIntoView();
+  submitByEnterKey = e => {
+    if (e && e.keyCode && e.keyCode === 13) {
+      // user pressed enter key
+      this.sendMessage();
+    }
   };
-
   render() {
     const { message, messages } = this.state;
     const { chatPartner, conversation } = this.props;
@@ -91,13 +208,14 @@ class Chat extends Component {
           </Container>
         );
     }
-
     return (
       <Consumer>
         {context => (
           <Container
-            className="column full-center bg-white ov-hidden br4"
-            style={{ width: "50vw" }}
+            className="column full-center flex-fill ov-auto bg-white ov-hidden br4"
+            style={{
+              width: isMobileOrTablet() ? "100vw" : "50vw"
+            }}
           >
             {chatPartner && (
               <Container className="x-fill border-bottom pa16">
@@ -151,13 +269,19 @@ class Chat extends Component {
             )}
 
             <Container
-              className="x-fill align-center border-top pr16"
+              className={
+                "x-fill border-top  " +
+                (isMobileOrTablet() ? "" : "align-center pr16")
+              }
               style={{
-                minHeight: "80px"
+                minHeight: isMobileOrTablet() ? "" : "80px"
               }}
             >
               <textarea
-                className="send-message-textarea light-scrollbar pa16"
+                className={
+                  "send-message-textarea light-scrollbar " +
+                  (isMobileOrTablet() ? "" : "pa16")
+                }
                 onChange={event =>
                   this.handleChange({ message: event.target.value })
                 }
@@ -165,7 +289,10 @@ class Chat extends Component {
                 value={message}
               />
               <Button
-                className="button-2 px32 py8 br4"
+                className={
+                  "button-2 " +
+                  (isMobileOrTablet() ? "px8 py4" : "px32 py8 br4")
+                }
                 onClick={this.sendMessage}
                 text="Send"
               />

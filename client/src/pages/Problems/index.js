@@ -32,40 +32,42 @@ class Problems extends Component {
       <Consumer>
         {context => (
           <Page
-            className="justify-center align-start bg-grey py32"
+            className="bg-grey"
             description={title}
             keywords=""
             title={title}
           >
-            <Container className="container large column align-center pa16 mr32">
-              <Container className="x-fill justify-between mb16">
-                <Text className="" text={title + " Problems"} type="h4" />
-                <Filters />
+            <Container className="x-fill justify-center py32">
+              <Container className="container large column align-center pa16 mr32">
+                <Container className="x-fill justify-between mb16">
+                  <Text className="" text={title + " Problems"} type="h4" />
+                  <Filters />
+                </Container>
+
+                {problems && (
+                  <Container className="x-fill column">
+                    {problems && problems.length === 0 && (
+                      <Text
+                        className="fw-400"
+                        text="No problems found."
+                        type="h4"
+                      />
+                    )}
+                    {context.problems &&
+                      context.problems.map((problem, index) => (
+                        <Problem
+                          key={index}
+                          problem={problem}
+                          problemIndex={index}
+                        />
+                      ))}
+                  </Container>
+                )}
+                {!problems && <LoadingHeart />}
               </Container>
 
-              {problems && (
-                <Container className="x-fill column">
-                  {problems && problems.length === 0 && (
-                    <Text
-                      className="fw-400"
-                      text="No problems found."
-                      type="h4"
-                    />
-                  )}
-                  {context.problems &&
-                    context.problems.map((problem, index) => (
-                      <Problem
-                        key={index}
-                        problem={problem}
-                        problemIndex={index}
-                      />
-                    ))}
-                </Container>
-              )}
-              {!problems && <LoadingHeart />}
+              <HotTags />
             </Container>
-
-            <HotTags />
           </Page>
         )}
       </Consumer>

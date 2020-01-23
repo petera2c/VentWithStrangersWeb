@@ -3,7 +3,12 @@ import { Helmet } from "react-helmet";
 import ReactGA from "react-ga";
 import { withRouter } from "react-router-dom";
 
+import Header from "../../Header";
+import MobileHeader from "../../Header/MobileHeader";
+
 import Container from "../Container";
+
+import { isMobileOrTablet } from "../../../util";
 
 import "./style.css";
 
@@ -23,7 +28,6 @@ class Page extends Component {
 
   checkPropsVariables = activePage => {
     let { title, description, image, style } = this.props; // Variables
-
     return { style, title, description, image };
   };
   render() {
@@ -43,7 +47,7 @@ class Page extends Component {
 
     return (
       <Container
-        className={"x-fill flex-fill " + className}
+        className={"screen-container column " + className}
         style={style}
         testMode={testMode}
       >
@@ -57,8 +61,9 @@ class Page extends Component {
           <meta property="image" content={image} />
           <meta property="og:image" content={image} />
         </Helmet>
-
-        {children}
+        {!isMobileOrTablet() && <Header />}
+        {isMobileOrTablet() && <MobileHeader />}
+        <Container className="testt">{children}</Container>
       </Container>
     );
   }

@@ -14,14 +14,23 @@ import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
 
+import { isMobileOrTablet } from "../../util";
 import { findConversation, initUserJoined } from "./util";
 
 import "./style.css";
 
-class JoinConversation extends Component {
+class ChatPage extends Component {
   state = {
     chatPartner: undefined,
-    conversation: false,
+    conversation: {
+      messages: [],
+      _id: "5e29f4f41ee1f7629c78868f",
+      listener: "5e271d7c1ee1f7629c7885eb",
+      createdAt: "2020-01-23T19:33:08.143Z",
+      updatedAt: "2020-01-23T19:33:14.078Z",
+      __v: 0,
+      venter: "5e29f4f61ee1f7629c788692"
+    },
     listenersWaiting: 0,
     ventersWaiting: 0,
     listener: false,
@@ -61,27 +70,33 @@ class JoinConversation extends Component {
       <Consumer>
         {context => (
           <Page
-            className="bg-grey justify-center py32"
+            className="bg-grey align-center"
             description="Vent with strangers :)"
             keywords="vent, strangers, help"
             title="Vent or Help Now"
           >
-            <Container className="column">
-              <Text
-                className="pb16"
-                text={
-                  conversation
-                    ? conversation.listener === user._id
-                      ? "Helping"
-                      : "Venting"
-                    : "Chat"
-                }
-                type="h4"
-              />
+            <Container
+              className={
+                "column flex-fill " + (isMobileOrTablet() ? "" : "py32")
+              }
+            >
+              {!isMobileOrTablet() && (
+                <Text
+                  className="pb16"
+                  text={
+                    conversation
+                      ? conversation.listener === user._id
+                        ? "Helping"
+                        : "Venting"
+                      : "Chat"
+                  }
+                  type="h4"
+                />
+              )}
               {context.user && !conversation && (
-                <Container className="wrap mt16">
+                <Container className="x-wrap full-center mt16">
                   <Container
-                    className="button-6 column bg-white container small mr32 br4"
+                    className="button-6 column bg-white container small mx16 mb16 br4"
                     onClick={() => {
                       this.handleChange({ conversation: true });
                       findConversation(context.socket, "listener");
@@ -113,7 +128,7 @@ class JoinConversation extends Component {
                     </Container>
                   </Container>
                   <Container
-                    className="button-6 column bg-white container small mx16 br4"
+                    className="button-6 column bg-white container small mx16 mb16 br4"
                     onClick={() => {
                       this.handleChange({ conversation: true });
                       findConversation(context.socket, "venter");
@@ -147,9 +162,7 @@ class JoinConversation extends Component {
                 </Container>
               )}
               {conversation && (
-                <Container className="flex-fill">
-                  <Chat chatPartner={chatPartner} conversation={conversation} />
-                </Container>
+                <Chat chatPartner={chatPartner} conversation={conversation} />
               )}
             </Container>
           </Page>
@@ -158,6 +171,6 @@ class JoinConversation extends Component {
     );
   }
 }
-JoinConversation.contextType = ExtraContext;
+ChatPage.contextType = ExtraContext;
 
-export default JoinConversation;
+export default ChatPage;

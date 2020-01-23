@@ -3,6 +3,7 @@
   position: relative;
   display: flex;
   box-sizing: border-box;
+  max-width: 100%;
 
   transition: all 0.2s ease;
 }
@@ -231,7 +232,9 @@
 .shadow-1 {
   box-shadow: 0px 4px 0px 4px rgba(0, 64, 128, 0.2);
 }
-
+.shadow-2 {
+  box-shadow: 0px 2px 20px 0 rgba(153, 153, 153, 0.3);
+}
 .test-mode {
   background-color: red;
 }

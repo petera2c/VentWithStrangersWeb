@@ -38,12 +38,12 @@ class NewProblemPage extends Component {
       <Consumer>
         {context => (
           <Page
-            className="column align-center bg-grey py32"
+            className="column align-center bg-grey "
             description="Problem"
             keywords=""
             title="Post Problem"
           >
-            <Container className="container large ov-visible column py16">
+            <Container className="container large ov-visible column py32">
               <Text
                 className="fw-600 mb16"
                 text="Post Your Problem"
