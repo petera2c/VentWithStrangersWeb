@@ -194,7 +194,7 @@ const searchProblem = (searchPostString, callback) => {
 
   if (doesStringHaveSpaceChar === -1) {
     Problem.find(
-      { title: { $regex: searchPostString + ".*" } },
+      { title: { $regex: searchPostString + ".*", $options: "i" } },
       (err, problems) => {
         if (problems && problems.length === 0) {
           return callback([]);
