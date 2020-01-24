@@ -36,7 +36,7 @@ class Problems extends Component {
             keywords=""
             title={title}
           >
-            <Container className="x-fill justify-center py32">
+            <Container className="x-fill justify-center align-start py32">
               <Container
                 className={
                   "container large column align-center " +

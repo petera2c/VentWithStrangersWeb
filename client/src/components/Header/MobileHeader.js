@@ -151,7 +151,10 @@ class Header extends Component {
                         }
                         to={"/activity" + search}
                       >
-                        <FontAwesomeIcon icon={faChartNetwork} />
+                        <FontAwesomeIcon
+                          className="mr8"
+                          icon={faChartNetwork}
+                        />
                         Activity
                       </Link>
 
@@ -162,7 +165,7 @@ class Header extends Component {
                         }
                         to="/account"
                       >
-                        <FontAwesomeIcon icon={faUser} />
+                        <FontAwesomeIcon className="mr8" icon={faUser} />
                         Account
                       </Link>
 
@@ -173,7 +176,7 @@ class Header extends Component {
                         }
                         to="/settings"
                       >
-                        <FontAwesomeIcon icon={faCog} />
+                        <FontAwesomeIcon className="mr8" icon={faCog} />
                         Settings
                       </Link>
                     </Container>

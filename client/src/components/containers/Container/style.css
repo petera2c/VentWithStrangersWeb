@@ -120,27 +120,27 @@
   max-height: 150px;
 }
 .container.tiny {
-  min-width: 250px;
+  min-width: 280px;
 }
 .container.twentyvw {
-  min-width: 250px;
+  min-width: 280px;
   width: 20vw;
 }
 .container.small {
-  min-width: 250px;
+  min-width: 280px;
   width: 25vw;
 }
 .container.medium {
-  min-width: 250px;
+  min-width: 280px;
   width: 35vw;
   flex-basis: auto;
 }
 .container.large {
-  min-width: 250px;
+  min-width: 280px;
   width: 50vw;
 }
 .container.extra-large {
-  min-width: 250px;
+  min-width: 280px;
   width: 75vw;
   max-width: 1400px;
 }

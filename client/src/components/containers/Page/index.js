@@ -3,9 +3,6 @@ import { Helmet } from "react-helmet";
 import ReactGA from "react-ga";
 import { withRouter } from "react-router-dom";
 
-import Header from "../../Header";
-import MobileHeader from "../../Header/MobileHeader";
-
 import Container from "../Container";
 
 import { isMobileOrTablet } from "../../../util";
@@ -47,7 +44,7 @@ class Page extends Component {
 
     return (
       <Container
-        className={"screen-container column " + className}
+        className={"column flex-fill ov-auto " + className}
         style={style}
         testMode={testMode}
       >
@@ -61,8 +58,6 @@ class Page extends Component {
           <meta property="image" content={image} />
           <meta property="og:image" content={image} />
         </Helmet>
-        {!isMobileOrTablet() && <Header />}
-        {isMobileOrTablet() && <MobileHeader />}
         {children}
       </Container>
     );

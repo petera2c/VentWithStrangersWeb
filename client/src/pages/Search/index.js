@@ -13,7 +13,7 @@ import HotTags from "../../components/HotTags";
 import Filters from "../../components/Filters";
 import Problem from "../../components/Problem";
 
-import { capitolizeFirstChar } from "../../util";
+import { isMobileOrTablet } from "../../util";
 
 class SearchPage extends Component {
   render() {
@@ -28,7 +28,12 @@ class SearchPage extends Component {
             keywords=""
             title="Home"
           >
-            <Container className="container large column align-center px16 py32 mr32">
+            <Container
+              className={
+                "container large column align-center py32 " +
+                (isMobileOrTablet() ? "" : "px16 mr32")
+              }
+            >
               <Container className="x-fill justify-end mb16">
                 <Filters />
               </Container>

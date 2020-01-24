@@ -62,106 +62,111 @@ class ChatPage extends Component {
       <Consumer>
         {context => (
           <Page
-            className="bg-grey align-center"
+            className="bg-grey"
             description="Vent with strangers :)"
             keywords="vent, strangers, help"
-            style={{ maxHeight: "100vh" }}
             title="Vent or Help Now"
           >
             <Container
               className={
-                "column flex-fill ov-auto " + (isMobileOrTablet() ? "" : "py32")
+                "column flex-fill ov-auto align-center " +
+                (isMobileOrTablet() ? "" : "py32")
               }
             >
-              {!isMobileOrTablet() && (
-                <Text
-                  className="pb16"
-                  text={
-                    conversation
-                      ? conversation.listener === user._id
-                        ? "Helping"
-                        : "Venting"
-                      : "Chat"
-                  }
-                  type="h4"
-                />
-              )}
               {context.user && !conversation && (
-                <Container className="wrap full-center mt16">
-                  <Container
-                    className={
-                      "button-6 column bg-white container small mb16 br4 " +
-                      (isMobileOrTablet() ? "mx16" : "mr32")
-                    }
-                    onClick={() => {
-                      this.handleChange({ conversation: true });
-                      findConversation(context.socket, "listener");
-                    }}
-                  >
-                    <Container className="column x-fill flex-fill full-center border-bottom py64">
-                      <FontAwesomeIcon
-                        className="blue mb8"
-                        icon={faHandsHelping}
-                        size="2x"
-                      />
-                      <Text
-                        className="grey-11 fw-300 tac"
-                        text="Help a Stranger"
-                        type="h3"
-                      />
+                <Container className="column">
+                  {!isMobileOrTablet() && (
+                    <Text className="pb16" text="Chat" type="h4" />
+                  )}
+                  <Container className="wrap full-center mt16">
+                    <Container
+                      className={
+                        "button-6 column bg-white container small mb16 br4 " +
+                        (isMobileOrTablet() ? "mx16" : "mr32")
+                      }
+                      onClick={() => {
+                        this.handleChange({ conversation: true });
+                        findConversation(context.socket, "listener");
+                      }}
+                    >
+                      <Container className="column x-fill flex-fill full-center border-bottom py64">
+                        <FontAwesomeIcon
+                          className="blue mb8"
+                          icon={faHandsHelping}
+                          size="2x"
+                        />
+                        <Text
+                          className="grey-11 fw-300 tac"
+                          text="Help a Stranger"
+                          type="h3"
+                        />
+                      </Container>
+                      <Container className="column x-fill full-center py16">
+                        <Text
+                          className="grey-3 fw-300 tac"
+                          text="Listeners Waiting"
+                          type="h5"
+                        />
+                        <Text
+                          className="grey-5 tac"
+                          text={listenersWaiting + " People"}
+                          type="p"
+                        />
+                      </Container>
                     </Container>
-                    <Container className="column x-fill full-center py16">
-                      <Text
-                        className="grey-3 fw-300 tac"
-                        text="Listeners Waiting"
-                        type="h5"
-                      />
-                      <Text
-                        className="grey-5 tac"
-                        text={listenersWaiting + " People"}
-                        type="p"
-                      />
-                    </Container>
-                  </Container>
-                  <Container
-                    className={
-                      "button-6 column bg-white container small mb16 br4 " +
-                      (isMobileOrTablet() ? "mx16" : "")
-                    }
-                    onClick={() => {
-                      this.handleChange({ conversation: true });
-                      findConversation(context.socket, "venter");
-                    }}
-                  >
-                    <Container className="column x-fill flex-fill full-center border-bottom py64">
-                      <FontAwesomeIcon
-                        className="blue mb8"
-                        icon={faWalkieTalkie}
-                        size="2x"
-                      />
-                      <Text
-                        className="grey-11 fw-300 tac"
-                        text="Vent to a Stranger"
-                        type="h3"
-                      />
-                    </Container>
-                    <Container className="column x-fill full-center py16">
-                      <Text
-                        className="grey-3 fw-300 tac"
-                        text="Venters Waiting"
-                        type="h5"
-                      />
-                      <Text
-                        className="grey-5 tac"
-                        text={ventersWaiting + " People"}
-                        type="p"
-                      />
+                    <Container
+                      className={
+                        "button-6 column bg-white container small mb16 br4 " +
+                        (isMobileOrTablet() ? "mx16" : "")
+                      }
+                      onClick={() => {
+                        this.handleChange({ conversation: true });
+                        findConversation(context.socket, "venter");
+                      }}
+                    >
+                      <Container className="column x-fill flex-fill full-center border-bottom py64">
+                        <FontAwesomeIcon
+                          className="blue mb8"
+                          icon={faWalkieTalkie}
+                          size="2x"
+                        />
+                        <Text
+                          className="grey-11 fw-300 tac"
+                          text="Vent to a Stranger"
+                          type="h3"
+                        />
+                      </Container>
+                      <Container className="column x-fill full-center py16">
+                        <Text
+                          className="grey-3 fw-300 tac"
+                          text="Venters Waiting"
+                          type="h5"
+                        />
+                        <Text
+                          className="grey-5 tac"
+                          text={ventersWaiting + " People"}
+                          type="p"
+                        />
+                      </Container>
                     </Container>
                   </Container>
                 </Container>
               )}
               {conversation && (
-                <Chat chatPartner={chatPartner} conversation={conversation} />
+                <Container className="column flex-fill ov-auto">
+                  {!isMobileOrTablet() && (
+                    <Text
+                      className="pb16"
+                      text={
+                        conversation.listener === user._id
+                          ? "Helping"
+                          : "Venting"
+                      }
+                      type="h4"
+                    />
+                  )}
+                  <Chat chatPartner={chatPartner} conversation={conversation} />
+                </Container>
               )}
             </Container>
           </Page>
