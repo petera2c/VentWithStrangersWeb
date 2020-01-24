@@ -44,3 +44,22 @@ export const likeProblem = (context, problem, problemIndex) => {
     }
   });
 };
+
+export const unlikeProblem = (context, problem, problemIndex) => {
+  context.socket.emit("unlike_problem", problem._id, returnObj => {
+    const { message, success } = returnObj;
+
+    if (success) {
+      problem.upVotes--;
+      problem.dailyUpvotes--;
+      problem.hasLiked = false;
+
+      context.updateProblem(problem, problemIndex);
+    } else {
+      context.notify({
+        message,
+        type: "danger"
+      });
+    }
+  });
+};

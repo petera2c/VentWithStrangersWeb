@@ -20,7 +20,8 @@ const {
   getProblem,
   getUsersPosts,
   likeProblem,
-  searchProblem
+  searchProblem,
+  unlikeProblem
 } = require("./problem");
 
 const { getSettings, saveSettings } = require("./settings");
@@ -43,6 +44,9 @@ module.exports = io => {
     socket.on("search_problems", searchProblem);
     socket.on("like_problem", (problemID, callback) =>
       likeProblem(problemID, callback, socket)
+    );
+    socket.on("unlike_problem", (dateObj, callback) =>
+      unlikeProblem(dateObj, callback, socket)
     );
 
     socket.on("comment_problem", (commentString, problemID, callback) =>

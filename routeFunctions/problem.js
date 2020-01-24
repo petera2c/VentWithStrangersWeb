@@ -218,6 +218,26 @@ const searchProblem = (searchPostString, callback) => {
       .lean();
   }
 };
+
+const unlikeProblem = (problemID, callback, socket) => {
+  const userID = socket.request.user._id;
+
+  Problem.findById(problemID, (err, problem) => {
+    if (problem) {
+      const index = problem.upVotes.findIndex(upVoteUserID => {
+        return String(upVoteUserID) === String(userID);
+      });
+      if (index >= 0) {
+        problem.dailyUpvotes -= 1;
+        problem.upVotes.splice(index, 1);
+        problem.save((err, result) => {
+          callback({ success: true });
+        });
+      } else callback({ message: "You haven't liked post.", success: false });
+    } else callback({ message: "Problem not found.", success: false });
+  });
+};
+
 module.exports = {
   addUserToObject,
   getProblem,
@@ -225,5 +245,6 @@ module.exports = {
   getUsersPosts,
   likeProblem,
   saveProblem,
-  searchProblem
+  searchProblem,
+  unlikeProblem
 };

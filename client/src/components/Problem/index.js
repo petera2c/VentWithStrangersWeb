@@ -21,7 +21,12 @@ import Button from "../views/Button";
 import Text from "../views/Text";
 
 import { addTagsToPage, capitolizeFirstChar } from "../../util";
-import { commentProblem, getProblemComments, likeProblem } from "./util";
+import {
+  commentProblem,
+  getProblemComments,
+  likeProblem,
+  unlikeProblem
+} from "./util";
 
 class Problem extends Component {
   state = {
@@ -153,10 +158,9 @@ class Problem extends Component {
                   icon={problem.hasLiked ? faHeart2 : faHeart}
                   onClick={e => {
                     e.stopPropagation();
-                    if (problem.hasLiked) {
-                    } else {
-                      likeProblem(this.context, problem, problemIndex);
-                    }
+                    if (problem.hasLiked)
+                      unlikeProblem(this.context, problem, problemIndex);
+                    else likeProblem(this.context, problem, problemIndex);
                   }}
                 />
                 <Text className="grey-5" text={problem.upVotes} type="p" />
