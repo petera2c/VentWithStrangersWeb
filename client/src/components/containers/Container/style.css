@@ -39,7 +39,7 @@
 .float-right {
   float: right;
 }
-.x-wrap {
+.wrap {
   flex-shrink: 0;
   display: flex;
   flex-wrap: wrap;

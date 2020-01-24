@@ -18,6 +18,7 @@ class Input extends Component {
       onClick = () => {},
       placeholder,
       required,
+      style,
       tabIndex,
       type,
       value
@@ -37,6 +38,7 @@ class Input extends Component {
         onClick={onClick}
         placeholder={placeholder}
         required={required}
+        style={style}
         tabIndex={tabIndex}
         type={type}
         value={value}

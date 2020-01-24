@@ -63,7 +63,7 @@ class Page extends Component {
         </Helmet>
         {!isMobileOrTablet() && <Header />}
         {isMobileOrTablet() && <MobileHeader />}
-        <Container className="testt">{children}</Container>
+        {children}
       </Container>
     );
   }

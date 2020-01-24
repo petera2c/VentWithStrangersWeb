@@ -105,7 +105,7 @@ class TagsModal extends Component {
               <Text className="grey-8 mb8" text="Searched Tags" type="h6" />
             )}
             {searchedTags.length > 0 && (
-              <Container className="x-fill x-wrap">
+              <Container className="x-fill wrap">
                 {searchedTags.map((tag, index) => (
                   <Button
                     className="grey-1 tac fw-300 border-all px16 py8 mr8 mb8 br4"
@@ -120,7 +120,7 @@ class TagsModal extends Component {
               <Text className="grey-8 mb8" text="Recent Tags" type="h6" />
             )}
             {user.recentTags.length > 0 && (
-              <Container className="x-fill x-wrap">
+              <Container className="x-fill wrap">
                 {user.recentTags.map((tag, index) => (
                   <Button
                     className="grey-1 tac fw-300 border-all px16 py8 mr8 mb8 br4"
@@ -139,7 +139,7 @@ class TagsModal extends Component {
               />
             )}
             {selectedTags.length > 0 && (
-              <Container className="x-fill x-wrap">
+              <Container className="x-fill wrap">
                 {selectedTags.map((tag, index) => (
                   <Container
                     key={index}

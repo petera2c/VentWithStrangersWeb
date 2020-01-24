@@ -22,15 +22,7 @@ import "./style.css";
 class ChatPage extends Component {
   state = {
     chatPartner: undefined,
-    conversation: {
-      messages: [],
-      _id: "5e29f4f41ee1f7629c78868f",
-      listener: "5e271d7c1ee1f7629c7885eb",
-      createdAt: "2020-01-23T19:33:08.143Z",
-      updatedAt: "2020-01-23T19:33:14.078Z",
-      __v: 0,
-      venter: "5e29f4f61ee1f7629c788692"
-    },
+    conversation: false,
     listenersWaiting: 0,
     ventersWaiting: 0,
     listener: false,
@@ -73,11 +65,12 @@ class ChatPage extends Component {
             className="bg-grey align-center"
             description="Vent with strangers :)"
             keywords="vent, strangers, help"
+            style={{ maxHeight: "100vh" }}
             title="Vent or Help Now"
           >
             <Container
               className={
-                "column flex-fill " + (isMobileOrTablet() ? "" : "py32")
+                "column flex-fill ov-auto " + (isMobileOrTablet() ? "" : "py32")
               }
             >
               {!isMobileOrTablet() && (
@@ -94,9 +87,12 @@ class ChatPage extends Component {
                 />
               )}
               {context.user && !conversation && (
-                <Container className="x-wrap full-center mt16">
+                <Container className="wrap full-center mt16">
                   <Container
-                    className="button-6 column bg-white container small mx16 mb16 br4"
+                    className={
+                      "button-6 column bg-white container small mb16 br4 " +
+                      (isMobileOrTablet() ? "mx16" : "mr32")
+                    }
                     onClick={() => {
                       this.handleChange({ conversation: true });
                       findConversation(context.socket, "listener");
@@ -128,7 +124,10 @@ class ChatPage extends Component {
                     </Container>
                   </Container>
                   <Container
-                    className="button-6 column bg-white container small mx16 mb16 br4"
+                    className={
+                      "button-6 column bg-white container small mb16 br4 " +
+                      (isMobileOrTablet() ? "mx16" : "")
+                    }
                     onClick={() => {
                       this.handleChange({ conversation: true });
                       findConversation(context.socket, "venter");

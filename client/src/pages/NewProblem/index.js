@@ -78,60 +78,7 @@ class NewProblemPage extends Component {
                       value={tags}
                     />
                   </Container>
-                  <Container>
-                    <Container className="flex-fill column mb8">
-                      <Text className="fw-400 mb8" text="Gender" type="h5" />
-                      <Container className="flex-fill">
-                        <Text
-                          className={`fw-400 tac flex-fill clickable border-all large ${
-                            gender === 0 ? "active blue" : ""
-                          } pa8`}
-                          onClick={() => this.handleChange({ gender: 0 })}
-                          style={{
-                            borderTopLeftRadius: "4px",
-                            borderBottomLeftRadius: "4px",
-                            borderRight: gender === 0 ? "" : "none"
-                          }}
-                          type="h5"
-                        >
-                          <FontAwesomeIcon
-                            className="mr8"
-                            icon={faGenderless}
-                          />
-                          Everyone
-                        </Text>
-                        <Text
-                          className={`fw-400 tac flex-fill clickable border-all large ${
-                            gender === 1 ? "active blue" : ""
-                          } pa8`}
-                          onClick={() => this.handleChange({ gender: 1 })}
-                          style={{
-                            borderLeft: gender === 0 ? "none" : "",
-                            borderRight: gender === 2 ? "none" : ""
-                          }}
-                          type="h5"
-                        >
-                          <FontAwesomeIcon className="mr8" icon={faVenus} />
-                          Female
-                        </Text>
-                        <Text
-                          className={`fw-400 tac flex-fill clickable border-all large ${
-                            gender === 2 ? "active blue" : ""
-                          } pa8`}
-                          onClick={() => this.handleChange({ gender: 2 })}
-                          style={{
-                            borderBottomRightRadius: "4px",
-                            borderTopRightRadius: "4px",
-                            borderLeft: gender === 2 ? "" : "none"
-                          }}
-                          type="h5"
-                        >
-                          <FontAwesomeIcon className="mr8" icon={faMars} />
-                          Male
-                        </Text>
-                      </Container>
-                    </Container>
-                  </Container>
+
                   <Text className="fw-400 mb8" text="Description" type="h5" />
                   <TextArea
                     className="no-border py8 px16 mb8 br4"

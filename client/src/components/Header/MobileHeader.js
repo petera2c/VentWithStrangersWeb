@@ -11,6 +11,9 @@ import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
 import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 import { faBars } from "@fortawesome/pro-solid-svg-icons/faBars";
+import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
+import { faChartNetwork } from "@fortawesome/pro-solid-svg-icons/faChartNetwork";
+import { faCog } from "@fortawesome/free-solid-svg-icons/faCog";
 
 import Consumer, { ExtraContext } from "../../context";
 
@@ -56,7 +59,7 @@ class Header extends Component {
       searchPostString
     } = this.state;
     const { location } = this.props;
-    const { pathname } = location;
+    const { pathname, search } = location;
 
     return (
       <Consumer>
@@ -118,8 +121,65 @@ class Header extends Component {
               </Container>
             )}
             {mobileHeaderActive && (
-              <Container className="column x-fill bg-grey-4 py16 px16">
-                <Container className="bg-white align-center py4 px8 mb16 br4">
+              <Container className="column x-fill bg-grey-4">
+                {context.user && context.user.password && (
+                  <Container className="column">
+                    <Link to="/activity">
+                      <Container className="full-center py16 mx16">
+                        <Text
+                          className="round-icon bg-blue white mr8"
+                          text={capitolizeFirstChar(
+                            context.user.displayName[0]
+                          )}
+                          type="h6"
+                        />
+                        <Text
+                          className="mr8"
+                          text={`Hello, ${capitolizeFirstChar(
+                            context.user.displayName
+                          )}`}
+                          type="p"
+                        />
+                        <FontAwesomeIcon icon={faChevronDown} />
+                      </Container>
+                    </Link>
+                    <Container className="bg-white x-fill">
+                      <Link
+                        className={
+                          "button-3 tac py16 mx16 " +
+                          isPageActive("/activity", pathname)
+                        }
+                        to={"/activity" + search}
+                      >
+                        <FontAwesomeIcon icon={faChartNetwork} />
+                        Activity
+                      </Link>
+
+                      <Link
+                        className={
+                          "button-3 tac py16 mx16 " +
+                          isPageActive("/account", pathname)
+                        }
+                        to="/account"
+                      >
+                        <FontAwesomeIcon icon={faUser} />
+                        Account
+                      </Link>
+
+                      <Link
+                        className={
+                          "button-3 tac py16 mx16 " +
+                          isPageActive("/settings", pathname)
+                        }
+                        to="/settings"
+                      >
+                        <FontAwesomeIcon icon={faCog} />
+                        Settings
+                      </Link>
+                    </Container>
+                  </Container>
+                )}
+                <Container className="bg-white align-center py4 px8 ma16 br4">
                   <FontAwesomeIcon className="grey-5 mr8" icon={faSearch} />
                   <Input
                     className="no-border br4"
@@ -147,25 +207,6 @@ class Header extends Component {
                       }
                     />
                   </Container>
-                )}
-                {context.user && context.user.password && (
-                  <Link className="absolute right-0 mr32" to="/activity">
-                    <Container className="full-center">
-                      <Text
-                        className="round-icon bg-blue white mr8"
-                        text={capitolizeFirstChar(context.user.displayName[0])}
-                        type="h6"
-                      />
-                      <Text
-                        className="mr8"
-                        text={`Hello, ${capitolizeFirstChar(
-                          context.user.displayName
-                        )}`}
-                        type="p"
-                      />
-                      <FontAwesomeIcon icon={faChevronDown} />
-                    </Container>
-                  </Link>
                 )}
               </Container>
             )}

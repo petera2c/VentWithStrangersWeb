@@ -23,13 +23,13 @@ class SearchPage extends Component {
       <Consumer>
         {context => (
           <Page
-            className="justify-center align-start bg-grey py32"
+            className="align-center bg-grey"
             description="Home"
             keywords=""
             title="Home"
           >
-            <Container className="container large column align-center pa16 mr32">
-              <Container className="x-fill justify-between mb16">
+            <Container className="container large column align-center px16 py32 mr32">
+              <Container className="x-fill justify-end mb16">
                 <Filters />
               </Container>
 

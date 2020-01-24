@@ -84,7 +84,7 @@ class Problem extends Component {
                   />
                 </Container>
               </Link>
-              <Container className="x-wrap align-center">
+              <Container className="wrap align-center">
                 {problem.tags.map((tag, index) => (
                   <Text
                     className="button-1 clickable mr8"

@@ -17,7 +17,7 @@ import Button from "../../components/views/Button";
 
 import { ExtraContext } from "../../context";
 
-import { capitolizeFirstChar, isPageActive } from "../../util";
+import { isMobileOrTablet } from "../../util";
 
 class AccountSection extends Component {
   state = {
@@ -71,7 +71,7 @@ class AccountSection extends Component {
     const { pathname, search } = location;
 
     return (
-      <Container className="container large column pa16">
+      <Container className="container large column">
         <Text className="mb16" text="Account" type="h4" />
         <Container
           className="column bg-white pa16 mb2"
@@ -85,9 +85,13 @@ class AccountSection extends Component {
             text="Personal Information"
             type="h6"
           />
-          <Container>
-            <Container className="x-50 column pr8 mb16">
-              <Text className="mb8 " text="Display Name" type="p" />
+          <Container className="wrap">
+            <Container
+              className={
+                "column pr8 mb16 " + (isMobileOrTablet() ? "x-100" : "x-50")
+              }
+            >
+              <Text className="mb8" text="Display Name" type="p" />
               <Container className="full-center bg-grey-4 py4 px8 br4">
                 <FontAwesomeIcon className="grey-5 mr8" icon={faMonument} />
                 <Input
@@ -101,7 +105,11 @@ class AccountSection extends Component {
                 />
               </Container>
             </Container>
-            <Container className="x-50 column pr8 mb16">
+            <Container
+              className={
+                "column pr8 mb16 " + (isMobileOrTablet() ? "x-100" : "x-50")
+              }
+            >
               <Text className="mb8 " text="Email" type="p" />
               <Container className="full-center bg-grey-4 py4 px8 br4">
                 <FontAwesomeIcon className="grey-5 mr8" icon={faPaperPlane} />
@@ -120,7 +128,11 @@ class AccountSection extends Component {
             text="Change your Password"
             type="h6"
           />
-          <Container className="x-50 column pr8 mb16">
+          <Container
+            className={
+              "column pr8 mb16 " + (isMobileOrTablet() ? "x-100" : "x-50")
+            }
+          >
             <Text className="mb8 " text="Old Password" type="p" />
             <Container className="full-center bg-grey-4 py4 px8 br4">
               <FontAwesomeIcon className="grey-5 mr8" icon={faLockAlt} />
@@ -135,8 +147,12 @@ class AccountSection extends Component {
               />
             </Container>
           </Container>
-          <Container>
-            <Container className="x-50 column pr8 mb16">
+          <Container className="wrap">
+            <Container
+              className={
+                "column pr8 mb16 " + (isMobileOrTablet() ? "x-100" : "x-50")
+              }
+            >
               <Text className="mb8 " text="New Password" type="p" />
               <Container className="full-center bg-grey-4 py4 px8 br4">
                 <FontAwesomeIcon className="grey-5 mr8" icon={faLockAlt} />
@@ -151,7 +167,11 @@ class AccountSection extends Component {
                 />
               </Container>
             </Container>
-            <Container className="x-50 column mb16">
+            <Container
+              className={
+                "column mb16 " + (isMobileOrTablet() ? "x-100" : "x-50")
+              }
+            >
               <Text className="mb8 " text="Confirm Password" type="p" />
               <Container className="full-center bg-grey-4 py4 px8 br4">
                 <FontAwesomeIcon className="grey-5 mr8" icon={faLockAlt} />

@@ -16,7 +16,11 @@ import Text from "../../components/views/Text";
 
 import Consumer, { ExtraContext } from "../../context";
 
-import { capitolizeFirstChar, isPageActive } from "../../util";
+import {
+  capitolizeFirstChar,
+  isMobileOrTablet,
+  isPageActive
+} from "../../util";
 
 class AccountPage extends Component {
   componentDidMount() {
@@ -37,64 +41,66 @@ class AccountPage extends Component {
       <Consumer>
         {context => (
           <Page
-            className="justify-center align-start bg-grey py32"
+            className="justify-start align-center bg-grey"
             description=""
             keywords=""
             title="Account"
           >
-            {!search && (
-              <Container className="x-25 column align-center bg-white px16 br8">
-                <Link className="x-fill" to={"/activity" + search}>
-                  <Container
-                    className={
-                      "grid-1 button-4 clickable x-fill align-center py16" +
-                      isPageActive("/activity", pathname)
-                    }
-                  >
-                    <Container className="flex x-fill full-center">
-                      <FontAwesomeIcon icon={faChartNetwork} />
+            <Container className="align-start py32">
+              {!isMobileOrTablet() && !search && (
+                <Container className="x-25 column align-center bg-white px16 br8">
+                  <Link className="x-fill" to={"/activity" + search}>
+                    <Container
+                      className={
+                        "grid-1 button-4 clickable x-fill align-center py16" +
+                        isPageActive("/activity", pathname)
+                      }
+                    >
+                      <Container className="flex x-fill full-center">
+                        <FontAwesomeIcon icon={faChartNetwork} />
+                      </Container>
+                      <Text text="Activity" type="h5" />
                     </Container>
-                    <Text text="Activity" type="h5" />
-                  </Container>
-                </Link>
+                  </Link>
 
-                <Link className="x-fill" to="/account">
-                  <Container
-                    className={
-                      "grid-1 button-4 clickable x-fill align-center py16" +
-                      isPageActive("/account", pathname)
-                    }
-                  >
-                    <Container className="flex x-fill full-center">
-                      <FontAwesomeIcon icon={faUser} />
+                  <Link className="x-fill" to="/account">
+                    <Container
+                      className={
+                        "grid-1 button-4 clickable x-fill align-center py16" +
+                        isPageActive("/account", pathname)
+                      }
+                    >
+                      <Container className="flex x-fill full-center">
+                        <FontAwesomeIcon icon={faUser} />
+                      </Container>
+                      <Text text="Account" type="h5" />
                     </Container>
-                    <Text text="Account" type="h5" />
-                  </Container>
-                </Link>
+                  </Link>
 
-                <Link className="x-fill" to="/settings">
-                  <Container
-                    className={
-                      "grid-1 button-4 clickable x-fill align-center py16" +
-                      isPageActive("/settings", pathname)
-                    }
-                  >
-                    <Container className="flex x-fill full-center">
-                      <FontAwesomeIcon icon={faCog} />
+                  <Link className="x-fill" to="/settings">
+                    <Container
+                      className={
+                        "grid-1 button-4 clickable x-fill align-center py16" +
+                        isPageActive("/settings", pathname)
+                      }
+                    >
+                      <Container className="flex x-fill full-center">
+                        <FontAwesomeIcon icon={faCog} />
+                      </Container>
+                      <Text text="Settings" type="h5" />
                     </Container>
-                    <Text text="Settings" type="h5" />
-                  </Container>
-                </Link>
+                  </Link>
 
-                <Container className="clickable x-fill align-center pa16">
-                  <Text className="button-1" text="Sign Out" type="h5" />
+                  <Container className="clickable x-fill align-center pa16">
+                    <Text className="button-1" text="Sign Out" type="h5" />
+                  </Container>
                 </Container>
+              )}
+              <Container className={isMobileOrTablet() ? "" : "pl32"}>
+                {pathname === "/account" && <Account />}
+                {pathname === "/activity" && <Activity />}
+                {pathname === "/settings" && <Settings />}
               </Container>
-            )}
-            <Container className="ml16">
-              {pathname === "/account" && <Account />}
-              {pathname === "/activity" && <Activity />}
-              {pathname === "/settings" && <Settings />}
             </Container>
           </Page>
         )}
