@@ -105,7 +105,7 @@ const likeComment = (dataObj, callback, socket) => {
           upVoteUserID => String(upVoteUserID) === String(userID)
         )
       )
-        callback({ message: "Already liked post.", success: false });
+        callback({ message: "Already liked comment.", success: false });
       else {
         comment.dailyUpvotes += 1;
         comment.upVotes.unshift(userID);
@@ -113,7 +113,31 @@ const likeComment = (dataObj, callback, socket) => {
           callback({ success: true });
         });
       }
-    } else callback({ message: "Problem not found.", success: false });
+    } else callback({ message: "Comment not found.", success: false });
+  });
+};
+
+const unlikeComment = (dataObj, callback, socket) => {
+  const userID = socket.request.user._id;
+  const { commentID } = dataObj;
+
+  Comment.findById(commentID, (err, comment) => {
+    if (comment) {
+      const index = comment.upVotes.findIndex(
+        upVoteUserID => String(upVoteUserID) === String(userID)
+      );
+      if (index >= 0) {
+        comment.dailyUpvotes -= 1;
+        comment.upVotes.splice(index, 1);
+        comment.save((err, result) => {
+          callback({ success: true });
+        });
+      } else
+        callback({
+          message: "You haven't liked this comment.",
+          success: false
+        });
+    } else callback({ message: "Comment not found.", success: false });
   });
 };
 
@@ -121,5 +145,6 @@ module.exports = {
   commentProblem,
   getProblemComments,
   getUsersComments,
-  likeComment
+  likeComment,
+  unlikeComment
 };

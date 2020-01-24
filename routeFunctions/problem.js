@@ -224,9 +224,9 @@ const unlikeProblem = (problemID, callback, socket) => {
 
   Problem.findById(problemID, (err, problem) => {
     if (problem) {
-      const index = problem.upVotes.findIndex(upVoteUserID => {
-        return String(upVoteUserID) === String(userID);
-      });
+      const index = problem.upVotes.findIndex(
+        upVoteUserID => String(upVoteUserID) === String(userID)
+      );
       if (index >= 0) {
         problem.dailyUpvotes -= 1;
         problem.upVotes.splice(index, 1);
