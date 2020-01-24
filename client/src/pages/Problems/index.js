@@ -15,8 +15,7 @@ import HotTags from "../../components/HotTags";
 import Filters from "../../components/Filters";
 import Problem from "../../components/Problem";
 
-import { isMobileOrTablet } from "../../util";
-import { capitolizeFirstChar } from "../../util";
+import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
 
 class Problems extends Component {
   render() {
@@ -38,7 +37,12 @@ class Problems extends Component {
             title={title}
           >
             <Container className="x-fill justify-center py32">
-              <Container className="container large column align-center pa16 mr32">
+              <Container
+                className={
+                  "container large column align-center " +
+                  (isMobileOrTablet() ? "" : "pa16 mr32")
+                }
+              >
                 <Container className="x-fill justify-between mb16">
                   <Text className="" text={title + " Problems"} type="h4" />
                   <Filters />
@@ -66,7 +70,7 @@ class Problems extends Component {
                 {!problems && <LoadingHeart />}
               </Container>
 
-              <HotTags />
+              {!isMobileOrTablet() && <HotTags />}
             </Container>
           </Page>
         )}

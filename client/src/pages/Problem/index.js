@@ -52,21 +52,23 @@ class ProblemPage extends Component {
 
     return (
       <Page
-        className="justify-center align-start bg-grey py32"
+        className="justify-start align-center bg-grey"
         description={description}
         keywords=""
         title={title}
       >
-        {problems && (
-          <Container className="container large column">
-            <Problem
-              displayCommentField
-              problem={problems[0]}
-              problemIndex={0}
-            />
-          </Container>
-        )}
-        {!problems && <LoadingHeart />}
+        <Container className="py32">
+          {problems && (
+            <Container className="container large column">
+              <Problem
+                displayCommentField
+                problem={problems[0]}
+                problemIndex={0}
+              />
+            </Container>
+          )}
+          {!problems && <LoadingHeart />}
+        </Container>
       </Page>
     );
   }

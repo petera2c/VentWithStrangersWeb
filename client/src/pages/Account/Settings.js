@@ -103,6 +103,8 @@ class AccountSection extends Component {
                   somethingChanged: true
                 })
               }
+              style={{ minWidth: "13px" }}
+              style={{ minWidth: "13px" }}
               type="checkbox"
             />
             <Text
@@ -121,6 +123,7 @@ class AccountSection extends Component {
                   somethingChanged: true
                 })
               }
+              style={{ minWidth: "13px" }}
               type="checkbox"
             />
             <Text
@@ -139,6 +142,7 @@ class AccountSection extends Component {
                   somethingChanged: true
                 })
               }
+              style={{ minWidth: "13px" }}
               type="checkbox"
             />
             <Text
@@ -162,6 +166,7 @@ class AccountSection extends Component {
                   somethingChanged: true
                 })
               }
+              style={{ minWidth: "13px" }}
               type="checkbox"
             />
             <Text
