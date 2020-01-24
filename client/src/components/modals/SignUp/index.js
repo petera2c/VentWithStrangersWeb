@@ -8,6 +8,7 @@ import Text from "../../views/Text";
 import Button from "../../views/Button";
 import Input from "../../views/Input";
 
+import { isMobileOrTablet } from "../../../util";
 import { validateEmail } from "./util";
 
 let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -104,7 +105,7 @@ class SignUpModal extends Component {
       <Consumer>
         {context => (
           <Container className="modal-container full-center">
-            <Container className="modal container medium column align-center bg-white br4">
+            <Container className="modal container medium column align-center ov-auto bg-white br4">
               <Container className="x-fill justify-center bg-blue py16">
                 <Text
                   className="tac white"
@@ -173,8 +174,13 @@ class SignUpModal extends Component {
                       text="(Your Email Address will never be shown to anyone.)"
                       type="p"
                     />
-                    <Container className="x-fill">
-                      <Container className="x-50 column pr8">
+                    <Container className="x-fill wrap">
+                      <Container
+                        className={
+                          "column " +
+                          (isMobileOrTablet() ? "x-100" : "x-50 pr8")
+                        }
+                      >
                         <Text
                           className="fw-400 mb8"
                           text="Password"
@@ -192,7 +198,12 @@ class SignUpModal extends Component {
                           required
                         />
                       </Container>
-                      <Container className="x-50 column pl8">
+                      <Container
+                        className={
+                          "column " +
+                          (isMobileOrTablet() ? "x-100" : "x-50 pl8")
+                        }
+                      >
                         <Text
                           className="fw-400 mb8"
                           text="Confirm Password"

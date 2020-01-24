@@ -25,7 +25,7 @@ import Button from "../views/Button";
 import LoginModal from "../modals/Login";
 import SignUpModal from "../modals/SignUp";
 
-import { capitolizeFirstChar, isPageActive } from "../../util";
+import { capitolizeFirstChar, isPageActive, signOut } from "../../util";
 
 class Header extends Component {
   state = {
@@ -189,6 +189,12 @@ class Header extends Component {
                         <FontAwesomeIcon className="mr8" icon={faCog} />
                         Settings
                       </Link>
+                      <Text
+                        className="button-1 full-center fw-400 tac py16 mx16"
+                        onClick={signOut}
+                        text="Sign Out"
+                        type="h5"
+                      />
                     </Container>
                   </Container>
                 )}

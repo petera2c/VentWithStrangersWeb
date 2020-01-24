@@ -6,6 +6,8 @@ import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faChartNetwork } from "@fortawesome/pro-solid-svg-icons/faChartNetwork";
 import { faCog } from "@fortawesome/free-solid-svg-icons/faCog";
 
+import Consumer, { ExtraContext } from "../../context";
+
 import Account from "./Account";
 import Activity from "./Activity";
 import Settings from "./Settings";
@@ -14,13 +16,7 @@ import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
 
-import Consumer, { ExtraContext } from "../../context";
-
-import {
-  capitolizeFirstChar,
-  isMobileOrTablet,
-  isPageActive
-} from "../../util";
+import { isMobileOrTablet, isPageActive, signOut } from "../../util";
 
 class AccountPage extends Component {
   componentDidMount() {
@@ -92,7 +88,12 @@ class AccountPage extends Component {
                   </Link>
 
                   <Container className="clickable x-fill align-center pa16">
-                    <Text className="button-1" text="Sign Out" type="h5" />
+                    <Text
+                      className="button-1"
+                      onClick={signOut}
+                      text="Sign Out"
+                      type="h5"
+                    />
                   </Container>
                 </Container>
               )}

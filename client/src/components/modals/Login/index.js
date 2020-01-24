@@ -67,7 +67,7 @@ class LoginPage extends Component {
       <Consumer>
         {context => (
           <Container className="modal-container full-center">
-            <Container className="modal container medium column align-center bg-white br4">
+            <Container className="modal container medium column align-center ov-auto bg-white br4">
               <Container className="x-fill justify-center bg-blue py16">
                 <Text
                   className="tac white"

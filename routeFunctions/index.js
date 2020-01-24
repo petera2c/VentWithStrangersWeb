@@ -37,4 +37,10 @@ module.exports = app => {
   app.post("/api/login", login);
   // Register user
   app.post("/api/register", register);
+
+  app.get("/api/sign-out", (req, res) => {
+    req.session.destroy(err => {
+      res.redirect("/");
+    });
+  });
 };

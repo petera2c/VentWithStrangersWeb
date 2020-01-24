@@ -20,8 +20,7 @@ import Container from "../containers/Container";
 import Button from "../views/Button";
 import Text from "../views/Text";
 
-import { capitolizeFirstChar } from "../../util";
-import { addTagsToPage } from "../../util";
+import { addTagsToPage, capitolizeFirstChar } from "../../util";
 import { commentProblem, getProblemComments, likeProblem } from "./util";
 
 class Problem extends Component {
