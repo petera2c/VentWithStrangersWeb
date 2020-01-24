@@ -3,7 +3,7 @@ import Consumer, { ExtraContext } from "../../context";
 import { withRouter } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFire } from "@fortawesome/free-solid-svg-icons/faFire";
+import { faFire } from "@fortawesome/pro-solid-svg-icons/faFire";
 
 import LoadingHeart from "../../components/loaders/Heart";
 
@@ -29,7 +29,7 @@ class HotTags extends Component {
     return (
       <Consumer>
         {context => (
-          <Container className="x-25 column align-center bg-white br8">
+          <Container className="x-fill column align-center bg-white br8">
             <Container className="x-fill border-bottom py16">
               <Container className="align-center border-left active large px16">
                 <FontAwesomeIcon className="blue mr8" icon={faFire} />

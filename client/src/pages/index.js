@@ -16,6 +16,7 @@ import ProblemsPage from "./Problems";
 import FindStrangerPage from "./FindStranger";
 import NewProblemPage from "./NewProblem";
 import ProblemPage from "./Problem";
+import HotTagsPage from "./HotTags";
 import NotFoundPage from "./NotFound";
 
 import { isMobileOrTablet } from "../util";
@@ -96,6 +97,7 @@ class Routes extends Component {
               <Route path="/activity/" component={AccountPage} />
               <Route path="/settings/" component={AccountPage} exact />
               <Route path="/search/" component={SearchPage} />
+              <Route path="/hot-tags/" component={HotTagsPage} />
               <Route path="/" component={ProblemsPage} exact />
               <Route path="/trending/" component={ProblemsPage} />
               <Route path="/recent/" component={ProblemsPage} />

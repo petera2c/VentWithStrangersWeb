@@ -27,6 +27,10 @@ class TagsModal extends Component {
   };
   componentDidMount() {
     this.ismounted = true;
+
+    const { user } = this.context;
+
+    this.searchTags("");
   }
   componentWillUnmount() {
     this.ismounted = false;
@@ -63,7 +67,7 @@ class TagsModal extends Component {
   searchTags = tag => {
     const { socket } = this.context;
 
-    this.handleChange({ searchString: event.target.value });
+    this.handleChange({ searchString: tag });
     socket.emit("search_tags", tag, tags =>
       this.handleChange({ searchedTags: tags })
     );
@@ -76,12 +80,12 @@ class TagsModal extends Component {
 
     return (
       <Container className="modal-container">
-        <Container className="modal container medium column bg-white br4">
+        <Container className="modal container medium column ov-auto bg-white br4">
           <Container className="x-fill full-center bg-grey-10 pa16">
             <Text className="fw-400 grey-8" text="Tags Filters" type="h4" />
           </Container>
-          <Container className="x-fill column border-bottom large px32 py16">
-            <Container className="justify-between align-center border-bottom mb16">
+          <Container className="x-fill column wrap border-bottom large px32 py16">
+            <Container className="wrap justify-between align-center border-bottom mb16">
               <Container className="flex-fill align-center">
                 <FontAwesomeIcon icon={faSearch} />
                 <Input
@@ -101,6 +105,9 @@ class TagsModal extends Component {
                 text="Reset Tags"
               />
             </Container>
+            {searchedTags.length === 0 && (
+              <Text className="mb8" text="No tags found" type="h6" />
+            )}
             {searchedTags.length > 0 && (
               <Text className="grey-8 mb8" text="Searched Tags" type="h6" />
             )}
@@ -117,7 +124,11 @@ class TagsModal extends Component {
               </Container>
             )}
             {user.recentTags.length > 0 && (
-              <Text className="grey-8 mb8" text="Recent Tags" type="h6" />
+              <Text
+                className="grey-8 mb8"
+                text="Recently Used Tags"
+                type="h6"
+              />
             )}
             {user.recentTags.length > 0 && (
               <Container className="x-fill wrap">

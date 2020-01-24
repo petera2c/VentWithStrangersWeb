@@ -2,18 +2,18 @@ import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSnowmobile } from "@fortawesome/pro-solid-svg-icons/faSnowmobile";
-import { faConciergeBell } from "@fortawesome/pro-solid-svg-icons/faConciergeBell";
-import { faFireAlt } from "@fortawesome/pro-solid-svg-icons/faFireAlt";
-import { faRedo } from "@fortawesome/free-solid-svg-icons/faRedo";
-import { faPen } from "@fortawesome/free-solid-svg-icons/faPen";
-import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
-import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
+import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
+import { faConciergeBell } from "@fortawesome/pro-duotone-svg-icons/faConciergeBell";
+import { faFireAlt } from "@fortawesome/pro-duotone-svg-icons/faFireAlt";
+import { faFire } from "@fortawesome/pro-solid-svg-icons/faFire";
+import { faPen } from "@fortawesome/pro-solid-svg-icons/faPen";
+import { faComments } from "@fortawesome/pro-solid-svg-icons/faComments";
+import { faSearch } from "@fortawesome/pro-solid-svg-icons/faSearch";
+import { faChevronDown } from "@fortawesome/pro-solid-svg-icons/faChevronDown";
 import { faBars } from "@fortawesome/pro-solid-svg-icons/faBars";
-import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
-import { faChartNetwork } from "@fortawesome/pro-solid-svg-icons/faChartNetwork";
-import { faCog } from "@fortawesome/free-solid-svg-icons/faCog";
+import { faUser } from "@fortawesome/pro-solid-svg-icons/faUser";
+import { faChartNetwork } from "@fortawesome/pro-duotone-svg-icons/faChartNetwork";
+import { faCog } from "@fortawesome/pro-duotone-svg-icons/faCog";
 
 import Consumer, { ExtraContext } from "../../context";
 
@@ -95,7 +95,7 @@ class Header extends Component {
                   }
                   to="/trending"
                 >
-                  <FontAwesomeIcon className="mr8" icon={faSnowmobile} />
+                  <FontAwesomeIcon className="mr8" icon={faAnalytics} />
                   Trending
                 </Link>
                 <Link
@@ -117,6 +117,16 @@ class Header extends Component {
                 >
                   <FontAwesomeIcon className="mr8" icon={faFireAlt} />
                   Popular
+                </Link>
+                <Link
+                  className={
+                    "button-3 tac py16 mx16 " +
+                    isPageActive("/hot-tags", pathname)
+                  }
+                  to="/hot-tags"
+                >
+                  <FontAwesomeIcon className="mr8" icon={faFire} />
+                  Hot Tags
                 </Link>
               </Container>
             )}

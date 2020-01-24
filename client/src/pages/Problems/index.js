@@ -70,7 +70,11 @@ class Problems extends Component {
                 {!problems && <LoadingHeart />}
               </Container>
 
-              {!isMobileOrTablet() && <HotTags />}
+              {!isMobileOrTablet() && (
+                <Container className="x-25">
+                  <HotTags />
+                </Container>
+              )}
             </Container>
           </Page>
         )}
