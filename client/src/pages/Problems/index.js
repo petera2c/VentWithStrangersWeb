@@ -14,6 +14,7 @@ import Text from "../../components/views/Text";
 import HotTags from "../../components/HotTags";
 import Filters from "../../components/Filters";
 import Problem from "../../components/Problem";
+import LoadMoreProblems from "../../components/LoadMore";
 
 import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
 
@@ -65,6 +66,7 @@ class Problems extends Component {
                           problemIndex={index}
                         />
                       ))}
+                    {false && <LoadMoreProblems />}
                   </Container>
                 )}
                 {!problems && <LoadingHeart />}

@@ -23,4 +23,4 @@ class LoadMore extends Component {
 
 LoadMore.contextType = ExtraContext;
 
-export default withRouter(LoadMore);
+export default LoadMore;
