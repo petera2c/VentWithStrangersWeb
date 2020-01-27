@@ -10,7 +10,7 @@ import Text from "../../components/views/Text";
 class LoadMore extends Component {
   render() {
     return (
-      <Container className="x-fill column bg-white br8">
+      <Container className="clickable x-fill column bg-white br8">
         <Container className="justify-between pt16 px32">
           <Container>
             <div className="round-icon bg-grey-2 mr8" />
