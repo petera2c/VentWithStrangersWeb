@@ -43,7 +43,14 @@
 </url>
 
 <url>
-  <loc>https://www.ventwithstrangers.com/test?5e27487b1ee1f7629c78860b</loc>
+  <loc>https://www.ventwithstrangers.com/test%20author?5e2f0c81da024601c8b2b9b8</loc>
+  <lastmod>2020-01-27</lastmod>
+  <changefreq>yearly
+</changefreq>  <priority>0.4</priority>
+</url>
+
+<url>
+  <loc>https://www.ventwithstrangers.com/test?5e2f0ca8da024601c8b2b9bb</loc>
   <lastmod>2020-01-27</lastmod>
   <changefreq>yearly
 </changefreq>  <priority>0.4</priority>

@@ -53,21 +53,27 @@ const addUserToObject = (callback, objects) => {
   }
 };
 const getProblem = (id, callback, socket) => {
-  Problem.aggregate(
-    getAggregateSingle(socket.request.user._id, id),
-    (err, problems) => {
-      if (problems && problems.length !== 0)
-        addUserToObject(
-          problems => callback({ problems, success: true }),
-          problems
-        );
-      else
-        callback({
-          message: "Incorrect ID, unable to find a post.",
-          success: false
-        });
-    }
-  );
+  if (id && id !== "undefined") {
+    Problem.aggregate(
+      getAggregateSingle(socket.request.user._id, id),
+      (err, problems) => {
+        if (problems && problems.length !== 0)
+          addUserToObject(
+            problems => callback({ problems, success: true }),
+            problems
+          );
+        else
+          callback({
+            message: "Incorrect ID, unable to find a post.",
+            success: false
+          });
+      }
+    );
+  } else
+    callback({
+      message: "No id given.",
+      success: false
+    });
 };
 
 const getProblems = (req, res) => {

@@ -30,6 +30,7 @@ const problemSchema = new Schema(
     timestamps: true // Saves createdAt and updatedAt as dates. createdAt will be our timestamp.
   }
 );
-problemSchema.index({ authorID: -1, title: "text" });
+problemSchema.index({ title: "text" });
+problemSchema.index({ authorID: -1 });
 
 module.exports = mongoose.model("problems", problemSchema);
