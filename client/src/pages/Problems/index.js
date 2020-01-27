@@ -32,7 +32,7 @@ class Problems extends Component {
       <Consumer>
         {context => (
           <Page
-            className="bg-grey"
+            className="bg-grey-2"
             description={title}
             keywords=""
             title={title}
@@ -66,7 +66,7 @@ class Problems extends Component {
                           problemIndex={index}
                         />
                       ))}
-                    {false && <LoadMoreProblems />}
+                    <LoadMoreProblems />
                   </Container>
                 )}
                 {!problems && <LoadingHeart />}

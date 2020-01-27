@@ -15,7 +15,7 @@ class NotFoundPage extends Component {
       <Consumer>
         {context => (
           <Page
-            className="bg-grey x-fill px16 py32"
+            className="bg-grey-2 x-fill px16 py32"
             description="Home"
             keywords=""
             title="Home"

@@ -7,14 +7,31 @@ import { faFire } from "@fortawesome/pro-solid-svg-icons/faFire";
 import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
 
-import "./style.css";
-
 class LoadMore extends Component {
   render() {
     return (
       <Container className="x-fill column bg-white br8">
-        <Container className="border-bottom justify-between py16 pl32 pr16">
-          <div className="test1" />
+        <Container className="justify-between pt16 px32">
+          <Container>
+            <div className="round-icon bg-grey-2 mr8" />
+            <div
+              className=" bg-grey-2 br16"
+              style={{ width: "140px", height: "24px" }}
+            />
+          </Container>
+          <div
+            className="bg-grey-2 br16"
+            style={{ width: "140px", height: "24px" }}
+          />
+        </Container>
+        <Container className="pt16 px32">
+          <div className="x-fill bg-grey-2 br8" style={{ height: "100px" }} />
+        </Container>
+        <Container className="py16 px32">
+          <div
+            className=" bg-grey-2 br16"
+            style={{ width: "140px", height: "24px" }}
+          />
         </Container>
       </Container>
     );

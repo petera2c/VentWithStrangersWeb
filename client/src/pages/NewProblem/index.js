@@ -38,7 +38,7 @@ class NewProblemPage extends Component {
       <Consumer>
         {context => (
           <Page
-            className="column align-center bg-grey "
+            className="column align-center bg-grey-2 "
             description="Problem"
             keywords=""
             title="Post Problem"

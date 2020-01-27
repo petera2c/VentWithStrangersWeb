@@ -52,7 +52,7 @@ class ProblemPage extends Component {
 
     return (
       <Page
-        className="justify-start align-center bg-grey"
+        className="justify-start align-center bg-grey-2"
         description={description}
         keywords=""
         title={title}

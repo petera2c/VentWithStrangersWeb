@@ -23,7 +23,7 @@ class SearchPage extends Component {
       <Consumer>
         {context => (
           <Page
-            className="align-center bg-grey"
+            className="align-center bg-grey-2"
             description="Home"
             keywords=""
             title="Home"

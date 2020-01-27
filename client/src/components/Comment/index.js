@@ -31,7 +31,7 @@ class Comment extends Component {
           borderBottomRightRadius: arrayLength - 1 === index ? "8px" : ""
         }}
       >
-        <Container className="justify-between py16 pl32 pr16">
+        <Container className="justify-between py16 px32">
           <Container className="align-center">
             <Text
               className="round-icon bg-blue white mr8"

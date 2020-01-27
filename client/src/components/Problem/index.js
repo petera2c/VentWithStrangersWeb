@@ -65,7 +65,7 @@ class Problem extends Component {
       <Container className="x-fill column mb16">
         <Container className="x-fill column bg-white mb8 br8">
           <Container
-            className="clickable border-bottom justify-between py16 pl32 pr16"
+            className="clickable border-bottom justify-between py16 px32"
             onClick={() =>
               history.push("/problem/" + problem.title + "?" + problem._id)
             }

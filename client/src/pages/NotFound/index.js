@@ -13,7 +13,7 @@ class NotFoundPage extends Component {
       <Consumer>
         {context => (
           <Page
-            className="column align-center bg-grey py32"
+            className="column align-center bg-grey-2 py32"
             description="Home"
             keywords=""
             title="Home"

@@ -37,7 +37,7 @@ class AccountPage extends Component {
       <Consumer>
         {context => (
           <Page
-            className="justify-start align-center bg-grey"
+            className="justify-start align-center bg-grey-2"
             description=""
             keywords=""
             title="Account"
