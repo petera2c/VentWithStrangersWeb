@@ -196,9 +196,12 @@ const saveProblem = (req, res) => {
   }
 };
 const searchProblem = (searchPostString, callback) => {
+  searchPostString = searchPostString.replace(/%20/g, " ");
+
   const doesStringHaveSpaceChar = searchPostString.search(" ");
 
   if (doesStringHaveSpaceChar === -1) {
+    console.log("here");
     Problem.find(
       { title: { $regex: searchPostString + ".*", $options: "i" } },
       (err, problems) => {

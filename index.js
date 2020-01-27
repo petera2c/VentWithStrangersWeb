@@ -61,7 +61,7 @@ app.use(passport.session());
 
 require("./routeFunctions")(app); // Routes
 
-createSiteMap();
+//createSiteMap();
 
 // If using production then if a route is not found in express we send user to react routes
 if (process.env.NODE_ENV === "production") {
