@@ -30,16 +30,26 @@ export const getUsersComments = (
   });
 };
 
-export const getUsersPosts = (handleChange, notify, search, socket, user) => {
+export const getUsersPosts = (
+  handleChange,
+  notify,
+  oldProblems,
+  search,
+  skip,
+  socket,
+  user
+) => {
   let searchID = user._id;
   if (search) searchID = search;
 
-  socket.emit("get_users_posts", { searchID }, result => {
+  socket.emit("get_users_posts", { searchID, skip }, result => {
     const { message, problems, success } = result;
-    if (success) handleChange({ problems });
-    else {
-      handleChange({ problems });
-      notify({ message, type: "danger" });
-    }
+    let newProblems = problems;
+    let canLoadMorePosts = true;
+
+    if (problems && problems.length < 10) canLoadMorePosts = false;
+    if (skip && oldProblems) newProblems = oldProblems.concat(newProblems);
+
+    handleChange({ canLoadMorePosts, problems: newProblems });
   });
 };

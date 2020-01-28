@@ -48,14 +48,8 @@ class Routes extends Component {
   }
   getDataNeededForPage = (location, action, initialPageLoad) => {
     let { pathname, search } = location;
-    const {
-      getProblems,
-      handleChange,
-      notify,
-      skip,
-      socket,
-      user
-    } = this.context;
+    const { getProblems, handleChange, notify, socket } = this.context; // Functions
+    const { problems, skip, user } = this.context; // Variables
 
     if (
       pathname + search ===
@@ -78,7 +72,7 @@ class Routes extends Component {
       searchProblems(handleChange, undefined, search, skip, socket);
     else if (pathname === "/") getProblems("/trending", search);
     else if (pathname === "/activity") {
-      getUsersPosts(handleChange, notify, search, socket, user);
+      getUsersPosts(handleChange, notify, problems, search, skip, socket, user);
       getUsersComments(handleChange, notify, search, socket, user);
     }
   };

@@ -20,7 +20,6 @@ import { isMobileOrTablet } from "../../util";
 
 class SearchPage extends Component {
   render() {
-    const { problems } = this.context;
     const { location } = this.props;
     let { search = "" } = location;
     search = search.slice(1, search.length);
@@ -44,10 +43,10 @@ class SearchPage extends Component {
                 <Filters />
               </Container>
 
-              {problems && (
+              {context.problems && (
                 <Container className="x-fill column">
-                  {problems &&
-                    problems.map((problem, index) => (
+                  {context.problems &&
+                    context.problems.map((problem, index) => (
                       <Problem
                         key={index}
                         previewMode={true}
@@ -62,7 +61,7 @@ class SearchPage extends Component {
                         context.handleChange({ skip: context.skip + 10 }, () =>
                           searchProblems(
                             context.handleChange,
-                            problems,
+                            context.problems,
                             search,
                             context.skip + 10,
                             context.socket
@@ -73,8 +72,8 @@ class SearchPage extends Component {
                   )}
                 </Container>
               )}
-              {!problems && <LoadingHeart />}
-              {problems && problems.length === 0 && (
+              {!context.problems && <LoadingHeart />}
+              {context.problems && context.problems.length === 0 && (
                 <Text className="fw-400" text="No problems found." type="h4" />
               )}
             </Container>
