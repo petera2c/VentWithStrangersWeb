@@ -17,7 +17,10 @@ class LoadMoreProblems extends Component {
     window.onscroll = ev => {
       clearTimeout(timeout);
       timeout = setTimeout(() => {
-        if (window.innerHeight + window.scrollY >= document.body.scrollHeight) {
+        if (
+          window.innerHeight + window.scrollY + 5 >=
+          document.body.scrollHeight
+        ) {
           loadMore();
         }
       }, 50);
