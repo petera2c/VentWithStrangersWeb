@@ -14,7 +14,7 @@ import Text from "../../components/views/Text";
 import HotTags from "../../components/HotTags";
 import Filters from "../../components/Filters";
 import Problem from "../../components/Problem";
-import LoadMoreProblems from "../../components/LoadMore";
+import LoadMoreProblems from "../../components/LoadMoreProblems";
 
 import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
 
@@ -62,12 +62,13 @@ class Problems extends Component {
                       context.problems.map((problem, index) => (
                         <Problem
                           key={index}
+                          previewMode={true}
                           problem={problem}
                           problemIndex={index}
                         />
                       ))}
                     <LoadMoreProblems
-                      onClick={() => {
+                      loadMore={() => {
                         context.handleChange({ skip: context.skip + 10 }, () =>
                           context.getProblems(pathname, search)
                         );

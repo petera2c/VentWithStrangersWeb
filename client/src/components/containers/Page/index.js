@@ -44,7 +44,7 @@ class Page extends Component {
 
     return (
       <Container
-        className={"column flex-fill ov-auto " + className}
+        className={"column flex-fill " + className}
         style={style}
         testMode={testMode}
       >

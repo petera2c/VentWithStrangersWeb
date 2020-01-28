@@ -62,7 +62,7 @@ class ChatPage extends Component {
       <Consumer>
         {context => (
           <Page
-            className="bg-grey-2"
+            className="bg-grey-2 ov-auto"
             description="Vent with strangers :)"
             keywords="vent, strangers, help"
             title="Vent or Help Now"

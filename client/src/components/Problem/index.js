@@ -60,6 +60,13 @@ class Problem extends Component {
       keywords += problem.tags[index];
     }
 
+    let title = problem.title;
+    if (previewMode && title.length > 140) title = title.slice(0, 140) + "...";
+
+    let description = problem.description;
+    if (previewMode && description.length > 80)
+      description = description.slice(0, 80) + "...";
+
     return (
       <Container className="x-fill column mb16">
         <Container className="x-fill column bg-white mb8 br8">
@@ -105,11 +112,7 @@ class Problem extends Component {
           <Container
             className={`column ${previewMode ? "" : "border-bottom"} py16 px32`}
           >
-            <Text
-              className="fw-400 grey-8 mb8"
-              text={problem.title}
-              type="h5"
-            />
+            <Text className="fw-400 grey-8 mb8" text={title} type="h5" />
             <Container className="mb8">
               <FontAwesomeIcon className="grey-5 mr8" icon={faClock} />
               <Text
@@ -120,15 +123,7 @@ class Problem extends Component {
                 type="p"
               />
             </Container>
-            <Text
-              className=""
-              text={
-                previewMode
-                  ? problem.description.slice(0, 100)
-                  : problem.description
-              }
-              type="p"
-            />
+            <Text className="" text={description} type="p" />
           </Container>
           {!previewMode && (
             <Container className="py16 px32">

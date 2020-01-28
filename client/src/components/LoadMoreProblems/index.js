@@ -7,14 +7,18 @@ import { faFire } from "@fortawesome/pro-solid-svg-icons/faFire";
 import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
 
-class LoadMore extends Component {
+class LoadMoreProblems extends Component {
+  componentDidMount() {
+    const { loadMore = () => {} } = this.props;
+    window.onscroll = ev => {
+      if (window.innerHeight + window.scrollY >= document.body.scrollHeight) {
+        loadMore();
+      }
+    };
+  }
   render() {
-    const { onClick = () => {} } = this.props;
     return (
-      <Container
-        className="clickable x-fill column bg-white br8"
-        onClick={onClick}
-      >
+      <Container className="clickable x-fill column bg-white br8">
         <Container className="justify-between pt16 px32">
           <Container>
             <div className="round-icon bg-grey-2 mr8" />
@@ -42,6 +46,6 @@ class LoadMore extends Component {
   }
 }
 
-LoadMore.contextType = ExtraContext;
+LoadMoreProblems.contextType = ExtraContext;
 
-export default LoadMore;
+export default LoadMoreProblems;
