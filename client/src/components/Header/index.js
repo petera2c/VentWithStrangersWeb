@@ -118,7 +118,7 @@ class Header extends Component {
               </Container>
             </Container>
 
-            <Container className="flex-fill justify-end mb16">
+            <Container className="flex-fill justify-end mr32 mb16">
               {context.user && !context.user.password && (
                 <Button
                   className="blue fw-300 mx32"
@@ -136,7 +136,7 @@ class Header extends Component {
                 />
               )}
               {context.user && context.user.password && (
-                <Link className="flex full-center mr32" to="/activity">
+                <Link className="flex full-center" to="/activity">
                   <Text
                     className="round-icon bg-blue white mr8"
                     text={capitolizeFirstChar(context.user.displayName[0])}
