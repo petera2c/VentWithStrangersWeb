@@ -10,28 +10,31 @@ import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
 
 class LoadMoreProblems extends Component {
+  state = { hasScrolled: false };
   componentDidMount() {
+    this._ismounted = true;
     window.addEventListener("scroll", this.scrollListener);
   }
   componentWillUnmount() {
+    this._ismounted = false;
     window.removeEventListener("scroll", this.scrollListener);
   }
+  handleChange = stateObj => {
+    if (this._ismounted) this.setState(stateObj);
+  };
   scrollListener = () => {
     const { loadMore = () => {} } = this.props;
+    const { hasScrolled } = this.state;
 
-    var timeout;
+    if (
+      window.innerHeight + window.scrollY + 5 >= document.body.scrollHeight &&
+      !hasScrolled
+    ) {
+      this.handleChange({ hasScrolled: true });
+      loadMore();
+    }
 
-    clearTimeout(timeout);
-    timeout = setTimeout(() => {
-      if (
-        window.innerHeight + window.scrollY + 5 >= document.body.scrollHeight &&
-        this.props.canLoadMorePosts
-      ) {
-        {
-          loadMore();
-        }
-      }
-    }, 50);
+    setTimeout(() => this.handleChange({ hasScrolled: false }), 100);
   };
   render() {
     const { loadMore = () => {} } = this.props;

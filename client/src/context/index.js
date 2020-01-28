@@ -67,6 +67,7 @@ class GIProvider extends Component {
         if (problems && problems.length < 10) canLoadMorePosts = false;
         if (skip && this.state.problems)
           newProblems = this.state.problems.concat(newProblems);
+
         if (success)
           this.handleChange({
             canLoadMorePosts,
