@@ -9,8 +9,12 @@ import Text from "../../components/views/Text";
 
 class LoadMore extends Component {
   render() {
+    const { onClick = () => {} } = this.props;
     return (
-      <Container className="clickable x-fill column bg-white br8">
+      <Container
+        className="clickable x-fill column bg-white br8"
+        onClick={onClick}
+      >
         <Container className="justify-between pt16 px32">
           <Container>
             <div className="round-icon bg-grey-2 mr8" />

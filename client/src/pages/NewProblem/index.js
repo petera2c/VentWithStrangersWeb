@@ -56,7 +56,12 @@ class NewProblemPage extends Component {
 
                   <Input
                     className="py8 px16 mb8 br4"
-                    onChange={e => this.handleChange({ title: e.target.value })}
+                    onChange={e =>
+                      this.handleChange({
+                        saving: false,
+                        title: e.target.value
+                      })
+                    }
                     placeholder="Sed malesuada sagittis risus, id pharetra est scelerisque sed"
                     type="text"
                     value={title}
@@ -71,7 +76,10 @@ class NewProblemPage extends Component {
                     <Input
                       className="py8 px16 br4"
                       onChange={e => {
-                        this.handleChange({ tags: e.target.value });
+                        this.handleChange({
+                          saving: false,
+                          tags: e.target.value
+                        });
                       }}
                       placeholder="Depression, Relationship, Bullying"
                       type="text"
@@ -83,7 +91,10 @@ class NewProblemPage extends Component {
                   <TextArea
                     className="no-border py8 px16 mb8 br4"
                     onChange={event =>
-                      this.handleChange({ description: event.target.value })
+                      this.handleChange({
+                        saving: false,
+                        description: event.target.value
+                      })
                     }
                     placeholder="Aliquam semper vel mi eu sodales. Quisque nec massa eget elit placerat fermentum eu quis eros. Cras at felis nec arcu maximus congue ut a lectus. Fusce luctus dolor ac dolor vestibulum, eu lobortis nibh finibus. Morbi est risus, interdum non molestie vel, consectetur nec velit. Donec posuere ex et nibh lobortis, et fermentum sapien laoreet. Vestibulum in tincidunt purus, aliquet vestibulum turpis. Nunc dapibus erat in risus posuere, vitae tempus enim vulputate. Maecenas quis pellentesque augue. Fusce non vestibulum arcu."
                     value={description}

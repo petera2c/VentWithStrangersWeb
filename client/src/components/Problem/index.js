@@ -54,7 +54,6 @@ class Problem extends Component {
     const { commentString, displayCommentField } = this.state;
     const { history } = this.props; // Functions
     const { previewMode, problem, problemIndex } = this.props; // Variables
-
     let keywords = "";
     for (let index in problem.tags) {
       if (index !== 0) keywords += ",";

@@ -1,6 +1,6 @@
 import React, { Component, createContext } from "react";
-import axios from "axios";
 import { withRouter } from "react-router-dom";
+import axios from "axios";
 
 const ExtraContext = createContext();
 const { Provider, Consumer } = ExtraContext;
@@ -8,6 +8,7 @@ const { Provider, Consumer } = ExtraContext;
 class GIProvider extends Component {
   state = {
     hotTags: [],
+    skip: 0,
     notification: {
       on: false,
       message: "",
@@ -38,6 +39,7 @@ class GIProvider extends Component {
   };
 
   getProblems = (pathname, search) => {
+    const { skip } = this.state;
     let tagTemp = "";
     let tags = [];
 
@@ -50,18 +52,29 @@ class GIProvider extends Component {
     if (tagTemp) tags.push(tagTemp);
 
     axios
-      .post("/api/problems", { page: pathname.slice(1, pathname.length), tags })
+      .post("/api/problems", {
+        page: pathname.slice(1, pathname.length),
+        skip,
+        tags
+      })
       .then(res => {
         const { problems, success } = res.data;
+        let newProblems = problems;
 
-        if (success) this.handleChange({ problems });
+        if (skip && this.state.problems)
+          newProblems = newProblems.concat(this.state.problems);
+
+        if (success)
+          this.handleChange({
+            problems: newProblems
+          });
         else {
           // TODO: handle error
         }
       });
   };
-  handleChange = stateObject => {
-    if (this._ismounted) this.setState(stateObject);
+  handleChange = (stateObject, callback) => {
+    if (this._ismounted) this.setState(stateObject, callback);
   };
 
   notify = newNotification => {
@@ -85,6 +98,7 @@ class GIProvider extends Component {
   render() {
     const {
       hotTags,
+      skip,
       notification,
       problems,
       saving,
@@ -99,6 +113,7 @@ class GIProvider extends Component {
           getProblems: this.getProblems,
           handleChange: this.handleChange,
           hotTags,
+          skip,
           notify: this.notify,
           problems,
           saving,

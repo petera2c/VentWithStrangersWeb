@@ -19,11 +19,12 @@ const project = userID => {
   };
 };
 
-const getAggregate = (sort, match, userID) => [
+const getAggregate = (skip, sort, match, userID) => [
   {
     $match: match
   },
   project(userID),
+  { $skip: skip },
   { $sort: sort },
   { $limit: 10 }
 ];
@@ -77,7 +78,7 @@ const getProblem = (id, callback, socket) => {
 };
 
 const getProblems = (req, res) => {
-  const { page, tags = [] } = req.body;
+  const { page, skip = 0, tags = [] } = req.body;
   const match = {};
   const sort = {};
 
@@ -88,7 +89,7 @@ const getProblems = (req, res) => {
   if (tags.length !== 0) match.tags = { $elemMatch: { name: { $all: tags } } };
 
   Problem.aggregate(
-    getAggregate(sort, match, req.user._id),
+    getAggregate(skip, sort, match, req.user._id),
     (err, problems) => {
       if (problems) {
         if (problems && problems.length === 0) {
@@ -103,10 +104,11 @@ const getProblems = (req, res) => {
   );
 };
 const getUsersPosts = (dataObj, callback, socket) => {
-  const { searchID } = dataObj;
+  const { searchID, skip = 0 } = dataObj;
 
   Problem.aggregate(
     getAggregate(
+      skip,
       { createdAt: -1 },
       { authorID: mongoose.Types.ObjectId(searchID) },
       socket.request.user._id
@@ -195,13 +197,12 @@ const saveProblem = (req, res) => {
     });
   }
 };
-const searchProblem = (searchPostString, callback) => {
+const searchProblem = (searchPostString, skip = 0, callback) => {
   searchPostString = searchPostString.replace(/%20/g, " ");
 
   const doesStringHaveSpaceChar = searchPostString.search(" ");
 
   if (doesStringHaveSpaceChar === -1) {
-    console.log("here");
     Problem.find(
       { title: { $regex: searchPostString + ".*", $options: "i" } },
       (err, problems) => {
@@ -210,6 +211,7 @@ const searchProblem = (searchPostString, callback) => {
         } else return addUserToObject(problems => callback(problems), problems);
       }
     )
+      .skip(skip)
       .limit(10)
       .lean();
   } else {

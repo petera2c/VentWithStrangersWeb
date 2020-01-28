@@ -22,7 +22,7 @@ class Problems extends Component {
   render() {
     const { problems } = this.context;
     const { location } = this.props;
-    const { pathname } = location;
+    const { pathname, search } = location;
 
     let title = capitolizeFirstChar(pathname.slice(1, pathname.length));
 
@@ -66,7 +66,13 @@ class Problems extends Component {
                           problemIndex={index}
                         />
                       ))}
-                    <LoadMoreProblems />
+                    <LoadMoreProblems
+                      onClick={() => {
+                        context.handleChange({ skip: context.skip + 10 }, () =>
+                          context.getProblems(pathname, search)
+                        );
+                      }}
+                    />
                   </Container>
                 )}
                 {!problems && <LoadingHeart />}

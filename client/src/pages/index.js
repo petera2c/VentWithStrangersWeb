@@ -47,7 +47,7 @@ class Routes extends Component {
   }
   getDataNeededForPage = (location, action, initialPageLoad) => {
     let { pathname, search } = location;
-    const { getProblems, handleChange, socket } = this.context;
+    const { getProblems, handleChange, skip, socket } = this.context;
 
     if (
       pathname + search ===
@@ -56,7 +56,7 @@ class Routes extends Component {
     )
       return;
 
-    handleChange({ problems: undefined });
+    handleChange({ problems: undefined, skip: 0 });
 
     search = search.slice(1, search.length);
 
@@ -67,7 +67,7 @@ class Routes extends Component {
     )
       getProblems(pathname, search);
     else if (pathname === "/search")
-      socket.emit("search_problems", search, problems => {
+      socket.emit("search_problems", search, skip, problems => {
         handleChange({ problems });
       });
     else if (pathname === "/") getProblems("/trending", search);
