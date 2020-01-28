@@ -11,21 +11,28 @@ import Text from "../../components/views/Text";
 
 class LoadMoreProblems extends Component {
   componentDidMount() {
+    window.addEventListener("scroll", this.scrollListener);
+  }
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.scrollListener);
+  }
+  scrollListener = () => {
     const { loadMore = () => {} } = this.props;
 
     var timeout;
-    window.onscroll = ev => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        if (
-          window.innerHeight + window.scrollY + 5 >=
-          document.body.scrollHeight
-        ) {
+
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      if (
+        window.innerHeight + window.scrollY + 5 >= document.body.scrollHeight &&
+        this.props.canLoadMorePosts
+      ) {
+        {
           loadMore();
         }
-      }, 50);
-    };
-  }
+      }
+    }, 50);
+  };
   render() {
     const { loadMore = () => {} } = this.props;
 

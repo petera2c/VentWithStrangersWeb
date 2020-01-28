@@ -57,6 +57,7 @@ class SearchPage extends Component {
                     ))}
                   {context.canLoadMorePosts && (
                     <LoadMoreProblems
+                      canLoadMorePosts={context.canLoadMorePosts}
                       loadMore={() => {
                         context.handleChange({ skip: context.skip + 10 }, () =>
                           searchProblems(
