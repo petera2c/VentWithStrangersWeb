@@ -19,8 +19,9 @@ import ProblemPage from "./Problem";
 import HotTagsPage from "./HotTags";
 import NotFoundPage from "./NotFound";
 
+import { searchProblems } from "./Search/util";
 import { isMobileOrTablet } from "../util";
-import { initSocket } from "./util";
+import { getUsersComments, getUsersPosts, initSocket } from "./util";
 
 class Routes extends Component {
   state = {
@@ -47,7 +48,14 @@ class Routes extends Component {
   }
   getDataNeededForPage = (location, action, initialPageLoad) => {
     let { pathname, search } = location;
-    const { getProblems, handleChange, skip, socket } = this.context;
+    const {
+      getProblems,
+      handleChange,
+      notify,
+      skip,
+      socket,
+      user
+    } = this.context;
 
     if (
       pathname + search ===
@@ -67,10 +75,12 @@ class Routes extends Component {
     )
       getProblems(pathname, search);
     else if (pathname === "/search")
-      socket.emit("search_problems", search, skip, problems => {
-        handleChange({ problems });
-      });
+      searchProblems(handleChange, undefined, search, skip, socket);
     else if (pathname === "/") getProblems("/trending", search);
+    else if (pathname === "/activity") {
+      getUsersPosts(handleChange, notify, search, socket, user);
+      getUsersComments(handleChange, notify, search, socket, user);
+    }
   };
   componentWillUnmount() {
     this.unlisten();

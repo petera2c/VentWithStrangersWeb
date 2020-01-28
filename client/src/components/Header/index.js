@@ -58,77 +58,85 @@ class Header extends Component {
     return (
       <Consumer>
         {context => (
-          <Container className="sticky top-0 x-fill full-center bg-white border-top large active">
-            <Link
-              className={
-                "button-3 py16 mx16 " +
-                isPageActive("/trending", pathname) +
-                isPageActive("/", pathname)
-              }
-              to="/trending"
+          <Container className="sticky top-0 x-fill align-center justify-between wrap bg-white border-top large active pt16">
+            <Container
+              className="align-center wrap"
+              style={{ paddingLeft: "calc(12.5vw - 8px)" }}
             >
-              <FontAwesomeIcon className="mr8" icon={faAnalytics} />
-              Trending
-            </Link>
-            <Link
-              className={
-                "button-3 py16 mx16 " + isPageActive("/recent", pathname)
-              }
-              to="/recent"
-            >
-              <FontAwesomeIcon className="mr8" icon={faConciergeBell} />
-              Recent
-            </Link>
-            <Link
-              className={
-                "button-3 py16 ml16 mr64 " + isPageActive("/popular", pathname)
-              }
-              to="/popular"
-            >
-              <FontAwesomeIcon className="mr8" icon={faFireAlt} />
-              Popular
-            </Link>
-
-            <Container className="border-all active py4 mr16 br4">
               <Link
-                className="border-right active blue px8"
-                to="/post-a-problem"
+                className={
+                  "button-3 mb16 mr16 " +
+                  isPageActive("/trending", pathname) +
+                  isPageActive("/", pathname)
+                }
+                to="/trending"
               >
-                <FontAwesomeIcon className="" icon={faPen} />
+                <FontAwesomeIcon className="mr8" icon={faAnalytics} />
+                Trending
               </Link>
-              <Link className="blue px8" to="/vent-to-a-stranger">
-                <FontAwesomeIcon className="" icon={faComments} />
+              <Link
+                className={
+                  "button-3 mb16 mx16 " + isPageActive("/recent", pathname)
+                }
+                to="/recent"
+              >
+                <FontAwesomeIcon className="mr8" icon={faConciergeBell} />
+                Recent
               </Link>
+              <Link
+                className={
+                  "button-3 mb16 ml16 mr64 " +
+                  isPageActive("/popular", pathname)
+                }
+                to="/popular"
+              >
+                <FontAwesomeIcon className="mr8" icon={faFireAlt} />
+                Popular
+              </Link>
+
+              <Container className="border-all active py4 mr16 mb16 br4">
+                <Link
+                  className="border-right active blue px8"
+                  to="/post-a-problem"
+                >
+                  <FontAwesomeIcon className="" icon={faPen} />
+                </Link>
+                <Link className="blue px8" to="/vent-to-a-stranger">
+                  <FontAwesomeIcon className="" icon={faComments} />
+                </Link>
+              </Container>
+
+              <Container className="full-center bg-grey-4 py4 px8 mb16 br4">
+                <FontAwesomeIcon className="grey-5 mr8" icon={faSearch} />
+                <Input
+                  className="no-border bg-grey-4 br4"
+                  onChange={e => this.searchPosts(e.target.value)}
+                  placeholder="Search"
+                  type="text"
+                  value={searchPostString}
+                />
+              </Container>
             </Container>
 
-            <Container className="full-center bg-grey-4 py4 px8 br4">
-              <FontAwesomeIcon className="grey-5 mr8" icon={faSearch} />
-              <Input
-                className="no-border bg-grey-4 br4"
-                onChange={e => this.searchPosts(e.target.value)}
-                placeholder="Search"
-                type="text"
-                value={searchPostString}
-              />
-            </Container>
-
-            {context.user && !context.user.password && (
-              <Button
-                className="blue fw-300 mx32"
-                text="Login"
-                onClick={() => this.handleChange({ loginModalBoolean: true })}
-              />
-            )}
-            {context.user && !context.user.password && (
-              <Button
-                className="white blue-fade px32 py8 br4"
-                text="Sign Up"
-                onClick={() => this.handleChange({ signUpModalBoolean: true })}
-              />
-            )}
-            {context.user && context.user.password && (
-              <Link className="absolute right-0 mr32" to="/activity">
-                <Container className="full-center">
+            <Container className="flex-fill justify-end mb16">
+              {context.user && !context.user.password && (
+                <Button
+                  className="blue fw-300 mx32"
+                  text="Login"
+                  onClick={() => this.handleChange({ loginModalBoolean: true })}
+                />
+              )}
+              {context.user && !context.user.password && (
+                <Button
+                  className="white blue-fade px32 py8 br4"
+                  text="Sign Up"
+                  onClick={() =>
+                    this.handleChange({ signUpModalBoolean: true })
+                  }
+                />
+              )}
+              {context.user && context.user.password && (
+                <Link className="flex full-center mr32" to="/activity">
                   <Text
                     className="round-icon bg-blue white mr8"
                     text={capitolizeFirstChar(context.user.displayName[0])}
@@ -142,9 +150,10 @@ class Header extends Component {
                     type="p"
                   />
                   <FontAwesomeIcon icon={faChevronDown} />
-                </Container>
-              </Link>
-            )}
+                </Link>
+              )}
+            </Container>
+
             {loginModalBoolean && (
               <LoginModal
                 close={() => this.handleChange({ loginModalBoolean: false })}

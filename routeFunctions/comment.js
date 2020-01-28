@@ -76,22 +76,24 @@ const getProblemComments = (problemID, callback, socket) => {
 const getUsersComments = (dataObj, callback, socket) => {
   const { searchID } = dataObj;
 
-  Comment.aggregate(
-    getAggregate(
-      { authorID: mongoose.Types.ObjectId(searchID) },
-      socket.request.user._id
-    ),
-    (err, comments) => {
-      if (comments) {
-        if (comments.length === 0) callback({ comments, success: true });
-        else
-          addUserToObject(
-            comments => callback({ comments, success: true }),
-            comments
-          );
-      } else callback({ message: "Unable to get posts.", success: false });
-    }
-  );
+  if (searchID.match(/^[0-9a-fA-F]{24}$/))
+    Comment.aggregate(
+      getAggregate(
+        { authorID: mongoose.Types.ObjectId(searchID) },
+        socket.request.user._id
+      ),
+      (err, comments) => {
+        if (comments) {
+          if (comments.length === 0) callback({ comments, success: true });
+          else
+            addUserToObject(
+              comments => callback({ comments, success: true }),
+              comments
+            );
+        } else callback({ message: "Unable to get posts.", success: false });
+      }
+    );
+  else callback({ comments: [], message: "Invalid ID.", success: false });
 };
 
 const likeComment = (dataObj, callback, socket) => {

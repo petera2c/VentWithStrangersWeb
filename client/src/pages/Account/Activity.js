@@ -21,16 +21,12 @@ import { capitolizeFirstChar } from "../../util";
 
 class ActivitySection extends Component {
   state = {
-    comments: undefined,
     commentsSection: false,
     postsSection: true
   };
 
   componentDidMount() {
     this._ismounted = true;
-
-    this.getUsersPosts();
-    this.getUsersComments();
   }
   componentWillUnmount() {
     this._ismounted = false;
@@ -45,41 +41,9 @@ class ActivitySection extends Component {
     else return "";
   };
 
-  getUsersPosts = () => {
-    const { handleChange, notify, socket, user } = this.context;
-    const { location } = this.props;
-    const { search } = location;
-
-    let searchID = user._id;
-    if (search) searchID = location.search.slice(1, search.length);
-
-    socket.emit("get_users_posts", { searchID }, result => {
-      const { message, problems, success } = result;
-
-      if (success) handleChange({ problems });
-      else notify({ message, type: "danger" });
-    });
-  };
-
-  getUsersComments = () => {
-    const { handleChange, notify, socket, user } = this.context;
-    const { location } = this.props;
-    const { search } = location;
-
-    let searchID = user._id;
-    if (search) searchID = location.search.slice(1, search.length);
-
-    socket.emit("get_users_comments", { searchID }, result => {
-      const { comments, message, success } = result;
-
-      if (success) this.handleChange({ comments });
-      else notify({ message, type: "danger" });
-    });
-  };
-
   render() {
-    const { comments, commentsSection, postsSection } = this.state;
-    const { problems } = this.context;
+    const { commentsSection, postsSection } = this.state;
+    const { comments, problems } = this.context;
 
     return (
       <Container className="container large column pa16">
@@ -105,12 +69,12 @@ class ActivitySection extends Component {
                 "x-50 button-4 clickable full-center py16" +
                 this.isActive(commentsSection)
               }
-              onClick={() =>
+              onClick={() => {
                 this.handleChange({
                   postsSection: false,
                   commentsSection: true
-                })
-              }
+                });
+              }}
             >
               <Text className="tac" text="Comments" type="h5" />
             </Container>
@@ -120,7 +84,12 @@ class ActivitySection extends Component {
           <Container className="x-fill column">
             {problems &&
               problems.map((problem, index) => (
-                <Problem key={index} problem={problem} problemIndex={index} />
+                <Problem
+                  key={index}
+                  previewMode={true}
+                  problem={problem}
+                  problemIndex={index}
+                />
               ))}
             {problems && problems.length === 0 && (
               <Text className="fw-400" text="No problems found." type="h4" />
@@ -143,7 +112,7 @@ class ActivitySection extends Component {
             )}
           </Container>
         )}
-        {(!problems || !comments) && (
+        {((!problems && postsSection) || (!comments && !postsSection)) && (
           <Container className="x-fill full-center">
             <LoadingHeart />
           </Container>

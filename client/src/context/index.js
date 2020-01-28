@@ -7,6 +7,8 @@ const { Provider, Consumer } = ExtraContext;
 
 class GIProvider extends Component {
   state = {
+    canLoadMorePosts: true,
+    comments: undefined,
     hotTags: [],
     skip: 0,
     notification: {
@@ -60,12 +62,14 @@ class GIProvider extends Component {
       .then(res => {
         const { problems, success } = res.data;
         let newProblems = problems;
+        let canLoadMorePosts = true;
 
+        if (problems && problems.length < 10) canLoadMorePosts = false;
         if (skip && this.state.problems)
-          newProblems = newProblems.concat(this.state.problems);
-
+          newProblems = this.state.problems.concat(newProblems);
         if (success)
           this.handleChange({
+            canLoadMorePosts,
             problems: newProblems
           });
         else {
@@ -97,6 +101,8 @@ class GIProvider extends Component {
   };
   render() {
     const {
+      canLoadMorePosts,
+      comments,
       hotTags,
       skip,
       notification,
@@ -110,6 +116,8 @@ class GIProvider extends Component {
       <Provider
         value={{
           addComment: this.addComment,
+          canLoadMorePosts,
+          comments,
           getProblems: this.getProblems,
           handleChange: this.handleChange,
           hotTags,

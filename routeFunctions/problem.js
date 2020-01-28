@@ -106,24 +106,24 @@ const getProblems = (req, res) => {
 const getUsersPosts = (dataObj, callback, socket) => {
   const { searchID, skip = 0 } = dataObj;
 
-  Problem.aggregate(
-    getAggregate(
-      skip,
-      { createdAt: -1 },
-      { authorID: mongoose.Types.ObjectId(searchID) },
-      socket.request.user._id
-    ),
-    (err, problems) => {
-      if (problems) {
-        if (problems.length === 0) callback({ problems, success: true });
-        else
-          addUserToObject(
-            problems => callback({ problems, success: true }),
-            problems
-          );
-      } else callback({ message: "Unable to get posts.", success: false });
-    }
-  );
+  if (searchID.match(/^[0-9a-fA-F]{24}$/)) {
+    const match = { authorID: mongoose.Types.ObjectId(searchID) };
+
+    Problem.aggregate(
+      getAggregate(skip, { createdAt: -1 }, match, socket.request.user._id),
+      (err, problems) => {
+        if (problems) {
+          if (problems.length === 0) callback({ problems, success: true });
+          else
+            addUserToObject(
+              problems => callback({ problems, success: true }),
+              problems
+            );
+        } else callback({ message: "Unable to get posts.", success: false });
+      }
+    );
+  } else
+    return callback({ message: "Invalid ID.", problems: [], success: false });
 };
 
 const likeProblem = (problemID, callback, socket) => {
@@ -197,7 +197,10 @@ const saveProblem = (req, res) => {
     });
   }
 };
-const searchProblem = (searchPostString, skip = 0, callback) => {
+const searchProblems = (dataObj, callback) => {
+  let { searchPostString = "" } = dataObj;
+  const { skip = 0 } = dataObj;
+
   searchPostString = searchPostString.replace(/%20/g, " ");
 
   const doesStringHaveSpaceChar = searchPostString.search(" ");
@@ -256,6 +259,6 @@ module.exports = {
   getUsersPosts,
   likeProblem,
   saveProblem,
-  searchProblem,
+  searchProblems,
   unlikeProblem
 };

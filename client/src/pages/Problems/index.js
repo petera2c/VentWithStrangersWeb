@@ -67,13 +67,16 @@ class Problems extends Component {
                           problemIndex={index}
                         />
                       ))}
-                    <LoadMoreProblems
-                      loadMore={() => {
-                        context.handleChange({ skip: context.skip + 10 }, () =>
-                          context.getProblems(pathname, search)
-                        );
-                      }}
-                    />
+                    {context.canLoadMorePosts && (
+                      <LoadMoreProblems
+                        loadMore={() => {
+                          context.handleChange(
+                            { skip: context.skip + 10 },
+                            () => context.getProblems(pathname, search)
+                          );
+                        }}
+                      />
+                    )}
                   </Container>
                 )}
                 {!problems && <LoadingHeart />}

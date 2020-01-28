@@ -21,7 +21,7 @@ const {
   getProblem,
   getUsersPosts,
   likeProblem,
-  searchProblem,
+  searchProblems,
   unlikeProblem
 } = require("./problem");
 
@@ -42,7 +42,7 @@ module.exports = io => {
     socket.on("user_reported", () => {});
 
     socket.on("search_tags", searchTags);
-    socket.on("search_problems", searchProblem);
+    socket.on("search_problems", searchProblems);
     socket.on("like_problem", (problemID, callback) =>
       likeProblem(problemID, callback, socket)
     );
