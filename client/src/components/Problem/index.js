@@ -53,7 +53,13 @@ class Problem extends Component {
   render() {
     const { commentString, displayCommentField } = this.state;
     const { history } = this.props; // Functions
-    const { previewMode, problem, problemIndex } = this.props; // Variables
+    const {
+      previewMode,
+      problem,
+      problemIndex,
+      searchPreviewMode
+    } = this.props; // Variables
+
     let keywords = "";
     for (let index in problem.tags) {
       if (index !== 0) keywords += ",";
@@ -71,12 +77,13 @@ class Problem extends Component {
       <Container className="x-fill column mb16">
         <Container className="x-fill column bg-white mb8 br8">
           <Container
-            className="clickable border-bottom justify-between py16 px32"
+            className="clickable x-fill justify-between border-bottom py16 px32"
             onClick={() =>
               history.push("/problem/" + problem.title + "?" + problem._id)
             }
           >
             <Link
+              className="mr16"
               onClick={e => e.stopPropagation()}
               to={"/activity?" + problem.authorID}
             >
@@ -93,19 +100,21 @@ class Problem extends Component {
                 />
               </Container>
             </Link>
-            <Container className="wrap align-center">
-              {problem.tags.map((tag, index) => (
-                <Text
-                  className="button-1 clickable mr8"
-                  key={index}
-                  onClick={e => {
-                    e.stopPropagation();
-                    addTagsToPage(this.props, [tag]);
-                  }}
-                  text={tag.name}
-                  type="p"
-                />
-              ))}
+            <Container className="flex-fill align-center justify-end">
+              <Container className="flex-fill wrap justify-end">
+                {problem.tags.map((tag, index) => (
+                  <Text
+                    className="button-1 clickable mr8"
+                    key={index}
+                    onClick={e => {
+                      e.stopPropagation();
+                      addTagsToPage(this.props, [tag]);
+                    }}
+                    text={tag.name}
+                    type="p"
+                  />
+                ))}
+              </Container>
               <FontAwesomeIcon className="grey-9 ml16" icon={faEllipsisV} />
             </Container>
           </Container>
@@ -125,7 +134,7 @@ class Problem extends Component {
             </Container>
             <Text className="" text={description} type="p" />
           </Container>
-          {!previewMode && (
+          {!searchPreviewMode && (
             <Container className="py16 px32">
               <FontAwesomeIcon
                 className="clickable blue mr4"
@@ -154,7 +163,7 @@ class Problem extends Component {
             </Container>
           )}
         </Container>
-        {!previewMode && displayCommentField && (
+        {!searchPreviewMode && displayCommentField && (
           <Container className="column bg-white py16 mb16 br8">
             <Container className="border-bottom pb16 mb16">
               <Container className="align-center border-left active large px16">
