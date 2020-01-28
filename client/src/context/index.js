@@ -111,7 +111,6 @@ class GIProvider extends Component {
       socket,
       user
     } = this.state;
-    console.log(problems);
 
     return (
       <Provider
