@@ -88,6 +88,7 @@ class Routes extends Component {
 
   render() {
     const { databaseConnection } = this.state;
+    const { pathname } = this.props.location;
 
     if (!databaseConnection)
       return (
@@ -99,7 +100,12 @@ class Routes extends Component {
     return (
       <Consumer>
         {context => (
-          <Container className="screen-container column">
+          <Container
+            className="screen-container column"
+            style={{
+              maxHeight: pathname === "/vent-to-a-stranger" ? "100vh" : "auto"
+            }}
+          >
             {!isMobileOrTablet() && <Header />}
             {isMobileOrTablet() && <MobileHeader />}
             <Switch>
