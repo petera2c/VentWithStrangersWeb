@@ -67,7 +67,7 @@ const createSiteMap = () => {
 const getMetaInformation = (url, callback) => {
   const defaultMetaObject = {
     metaDescription:
-      "People care. Vent, chat anonymously and be apart of a community committed to making the world a better place.",
+      "People care. Vent, and chat anonymously and be apart of a community committed to making the world a better place.",
     metaImage:
       "https://res.cloudinary.com/dnc1t9z9o/image/upload/v1580431332/VENT.jpg",
     metaTitle: "We Care | Vent With Strangers"
