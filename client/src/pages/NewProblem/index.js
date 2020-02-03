@@ -126,7 +126,7 @@ class NewProblemPage extends Component {
                             title
                           } = this.state;
 
-                          if (description && tags && title) {
+                          if (description && title) {
                             this.handleChange({ saving: true });
 
                             const tagsArray = [];

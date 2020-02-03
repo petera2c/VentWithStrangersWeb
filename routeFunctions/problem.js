@@ -183,44 +183,50 @@ const saveProblem = (req, res) => {
 
   let counter = 0;
   const tagNameArray = [];
-  for (let index in tags) {
-    const tag = tags[index].toLowerCase();
-    counter++;
-    Tag.findOne({ name: tags[index] }, (err, tagFromDB) => {
-      counter--;
-      if (tagFromDB) {
-        tagNameArray.push({ name: tagFromDB.name });
 
-        tagFromDB.uses += 1;
-        tagFromDB.save();
-      } else {
-        const newTag = new Tag({ name: tag, uses: 1 });
-        tagNameArray.push({ name: newTag.name });
-        newTag.save();
-      }
-      if (counter === 0) {
-        const newProblem = new Problem({
-          description,
-          dailyUpvotes: 0,
-          gender,
-          tags: tagNameArray,
-          title
-        });
-        newProblem.authorID = req.user._id;
-        newProblem.save((err, newProblem) => {
-          if (!err && newProblem)
-            res.send({ problemID: newProblem._id, success: true });
-          else if (err && err.code === 11000)
-            res.send({
-              message:
-                "This title has already been used, please try something different!",
-              success: false
-            });
-          else res.send({ success: false });
-        });
-      }
+  const saveNewProblem = (description, gender, tagNameArray, title) => {
+    const newProblem = new Problem({
+      description,
+      dailyUpvotes: 0,
+      gender,
+      tags: tagNameArray,
+      title
     });
-  }
+    newProblem.authorID = req.user._id;
+    newProblem.save((err, newProblem) => {
+      if (!err && newProblem)
+        res.send({ problemID: newProblem._id, success: true });
+      else if (err && err.code === 11000)
+        res.send({
+          message:
+            "This title has already been used, please try something different!",
+          success: false
+        });
+      else res.send({ success: false });
+    });
+  };
+
+  if (tags && tags.length > 0)
+    for (let index in tags) {
+      const tag = tags[index].toLowerCase();
+      counter++;
+      Tag.findOne({ name: tags[index] }, (err, tagFromDB) => {
+        counter--;
+        if (tagFromDB) {
+          tagNameArray.push({ name: tagFromDB.name });
+
+          tagFromDB.uses += 1;
+          tagFromDB.save();
+        } else {
+          const newTag = new Tag({ name: tag, uses: 1 });
+          tagNameArray.push({ name: newTag.name });
+          newTag.save();
+        }
+        if (counter === 0)
+          saveNewProblem(description, gender, tagNameArray, title);
+      });
+    }
+  else saveNewProblem(description, gender, undefined, title);
 };
 const searchProblems = (dataObj, callback) => {
   let { searchPostString = "" } = dataObj;
