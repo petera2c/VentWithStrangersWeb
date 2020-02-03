@@ -9,18 +9,30 @@ import Consumer, { ExtraContext } from "../../context";
 
 import HotTags from "../../components/HotTags";
 
-class NotFoundPage extends Component {
+import { isMobileOrTablet } from "../../util";
+
+class HotTagsPage extends Component {
   render() {
     return (
       <Consumer>
         {context => (
           <Page
-            className="x-fill px16 bg-grey-2 py32"
+            className="column x-fill align-center px16 bg-grey-2 py32"
             description="Home"
             keywords=""
             title="Home"
           >
-            <HotTags />
+            <Container
+              className={
+                "column " +
+                (isMobileOrTablet()
+                  ? "container mobile-full px16"
+                  : "container large")
+              }
+            >
+              <Text className="primary fs-20 mb16" text="Tags" type="h1" />
+              <HotTags />
+            </Container>
           </Page>
         )}
       </Consumer>
@@ -28,4 +40,4 @@ class NotFoundPage extends Component {
   }
 }
 
-export default NotFoundPage;
+export default HotTagsPage;

@@ -119,15 +119,14 @@ class ChatPage extends Component {
             >
               {context.user && !conversation && (
                 <Container className="column">
-                  {!isMobileOrTablet() && (
-                    <Text className="pt32" text="Chat" type="h4" />
-                  )}
-                  <Container
+                  <Text
                     className={
-                      "wrap full-center " +
-                      (isMobileOrTablet() ? "mt32" : "mt16")
+                      "primary fs-20 " + (isMobileOrTablet() ? "px32 pt32" : "")
                     }
-                  >
+                    text="Vent with a Stranger"
+                    type="h1"
+                  />
+                  <Container className="wrap full-center mt16">
                     <Container
                       className={
                         "button-6 column bg-white shadow-3 container small mb16 br8 " +
