@@ -170,7 +170,7 @@ class Problem extends Component {
           <Container
             className={`column ${previewMode ? "" : "border-bottom"} py16 px32`}
           >
-            <Text className="fw-400 grey-8 mb8" text={title} type="h5" />
+            <Text className="fs-16 fw-400 grey-8 mb8" text={title} type="h1" />
             <Container className="mb8">
               <FontAwesomeIcon className="grey-5 mr8" icon={faClock} />
               <Text
@@ -181,7 +181,11 @@ class Problem extends Component {
                 type="p"
               />
             </Container>
-            <Text className="" text={description} type="p" />
+            <Text
+              className="fs-14 fw-400 grey-1"
+              text={description}
+              type="h2"
+            />
           </Container>
           {!searchPreviewMode && (
             <Container className="py16 px32">

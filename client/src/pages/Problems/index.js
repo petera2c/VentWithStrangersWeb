@@ -67,7 +67,11 @@ class Problems extends Component {
                 }
               >
                 <Container className="x-fill justify-between mb16">
-                  <Text className="" text={title + " Problems"} type="h4" />
+                  <Text
+                    className="primary fs-20"
+                    text={title + " Problems"}
+                    type="h1"
+                  />
                   <Filters />
                 </Container>
 
