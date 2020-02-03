@@ -1,10 +1,12 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 import Consumer, { ExtraContext } from "../../context";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
+import { faPen } from "@fortawesome/pro-solid-svg-icons/faPen";
+import { faComments } from "@fortawesome/pro-solid-svg-icons/faComments";
 
 import LoadingHeart from "../../components/loaders/Heart";
 
@@ -28,20 +30,40 @@ class Problems extends Component {
 
     if (!pathname || pathname === "/") title = "Trending";
 
+    let metaDescription =
+      "People care. Vent and chat anonymously to be apart of a community committed to making the world a better place.";
+
+    if (pathname === "/popular")
+      metaDescription =
+        "Problems and issues that have the most upvotes and comments of all time. Post, comment, and/or like anonymously.";
+    else if (pathname === "/recent")
+      metaDescription =
+        "The latest problems and issues people have posted. Post, comment, and/or like anonymously.";
+    else if (pathname === "/trending")
+      metaDescription =
+        "People’s problems and issues with the most upvotes in the past 24 hours. Post, comment, and/or like anonymously.";
+
     return (
       <Consumer>
         {context => (
           <Page
             className="bg-grey-2"
-            description={title}
+            description={metaDescription}
             keywords=""
             title={title}
           >
-            <Container className="x-fill justify-center align-start py32">
+            <Container
+              className={
+                "x-fill justify-center align-start " +
+                (isMobileOrTablet() ? "py16" : "py32")
+              }
+            >
               <Container
                 className={
-                  "container large column align-center " +
-                  (isMobileOrTablet() ? "" : "pa16 mr32")
+                  "column align-center " +
+                  (isMobileOrTablet()
+                    ? "container mobile-full pa16"
+                    : "container large mr32")
                 }
               >
                 <Container className="x-fill justify-between mb16">
@@ -84,8 +106,18 @@ class Problems extends Component {
               </Container>
 
               {!isMobileOrTablet() && (
-                <Container className="x-25">
+                <Container className="container small column">
                   <HotTags />
+                  <Container className="x-fill column align-start bg-white shadow-3 pa16 mt16 br8">
+                    <Link className="button-3 mb16" to="/vent-to-a-stranger">
+                      <FontAwesomeIcon className="mr8" icon={faComments} />
+                      Chat with a Stranger
+                    </Link>
+                    <Link className="button-3" to="/post-a-problem">
+                      <FontAwesomeIcon className="mr8" icon={faPen} />
+                      Post a Problem
+                    </Link>
+                  </Container>
                 </Container>
               )}
             </Container>

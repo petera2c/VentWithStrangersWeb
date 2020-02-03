@@ -60,7 +60,8 @@ module.exports = (env, argv) => {
     plugins: plugins,
     devServer: {
       proxy: {
-        "/api/*": "http://localhost:5000"
+        "/api/*": "http://localhost:5000",
+        "/sitemap.xml": "http://localhost:5000"
       },
       disableHostCheck: true,
       historyApiFallback: true

@@ -18,7 +18,7 @@ import Comment from "../../components/Comment";
 
 import LoadMoreProblems from "../../components/LoadMoreProblems";
 
-import { capitolizeFirstChar } from "../../util";
+import { isMobileOrTablet } from "../../util";
 import { getUsersPosts } from "../util";
 
 class ActivitySection extends Component {
@@ -51,9 +51,14 @@ class ActivitySection extends Component {
     return (
       <Consumer>
         {context => (
-          <Container className="container large column pa16">
+          <Container
+            className={
+              "container column px16 " +
+              (isMobileOrTablet() ? "mobile-full" : "large")
+            }
+          >
             <Text className="mb16" text="Activity" type="h4" />
-            <Container className="ov-hidden column bg-white mb16 br4">
+            <Container className="ov-hidden column bg-white shadow-3 mb16 br8">
               <Container>
                 <Container
                   className={
@@ -125,15 +130,17 @@ class ActivitySection extends Component {
             )}
             {commentsSection && (
               <Container className="x-fill column">
-                {context.comments &&
-                  context.comments.map((comment, index) => (
-                    <Comment
-                      arrayLength={context.comments.length}
-                      comment={comment}
-                      key={index}
-                      index={index}
-                    />
-                  ))}
+                <Container className="column shadow-3 br8">
+                  {context.comments &&
+                    context.comments.map((comment, index) => (
+                      <Comment
+                        arrayLength={context.comments.length}
+                        comment={comment}
+                        key={index}
+                        index={index}
+                      />
+                    ))}
+                </Container>
                 {context.comments && context.comments.length === 0 && (
                   <Text
                     className="fw-400"

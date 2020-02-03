@@ -67,7 +67,13 @@
   border: 1px solid var(--grey-color-1);
 }
 .heart:hover {
-  color: red;
+  color: var(--red-color);
+}
+.button-7:hover {
+  color: var(--blue-color);
+}
+.button-8:hover {
+  color: var(--red-color);
 }
 button.purple {
   color: var(--seven-purple-color);

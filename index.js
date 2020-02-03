@@ -61,7 +61,8 @@ app.use(passport.session());
 
 require("./routeFunctions")(app); // Routes
 
-//createSiteMap();
+schedule.scheduleJob("0 0 * * *", createSiteMap);
+createSiteMap();
 
 // If using production then if a route is not found in express we send user to react routes
 if (process.env.NODE_ENV === "production") {
@@ -86,15 +87,16 @@ if (process.env.NODE_ENV === "production") {
   };
 
   app.get("/", (req, res) => {
-    injectMetaData(req, res);
+    if (req.originalUrl !== "/sitemap.xml") injectMetaData(req, res);
   });
 
   app.use(express.static(path.resolve(__dirname, "./client", "build")));
 
   app.get("*", (req, res) => {
-    injectMetaData(req, res);
+    if (req.originalUrl !== "/sitemap.xml") injectMetaData(req, res);
   });
 }
+
 const PORT = process.env.PORT || 5000;
 
 server.listen(PORT);

@@ -71,15 +71,14 @@ class AccountSection extends Component {
     const { pathname, search } = location;
 
     return (
-      <Container className="container large column">
+      <Container
+        className={
+          "container column px16 " +
+          (isMobileOrTablet() ? "mobile-full" : "large")
+        }
+      >
         <Text className="mb16" text="Account" type="h4" />
-        <Container
-          className="column bg-white pa16 mb2"
-          style={{
-            borderTopLeftRadius: "4px",
-            borderTopRightRadius: "4px"
-          }}
-        >
+        <Container className="column bg-white shadow-3 pa16 mb2 br8">
           <Text
             className="blue bold mb16"
             text="Personal Information"
@@ -188,13 +187,7 @@ class AccountSection extends Component {
             </Container>
           </Container>
         </Container>
-        <Container
-          className="full-center bg-white pa16"
-          style={{
-            borderBottomLeftRadius: "4px",
-            borderBottomRightRadius: "4px"
-          }}
-        >
+        <Container className="full-center bg-white shadow-3 pa16 br8">
           <Button
             className="cancel py8 px32 mx4 br4"
             text="Cancel"

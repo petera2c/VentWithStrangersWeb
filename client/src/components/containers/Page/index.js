@@ -48,11 +48,11 @@ class Page extends Component {
         style={style}
         testMode={testMode}
       >
-        <Helmet>
+        <Helmet defer={false}>
           <meta charSet="utf-8" />
-          <title>{`${title} | VentWithStrangers`}</title>
-          <meta name="title" content={`${title} | VentWithStrangers`} />
-          <meta name="og:title" content={`${title} | VentWithStrangers`} />
+          <title>{`${title} | Vent With Strangers`}</title>
+          <meta name="title" content={`${title} | Vent With Strangers`} />
+          <meta name="og:title" content={`${title} | Vent With Strangers`} />
           <meta name="description" content={description} />
           <meta name="og:description" content={description} />
           <meta property="image" content={image} />

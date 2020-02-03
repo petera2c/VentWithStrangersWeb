@@ -22,6 +22,12 @@ const problemSchema = new Schema(
     dailyUpvotes: { require: true, type: Number },
     description: { require: true, type: String },
     gender: Number,
+    reports: [
+      {
+        complaint: { required: true, type: Number },
+        userID: { required: true, type: Schema.Types.ObjectId }
+      }
+    ],
     tags: [{ name: { type: String } }],
     title: { require: true, type: String, unique: true },
     upVotes: [{ type: Schema.Types.ObjectId }]

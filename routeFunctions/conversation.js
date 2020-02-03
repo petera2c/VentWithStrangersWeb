@@ -19,8 +19,9 @@ const emitWaitingConversations = socket => {
     });
   });
 };
-const findConversation = (object, callback, socket) => {
-  const { type } = object;
+
+const findConversation = (dataObj, callback, socket) => {
+  const { type } = dataObj;
   const userID = socket.request.user._id;
   let oppositeType = "listener";
   if (type === "listener") oppositeType = "venter";
@@ -38,7 +39,6 @@ const findConversation = (object, callback, socket) => {
               if (chatPartner) {
                 conversation[type] = userID;
                 conversation.save((err, conversation) => {
-                  emitWaitingConversations(socket);
                   joinRoom(
                     conversation,
                     socket,
@@ -68,6 +68,17 @@ const findConversation = (object, callback, socket) => {
     .limit(1);
 };
 
+const getUsersWaiting = callback => {
+  ChatQueue.countDocuments({ type: "venter" }, (err, venterCount) => {
+    ChatQueue.countDocuments({ type: "listener" }, (err, listenerCount) => {
+      callback({
+        listenersWaiting: listenerCount,
+        ventersWaiting: venterCount
+      });
+    });
+  });
+};
+
 const joinRoom = (
   conversation,
   socket,
@@ -76,6 +87,7 @@ const joinRoom = (
 ) => {
   socket.leaveAll();
   socket.join(conversation._id);
+  emitWaitingConversations(socket);
 
   socket.emit("user_joined_chat", {
     chatPartner: chatPartnerDisplayName,
@@ -86,14 +98,21 @@ const joinRoom = (
     conversation
   });
 };
+
 const leaveChat = socket => {
+  for (let index in socket.rooms) {
+    socket.to(index).emit("user_left");
+  }
   socket.leaveAll();
+
   ChatQueue.find({ userID: socket.request.user._id }, (err, chatQueues) => {
+    emitWaitingConversations(socket);
     for (let index in chatQueues) {
       chatQueues[index].remove();
     }
   });
 };
+
 const sendMessage = (dataObject, socket) => {
   const { conversationID } = dataObject;
   const userID = socket.request.user._id;
@@ -121,6 +140,7 @@ const sendMessage = (dataObject, socket) => {
 module.exports = {
   emitWaitingConversations,
   findConversation,
+  getUsersWaiting,
   leaveChat,
   sendMessage
 };

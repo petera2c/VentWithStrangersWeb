@@ -35,8 +35,10 @@ class SearchPage extends Component {
           >
             <Container
               className={
-                "container large column align-center py32 " +
-                (isMobileOrTablet() ? "" : "px16 mr32")
+                "column align-center py32 " +
+                (isMobileOrTablet()
+                  ? "container mobile-full px16"
+                  : "container large px16 mr32")
               }
             >
               <Container className="x-fill justify-end mb16">

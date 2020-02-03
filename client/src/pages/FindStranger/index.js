@@ -15,25 +15,33 @@ import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
 
 import { isMobileOrTablet } from "../../util";
-import { findConversation, initUserJoined } from "./util";
+import { findConversation } from "./util";
 
-import "./style.css";
+const INITIAL_META_TITLE = "Chat";
+var myVar;
 
 class ChatPage extends Component {
   state = {
     chatPartner: undefined,
     conversation: false,
-    listenersWaiting: 0,
-    ventersWaiting: 0,
     listener: false,
+    listenersWaiting: 0,
+    metaTitle: INITIAL_META_TITLE,
     saving: true,
-    venter: false
+    venter: false,
+    ventersWaiting: 0
   };
   componentDidMount() {
     this._ismounted = true;
+    window.addEventListener("focus", this.onFocus);
+
     const { socket } = this.context;
+
     if (socket) {
-      initUserJoined(this.handleChange, socket);
+      socket.emit("get_users_waiting", stateObj => {
+        this.handleChange(stateObj);
+      });
+      this.initUserJoined(this.handleChange, socket);
       socket.on("users_waiting", stateObj => {
         this.handleChange(stateObj);
       });
@@ -41,20 +49,56 @@ class ChatPage extends Component {
   }
   componentWillUnmount() {
     this._ismounted = false;
+    window.removeEventListener("focus", this.onFocus);
   }
 
   handleChange = stateObj => {
     if (this._ismounted) this.setState(stateObj);
   };
+
+  initUserJoined = (callback, socket) => {
+    socket.on("user_joined_chat", stateObj => {
+      callback(stateObj);
+
+      if (!document.hasFocus() && stateObj.chatPartner) {
+        this.startMetaChangeInterval(
+          stateObj.chatPartner + " Joined",
+          "Start Chatting"
+        );
+      }
+    });
+  };
+  onFocus = () => {
+    if (document.hasFocus()) {
+      this.handleChange({ metaTitle: INITIAL_META_TITLE });
+    }
+  };
+  startMetaChangeInterval = (metaTitle1, metaTitle2) => {
+    this.handleChange({ metaTitle: metaTitle1 });
+    clearInterval(myVar);
+
+    myVar = setInterval(() => {
+      if (document.hasFocus()) {
+        this.handleChange({ metaTitle: INITIAL_META_TITLE });
+        clearInterval(myVar);
+      } else {
+        if (this.state.metaTitle === metaTitle1)
+          this.handleChange({ metaTitle: metaTitle2 });
+        else this.handleChange({ metaTitle: metaTitle1 });
+      }
+    }, 1200);
+  };
+
   render() {
     const {
       chatPartner,
       conversation,
-      listenersWaiting,
-      ventersWaiting,
       listener,
+      listenersWaiting,
+      metaTitle,
       saving,
-      venter
+      venter,
+      ventersWaiting
     } = this.state;
     const { user } = this.context;
 
@@ -63,9 +107,9 @@ class ChatPage extends Component {
         {context => (
           <Page
             className="bg-grey-2 ov-auto"
-            description="Vent with strangers :)"
+            description="Sometimes, all we need is an available ear. This is where you can anonymously talk to someone that wants to listen, or anonymously listen to someone that wants to be heard."
             keywords="vent, strangers, help"
-            title="Vent or Help Now"
+            title={metaTitle}
           >
             <Container
               className={
@@ -76,13 +120,18 @@ class ChatPage extends Component {
               {context.user && !conversation && (
                 <Container className="column">
                   {!isMobileOrTablet() && (
-                    <Text className="pb16" text="Chat" type="h4" />
+                    <Text className="pt32" text="Chat" type="h4" />
                   )}
-                  <Container className="wrap full-center mt16">
+                  <Container
+                    className={
+                      "wrap full-center " +
+                      (isMobileOrTablet() ? "mt32" : "mt16")
+                    }
+                  >
                     <Container
                       className={
-                        "button-6 column bg-white container small mb16 br4 " +
-                        (isMobileOrTablet() ? "mx16" : "mr32")
+                        "button-6 column bg-white shadow-3 container small mb16 br8 " +
+                        (isMobileOrTablet() ? "px16" : "mr32")
                       }
                       onClick={() => {
                         this.handleChange({ conversation: true });
@@ -116,8 +165,8 @@ class ChatPage extends Component {
                     </Container>
                     <Container
                       className={
-                        "button-6 column bg-white container small mb16 br4 " +
-                        (isMobileOrTablet() ? "mx16" : "")
+                        "button-6 column bg-white shadow-3 container small mb16 br8 " +
+                        (isMobileOrTablet() ? "px16" : "")
                       }
                       onClick={() => {
                         this.handleChange({ conversation: true });
@@ -153,7 +202,12 @@ class ChatPage extends Component {
                 </Container>
               )}
               {conversation && (
-                <Container className="column flex-fill ov-auto">
+                <Container
+                  className={
+                    "column flex-fill ov-auto " +
+                    (isMobileOrTablet() ? "" : "px16 pb16")
+                  }
+                >
                   {!isMobileOrTablet() && (
                     <Text
                       className="pb16"
@@ -165,7 +219,17 @@ class ChatPage extends Component {
                       type="h4"
                     />
                   )}
-                  <Chat chatPartner={chatPartner} conversation={conversation} />
+                  <Chat
+                    chatPartner={chatPartner}
+                    conversation={conversation}
+                    leaveChat={() =>
+                      this.handleChange({
+                        chatPartner: undefined,
+                        conversation: false
+                      })
+                    }
+                    startMetaChangeInterval={this.startMetaChangeInterval}
+                  />
                 </Container>
               )}
             </Container>

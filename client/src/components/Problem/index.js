@@ -7,14 +7,17 @@ import TextArea from "react-textarea-autosize";
 import { ExtraContext } from "../../context";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClock } from "@fortawesome/free-regular-svg-icons/faClock";
-import { faHeart } from "@fortawesome/free-regular-svg-icons/faHeart";
-import { faHeart as faHeart2 } from "@fortawesome/free-solid-svg-icons/faHeart";
-import { faComment } from "@fortawesome/free-regular-svg-icons/faComment";
-import { faEllipsisV } from "@fortawesome/free-solid-svg-icons/faEllipsisV";
+import { faClock } from "@fortawesome/pro-regular-svg-icons/faClock";
+import { faHeart } from "@fortawesome/pro-regular-svg-icons/faHeart";
+import { faHeart as faHeart2 } from "@fortawesome/pro-solid-svg-icons/faHeart";
+import { faComment } from "@fortawesome/pro-regular-svg-icons/faComment";
+import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
+import { faEdit } from "@fortawesome/pro-light-svg-icons/faEdit";
+import { faExclamationTriangle } from "@fortawesome/pro-light-svg-icons/faExclamationTriangle";
 
 import LoadingHeart from "../loaders/Heart";
 import Comment from "../Comment";
+import ReportModal from "../modals/Report";
 
 import Container from "../containers/Container";
 import Button from "../views/Button";
@@ -25,6 +28,7 @@ import {
   commentProblem,
   getProblemComments,
   likeProblem,
+  reportProblem,
   unlikeProblem
 } from "./util";
 
@@ -32,7 +36,9 @@ class Problem extends Component {
   state = {
     comments: undefined,
     commentString: "",
-    displayCommentField: this.props.displayCommentField
+    displayCommentField: this.props.displayCommentField,
+    postOptions: false,
+    reportModal: false
   };
 
   componentDidMount() {
@@ -51,7 +57,12 @@ class Problem extends Component {
   };
 
   render() {
-    const { commentString, displayCommentField } = this.state;
+    const {
+      commentString,
+      displayCommentField,
+      postOptions,
+      reportModal
+    } = this.state;
     const { history } = this.props; // Functions
     const {
       previewMode,
@@ -75,9 +86,9 @@ class Problem extends Component {
 
     return (
       <Container className="x-fill column mb16">
-        <Container className="x-fill column bg-white mb8 br8">
+        <Container className="x-fill column bg-white shadow-3 mb8 br8">
           <Container
-            className="clickable x-fill justify-between border-bottom py16 px32"
+            className="clickable x-fill justify-between border-bottom py16 pl32 pr16"
             onClick={() =>
               history.push("/problem/" + problem.title + "?" + problem._id)
             }
@@ -100,7 +111,7 @@ class Problem extends Component {
                 />
               </Container>
             </Link>
-            <Container className="flex-fill align-center justify-end">
+            <Container className="relative flex-fill align-center justify-end">
               <Container className="flex-fill wrap justify-end">
                 {problem.tags.map((tag, index) => (
                   <Text
@@ -115,7 +126,45 @@ class Problem extends Component {
                   />
                 ))}
               </Container>
-              <FontAwesomeIcon className="grey-9 ml16" icon={faEllipsisV} />
+              <FontAwesomeIcon
+                className="grey-9 px16"
+                icon={faEllipsisV}
+                onClick={e => {
+                  e.stopPropagation();
+                  this.handleChange({ postOptions: !postOptions });
+                }}
+              />
+              <Container
+                onClick={e => {
+                  e.stopPropagation();
+                }}
+                style={{
+                  position: "absolute",
+                  top: "100%",
+                  right: 0,
+                  display: postOptions ? "" : "none",
+                  zIndex: 1
+                }}
+              >
+                <Container className="column x-fill bg-white shadow-3 border-all px16 py8 br8">
+                  {false && problem.wasCreatedByUser && (
+                    <Container className="button-7 clickable align-center mb4">
+                      <FontAwesomeIcon className="mr8" icon={faEdit} />
+                      Edit Post
+                    </Container>
+                  )}
+                  <Container
+                    className="button-8 clickable align-center"
+                    onClick={() => this.handleChange({ reportModal: true })}
+                  >
+                    <FontAwesomeIcon
+                      className="mr8"
+                      icon={faExclamationTriangle}
+                    />
+                    Report Post
+                  </Container>
+                </Container>
+              </Container>
             </Container>
           </Container>
           <Container
@@ -164,7 +213,7 @@ class Problem extends Component {
           )}
         </Container>
         {!searchPreviewMode && displayCommentField && (
-          <Container className="column bg-white py16 mb16 br8">
+          <Container className="column bg-white shadow-3 py16 mb16 br8">
             <Container className="border-bottom pb16 mb16">
               <Container className="align-center border-left active large px16">
                 <FontAwesomeIcon className="blue mr8" icon={faComment} />
@@ -205,20 +254,30 @@ class Problem extends Component {
         )}
         {displayCommentField && problem.commentsArray && (
           <Container className="column pl16 mb16">
-            {problem.commentsArray.map((comment, index) => (
-              <Comment
-                arrayLength={problem.commentsArray.length}
-                comment={comment}
-                key={index}
-                index={index}
-              />
-            ))}
+            <Container className="column shadow-3 br8">
+              {problem.commentsArray.map((comment, index) => (
+                <Comment
+                  arrayLength={problem.commentsArray.length}
+                  comment={comment}
+                  key={index}
+                  index={index}
+                />
+              ))}
+            </Container>
           </Container>
         )}
         {displayCommentField && !problem.commentsArray && (
           <Container className="x-fill full-center">
             <LoadingHeart />
           </Container>
+        )}
+        {reportModal && (
+          <ReportModal
+            close={() => this.handleChange({ reportModal: false })}
+            submit={option =>
+              reportProblem(this.context, problem._id, option, problemIndex)
+            }
+          />
         )}
       </Container>
     );

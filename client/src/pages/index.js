@@ -86,8 +86,13 @@ class Routes extends Component {
 
     if (!databaseConnection)
       return (
-        <Container className="x-fill justify-end pr32">
-          <LoadingHeart />
+        <Container className="screen-container full-center pr32">
+          <img
+            alt=""
+            className="loading-animation"
+            src={require("../svgs/icon.svg")}
+            style={{ height: "280px" }}
+          />
         </Container>
       );
 

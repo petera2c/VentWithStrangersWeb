@@ -1,4 +1,5 @@
 import React, { Component, useState } from "react";
+import Consumer, { ExtraContext } from "../../context";
 
 import TextArea from "react-textarea-autosize";
 
@@ -16,9 +17,8 @@ import Input from "../../components/views/Input";
 
 import Emoji from "../../components/Emoji";
 
-import Consumer, { ExtraContext } from "../../context";
-
 import { saveProblem } from "./util";
+import { isMobileOrTablet } from "../../util";
 
 class NewProblemPage extends Component {
   state = {
@@ -38,19 +38,26 @@ class NewProblemPage extends Component {
       <Consumer>
         {context => (
           <Page
-            className="column align-center bg-grey-2 "
-            description="Problem"
+            className="column align-center bg-grey-2"
+            description="You aren’t alone, and you should never feel alone. If you are feeling down, anonymously post your issue here. There is an entire community of people that want to help you."
             keywords=""
-            title="Post Problem"
+            title="Post a Problem"
           >
-            <Container className="container large ov-visible column py32">
+            <Container
+              className={
+                "ov-visible column py32 " +
+                (isMobileOrTablet()
+                  ? "container mobile-full px16"
+                  : "container large")
+              }
+            >
               <Text
                 className="fw-600 mb16"
                 text="Post Your Problem"
                 type="h4"
               />
 
-              <Container className="column bg-white">
+              <Container className="column bg-white shadow-3 br8">
                 <Container className="column py32 px32 br4">
                   <Text className="fw-400 mb8" text="Title" type="h5" />
 
@@ -62,7 +69,7 @@ class NewProblemPage extends Component {
                         title: e.target.value
                       })
                     }
-                    placeholder="Sed malesuada sagittis risus, id pharetra est scelerisque sed"
+                    placeholder="We are here for you."
                     type="text"
                     value={title}
                   />
@@ -96,7 +103,7 @@ class NewProblemPage extends Component {
                         description: event.target.value
                       })
                     }
-                    placeholder="Aliquam semper vel mi eu sodales. Quisque nec massa eget elit placerat fermentum eu quis eros. Cras at felis nec arcu maximus congue ut a lectus. Fusce luctus dolor ac dolor vestibulum, eu lobortis nibh finibus. Morbi est risus, interdum non molestie vel, consectetur nec velit. Donec posuere ex et nibh lobortis, et fermentum sapien laoreet. Vestibulum in tincidunt purus, aliquet vestibulum turpis. Nunc dapibus erat in risus posuere, vitae tempus enim vulputate. Maecenas quis pellentesque augue. Fusce non vestibulum arcu."
+                    placeholder="Let it all out. You are not alone."
                     value={description}
                   />
                   <Container className="justify-end">

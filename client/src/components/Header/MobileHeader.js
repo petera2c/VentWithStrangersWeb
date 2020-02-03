@@ -65,25 +65,34 @@ class Header extends Component {
       <Consumer>
         {context => (
           <Container className="sticky top-0 column x-fill full-center bg-white border-top large active shadow-2">
-            <Container className="x-fill align-center justify-end border-bottom py8 px16">
-              <Container className="border-all active py8 mr16 br4">
-                <Link
-                  className="border-right active blue px8"
-                  to="/post-a-problem"
-                >
-                  <FontAwesomeIcon className="" icon={faPen} />
-                </Link>
-                <Link className="blue px8" to="/vent-to-a-stranger">
-                  <FontAwesomeIcon className="" icon={faComments} />
-                </Link>
-              </Container>
-              <FontAwesomeIcon
-                className="blue border-all active pa8 br4"
-                icon={faBars}
-                onClick={() =>
-                  this.setState({ mobileHeaderActive: !mobileHeaderActive })
-                }
+            <Container className="x-fill align-center justify-between border-bottom py8 px16">
+              <img
+                alt=""
+                src={require("../../svgs/icon.svg")}
+                style={{ height: "50px" }}
               />
+              <Container>
+                <Container className="full-center border-all active py8 mr16 br4">
+                  <Link
+                    className="border-right active blue px8"
+                    to="/post-a-problem"
+                  >
+                    <FontAwesomeIcon icon={faPen} />
+                  </Link>
+                  <Link className="blue px8" to="/vent-to-a-stranger">
+                    <FontAwesomeIcon icon={faComments} />
+                  </Link>
+                </Container>
+                <Container className="full-center border-all active pa8 br4">
+                  <FontAwesomeIcon
+                    className="blue"
+                    icon={faBars}
+                    onClick={() =>
+                      this.setState({ mobileHeaderActive: !mobileHeaderActive })
+                    }
+                  />
+                </Container>
+              </Container>
             </Container>
             {mobileHeaderActive && (
               <Container className="x-fill full-center">
@@ -108,16 +117,7 @@ class Header extends Component {
                   <FontAwesomeIcon className="mr8" icon={faConciergeBell} />
                   Recent
                 </Link>
-                <Link
-                  className={
-                    "button-3 tac py16 mx16 " +
-                    isPageActive("/popular", pathname)
-                  }
-                  to="/popular"
-                >
-                  <FontAwesomeIcon className="mr8" icon={faFireAlt} />
-                  Popular
-                </Link>
+
                 <Link
                   className={
                     "button-3 tac py16 mx16 " +

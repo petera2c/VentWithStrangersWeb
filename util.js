@@ -1,7 +1,17 @@
-const moment = require("moment-timezone");
+const AWS = require("aws-sdk");
 const fs = require("fs");
+const moment = require("moment-timezone");
 const Problem = require("./models/Problem");
+const {
+  amazonAccessKeyID,
+  amazonSecretAccessKey,
+  amazonBucket
+} = require("./config/keys");
 
+const s3 = new AWS.S3({
+  accessKeyId: amazonAccessKeyID,
+  secretAccessKey: amazonSecretAccessKey
+});
 const createSiteMap = () => {
   Problem.find({}, { title: 1 }, (err, problems) => {
     let siteMapString =
@@ -13,8 +23,6 @@ const createSiteMap = () => {
     siteMapString +=
       "<url>\n  <loc>https://www.ventwithstrangers.com/vent-to-a-stranger</loc>\n  <lastmod>2019-09-12</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
     siteMapString +=
-      "<url>\n  <loc>https://www.ventwithstrangers.com/popular</loc>\n  <lastmod>2019-09-12</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
-    siteMapString +=
       "<url>\n  <loc>https://www.ventwithstrangers.com/recent</loc>\n  <lastmod>2019-09-12</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
     siteMapString +=
       "<url>\n  <loc>https://www.ventwithstrangers.com/trending</loc>\n  <lastmod>2019-09-12</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
@@ -23,7 +31,7 @@ const createSiteMap = () => {
       const problem = problems[index];
 
       let url =
-        "https://www.ventwithstrangers.com/" +
+        "https://www.ventwithstrangers.com/problem/" +
         problem.title +
         "?" +
         problem._id;
@@ -42,19 +50,27 @@ const createSiteMap = () => {
         "</lastmod>\n  <changefreq>yearly\n</changefreq>  <priority>0.4</priority>\n</url>\n\n";
     }
     siteMapString += "</urlset>";
-    fs.writeFileSync(`${__dirname}/client/static/sitemap.xml`, siteMapString);
+
+    const file = new Buffer.from(siteMapString);
+    const params = {
+      Bucket: amazonBucket,
+      Key: "sitemap.xml",
+      Body: siteMapString
+    };
+
+    s3.putObject(params, (err, data) => {
+      if (err) console.log(err);
+    });
   });
 };
 
 const getMetaInformation = (url, callback) => {
-  const defaultMetaDescription = "Vent with Strangers";
-  const defaultMetaImage = "";
-  const defaultMetaTitle = "Home | Vent with Strangers";
-
-  const defaultObject = {
-    metaDescription: defaultMetaDescription,
-    metaImage: defaultMetaImage,
-    metaTitle: defaultMetaTitle
+  const defaultMetaObject = {
+    metaDescription:
+      "People care. Vent, chat anonymously and be apart of a community committed to making the world a better place.",
+    metaImage:
+      "https://res.cloudinary.com/dnc1t9z9o/image/upload/v1580431332/VENT.jpg",
+    metaTitle: "We Care | Vent With Strangers"
   };
 
   if (url.substring(0, 10) === "/problem/") {
@@ -69,59 +85,56 @@ const getMetaInformation = (url, callback) => {
 
             return callback({
               metaDescription: problem.description.substring(0, 160) + "...",
-              metaImage: "",
+              metaImage:
+                "https://res.cloudinary.com/dnc1t9z9o/image/upload/v1580431332/VENT.jpg",
               metaTitle:
-                problem.title.substring(0, 40) + " | Vent with Strangers"
+                problem.title.substring(0, 40) + " | Vent With Strangers"
             });
           }
         }
       }
 
-      return callback(defaultObject);
+      return callback(defaultMetaObject);
     });
   } else
     switch (url) {
       case "/":
-        return callback({
-          metaDescription: "Vent with Strangers",
-          metaImage: "",
-          metaTitle: "Trending | Vent with Strangers"
-        });
-      case "/popular":
-        return callback({
-          metaDescription: "Vent with Strangers",
-          metaImage: "",
-          metaTitle: "Popular | Vent with Strangers"
-        });
+        return callback(defaultMetaObject);
+
       case "/recent":
         return callback({
-          metaDescription: "Vent with Strangers",
-          metaImage: "",
-          metaTitle: "Recent | Vent with Strangers"
+          metaDescription:
+            "The latest problems and issues people have posted. Post, comment, and/or like anonymously.",
+          metaImage: defaultMetaObject.metaImage,
+          metaTitle: "Recent | Vent With Strangers"
         });
       case "/trending":
         return callback({
-          metaDescription: "Vent with Strangers",
-          metaImage: "",
-          metaTitle: "Trending | Vent with Strangers"
+          metaDescription:
+            "People’s problems and issues with the most upvotes in the past 24 hours. Post, comment, and/or like anonymously.",
+          metaImage: defaultMetaObject.metaImage,
+          metaTitle: "Trending | Vent With Strangers"
         });
       case "/post-a-problem":
         return callback({
-          metaDescription: "Vent with Strangers",
-          metaImage: "",
-          metaTitle: "Post Problem | Vent with Strangers"
+          metaDescription:
+            "You aren’t alone, and you should never feel alone. If you are feeling down, anonymously post your issue here. There is an entire community of people that want to help you.",
+          metaImage: defaultMetaObject.metaImage,
+          metaTitle: "Post a Problem | Vent With Strangers"
         });
       case "/vent-to-a-stranger":
         return callback({
-          metaDescription: "Vent with Strangers",
-          metaImage: "",
-          metaTitle: "Vent or Help Now | Vent with Strangers"
+          metaDescription:
+            "Sometimes, all we need is an available ear. This is where you can anonymously talk to someone that wants to listen, or anonymously listen to someone that wants to be heard.",
+          metaImage: defaultMetaObject.metaImage,
+          metaTitle: "Vent or Help Now | Vent With Strangers"
         });
 
       default:
-        return callback(defaultObject);
+        return callback(defaultMetaObject);
     }
 };
+
 module.exports = {
   createSiteMap,
   getMetaInformation

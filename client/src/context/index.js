@@ -95,6 +95,12 @@ class GIProvider extends Component {
       }, 5000);
     }
   };
+  removeProblem = problemIndex => {
+    let { problems } = this.state;
+
+    problems = problems.splice(1, problemIndex);
+    this.handleChange({ problems });
+  };
   updateProblem = (problem, problemIndex) => {
     let { problems } = this.state;
     problems[problemIndex] = problem;
@@ -125,6 +131,7 @@ class GIProvider extends Component {
           skip,
           notify: this.notify,
           problems,
+          removeProblem: this.removeProblem,
           saving,
           socket,
           updateProblem: this.updateProblem,

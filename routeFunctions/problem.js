@@ -14,7 +14,8 @@ const project = userID => {
       hasLiked: { $in: [userID, "$upVotes"] },
       tags: "$tags",
       title: "$title",
-      upVotes: { $size: "$upVotes" }
+      upVotes: { $size: "$upVotes" },
+      wasCreatedByUser: { $eq: ["$authorID", userID] }
     }
   };
 };
@@ -79,7 +80,7 @@ const getProblem = (id, callback, socket) => {
 
 const getProblems = (req, res) => {
   const { page, skip = 0, tags = [] } = req.body;
-  const match = {};
+  const match = { $expr: { $not: { $in: [req.user._id, "$reports.userID"] } } };
   const sort = {};
 
   if (page === "popular") sort.upVotes = -1;
@@ -129,17 +130,41 @@ const getUsersPosts = (dataObj, callback, socket) => {
 const likeProblem = (problemID, callback, socket) => {
   const userID = socket.request.user._id;
 
-  Problem.findById(problemID, (err, problem) => {
+  Problem.findById(
+    problemID,
+    { dailyUpvotes: 1, upVotes: 1 },
+    (err, problem) => {
+      if (problem) {
+        if (
+          problem.upVotes.find(
+            upVoteUserID => String(upVoteUserID) === String(userID)
+          )
+        )
+          callback({ message: "Already liked post.", success: false });
+        else {
+          problem.dailyUpvotes += 1;
+          problem.upVotes.unshift(userID);
+          problem.save((err, result) => {
+            callback({ success: true });
+          });
+        }
+      } else callback({ message: "Problem not found.", success: false });
+    }
+  );
+};
+
+const reportProblem = (dataObj, callback, socket) => {
+  const userID = socket.request.user._id;
+  const { option, problemID } = dataObj;
+
+  Problem.findById(problemID, { reports: 1 }, (err, problem) => {
     if (problem) {
       if (
-        problem.upVotes.find(
-          upVoteUserID => String(upVoteUserID) === String(userID)
-        )
+        problem.reports.find(report => String(report.userID) === String(userID))
       )
-        callback({ message: "Already liked post.", success: false });
+        callback({ message: "Already reported post.", success: false });
       else {
-        problem.dailyUpvotes += 1;
-        problem.upVotes.unshift(userID);
+        problem.reports.unshift({ complaint: option, userID });
         problem.save((err, result) => {
           callback({ success: true });
         });
@@ -258,6 +283,7 @@ module.exports = {
   getProblems,
   getUsersPosts,
   likeProblem,
+  reportProblem,
   saveProblem,
   searchProblems,
   unlikeProblem

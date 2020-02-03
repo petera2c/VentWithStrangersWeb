@@ -1,11 +1,18 @@
 const mongoose = require("mongoose");
 const problem = require("./problem");
+const s3Proxy = require("s3-proxy");
+
 const tag = require("./tag");
 
 const User = require("../models/User");
 const Tag = require("../models/Tag");
 
 const { login, randomLogin, register } = require("./user");
+const {
+  amazonAccessKeyID,
+  amazonSecretAccessKey,
+  amazonBucket
+} = require("../config/keys");
 
 module.exports = app => {
   // Middleware
@@ -14,8 +21,19 @@ module.exports = app => {
     else next();
   };
 
+  app.get(
+    "/sitemap.xml",
+    s3Proxy({
+      bucket: amazonBucket,
+      accessKeyId: amazonAccessKeyID,
+      secretAccessKey: amazonSecretAccessKey,
+      overrideCacheControl: "max-age=100000",
+      defaultKey: "sitemap.xml"
+    })
+  );
+
   // Get current user
-  app.get("/api/user", middleware, (req, res, next) => {
+  app.get("/api/user", middleware, (req, res) => {
     res.send({ success: true, user: req.user, port: process.env.PORT });
   });
   app.post("/api/new-problem", middleware, (req, res) =>

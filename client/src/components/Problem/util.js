@@ -45,6 +45,23 @@ export const likeProblem = (context, problem, problemIndex) => {
   });
 };
 
+export const reportProblem = (context, id, option, problemIndex) => {
+  context.socket.emit(
+    "report_problem",
+    { option, problemID: id },
+    returnObj => {
+      const { message, success } = returnObj;
+
+      if (success) context.removeProblem(problemIndex);
+      else
+        context.notify({
+          message,
+          type: "danger"
+        });
+    }
+  );
+};
+
 export const unlikeProblem = (context, problem, problemIndex) => {
   context.socket.emit("unlike_problem", problem._id, returnObj => {
     const { message, success } = returnObj;

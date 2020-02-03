@@ -4,7 +4,7 @@ const passport = require("passport");
 const Settings = require("../models/Settings");
 const User = require("../models/User");
 
-const names = require("./names");
+const { animalList, adjectivesList } = require("./lists");
 
 const login = (req, res, next) => {
   passport.authenticate("local-login", (err, user, message) => {
@@ -30,7 +30,8 @@ const login = (req, res, next) => {
 
 const randomLogin = (req, res, next) => {
   passport.authenticate("local-login", (err, user, message) => {
-    const randomIndex = Math.floor(Math.random() * 1999);
+    const randomAdjectiveIndex = Math.floor(Math.random() * (215 - 0 + 1) + 0);
+    const randomAnimalIndex = Math.floor(Math.random() * (44 - 0 + 1) + 0);
 
     const newSettings = new Settings({
       adultContent: false,
@@ -39,7 +40,10 @@ const randomLogin = (req, res, next) => {
       receiveEmails: true
     });
     const newUser = new User({
-      displayName: names[randomIndex],
+      displayName:
+        adjectivesList[randomAdjectiveIndex] +
+        " " +
+        animalList[randomAnimalIndex],
       language: "english",
       settingsID: newSettings._id,
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone

@@ -13,7 +13,7 @@ import Text from "../../components/views/Text";
 
 import Consumer, { ExtraContext } from "../../context";
 
-import { capitolizeFirstChar, isPageActive } from "../../util";
+import { isMobileOrTablet } from "../../util";
 
 class AccountSection extends Component {
   state = {
@@ -83,15 +83,14 @@ class AccountSection extends Component {
     const { pathname, search } = location;
 
     return (
-      <Container className="container large column pa16">
+      <Container
+        className={
+          "container column px16 " +
+          (isMobileOrTablet() ? "mobile-full" : "large")
+        }
+      >
         <Text className="mb16" text="Settings" type="h4" />
-        <Container
-          className="column bg-white pa16 mb2"
-          style={{
-            borderTopLeftRadius: "4px",
-            borderTopRightRadius: "4px"
-          }}
-        >
+        <Container className="column bg-white shadow-3 pa16 mb2 br8">
           <Text className="blue bold mb16" text="Notifications" type="h6" />
           <Container className="mb8">
             <Input
@@ -103,7 +102,6 @@ class AccountSection extends Component {
                   somethingChanged: true
                 })
               }
-              style={{ minWidth: "13px" }}
               style={{ minWidth: "13px" }}
               type="checkbox"
             />
@@ -182,13 +180,7 @@ class AccountSection extends Component {
           />
         </Container>
         {somethingChanged && (
-          <Container
-            className="full-center bg-white pa16"
-            style={{
-              borderBottomLeftRadius: "4px",
-              borderBottomRightRadius: "4px"
-            }}
-          >
+          <Container className="full-center bg-white shadow-3 pa16 br8">
             <Button
               className="button-5 py8 px32 mx4 br4"
               text="Apply"

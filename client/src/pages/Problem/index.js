@@ -14,6 +14,8 @@ import Button from "../../components/views/Button";
 import Input from "../../components/views/Input";
 import Consumer from "../../context";
 
+import { isMobileOrTablet } from "../../util";
+
 class ProblemPage extends Component {
   componentDidMount() {
     this._ismounted = true;
@@ -57,7 +59,7 @@ class ProblemPage extends Component {
         keywords=""
         title={title}
       >
-        <Container className="py32">
+        <Container className={isMobileOrTablet() ? "py16" : "py32"}>
           {problems && (
             <Container className="container large column">
               <Problem

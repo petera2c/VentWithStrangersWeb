@@ -37,14 +37,19 @@ class AccountPage extends Component {
       <Consumer>
         {context => (
           <Page
-            className="justify-start align-center bg-grey-2"
+            className="bg-grey-2"
             description=""
             keywords=""
             title="Account"
           >
-            <Container className="align-start py32">
+            <Container
+              className={
+                "x-fill align-start justify-center " +
+                (isMobileOrTablet() ? "py16" : "py32")
+              }
+            >
               {!isMobileOrTablet() && !search && (
-                <Container className="x-25 column align-center bg-white px16 br8">
+                <Container className="container small column align-center bg-white shadow-3 px16 br8">
                   <Link className="x-fill" to={"/activity" + search}>
                     <Container
                       className={
@@ -97,7 +102,9 @@ class AccountPage extends Component {
                   </Container>
                 </Container>
               )}
-              <Container className={isMobileOrTablet() ? "" : "pl32"}>
+              <Container
+                className={isMobileOrTablet() ? "x-fill pt16" : "pl32"}
+              >
                 {pathname === "/account" && <Account />}
                 {pathname === "/activity" && <Activity />}
                 {pathname === "/settings" && <Settings />}

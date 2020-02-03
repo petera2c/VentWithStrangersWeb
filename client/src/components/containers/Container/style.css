@@ -70,9 +70,6 @@
   width: 50%;
 }
 
-.x-25 {
-  width: 25vw;
-}
 .y-50 {
   min-height: 20vh;
 }
@@ -115,9 +112,10 @@
 
 .container {
   position: relative;
-  overflow: hidden;
 }
-
+.container .small {
+  width: 25vw;
+}
 .container.tinier {
   min-width: 150px;
   max-height: 150px;
@@ -132,6 +130,7 @@
 .container.small {
   min-width: 280px;
   width: 25vw;
+  max-width: 500px;
 }
 .container.medium {
   min-width: 280px;
@@ -141,11 +140,22 @@
 .container.large {
   min-width: 280px;
   width: 50vw;
+  max-width: 1000px;
 }
 .container.extra-large {
   min-width: 280px;
   width: 75vw;
   max-width: 1400px;
+}
+.container.full {
+  min-width: 280px;
+  width: 100vw;
+  max-width: 2000px;
+}
+.container.mobile-full {
+  min-width: 280px;
+  width: 100vw;
+  max-width: 800px;
 }
 
 .container.y-30vw {
@@ -208,6 +218,9 @@
   background-color: hsla(0, 0%, 0%, 0.4);
 }
 
+.bg-red {
+  background-color: var(--red-color);
+}
 .bg-white {
   background-color: var(--white-color);
 }
@@ -232,12 +245,26 @@
 .bg-purple {
   background-color: var(--purple-color);
 }
-.shadow-1 {
-  box-shadow: 0px 4px 0px 4px rgba(0, 64, 128, 0.2);
-}
 .shadow-2 {
   box-shadow: 0px 2px 20px 0 rgba(153, 153, 153, 0.3);
 }
+.shadow-3 {
+  box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.2);
+}
 .test-mode {
-  background-color: red;
+  background-color: var(--red-color);
+}
+.loading-animation {
+  animation: loading-animation 2s infinite linear;
+}
+@keyframes loading-animation {
+  0% {
+    transform: scale(1.2);
+  }
+  50% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.2);
+  }
 }
