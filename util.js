@@ -77,19 +77,10 @@ const getMetaInformation = (url, callback) => {
   if (problemID) {
     Problem.findById(problemID, (err, problem) => {
       if (!err && problem) {
-        let metaTitle = problem.title;
-        if (problem.title && problem.title.length > 40)
-          metaTitle = problem.title.substring(0, 40);
-        metaTitle += " | Vent With Strangers";
-
-        let metaDescription = problem.description;
-        if (problem.description && problem.description.length > 160)
-          metaDescription = problem.description.substring(0, 160) + "...";
-
         return callback({
-          metaDescription: problem.description.substring(0, 160) + "...",
+          metaDescription: problem.description,
           metaImage: defaultMetaObject.metaImage,
-          metaTitle
+          metaTitle: problem.title
         });
       } else return callback(defaultMetaObject);
     });
