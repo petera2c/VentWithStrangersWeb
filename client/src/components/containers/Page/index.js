@@ -50,9 +50,9 @@ class Page extends Component {
       >
         <Helmet defer={false}>
           <meta charSet="utf-8" />
-          <title>{`${title} | Vent With Strangers`}</title>
-          <meta name="title" content={`${title} | Vent With Strangers`} />
-          <meta name="og:title" content={`${title} | Vent With Strangers`} />
+          <title>{`${title}`}</title>
+          <meta name="title" content={`${title}`} />
+          <meta name="og:title" content={`${title}`} />
           <meta name="description" content={description} />
           <meta name="og:description" content={description} />
           <meta property="image" content={image} />

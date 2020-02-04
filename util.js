@@ -67,7 +67,7 @@ const getMetaInformation = (url, callback) => {
       "People care. Vent, and chat anonymously and be apart of a community committed to making the world a better place.",
     metaImage:
       "https://res.cloudinary.com/dnc1t9z9o/image/upload/v1580431332/VENT.jpg",
-    metaTitle: "We Care | Vent With Strangers"
+    metaTitle: "We Care"
   };
 
   const regexMatch = url.match(/(?<=\/problem\/\s*).*?(?=\s*\/)/gs);
@@ -94,28 +94,28 @@ const getMetaInformation = (url, callback) => {
           metaDescription:
             "The latest problems and issues people have posted. Post, comment, and/or like anonymously.",
           metaImage: defaultMetaObject.metaImage,
-          metaTitle: "Recent | Vent With Strangers"
+          metaTitle: "Recent"
         });
       case "/trending":
         return callback({
           metaDescription:
             "People’s problems and issues with the most upvotes in the past 24 hours. Post, comment, and/or like anonymously.",
           metaImage: defaultMetaObject.metaImage,
-          metaTitle: "Trending | Vent With Strangers"
+          metaTitle: "Trending"
         });
       case "/post-a-problem":
         return callback({
           metaDescription:
             "You aren’t alone, and you should never feel alone. If you are feeling down, anonymously post your issue here. There is an entire community of people that want to help you.",
           metaImage: defaultMetaObject.metaImage,
-          metaTitle: "Post a Problem | Vent With Strangers"
+          metaTitle: "Post a Problem"
         });
       case "/vent-to-a-stranger":
         return callback({
           metaDescription:
             "Sometimes, all we need is an available ear. This is where you can anonymously talk to someone that wants to listen, or anonymously listen to someone that wants to be heard.",
           metaImage: defaultMetaObject.metaImage,
-          metaTitle: "Vent or Help Now | Vent With Strangers"
+          metaTitle: "Vent or Help Now"
         });
 
       default:
