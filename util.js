@@ -17,15 +17,15 @@ const createSiteMap = () => {
     let siteMapString =
       '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n';
     siteMapString +=
-      "<url>\n  <loc>https://www.ventwithstrangers.com/</loc>\n  <lastmod>2019-09-12</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
+      "<url>\n  <loc>https://www.ventwithstrangers.com/</loc>\n  <lastmod>2020-02-04</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
     siteMapString +=
-      "<url>\n  <loc>https://www.ventwithstrangers.com/post-a-problem</loc>\n  <lastmod>2019-09-12</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
+      "<url>\n  <loc>https://www.ventwithstrangers.com/post-a-problem</loc>\n  <lastmod>2020-02-04</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
     siteMapString +=
-      "<url>\n  <loc>https://www.ventwithstrangers.com/vent-to-a-stranger</loc>\n  <lastmod>2019-09-12</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
+      "<url>\n  <loc>https://www.ventwithstrangers.com/vent-to-a-stranger</loc>\n  <lastmod>2020-02-04</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
     siteMapString +=
-      "<url>\n  <loc>https://www.ventwithstrangers.com/recent</loc>\n  <lastmod>2019-09-12</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
+      "<url>\n  <loc>https://www.ventwithstrangers.com/recent</loc>\n  <lastmod>2020-02-04</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
     siteMapString +=
-      "<url>\n  <loc>https://www.ventwithstrangers.com/trending</loc>\n  <lastmod>2019-09-12</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
+      "<url>\n  <loc>https://www.ventwithstrangers.com/trending</loc>\n  <lastmod>2020-02-04</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
 
     for (let index in problems) {
       const problem = problems[index];
