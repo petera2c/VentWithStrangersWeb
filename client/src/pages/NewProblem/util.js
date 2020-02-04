@@ -2,10 +2,10 @@ import axios from "axios";
 
 export const saveProblem = (callback, problemObject, notify) => {
   axios.post("/api/new-problem", problemObject).then(res => {
-    const { message, problemID, success } = res.data;
+    const { message, problem, success } = res.data;
 
     if (success) {
-      callback(problemID);
+      callback(problem);
     } else {
       notify({ message, type: "danger" });
     }

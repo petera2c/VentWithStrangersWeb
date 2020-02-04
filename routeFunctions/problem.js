@@ -194,8 +194,7 @@ const saveProblem = (req, res) => {
     });
     newProblem.authorID = req.user._id;
     newProblem.save((err, newProblem) => {
-      if (!err && newProblem)
-        res.send({ problemID: newProblem._id, success: true });
+      if (!err && newProblem) res.send({ problem: newProblem, success: true });
       else if (err && err.code === 11000)
         res.send({
           message:

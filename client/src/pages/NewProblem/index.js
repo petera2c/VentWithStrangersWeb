@@ -142,11 +142,17 @@ class NewProblemPage extends Component {
                             }
                             if (word) tagsArray.push(word);
                             saveProblem(
-                              problemID => {
+                              problem => {
                                 this.handleChange({ saving: false });
                                 const { history } = this.props;
                                 history.push(
-                                  "/problem/" + title + "?" + problemID
+                                  "/problem/" +
+                                    problem._id +
+                                    "/" +
+                                    problem.title
+                                      .replace(/[^a-zA-Z ]/g, "")
+                                      .replace(/ /g, "-")
+                                      .toLowerCase()
                                 );
 
                                 window.location.reload();

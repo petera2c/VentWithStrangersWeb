@@ -96,7 +96,7 @@ class Problem extends Component {
                   "/" +
                   problem.title
                     .replace(/[^a-zA-Z ]/g, "")
-                    .replace(" ", "-")
+                    .replace(/ /g, "-")
                     .toLowerCase()
               )
             }

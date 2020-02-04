@@ -36,7 +36,7 @@ const createSiteMap = () => {
         "/" +
         problem.title
           .replace(/[^a-zA-Z ]/g, "")
-          .replace(" ", "-")
+          .replace(/ /g, "-")
           .toLowerCase();
 
       siteMapString +=
