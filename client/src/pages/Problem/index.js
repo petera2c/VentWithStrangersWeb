@@ -16,29 +16,42 @@ import Consumer from "../../context";
 
 import { isMobileOrTablet } from "../../util";
 
+const getProblemIdFromURL = pathname =>
+  pathname.match(/(?<=\/problem\/\s*).*?(?=\s*\/)/gs);
+
 class ProblemPage extends Component {
   componentDidMount() {
     this._ismounted = true;
 
     const { location } = this.props;
     const { handleChange, notify, socket } = this.context;
-    const { search } = location;
+    const { pathname } = location;
 
-    socket.emit("get_problem", search.slice(1, search.length), result => {
-      const { message, problems, success } = result;
+    const regexMatch = getProblemIdFromURL(pathname);
+    let problemID;
+    if (regexMatch) problemID = regexMatch[0];
 
-      if (success)
-        handleChange({
-          problems
-        });
-      else if (message) notify({ message, type: "danger" });
-      else
-        notify({
-          message:
-            "Something unexpected has happened, please refresh the page and try again.",
-          type: "danger"
-        });
-    });
+    if (problemID)
+      socket.emit("get_problem", problemID, result => {
+        const { message, problems, success } = result;
+
+        if (success)
+          handleChange({
+            problems
+          });
+        else if (message) notify({ message, type: "danger" });
+        else
+          notify({
+            message:
+              "Something unexpected has happened, please refresh the page and try again.",
+            type: "danger"
+          });
+      });
+    else
+      notify({
+        message: "No post ID.",
+        type: "danger"
+      });
   }
   componentWillUnmount() {
     this._ismounted = false;

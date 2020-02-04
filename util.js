@@ -32,15 +32,12 @@ const createSiteMap = () => {
 
       let url =
         "https://www.ventwithstrangers.com/problem/" +
-        problem.title +
-        "?" +
-        problem._id;
-      url = url.replace(/ /g, "%20");
-      url = url.replace(/</g, "&lt;");
-      url = url.replace(/>/g, "&gt;");
-      url = url.replace(/&/g, "&amp;");
-      url = url.replace(/'/g, "&apos;");
-      url = url.replace(/""/g, "&quot;");
+        problem._id +
+        "/" +
+        problem.title
+          .replace(/[^a-zA-Z ]/g, "")
+          .replace(" ", "-")
+          .toLowerCase();
 
       siteMapString +=
         "<url>\n  <loc>" +
@@ -73,28 +70,28 @@ const getMetaInformation = (url, callback) => {
     metaTitle: "We Care | Vent With Strangers"
   };
 
-  if (url.substring(0, 10) === "/problem/") {
-    Problem.find({}, (err, problems) => {
-      for (let index in problems) {
-        const problem = problems[index];
+  const regexMatch = url.match(/(?<=\/problem\/\s*).*?(?=\s*\/)/gs);
+  let problemID;
+  if (regexMatch) problemID = regexMatch[0];
 
-        const { contentArray = [] } = problem;
-        if (problem.title) {
-          if (problem.title === url.substring(10, url.length)) {
-            let temp = {};
+  if (problemID) {
+    Problem.findById(problemID, (err, problem) => {
+      if (!err && problem) {
+        let metaTitle = problem.title;
+        if (problem.title && problem.title.length > 40)
+          metaTitle = problem.title.substring(0, 40);
+        metaTitle += " | Vent With Strangers";
 
-            return callback({
-              metaDescription: problem.description.substring(0, 160) + "...",
-              metaImage:
-                "https://res.cloudinary.com/dnc1t9z9o/image/upload/v1580431332/VENT.jpg",
-              metaTitle:
-                problem.title.substring(0, 40) + " | Vent With Strangers"
-            });
-          }
-        }
-      }
+        let metaDescription = problem.description;
+        if (problem.description && problem.description.length > 160)
+          metaDescription = problem.description.substring(0, 160) + "...";
 
-      return callback(defaultMetaObject);
+        return callback({
+          metaDescription: problem.description.substring(0, 160) + "...",
+          metaImage: defaultMetaObject.metaImage,
+          metaTitle
+        });
+      } else return callback(defaultMetaObject);
     });
   } else
     switch (url) {

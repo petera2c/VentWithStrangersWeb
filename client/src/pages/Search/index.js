@@ -29,9 +29,9 @@ class SearchPage extends Component {
         {context => (
           <Page
             className="align-center bg-grey-2"
-            description="Home"
+            description="Search"
             keywords=""
-            title="Home"
+            title={search ? search : "Search"}
           >
             <Container
               className={

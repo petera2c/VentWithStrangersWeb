@@ -12,7 +12,12 @@ export function capitolizeFirstChar(string) {
 export const addTagsToPage = (props, selectedTags) => {
   const { browser, history, location } = props;
   let searchPathname = location.pathname;
-  if (searchPathname === "/hot-tags") searchPathname = "/trending";
+  if (
+    searchPathname !== "/popular" &&
+    searchPathname !== "/recent" &&
+    searchPathname !== "/trending"
+  )
+    searchPathname = "/trending";
 
   for (let index in selectedTags) {
     if (index == 0) searchPathname += "?" + selectedTags[index].name;

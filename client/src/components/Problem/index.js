@@ -90,7 +90,15 @@ class Problem extends Component {
           <Container
             className="clickable x-fill justify-between border-bottom py16 pl32 pr16"
             onClick={() =>
-              history.push("/problem/" + problem.title + "?" + problem._id)
+              history.push(
+                "/problem/" +
+                  problem._id +
+                  "/" +
+                  problem.title
+                    .replace(/[^a-zA-Z ]/g, "")
+                    .replace(" ", "-")
+                    .toLowerCase()
+              )
             }
           >
             <Link

@@ -18,9 +18,9 @@ class HotTagsPage extends Component {
         {context => (
           <Page
             className="column x-fill align-center px16 bg-grey-2 py32"
-            description="Home"
+            description="Tags"
             keywords=""
-            title="Home"
+            title="Tags"
           >
             <Container
               className={
