@@ -1,13 +1,13 @@
 import axios from "axios";
 
 // Taken from stack overflow
-export function capitolizeWordsInString(str) {
+export const capitolizeWordsInString = str => {
   return str.replace(/\b\w/g, l => l.toUpperCase());
-}
-export function capitolizeFirstChar(string) {
+};
+export const capitolizeFirstChar = string => {
   if (string) return string.charAt(0).toUpperCase() + string.slice(1);
   else return;
-}
+};
 
 export const addTagsToPage = (props, selectedTags) => {
   const { browser, history, location } = props;
