@@ -17,15 +17,21 @@ const createSiteMap = () => {
     let siteMapString =
       '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n';
     siteMapString +=
-      "<url>\n  <loc>https://www.ventwithstrangers.com/</loc>\n  <lastmod>2020-02-04</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
+      "<url>\n  <loc>https://www.ventwithstrangers.com/</loc>\n  <lastmod>" +
+      new moment().format("YYYY-MM-DD") +
+      "</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
     siteMapString +=
       "<url>\n  <loc>https://www.ventwithstrangers.com/post-a-problem</loc>\n  <lastmod>2020-02-04</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
     siteMapString +=
       "<url>\n  <loc>https://www.ventwithstrangers.com/vent-to-a-stranger</loc>\n  <lastmod>2020-02-04</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
     siteMapString +=
-      "<url>\n  <loc>https://www.ventwithstrangers.com/recent</loc>\n  <lastmod>2020-02-04</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
+      "<url>\n  <loc>https://www.ventwithstrangers.com/recent</loc>\n  <lastmod>" +
+      new moment().format("YYYY-MM-DD") +
+      "</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
     siteMapString +=
-      "<url>\n  <loc>https://www.ventwithstrangers.com/trending</loc>\n  <lastmod>2020-02-04</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
+      "<url>\n  <loc>https://www.ventwithstrangers.com/trending</loc>\n  <lastmod>" +
+      new moment().format("YYYY-MM-DD") +
+      "</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
 
     for (let index in problems) {
       const problem = problems[index];
@@ -67,7 +73,7 @@ const getMetaInformation = (url, callback) => {
       "People care. Vent, and chat anonymously and be apart of a community committed to making the world a better place.",
     metaImage:
       "https://res.cloudinary.com/dnc1t9z9o/image/upload/v1580431332/VENT.jpg",
-    metaTitle: "We Care"
+    metaTitle: "We Care | Vent With Strangers"
   };
 
   const regexMatch = url.match(/(?<=\/problem\/\s*).*?(?=\s*\/)/gs);
@@ -80,7 +86,7 @@ const getMetaInformation = (url, callback) => {
         return callback({
           metaDescription: problem.description,
           metaImage: defaultMetaObject.metaImage,
-          metaTitle: problem.title
+          metaTitle: problem.title + " | Vent With Strangers"
         });
       } else return callback(defaultMetaObject);
     });
@@ -94,28 +100,28 @@ const getMetaInformation = (url, callback) => {
           metaDescription:
             "The latest problems and issues people have posted. Post, comment, and/or like anonymously.",
           metaImage: defaultMetaObject.metaImage,
-          metaTitle: "Recent"
+          metaTitle: "Recent | Vent With Strangers"
         });
       case "/trending":
         return callback({
           metaDescription:
             "People’s problems and issues with the most upvotes in the past 24 hours. Post, comment, and/or like anonymously.",
           metaImage: defaultMetaObject.metaImage,
-          metaTitle: "Trending"
+          metaTitle: "Trending | Vent With Strangers"
         });
       case "/post-a-problem":
         return callback({
           metaDescription:
             "You aren’t alone, and you should never feel alone. If you are feeling down, anonymously post your issue here. There is an entire community of people that want to help you.",
           metaImage: defaultMetaObject.metaImage,
-          metaTitle: "Post a Problem"
+          metaTitle: "Post a Problem | Vent With Strangers"
         });
       case "/vent-to-a-stranger":
         return callback({
           metaDescription:
             "Sometimes, all we need is an available ear. This is where you can anonymously talk to someone that wants to listen, or anonymously listen to someone that wants to be heard.",
           metaImage: defaultMetaObject.metaImage,
-          metaTitle: "Vent or Help Now"
+          metaTitle: "Vent or Help Now | Vent With Strangers"
         });
 
       default:
