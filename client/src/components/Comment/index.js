@@ -32,7 +32,7 @@ class Comment extends Component {
         }}
       >
         <Container className="justify-between wrap py16 px32">
-          <Container className="align-center">
+          <Container className="align-center mb8">
             <Text
               className="round-icon bg-blue white mr8"
               text={capitolizeFirstChar(comment.author[0])}
@@ -44,7 +44,7 @@ class Comment extends Component {
               type="h5"
             />
           </Container>
-          <Container className="wrap mb8">
+          <Container className="align-center wrap mb8">
             <FontAwesomeIcon className="clickable grey-5 mr8" icon={faClock} />
             <Text
               className="grey-5"
@@ -56,7 +56,7 @@ class Comment extends Component {
           </Container>
         </Container>
         <Text className="px32" text={comment.text} type="p" />
-        <Container className="py16 px32">
+        <Container className="align-center py16 px32">
           <FontAwesomeIcon
             className={`clickable heart ${
               comment.hasLiked ? "red" : "grey-5"

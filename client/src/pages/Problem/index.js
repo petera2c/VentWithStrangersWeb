@@ -86,7 +86,14 @@ class ProblemPage extends Component {
       >
         <Container className={isMobileOrTablet() ? "py16" : "py32"}>
           {problems && (
-            <Container className="container large column">
+            <Container
+              className={
+                "column" +
+                (isMobileOrTablet()
+                  ? "container mobile-full px16"
+                  : "container large ")
+              }
+            >
               <Problem
                 displayCommentField
                 problem={problems[0]}
