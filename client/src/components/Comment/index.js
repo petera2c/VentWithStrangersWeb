@@ -31,7 +31,7 @@ class Comment extends Component {
           borderBottomRightRadius: arrayLength - 1 === index ? "8px" : ""
         }}
       >
-        <Container className="justify-between py16 px32">
+        <Container className="justify-between wrap py16 px32">
           <Container className="align-center">
             <Text
               className="round-icon bg-blue white mr8"
@@ -44,7 +44,7 @@ class Comment extends Component {
               type="h5"
             />
           </Container>
-          <Container className="mb8">
+          <Container className="wrap mb8">
             <FontAwesomeIcon className="clickable grey-5 mr8" icon={faClock} />
             <Text
               className="grey-5"

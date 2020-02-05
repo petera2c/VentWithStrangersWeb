@@ -52,7 +52,7 @@ class Header extends Component {
       signUpModalBoolean,
       searchPostString
     } = this.state;
-    const { location } = this.props;
+    const { history, location } = this.props;
     const { pathname } = location;
 
     return (
@@ -66,6 +66,8 @@ class Header extends Component {
               >
                 <img
                   alt=""
+                  className="clickable"
+                  onClick={() => history.push("/trending")}
                   src={require("../../svgs/icon.svg")}
                   style={{ height: "50px" }}
                 />

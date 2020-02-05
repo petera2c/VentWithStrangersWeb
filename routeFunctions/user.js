@@ -30,7 +30,7 @@ const login = (req, res, next) => {
 
 const randomLogin = (req, res, next) => {
   passport.authenticate("local-login", (err, user, message) => {
-    const randomAdjectiveIndex = Math.floor(Math.random() * (215 - 0 + 1) + 0);
+    const randomAdjectiveIndex = Math.floor(Math.random() * (177 - 0 + 1) + 0);
     const randomAnimalIndex = Math.floor(Math.random() * (44 - 0 + 1) + 0);
 
     const newSettings = new Settings({

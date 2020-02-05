@@ -96,7 +96,7 @@ class NewProblemPage extends Component {
 
                   <Text className="fw-400 mb8" text="Description" type="h5" />
                   <TextArea
-                    className="no-border py8 px16 mb8 br4"
+                    className="py8 px16 mb8 br4"
                     onChange={event =>
                       this.handleChange({
                         saving: false,

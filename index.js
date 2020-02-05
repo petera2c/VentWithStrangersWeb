@@ -10,9 +10,8 @@ const bodyParser = require("body-parser"); // Read data in post requests from fr
 const passport = require("passport"); // For Login and Register
 const secure = require("express-force-https"); // force https so http does not work
 const fs = require("fs");
-const schedule = require("node-schedule");
-
 const { createSiteMap, getMetaInformation } = require("./util");
+const path = require("path");
 
 mongoose.set("useCreateIndex", true);
 
@@ -25,10 +24,12 @@ const allowCrossDomain = (req, res, next) => {
 app.use(allowCrossDomain);
 app.use(secure);
 
+const favicon = require("serve-favicon");
+app.use(favicon(path.join(__dirname, "client", "static", "favicon.ico")));
+
 require("./routeFunctions/passport")(passport);
 
 // Socket imports
-const path = require("path");
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 const SocketManager = require("./routeFunctions/SocketManager");
@@ -61,6 +62,7 @@ app.use(passport.session());
 
 require("./routeFunctions")(app); // Routes
 
+const schedule = require("node-schedule");
 schedule.scheduleJob("0 0 * * *", createSiteMap);
 createSiteMap();
 

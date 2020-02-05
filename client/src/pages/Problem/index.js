@@ -16,8 +16,20 @@ import Consumer from "../../context";
 
 import { isMobileOrTablet } from "../../util";
 
-const getProblemIdFromURL = pathname =>
-  pathname.match(/(?<=\/problem\/\s*).*?(?=\s*\/)/gs);
+const getProblemIdFromURL = pathname => {
+  // regular expression will not work due to catastrophic backtracing
+  //pathname.match(/(?<=\/problem\/\s*).*?(?=\s*\/)/gs);
+  if (pathname) {
+    const test = pathname.slice(9, pathname.length);
+    let something = "";
+    for (let index in test) {
+      if (test[index] === "/") break;
+      something += test[index];
+    }
+
+    return something;
+  }
+};
 
 class ProblemPage extends Component {
   componentDidMount() {
@@ -29,7 +41,7 @@ class ProblemPage extends Component {
 
     const regexMatch = getProblemIdFromURL(pathname);
     let problemID;
-    if (regexMatch) problemID = regexMatch[0];
+    if (regexMatch) problemID = regexMatch;
 
     if (problemID)
       socket.emit("get_problem", problemID, result => {
