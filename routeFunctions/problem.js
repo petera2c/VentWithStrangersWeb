@@ -173,6 +173,15 @@ const reportProblem = (dataObj, callback, socket) => {
   });
 };
 
+const resetDailyUpvotes = () => {
+  Problem.find({}, { dailyUpvotes: 1 }, (err, problems) => {
+    for (let index in problems) {
+      problems[index].dailyUpvotes = 0;
+      problems[index].save();
+    }
+  });
+};
+
 const returnProblemsFunction = (err, problems, res) => {
   if (!err && problems) res.send({ problems, success: true });
   else res.send({ success: false });
@@ -289,6 +298,7 @@ module.exports = {
   getUsersPosts,
   likeProblem,
   reportProblem,
+  resetDailyUpvotes,
   saveProblem,
   searchProblems,
   unlikeProblem

@@ -11,6 +11,7 @@ const passport = require("passport"); // For Login and Register
 const secure = require("express-force-https"); // force https so http does not work
 const fs = require("fs");
 const { createSiteMap, getMetaInformation } = require("./util");
+const { resetDailyUpvotes } = require("./routeFunctions/problem");
 const path = require("path");
 
 mongoose.set("useCreateIndex", true);
@@ -37,7 +38,10 @@ const passportSocketIo = require("passport.socketio");
 
 io.on("connection", SocketManager(io));
 
-mongoose.connect(keys.mongoDevelopentURI, { useNewUrlParser: true });
+mongoose.connect(keys.mongoDevelopentURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 const db = mongoose.connection;
 
 app.use(morgan("dev")); // Prints all routes used to console
@@ -64,6 +68,7 @@ require("./routeFunctions")(app); // Routes
 
 const schedule = require("node-schedule");
 schedule.scheduleJob("0 0 * * *", createSiteMap);
+schedule.scheduleJob("0 0 * * 0,3", resetDailyUpvotes);
 createSiteMap();
 
 // If using production then if a route is not found in express we send user to react routes
