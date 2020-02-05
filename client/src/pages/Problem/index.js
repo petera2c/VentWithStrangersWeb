@@ -20,14 +20,14 @@ const getProblemIdFromURL = pathname => {
   // regular expression will not work due to catastrophic backtracing
   //pathname.match(/(?<=\/problem\/\s*).*?(?=\s*\/)/gs);
   if (pathname) {
-    const test = pathname.slice(9, pathname.length);
-    let something = "";
-    for (let index in test) {
-      if (test[index] === "/") break;
-      something += test[index];
+    const problemIdStart = pathname.slice(9, pathname.length);
+    let problemID = "";
+    for (let index in problemIdStart) {
+      if (problemIdStart[index] === "/") break;
+      problemID += problemIdStart[index];
     }
 
-    return something;
+    return problemID;
   }
 };
 
