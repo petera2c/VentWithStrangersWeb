@@ -21,7 +21,6 @@ const getProblemIdFromURL = pathname => {
   //pathname.match(/(?<=\/problem\/\s*).*?(?=\s*\/)/gs);
   if (pathname) {
     const problemIdStart = pathname.slice(9, pathname.length);
-    alert(problemIdStart);
     let problemID = "";
     for (let index in problemIdStart) {
       if (problemIdStart[index] === "/") break;
