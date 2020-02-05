@@ -88,7 +88,7 @@ class ProblemPage extends Component {
           {problems && (
             <Container
               className={
-                "column" +
+                "column " +
                 (isMobileOrTablet()
                   ? "container mobile-full px16"
                   : "container large ")
