@@ -29,9 +29,14 @@ const login = (req, res, next) => {
 };
 
 const randomLogin = (req, res, next) => {
+  console.log(animalList.length);
   passport.authenticate("local-login", (err, user, message) => {
-    const randomAdjectiveIndex = Math.floor(Math.random() * (179 - 0 + 1) + 0);
-    const randomAnimalIndex = Math.floor(Math.random() * (42 - 0 + 1) + 0);
+    const randomAdjectiveIndex = Math.floor(
+      Math.random() * (adjectivesList.length - 0) + 0
+    );
+    const randomAnimalIndex = Math.floor(
+      Math.random() * (animalList.length - 0) + 0
+    );
 
     const newSettings = new Settings({
       adultContent: false,
