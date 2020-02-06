@@ -24,8 +24,7 @@ class Chat extends Component {
     leaveConfirm: false,
     message: "",
     messages: [],
-    metaTitle: "",
-    userLeft: false
+    metaTitle: ""
   };
   componentDidMount() {
     this._ismounted = true;
@@ -63,19 +62,15 @@ class Chat extends Component {
         startMetaChangeInterval(chatPartner + "'s Waiting", "New Message");
       }
     });
-
-    socket.on("user_left", () => {
-      this.handleChange({ userLeft: true });
-    });
   };
 
   scrollToBottom = () => {
     if (this.messagesEnd) this.messagesEnd.scrollIntoView();
   };
   sendMessage = () => {
-    const { message, messages, userLeft } = this.state;
+    const { message, messages } = this.state;
     const { socket, user } = this.context;
-    const { conversation } = this.props;
+    const { conversation, userLeft } = this.props;
 
     if (!message || !conversation.venter || !conversation.listener || userLeft)
       return;
@@ -99,9 +94,9 @@ class Chat extends Component {
   };
 
   render() {
-    const { leaveConfirm, message, messages, userLeft } = this.state;
+    const { leaveConfirm, message, messages } = this.state;
     const { leaveChat } = this.props;
-    const { chatPartner, conversation } = this.props; // Variables
+    const { chatPartner, conversation, userLeft } = this.props; // Variables
     const { user } = this.context;
 
     let messageDivs = [];
@@ -155,7 +150,7 @@ class Chat extends Component {
               {chatPartner && userLeft && (
                 <Text
                   className="fw-400"
-                  text={` ${capitolizeFirstChar(chatPartner)} has left chat.`}
+                  text={`${capitolizeFirstChar(chatPartner)} has left chat.`}
                   type="h5"
                 />
               )}
@@ -199,7 +194,7 @@ class Chat extends Component {
             )}
 
             <Container className="column x-fill">
-              {userLeft && (
+              {chatPartner && userLeft && (
                 <Text
                   className="x-fill tac"
                   text={`${chatPartner} has left chat.`}

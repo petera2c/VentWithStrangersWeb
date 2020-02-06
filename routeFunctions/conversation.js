@@ -85,7 +85,6 @@ const joinRoom = (
   myDisplayName,
   chatPartnerDisplayName
 ) => {
-  socket.leaveAll();
   socket.join(conversation._id);
   emitWaitingConversations(socket);
 
@@ -103,12 +102,12 @@ const leaveChat = socket => {
   for (let index in socket.rooms) {
     socket.to(index).emit("user_left");
   }
-  socket.leaveAll();
 
   ChatQueue.find({ userID: socket.request.user._id }, (err, chatQueues) => {
-    emitWaitingConversations(socket);
     for (let index in chatQueues) {
-      chatQueues[index].remove();
+      chatQueues[index].remove(() => {
+        emitWaitingConversations(socket);
+      });
     }
   });
 };

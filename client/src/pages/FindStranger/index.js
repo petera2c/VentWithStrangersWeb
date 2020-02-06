@@ -19,31 +19,32 @@ import { findConversation } from "./util";
 
 const INITIAL_META_TITLE = "Chat";
 var myVar;
+var myVar2;
 
 class ChatPage extends Component {
   state = {
     chatPartner: undefined,
     conversation: false,
-    listener: false,
     listenersWaiting: 0,
     metaTitle: INITIAL_META_TITLE,
-    saving: true,
-    venter: false,
+    userLeft: false,
     ventersWaiting: 0
   };
   componentDidMount() {
     this._ismounted = true;
     window.addEventListener("focus", this.onFocus);
-
     const { socket } = this.context;
 
     if (socket) {
       socket.emit("get_users_waiting", stateObj => {
-        this.handleChange(stateObj);
+        this.handleChange(stateObj, this.onFocus);
       });
       this.initUserJoined(this.handleChange, socket);
       socket.on("users_waiting", stateObj => {
-        this.handleChange(stateObj);
+        this.handleChange(stateObj, this.onFocus);
+      });
+      socket.on("user_left", () => {
+        this.handleChange({ userLeft: true });
       });
     }
   }
@@ -52,8 +53,8 @@ class ChatPage extends Component {
     window.removeEventListener("focus", this.onFocus);
   }
 
-  handleChange = stateObj => {
-    if (this._ismounted) this.setState(stateObj);
+  handleChange = (stateObj, callback) => {
+    if (this._ismounted) this.setState(stateObj, callback);
   };
 
   initUserJoined = (callback, socket) => {
@@ -69,18 +70,57 @@ class ChatPage extends Component {
     });
   };
   onFocus = () => {
+    const { conversation, listenersWaiting, ventersWaiting } = this.props;
+
     if (document.hasFocus()) {
       this.handleChange({ metaTitle: INITIAL_META_TITLE });
-    }
+    } else if (!document.hasFocus() && !conversation)
+      this.startMetaChangeIntervalWaiters();
   };
   startMetaChangeInterval = (metaTitle1, metaTitle2) => {
     this.handleChange({ metaTitle: metaTitle1 });
     clearInterval(myVar);
 
     myVar = setInterval(() => {
-      if (document.hasFocus()) {
-        this.handleChange({ metaTitle: INITIAL_META_TITLE });
+      const { userLeft } = this.state;
+
+      if (userLeft) {
         clearInterval(myVar);
+        this.handleChange({ metaTitle: "User left chat" });
+      } else if (document.hasFocus()) {
+        clearInterval(myVar);
+        this.handleChange({ metaTitle: INITIAL_META_TITLE });
+      } else {
+        if (this.state.metaTitle === metaTitle1)
+          this.handleChange({ metaTitle: metaTitle2 });
+        else this.handleChange({ metaTitle: metaTitle1 });
+      }
+    }, 1200);
+  };
+
+  startMetaChangeIntervalWaiters = () => {
+    clearInterval(myVar2);
+
+    myVar2 = setInterval(() => {
+      const { conversation, listenersWaiting, ventersWaiting } = this.state;
+      let metaTitle1 = "";
+      let metaTitle2 = "";
+
+      if (listenersWaiting) {
+        metaTitle1 = listenersWaiting + " Listener Waiting";
+        metaTitle2 = "Vent Now";
+      } else {
+        metaTitle1 = ventersWaiting + " Venter Waiting";
+        metaTitle2 = "Help Now";
+      }
+
+      if (
+        document.hasFocus() ||
+        conversation ||
+        (!listenersWaiting && !ventersWaiting)
+      ) {
+        clearInterval(myVar2);
+        this.handleChange({ metaTitle: INITIAL_META_TITLE });
       } else {
         if (this.state.metaTitle === metaTitle1)
           this.handleChange({ metaTitle: metaTitle2 });
@@ -93,11 +133,9 @@ class ChatPage extends Component {
     const {
       chatPartner,
       conversation,
-      listener,
       listenersWaiting,
       metaTitle,
-      saving,
-      venter,
+      userLeft,
       ventersWaiting
     } = this.state;
     const { user } = this.context;
@@ -133,7 +171,10 @@ class ChatPage extends Component {
                         (isMobileOrTablet() ? "px16" : "mr32")
                       }
                       onClick={() => {
-                        this.handleChange({ conversation: true });
+                        this.handleChange({
+                          conversation: true,
+                          userLeft: false
+                        });
                         findConversation(context.socket, "listener");
                       }}
                     >
@@ -168,7 +209,10 @@ class ChatPage extends Component {
                         (isMobileOrTablet() ? "px16" : "")
                       }
                       onClick={() => {
-                        this.handleChange({ conversation: true });
+                        this.handleChange({
+                          conversation: true,
+                          userLeft: false
+                        });
                         findConversation(context.socket, "venter");
                       }}
                     >
@@ -228,6 +272,7 @@ class ChatPage extends Component {
                       })
                     }
                     startMetaChangeInterval={this.startMetaChangeInterval}
+                    userLeft={userLeft}
                   />
                 </Container>
               )}
