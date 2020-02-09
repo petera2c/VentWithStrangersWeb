@@ -4,9 +4,7 @@ import Consumer, { ExtraContext } from "../../context";
 import TextArea from "react-textarea-autosize";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMars } from "@fortawesome/free-solid-svg-icons/faMars";
-import { faVenus } from "@fortawesome/free-solid-svg-icons/faVenus";
-import { faGenderless } from "@fortawesome/free-solid-svg-icons/faGenderless";
+import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
 
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
@@ -24,15 +22,28 @@ class NewProblemPage extends Component {
   state = {
     description: "",
     gender: 0,
-    tags: "",
+    tags: [],
+    tagText: "",
     title: "",
     saving: false
   };
   handleChange = stateObject => {
     this.setState(stateObject);
   };
+  updateTags = something => {
+    let { tags } = this.state;
+
+    let word = "";
+    for (let index in something) {
+      if (something[index] === " " || something[index] === ",") {
+        tags.push(word);
+        word = "";
+      } else word += something[index];
+    }
+    this.handleChange({ saving: false, tags, tagText: word });
+  };
   render() {
-    const { description, gender, saving, tags, title } = this.state;
+    const { description, gender, saving, tags, tagText, title } = this.state;
 
     return (
       <Consumer>
@@ -82,16 +93,40 @@ class NewProblemPage extends Component {
 
                     <Input
                       className="py8 px16 br4"
-                      onChange={e => {
-                        this.handleChange({
-                          saving: false,
-                          tags: e.target.value
-                        });
-                      }}
+                      onChange={e => this.updateTags(e.target.value)}
                       placeholder="Depression, Relationship, Bullying"
                       type="text"
-                      value={tags}
+                      value={tagText}
                     />
+                  </Container>
+                  <Container>
+                    {tags.map((tag, index) => (
+                      <Container
+                        key={index}
+                        className="clickable mr8 mb8"
+                        onClick={() => {}}
+                      >
+                        <Text
+                          className="flex-fill tac fw-300 border-all blue active large px16 py8"
+                          style={{
+                            marginRight: "1px",
+                            borderTopLeftRadius: "4px",
+                            borderBottomLeftRadius: "4px"
+                          }}
+                          text={tag}
+                          type="p"
+                        />
+                        <Container
+                          className="full-center border-all px16"
+                          style={{
+                            borderTopRightRadius: "4px",
+                            borderBottomRightRadius: "4px"
+                          }}
+                        >
+                          <FontAwesomeIcon className="" icon={faTimes} />
+                        </Container>
+                      </Container>
+                    ))}
                   </Container>
 
                   <Text className="fw-400 mb8" text="Description" type="h5" />
@@ -104,6 +139,7 @@ class NewProblemPage extends Component {
                       })
                     }
                     placeholder="Let it all out. You are not alone."
+                    style={{ minHeight: "100px" }}
                     value={description}
                   />
                   <Container className="justify-end">
@@ -129,18 +165,6 @@ class NewProblemPage extends Component {
                           if (description && title) {
                             this.handleChange({ saving: true });
 
-                            const tagsArray = [];
-                            let word = "";
-
-                            for (let index in tags) {
-                              if (tags[index] === "," || tags[index] === " ") {
-                                if (word !== "") {
-                                  tagsArray.push(word);
-                                  word = "";
-                                }
-                              } else word += tags[index];
-                            }
-                            if (word) tagsArray.push(word);
                             saveProblem(
                               problem => {
                                 this.handleChange({ saving: false });
@@ -157,7 +181,7 @@ class NewProblemPage extends Component {
 
                                 window.location.reload();
                               },
-                              { description, gender, tags: tagsArray, title },
+                              { description, gender, tags, title },
                               context.notify
                             );
                           } else alert("One or more fields is missing.");
