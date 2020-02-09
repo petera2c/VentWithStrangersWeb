@@ -43,18 +43,6 @@ class NewProblemPage extends Component {
             keywords=""
             title="Post a Problem"
           >
-            <Container className="x-fill justify-center align-start">
-              <Text
-                className={
-                  "fw-400 fs-20 " +
-                  (isMobileOrTablet()
-                    ? "container mobile-full pa16"
-                    : "container extra-large pr32 pb32")
-                }
-                text="People care and help is here. Vent and chat anonymously to be a part of a community committed to making the world a better place. This is a website for people that want to be heard and people that want to listen."
-                type="h2"
-              />
-            </Container>
             <Container
               className={
                 "ov-visible column py32 " +
