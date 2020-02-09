@@ -33,6 +33,7 @@ class ChatPage extends Component {
   componentDidMount() {
     this._ismounted = true;
     window.addEventListener("focus", this.onFocus);
+    window.addEventListener("blur", this.onFocus);
     const { socket } = this.context;
 
     if (socket) {
@@ -51,6 +52,7 @@ class ChatPage extends Component {
   componentWillUnmount() {
     this._ismounted = false;
     window.removeEventListener("focus", this.onFocus);
+    window.removeEventListener("blue", this.onFocus);
   }
 
   handleChange = (stateObj, callback) => {
@@ -71,7 +73,7 @@ class ChatPage extends Component {
   };
   onFocus = () => {
     const { conversation, listenersWaiting, ventersWaiting } = this.props;
-
+    console.log(document.hasFocus());
     if (document.hasFocus()) {
       this.handleChange({ metaTitle: INITIAL_META_TITLE });
     } else if (!document.hasFocus() && !conversation)
@@ -113,15 +115,18 @@ class ChatPage extends Component {
         metaTitle1 = ventersWaiting + " Venter Waiting";
         metaTitle2 = "Help Now";
       }
+      console.log("\n");
 
       if (
         document.hasFocus() ||
         conversation ||
         (!listenersWaiting && !ventersWaiting)
       ) {
+        console.log("here");
         clearInterval(myVar2);
         this.handleChange({ metaTitle: INITIAL_META_TITLE });
       } else {
+        console.log("here2");
         if (this.state.metaTitle === metaTitle1)
           this.handleChange({ metaTitle: metaTitle2 });
         else this.handleChange({ metaTitle: metaTitle1 });

@@ -59,7 +59,7 @@ class Chat extends Component {
       this.scrollToBottom();
 
       if (!document.hasFocus() && chatPartner) {
-        startMetaChangeInterval(chatPartner + "'s Waiting", "New Message");
+        startMetaChangeInterval(chatPartner + " is Waiting", "New Message");
       }
     });
   };
