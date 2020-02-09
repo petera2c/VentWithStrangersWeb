@@ -143,7 +143,8 @@ class Problem extends Component {
                   this.handleChange({ postOptions: !postOptions });
                 }}
               />
-              <Container
+              <HandleOutsideClick
+                close={() => this.handleChange({ postOptions: false })}
                 onClick={e => {
                   e.stopPropagation();
                 }}
@@ -162,7 +163,7 @@ class Problem extends Component {
                       Edit Post
                     </Container>
                   )}
-                  <HandleOutsideClick
+                  <Container
                     className="button-8 clickable align-center"
                     onClick={() => this.handleChange({ reportModal: true })}
                   >
@@ -171,9 +172,9 @@ class Problem extends Component {
                       icon={faExclamationTriangle}
                     />
                     Report Post
-                  </HandleOutsideClick>
+                  </Container>
                 </Container>
-              </Container>
+              </HandleOutsideClick>
             </Container>
           </Container>
           <Container
@@ -203,7 +204,9 @@ class Problem extends Component {
                 icon={faComment}
                 onClick={e => {
                   e.stopPropagation();
-                  this.handleChange({ displayCommentField: true });
+                  this.handleChange({
+                    displayCommentField: !displayCommentField
+                  });
                   if (!displayCommentField)
                     getProblemComments(this.context, problem, problemIndex);
                 }}
@@ -226,7 +229,7 @@ class Problem extends Component {
           )}
         </Container>
         {!searchPreviewMode && displayCommentField && (
-          <Container className="column bg-white shadow-3 py16 mb16 br8">
+          <Container className="column bg-white shadow-3 py16 mb16 ml8 br8">
             <Container className="border-bottom pb16 mb16">
               <Container className="align-center border-left active large px16">
                 <FontAwesomeIcon className="blue mr8" icon={faComment} />

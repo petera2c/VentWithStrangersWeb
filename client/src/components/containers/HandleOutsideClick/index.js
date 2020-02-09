@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import Container from "../../components/containers/Container";
+import Container from "../Container";
 
 class HandleOutsideClickContainer extends Component {
   componentDidMount() {

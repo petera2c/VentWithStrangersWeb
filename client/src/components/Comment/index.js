@@ -67,7 +67,11 @@ class Comment extends Component {
               else likeComment(this.context, comment, index);
             }}
           />
-          <Text className="grey-5" text={comment.upVotes} type="p" />
+          <Text
+            className="grey-5"
+            text={comment.upVotes ? comment.upVotes : 0}
+            type="p"
+          />
         </Container>
       </Container>
     );
