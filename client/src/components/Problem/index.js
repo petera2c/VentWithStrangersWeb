@@ -20,6 +20,7 @@ import Comment from "../Comment";
 import ReportModal from "../modals/Report";
 
 import Container from "../containers/Container";
+import HandleOutsideClick from "../containers/HandleOutsideClick";
 import Button from "../views/Button";
 import Text from "../views/Text";
 
@@ -161,7 +162,7 @@ class Problem extends Component {
                       Edit Post
                     </Container>
                   )}
-                  <Container
+                  <HandleOutsideClick
                     className="button-8 clickable align-center"
                     onClick={() => this.handleChange({ reportModal: true })}
                   >
@@ -170,7 +171,7 @@ class Problem extends Component {
                       icon={faExclamationTriangle}
                     />
                     Report Post
-                  </Container>
+                  </HandleOutsideClick>
                 </Container>
               </Container>
             </Container>

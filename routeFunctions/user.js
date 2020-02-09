@@ -29,7 +29,6 @@ const login = (req, res, next) => {
 };
 
 const randomLogin = (req, res, next) => {
-  console.log(animalList.length);
   passport.authenticate("local-login", (err, user, message) => {
     const randomAdjectiveIndex = Math.floor(
       Math.random() * (adjectivesList.length - 0) + 0

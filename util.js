@@ -19,19 +19,19 @@ const createSiteMap = () => {
     siteMapString +=
       "<url>\n  <loc>https://www.ventwithstrangers.com/</loc>\n  <lastmod>" +
       new moment().format("YYYY-MM-DD") +
-      "</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
+      "</lastmod>\n  <changefreq>daily</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
     siteMapString +=
-      "<url>\n  <loc>https://www.ventwithstrangers.com/post-a-problem</loc>\n  <lastmod>2020-02-04</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
+      "<url>\n  <loc>https://www.ventwithstrangers.com/post-a-problem</loc>\n  <lastmod>2020-02-04</lastmod>\n  <changefreq>daily</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
     siteMapString +=
-      "<url>\n  <loc>https://www.ventwithstrangers.com/vent-to-a-stranger</loc>\n  <lastmod>2020-02-04</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
+      "<url>\n  <loc>https://www.ventwithstrangers.com/vent-to-a-stranger</loc>\n  <lastmod>2020-02-04</lastmod>\n  <changefreq>daily</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
     siteMapString +=
       "<url>\n  <loc>https://www.ventwithstrangers.com/recent</loc>\n  <lastmod>" +
       new moment().format("YYYY-MM-DD") +
-      "</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
+      "</lastmod>\n  <changefreq>daily</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
     siteMapString +=
       "<url>\n  <loc>https://www.ventwithstrangers.com/trending</loc>\n  <lastmod>" +
       new moment().format("YYYY-MM-DD") +
-      "</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
+      "</lastmod>\n  <changefreq>daily</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
 
     for (let index in problems) {
       const problem = problems[index];
@@ -50,7 +50,7 @@ const createSiteMap = () => {
         url +
         "</loc>\n  <lastmod>" +
         new moment(problem.updatedAt).format("YYYY-MM-DD") +
-        "</lastmod>\n  <changefreq>yearly\n</changefreq>  <priority>0.4</priority>\n</url>\n\n";
+        "</lastmod>\n  <changefreq>daily\n</changefreq>  <priority>0.4</priority>\n</url>\n\n";
     }
     siteMapString += "</urlset>";
 

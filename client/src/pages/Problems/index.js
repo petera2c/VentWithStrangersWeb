@@ -19,7 +19,7 @@ import Problem from "../../components/Problem";
 import LoadMoreProblems from "../../components/LoadMoreProblems";
 
 import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
-
+//People care and help is here. Vent in our anonymous forum or chat anonymously to be apart of a community committed to making the world a better place.
 class Problems extends Component {
   render() {
     const { problems } = this.context;
@@ -47,11 +47,23 @@ class Problems extends Component {
       <Consumer>
         {context => (
           <Page
-            className="bg-grey-2"
+            className="column bg-grey-2"
             description={metaDescription}
             keywords=""
             title={title}
           >
+            <Container className="x-fill justify-center align-start">
+              <Text
+                className={
+                  "fw-400 fs-20 " +
+                  (isMobileOrTablet()
+                    ? "container mobile-full pa16"
+                    : "container extra-large pr32 pt32")
+                }
+                text="People care and help is here. Vent and chat anonymously to be a part of a community committed to making the world a better place. This is a website for people that want to be heard and people that want to listen."
+                type="h2"
+              />
+            </Container>
             <Container
               className={
                 "x-fill justify-center align-start " +
