@@ -71,6 +71,7 @@ class Routes extends Component {
     else if (pathname === "/search")
       searchProblems(handleChange, undefined, search, skip, socket);
     else if (pathname === "/") getProblems("/trending", search);
+    else if (pathname === "/home") getProblems("/trending", search);
     else if (pathname === "/activity") {
       getUsersPosts(handleChange, notify, problems, search, skip, socket, user);
       getUsersComments(handleChange, notify, search, socket, user);
