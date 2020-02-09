@@ -114,6 +114,7 @@ class Routes extends Component {
               <Route path="/search/" component={SearchPage} />
               <Route path="/hot-tags/" component={HotTagsPage} />
               <Route path="/" component={ProblemsPage} exact />
+              <Route path="/home/" component={ProblemsPage} />
               <Route path="/trending/" component={ProblemsPage} />
               <Route path="/recent/" component={ProblemsPage} />
               <Route path="/popular/" component={ProblemsPage} />

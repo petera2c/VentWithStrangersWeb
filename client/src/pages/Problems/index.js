@@ -28,7 +28,8 @@ class Problems extends Component {
 
     let title = capitolizeFirstChar(pathname.slice(1, pathname.length));
 
-    if (!pathname || pathname === "/") title = "Trending";
+    if (!pathname || pathname === "/" || pathname === "/home")
+      title = "Trending";
 
     let metaDescription =
       "People care. Vent and chat anonymously to be apart of a community committed to making the world a better place.";
