@@ -73,7 +73,6 @@ class ChatPage extends Component {
   };
   onFocus = () => {
     const { conversation, listenersWaiting, ventersWaiting } = this.props;
-    console.log(document.hasFocus());
     if (document.hasFocus()) {
       this.handleChange({ metaTitle: INITIAL_META_TITLE });
     } else if (!document.hasFocus() && !conversation)
@@ -115,18 +114,15 @@ class ChatPage extends Component {
         metaTitle1 = ventersWaiting + " Venter Waiting";
         metaTitle2 = "Help Now";
       }
-      console.log("\n");
 
       if (
         document.hasFocus() ||
         conversation ||
         (!listenersWaiting && !ventersWaiting)
       ) {
-        console.log("here");
         clearInterval(myVar2);
         this.handleChange({ metaTitle: INITIAL_META_TITLE });
       } else {
-        console.log("here2");
         if (this.state.metaTitle === metaTitle1)
           this.handleChange({ metaTitle: metaTitle2 });
         else this.handleChange({ metaTitle: metaTitle1 });

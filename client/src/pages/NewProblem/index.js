@@ -30,17 +30,24 @@ class NewProblemPage extends Component {
   handleChange = stateObject => {
     this.setState(stateObject);
   };
-  updateTags = something => {
+  updateTags = inputText => {
     let { tags } = this.state;
 
     let word = "";
-    for (let index in something) {
-      if (something[index] === " " || something[index] === ",") {
-        tags.push(word);
+    for (let index in inputText) {
+      if (inputText[index] === " " || inputText[index] === ",") {
+        if (word) tags.push(word);
         word = "";
-      } else word += something[index];
+      } else word += inputText[index];
     }
     this.handleChange({ saving: false, tags, tagText: word });
+  };
+  removeTag = index => {
+    let { tags } = this.state;
+
+    tags.splice(index, 1);
+
+    this.handleChange({ tags });
   };
   render() {
     const { description, gender, saving, tags, tagText, title } = this.state;
@@ -104,7 +111,7 @@ class NewProblemPage extends Component {
                       <Container
                         key={index}
                         className="clickable mr8 mb8"
-                        onClick={() => {}}
+                        onClick={() => this.removeTag(index)}
                       >
                         <Text
                           className="flex-fill tac fw-300 border-all blue active large px16 py8"
