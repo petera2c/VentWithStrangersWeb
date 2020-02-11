@@ -95,6 +95,7 @@ class ProblemPage extends Component {
               }
             >
               <Problem
+                disablePostOnClick={true}
                 displayCommentField
                 problem={problems[0]}
                 problemIndex={0}

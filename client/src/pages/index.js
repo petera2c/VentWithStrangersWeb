@@ -46,17 +46,13 @@ class Routes extends Component {
 
     this.unlisten = this.props.history.listen(this.getDataNeededForPage);
   }
+  componentWillUnmount() {
+    this.unlisten();
+  }
   getDataNeededForPage = (location, action, initialPageLoad) => {
     let { pathname, search } = location;
     const { getProblems, handleChange, notify, socket } = this.context; // Functions
     const { problems, skip, user } = this.context; // Variables
-
-    if (
-      pathname + search ===
-        this.props.location.pathname + this.props.location.search &&
-      !initialPageLoad
-    )
-      return;
 
     handleChange({ problems: undefined, skip: 0 });
 
@@ -77,9 +73,6 @@ class Routes extends Component {
       getUsersComments(handleChange, notify, search, socket, user);
     }
   };
-  componentWillUnmount() {
-    this.unlisten();
-  }
 
   render() {
     const { databaseConnection } = this.state;

@@ -66,6 +66,7 @@ class Problem extends Component {
     } = this.state;
     const { history } = this.props; // Functions
     const {
+      disablePostOnClick,
       previewMode,
       problem,
       problemIndex,
@@ -87,21 +88,26 @@ class Problem extends Component {
 
     return (
       <Container className="x-fill column mb16">
-        <Container className="x-fill column bg-white shadow-3 mb8 br8">
-          <Container
-            className="clickable x-fill justify-between border-bottom py16 pl32 pr16"
-            onClick={() =>
-              history.push(
-                "/problem/" +
-                  problem._id +
-                  "/" +
-                  problem.title
-                    .replace(/[^a-zA-Z ]/g, "")
-                    .replace(/ /g, "-")
-                    .toLowerCase()
-              )
-            }
-          >
+        <Container
+          className={
+            "x-fill column bg-white shadow-3 mb8 br8 " +
+            (disablePostOnClick ? "" : "clickable")
+          }
+          onClick={() =>
+            disablePostOnClick
+              ? {}
+              : history.push(
+                  "/problem/" +
+                    problem._id +
+                    "/" +
+                    problem.title
+                      .replace(/[^a-zA-Z ]/g, "")
+                      .replace(/ /g, "-")
+                      .toLowerCase()
+                )
+          }
+        >
+          <Container className="x-fill justify-between border-bottom py16 pl32 pr16">
             <Link
               className="mr16"
               onClick={e => e.stopPropagation()}
