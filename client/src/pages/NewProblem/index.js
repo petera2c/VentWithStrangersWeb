@@ -165,10 +165,11 @@ class NewProblemPage extends Component {
                           const {
                             description,
                             gender,
-                            tags,
+                            tags = [],
+                            tagText,
                             title
                           } = this.state;
-
+                          if (tagText) tags.push(tagText);
                           if (description && title) {
                             this.handleChange({ saving: true });
 
