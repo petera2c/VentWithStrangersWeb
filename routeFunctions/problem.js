@@ -25,8 +25,8 @@ const getAggregate = (skip, sort, match, userID) => [
     $match: match
   },
   project(userID),
-  { $skip: skip },
   { $sort: sort },
+  { $skip: skip },
   { $limit: 10 }
 ];
 
