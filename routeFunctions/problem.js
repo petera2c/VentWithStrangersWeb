@@ -193,6 +193,25 @@ const saveProblem = (req, res) => {
   let counter = 0;
   const tagNameArray = [];
 
+  if (!title) {
+    return res.send({
+      message: "You forgot to give it a title!",
+      success: false
+    });
+  }
+  if (!description) {
+    return res.send({
+      message: "You forgot to give it a description!",
+      success: false
+    });
+  }
+  if (title && title.length > 140) {
+    return res.send({
+      message: "Title is too long! The title must be less than 140 characters.",
+      success: false
+    });
+  }
+
   const saveNewProblem = (description, gender, tagNameArray, title) => {
     const newProblem = new Problem({
       description,

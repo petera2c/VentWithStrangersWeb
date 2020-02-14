@@ -75,6 +75,9 @@
 .fs-16 {
   font-size: var(--sixteen-font-size);
 }
+.fs-18 {
+  font-size: var(--eighteen-font-size);
+}
 .fs-20 {
   font-size: var(--twenty-font-size);
 }
@@ -93,33 +96,33 @@ h2 {
 h3 {
   margin: 0;
   padding: 0;
-  font-size: var(--twenty-font-size);
+  font-size: var(--twenty-two-font-size);
 }
 h4 {
   color: var(--primary-font-color);
   margin: 0;
   text-align: left;
 
-  font-size: var(--twenty-font-size);
+  font-size: var(--twenty-two-font-size);
 }
 h5 {
   margin: 0;
 
-  font-size: var(--sixteen-font-size);
+  font-size: var(--twenty-font-size);
 }
 h6 {
   color: var(--primary-font-color);
   margin: 0;
 
-  font-size: var(--sixteen-font-size);
+  font-size: var(--twenty-font-size);
 }
 p {
   margin: 0;
   text-align: left;
-  font-size: var(--fourteen-font-size);
+  font-size: var(--eighteen-font-size);
 }
 
 text {
-  font-size: var(--fourteen-font-size);
+  font-size: var(--eighteen-font-size);
   fill: var(--primary-font-color);
 }

@@ -80,11 +80,10 @@ class Problem extends Component {
     }
 
     let title = problem.title;
-    if (previewMode && title.length > 140) title = title.slice(0, 140) + "...";
 
     let description = problem.description;
-    if (previewMode && description.length > 80)
-      description = description.slice(0, 80) + "...";
+    if (previewMode && description.length > 240)
+      description = description.slice(0, 240) + "... Read More";
 
     return (
       <Container className="x-fill column mb16">
@@ -183,54 +182,59 @@ class Problem extends Component {
               </HandleOutsideClick>
             </Container>
           </Container>
-          <Container
-            className={`column ${previewMode ? "" : "border-bottom"} py16 px32`}
-          >
-            <Text className="fs-16 fw-400 grey-8 mb8" text={title} type="h1" />
-            <Container className="mb8">
-              <FontAwesomeIcon className="grey-5 mr8" icon={faClock} />
-              <Text
-                className="grey-5"
-                text={moment(problem.createdAt)
-                  .subtract(1, "minute")
-                  .fromNow()}
-                type="p"
-              />
-            </Container>
+          <Container className="column border-bottom py16 px32">
+            <Text className="fs-20 fw-400 grey-8 mb8" text={title} type="h1" />
+
             <Text
-              className="fs-14 fw-400 grey-1"
+              className="fs-18 fw-400 grey-1"
               text={description}
               type="h2"
             />
           </Container>
           {!searchPreviewMode && (
-            <Container className="py16 px32">
-              <FontAwesomeIcon
-                className="clickable blue mr4"
-                icon={faComment}
-                onClick={e => {
-                  e.stopPropagation();
-                  this.handleChange({
-                    displayCommentField: !displayCommentField
-                  });
-                  if (!displayCommentField)
-                    getProblemComments(this.context, problem, problemIndex);
-                }}
-              />
-              <Text className="blue mr8" text={problem.commentsSize} type="p" />
-              <FontAwesomeIcon
-                className={`clickable heart ${
-                  problem.hasLiked ? "red" : "grey-5"
-                } mr4`}
-                icon={problem.hasLiked ? faHeart2 : faHeart}
-                onClick={e => {
-                  e.stopPropagation();
-                  if (problem.hasLiked)
-                    unlikeProblem(this.context, problem, problemIndex);
-                  else likeProblem(this.context, problem, problemIndex);
-                }}
-              />
-              <Text className="grey-5" text={problem.upVotes} type="p" />
+            <Container className="wrap justify-between py16 px32">
+              <Container className="align-center">
+                <FontAwesomeIcon
+                  className="clickable blue mr4"
+                  icon={faComment}
+                  onClick={e => {
+                    e.stopPropagation();
+                    this.handleChange({
+                      displayCommentField: !displayCommentField
+                    });
+                    if (!displayCommentField)
+                      getProblemComments(this.context, problem, problemIndex);
+                  }}
+                />
+                <Text
+                  className="blue mr8"
+                  text={problem.commentsSize}
+                  type="p"
+                />
+                <FontAwesomeIcon
+                  className={`clickable heart ${
+                    problem.hasLiked ? "red" : "grey-5"
+                  } mr4`}
+                  icon={problem.hasLiked ? faHeart2 : faHeart}
+                  onClick={e => {
+                    e.stopPropagation();
+                    if (problem.hasLiked)
+                      unlikeProblem(this.context, problem, problemIndex);
+                    else likeProblem(this.context, problem, problemIndex);
+                  }}
+                />
+                <Text className="grey-5 mr16" text={problem.upVotes} type="p" />
+              </Container>
+              <Container className="align-center">
+                <FontAwesomeIcon className="grey-5 mr8" icon={faClock} />
+                <Text
+                  className="grey-5"
+                  text={moment(problem.createdAt)
+                    .subtract(1, "minute")
+                    .fromNow()}
+                  type="p"
+                />
+              </Container>
             </Container>
           )}
         </Container>

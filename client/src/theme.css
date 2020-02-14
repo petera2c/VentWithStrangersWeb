@@ -472,7 +472,7 @@
 body {
   margin: 0;
   padding: 0;
-
+  word-wrap: break-word;
   font-family: var(--font-theme);
   color: var(--grey-color-1);
 }

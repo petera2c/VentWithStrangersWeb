@@ -45,13 +45,17 @@ class HotTags extends Component {
                 onClick={() => addTagsToPage(this.props, [hotTag])}
               >
                 <Text
-                  className="round-icon bg-light-blue blue fs-12"
+                  className="round-icon bg-light-blue blue fs-18"
                   text={index}
                   type="p"
                 />
                 <Container className="column pa16">
                   <Text className="button-1" text={hotTag.name} type="p" />
-                  <Text className="grey-5" text={hotTag.uses} type="p" />
+                  <Text
+                    className="grey-5"
+                    text={hotTag.uses + " recent uses"}
+                    type="p"
+                  />
                 </Container>
               </Container>
             ))}
