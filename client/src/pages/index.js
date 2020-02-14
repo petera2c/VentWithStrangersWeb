@@ -54,24 +54,32 @@ class Routes extends Component {
     const { getProblems, handleChange, notify, socket } = this.context; // Functions
     const { problems, skip, user } = this.context; // Variables
 
-    handleChange({ problems: undefined, skip: 0 });
+    handleChange({ problems: undefined, skip: 0 }, () => {
+      search = search.slice(1, search.length);
 
-    search = search.slice(1, search.length);
-
-    if (
-      pathname === "/popular" ||
-      pathname === "/recent" ||
-      pathname === "/trending"
-    )
-      getProblems(pathname, search);
-    else if (pathname === "/search")
-      searchProblems(handleChange, undefined, search, skip, socket);
-    else if (pathname === "/") getProblems("/trending", search);
-    else if (pathname === "/home") getProblems("/trending", search);
-    else if (pathname === "/activity") {
-      getUsersPosts(handleChange, notify, problems, search, skip, socket, user);
-      getUsersComments(handleChange, notify, search, socket, user);
-    }
+      if (
+        pathname === "/popular" ||
+        pathname === "/recent" ||
+        pathname === "/trending"
+      )
+        getProblems(pathname, search);
+      else if (pathname === "/search")
+        searchProblems(handleChange, undefined, search, skip, socket);
+      else if (pathname === "/") getProblems("/trending", search);
+      else if (pathname === "/home") getProblems("/trending", search);
+      else if (pathname === "/activity") {
+        getUsersPosts(
+          handleChange,
+          notify,
+          problems,
+          search,
+          skip,
+          socket,
+          user
+        );
+        getUsersComments(handleChange, notify, search, socket, user);
+      }
+    });
   };
 
   render() {
