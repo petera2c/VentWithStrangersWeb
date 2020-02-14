@@ -121,7 +121,7 @@ const getMetaInformation = (url, callback) => {
           metaDescription:
             "Sometimes, all we need is an available ear. This is where you can anonymously talk to someone that wants to listen, or anonymously listen to someone that wants to be heard.",
           metaImage: defaultMetaObject.metaImage,
-          metaTitle: "Vent or Help Now | Vent With Strangers"
+          metaTitle: "Chat | Vent With Strangers"
         });
 
       default:
