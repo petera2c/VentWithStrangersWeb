@@ -58,7 +58,7 @@ class ActivitySection extends Component {
             }
           >
             <Text className="mb16" text="Activity" type="h4" />
-            <Container className="ov-hidden column bg-white shadow-3 mb16 br8">
+            <Container className="ov-hidden column bg-white border-all2 mb16 br8">
               <Container>
                 <Container
                   className={
@@ -130,7 +130,7 @@ class ActivitySection extends Component {
             )}
             {commentsSection && (
               <Container className="x-fill column">
-                <Container className="column shadow-3 br8">
+                <Container className="column border-all2 br8">
                   {context.comments &&
                     context.comments.map((comment, index) => (
                       <Comment

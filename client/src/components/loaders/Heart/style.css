@@ -28,7 +28,7 @@
   position: absolute;
   width: 40px;
   height: 40px;
-  background: var(--blue-color);
+  background: var(--main-color);
   transform: rotate(45deg);
 }
 .loader-heart > div div:after,
@@ -38,7 +38,7 @@
   display: block;
   width: 40px;
   height: 40px;
-  background: var(--blue-color);
+  background: var(--main-color);
 }
 .loader-heart > div div:before {
   left: -26px;

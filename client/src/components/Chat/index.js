@@ -127,7 +127,7 @@ class Chat extends Component {
               "column full-center flex-fill ov-auto bg-white br4 " +
               (isMobileOrTablet()
                 ? "container mobile-full"
-                : "container large shadow-3")
+                : "container large border-all2")
             }
           >
             <Container className="x-fill justify-between border-bottom pa16">

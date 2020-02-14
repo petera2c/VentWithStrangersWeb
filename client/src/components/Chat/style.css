@@ -4,7 +4,7 @@
   max-width: 60%;
 }
 .authors-message {
-  background-color: var(--blue-color);
+  background-color: var(--main-color);
   color: var(--white-color);
 }
 

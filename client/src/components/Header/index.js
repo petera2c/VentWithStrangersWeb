@@ -81,7 +81,7 @@ class Header extends Component {
               >
                 <Link
                   className={
-                    "button-3 my16 mr32 " +
+                    "button-3 py16 mr32 " +
                     isPageActive("/trending", pathname) +
                     isPageActive("/", pathname)
                   }
@@ -92,7 +92,7 @@ class Header extends Component {
                 </Link>
                 <Link
                   className={
-                    "button-3 my16 mr32 " + isPageActive("/recent", pathname)
+                    "button-3 py16 mr32 " + isPageActive("/recent", pathname)
                   }
                   to="/recent"
                 >

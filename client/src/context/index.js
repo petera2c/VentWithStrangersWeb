@@ -98,7 +98,8 @@ class GIProvider extends Component {
   removeProblem = problemIndex => {
     let { problems } = this.state;
 
-    problems = problems.splice(1, problemIndex);
+    problems.splice(problemIndex, 1);
+
     this.handleChange({ problems });
   };
   updateProblem = (problem, problemIndex) => {

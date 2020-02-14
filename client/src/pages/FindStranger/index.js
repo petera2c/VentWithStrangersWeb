@@ -182,7 +182,7 @@ class ChatPage extends Component {
                   <Container className="wrap full-center mt16">
                     <Container
                       className={
-                        "button-6 column bg-white shadow-3 container small mb16 br8 " +
+                        "button-6 column bg-white border-all2 container small mb16 br8 " +
                         (isMobileOrTablet() ? "px16" : "mr32")
                       }
                       onClick={() => {
@@ -220,7 +220,7 @@ class ChatPage extends Component {
                     </Container>
                     <Container
                       className={
-                        "button-6 column bg-white shadow-3 container small mb16 br8 " +
+                        "button-6 column bg-white border-all2 container small mb16 br8 " +
                         (isMobileOrTablet() ? "px16" : "")
                       }
                       onClick={() => {

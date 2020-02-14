@@ -3,8 +3,14 @@
   background-color: #53f4ff;
 }
 
+.bg-grey-2 {
+  background-color: #e7f4fe;
+}
+.border-all2 {
+}
 :root {
-  --blue-color: #2096f2;
+  --main-color: #2096f2;
+
   --green-theme-color: #86ff3b;
   --purple-theme-color: #e056fd;
   --orange-theme-color: #ff9f1a;
@@ -455,7 +461,7 @@
 .border-right.active,
 .border-bottom.active,
 .border-left.active {
-  border-color: var(--blue-color);
+  border-color: var(--main-color);
 }
 .border-all.large,
 .border-top.large,

@@ -29,7 +29,7 @@ class HotTags extends Component {
     return (
       <Consumer>
         {context => (
-          <Container className="x-fill column align-center bg-white shadow-3 br8">
+          <Container className="x-fill column align-center bg-white border-all2 br8">
             <Container className="x-fill border-bottom py16">
               <Container className="align-center border-left active large px16">
                 <FontAwesomeIcon className="blue mr8" icon={faFire} />

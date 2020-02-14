@@ -225,13 +225,10 @@
   background-color: var(--white-color);
 }
 .bg-blue {
-  background-color: var(--blue-color);
+  background-color: var(--main-color);
 }
 .bg-light-blue {
   background-color: var(--light-blue-color);
-}
-.bg-grey-2 {
-  background-color: var(--grey-color-2);
 }
 .bg-grey-4 {
   background-color: var(--grey-color-4);

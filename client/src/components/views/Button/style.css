@@ -1,5 +1,5 @@
 .blue-fade {
-  background: linear-gradient(to top, var(--blue-color), #64b5f6);
+  background: linear-gradient(to top, var(--main-color), #64b5f6);
 }
 .grey-button {
   border: 1px solid var(--grey-font-color);
@@ -15,12 +15,12 @@
 }
 .button-2 {
   cursor: pointer;
-  color: var(--blue-color);
-  border: 1px solid var(--blue-color);
+  color: var(--main-color);
+  border: 1px solid var(--main-color);
 }
 .button-2:hover {
   color: var(--white-color);
-  background-color: var(--blue-color);
+  background-color: var(--main-color);
 }
 .button-3 {
   cursor: pointer;
@@ -29,8 +29,8 @@
 }
 .button-3:hover,
 .button-3.active {
-  color: var(--blue-color);
-  border-bottom: 2px solid var(--blue-color);
+  color: var(--main-color);
+  border-bottom: 2px solid var(--main-color);
 }
 
 .button-4 {
@@ -40,18 +40,18 @@
 }
 .button-4:hover,
 .button-4.active {
-  color: var(--blue-color);
-  border-color: var(--blue-color);
+  color: var(--main-color);
+  border-color: var(--main-color);
 }
 .button-5 {
   cursor: pointer;
-  background-color: var(--blue-color);
+  background-color: var(--main-color);
   border: 1px solid transparent;
   color: var(--white-color);
 }
 .button-5:hover {
-  background-color: var(--blue-color);
-  border-color: var(--blue-color);
+  background-color: var(--main-color);
+  border-color: var(--main-color);
 }
 .button-6 {
   cursor: pointer;
@@ -59,8 +59,8 @@
 }
 .button-6:hover,
 .button-6:hover h3 {
-  border-color: var(--blue-color);
-  color: var(--blue-color) !important;
+  border-color: var(--main-color);
+  color: var(--main-color) !important;
 }
 .cancel {
   color: var(--grey-color-1);
@@ -70,7 +70,7 @@
   color: var(--red-color);
 }
 .button-7:hover {
-  color: var(--blue-color);
+  color: var(--main-color);
 }
 .button-8:hover {
   color: var(--red-color);

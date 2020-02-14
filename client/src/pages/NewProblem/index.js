@@ -75,7 +75,7 @@ class NewProblemPage extends Component {
                 type="h4"
               />
 
-              <Container className="column bg-white shadow-3 br8">
+              <Container className="column bg-white border-all2 br8">
                 <Container className="column py32 px32 br4">
                   <Text className="fw-400 mb8" text="Title" type="h5" />
 

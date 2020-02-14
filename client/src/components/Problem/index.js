@@ -89,7 +89,7 @@ class Problem extends Component {
       <Container className="x-fill column mb16">
         <Container
           className={
-            "x-fill column bg-white shadow-3 mb8 br8 " +
+            "x-fill column bg-white border-all2 mb8 br8 " +
             (disablePostOnClick ? "" : "clickable")
           }
           onClick={() =>
@@ -161,7 +161,7 @@ class Problem extends Component {
                   zIndex: 1
                 }}
               >
-                <Container className="column x-fill bg-white shadow-3 border-all px16 py8 br8">
+                <Container className="column x-fill bg-white border-all2 border-all px16 py8 br8">
                   {false && problem.wasCreatedByUser && (
                     <Container className="button-7 clickable align-center mb4">
                       <FontAwesomeIcon className="mr8" icon={faEdit} />
@@ -183,7 +183,7 @@ class Problem extends Component {
             </Container>
           </Container>
           <Container className="column border-bottom py16 px32">
-            <Text className="fs-20 fw-400 grey-8 mb8" text={title} type="h1" />
+            <Text className="fs-20 primary mb8" text={title} type="h1" />
 
             <Text
               className="fs-18 fw-400 grey-1"
@@ -239,7 +239,7 @@ class Problem extends Component {
           )}
         </Container>
         {!searchPreviewMode && displayCommentField && (
-          <Container className="column bg-white shadow-3 py16 mb16 ml8 br8">
+          <Container className="column bg-white border-all2 py16 mb16 ml8 br8">
             <Container className="border-bottom pb16 mb16">
               <Container className="align-center border-left active large px16">
                 <FontAwesomeIcon className="blue mr8" icon={faComment} />
@@ -280,7 +280,7 @@ class Problem extends Component {
         )}
         {displayCommentField && problem.commentsArray && (
           <Container className="column pl16 mb16">
-            <Container className="column shadow-3 br8">
+            <Container className="column border-all2 br8">
               {problem.commentsArray.map((comment, index) => (
                 <Comment
                   arrayLength={problem.commentsArray.length}

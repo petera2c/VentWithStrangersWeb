@@ -10,8 +10,8 @@
   color: var(--red-color);
 }
 .blue {
-  color: var(--blue-color);
-  fill: var(--blue-color);
+  color: var(--main-color);
+  fill: var(--main-color);
 }
 .primary {
   color: var(--primary-font-color);

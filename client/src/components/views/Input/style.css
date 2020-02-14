@@ -25,7 +25,7 @@ input {
 }
 textarea:focus,
 input:focus {
-  border-color: var(--blue-color);
+  border-color: var(--main-color);
 }
 
 input[type="file"] {

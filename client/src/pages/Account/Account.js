@@ -78,7 +78,7 @@ class AccountSection extends Component {
         }
       >
         <Text className="mb16" text="Account" type="h4" />
-        <Container className="column bg-white shadow-3 pa16 mb2 br8">
+        <Container className="column bg-white border-all2 pa16 mb2 br8">
           <Text
             className="blue bold mb16"
             text="Personal Information"
@@ -187,7 +187,7 @@ class AccountSection extends Component {
             </Container>
           </Container>
         </Container>
-        <Container className="full-center bg-white shadow-3 pa16 br8">
+        <Container className="full-center bg-white border-all2 pa16 br8">
           <Button
             className="cancel py8 px32 mx4 br4"
             text="Cancel"

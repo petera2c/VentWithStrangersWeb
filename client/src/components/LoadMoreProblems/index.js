@@ -41,7 +41,7 @@ class LoadMoreProblems extends Component {
 
     return (
       <Container className="column x-fill full-center" onClick={loadMore}>
-        <Container className="clickable x-fill column bg-white shadow-3 mb16 br8">
+        <Container className="clickable x-fill column bg-white border-all2 mb16 br8">
           <Container className="justify-between pt16 px32">
             <Container>
               <div className="round-icon bg-grey-2 mr8" />
