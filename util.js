@@ -15,7 +15,7 @@ const s3 = new AWS.S3({
 const createSiteMap = () => {
   Problem.find({}, { title: 1 }, (err, problems) => {
     let siteMapString =
-      '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.8">\n\n';
+      '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n';
     siteMapString +=
       "<url>\n  <loc>https://www.ventwithstrangers.com/</loc>\n  <lastmod>" +
       new moment().format("YYYY-MM-DD") +
