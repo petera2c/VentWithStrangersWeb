@@ -94,8 +94,6 @@ const adjectivesList = [
   "Experienced",
   "Cool",
   "Flashy",
-  "Cheesy",
-  "Greasy",
   "Homely",
   "Witty",
   "Clever",

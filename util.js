@@ -15,23 +15,23 @@ const s3 = new AWS.S3({
 const createSiteMap = () => {
   Problem.find({}, { title: 1 }, (err, problems) => {
     let siteMapString =
-      '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n';
+      '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.8">\n\n';
     siteMapString +=
       "<url>\n  <loc>https://www.ventwithstrangers.com/</loc>\n  <lastmod>" +
       new moment().format("YYYY-MM-DD") +
-      "</lastmod>\n  <changefreq>daily</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
+      "</lastmod>\n  <changefreq>daily</changefreq>\n  <priority>1</priority>\n</url>\n\n";
     siteMapString +=
-      "<url>\n  <loc>https://www.ventwithstrangers.com/post-a-problem</loc>\n  <lastmod>2020-02-04</lastmod>\n  <changefreq>daily</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
+      "<url>\n  <loc>https://www.ventwithstrangers.com/post-a-problem</loc>\n  <lastmod>2020-02-04</lastmod>\n  <changefreq>daily</changefreq>\n  <priority>0.8</priority>\n</url>\n\n";
     siteMapString +=
-      "<url>\n  <loc>https://www.ventwithstrangers.com/vent-to-a-stranger</loc>\n  <lastmod>2020-02-04</lastmod>\n  <changefreq>daily</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
+      "<url>\n  <loc>https://www.ventwithstrangers.com/vent-to-a-stranger</loc>\n  <lastmod>2020-02-04</lastmod>\n  <changefreq>daily</changefreq>\n  <priority>0.8</priority>\n</url>\n\n";
     siteMapString +=
       "<url>\n  <loc>https://www.ventwithstrangers.com/recent</loc>\n  <lastmod>" +
       new moment().format("YYYY-MM-DD") +
-      "</lastmod>\n  <changefreq>daily</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
+      "</lastmod>\n  <changefreq>daily</changefreq>\n  <priority>0.8</priority>\n</url>\n\n";
     siteMapString +=
       "<url>\n  <loc>https://www.ventwithstrangers.com/trending</loc>\n  <lastmod>" +
       new moment().format("YYYY-MM-DD") +
-      "</lastmod>\n  <changefreq>daily</changefreq>\n  <priority>0.9</priority>\n</url>\n\n";
+      "</lastmod>\n  <changefreq>daily</changefreq>\n  <priority>0.8</priority>\n</url>\n\n";
 
     for (let index in problems) {
       const problem = problems[index];
@@ -79,10 +79,12 @@ const getMetaInformation = (url, callback) => {
   const regexMatch = url.match(/(?<=\/problem\/\s*).*?(?=\s*\/)/gs);
   let problemID;
   if (regexMatch) problemID = regexMatch[0];
+  console.log(problemID);
 
   if (problemID) {
     Problem.findById(problemID, (err, problem) => {
       if (!err && problem) {
+        console.log(problem.title);
         return callback({
           metaDescription: problem.description,
           metaImage: defaultMetaObject.metaImage,
