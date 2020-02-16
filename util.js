@@ -70,32 +70,35 @@ const createSiteMap = () => {
 const getMetaInformation = (url, callback) => {
   const defaultMetaObject = {
     metaDescription:
-      "People care. Vent, and chat anonymously and be apart of a community committed to making the world a better place.",
+      "Vent, and chat anonymously to be apart of a community committed to making the world a happier place.",
     metaImage:
       "https://res.cloudinary.com/dnc1t9z9o/image/upload/v1580431332/VENT.jpg",
-    metaTitle: "We Care | Vent With Strangers"
+    metaTitle: "Page Not Found"
   };
 
   const regexMatch = url.match(/(?<=\/problem\/\s*).*?(?=\s*\/)/gs);
   let problemID;
   if (regexMatch) problemID = regexMatch[0];
-  console.log(problemID);
 
   if (problemID) {
     Problem.findById(problemID, (err, problem) => {
       if (!err && problem) {
-        console.log(problem.title);
         return callback({
           metaDescription: problem.description,
           metaImage: defaultMetaObject.metaImage,
           metaTitle: problem.title + " | Vent With Strangers"
         });
-      } else return callback(defaultMetaObject);
+      }
     });
   } else
     switch (url) {
       case "/":
-        return callback(defaultMetaObject);
+        return callback({
+          metaDescription:
+            "People’s problems and issues with the most upvotes in the past 24 hours. Post, comment, and/or like anonymously.",
+          metaImage: defaultMetaObject.metaImage,
+          metaTitle: "Trending | Vent With Strangers"
+        });
 
       case "/recent":
         return callback({
@@ -125,9 +128,6 @@ const getMetaInformation = (url, callback) => {
           metaImage: defaultMetaObject.metaImage,
           metaTitle: "Chat | Vent With Strangers"
         });
-
-      default:
-        return callback(defaultMetaObject);
     }
 };
 
