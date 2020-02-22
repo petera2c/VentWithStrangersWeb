@@ -50,7 +50,7 @@ const createSiteMap = () => {
         url +
         "</loc>\n  <lastmod>" +
         new moment(problem.updatedAt).format("YYYY-MM-DD") +
-        "</lastmod>\n  <changefreq>daily\n</changefreq>  <priority>0.4</priority>\n</url>\n\n";
+        "</lastmod>\n  <changefreq>monthly\n</changefreq>  <priority>0.4</priority>\n</url>\n\n";
     }
     siteMapString += "</urlset>";
 
