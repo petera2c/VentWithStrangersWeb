@@ -33,6 +33,18 @@ import {
   unlikeProblem
 } from "./util";
 
+class SmartLink extends Component {
+  render() {
+    const { children, disablePostOnClick } = this.props;
+
+    if (disablePostOnClick) {
+      return <Container {...this.props}>{children}</Container>;
+    } else {
+      return <Link {...this.props}>{children}</Link>;
+    }
+  }
+}
+
 class Problem extends Component {
   state = {
     comments: undefined,
@@ -87,11 +99,12 @@ class Problem extends Component {
 
     return (
       <Container className="x-fill column mb16">
-        <Link
+        <SmartLink
           className={
             "x-fill column bg-white border-all2 mb8 br8 " +
             (disablePostOnClick ? "" : "clickable")
           }
+          disablePostOnClick={disablePostOnClick}
           to={
             "/problem/" +
             problem._id +
@@ -101,13 +114,14 @@ class Problem extends Component {
               .replace(/ /g, "-")
               .toLowerCase()
           }
-          onClick={e => (disablePostOnClick ? e.preventDefault() : {})}
         >
-          <Container className="x-fill justify-between border-bottom py16 pl32 pr16">
-            <Link
+          <Container className="x-fill wrap justify-between border-bottom py16 pl32 pr16">
+            <Container
               className="mr16"
-              onClick={e => e.stopPropagation()}
-              to={"/activity?" + problem.authorID}
+              onClick={e => {
+                e.stopPropagation();
+                history.push("/activity?" + problem.authorID);
+              }}
             >
               <Container className="full-center">
                 <Text
@@ -121,7 +135,7 @@ class Problem extends Component {
                   type="h5"
                 />
               </Container>
-            </Link>
+            </Container>
             <Container className="relative flex-fill align-center justify-end">
               <Container className="flex-fill wrap justify-end">
                 {problem.tags.map((tag, index) => (
@@ -234,7 +248,7 @@ class Problem extends Component {
               </Container>
             </Container>
           )}
-        </Link>
+        </SmartLink>
         {!searchPreviewMode && displayCommentField && (
           <Container className="column bg-white border-all2 py16 mb16 ml8 br8">
             <Container className="border-bottom pb16 mb16">
