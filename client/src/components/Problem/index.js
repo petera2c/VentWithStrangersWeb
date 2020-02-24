@@ -87,24 +87,21 @@ class Problem extends Component {
 
     return (
       <Container className="x-fill column mb16">
-        <Container
+        <Link
           className={
             "x-fill column bg-white border-all2 mb8 br8 " +
             (disablePostOnClick ? "" : "clickable")
           }
-          onClick={() =>
-            disablePostOnClick
-              ? {}
-              : history.push(
-                  "/problem/" +
-                    problem._id +
-                    "/" +
-                    problem.title
-                      .replace(/[^a-zA-Z ]/g, "")
-                      .replace(/ /g, "-")
-                      .toLowerCase()
-                )
+          to={
+            "/problem/" +
+            problem._id +
+            "/" +
+            problem.title
+              .replace(/[^a-zA-Z ]/g, "")
+              .replace(/ /g, "-")
+              .toLowerCase()
           }
+          onClick={e => (disablePostOnClick ? e.preventDefault() : {})}
         >
           <Container className="x-fill justify-between border-bottom py16 pl32 pr16">
             <Link
@@ -237,7 +234,7 @@ class Problem extends Component {
               </Container>
             </Container>
           )}
-        </Container>
+        </Link>
         {!searchPreviewMode && displayCommentField && (
           <Container className="column bg-white border-all2 py16 mb16 ml8 br8">
             <Container className="border-bottom pb16 mb16">
