@@ -148,6 +148,7 @@ class Problem extends Component {
                     key={index}
                     onClick={e => {
                       e.stopPropagation();
+                      e.preventDefault();
                       addTagsToPage(this.props, [tag]);
                     }}
                     text={tag.name}
