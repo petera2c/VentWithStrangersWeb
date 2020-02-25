@@ -68,6 +68,7 @@ const createSiteMap = () => {
 };
 
 const getMetaInformation = (url, callback) => {
+  if (url && url[1] === "?") url = "/";
   const defaultMetaObject = {
     metaDescription:
       "Vent, and chat anonymously to be apart of a community committed to making the world a happier place.",
