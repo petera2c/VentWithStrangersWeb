@@ -20,7 +20,7 @@ export const addTagsToPage = (props, selectedTags) => {
     searchPathname = "/trending";
 
   for (let index in selectedTags) {
-    if (index == 0) searchPathname += "?" + selectedTags[index].name;
+    if (index == 0) searchPathname += "?tags=" + selectedTags[index].name;
     else searchPathname += "+" + selectedTags[index].name;
   }
   history.push(searchPathname);

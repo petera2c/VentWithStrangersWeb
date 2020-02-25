@@ -35,12 +35,16 @@ import {
 
 class SmartLink extends Component {
   render() {
-    const { children, disablePostOnClick } = this.props;
+    const { children, className, disablePostOnClick, to } = this.props;
 
     if (disablePostOnClick) {
-      return <Container {...this.props}>{children}</Container>;
+      return <Container className={className}>{children}</Container>;
     } else {
-      return <Link {...this.props}>{children}</Link>;
+      return (
+        <Link className={className} to={to}>
+          {children}
+        </Link>
+      );
     }
   }
 }

@@ -45,13 +45,16 @@ class GIProvider extends Component {
     let tagTemp = "";
     let tags = [];
 
-    for (let index in search) {
-      if (search[index] == "+") {
-        tags.push(tagTemp);
-        tagTemp = "";
-      } else tagTemp += search[index];
+    if (search && search.slice(0, 5) === "tags=") {
+      const tagString = search.slice(5, search.length);
+      for (let index in tagString) {
+        if (tagString[index] == "+") {
+          tags.push(tagTemp);
+          tagTemp = "";
+        } else tagTemp += tagString[index];
+      }
+      if (tagTemp) tags.push(tagTemp);
     }
-    if (tagTemp) tags.push(tagTemp);
 
     axios
       .post("/api/problems", {
