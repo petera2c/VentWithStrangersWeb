@@ -128,6 +128,8 @@ const getMetaInformation = (url, callback) => {
           metaImage: defaultMetaObject.metaImage,
           metaTitle: "Chat | Vent With Strangers"
         });
+      default:
+        return callback(defaultMetaObject);
     }
 };
 
