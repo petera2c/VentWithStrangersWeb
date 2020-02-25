@@ -99,23 +99,23 @@ class Problem extends Component {
 
     return (
       <Container className="x-fill column mb16">
-        <SmartLink
-          className={
-            "x-fill column bg-white border-all2 mb8 br8 " +
-            (disablePostOnClick ? "" : "clickable")
-          }
-          disablePostOnClick={disablePostOnClick}
-          to={
-            "/problem/" +
-            problem._id +
-            "/" +
-            problem.title
-              .replace(/[^a-zA-Z ]/g, "")
-              .replace(/ /g, "-")
-              .toLowerCase()
-          }
-        >
-          <Container className="x-fill wrap justify-between border-bottom py16 pl32 pr16">
+        <Container className="x-fill column bg-white border-all2 mb8 br8">
+          <SmartLink
+            className={
+              "x-fill wrap justify-between border-bottom py16 pl32 pr16 " +
+              (disablePostOnClick ? "" : "clickable")
+            }
+            disablePostOnClick={disablePostOnClick}
+            to={
+              "/problem/" +
+              problem._id +
+              "/" +
+              problem.title
+                .replace(/[^a-zA-Z ]/g, "")
+                .replace(/ /g, "-")
+                .toLowerCase()
+            }
+          >
             <Container
               className="mr16"
               onClick={e => {
@@ -192,8 +192,23 @@ class Problem extends Component {
                 </Container>
               </HandleOutsideClick>
             </Container>
-          </Container>
-          <Container className="column border-bottom py16 px32">
+          </SmartLink>
+          <SmartLink
+            className={
+              "column border-bottom py16 px32 " +
+              (disablePostOnClick ? "" : "clickable")
+            }
+            disablePostOnClick={disablePostOnClick}
+            to={
+              "/problem/" +
+              problem._id +
+              "/" +
+              problem.title
+                .replace(/[^a-zA-Z ]/g, "")
+                .replace(/ /g, "-")
+                .toLowerCase()
+            }
+          >
             <Text className="fs-20 primary mb8" text={title} type="h1" />
 
             <Text
@@ -201,7 +216,7 @@ class Problem extends Component {
               text={description}
               type="h2"
             />
-          </Container>
+          </SmartLink>
           {!searchPreviewMode && (
             <Container className="wrap justify-between py16 px32">
               <Container className="align-center">
@@ -248,7 +263,7 @@ class Problem extends Component {
               </Container>
             </Container>
           )}
-        </SmartLink>
+        </Container>
         {!searchPreviewMode && displayCommentField && (
           <Container className="column bg-white border-all2 py16 mb16 ml8 br8">
             <Container className="border-bottom pb16 mb16">
