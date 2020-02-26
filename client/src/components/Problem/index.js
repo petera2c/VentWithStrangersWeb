@@ -158,7 +158,7 @@ class Problem extends Component {
                 ))}
               </Container>
               <FontAwesomeIcon
-                className="grey-9 px16"
+                className="clickable grey-9 px16"
                 icon={faEllipsisV}
                 onClick={e => {
                   e.preventDefault();
