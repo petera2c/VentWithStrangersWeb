@@ -123,7 +123,6 @@ class Problem extends Component {
             <Container
               className="mr16"
               onClick={e => {
-                e.stopPropagation();
                 e.preventDefault();
 
                 history.push("/activity?" + problem.authorID);
@@ -149,8 +148,8 @@ class Problem extends Component {
                     className="button-1 clickable mr8"
                     key={index}
                     onClick={e => {
-                      e.stopPropagation();
                       e.preventDefault();
+
                       addTagsToPage(this.props, [tag]);
                     }}
                     text={tag.name}
@@ -162,14 +161,15 @@ class Problem extends Component {
                 className="grey-9 px16"
                 icon={faEllipsisV}
                 onClick={e => {
-                  e.stopPropagation();
+                  e.preventDefault();
+
                   this.handleChange({ postOptions: !postOptions });
                 }}
               />
               <HandleOutsideClick
                 close={() => this.handleChange({ postOptions: false })}
                 onClick={e => {
-                  e.stopPropagation();
+                  e.preventDefault();
                 }}
                 style={{
                   position: "absolute",
@@ -231,7 +231,7 @@ class Problem extends Component {
                   className="clickable blue mr4"
                   icon={faComment}
                   onClick={e => {
-                    e.stopPropagation();
+                    e.preventDefault();
                     this.handleChange({
                       displayCommentField: !displayCommentField
                     });
@@ -250,7 +250,7 @@ class Problem extends Component {
                   } mr4`}
                   icon={problem.hasLiked ? faHeart2 : faHeart}
                   onClick={e => {
-                    e.stopPropagation();
+                    e.preventDefault();
                     if (problem.hasLiked)
                       unlikeProblem(this.context, problem, problemIndex);
                     else likeProblem(this.context, problem, problemIndex);
