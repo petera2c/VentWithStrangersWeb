@@ -124,6 +124,8 @@ class Problem extends Component {
               className="mr16"
               onClick={e => {
                 e.stopPropagation();
+                e.preventDefault();
+
                 history.push("/activity?" + problem.authorID);
               }}
             >
