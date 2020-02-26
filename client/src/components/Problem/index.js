@@ -106,7 +106,7 @@ class Problem extends Component {
         <Container className="x-fill column bg-white border-all2 mb8 br8">
           <SmartLink
             className={
-              "x-fill wrap justify-between border-bottom py16 pl32 pr16 " +
+              "main-container x-fill wrap justify-between border-bottom py16 pl32 pr16 " +
               (disablePostOnClick ? "" : "clickable")
             }
             disablePostOnClick={disablePostOnClick}
@@ -202,7 +202,7 @@ class Problem extends Component {
           </SmartLink>
           <SmartLink
             className={
-              "column border-bottom py16 px32 " +
+              "main-container column border-bottom py16 px32 " +
               (disablePostOnClick ? "" : "clickable")
             }
             disablePostOnClick={disablePostOnClick}
