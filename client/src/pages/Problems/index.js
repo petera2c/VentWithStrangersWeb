@@ -26,10 +26,11 @@ class Problems extends Component {
     const { location } = this.props;
     const { pathname, search } = location;
 
-    let title = capitolizeFirstChar(pathname.slice(1, pathname.length));
+    let title = "";
 
-    if (!pathname || pathname === "/" || pathname === "/home")
-      title = "Trending";
+    if (pathname === "/recent") title = "Recent";
+    if (pathname === "/popular") title = "Popular";
+    else title = "Trending";
 
     let metaDescription =
       "People care. Vent and chat anonymously to be apart of a community committed to making the world a better place.";

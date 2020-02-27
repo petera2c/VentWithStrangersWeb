@@ -80,7 +80,8 @@ class Problem extends Component {
       postOptions,
       reportModal
     } = this.state;
-    const { history } = this.props; // Functions
+    const { history, location } = this.props; // Functions
+    const { pathname } = location;
     const {
       disablePostOnClick,
       previewMode,
@@ -334,7 +335,14 @@ class Problem extends Component {
           <ReportModal
             close={() => this.handleChange({ reportModal: false })}
             submit={option =>
-              reportProblem(this.context, problem._id, option, problemIndex)
+              reportProblem(
+                this.context,
+                history,
+                problem._id,
+                option,
+                pathname,
+                problemIndex
+              )
             }
           />
         )}

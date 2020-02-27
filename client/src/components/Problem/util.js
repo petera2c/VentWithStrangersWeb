@@ -45,14 +45,23 @@ export const likeProblem = (context, problem, problemIndex) => {
   });
 };
 
-export const reportProblem = (context, id, option, problemIndex) => {
+export const reportProblem = (
+  context,
+  history,
+  id,
+  option,
+  pathname,
+  problemIndex
+) => {
   context.socket.emit(
     "report_problem",
     { option, problemID: id },
     returnObj => {
       const { message, success } = returnObj;
 
-      if (success) context.removeProblem(problemIndex);
+      if (success && pathname.substring(0, 9) === "/problem/")
+        history.push("/trending/reported");
+      else if (success) context.removeProblem(problemIndex);
       else
         context.notify({
           message,

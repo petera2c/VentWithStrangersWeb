@@ -2,6 +2,7 @@ const AWS = require("aws-sdk");
 const fs = require("fs");
 const moment = require("moment-timezone");
 const Problem = require("./models/Problem");
+const User = require("./models/User");
 const {
   amazonAccessKeyID,
   amazonSecretAccessKey,
@@ -77,19 +78,29 @@ const getMetaInformation = (url, callback) => {
     metaTitle: "Page Not Found"
   };
 
-  const regexMatch = url.match(/(?<=\/problem\/\s*).*?(?=\s*\/)/gs);
-  let problemID;
-  if (regexMatch) problemID = regexMatch[0];
+  const checkIsProblem = url.match(/(?<=\/problem\/\s*).*?(?=\s*\/)/gs);
+  const userObjectID = url.split("/activity?")[1];
+  let problemObjectID;
+  if (checkIsProblem) problemObjectID = checkIsProblem[0];
 
-  if (problemID) {
-    Problem.findById(problemID, (err, problem) => {
-      if (!err && problem) {
+  if (checkIsProblem && checkIsProblem) {
+    Problem.findById(problemObjectID, (err, problem) => {
+      if (!err && problem)
         return callback({
           metaDescription: problem.description,
           metaImage: defaultMetaObject.metaImage,
           metaTitle: problem.title + " | Vent With Strangers"
         });
-      }
+      else return callback(defaultMetaObject);
+    });
+  } else if (userObjectID) {
+    User.findById(userObjectID, (err, user) => {
+      if (!err && user)
+        return callback({
+          metaImage: defaultMetaObject.metaImage,
+          metaTitle: "Account | Vent With Strangers"
+        });
+      else return callback(defaultMetaObject);
     });
   } else
     switch (url) {

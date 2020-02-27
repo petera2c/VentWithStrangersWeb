@@ -58,15 +58,16 @@ class Routes extends Component {
       search = search.slice(1, search.length);
 
       if (
-        pathname === "/popular" ||
-        pathname === "/recent" ||
-        pathname === "/trending"
+        pathname.substring(0, 8) === "/popular" ||
+        pathname.substring(0, 7) === "/recent" ||
+        pathname.substring(0, 9) === "/trending"
       )
         getProblems(pathname, search);
+      else if (pathname === "/") getProblems("/trending", search);
+      else if (pathname.substring(0, 5) === "/home")
+        getProblems("/trending", search);
       else if (pathname === "/search")
         searchProblems(handleChange, undefined, search, skip, socket);
-      else if (pathname === "/") getProblems("/trending", search);
-      else if (pathname === "/home") getProblems("/trending", search);
       else if (pathname === "/activity") {
         getUsersPosts(
           handleChange,
