@@ -72,7 +72,7 @@ schedule.scheduleJob("0 0 * * 0,3", resetDailyUpvotes);
 createSiteMap();
 
 // If using production then if a route is not found in express we send user to react routes
-if (true) {
+if (process.env.NODE_ENV === "production") {
   const injectMetaData = (req, res) => {
     const filePath = path.resolve(__dirname, "./client", "build", "index.html");
 

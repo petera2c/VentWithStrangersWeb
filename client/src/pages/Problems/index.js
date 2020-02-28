@@ -27,9 +27,8 @@ class Problems extends Component {
     const { pathname, search } = location;
 
     let title = "";
-
     if (pathname === "/recent") title = "Recent";
-    if (pathname === "/popular") title = "Popular";
+    else if (pathname === "/popular") title = "Popular";
     else title = "Trending";
 
     let metaDescription =
