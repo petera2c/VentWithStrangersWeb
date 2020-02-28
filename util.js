@@ -102,47 +102,42 @@ const getMetaInformation = (url, callback) => {
         });
       else return callback(defaultMetaObject);
     });
-  } else
-    switch (url) {
-      case "/":
-        return callback({
-          metaDescription:
-            "People’s problems and issues with the most upvotes in the past 24 hours. Post, comment, and/or like anonymously.",
-          metaImage: defaultMetaObject.metaImage,
-          metaTitle: "Trending | Vent With Strangers"
-        });
-
-      case "/recent":
-        return callback({
-          metaDescription:
-            "The latest problems and issues people have posted. Post, comment, and/or like anonymously.",
-          metaImage: defaultMetaObject.metaImage,
-          metaTitle: "Recent | Vent With Strangers"
-        });
-      case "/trending":
-        return callback({
-          metaDescription:
-            "People’s problems and issues with the most upvotes in the past 24 hours. Post, comment, and/or like anonymously.",
-          metaImage: defaultMetaObject.metaImage,
-          metaTitle: "Trending | Vent With Strangers"
-        });
-      case "/post-a-problem":
-        return callback({
-          metaDescription:
-            "You aren’t alone, and you should never feel alone. If you are feeling down, anonymously post your issue here. There is an entire community of people that want to help you.",
-          metaImage: defaultMetaObject.metaImage,
-          metaTitle: "Post a Problem | Vent With Strangers"
-        });
-      case "/vent-to-a-stranger":
-        return callback({
-          metaDescription:
-            "Sometimes, all we need is an available ear. This is where you can anonymously talk to someone that wants to listen, or anonymously listen to someone that wants to be heard.",
-          metaImage: defaultMetaObject.metaImage,
-          metaTitle: "Chat | Vent With Strangers"
-        });
-      default:
-        return callback(defaultMetaObject);
-    }
+  } else if (url === "/")
+    return callback({
+      metaDescription:
+        "People’s problems and issues with the most upvotes in the past 24 hours. Post, comment, and/or like anonymously.",
+      metaImage: defaultMetaObject.metaImage,
+      metaTitle: "Trending | Vent With Strangers"
+    });
+  else if (url.substring(0, 7) === "/recent")
+    return callback({
+      metaDescription:
+        "The latest problems and issues people have posted. Post, comment, and/or like anonymously.",
+      metaImage: defaultMetaObject.metaImage,
+      metaTitle: "Recent | Vent With Strangers"
+    });
+  else if (url.substring(0, 9) === "/trending")
+    return callback({
+      metaDescription:
+        "People’s problems and issues with the most upvotes in the past 24 hours. Post, comment, and/or like anonymously.",
+      metaImage: defaultMetaObject.metaImage,
+      metaTitle: "Trending | Vent With Strangers"
+    });
+  else if (url === "/post-a-problem")
+    return callback({
+      metaDescription:
+        "You aren’t alone, and you should never feel alone. If you are feeling down, anonymously post your issue here. There is an entire community of people that want to help you.",
+      metaImage: defaultMetaObject.metaImage,
+      metaTitle: "Post a Problem | Vent With Strangers"
+    });
+  else if (url === "/vent-to-a-stranger")
+    return callback({
+      metaDescription:
+        "Sometimes, all we need is an available ear. This is where you can anonymously talk to someone that wants to listen, or anonymously listen to someone that wants to be heard.",
+      metaImage: defaultMetaObject.metaImage,
+      metaTitle: "Chat | Vent With Strangers"
+    });
+  else return callback(defaultMetaObject);
 };
 
 module.exports = {
