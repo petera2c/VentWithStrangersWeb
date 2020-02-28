@@ -75,7 +75,7 @@ const getMetaInformation = (url, callback) => {
       "Vent, and chat anonymously to be apart of a community committed to making the world a happier place.",
     metaImage:
       "https://res.cloudinary.com/dnc1t9z9o/image/upload/v1580431332/VENT.jpg",
-    metaTitle: "Page Not Found"
+    metaTitle: "We Care | Vent With Strangers"
   };
 
   const checkIsProblem = url.match(/(?<=\/problem\/\s*).*?(?=\s*\/)/gs);
