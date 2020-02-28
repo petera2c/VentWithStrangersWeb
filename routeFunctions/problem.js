@@ -238,19 +238,24 @@ const saveProblem = (req, res) => {
       const tag = tags[index].toLowerCase();
       counter++;
       Tag.findOne({ name: tags[index] }, (err, tagFromDB) => {
-        counter--;
         if (tagFromDB) {
           tagNameArray.push({ name: tagFromDB.name });
 
           tagFromDB.uses += 1;
-          tagFromDB.save();
+          tagFromDB.save(() => {
+            counter--;
+            if (counter === 0)
+              saveNewProblem(description, gender, tagNameArray, title);
+          });
         } else {
           const newTag = new Tag({ name: tag, uses: 1 });
           tagNameArray.push({ name: newTag.name });
-          newTag.save();
+          newTag.save(() => {
+            counter--;
+            if (counter === 0)
+              saveNewProblem(description, gender, tagNameArray, title);
+          });
         }
-        if (counter === 0)
-          saveNewProblem(description, gender, tagNameArray, title);
       });
     }
   else saveNewProblem(description, gender, undefined, title);
