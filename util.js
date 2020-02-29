@@ -107,7 +107,7 @@ const getMetaInformation = (url, callback) => {
       metaDescription:
         "People’s problems and issues with the most upvotes in the past 24 hours. Post, comment, and/or like anonymously.",
       metaImage: defaultMetaObject.metaImage,
-      metaTitle: "Trending | Vent With Strangers"
+      metaTitle: "We Care | Vent With Strangers"
     });
   else if (url.substring(0, 7) === "/recent")
     return callback({

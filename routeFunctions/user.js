@@ -4,7 +4,7 @@ const passport = require("passport");
 const Settings = require("../models/Settings");
 const User = require("../models/User");
 
-const { animalList, adjectivesList } = require("./lists");
+const { animalList, adjectivesList } = require("../constants/lists");
 
 const login = (req, res, next) => {
   passport.authenticate("local-login", (err, user, message) => {
