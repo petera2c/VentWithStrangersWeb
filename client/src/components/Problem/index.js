@@ -221,21 +221,7 @@ class Problem extends Component {
                 .toLowerCase()
             }
           >
-            <Link
-              className="fs-20 primary mb8"
-              to={
-                "/problem/" +
-                problem._id +
-                "/" +
-                problem.title
-                  .replace(/[^a-zA-Z ]/g, "")
-                  .replace(/ /g, "-")
-                  .toLowerCase()
-              }
-              type="h1"
-            >
-              title
-            </Link>
+            <Text className="fs-20 primary mb8" text={title} type="h1" />
 
             <Text className="fs-18 fw-400 grey-1" text={description} type="p" />
           </SmartLink>
