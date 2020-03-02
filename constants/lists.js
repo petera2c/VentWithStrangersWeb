@@ -131,7 +131,6 @@ const adjectivesList = [
   "Intuitive",
   "Geometrical",
   "Loyal",
-  "Revolting",
   "Magic",
   "Affectionate",
   "Enchanting",
@@ -218,4 +217,9 @@ const animalList = [
   "Horse"
 ];
 
-module.exports = { animalList, adjectivesList };
+const notificationTypes = [
+  { _id: 1, title: "Someone commented on your post!" },
+  { _id: 2, title: "Someone loved your post!" }
+];
+
+module.exports = { animalList, adjectivesList, notificationTypes };

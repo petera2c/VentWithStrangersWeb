@@ -12,7 +12,7 @@ input {
   resize: vertical;
   box-sizing: border-box;
 
-  font-size: var(--sixteen-font-size);
+  font-size: var(--eighteen-font-size);
   font-family: var(--font-theme);
   border: 1px solid var(--grey-color-7);
   color: var(--primary-font-color);

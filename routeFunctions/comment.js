@@ -3,6 +3,7 @@ const Comment = require("../models/Comment");
 const Problem = require("../models/Problem");
 
 const { addUserToObject } = require("./problem");
+const { saveNotification } = require("./notification");
 
 const getAggregate = (match, userID) => [
   {
@@ -111,8 +112,11 @@ const likeComment = (dataObj, callback, socket) => {
       else {
         comment.dailyUpvotes += 1;
         comment.upVotes.unshift(userID);
+
+        console.log(comment);
         comment.save((err, result) => {
           callback({ success: true });
+          saveNotification(userID, 3, comment.authorID);
         });
       }
     } else callback({ message: "Comment not found.", success: false });

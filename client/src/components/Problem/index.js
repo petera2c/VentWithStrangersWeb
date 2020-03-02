@@ -24,7 +24,11 @@ import HandleOutsideClick from "../containers/HandleOutsideClick";
 import Button from "../views/Button";
 import Text from "../views/Text";
 
-import { addTagsToPage, capitolizeFirstChar } from "../../util";
+import {
+  addTagsToPage,
+  capitolizeFirstChar,
+  isMobileOrTablet
+} from "../../util";
 import {
   commentProblem,
   getProblemComments,
@@ -217,16 +221,33 @@ class Problem extends Component {
                 .toLowerCase()
             }
           >
-            <Text className="fs-20 primary mb8" text={title} type="h1" />
+            <Link
+              className="fs-20 primary mb8"
+              to={
+                "/problem/" +
+                problem._id +
+                "/" +
+                problem.title
+                  .replace(/[^a-zA-Z ]/g, "")
+                  .replace(/ /g, "-")
+                  .toLowerCase()
+              }
+              type="h1"
+            >
+              title
+            </Link>
 
-            <Text
-              className="fs-18 fw-400 grey-1"
-              text={description}
-              type="h2"
-            />
+            <Text className="fs-18 fw-400 grey-1" text={description} type="p" />
           </SmartLink>
           {!searchPreviewMode && (
-            <Container className="wrap justify-between py16 px32">
+            <Container
+              className={
+                "wrap justify-between py16 px32 " +
+                (!searchPreviewMode && displayCommentField
+                  ? "border-bottom"
+                  : "")
+              }
+            >
               <Container className="align-center">
                 <FontAwesomeIcon
                   className="clickable blue mr4"
@@ -271,66 +292,61 @@ class Problem extends Component {
               </Container>
             </Container>
           )}
+          {!searchPreviewMode && displayCommentField && (
+            <Container className="x-fill border-bottom">
+              <Container className="x-fill column border-all2 py16 mb16 br8">
+                <Container className="x-fill px16">
+                  <Container className="column x-fill align-end border-all pa8 br8">
+                    <TextArea
+                      className="x-fill no-border no-resize"
+                      onChange={e =>
+                        this.handleChange({ commentString: e.target.value })
+                      }
+                      placeholder="Type a helpful message here..."
+                      style={{
+                        minHeight: isMobileOrTablet() ? "100px" : "60px"
+                      }}
+                      value={commentString}
+                    />
+                    <Button
+                      className="button-2 px32 py8 br4"
+                      onClick={() => {
+                        commentProblem(
+                          commentString,
+                          this.context,
+                          problem,
+                          problemIndex
+                        );
+                        this.handleChange({ commentString: "" });
+                      }}
+                      text="Send"
+                    />
+                  </Container>
+                </Container>
+              </Container>
+            </Container>
+          )}
+          {displayCommentField && problem.commentsArray && (
+            <Container className="column mb16">
+              <Container className="column border-all2 br8">
+                {problem.commentsArray.map((comment, index) => (
+                  <Comment
+                    arrayLength={problem.commentsArray.length}
+                    comment={comment}
+                    key={index}
+                    index={index}
+                  />
+                ))}
+              </Container>
+            </Container>
+          )}
+          {displayCommentField && !problem.commentsArray && (
+            <Container className="x-fill full-center">
+              <LoadingHeart />
+            </Container>
+          )}
         </Container>
-        {!searchPreviewMode && displayCommentField && (
-          <Container className="column bg-white border-all2 py16 mb16 ml8 br8">
-            <Container className="border-bottom pb16 mb16">
-              <Container className="align-center border-left active large px16">
-                <FontAwesomeIcon className="blue mr8" icon={faComment} />
-                <Text
-                  className="blue fw-300"
-                  text="Give your advice or supporting message"
-                  type="h6"
-                />
-              </Container>
-            </Container>
-            <Container className="x-fill px16">
-              <Container className="column x-fill align-end border-all pa8 br8">
-                <TextArea
-                  className="x-fill no-border no-resize"
-                  onChange={e =>
-                    this.handleChange({ commentString: e.target.value })
-                  }
-                  placeholder="Type a helpful message here..."
-                  style={{ minHeight: "100px" }}
-                  value={commentString}
-                />
-                <Button
-                  className="button-2 px32 py8 br4"
-                  onClick={() => {
-                    commentProblem(
-                      commentString,
-                      this.context,
-                      problem,
-                      problemIndex
-                    );
-                    this.handleChange({ commentString: "" });
-                  }}
-                  text="Send"
-                />
-              </Container>
-            </Container>
-          </Container>
-        )}
-        {displayCommentField && problem.commentsArray && (
-          <Container className="column pl16 mb16">
-            <Container className="column border-all2 br8">
-              {problem.commentsArray.map((comment, index) => (
-                <Comment
-                  arrayLength={problem.commentsArray.length}
-                  comment={comment}
-                  key={index}
-                  index={index}
-                />
-              ))}
-            </Container>
-          </Container>
-        )}
-        {displayCommentField && !problem.commentsArray && (
-          <Container className="x-fill full-center">
-            <LoadingHeart />
-          </Container>
-        )}
+
         {reportModal && (
           <ReportModal
             close={() => this.handleChange({ reportModal: false })}
