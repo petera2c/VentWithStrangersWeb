@@ -13,6 +13,6 @@ const notificationSchema = new Schema(
     timestamps: true // Saves createdAt and updatedAt as dates. createdAt will be our timestamp.
   }
 );
-notificationSchema.index({ userID: -1 });
+notificationSchema.index({ receiverID: -1 });
 
 module.exports = mongoose.model("notifications", notificationSchema);

@@ -113,10 +113,9 @@ const likeComment = (dataObj, callback, socket) => {
         comment.dailyUpvotes += 1;
         comment.upVotes.unshift(userID);
 
-        console.log(comment);
         comment.save((err, result) => {
           callback({ success: true });
-          saveNotification(userID, 3, comment.authorID);
+          //saveNotification(userID, 3, comment.authorID);
         });
       }
     } else callback({ message: "Comment not found.", success: false });
