@@ -43,25 +43,32 @@ const saveNotification = (
   type
 ) => {
   if (receiverID && senderID && String(receiverID) !== String(senderID))
-    User.findById(receiverID, { email: 1 }, (err, receiverUser) => {
-      new Notification({
-        hasSeen: false,
-        link,
-        objectID,
-        receiverID,
-        senderID,
-        type
-      }).save((err, notification) => {
-        if (notification) {
-          if (receiverUser && receiverUser.email) {
-            sendEmail(
-              body + " Check it out at " + link,
-              undefined,
-              receiverUser.email,
-              title
-            );
+    Settings.findOne({ userID: receiverID }, (err, settings) => {
+      User.findById(receiverID, { email: 1 }, (err, receiverUser) => {
+        new Notification({
+          hasSeen: false,
+          link,
+          objectID,
+          receiverID,
+          senderID,
+          type
+        }).save((err, notification) => {
+          if (notification) {
+            if (receiverUser && receiverUser.email) {
+              if (
+                (type === 1 && settings.postCommented) ||
+                (type === 2 && settings.commentLiked) ||
+                (type === 3 && settings.postLiked)
+              )
+                sendEmail(
+                  body + " Check it out at " + link,
+                  undefined,
+                  receiverUser.email,
+                  title
+                );
+            }
           }
-        }
+        });
       });
     });
 };
@@ -84,7 +91,7 @@ const commentPostNotification = (problem, user) => {
   );
 };
 
-const likeCommentNotification = (problem, user) => {
+const likeCommentNotification = (comment, problem, user) => {
   saveNotification(
     user.displayName + " loved your comment '" + comment.text + "'",
     "https://www.ventwithstrangers.com/problem/" +
@@ -113,7 +120,7 @@ const likeProblemNotification = (problem, user) => {
         .replace(/ /g, "-")
         .toLowerCase(),
     problem._id,
-    savedProblem.authorID,
+    problem.authorID,
     user._id,
     "Someone loved your post!",
     3

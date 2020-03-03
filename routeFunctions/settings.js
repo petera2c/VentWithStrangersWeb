@@ -11,11 +11,18 @@ const getSettings = (callback, socket) => {
 
 const saveSettings = (dataObj, callback, socket) => {
   const { settingsID } = socket.request.user;
-  const { adultContent, postCommented, postLiked, receiveEmails } = dataObj;
+  const {
+    adultContent,
+    commentLiked,
+    postCommented,
+    postLiked,
+    receiveEmails
+  } = dataObj;
 
   Settings.findById(settingsID, (err, settings) => {
     if (!err && settings) {
       settings.adultContent = adultContent;
+      settings.commentLiked = commentLiked;
       settings.postCommented = postCommented;
       settings.postLiked = postLiked;
       settings.receiveEmails = receiveEmails;

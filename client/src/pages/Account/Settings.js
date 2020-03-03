@@ -18,6 +18,7 @@ import { isMobileOrTablet } from "../../util";
 class AccountSection extends Component {
   state = {
     adultContent: undefined,
+    commentLiked: undefined,
     postCommented: undefined,
     postLiked: undefined,
     receiveEmails: undefined,
@@ -31,6 +32,7 @@ class AccountSection extends Component {
       const { settings, success } = result;
       const {
         adultContent,
+        commentLiked,
         postCommented,
         postLiked,
         receiveEmails
@@ -38,6 +40,7 @@ class AccountSection extends Component {
 
       this.handleChange({
         adultContent,
+        commentLiked,
         postCommented,
         postLiked,
         receiveEmails
@@ -53,6 +56,7 @@ class AccountSection extends Component {
   updateSettings = () => {
     const {
       adultContent,
+      commentLiked,
       postCommented,
       postLiked,
       receiveEmails
@@ -61,7 +65,7 @@ class AccountSection extends Component {
 
     socket.emit(
       "save_settings",
-      { adultContent, postCommented, postLiked, receiveEmails },
+      { adultContent, commentLiked, postCommented, postLiked, receiveEmails },
       result => {
         const { message, success } = result;
 
@@ -74,6 +78,7 @@ class AccountSection extends Component {
   render() {
     const {
       adultContent,
+      commentLiked,
       postCommented,
       postLiked,
       receiveEmails,
@@ -92,26 +97,7 @@ class AccountSection extends Component {
         <Text className="mb16" text="Settings" type="h4" />
         <Container className="column bg-white border-all2 pa16 mb2 br8">
           <Text className="blue bold mb16" text="Notifications" type="h6" />
-          <Container className="mb8">
-            <Input
-              className="mr8"
-              defaultChecked={postLiked}
-              onClick={() =>
-                this.handleChange({
-                  postLiked: !postLiked,
-                  somethingChanged: true
-                })
-              }
-              style={{ minWidth: "13px" }}
-              type="checkbox"
-            />
-            <Text
-              className=""
-              text="Notify me when my post recieves a new like"
-              type="p"
-            />
-          </Container>
-          <Container className="mb16">
+          <Container className="align-center mb16">
             <Input
               className="mr8"
               defaultChecked={postCommented}
@@ -126,11 +112,49 @@ class AccountSection extends Component {
             />
             <Text
               className=""
-              text="Notify me when my post recieves a new comment"
+              text="Email me when my post recieves a new comment"
               type="p"
             />
           </Container>
-          <Container className="mb16">
+          <Container className="align-center mb16">
+            <Input
+              className="mr8"
+              defaultChecked={commentLiked}
+              onClick={() =>
+                this.handleChange({
+                  commentLiked: !commentLiked,
+                  somethingChanged: true
+                })
+              }
+              style={{ minWidth: "13px" }}
+              type="checkbox"
+            />
+            <Text
+              className=""
+              text="Email me when my comment recieves a new like"
+              type="p"
+            />
+          </Container>
+          <Container className="align-center mb16">
+            <Input
+              className="mr8"
+              defaultChecked={postLiked}
+              onClick={() =>
+                this.handleChange({
+                  postLiked: !postLiked,
+                  somethingChanged: true
+                })
+              }
+              style={{ minWidth: "13px" }}
+              type="checkbox"
+            />
+            <Text
+              className=""
+              text="Email me when my post recieves a new like"
+              type="p"
+            />
+          </Container>
+          <Container className="align-center mb16">
             <Input
               className="mr8"
               defaultChecked={receiveEmails}
@@ -154,7 +178,7 @@ class AccountSection extends Component {
             text="Privacy and Content Preferences"
             type="h6"
           />
-          <Container className="mb16">
+          <Container className="align-center mb16">
             <Input
               className="mr8"
               defaultChecked={adultContent}

@@ -108,7 +108,6 @@ const getUsersComments = (dataObj, callback, socket) => {
 
 const likeComment = (dataObj, callback, socket) => {
   const userID = socket.request.user._id;
-  const userDisplayName = socket.request.user.displayName;
   const { commentID } = dataObj;
 
   Comment.findById(commentID, (err, comment) => {
@@ -128,7 +127,7 @@ const likeComment = (dataObj, callback, socket) => {
             comment.problemID,
             { authorID: 1, title: 1 },
             (err, problem) => {
-              likeCommentNotification(problem, user);
+              likeCommentNotification(comment, problem, socket.request.user);
             }
           );
           callback({ success: true });

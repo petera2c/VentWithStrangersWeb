@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 const settingsSchema = new Schema(
   {
     adultContent: { required: true, type: Boolean },
+    commentLiked: { required: true, type: Boolean },
     postCommented: { required: true, type: Boolean },
     postLiked: { required: true, type: Boolean },
     receiveEmails: { required: true, type: Boolean },

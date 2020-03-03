@@ -131,7 +131,6 @@ const getUsersPosts = (dataObj, callback, socket) => {
 
 const likeProblem = (problemID, callback, socket) => {
   const userID = socket.request.user._id;
-  const userDisplayName = socket.request.user.displayName;
 
   Problem.findById(
     problemID,
@@ -148,7 +147,7 @@ const likeProblem = (problemID, callback, socket) => {
           problem.dailyUpvotes += 1;
           problem.upVotes.unshift(userID);
           problem.save((err, problem) => {
-            likeProblemNotification(problem, user);
+            likeProblemNotification(problem, socket.request.user);
             callback({ success: true });
           });
         }

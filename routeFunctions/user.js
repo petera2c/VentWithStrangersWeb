@@ -38,8 +38,9 @@ const randomLogin = (req, res, next) => {
     );
 
     const newSettings = new Settings({
-      adultContent: false,
+      adultContent: true,
       postCommented: true,
+      commentLiked: true,
       postLiked: true,
       receiveEmails: true
     });
