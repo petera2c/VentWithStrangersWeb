@@ -279,8 +279,15 @@ class Problem extends Component {
             </Container>
           )}
           {!searchPreviewMode && displayCommentField && (
-            <Container className="x-fill border-bottom">
-              <Container className="x-fill column border-all2 py16 mb16 br8">
+            <Container
+              className={
+                "x-fill " +
+                (problem.commentsArray && problem.commentsArray.length > 0
+                  ? "border-bottom"
+                  : "")
+              }
+            >
+              <Container className="x-fill column border-all2 py16 br8">
                 <Container className="x-fill px16">
                   <Container className="column x-fill align-end border-all pa8 br8">
                     <TextArea

@@ -87,7 +87,9 @@ const getMetaInformation = (url, callback) => {
     Problem.findById(problemObjectID, (err, problem) => {
       if (!err && problem)
         return callback({
-          metaDescription: problem.description,
+          metaDescription: problem.description
+            ? problem.description.substring(0, 200)
+            : "",
           metaImage: defaultMetaObject.metaImage,
           metaTitle: problem.title + " | Vent With Strangers"
         });

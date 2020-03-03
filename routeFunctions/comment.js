@@ -3,7 +3,10 @@ const Comment = require("../models/Comment");
 const Problem = require("../models/Problem");
 
 const { addUserToObject } = require("./problem");
-const { saveNotification } = require("./notification");
+const {
+  commentPostNotification,
+  likeCommentNotification
+} = require("./notification");
 
 const getAggregate = (match, userID) => [
   {
@@ -45,6 +48,12 @@ const commentProblem = (commentString, problemID, callback, socket) => {
     (err, saveData) => {
       if (saveData && !err)
         comment.save((err, comment) => {
+          Problem.findById(
+            problemID,
+            { authorID: 1, title: 1 },
+            (err, problem) =>
+              commentPostNotification(problem, socket.request.user)
+          );
           callback({ comment, success: true });
         });
       else callback({ success: false });
@@ -99,6 +108,7 @@ const getUsersComments = (dataObj, callback, socket) => {
 
 const likeComment = (dataObj, callback, socket) => {
   const userID = socket.request.user._id;
+  const userDisplayName = socket.request.user.displayName;
   const { commentID } = dataObj;
 
   Comment.findById(commentID, (err, comment) => {
@@ -114,8 +124,14 @@ const likeComment = (dataObj, callback, socket) => {
         comment.upVotes.unshift(userID);
 
         comment.save((err, result) => {
+          Problem.findById(
+            comment.problemID,
+            { authorID: 1, title: 1 },
+            (err, problem) => {
+              likeCommentNotification(problem, user);
+            }
+          );
           callback({ success: true });
-          //saveNotification(userID, 3, comment.authorID);
         });
       }
     } else callback({ message: "Comment not found.", success: false });

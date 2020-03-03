@@ -217,9 +217,4 @@ const animalList = [
   "Horse"
 ];
 
-const notificationTypes = [
-  { _id: 1, title: "Someone commented on your post!" },
-  { _id: 2, title: "Someone loved your post!" }
-];
-
-module.exports = { animalList, adjectivesList, notificationTypes };
+module.exports = { animalList, adjectivesList };

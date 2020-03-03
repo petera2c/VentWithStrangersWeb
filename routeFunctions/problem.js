@@ -3,6 +3,8 @@ const Problem = require("../models/Problem");
 const User = require("../models/User");
 const Tag = require("../models/Tag");
 
+const { likeProblemNotification } = require("./notification");
+
 const project = userID => {
   return {
     $project: {
@@ -129,10 +131,11 @@ const getUsersPosts = (dataObj, callback, socket) => {
 
 const likeProblem = (problemID, callback, socket) => {
   const userID = socket.request.user._id;
+  const userDisplayName = socket.request.user.displayName;
 
   Problem.findById(
     problemID,
-    { dailyUpvotes: 1, upVotes: 1 },
+    { authorID: 1, dailyUpvotes: 1, title: 1, upVotes: 1 },
     (err, problem) => {
       if (problem) {
         if (
@@ -144,7 +147,8 @@ const likeProblem = (problemID, callback, socket) => {
         else {
           problem.dailyUpvotes += 1;
           problem.upVotes.unshift(userID);
-          problem.save((err, result) => {
+          problem.save((err, problem) => {
+            likeProblemNotification(problem, user);
             callback({ success: true });
           });
         }
