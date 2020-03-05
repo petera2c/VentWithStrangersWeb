@@ -190,7 +190,14 @@ class Header extends Component {
                       <FontAwesomeIcon icon={faChevronDown} />
                     </Link>
 
-                    <Container className="relative">
+                    <HandleOutsideClick
+                      className="relative"
+                      close={() =>
+                        this.handleChange({
+                          showNotificationDropdown: false
+                        })
+                      }
+                    >
                       <FontAwesomeIcon
                         className="clickable blue"
                         icon={faBell}
@@ -204,13 +211,8 @@ class Header extends Component {
                         size="2x"
                       />
                       {showNotificationDropdown && (
-                        <HandleOutsideClick
+                        <Container
                           className="container small bg-white shadow-2 ov-auto br8"
-                          close={() =>
-                            this.handleChange({
-                              showNotificationDropdown: false
-                            })
-                          }
                           style={{
                             position: "absolute",
                             top: "calc(100% + 8px)",
@@ -219,7 +221,7 @@ class Header extends Component {
                           }}
                         >
                           <NotificationList />
-                        </HandleOutsideClick>
+                        </Container>
                       )}
                       {this.newNotificationCounter() &&
                         !showNotificationDropdown && (
@@ -236,7 +238,7 @@ class Header extends Component {
                             {this.newNotificationCounter()}
                           </Text>
                         )}
-                    </Container>
+                    </HandleOutsideClick>
                   </Container>
                 )}
               </Container>
