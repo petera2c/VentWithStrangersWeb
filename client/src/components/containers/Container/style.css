@@ -59,6 +59,10 @@
 
   border-radius: 50%;
 }
+.round-icon.small {
+  width: 24px;
+  height: 24px;
+}
 
 .x-fill {
   width: 100%;

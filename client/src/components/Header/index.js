@@ -48,6 +48,30 @@ class Header extends Component {
     this.handleChange({ searchPostString });
     history.push("/search?" + searchPostString);
   };
+  newNotificationCounter = () => {
+    const { notifications } = this.context;
+    let counter = 0;
+
+    for (let index in notifications) {
+      if (!notifications[index].hasSeen) counter++;
+    }
+
+    if (!counter) return false;
+    else return counter;
+  };
+  readNotifications = () => {
+    const { socket } = this.context;
+
+    socket.emit("read_notifications", result => {
+      const { success } = result;
+
+      const { handleChange, notifications } = this.context;
+      for (let index in notifications) {
+        notifications[index].hasSeen = true;
+      }
+      handleChange({ notifications });
+    });
+  };
 
   render() {
     const {
@@ -169,11 +193,13 @@ class Header extends Component {
                       <FontAwesomeIcon
                         className="clickable blue"
                         icon={faBell}
-                        onClick={() =>
+                        onClick={() => {
                           this.handleChange({
                             showNotificationDropdown: !showNotificationDropdown
-                          })
-                        }
+                          });
+
+                          this.readNotifications();
+                        }}
                         size="2x"
                       />
                       {showNotificationDropdown && (
@@ -189,6 +215,21 @@ class Header extends Component {
                           <NotificationList />
                         </Container>
                       )}
+                      {this.newNotificationCounter() &&
+                        !showNotificationDropdown && (
+                          <Text
+                            className="fs-14 bg-red white pa4 br8"
+                            style={{
+                              position: "absolute",
+                              top: "-12px",
+                              right: "-12px",
+                              pointerEvents: "none"
+                            }}
+                            type="p"
+                          >
+                            {this.newNotificationCounter()}
+                          </Text>
+                        )}
                     </Container>
                   </Container>
                 )}

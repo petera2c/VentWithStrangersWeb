@@ -174,7 +174,6 @@ const animalList = [
   "Bear",
   "Beaver",
   "Cat",
-  "Cow",
   "Coyote",
   "Deer",
   "Dog",

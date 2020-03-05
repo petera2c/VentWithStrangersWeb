@@ -17,7 +17,7 @@ const {
   sendMessage
 } = require("./conversation");
 
-const { getNotifications } = require("./notification");
+const { getNotifications, readNotifications } = require("./notification");
 
 const {
   addUserToObject,
@@ -92,6 +92,9 @@ module.exports = io => {
 
     socket.on("get_notifications", dataObj =>
       getNotifications(dataObj, socket)
+    );
+    socket.on("read_notifications", callback =>
+      readNotifications(callback, socket)
     );
   };
 };

@@ -168,9 +168,31 @@ const likeProblemNotification = (problem, socket, userSockets) => {
   );
 };
 
+const readNotifications = (callback, socket) => {
+  const userID = socket.request.user._id;
+  let counter = 0;
+  Notification.find(
+    { hasSeen: false, receiverID: userID },
+    { hasSeen: 1 },
+    (err, notifications) => {
+      if (err || !notifications) return callback({ success: false });
+      for (let index in notifications) {
+        counter++;
+        notifications[index].hasSeen = true;
+        notifications[index].save((err, result) => {
+          if (err || !result) return callback({ success: false });
+          counter--;
+          if (counter === 0) return callback({ success: true });
+        });
+      }
+    }
+  );
+};
+
 module.exports = {
   commentPostNotification,
   getNotifications,
   likeCommentNotification,
-  likeProblemNotification
+  likeProblemNotification,
+  readNotifications
 };
