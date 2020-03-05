@@ -13,7 +13,7 @@ class NotificationList extends Component {
       <Consumer>
         {context => {
           return (
-            <Container className="column">
+            <Container className="column x-fill">
               {context.notifications.map((notification, index) => {
                 return (
                   <a
@@ -31,6 +31,16 @@ class NotificationList extends Component {
                   </a>
                 );
               })}
+              {((context.notifications && context.notifications.length === 0) ||
+                !context.notifications) && (
+                <Container className="full-center">
+                  <Text
+                    className="fw-400 pa16"
+                    text="There are no notifications to show!"
+                    type="h6"
+                  />
+                </Container>
+              )}
             </Container>
           );
         }}

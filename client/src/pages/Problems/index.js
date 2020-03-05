@@ -125,13 +125,13 @@ class Problems extends Component {
               {!isMobileOrTablet() && (
                 <Container className="container small column">
                   <Container className="x-fill column align-start bg-white border-all2 pa16 mb16 br8">
-                    <Link className="button-3 mb16" to="/vent-to-a-stranger">
-                      <FontAwesomeIcon className="mr8" icon={faComments} />
-                      Chat with a Stranger
-                    </Link>
-                    <Link className="button-3" to="/post-a-problem">
+                    <Link className="button-3 fs-18 mb16" to="/post-a-problem">
                       <FontAwesomeIcon className="mr8" icon={faPen} />
                       Post a Problem
+                    </Link>
+                    <Link className="button-3 fs-18" to="/vent-to-a-stranger">
+                      <FontAwesomeIcon className="mr8" icon={faComments} />
+                      Chat with a Stranger
                     </Link>
                   </Container>
                   <HotTags />

@@ -15,6 +15,7 @@ import { faChevronDown } from "@fortawesome/pro-solid-svg-icons/faChevronDown";
 import Consumer, { ExtraContext } from "../../context";
 
 import Container from "../containers/Container";
+import HandleOutsideClick from "../containers/HandleOutsideClick";
 import Text from "../views/Text";
 import Input from "../views/Input";
 import Button from "../views/Button";
@@ -203,8 +204,13 @@ class Header extends Component {
                         size="2x"
                       />
                       {showNotificationDropdown && (
-                        <Container
+                        <HandleOutsideClick
                           className="container small bg-white shadow-2 ov-auto br8"
+                          close={() =>
+                            this.handleChange({
+                              showNotificationDropdown: false
+                            })
+                          }
                           style={{
                             position: "absolute",
                             top: "calc(100% + 8px)",
@@ -213,7 +219,7 @@ class Header extends Component {
                           }}
                         >
                           <NotificationList />
-                        </Container>
+                        </HandleOutsideClick>
                       )}
                       {this.newNotificationCounter() &&
                         !showNotificationDropdown && (

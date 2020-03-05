@@ -46,7 +46,7 @@ class HotTags extends Component {
               >
                 <Text
                   className="round-icon bg-light-blue blue fs-18"
-                  text={index}
+                  text={index + 1}
                   type="p"
                 />
                 <Container className="column pa16">
