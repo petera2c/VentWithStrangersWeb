@@ -16,6 +16,7 @@ class GIProvider extends Component {
       message: "",
       type: "danger"
     },
+    notifications: [],
     problems: undefined,
     saving: false,
     socket: undefined,
@@ -117,6 +118,7 @@ class GIProvider extends Component {
       hotTags,
       skip,
       notification,
+      notifications,
       problems,
       saving,
       socket,
@@ -134,6 +136,7 @@ class GIProvider extends Component {
           hotTags,
           skip,
           notify: this.notify,
+          notifications,
           problems,
           removeProblem: this.removeProblem,
           saving,

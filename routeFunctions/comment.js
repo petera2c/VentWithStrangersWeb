@@ -25,7 +25,13 @@ const getAggregate = (match, userID) => [
   { $limit: 10 }
 ];
 
-const commentProblem = (commentString, problemID, callback, socket) => {
+const commentProblem = (
+  commentString,
+  problemID,
+  callback,
+  socket,
+  userSockets
+) => {
   const userID = socket.request.user._id;
 
   const comment = new Comment({
@@ -52,7 +58,7 @@ const commentProblem = (commentString, problemID, callback, socket) => {
             problemID,
             { authorID: 1, title: 1 },
             (err, problem) =>
-              commentPostNotification(problem, socket.request.user)
+              commentPostNotification(problem, socket, userSockets)
           );
           callback({ comment, success: true });
         });
@@ -106,7 +112,7 @@ const getUsersComments = (dataObj, callback, socket) => {
   else callback({ comments: [], message: "Invalid ID.", success: false });
 };
 
-const likeComment = (dataObj, callback, socket) => {
+const likeComment = (dataObj, callback, socket, userSockets) => {
   const userID = socket.request.user._id;
   const { commentID } = dataObj;
 
@@ -127,7 +133,7 @@ const likeComment = (dataObj, callback, socket) => {
             comment.problemID,
             { authorID: 1, title: 1 },
             (err, problem) => {
-              likeCommentNotification(comment, problem, socket.request.user);
+              likeCommentNotification(comment, problem, socket, userSockets);
             }
           );
           callback({ success: true });

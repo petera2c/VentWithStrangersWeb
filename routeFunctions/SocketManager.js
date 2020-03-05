@@ -17,6 +17,8 @@ const {
   sendMessage
 } = require("./conversation");
 
+const { getNotifications } = require("./notification");
+
 const {
   addUserToObject,
   getProblem,
@@ -30,7 +32,11 @@ const {
 const { getSettings, saveSettings } = require("./settings");
 
 module.exports = io => {
+  var userSockets = [];
   return socket => {
+    socket.on("set_user_id", () => {
+      userSockets[socket.request.user._id] = socket;
+    });
     socket.on("get_users_waiting", getUsersWaiting);
     socket.on("find_conversation", (dataObj, callback) =>
       findConversation(dataObj, callback, socket)
@@ -42,7 +48,7 @@ module.exports = io => {
     socket.on("search_tags", searchTags);
     socket.on("search_problems", searchProblems);
     socket.on("like_problem", (problemID, callback) =>
-      likeProblem(problemID, callback, socket)
+      likeProblem(problemID, callback, socket, userSockets)
     );
     socket.on("unlike_problem", (dataObj, callback) =>
       unlikeProblem(dataObj, callback, socket)
@@ -55,10 +61,10 @@ module.exports = io => {
       getProblem(id, callback, socket)
     );
     socket.on("comment_problem", (commentString, problemID, callback) =>
-      commentProblem(commentString, problemID, callback, socket)
+      commentProblem(commentString, problemID, callback, socket, userSockets)
     );
     socket.on("like_comment", (dataObj, callback) =>
-      likeComment(dataObj, callback, socket)
+      likeComment(dataObj, callback, socket, userSockets)
     );
     socket.on("unlike_comment", (dataObj, callback) =>
       unlikeComment(dataObj, callback, socket)
@@ -82,6 +88,10 @@ module.exports = io => {
     socket.on("get_settings", callback => getSettings(callback, socket));
     socket.on("save_settings", (dataObj, callback) =>
       saveSettings(dataObj, callback, socket)
+    );
+
+    socket.on("get_notifications", dataObj =>
+      getNotifications(dataObj, socket)
     );
   };
 };

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import moment from "moment-timezone";
 import { Route, Switch, withRouter } from "react-router-dom";
 
 import Consumer, { ExtraContext } from "../context";
@@ -21,7 +22,12 @@ import NotFoundPage from "./NotFound";
 
 import { searchProblems } from "./Search/util";
 import { isMobileOrTablet } from "../util";
-import { getUsersComments, getUsersPosts, initSocket } from "./util";
+import {
+  getNotifications,
+  getUsersComments,
+  getUsersPosts,
+  initSocket
+} from "./util";
 
 class Routes extends Component {
   state = {
@@ -38,6 +44,11 @@ class Routes extends Component {
           handleChange({ ...stateObj, user });
           this.setState({ databaseConnection: true });
           this.getDataNeededForPage(this.props.location, undefined, true);
+          stateObj.socket.emit("set_user_id");
+          if (user.password) {
+            getNotifications(0, stateObj.socket);
+            this.initReceiveNotifications();
+          }
         });
       } else {
         notify({ message, type: "danger" });
@@ -83,6 +94,30 @@ class Routes extends Component {
     });
   };
 
+  initReceiveNotifications = () => {
+    const { socket } = this.context;
+    socket.on("receive_new_notifications", dataObj => {
+      const { handleChange } = this.context; // Functions
+      const { notifications } = this.context; // Variables
+      const { newNotifications } = dataObj;
+
+      if (notifications.length > 0) {
+        if (newNotifications && newNotifications.length > 0) {
+          if (
+            moment(newNotifications[0].createdAt) <
+            moment(notifications[0].createdAt)
+          )
+            handleChange({
+              notifications: notifications.concat(newNotifications)
+            });
+          else
+            handleChange({
+              notifications: newNotifications.concat(notifications)
+            });
+        }
+      } else handleChange({ notifications: newNotifications });
+    });
+  };
   render() {
     const { databaseConnection } = this.state;
     const { pathname } = this.props.location;

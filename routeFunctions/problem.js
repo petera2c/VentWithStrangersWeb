@@ -129,7 +129,7 @@ const getUsersPosts = (dataObj, callback, socket) => {
     return callback({ message: "Invalid ID.", problems: [], success: false });
 };
 
-const likeProblem = (problemID, callback, socket) => {
+const likeProblem = (problemID, callback, socket, userSockets) => {
   const userID = socket.request.user._id;
 
   Problem.findById(
@@ -147,7 +147,7 @@ const likeProblem = (problemID, callback, socket) => {
           problem.dailyUpvotes += 1;
           problem.upVotes.unshift(userID);
           problem.save((err, problem) => {
-            likeProblemNotification(problem, socket.request.user);
+            likeProblemNotification(problem, socket, userSockets);
             callback({ success: true });
           });
         }

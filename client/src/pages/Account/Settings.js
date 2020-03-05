@@ -97,16 +97,18 @@ class AccountSection extends Component {
         <Text className="mb16" text="Settings" type="h4" />
         <Container className="column bg-white border-all2 pa16 mb2 br8">
           <Text className="blue bold mb16" text="Notifications" type="h6" />
-          <Container className="align-center mb16">
+          <Container
+            className="clickable align-center mb16"
+            onClick={() =>
+              this.handleChange({
+                postCommented: !postCommented,
+                somethingChanged: true
+              })
+            }
+          >
             <Input
               className="mr8"
               defaultChecked={postCommented}
-              onClick={() =>
-                this.handleChange({
-                  postCommented: !postCommented,
-                  somethingChanged: true
-                })
-              }
               style={{ minWidth: "13px" }}
               type="checkbox"
             />
@@ -116,16 +118,18 @@ class AccountSection extends Component {
               type="p"
             />
           </Container>
-          <Container className="align-center mb16">
+          <Container
+            className="clickable align-center mb16"
+            onClick={() =>
+              this.handleChange({
+                commentLiked: !commentLiked,
+                somethingChanged: true
+              })
+            }
+          >
             <Input
               className="mr8"
               defaultChecked={commentLiked}
-              onClick={() =>
-                this.handleChange({
-                  commentLiked: !commentLiked,
-                  somethingChanged: true
-                })
-              }
               style={{ minWidth: "13px" }}
               type="checkbox"
             />
@@ -135,16 +139,18 @@ class AccountSection extends Component {
               type="p"
             />
           </Container>
-          <Container className="align-center mb16">
+          <Container
+            className="clickable align-center mb16"
+            onClick={() =>
+              this.handleChange({
+                postLiked: !postLiked,
+                somethingChanged: true
+              })
+            }
+          >
             <Input
               className="mr8"
               defaultChecked={postLiked}
-              onClick={() =>
-                this.handleChange({
-                  postLiked: !postLiked,
-                  somethingChanged: true
-                })
-              }
               style={{ minWidth: "13px" }}
               type="checkbox"
             />
@@ -154,16 +160,18 @@ class AccountSection extends Component {
               type="p"
             />
           </Container>
-          <Container className="align-center mb16">
+          <Container
+            className="clickable align-center mb16"
+            onClick={() =>
+              this.handleChange({
+                receiveEmails: !receiveEmails,
+                somethingChanged: true
+              })
+            }
+          >
             <Input
               className="mr8"
               defaultChecked={receiveEmails}
-              onClick={() =>
-                this.handleChange({
-                  receiveEmails: !receiveEmails,
-                  somethingChanged: true
-                })
-              }
               style={{ minWidth: "13px" }}
               type="checkbox"
             />
@@ -178,16 +186,18 @@ class AccountSection extends Component {
             text="Privacy and Content Preferences"
             type="h6"
           />
-          <Container className="align-center mb16">
+          <Container
+            className="clickable align-center mb16"
+            onClick={() =>
+              this.handleChange({
+                adultContent: !adultContent,
+                somethingChanged: true
+              })
+            }
+          >
             <Input
               className="mr8"
               defaultChecked={adultContent}
-              onClick={() =>
-                this.handleChange({
-                  adultContent: !adultContent,
-                  somethingChanged: true
-                })
-              }
               style={{ minWidth: "13px" }}
               type="checkbox"
             />

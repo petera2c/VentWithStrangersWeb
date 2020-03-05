@@ -4,6 +4,7 @@ import { Link, withRouter } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
 import { faConciergeBell } from "@fortawesome/pro-duotone-svg-icons/faConciergeBell";
+import { faBell } from "@fortawesome/pro-duotone-svg-icons/faBell";
 import { faFireAlt } from "@fortawesome/pro-duotone-svg-icons/faFireAlt";
 import { faFire } from "@fortawesome/pro-solid-svg-icons/faFire";
 import { faPen } from "@fortawesome/pro-solid-svg-icons/faPen";
@@ -20,6 +21,7 @@ import Button from "../views/Button";
 
 import LoginModal from "../modals/Login";
 import SignUpModal from "../modals/SignUp";
+import NotificationList from "../NotificationList";
 
 import { capitolizeFirstChar, isPageActive } from "../../util";
 
@@ -27,7 +29,8 @@ class Header extends Component {
   state = {
     loginModalBoolean: false,
     signUpModalBoolean: false,
-    searchPostString: ""
+    searchPostString: "",
+    showNotificationDropdown: false
   };
   componentDidMount() {
     this._ismounted = true;
@@ -50,7 +53,8 @@ class Header extends Component {
     const {
       loginModalBoolean,
       signUpModalBoolean,
-      searchPostString
+      searchPostString,
+      showNotificationDropdown
     } = this.state;
     const { history, location } = this.props;
     const { pathname } = location;
@@ -144,21 +148,49 @@ class Header extends Component {
                   />
                 )}
                 {context.user && context.user.password && (
-                  <Link className="flex full-center" to="/activity">
-                    <Text
-                      className="round-icon bg-blue white mr8"
-                      text={capitolizeFirstChar(context.user.displayName[0])}
-                      type="h6"
-                    />
-                    <Text
-                      className="mr8"
-                      text={`Hello, ${capitolizeFirstChar(
-                        context.user.displayName
-                      )}`}
-                      type="p"
-                    />
-                    <FontAwesomeIcon icon={faChevronDown} />
-                  </Link>
+                  <Container className="align-center wrap">
+                    <Link className="flex full-center mr16" to="/activity">
+                      <Text
+                        className="round-icon bg-blue white mr8"
+                        text={capitolizeFirstChar(context.user.displayName[0])}
+                        type="h6"
+                      />
+                      <Text
+                        className="mr8"
+                        text={`Hello, ${capitolizeFirstChar(
+                          context.user.displayName
+                        )}`}
+                        type="p"
+                      />
+                      <FontAwesomeIcon icon={faChevronDown} />
+                    </Link>
+
+                    <Container className="relative">
+                      <FontAwesomeIcon
+                        className="clickable blue"
+                        icon={faBell}
+                        onClick={() =>
+                          this.handleChange({
+                            showNotificationDropdown: !showNotificationDropdown
+                          })
+                        }
+                        size="2x"
+                      />
+                      {showNotificationDropdown && (
+                        <Container
+                          className="container small bg-white shadow-2 ov-auto br8"
+                          style={{
+                            position: "absolute",
+                            top: "calc(100% + 8px)",
+                            right: 0,
+                            maxHeight: "300px"
+                          }}
+                        >
+                          <NotificationList />
+                        </Container>
+                      )}
+                    </Container>
+                  </Container>
                 )}
               </Container>
             </Container>

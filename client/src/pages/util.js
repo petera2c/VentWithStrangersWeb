@@ -1,12 +1,7 @@
 import io from "socket.io-client";
 
-export const initSocket = callback => {
-  let socket;
-  if (process.env.NODE_ENV === "development")
-    socket = io("http://localhost:5000");
-  else socket = io();
-
-  callback({ socket });
+export const getNotifications = (skip, socket) => {
+  socket.emit("get_notifications", { skip });
 };
 
 export const getUsersComments = (
@@ -52,4 +47,13 @@ export const getUsersPosts = (
 
     handleChange({ canLoadMorePosts, problems: newProblems });
   });
+};
+
+export const initSocket = callback => {
+  let socket;
+  if (process.env.NODE_ENV === "development")
+    socket = io("http://localhost:5000");
+  else socket = io();
+
+  callback({ socket });
 };

@@ -33,7 +33,6 @@ const adjectivesList = [
   "Snazzy",
   "Disguised",
   "Orderly",
-  "Many",
   "Gleaming",
   "Divine",
   "Cheering",

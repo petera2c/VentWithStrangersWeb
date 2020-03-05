@@ -6,6 +6,47 @@ const keys = require("../config/keys");
 
 const { notificationTypes } = require("../constants/lists");
 
+const getNotificationBody = (title, type, userDisplayName) => {
+  if (type === 1)
+    return userDisplayName + " commented on your post '" + title + "'";
+  else if (type === 2)
+    return userDisplayName + " loved your comment '" + title + "'";
+  else if (type === 3)
+    return userDisplayName + " loved your post '" + title + "'";
+};
+const getNotificationTitle = type => {
+  if (type === 1) return "Someone commented on your post!";
+  else if (type === 2) return "Someone loved your comment!";
+  else if (type === 3) return "Someone loved your post!";
+};
+
+const getProblemLink = problem => {
+  return (
+    "https://www.ventwithstrangers.com/problem/" +
+    problem._id +
+    "/" +
+    problem.title
+      .replace(/[^a-zA-Z ]/g, "")
+      .replace(/ /g, "-")
+      .toLowerCase()
+  );
+};
+
+const getNotifications = (dataObj, socket) => {
+  const userID = socket.request.user._id;
+  const { skip } = dataObj;
+
+  Notification.find({ receiverID: userID }, (err, notifications) => {
+    if (notifications)
+      socket.emit("receive_new_notifications", {
+        newNotifications: notifications
+      });
+  })
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(10);
+};
+
 const sendEmail = (body, callback, sendToEmail, subject) => {
   var transporter = nodemailer.createTransport({
     service: "gmail",
@@ -40,20 +81,26 @@ const saveNotification = (
   receiverID,
   senderID,
   title,
-  type
+  type,
+  userSockets
 ) => {
   if (receiverID && senderID && String(receiverID) !== String(senderID))
     Settings.findOne({ userID: receiverID }, (err, settings) => {
       User.findById(receiverID, { email: 1 }, (err, receiverUser) => {
         new Notification({
+          body,
           hasSeen: false,
           link,
           objectID,
           receiverID,
           senderID,
+          title,
           type
         }).save((err, notification) => {
           if (notification) {
+            userSockets[receiverID].emit("receive_new_notifications", {
+              newNotifications: [notification]
+            });
             if (receiverUser && receiverUser.email) {
               if (
                 (type === 1 && settings.postCommented) ||
@@ -73,62 +120,57 @@ const saveNotification = (
     });
 };
 
-const commentPostNotification = (problem, user) => {
+const commentPostNotification = (problem, socket, userSockets) => {
+  const type = 1;
+  const { user } = socket.request;
+
   saveNotification(
-    user.displayName + " commented on your post '" + problem.title + "'",
-    "https://www.ventwithstrangers.com/problem/" +
-      problem._id +
-      "/" +
-      problem.title
-        .replace(/[^a-zA-Z ]/g, "")
-        .replace(/ /g, "-")
-        .toLowerCase(),
+    getNotificationBody(problem.title, type, user.displayName),
+    getProblemLink(problem),
     problem._id,
     problem.authorID,
     user._id,
-    "Someone commented on your post!",
-    1
+    getNotificationTitle(type),
+    type,
+    userSockets
   );
 };
 
-const likeCommentNotification = (comment, problem, user) => {
+const likeCommentNotification = (comment, problem, socket, userSockets) => {
+  const type = 2;
+  const { user } = socket.request;
+
   saveNotification(
-    user.displayName + " loved your comment '" + comment.text + "'",
-    "https://www.ventwithstrangers.com/problem/" +
-      problem._id +
-      "/" +
-      problem.title
-        .replace(/[^a-zA-Z ]/g, "")
-        .replace(/ /g, "-")
-        .toLowerCase(),
+    getNotificationBody(comment.text, type, user.displayName),
+    getProblemLink(problem),
     problem._id,
     comment.authorID,
     user._id,
-    "Someone loved your comment!",
-    2
+    getNotificationTitle(type),
+    type,
+    userSockets
   );
 };
 
-const likeProblemNotification = (problem, user) => {
+const likeProblemNotification = (problem, socket, userSockets) => {
+  const type = 3;
+  const { user } = socket.request;
+
   saveNotification(
-    user.displayName + " loved your post '" + problem.title + "'",
-    "https://www.ventwithstrangers.com/problem/" +
-      problem._id +
-      "/" +
-      problem.title
-        .replace(/[^a-zA-Z ]/g, "")
-        .replace(/ /g, "-")
-        .toLowerCase(),
+    getNotificationBody(problem.title, type, user.displayName),
+    getProblemLink(problem),
     problem._id,
     problem.authorID,
     user._id,
-    "Someone loved your post!",
-    3
+    getNotificationTitle(type),
+    type,
+    userSockets
   );
 };
 
 module.exports = {
   commentPostNotification,
+  getNotifications,
   likeCommentNotification,
   likeProblemNotification
 };
