@@ -98,9 +98,10 @@ const saveNotification = (
           type
         }).save((err, notification) => {
           if (notification) {
-            userSockets[receiverID].emit("receive_new_notifications", {
-              newNotifications: [notification]
-            });
+            if (userSockets[receiverID])
+              userSockets[receiverID].emit("receive_new_notifications", {
+                newNotifications: [notification]
+              });
             if (receiverUser && receiverUser.email) {
               if (
                 (type === 1 && settings.postCommented) ||
