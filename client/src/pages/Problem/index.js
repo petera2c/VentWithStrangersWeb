@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import moment from "moment-timezone";
 import TextArea from "react-textarea-autosize";
-import { ExtraContext } from "../../context";
+import Consumer, { ExtraContext } from "../../context";
 
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
@@ -12,7 +12,6 @@ import LoadingHeart from "../../components/loaders/Heart";
 import Text from "../../components/views/Text";
 import Button from "../../components/views/Button";
 import Input from "../../components/views/Input";
-import Consumer from "../../context";
 
 import { isMobileOrTablet } from "../../util";
 

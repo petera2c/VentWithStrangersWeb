@@ -12,6 +12,7 @@ import Header from "../components/Header";
 import MobileHeader from "../components/Header/MobileHeader";
 
 import AccountPage from "./Account";
+import NotificationsPage from "./Notifications";
 import SearchPage from "./Search";
 import ProblemsPage from "./Problems";
 import FindStrangerPage from "./FindStranger";
@@ -149,6 +150,7 @@ class Routes extends Component {
               <Route path="/account/" component={AccountPage} exact />
               <Route path="/activity/" component={AccountPage} />
               <Route path="/settings/" component={AccountPage} exact />
+              <Route path="/notifications/" component={NotificationsPage} />
               <Route path="/search/" component={SearchPage} />
               <Route path="/hot-tags/" component={HotTagsPage} />
               <Route path="/" component={ProblemsPage} exact />

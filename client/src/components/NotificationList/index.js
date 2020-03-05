@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import moment from "moment-timezone";
 
 import Consumer from "../../context";
 
@@ -18,7 +19,7 @@ class NotificationList extends Component {
                 return (
                   <a
                     className={
-                      "column border-bottom pa16 " +
+                      "column pa16 " +
                       (index !== context.notifications.length - 1
                         ? "border-bottom"
                         : "")
@@ -26,8 +27,13 @@ class NotificationList extends Component {
                     key={index}
                     href={notification.link}
                   >
-                    <Text text={notification.title} type="h6" />
-                    <Text text={notification.body} type="p" />
+                    <Text text={notification.body} type="h6" />
+                    <Text
+                      text={moment(notification.createdAt)
+                        .subtract(1, "minute")
+                        .fromNow()}
+                      type="p"
+                    />
                   </a>
                 );
               })}

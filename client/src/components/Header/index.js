@@ -25,6 +25,7 @@ import SignUpModal from "../modals/SignUp";
 import NotificationList from "../NotificationList";
 
 import { capitolizeFirstChar, isPageActive } from "../../util";
+import { newNotificationCounter } from "./util";
 
 class Header extends Component {
   state = {
@@ -48,17 +49,6 @@ class Header extends Component {
 
     this.handleChange({ searchPostString });
     history.push("/search?" + searchPostString);
-  };
-  newNotificationCounter = () => {
-    const { notifications } = this.context;
-    let counter = 0;
-
-    for (let index in notifications) {
-      if (!notifications[index].hasSeen) counter++;
-    }
-
-    if (!counter) return false;
-    else return counter;
   };
   readNotifications = () => {
     const { socket } = this.context;
@@ -223,7 +213,7 @@ class Header extends Component {
                           <NotificationList />
                         </Container>
                       )}
-                      {this.newNotificationCounter() &&
+                      {newNotificationCounter(context.notifications) &&
                         !showNotificationDropdown && (
                           <Text
                             className="fs-14 bg-red white pa4 br8"
@@ -235,7 +225,7 @@ class Header extends Component {
                             }}
                             type="p"
                           >
-                            {this.newNotificationCounter()}
+                            {newNotificationCounter(context.notifications)}
                           </Text>
                         )}
                     </HandleOutsideClick>

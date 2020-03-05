@@ -4,6 +4,7 @@ import { Link, withRouter } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
 import { faConciergeBell } from "@fortawesome/pro-duotone-svg-icons/faConciergeBell";
+import { faBell } from "@fortawesome/pro-duotone-svg-icons/faBell";
 import { faFireAlt } from "@fortawesome/pro-duotone-svg-icons/faFireAlt";
 import { faFire } from "@fortawesome/pro-solid-svg-icons/faFire";
 import { faPen } from "@fortawesome/pro-solid-svg-icons/faPen";
@@ -26,8 +27,9 @@ import LoginModal from "../modals/Login";
 import SignUpModal from "../modals/SignUp";
 
 import { capitolizeFirstChar, isPageActive, signOut } from "../../util";
+import { newNotificationCounter } from "./util";
 
-class Header extends Component {
+class MobileHeader extends Component {
   state = {
     mobileHeaderActive: false,
     loginModalBoolean: false,
@@ -49,6 +51,19 @@ class Header extends Component {
 
     this.handleChange({ searchPostString });
     history.push("/search?" + searchPostString);
+  };
+  readNotifications = () => {
+    const { socket } = this.context;
+
+    socket.emit("read_notifications", result => {
+      const { success } = result;
+
+      const { handleChange, notifications } = this.context;
+      for (let index in notifications) {
+        notifications[index].hasSeen = true;
+      }
+      handleChange({ notifications });
+    });
   };
 
   render() {
@@ -73,7 +88,38 @@ class Header extends Component {
                 src={require("../../svgs/icon.svg")}
                 style={{ height: "50px" }}
               />
+
               <Container>
+                {context.user && context.user.password && (
+                  <Container className="align-center mr8">
+                    <Link to="/notifications">
+                      <FontAwesomeIcon
+                        className="clickable blue"
+                        icon={faBell}
+                        onClick={() => {
+                          this.readNotifications();
+                        }}
+                        size="2x"
+                      />
+                    </Link>
+
+                    {newNotificationCounter(context.notifications) && (
+                      <Text
+                        className="fs-14 bg-red white pa4 br8"
+                        style={{
+                          position: "absolute",
+                          top: "-12px",
+                          right: "-12px",
+                          pointerEvents: "none",
+                          zIndex: 1
+                        }}
+                        type="p"
+                      >
+                        {newNotificationCounter(context.notifications)}
+                      </Text>
+                    )}
+                  </Container>
+                )}
                 <Container className="full-center border-all active py8 mr16 br4">
                   <Link
                     className="border-right active blue px8"
@@ -260,6 +306,6 @@ class Header extends Component {
     );
   }
 }
-Header.contextType = ExtraContext;
+MobileHeader.contextType = ExtraContext;
 
-export default withRouter(Header);
+export default withRouter(MobileHeader);
