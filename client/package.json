@@ -27,6 +27,7 @@
     "html-webpack-plugin": "^3.2.0",
     "moment-timezone": "^0.5.27",
     "react": "^16.12.0",
+    "react-contenteditable": "^3.3.3",
     "react-dom": "^16.12.0",
     "react-ga": "^2.7.0",
     "react-helmet": "^5.2.1",

@@ -5,6 +5,10 @@ module.exports = {
 
   cookieKey: process.env.COOKIE_KEY,
 
+  cloudinaryName: process.env.CLOUDINARY_NAME,
+  cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+  cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET,
+
   email: process.env.EMAIL,
   emailPassword: process.env.EMAIL_PASSWORD,
 

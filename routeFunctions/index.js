@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
-const problem = require("./problem");
 const s3Proxy = require("s3-proxy");
 
 const tag = require("./tag");
+const problem = require("./problem");
+const { getBlog, getBlogs, saveBlog } = require("./blog");
 
 const User = require("../models/User");
 const Tag = require("../models/Tag");
@@ -50,6 +51,10 @@ module.exports = app => {
   app.post("/api/tags/recent/update", middleware, (req, res) =>
     tag.updateRecentTags(req, res)
   );
+
+  app.get("/api/blogs", (req, res) => getBlogs(req, res));
+  app.get("/api/blog/:blogID", (req, res) => getBlog(req, res));
+  app.post("/api/blog", (req, res) => saveBlog(req, res));
 
   // Login user
   app.post("/api/login", login);

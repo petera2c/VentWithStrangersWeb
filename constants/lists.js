@@ -51,7 +51,6 @@ const adjectivesList = [
   "Optimistic",
   "Impressive",
   "Excellent",
-  "Difficult",
   "Quick",
   "Motivated",
   "Healing",

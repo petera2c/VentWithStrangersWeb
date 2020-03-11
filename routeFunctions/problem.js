@@ -87,7 +87,10 @@ const getProblems = (req, res) => {
 
   if (page === "popular") sort.upVotes = -1;
   else if (page === "recent") sort.createdAt = -1;
-  else sort.dailyUpvotes = -1;
+  else {
+    sort.dailyUpvotes = -1;
+    sort.createdAt = -1;
+  }
 
   if (tags.length !== 0) match.tags = { $elemMatch: { name: { $all: tags } } };
 

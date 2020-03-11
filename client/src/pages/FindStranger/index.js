@@ -4,7 +4,6 @@ import axios from "axios";
 import Consumer, { ExtraContext } from "../../context";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-faWalkieTalkie;
 import { faHandsHelping } from "@fortawesome/pro-duotone-svg-icons/faHandsHelping";
 import { faWalkieTalkie } from "@fortawesome/pro-duotone-svg-icons/faWalkieTalkie";
 

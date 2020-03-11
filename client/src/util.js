@@ -33,6 +33,13 @@ export const isPageActive = (page, pathname) => {
   else return "";
 };
 
+export const getTextFromHtmlTag = tagString => {
+  let div = document.createElement("div");
+  div.innerHTML = "<div   dangerouslySetInnerHTML={{__html: " + tagString;
+
+  return div.textContent || div.innerText || "";
+};
+
 export const signOut = () => {
   axios.get("/api/sign-out").then(result => {
     window.location.reload();

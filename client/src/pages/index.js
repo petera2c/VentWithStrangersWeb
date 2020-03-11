@@ -19,6 +19,8 @@ import FindStrangerPage from "./FindStranger";
 import NewProblemPage from "./NewProblem";
 import ProblemPage from "./Problem";
 import HotTagsPage from "./HotTags";
+import BlogPage from "./Blog";
+import CreateBlogPage from "./CreateBlog";
 import NotFoundPage from "./NotFound";
 
 import { searchProblems } from "./Search/util";
@@ -161,6 +163,8 @@ class Routes extends Component {
               <Route path="/vent-to-a-stranger/" component={FindStrangerPage} />
               <Route path="/post-a-problem/" component={NewProblemPage} />
               <Route path="/problem/" component={ProblemPage} />
+              <Route path="/blog/" component={BlogPage} />
+              <Route path="/create-blog/" component={CreateBlogPage} />
               <Route component={NotFoundPage} />
             </Switch>
           </Container>

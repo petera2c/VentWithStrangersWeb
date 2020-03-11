@@ -1,6 +1,7 @@
 const AWS = require("aws-sdk");
 const fs = require("fs");
 const moment = require("moment-timezone");
+const Blog = require("./models/Blog");
 const Problem = require("./models/Problem");
 const User = require("./models/User");
 const {
@@ -15,55 +16,69 @@ const s3 = new AWS.S3({
 });
 const createSiteMap = () => {
   Problem.find({}, { title: 1 }, (err, problems) => {
-    let siteMapString =
-      '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n';
-    siteMapString +=
-      "<url>\n  <loc>https://www.ventwithstrangers.com/</loc>\n  <lastmod>" +
-      new moment().format("YYYY-MM-DD") +
-      "</lastmod>\n  <changefreq>daily</changefreq>\n  <priority>1</priority>\n</url>\n\n";
-    siteMapString +=
-      "<url>\n  <loc>https://www.ventwithstrangers.com/post-a-problem</loc>\n  <lastmod>2020-02-04</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.8</priority>\n</url>\n\n";
-    siteMapString +=
-      "<url>\n  <loc>https://www.ventwithstrangers.com/vent-to-a-stranger</loc>\n  <lastmod>2020-02-04</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.8</priority>\n</url>\n\n";
-    siteMapString +=
-      "<url>\n  <loc>https://www.ventwithstrangers.com/recent</loc>\n  <lastmod>" +
-      new moment().format("YYYY-MM-DD") +
-      "</lastmod>\n  <changefreq>daily</changefreq>\n  <priority>0.8</priority>\n</url>\n\n";
-    siteMapString +=
-      "<url>\n  <loc>https://www.ventwithstrangers.com/trending</loc>\n  <lastmod>" +
-      new moment().format("YYYY-MM-DD") +
-      "</lastmod>\n  <changefreq>daily</changefreq>\n  <priority>0.8</priority>\n</url>\n\n";
-
-    for (let index in problems) {
-      const problem = problems[index];
-
-      let url =
-        "https://www.ventwithstrangers.com/problem/" +
-        problem._id +
-        "/" +
-        problem.title
-          .replace(/[^a-zA-Z ]/g, "")
-          .replace(/ /g, "-")
-          .toLowerCase();
-
+    Blog.find({}, { updatedAt: 1, url: 1 }, (err, blogs) => {
+      let siteMapString =
+        '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n';
       siteMapString +=
-        "<url>\n  <loc>" +
-        url +
-        "</loc>\n  <lastmod>" +
-        new moment(problem.updatedAt).format("YYYY-MM-DD") +
-        "</lastmod>\n  <changefreq>monthly\n</changefreq>  <priority>0.4</priority>\n</url>\n\n";
-    }
-    siteMapString += "</urlset>";
+        "<url>\n  <loc>https://www.ventwithstrangers.com/</loc>\n  <lastmod>" +
+        new moment().format("YYYY-MM-DD") +
+        "</lastmod>\n  <changefreq>daily</changefreq>\n  <priority>1</priority>\n</url>\n\n";
+      siteMapString +=
+        "<url>\n  <loc>https://www.ventwithstrangers.com/post-a-problem</loc>\n  <lastmod>2020-02-04</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.8</priority>\n</url>\n\n";
+      siteMapString +=
+        "<url>\n  <loc>https://www.ventwithstrangers.com/vent-to-a-stranger</loc>\n  <lastmod>2020-02-04</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.8</priority>\n</url>\n\n";
+      siteMapString +=
+        "<url>\n  <loc>https://www.ventwithstrangers.com/recent</loc>\n  <lastmod>" +
+        new moment().format("YYYY-MM-DD") +
+        "</lastmod>\n  <changefreq>daily</changefreq>\n  <priority>0.8</priority>\n</url>\n\n";
+      siteMapString +=
+        "<url>\n  <loc>https://www.ventwithstrangers.com/trending</loc>\n  <lastmod>" +
+        new moment().format("YYYY-MM-DD") +
+        "</lastmod>\n  <changefreq>daily</changefreq>\n  <priority>0.8</priority>\n</url>\n\n";
 
-    const file = new Buffer.from(siteMapString);
-    const params = {
-      Bucket: amazonBucket,
-      Key: "sitemap.xml",
-      Body: siteMapString
-    };
+      for (let index in problems) {
+        const problem = problems[index];
 
-    s3.putObject(params, (err, data) => {
-      if (err) console.log(err);
+        let url =
+          "https://www.ventwithstrangers.com/problem/" +
+          problem._id +
+          "/" +
+          problem.title
+            .replace(/[^a-zA-Z ]/g, "")
+            .replace(/ /g, "-")
+            .toLowerCase();
+
+        siteMapString +=
+          "<url>\n  <loc>" +
+          url +
+          "</loc>\n  <lastmod>" +
+          new moment(problem.updatedAt).format("YYYY-MM-DD") +
+          "</lastmod>\n  <changefreq>monthly\n</changefreq>  <priority>0.4</priority>\n</url>\n\n";
+      }
+      for (let index in blogs) {
+        const blog = blogs[index];
+        siteMapString +=
+          "<url>\n  <loc>" +
+          "https://www.ventwithstrangers.co/blog/" +
+          blog._id +
+          "/" +
+          blog.url +
+          "</loc>\n  <lastmod>" +
+          new moment(blog.updatedAt).format("YYYY-MM-DD") +
+          "</lastmod>\n  <changefreq>daily\n</changefreq>  <priority>0.8</priority>\n</url>\n\n";
+      }
+
+      siteMapString += "</urlset>";
+
+      const params = {
+        Bucket: amazonBucket,
+        Key: "sitemap.xml",
+        Body: siteMapString
+      };
+
+      s3.putObject(params, (err, data) => {
+        if (err) console.log(err);
+      });
     });
   });
 };

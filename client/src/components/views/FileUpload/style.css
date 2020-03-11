@@ -1,0 +1,13 @@
+.uploaded-file:hover .icon-x-hover {
+  display: flex;
+}
+
+.icon-x-hover {
+  position: absolute;
+  display: none;
+
+  top: -8px;
+  right: -8px;
+
+  z-index: 10;
+}
