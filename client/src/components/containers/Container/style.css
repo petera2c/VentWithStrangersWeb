@@ -8,6 +8,9 @@
   transition: all 0.2s ease;
 }
 
+.relative {
+  position: relative;
+}
 .absolute {
   position: absolute;
 }

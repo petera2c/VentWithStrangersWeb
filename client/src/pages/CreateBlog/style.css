@@ -14,6 +14,18 @@
 .image.max {
   width: 100vw;
 }
+
+.hover-options-container {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+
+  display: none;
+  background-color: red;
+}
+.hover-options-container:hover {
+  display: flex;
+}
 .blog-img-container:hover .hover-options-container {
   display: flex;
 }
@@ -45,7 +57,7 @@
   padding-left: 16px;
   padding-top: 8px;
   padding-bottom: 8px;
-  background-color: var(--light-grey-theme-color);
+  background-color: red;
 }
 .top-right-over-div:hover {
   display: flex;

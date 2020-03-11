@@ -158,12 +158,7 @@ class CreateWebsiteBlog extends Component {
         }
         key={"image" + index}
       >
-        <div
-          className="hover-options-container"
-          style={{
-            backgroundColor: "var(--five-blue-color)"
-          }}
-        >
+        <div className="hover-options-container">
           <button
             className="white"
             onClick={() => this.handleContentChange("tiny", index, "size")}
@@ -280,10 +275,8 @@ class CreateWebsiteBlog extends Component {
     }
 
     return (
-      <Container className="x-fill justify-center">
-        <Container className="container-box large ov-visible block mb64">
-          <Link to="/blog">Go to Blog</Link>
-
+      <Container className="justify-center">
+        <Container className="container large ov-visible block mb64">
           <div className="flex my8">
             <p className="label mr8">Blog URL:</p>
             <input

@@ -1,6 +1,8 @@
 const AWS = require("aws-sdk");
 const fs = require("fs");
 const moment = require("moment-timezone");
+const jsdom = require("jsdom");
+
 const Blog = require("./models/Blog");
 const Problem = require("./models/Problem");
 const User = require("./models/User");
@@ -9,6 +11,8 @@ const {
   amazonSecretAccessKey,
   amazonBucket
 } = require("./config/keys");
+
+const { JSDOM } = jsdom;
 
 const s3 = new AWS.S3({
   accessKeyId: amazonAccessKeyID,
@@ -94,11 +98,14 @@ const getMetaInformation = (url, callback) => {
   };
 
   const checkIsProblem = url.match(/(?<=\/problem\/\s*).*?(?=\s*\/)/gs);
+  const checkIsBlog = url.match(/(?<=\/blog\/\s*).*?(?=\s*\/)/gs);
   const userObjectID = url.split("/activity?")[1];
   let problemObjectID;
+  let blogObjectID;
   if (checkIsProblem) problemObjectID = checkIsProblem[0];
+  if (checkIsBlog) blogObjectID = checkIsBlog[0];
 
-  if (checkIsProblem && checkIsProblem) {
+  if (checkIsProblem && problemObjectID) {
     Problem.findById(problemObjectID, (err, problem) => {
       if (!err && problem)
         return callback({
@@ -107,6 +114,35 @@ const getMetaInformation = (url, callback) => {
             : "",
           metaImage: defaultMetaObject.metaImage,
           metaTitle: problem.title + " | Vent With Strangers"
+        });
+      else return callback(defaultMetaObject);
+    });
+  }
+  if (checkIsBlog && blogObjectID) {
+    Blog.findById(blogObjectID, (err, blog) => {
+      const { contentArray = [], images = [] } = blog;
+      let temp = {};
+      if (contentArray[0]) temp = JSDOM.fragment(contentArray[0].html);
+
+      let metaTitle = defaultMetaObject.metaTitle;
+      if (temp.firstChild) metaTitle = temp.firstChild.textContent;
+
+      let temp2 = {};
+      if (contentArray[1]) temp2 = JSDOM.fragment(contentArray[1].html);
+
+      let metaDescription = defaultMetaObject.metaDescription;
+      if (temp2.firstChild)
+        metaDescription = temp2.firstChild.textContent
+          ? temp2.firstChild.textContent.substring(0, 200)
+          : defaultMetaObject.metaDescription;
+
+      let metaImage = defaultMetaObject.metaImage;
+      if (images[0]) metaImage = images[0].url;
+      if (!err && blog)
+        return callback({
+          metaDescription: metaDescription,
+          metaImage: metaImage,
+          metaTitle: metaTitle + " | Vent With Strangers"
         });
       else return callback(defaultMetaObject);
     });

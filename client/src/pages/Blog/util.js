@@ -15,15 +15,9 @@ export const createLinkFromNameAndJob = (id, name, title) => {
   );
 };
 
-export const createBlogDivs = (authorID, contentImagesArray) => {
+export const createBlogDivs = contentImagesArray => {
   const blogDivs = [];
   for (let index = 0; index < contentImagesArray.length; index++) {
-    if (index === 1 && authorID)
-      blogDivs.push(
-        <Container className="mb8" key="1ts">
-          <Text className="grey" text="By&nbsp;" type="p" />
-        </Container>
-      );
     const contentOrImage = contentImagesArray[index];
     if (!contentOrImage) continue;
     if (!contentOrImage.html) {
