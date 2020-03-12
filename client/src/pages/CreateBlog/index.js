@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import axios from "axios";
 import { Link, withRouter } from "react-router-dom";
 
+import { ExtraContext } from "../../context";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 import { faImage } from "@fortawesome/free-solid-svg-icons/faImage";
@@ -14,7 +16,6 @@ import { getFileType } from "../../components/views/FileUpload/util";
 import Container from "../../components/containers/Container";
 
 import "./style.css";
-
 class CreateWebsiteBlog extends Component {
   state = {
     authorID: undefined,
@@ -27,8 +28,13 @@ class CreateWebsiteBlog extends Component {
   componentDidMount() {
     this._ismounted = true;
 
-    const { location } = this.props;
+    const { history, location } = this.props;
     const { pathname } = location;
+    const { user } = this.context;
+
+    if (user && String(user._id) !== "5e38da7acaa5d60015654712")
+      return history.push("/");
+
     const regexMatch = pathname.split("/create-blog/")[1];
     let problemID;
     if (regexMatch) problemID = regexMatch;
@@ -266,12 +272,6 @@ class CreateWebsiteBlog extends Component {
 
     for (let index = 0; index < contentArray.length; index++) {
       const content = contentArray[index];
-      if (!content) continue;
-      if (content.size) {
-        blogDivs.push(this.createRelevantImageDiv(content, index));
-      } else {
-        blogDivs.push(this.editableTextbox(content, index));
-      }
     }
 
     return (
@@ -288,7 +288,14 @@ class CreateWebsiteBlog extends Component {
             />
           </div>
 
-          {blogDivs}
+          {contentArray.map((content, index) => {
+            if (!content) return null;
+            if (content.size) {
+              return this.createRelevantImageDiv(content, index);
+            } else {
+              return this.editableTextbox(content, index);
+            }
+          })}
 
           <Container className="wrap shadow-2" id="ghostit-blog-text-styling">
             <EditButton cmd="undo" />
@@ -361,5 +368,7 @@ function EditButton(props) {
     </button>
   );
 }
+
+CreateWebsiteBlog.contextType = ExtraContext;
 
 export default withRouter(CreateWebsiteBlog);
