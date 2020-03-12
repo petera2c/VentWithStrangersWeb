@@ -4,17 +4,6 @@ import { Link } from "react-router-dom";
 import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
 
-export const createLinkFromNameAndJob = (id, name, title) => {
-  return (
-    "/team-member/" +
-    (title.replace(/[^a-zA-Z ]/g, "") + "/" + name.replace(/[^a-zA-Z ]/g, ""))
-      .replace(/ /g, "-")
-      .toLowerCase() +
-    "/" +
-    id
-  );
-};
-
 export const createBlogDivs = contentImagesArray => {
   const blogDivs = [];
   for (let index = 0; index < contentImagesArray.length; index++) {
@@ -30,7 +19,7 @@ export const createBlogDivs = contentImagesArray => {
     } else {
       blogDivs.push(
         <div
-          className="mb8"
+          className=""
           dangerouslySetInnerHTML={{ __html: contentOrImage.html }}
           key={index}
         />
@@ -62,7 +51,7 @@ const createRelevantImageDiv = (image, index) => {
     <img
       alt="Blog"
       className={
-        "float-left ov-hidden image mb8 br8 " +
+        "float-left ov-hidden image br8 " +
         image.size +
         (image.size === "medium" ? "" : " mr16")
       }

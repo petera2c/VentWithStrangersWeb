@@ -41,7 +41,6 @@
   --grey-color-11: #6d7980;
 
   --primary-font-color: #3a4046;
-  --blue-font-color: #1f96f2;
 
   --large-font-size: 13pt;
   --extra-large-font-size: 17pt;
@@ -63,7 +62,27 @@
 
   --font-theme: "Nunito Sans";
 }
+.blog h1 {
+  color: var(--primary-font-color);
+  margin-bottom: 16px;
+}
 
+.blog h4 {
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+
+.blog p {
+  margin-bottom: 8px;
+}
+
+.blog a {
+  color: var(--main-color);
+  text-decoration: underline;
+}
+.blog img {
+  margin-bottom: 16px;
+}
 .grid-1 {
   display: grid;
   grid-template-columns: 32px 5fr;

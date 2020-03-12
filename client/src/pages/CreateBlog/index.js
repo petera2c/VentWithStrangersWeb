@@ -85,6 +85,12 @@ class CreateWebsiteBlog extends Component {
   handleContentChange = (value, index, index2) => {
     let { contentArray } = this.state;
     contentArray[index][index2] = value;
+    if (index2 === "html")
+      contentArray[index][index2] = contentArray[index][index2].replace(
+        /style="[a-zA-Z0-9:;\.\s\(\)\-\,]*"/gi,
+        ""
+      );
+
     this.setState({ contentArray });
   };
   handleChange = stateObj => {
