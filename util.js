@@ -117,8 +117,7 @@ const getMetaInformation = (url, callback) => {
         });
       else return callback(defaultMetaObject);
     });
-  }
-  if (checkIsBlog && blogObjectID) {
+  } else if (checkIsBlog && blogObjectID) {
     Blog.findById(blogObjectID, (err, blog) => {
       const { contentArray = [], images = [] } = blog;
       let temp = {};
