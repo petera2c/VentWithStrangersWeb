@@ -63,7 +63,7 @@ const createSiteMap = () => {
         const blog = blogs[index];
         siteMapString +=
           "<url>\n  <loc>" +
-          "https://www.ventwithstrangers.co/blog/" +
+          "https://www.ventwithstrangers.com/blog/" +
           blog._id +
           "/" +
           blog.url +
