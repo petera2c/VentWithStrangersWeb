@@ -32,7 +32,11 @@ class CreateWebsiteBlog extends Component {
     const { pathname } = location;
     const { user } = this.context;
 
-    if (user && String(user._id) !== "5e38da7acaa5d60015654712")
+    if (
+      user &&
+      (String(user._id) !== "5e38da7acaa5d60015654712" &&
+        String(user._id) !== "5e38d50d5c5df925e873ec9d")
+    )
       return history.push("/");
 
     const regexMatch = pathname.split("/create-blog/")[1];
@@ -154,116 +158,6 @@ class CreateWebsiteBlog extends Component {
         } else console.log(res.data);
       });
   };
-  createRelevantImageDiv = (image, index) => {
-    return (
-      <Container
-        className={
-          "relative full-center column blog-img-container image " +
-          image.size +
-          (image.size === "medium" ? "" : " mr16")
-        }
-        key={"image" + index}
-      >
-        <div className="hover-options-container">
-          <button
-            className="white"
-            onClick={() => this.handleContentChange("tiny", index, "size")}
-          >
-            tiny
-          </button>
-          <button
-            className="white"
-            onClick={() => this.handleContentChange("small", index, "size")}
-          >
-            small
-          </button>
-          <button
-            className="white"
-            onClick={() => this.handleContentChange("medium", index, "size")}
-          >
-            medium
-          </button>
-          <button
-            className="white"
-            onClick={() => this.handleContentChange("large", index, "size")}
-          >
-            large
-          </button>
-        </div>
-        <div className="top-right-over-div">
-          <FontAwesomeIcon
-            icon={faTrash}
-            className="delete"
-            onClick={() => this.removeIndex(index)}
-          />
-
-          <label htmlFor={"image-file-upload" + index}>
-            <FontAwesomeIcon icon={faImage} className="icon-button-2 my8" />
-          </label>
-          <input
-            id={"image-file-upload" + index}
-            type="file"
-            onChange={event => {
-              this.insertImage(event, index);
-            }}
-          />
-          <FontAwesomeIcon
-            icon={faFont}
-            className="icon-button-2"
-            onClick={() => this.insertTextbox(index)}
-          />
-        </div>
-        <img alt="" className="fill-parent br8" src={image.file || image.url} />
-
-        <input
-          className="regular-input x-fill border-box"
-          value={image.alt ? image.alt : ""}
-          placeholder="alt"
-          onChange={e => this.handleContentChange(e.target.value, index, "alt")}
-        />
-      </Container>
-    );
-  };
-
-  editableTextbox = (content, index) => {
-    return (
-      <div
-        className="relative bg-white"
-        id="editable-text-container"
-        key={index}
-      >
-        <div className="top-right-over-div">
-          <FontAwesomeIcon
-            icon={faTrash}
-            className="delete"
-            onClick={() => this.removeIndex(index)}
-          />
-          <label htmlFor={"text-file-upload" + index}>
-            <FontAwesomeIcon icon={faImage} className="icon-button-2 my8" />
-          </label>
-          <input
-            id={"text-file-upload" + index}
-            type="file"
-            onChange={event => this.insertImage(event, index)}
-          />
-          <FontAwesomeIcon
-            icon={faFont}
-            className="icon-button-2"
-            onClick={() => this.insertTextbox(index)}
-          />
-        </div>
-        <ContentEditable
-          className="block pa4"
-          disabled={false}
-          html={content.html}
-          innerRef={this.contentEditable}
-          onChange={e =>
-            this.handleContentChange(e.target.value, index, "html")
-          }
-        />
-      </div>
-    );
-  };
 
   render() {
     const { authorID, contentArray, hyperlink, url } = this.state;
@@ -290,11 +184,133 @@ class CreateWebsiteBlog extends Component {
 
           {contentArray.map((content, index) => {
             if (!content) return null;
-            if (content.size) {
-              return this.createRelevantImageDiv(content, index);
-            } else {
-              return this.editableTextbox(content, index);
-            }
+            if (content.size)
+              return (
+                <Container
+                  className={
+                    "relative full-center column blog-img-container image " +
+                    content.size +
+                    (content.size === "medium" ? "" : " mr16")
+                  }
+                  key={"image" + index}
+                >
+                  <div className="hover-options-container">
+                    <button
+                      className="white"
+                      onClick={() =>
+                        this.handleContentChange("tiny", index, "size")
+                      }
+                    >
+                      tiny
+                    </button>
+                    <button
+                      className="white"
+                      onClick={() =>
+                        this.handleContentChange("small", index, "size")
+                      }
+                    >
+                      small
+                    </button>
+                    <button
+                      className="white"
+                      onClick={() =>
+                        this.handleContentChange("medium", index, "size")
+                      }
+                    >
+                      medium
+                    </button>
+                    <button
+                      className="white"
+                      onClick={() =>
+                        this.handleContentChange("large", index, "size")
+                      }
+                    >
+                      large
+                    </button>
+                  </div>
+                  <div className="top-right-over-div">
+                    <FontAwesomeIcon
+                      icon={faTrash}
+                      className="delete"
+                      onClick={() => this.removeIndex(index)}
+                    />
+
+                    <label htmlFor={"image-file-upload" + index}>
+                      <FontAwesomeIcon
+                        icon={faImage}
+                        className="icon-button-2 my8"
+                      />
+                    </label>
+                    <input
+                      id={"image-file-upload" + index}
+                      type="file"
+                      onChange={event => {
+                        this.insertImage(event, index);
+                      }}
+                    />
+                    <FontAwesomeIcon
+                      icon={faFont}
+                      className="icon-button-2"
+                      onClick={() => this.insertTextbox(index)}
+                    />
+                  </div>
+                  <img
+                    alt=""
+                    className="fill-parent br8"
+                    src={content.file || content.url}
+                  />
+
+                  <input
+                    className="regular-input x-fill border-box"
+                    value={content.alt ? content.alt : ""}
+                    placeholder="alt"
+                    onChange={e =>
+                      this.handleContentChange(e.target.value, index, "alt")
+                    }
+                  />
+                </Container>
+              );
+            else
+              return (
+                <div
+                  className="relative bg-white"
+                  id="editable-text-container"
+                  key={index}
+                >
+                  <div className="top-right-over-div">
+                    <FontAwesomeIcon
+                      icon={faTrash}
+                      className="delete"
+                      onClick={() => this.removeIndex(index)}
+                    />
+                    <label htmlFor={"text-file-upload" + index}>
+                      <FontAwesomeIcon
+                        icon={faImage}
+                        className="icon-button-2 my8"
+                      />
+                    </label>
+                    <input
+                      id={"text-file-upload" + index}
+                      type="file"
+                      onChange={event => this.insertImage(event, index)}
+                    />
+                    <FontAwesomeIcon
+                      icon={faFont}
+                      className="icon-button-2"
+                      onClick={() => this.insertTextbox(index)}
+                    />
+                  </div>
+                  <ContentEditable
+                    className="block pa4"
+                    disabled={false}
+                    html={content.html}
+                    innerRef={this.contentEditable}
+                    onChange={e =>
+                      this.handleContentChange(e.target.value, index, "html")
+                    }
+                  />
+                </div>
+              );
           })}
 
           <Container className="wrap shadow-2" id="ghostit-blog-text-styling">

@@ -22,7 +22,11 @@ module.exports = {
   saveBlog: (req, res) => {
     let user = req.user;
     let blog3 = req.body;
-    if (user && String(user._id) !== "5e38da7acaa5d60015654712") {
+    if (
+      user &&
+      (String(user._id) !== "5e38da7acaa5d60015654712" &&
+        String(user._id) !== "5e38d50d5c5df925e873ec9d")
+    ) {
       res.send({ success: false });
       return;
     }
