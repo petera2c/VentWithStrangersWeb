@@ -24,21 +24,21 @@ const createSiteMap = () => {
       let siteMapString =
         '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n';
       siteMapString +=
-        "<url>\n  <loc>https://www.ventwithstrangers.com/</loc>\n  <lastmod>" +
+        "<url>\n<loc>https://www.ventwithstrangers.com/</loc>\n<lastmod>" +
         new moment().format("YYYY-MM-DD") +
-        "</lastmod>\n  <changefreq>daily</changefreq>\n  <priority>1</priority>\n</url>\n\n";
+        "</lastmod>\n<changefreq>daily</changefreq>\n<priority>1</priority>\n</url>\n\n";
       siteMapString +=
-        "<url>\n  <loc>https://www.ventwithstrangers.com/post-a-problem</loc>\n  <lastmod>2020-02-04</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.8</priority>\n</url>\n\n";
+        "<url>\n<loc>https://www.ventwithstrangers.com/post-a-problem</loc>\n<lastmod>2020-02-04</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.8</priority>\n</url>\n\n";
       siteMapString +=
-        "<url>\n  <loc>https://www.ventwithstrangers.com/vent-to-a-stranger</loc>\n  <lastmod>2020-02-04</lastmod>\n  <changefreq>yearly</changefreq>\n  <priority>0.8</priority>\n</url>\n\n";
+        "<url>\n<loc>https://www.ventwithstrangers.com/vent-to-a-stranger</loc>\n<lastmod>2020-02-04</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.8</priority>\n</url>\n\n";
       siteMapString +=
-        "<url>\n  <loc>https://www.ventwithstrangers.com/recent</loc>\n  <lastmod>" +
+        "<url>\n<loc>https://www.ventwithstrangers.com/recent</loc>\n<lastmod>" +
         new moment().format("YYYY-MM-DD") +
-        "</lastmod>\n  <changefreq>daily</changefreq>\n  <priority>0.8</priority>\n</url>\n\n";
+        "</lastmod>\n<changefreq>daily</changefreq>\n<priority>0.8</priority>\n</url>\n\n";
       siteMapString +=
-        "<url>\n  <loc>https://www.ventwithstrangers.com/trending</loc>\n  <lastmod>" +
+        "<url>\n<loc>https://www.ventwithstrangers.com/trending</loc>\n<lastmod>" +
         new moment().format("YYYY-MM-DD") +
-        "</lastmod>\n  <changefreq>daily</changefreq>\n  <priority>0.8</priority>\n</url>\n\n";
+        "</lastmod>\n<changefreq>daily</changefreq>\n<priority>0.8</priority>\n</url>\n\n";
 
       for (let index in problems) {
         const problem = problems[index];
@@ -53,23 +53,23 @@ const createSiteMap = () => {
             .toLowerCase();
 
         siteMapString +=
-          "<url>\n  <loc>" +
+          "<url>\n<loc>" +
           url +
-          "</loc>\n  <lastmod>" +
+          "</loc>\n<lastmod>" +
           new moment(problem.updatedAt).format("YYYY-MM-DD") +
-          "</lastmod>\n  <changefreq>monthly\n</changefreq>  <priority>0.4</priority>\n</url>\n\n";
+          "</lastmod>\n<changefreq>monthly</changefreq>\n</url>\n\n";
       }
       for (let index in blogs) {
         const blog = blogs[index];
         siteMapString +=
-          "<url>\n  <loc>" +
+          "<url>\n<loc>" +
           "https://www.ventwithstrangers.com/blog/" +
           blog._id +
           "/" +
           blog.url +
-          "</loc>\n  <lastmod>" +
+          "</loc>\n<lastmod>" +
           new moment(blog.updatedAt).format("YYYY-MM-DD") +
-          "</lastmod>\n  <changefreq>yearly\n</changefreq>  <priority>0.8</priority>\n</url>\n\n";
+          "</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.8</priority>\n</url>\n\n";
       }
 
       siteMapString += "</urlset>";

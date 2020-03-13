@@ -243,7 +243,7 @@ const saveProblem = (req, res) => {
     for (let index in tags) {
       const tag = tags[index].toLowerCase();
       counter++;
-      Tag.findOne({ name: tags[index] }, (err, tagFromDB) => {
+      Tag.findOne({ name: tag }, (err, tagFromDB) => {
         if (tagFromDB) {
           tagNameArray.push({ name: tagFromDB.name });
 
