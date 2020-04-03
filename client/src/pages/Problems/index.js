@@ -61,7 +61,7 @@ class Problems extends Component {
                     ? "container mobile-full pa16"
                     : "container extra-large pr32 pt32")
                 }
-                text="People care and help is here. Vent and chat anonymously to be a part of a community committed to making the world a better place. This is a website for people that want to be heard and people that want to listen."
+                text="This is a website for people that want to be heard and people that want to listen. Your emotional health is our priority."
                 type="h2"
               />
             </Container>

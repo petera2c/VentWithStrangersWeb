@@ -207,10 +207,6 @@ class NewProblemPage extends Component {
                     text="If you or someone you know  is in danger, call your local emergency services or police."
                     type="p"
                   />
-                  <Text
-                    text="National Suicide Prevention Lifeline (1-800-273-TALK [8255])."
-                    type="p"
-                  />
                 </Container>
               </Container>
             </Container>
