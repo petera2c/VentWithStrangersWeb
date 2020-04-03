@@ -105,7 +105,6 @@ class Problem extends Component {
     let description = problem.description;
     if (previewMode && description.length > 240)
       description = description.slice(0, 240) + "... Read More";
-
     return (
       <Container className="x-fill column mb16">
         <Container className="x-fill column bg-white border-all2 mb8 br8">
@@ -223,7 +222,12 @@ class Problem extends Component {
           >
             <Text className="fs-20 primary mb8" text={title} type="h1" />
 
-            <Text className="fs-18 fw-400 grey-1" text={description} type="p" />
+            <Text
+              className="fs-18 fw-400 grey-1"
+              style={{ whiteSpace: "pre-line" }}
+              text={description}
+              type="p"
+            />
           </SmartLink>
           {!searchPreviewMode && (
             <Container
