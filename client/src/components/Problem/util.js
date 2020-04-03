@@ -9,9 +9,9 @@ export const commentProblem = (
     commentString,
     problem1._id,
     returnObj => {
-      const { comment, success } = returnObj;
-
-      context.addComment(comment, problemIndex);
+      const { comment, message, success } = returnObj;
+      if (success) context.addComment(comment, problemIndex);
+      else context.notify({ message, type: "danger" });
     }
   );
 };

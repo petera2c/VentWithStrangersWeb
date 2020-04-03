@@ -34,6 +34,13 @@ const commentProblem = (
 ) => {
   const userID = socket.request.user._id;
 
+  if (!commentString.replace(/\s/g, "").length) {
+    return callback({
+      message: "Your comment has no content!",
+      success: false
+    });
+  }
+
   const comment = new Comment({
     authorID: userID,
     problemID,

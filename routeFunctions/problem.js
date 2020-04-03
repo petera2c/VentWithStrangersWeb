@@ -218,6 +218,31 @@ const saveProblem = (req, res) => {
     });
   }
 
+  if (
+    !title.replace(/\s/g, "").length ||
+    !description.replace(/\s/g, "").length
+  ) {
+    return res.send({
+      message: "Your title or description has no content!",
+      success: false
+    });
+  }
+  let hasFoundRealTag = false;
+  for (let index in tags) {
+    const tag = tags[index];
+    if (!tag.replace(/\s/g, "").length) continue;
+    else {
+      hasFoundRealTag = true;
+      break;
+    }
+  }
+  if (!hasFoundRealTag) {
+    return res.send({
+      message: "Your tags have no content!",
+      success: false
+    });
+  }
+
   const saveNewProblem = (description, gender, tagNameArray, title) => {
     const newProblem = new Problem({
       description,
@@ -226,6 +251,7 @@ const saveProblem = (req, res) => {
       tags: tagNameArray,
       title
     });
+
     newProblem.authorID = req.user._id;
     newProblem.save((err, newProblem) => {
       if (!err && newProblem) res.send({ problem: newProblem, success: true });
@@ -242,6 +268,8 @@ const saveProblem = (req, res) => {
   if (tags && tags.length > 0)
     for (let index in tags) {
       const tag = tags[index].toLowerCase();
+      if (!tag.replace(/\s/g, "").length) continue;
+
       counter++;
       Tag.findOne({ name: tag }, (err, tagFromDB) => {
         if (tagFromDB) {
