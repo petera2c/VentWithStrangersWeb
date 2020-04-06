@@ -101,7 +101,7 @@ class NewProblemPage extends Component {
                     <Input
                       className="py8 px16 br4"
                       onChange={e => this.updateTags(e.target.value)}
-                      placeholder="Depression, Relationship, Bullying"
+                      placeholder="depression, relationships, covid-19"
                       type="text"
                       value={tagText}
                     />
