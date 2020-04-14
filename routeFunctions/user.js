@@ -83,7 +83,7 @@ const register = (req, res, next) => {
         user.email = email;
         user.password = user.generateHash(password);
         user.save((err, result) => {
-          if (!err && result) res.send({ success: true });
+          if (!err && result) res.send({ success: true, user: result });
           else res.send({ message: err, success: false });
         });
       });
