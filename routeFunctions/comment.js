@@ -17,6 +17,7 @@ const getAggregate = (match, userID) => [
       authorID: "$authorID",
       createdAt: "$createdAt",
       hasLiked: { $in: [userID, "$upVotes"] },
+      problemID: "$problemID",
       text: "$text",
       upVotes: { $size: "$upVotes" }
     }
