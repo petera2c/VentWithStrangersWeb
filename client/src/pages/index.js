@@ -22,6 +22,7 @@ import HotTagsPage from "./HotTags";
 import BlogPage from "./Blog";
 import CreateBlogPage from "./CreateBlog";
 import NotFoundPage from "./NotFound";
+import PrivacyPolicyPage from "./PrivacyPolicy";
 
 import { searchProblems } from "./Search/util";
 import { isMobileOrTablet } from "../util";
@@ -165,6 +166,7 @@ class Routes extends Component {
               <Route path="/problem/" component={ProblemPage} />
               <Route path="/blog/" component={BlogPage} />
               <Route path="/create-blog/" component={CreateBlogPage} />
+              <Route path="/privacy-policy/" component={PrivacyPolicyPage} />
               <Route component={NotFoundPage} />
             </Switch>
           </Container>
