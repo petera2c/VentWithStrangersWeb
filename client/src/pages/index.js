@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import moment from "moment-timezone";
 import { Route, Switch, withRouter } from "react-router-dom";
+import Cookies from "universal-cookie";
 
 import Consumer, { ExtraContext } from "../context";
 
@@ -10,6 +11,7 @@ import Container from "../components/containers/Container";
 
 import Header from "../components/Header";
 import MobileHeader from "../components/Header/MobileHeader";
+import CookiesComponent from "../components/Cookies";
 
 import AccountPage from "./Account";
 import NotificationsPage from "./Notifications";
@@ -33,9 +35,12 @@ import {
   initSocket
 } from "./util";
 
+const cookies = new Cookies();
+
 class Routes extends Component {
   state = {
-    databaseConnection: false
+    databaseConnection: false,
+    hasVisitedSite: cookies.get("hasVisitedSite")
   };
   componentDidMount() {
     const { handleChange, notify } = this.context;
@@ -123,7 +128,7 @@ class Routes extends Component {
     });
   };
   render() {
-    const { databaseConnection } = this.state;
+    const { databaseConnection, hasVisitedSite } = this.state;
     const { pathname } = this.props.location;
 
     if (!databaseConnection)
@@ -169,6 +174,14 @@ class Routes extends Component {
               <Route path="/privacy-policy/" component={PrivacyPolicyPage} />
               <Route component={NotFoundPage} />
             </Switch>
+            {!hasVisitedSite && (
+              <CookiesComponent
+                accept={() => {
+                  cookies.set("hasVisitedSite", true);
+                  this.setState({ hasVisitedSite: true });
+                }}
+              />
+            )}
           </Container>
         )}
       </Consumer>
