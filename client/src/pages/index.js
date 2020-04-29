@@ -42,6 +42,7 @@ class Routes extends Component {
     databaseConnection: false,
     hasVisitedSite: cookies.get("hasVisitedSite")
   };
+
   componentDidMount() {
     const { handleChange, notify } = this.context;
 

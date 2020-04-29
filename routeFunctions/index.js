@@ -41,10 +41,6 @@ module.exports = app => {
     problem.saveProblem(req, res)
   );
 
-  app.post("/api/problems", middleware, (req, res) =>
-    problem.getProblems(req, res)
-  );
-
   app.get("/api/tags/trending", middleware, (req, res) =>
     tag.getTrendingTags(req, res)
   );

@@ -22,6 +22,7 @@ const { getNotifications, readNotifications } = require("./notification");
 const {
   addUserToObject,
   getProblem,
+  getProblems,
   getUsersPosts,
   likeProblem,
   reportProblem,
@@ -44,6 +45,10 @@ module.exports = io => {
     socket.on("send_message", dataObj => sendMessage(dataObj, socket));
     socket.on("leave_chat", () => leaveChat(socket));
     socket.on("disconnecting", () => leaveChat(socket));
+
+    socket.on("get_problems", (dataObj, callback) =>
+      getProblems(callback, dataObj, socket)
+    );
 
     socket.on("search_tags", searchTags);
     socket.on("search_problems", searchProblems);

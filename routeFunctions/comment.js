@@ -68,6 +68,7 @@ const commentProblem = (
             (err, problem) =>
               commentPostNotification(problem, socket, userSockets)
           );
+          socket.to(problem._id).emit(problem._id + "_comment", {});
           callback({ comment, success: true });
         });
       else callback({ success: false });

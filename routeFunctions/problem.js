@@ -80,9 +80,12 @@ const getProblem = (id, callback, socket) => {
     });
 };
 
-const getProblems = (req, res) => {
-  const { page, skip = 0, tags = [] } = req.body;
-  const match = { $expr: { $not: { $in: [req.user._id, "$reports.userID"] } } };
+const getProblems = (callback, dataObj, socket) => {
+  const { page, skip = 0, tags = [] } = dataObj;
+  const userID = socket.request.user._id;
+  const match = {
+    $expr: { $not: { $in: [userID, "$reports.userID"] } }
+  };
   const sort = {};
 
   if (page === "popular") sort.upVotes = -1;
@@ -95,20 +98,26 @@ const getProblems = (req, res) => {
   if (tags.length !== 0) match.tags = { $elemMatch: { name: { $all: tags } } };
 
   Problem.aggregate(
-    getAggregate(skip, sort, match, req.user._id),
+    getAggregate(skip, sort, match, userID),
     (err, problems) => {
       if (problems) {
         if (problems && problems.length === 0) {
-          return returnProblemsFunction(undefined, [], res);
-        } else
+          return returnProblemsFunction(callback, undefined, []);
+        } else {
+          for (let index in problems) {
+            socket.join(problems[index]._id);
+          }
+
           return addUserToObject(
-            problems => returnProblemsFunction(err, problems, res),
+            problems => returnProblemsFunction(callback, err, problems),
             problems
           );
-      } else res.send({ success: false });
+        }
+      } else callback({ success: false });
     }
   );
 };
+
 const getUsersPosts = (dataObj, callback, socket) => {
   const { searchID, skip = 0 } = dataObj;
 
@@ -134,7 +143,6 @@ const getUsersPosts = (dataObj, callback, socket) => {
 
 const likeProblem = (problemID, callback, socket, userSockets) => {
   const userID = socket.request.user._id;
-
   Problem.findById(
     problemID,
     { authorID: 1, dailyUpvotes: 1, title: 1, upVotes: 1 },
@@ -150,6 +158,11 @@ const likeProblem = (problemID, callback, socket, userSockets) => {
           problem.dailyUpvotes += 1;
           problem.upVotes.unshift(userID);
           problem.save((err, problem) => {
+            socket.to(problem._id).emit(problem._id + "_like", {
+              dailyUpvotes: problem.dailyUpvotes,
+              upVotes: problem.upVotes.length
+            });
+
             likeProblemNotification(problem, socket, userSockets);
             callback({ success: true });
           });
@@ -188,9 +201,9 @@ const resetDailyUpvotes = () => {
   });
 };
 
-const returnProblemsFunction = (err, problems, res) => {
-  if (!err && problems) res.send({ problems, success: true });
-  else res.send({ success: false });
+const returnProblemsFunction = (callback, err, problems) => {
+  if (!err && problems) callback({ problems, success: true });
+  else callback({ success: false });
 };
 
 const saveProblem = (req, res) => {
@@ -342,6 +355,10 @@ const unlikeProblem = (problemID, callback, socket) => {
         problem.dailyUpvotes -= 1;
         problem.upVotes.splice(index, 1);
         problem.save((err, result) => {
+          socket.to(result._id).emit(result._id + "_unlike", {
+            dailyUpvotes: result.dailyUpvotes,
+            upVotes: result.upVotes.length
+          });
           callback({ success: true });
         });
       } else callback({ message: "You haven't liked post.", success: false });

@@ -59,16 +59,31 @@ class Problem extends Component {
     commentString: "",
     displayCommentField: this.props.displayCommentField,
     postOptions: false,
-    reportModal: false
+    reportModal: false,
+    problem: this.props.problem
   };
 
   componentDidMount() {
     this.ismounted = true;
-    const { displayCommentField } = this.props;
-    const { problem, problemIndex } = this.props; // Variables
+    const { socket } = this.context;
+    const { displayCommentField, problemIndex } = this.props; // Variables
+    let { problem } = this.state;
 
     if (displayCommentField)
       getProblemComments(this.context, problem, problemIndex);
+
+    socket.on(problem._id + "_like", obj => {
+      problem.upVotes = obj.upVotes;
+      problem.dailyUpvotes = obj.dailyUpvotes;
+
+      this.setState({ problem });
+    });
+    socket.on(problem._id + "_unlike", obj => {
+      problem.upVotes = obj.upVotes;
+      problem.dailyUpvotes = obj.dailyUpvotes;
+
+      this.setState({ problem });
+    });
   }
   componentWillUnmount() {
     this.ismounted = false;
@@ -82,14 +97,14 @@ class Problem extends Component {
       commentString,
       displayCommentField,
       postOptions,
-      reportModal
+      reportModal,
+      problem
     } = this.state;
     const { history, location } = this.props; // Functions
     const { pathname } = location;
     const {
       disablePostOnClick,
       previewMode,
-      problem,
       problemIndex,
       searchPreviewMode
     } = this.props; // Variables

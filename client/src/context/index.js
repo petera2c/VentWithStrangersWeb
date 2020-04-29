@@ -42,7 +42,7 @@ class GIProvider extends Component {
   };
 
   getProblems = (pathname, search) => {
-    const { skip } = this.state;
+    const { skip, socket } = this.state;
     let tagTemp = "";
     let tags = [];
 
@@ -57,14 +57,15 @@ class GIProvider extends Component {
       if (tagTemp) tags.push(tagTemp);
     }
 
-    axios
-      .post("/api/problems", {
+    socket.emit(
+      "get_problems",
+      {
         page: pathname.slice(1, pathname.length),
         skip,
         tags
-      })
-      .then(res => {
-        const { problems, success } = res.data;
+      },
+      returnObj => {
+        const { problems, success } = returnObj;
         let newProblems = problems;
         let canLoadMorePosts = true;
 
@@ -80,7 +81,8 @@ class GIProvider extends Component {
         else {
           // TODO: handle error
         }
-      });
+      }
+    );
   };
   handleChange = (stateObject, callback) => {
     if (this._ismounted) this.setState(stateObject, callback);
