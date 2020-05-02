@@ -28,19 +28,6 @@ class GIProvider extends Component {
   componentWillUnmount() {
     this._ismounted = false;
   }
-
-  addComment = (comment, problemIndex) => {
-    let { problems, user } = this.state;
-    comment.author = user.displayName;
-
-    if (!problems[problemIndex].commentsArray)
-      problems[problemIndex].commentsArray = [];
-
-    problems[problemIndex].commentsArray.unshift(comment);
-
-    this.handleChange({ problems });
-  };
-
   getProblems = (pathname, search) => {
     const { skip, socket } = this.state;
     let tagTemp = "";
@@ -106,11 +93,6 @@ class GIProvider extends Component {
 
     problems.splice(problemIndex, 1);
 
-    this.handleChange({ problems });
-  };
-  updateProblem = (problem, problemIndex) => {
-    let { problems } = this.state;
-    problems[problemIndex] = problem;
     this.handleChange({ problems });
   };
   render() {
