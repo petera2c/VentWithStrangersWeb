@@ -34,6 +34,7 @@ const commentProblem = (
   userSockets
 ) => {
   const userID = socket.request.user._id;
+  const userDisplayName = socket.request.user.displayName;
 
   if (!commentString.replace(/\s/g, "").length) {
     return callback({
@@ -68,8 +69,17 @@ const commentProblem = (
             (err, problem) =>
               commentPostNotification(problem, socket, userSockets)
           );
-          socket.to(problem._id).emit(problem._id + "_comment", {});
-          callback({ comment, success: true });
+          let leanComment = comment.toObject();
+          leanComment.author = userDisplayName;
+          leanComment.upVotes = comment.upVotes.length;
+
+          socket
+            .to(leanComment.problemID)
+            .emit(leanComment.problemID + "_comment", {
+              comment: leanComment
+            });
+
+          callback({ comment: leanComment, success: true });
         });
       else callback({ success: false });
     }
@@ -145,7 +155,21 @@ const likeComment = (dataObj, callback, socket, userSockets) => {
               likeCommentNotification(comment, problem, socket, userSockets);
             }
           );
-          callback({ success: true });
+
+          let leanComment = comment.toObject();
+          leanComment.upVotes = comment.upVotes.length;
+          leanComment.hasLiked = undefined;
+
+          socket
+            .to(comment.problemID)
+            .emit(comment.problemID + "_comment_like", {
+              comment: leanComment
+            });
+          leanComment.hasLiked = true;
+          callback({
+            comment: leanComment,
+            success: true
+          });
         });
       }
     } else callback({ message: "Comment not found.", success: false });
@@ -165,7 +189,20 @@ const unlikeComment = (dataObj, callback, socket) => {
         comment.dailyUpvotes -= 1;
         comment.upVotes.splice(index, 1);
         comment.save((err, result) => {
-          callback({ success: true });
+          let leanComment = comment.toObject();
+          leanComment.upVotes = comment.upVotes.length;
+          leanComment.hasLiked = undefined;
+
+          socket
+            .to(comment.problemID)
+            .emit(comment.problemID + "_comment_unlike", {
+              comment: leanComment
+            });
+          leanComment.hasLiked = false;
+          callback({
+            comment: leanComment,
+            success: true
+          });
         });
       } else
         callback({

@@ -20,6 +20,7 @@ import { likeComment, unlikeComment } from "./util";
 class Comment extends Component {
   render() {
     const { arrayLength, comment, index } = this.props; // Variables
+    const { updateCommentLikes } = this.props;
 
     return (
       <Container
@@ -63,8 +64,10 @@ class Comment extends Component {
             } mr4`}
             icon={comment.hasLiked ? faHeart2 : faHeart}
             onClick={() => {
-              if (comment.hasLiked) unlikeComment(this.context, comment, index);
-              else likeComment(this.context, comment, index);
+              if (comment.hasLiked)
+                unlikeComment(this.context, comment, index, updateCommentLikes);
+              else
+                likeComment(this.context, comment, index, updateCommentLikes);
             }}
           />
           <Text

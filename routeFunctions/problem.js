@@ -160,11 +160,17 @@ const likeProblem = (problemID, callback, socket, userSockets) => {
           problem.save((err, problem) => {
             socket.to(problem._id).emit(problem._id + "_like", {
               dailyUpvotes: problem.dailyUpvotes,
+              hasLiked: undefined,
               upVotes: problem.upVotes.length
             });
 
             likeProblemNotification(problem, socket, userSockets);
-            callback({ success: true });
+            callback({
+              dailyUpvotes: problem.dailyUpvotes,
+              hasLiked: true,
+              success: true,
+              upVotes: problem.upVotes.length
+            });
           });
         }
       } else callback({ message: "Problem not found.", success: false });
@@ -357,9 +363,15 @@ const unlikeProblem = (problemID, callback, socket) => {
         problem.save((err, result) => {
           socket.to(result._id).emit(result._id + "_unlike", {
             dailyUpvotes: result.dailyUpvotes,
+            hasLiked: undefined,
             upVotes: result.upVotes.length
           });
-          callback({ success: true });
+          callback({
+            dailyUpvotes: result.dailyUpvotes,
+            hasLiked: false,
+            success: true,
+            upVotes: result.upVotes.length
+          });
         });
       } else callback({ message: "You haven't liked post.", success: false });
     } else callback({ message: "Problem not found.", success: false });

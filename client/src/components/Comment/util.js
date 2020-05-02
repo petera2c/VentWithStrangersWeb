@@ -1,13 +1,14 @@
-export const likeComment = (context, comment, commentIndex, updateComment) => {
+export const likeComment = (
+  context,
+  comment,
+  commentIndex,
+  updateCommentLikes
+) => {
   context.socket.emit("like_comment", { commentID: comment._id }, returnObj => {
     const { message, success } = returnObj;
 
     if (success) {
-      comment.upVotes++;
-      comment.dailyUpvotes++;
-      comment.hasLiked = true;
-
-      context.handleChange({});
+      updateCommentLikes(commentIndex, returnObj);
     } else {
       context.notify({
         message,
@@ -20,7 +21,7 @@ export const unlikeComment = (
   context,
   comment,
   commentIndex,
-  updateComment
+  updateCommentLikes
 ) => {
   context.socket.emit(
     "unlike_comment",
@@ -29,11 +30,7 @@ export const unlikeComment = (
       const { message, success } = returnObj;
 
       if (success) {
-        comment.upVotes--;
-        comment.dailyUpvotes--;
-        comment.hasLiked = false;
-
-        context.handleChange({});
+        updateCommentLikes(commentIndex, returnObj);
       } else {
         context.notify({
           message,

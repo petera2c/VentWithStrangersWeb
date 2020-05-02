@@ -2,7 +2,7 @@ export const commentProblem = (
   commentString,
   context,
   problem1,
-  problemIndex
+  addComment
 ) => {
   context.socket.emit(
     "comment_problem",
@@ -10,32 +10,25 @@ export const commentProblem = (
     problem1._id,
     returnObj => {
       const { comment, message, success } = returnObj;
-      if (success) context.addComment(comment, problemIndex);
+      if (success) addComment({ comment });
       else context.notify({ message, type: "danger" });
     }
   );
 };
-export const getProblemComments = (context, problem, problemIndex) => {
+export const getProblemComments = (context, handleChange, problem) => {
   context.socket.emit("get_problem_comments", problem._id, returnObj => {
     const { comments, message, success } = returnObj;
 
-    if (success) {
-      problem.commentsArray = comments;
-    }
-
-    context.updateProblem(problem, problemIndex);
+    if (success) handleChange({ comments });
+    else context.notify({ message, type: "danger" });
   });
 };
-export const likeProblem = (context, problem, problemIndex) => {
+export const likeProblem = (context, problem, updateProblemLikes) => {
   context.socket.emit("like_problem", problem._id, returnObj => {
     const { message, success } = returnObj;
 
     if (success) {
-      problem.upVotes++;
-      problem.dailyUpvotes++;
-      problem.hasLiked = true;
-
-      context.updateProblem(problem, problemIndex);
+      updateProblemLikes(returnObj);
     } else {
       context.notify({
         message,
@@ -71,16 +64,17 @@ export const reportProblem = (
   );
 };
 
-export const unlikeProblem = (context, problem, problemIndex) => {
+export const unlikeProblem = (
+  context,
+  problem,
+  problemIndex,
+  updateProblemLikes
+) => {
   context.socket.emit("unlike_problem", problem._id, returnObj => {
     const { message, success } = returnObj;
 
     if (success) {
-      problem.upVotes--;
-      problem.dailyUpvotes--;
-      problem.hasLiked = false;
-
-      context.updateProblem(problem, problemIndex);
+      updateProblemLikes(returnObj);
     } else {
       context.notify({
         message,

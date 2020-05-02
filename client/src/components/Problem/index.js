@@ -70,19 +70,36 @@ class Problem extends Component {
     let { problem } = this.state;
 
     if (displayCommentField)
-      getProblemComments(this.context, problem, problemIndex);
+      getProblemComments(
+        this.context,
+        this.handleChange,
+        problem,
+        problemIndex
+      );
 
-    socket.on(problem._id + "_like", obj => {
-      problem.upVotes = obj.upVotes;
-      problem.dailyUpvotes = obj.dailyUpvotes;
+    socket.on(problem._id + "_like", obj => this.updateProblemLikes(obj));
+    socket.on(problem._id + "_unlike", obj => this.updateProblemLikes(obj));
 
-      this.setState({ problem });
+    socket.on(problem._id + "_comment", obj => this.addComment(obj));
+    socket.on(problem._id + "_comment_like", obj => {
+      const { comments } = this.state;
+      if (comments) {
+        const { comment } = obj;
+        const commentIndex = comments.findIndex(
+          commentObj => commentObj._id === comment._id
+        );
+        this.updateCommentLikes(commentIndex, obj);
+      }
     });
-    socket.on(problem._id + "_unlike", obj => {
-      problem.upVotes = obj.upVotes;
-      problem.dailyUpvotes = obj.dailyUpvotes;
-
-      this.setState({ problem });
+    socket.on(problem._id + "_comment_unlike", obj => {
+      const { comments } = this.state;
+      if (comments) {
+        const { comment } = obj;
+        const commentIndex = comments.findIndex(
+          commentObj => commentObj._id === comment._id
+        );
+        this.updateCommentLikes(commentIndex, obj);
+      }
     });
   }
   componentWillUnmount() {
@@ -92,8 +109,43 @@ class Problem extends Component {
     if (this.ismounted) this.setState(stateObj);
   };
 
+  addComment = returnObj => {
+    let { comments, problem } = this.state;
+    let { comment } = returnObj;
+    if (comment.hasLiked === undefined) comment.hasLiked = false;
+
+    if (!comments) comments = [];
+    comments.unshift(comment);
+    problem.commentsSize += 1;
+
+    this.handleChange({ comments, problem });
+  };
+
+  updateProblemLikes = updatetObj => {
+    let { problem } = this.state;
+
+    problem.upVotes = updatetObj.upVotes;
+    problem.dailyUpvotes = updatetObj.dailyUpvotes;
+    if (updatetObj.hasLiked !== undefined)
+      problem.hasLiked = updatetObj.hasLiked;
+
+    this.setState({ problem });
+  };
+
+  updateCommentLikes = (commentIndex, updatetObj) => {
+    const { comments } = this.state;
+    let comment = comments[commentIndex];
+
+    comment.upVotes = updatetObj.comment.upVotes;
+    if (updatetObj.comment.hasLiked !== undefined)
+      comment.hasLiked = updatetObj.comment.hasLiked;
+
+    this.setState({ comments });
+  };
+
   render() {
     const {
+      comments,
       commentString,
       displayCommentField,
       postOptions,
@@ -120,6 +172,7 @@ class Problem extends Component {
     let description = problem.description;
     if (previewMode && description.length > 240)
       description = description.slice(0, 240) + "... Read More";
+
     return (
       <Container className="x-fill column mb16">
         <Container className="x-fill column bg-white border-all2 mb8 br8">
@@ -263,7 +316,12 @@ class Problem extends Component {
                       displayCommentField: !displayCommentField
                     });
                     if (!displayCommentField)
-                      getProblemComments(this.context, problem, problemIndex);
+                      getProblemComments(
+                        this.context,
+                        this.handleChange,
+                        problem,
+                        problemIndex
+                      );
                   }}
                 />
                 <Text
@@ -279,8 +337,17 @@ class Problem extends Component {
                   onClick={e => {
                     e.preventDefault();
                     if (problem.hasLiked)
-                      unlikeProblem(this.context, problem, problemIndex);
-                    else likeProblem(this.context, problem, problemIndex);
+                      unlikeProblem(
+                        this.context,
+                        problem,
+                        this.updateProblemLikes
+                      );
+                    else
+                      likeProblem(
+                        this.context,
+                        problem,
+                        this.updateProblemLikes
+                      );
                   }}
                 />
                 <Text className="grey-5 mr16" text={problem.upVotes} type="p" />
@@ -301,9 +368,7 @@ class Problem extends Component {
             <Container
               className={
                 "x-fill " +
-                (problem.commentsArray && problem.commentsArray.length > 0
-                  ? "border-bottom"
-                  : "")
+                (comments && comments.length > 0 ? "border-bottom" : "")
               }
             >
               <Container className="x-fill column border-all2 py16 br8">
@@ -327,7 +392,7 @@ class Problem extends Component {
                           commentString,
                           this.context,
                           problem,
-                          problemIndex
+                          this.addComment
                         );
                         this.handleChange({ commentString: "" });
                       }}
@@ -338,21 +403,22 @@ class Problem extends Component {
               </Container>
             </Container>
           )}
-          {displayCommentField && problem.commentsArray && (
+          {displayCommentField && comments && (
             <Container className="column mb16">
               <Container className="column border-all2 br8">
-                {problem.commentsArray.map((comment, index) => (
+                {comments.map((comment, index) => (
                   <Comment
-                    arrayLength={problem.commentsArray.length}
+                    arrayLength={comments.length}
                     comment={comment}
                     key={index}
                     index={index}
+                    updateCommentLikes={this.updateCommentLikes}
                   />
                 ))}
               </Container>
             </Container>
           )}
-          {displayCommentField && !problem.commentsArray && (
+          {displayCommentField && !comments && (
             <Container className="x-fill full-center">
               <LoadingHeart />
             </Container>
