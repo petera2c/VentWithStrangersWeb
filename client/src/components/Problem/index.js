@@ -112,12 +112,12 @@ class Problem extends Component {
 
   addComment = returnObj => {
     let { comments, problem } = this.state;
-    let { comment } = returnObj;
+    let { comment, commentsSize } = returnObj;
     if (comment.hasLiked === undefined) comment.hasLiked = false;
 
     if (!comments) comments = [];
     comments.unshift(comment);
-    problem.commentsSize += 1;
+    problem.commentsSize = commentsSize;
 
     this.handleChange({ comments, problem });
   };

@@ -65,24 +65,32 @@ const commentProblem = (
         comment.save((err, comment) => {
           Problem.findById(
             problemID,
-            { authorID: 1, title: 1 },
-            (err, problem) =>
-              commentPostNotification(problem, socket, userSockets)
+            { authorID: 1, comments: 1, title: 1 },
+            (err, problem) => {
+              if (!problem.comments) {
+                console.log("Something wrong");
+                return;
+              }
+
+              let leanComment = comment.toObject();
+              leanComment.author = userDisplayName;
+              leanComment.upVotes = comment.upVotes.length;
+
+              socket
+                .to(leanComment.problemID)
+                .emit(leanComment.problemID + "_comment", {
+                  comment: leanComment,
+                  commentsSize: problem.comments.length
+                });
+
+              socket.emit(leanComment.problemID + "_comment", {
+                comment: leanComment,
+                commentsSize: problem.comments.length,
+                success: true
+              });
+              commentPostNotification(problem, socket, userSockets);
+            }
           );
-          let leanComment = comment.toObject();
-          leanComment.author = userDisplayName;
-          leanComment.upVotes = comment.upVotes.length;
-
-          socket
-            .to(leanComment.problemID)
-            .emit(leanComment.problemID + "_comment", {
-              comment: leanComment
-            });
-
-          socket.emit(leanComment.problemID + "_comment", {
-            comment: leanComment,
-            success: true
-          });
         });
       else callback({ success: false });
     }
