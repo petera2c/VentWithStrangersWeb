@@ -19,6 +19,7 @@ import Problem from "../../components/Problem";
 import LoadMoreProblems from "../../components/LoadMoreProblems";
 
 import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
+
 //People care and help is here. Vent in our anonymous forum or chat anonymously to be apart of a community committed to making the world a better place.
 class Problems extends Component {
   render() {

@@ -79,7 +79,10 @@ const commentProblem = (
               comment: leanComment
             });
 
-          callback({ comment: leanComment, success: true });
+          socket.emit(leanComment.problemID + "_comment", {
+            comment: leanComment,
+            success: true
+          });
         });
       else callback({ success: false });
     }
@@ -166,7 +169,7 @@ const likeComment = (dataObj, callback, socket, userSockets) => {
               comment: leanComment
             });
           leanComment.hasLiked = true;
-          callback({
+          socket.emit(comment.problemID + "_comment_like", {
             comment: leanComment,
             success: true
           });
@@ -199,7 +202,7 @@ const unlikeComment = (dataObj, callback, socket) => {
               comment: leanComment
             });
           leanComment.hasLiked = false;
-          callback({
+          socket.emit(comment.problemID + "_comment_unlike", {
             comment: leanComment,
             success: true
           });

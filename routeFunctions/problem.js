@@ -61,6 +61,10 @@ const getProblem = (id, callback, socket) => {
     Problem.aggregate(
       getAggregateSingle(socket.request.user._id, id),
       (err, problems) => {
+        for (let index in problems) {
+          socket.join(problems[index]._id);
+        }
+
         if (problems && problems.length !== 0)
           addUserToObject(
             problems => callback({ problems, success: true }),
@@ -128,6 +132,10 @@ const getUsersPosts = (dataObj, callback, socket) => {
       getAggregate(skip, { createdAt: -1 }, match, socket.request.user._id),
       (err, problems) => {
         if (problems) {
+          for (let index in problems) {
+            socket.join(problems[index]._id);
+          }
+
           if (problems.length === 0) callback({ problems, success: true });
           else
             addUserToObject(
@@ -164,13 +172,14 @@ const likeProblem = (problemID, callback, socket, userSockets) => {
               upVotes: problem.upVotes.length
             });
 
-            likeProblemNotification(problem, socket, userSockets);
-            callback({
+            socket.emit(problem._id + "_like", {
               dailyUpvotes: problem.dailyUpvotes,
               hasLiked: true,
               success: true,
               upVotes: problem.upVotes.length
             });
+
+            likeProblemNotification(problem, socket, userSockets);
           });
         }
       } else callback({ message: "Problem not found.", success: false });
@@ -366,7 +375,7 @@ const unlikeProblem = (problemID, callback, socket) => {
             hasLiked: undefined,
             upVotes: result.upVotes.length
           });
-          callback({
+          socket.emit(problem._id + "_unlike", {
             dailyUpvotes: result.dailyUpvotes,
             hasLiked: false,
             success: true,

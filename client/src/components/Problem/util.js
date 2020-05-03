@@ -10,8 +10,9 @@ export const commentProblem = (
     problem1._id,
     returnObj => {
       const { comment, message, success } = returnObj;
-      if (success) addComment({ comment });
-      else context.notify({ message, type: "danger" });
+      if (success) {
+        //addComment({ comment });
+      } else context.notify({ message, type: "danger" });
     }
   );
 };
@@ -28,7 +29,7 @@ export const likeProblem = (context, problem, updateProblemLikes) => {
     const { message, success } = returnObj;
 
     if (success) {
-      updateProblemLikes(returnObj);
+      //updateProblemLikes(returnObj);
     } else {
       context.notify({
         message,
@@ -69,7 +70,7 @@ export const unlikeProblem = (context, problem, updateProblemLikes) => {
     const { message, success } = returnObj;
 
     if (success) {
-      updateProblemLikes(returnObj);
+      //updateProblemLikes(returnObj);
     } else {
       context.notify({
         message,

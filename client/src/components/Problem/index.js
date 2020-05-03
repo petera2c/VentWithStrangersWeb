@@ -83,6 +83,7 @@ class Problem extends Component {
     socket.on(problem._id + "_comment", obj => this.addComment(obj));
     socket.on(problem._id + "_comment_like", obj => {
       const { comments } = this.state;
+
       if (comments) {
         const { comment } = obj;
         const commentIndex = comments.findIndex(

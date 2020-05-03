@@ -8,7 +8,7 @@ export const likeComment = (
     const { message, success } = returnObj;
 
     if (success) {
-      updateCommentLikes(commentIndex, returnObj);
+      //updateCommentLikes(commentIndex, returnObj);
     } else {
       context.notify({
         message,
@@ -30,7 +30,7 @@ export const unlikeComment = (
       const { message, success } = returnObj;
 
       if (success) {
-        updateCommentLikes(commentIndex, returnObj);
+        //updateCommentLikes(commentIndex, returnObj);
       } else {
         context.notify({
           message,
