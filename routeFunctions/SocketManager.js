@@ -2,8 +2,8 @@ const { searchTags } = require("./tag");
 const { updateUser } = require("./user");
 
 const {
-  commentProblem,
-  getProblemComments,
+  commentVent,
+  getVentComments,
   getUsersComments,
   likeComment,
   unlikeComment
@@ -22,12 +22,12 @@ const { getNotifications, readNotifications } = require("./notification");
 const {
   addUserToObject,
   getProblem,
-  getProblems,
+  getVents,
   getUsersPosts,
-  likeProblem,
-  reportProblem,
-  searchProblems,
-  unlikeProblem
+  likeVent,
+  reportVent,
+  searchVents,
+  unlikeVent
 } = require("./problem");
 
 const { getSettings, saveSettings } = require("./settings");
@@ -47,26 +47,26 @@ module.exports = io => {
     socket.on("disconnecting", () => leaveChat(socket));
 
     socket.on("get_problems", (dataObj, callback) =>
-      getProblems(callback, dataObj, socket)
+      getVents(callback, dataObj, socket)
     );
 
     socket.on("search_tags", searchTags);
-    socket.on("search_problems", searchProblems);
+    socket.on("search_problems", searchVents);
     socket.on("like_problem", (problemID, callback) =>
-      likeProblem(problemID, callback, socket, userSockets)
+      likeVent(problemID, callback, socket, userSockets)
     );
     socket.on("unlike_problem", (dataObj, callback) =>
-      unlikeProblem(dataObj, callback, socket)
+      unlikeVent(dataObj, callback, socket)
     );
     socket.on("report_problem", (dataObj, callback) =>
-      reportProblem(dataObj, callback, socket)
+      reportVent(dataObj, callback, socket)
     );
 
     socket.on("get_problem", (id, callback) =>
       getProblem(id, callback, socket)
     );
     socket.on("comment_problem", (commentString, problemID, callback) =>
-      commentProblem(commentString, problemID, callback, socket, userSockets)
+      commentVent(commentString, problemID, callback, socket, userSockets)
     );
     socket.on("like_comment", (dataObj, callback) =>
       likeComment(dataObj, callback, socket, userSockets)
@@ -75,7 +75,7 @@ module.exports = io => {
       unlikeComment(dataObj, callback, socket)
     );
     socket.on("get_problem_comments", (problemID, callback) =>
-      getProblemComments(problemID, callback, socket)
+      getVentComments(problemID, callback, socket)
     );
 
     socket.on("get_users_posts", (dataObj, callback) =>

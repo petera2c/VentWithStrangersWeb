@@ -16,17 +16,17 @@ import CookiesComponent from "../components/Cookies";
 import AccountPage from "./Account";
 import NotificationsPage from "./Notifications";
 import SearchPage from "./Search";
-import ProblemsPage from "./Problems";
+import VentsPage from "./Vents";
 import FindStrangerPage from "./FindStranger";
-import NewProblemPage from "./NewProblem";
-import ProblemPage from "./Problem";
+import NewVentPage from "./NewVent";
+import VentPage from "./Vent";
 import HotTagsPage from "./HotTags";
 import BlogPage from "./Blog";
 import CreateBlogPage from "./CreateBlog";
 import NotFoundPage from "./NotFound";
 import PrivacyPolicyPage from "./PrivacyPolicy";
 
-import { searchProblems } from "./Search/util";
+import { searchVents } from "./Search/util";
 import { isMobileOrTablet } from "../util";
 import {
   getNotifications,
@@ -72,10 +72,10 @@ class Routes extends Component {
   }
   getDataNeededForPage = (location, action, initialPageLoad) => {
     let { pathname, search } = location;
-    const { getProblems, handleChange, notify, socket } = this.context; // Functions
-    const { problems, skip, user } = this.context; // Variables
+    const { getVents, handleChange, notify, socket } = this.context; // Functions
+    const { vents, skip, user } = this.context; // Variables
 
-    handleChange({ problems: undefined, skip: 0 }, () => {
+    handleChange({ vents: undefined, skip: 0 }, () => {
       search = search.slice(1, search.length);
 
       if (
@@ -83,22 +83,14 @@ class Routes extends Component {
         pathname.substring(0, 7) === "/recent" ||
         pathname.substring(0, 9) === "/trending"
       )
-        getProblems(pathname, search);
-      else if (pathname === "/") getProblems("/trending", search);
+        getVents(pathname, search);
+      else if (pathname === "/") getVents("/trending", search);
       else if (pathname.substring(0, 5) === "/home")
-        getProblems("/trending", search);
+        getVents("/trending", search);
       else if (pathname === "/search")
-        searchProblems(handleChange, undefined, search, skip, socket);
+        searchVents(handleChange, undefined, search, skip, socket);
       else if (pathname === "/activity") {
-        getUsersPosts(
-          handleChange,
-          notify,
-          problems,
-          search,
-          skip,
-          socket,
-          user
-        );
+        getUsersPosts(handleChange, notify, vents, search, skip, socket, user);
         getUsersComments(handleChange, notify, search, socket, user);
       }
     });
@@ -162,14 +154,14 @@ class Routes extends Component {
               <Route path="/notifications/" component={NotificationsPage} />
               <Route path="/search/" component={SearchPage} />
               <Route path="/hot-tags/" component={HotTagsPage} />
-              <Route path="/" component={ProblemsPage} exact />
-              <Route path="/home/" component={ProblemsPage} />
-              <Route path="/trending/" component={ProblemsPage} />
-              <Route path="/recent/" component={ProblemsPage} />
-              <Route path="/popular/" component={ProblemsPage} />
+              <Route path="/" component={VentsPage} exact />
+              <Route path="/home/" component={VentsPage} />
+              <Route path="/trending/" component={VentsPage} />
+              <Route path="/recent/" component={VentsPage} />
+              <Route path="/popular/" component={VentsPage} />
               <Route path="/vent-to-a-stranger/" component={FindStrangerPage} />
-              <Route path="/post-a-problem/" component={NewProblemPage} />
-              <Route path="/problem/" component={ProblemPage} />
+              <Route path="/post-a-problem/" component={NewVentPage} />
+              <Route path="/problem/" component={VentPage} />
               <Route path="/blog/" component={BlogPage} />
               <Route path="/create-blog/" component={CreateBlogPage} />
               <Route path="/privacy-policy/" component={PrivacyPolicyPage} />

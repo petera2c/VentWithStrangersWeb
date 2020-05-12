@@ -1,35 +1,25 @@
-export const commentProblem = (
-  commentString,
-  context,
-  problem1,
-  addComment
-) => {
-  context.socket.emit(
-    "comment_problem",
-    commentString,
-    problem1._id,
-    returnObj => {
-      const { comment, message, success } = returnObj;
-      if (success) {
-        //addComment({ comment });
-      } else context.notify({ message, type: "danger" });
-    }
-  );
+export const commentVent = (commentString, context, vent, addComment) => {
+  context.socket.emit("comment_problem", commentString, vent._id, returnObj => {
+    const { comment, message, success } = returnObj;
+    if (success) {
+      //addComment({ comment });
+    } else context.notify({ message, type: "danger" });
+  });
 };
-export const getProblemComments = (context, handleChange, problem) => {
-  context.socket.emit("get_problem_comments", problem._id, returnObj => {
+export const getVentComments = (context, handleChange, vent) => {
+  context.socket.emit("get_problem_comments", vent._id, returnObj => {
     const { comments, message, success } = returnObj;
 
     if (success) handleChange({ comments });
     else context.notify({ message, type: "danger" });
   });
 };
-export const likeProblem = (context, problem, updateProblemLikes) => {
-  context.socket.emit("like_problem", problem._id, returnObj => {
+export const likeVent = (context, vent, updateVentLikes) => {
+  context.socket.emit("like_problem", vent._id, returnObj => {
     const { message, success } = returnObj;
 
     if (success) {
-      //updateProblemLikes(returnObj);
+      //updateVentLikes(returnObj);
     } else {
       context.notify({
         message,
@@ -39,13 +29,13 @@ export const likeProblem = (context, problem, updateProblemLikes) => {
   });
 };
 
-export const reportProblem = (
+export const reportVent = (
   context,
   history,
   id,
   option,
   pathname,
-  problemIndex
+  ventIndex
 ) => {
   context.socket.emit(
     "report_problem",
@@ -55,7 +45,7 @@ export const reportProblem = (
 
       if (success && pathname.substring(0, 9) === "/problem/")
         history.push("/trending/reported");
-      else if (success) context.removeProblem(problemIndex);
+      else if (success) context.removeVent(ventIndex);
       else
         context.notify({
           message,
@@ -65,12 +55,12 @@ export const reportProblem = (
   );
 };
 
-export const unlikeProblem = (context, problem, updateProblemLikes) => {
-  context.socket.emit("unlike_problem", problem._id, returnObj => {
+export const unlikeVent = (context, vent, updateVentLikes) => {
+  context.socket.emit("unlike_problem", vent._id, returnObj => {
     const { message, success } = returnObj;
 
     if (success) {
-      //updateProblemLikes(returnObj);
+      //updateVentLikes(returnObj);
     } else {
       context.notify({
         message,

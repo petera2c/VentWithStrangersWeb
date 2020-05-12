@@ -12,10 +12,10 @@ import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
 import HotTags from "../../components/HotTags";
 import Filters from "../../components/Filters";
-import Problem from "../../components/Problem";
-import LoadMoreProblems from "../../components/LoadMoreProblems";
+import Vent from "../../components/Vent";
+import LoadMoreVents from "../../components/LoadMoreVents";
 
-import { searchProblems } from "./util";
+import { searchVents } from "./util";
 import { isMobileOrTablet } from "../../util";
 
 class SearchPage extends Component {
@@ -45,26 +45,26 @@ class SearchPage extends Component {
                 <Filters />
               </Container>
 
-              {context.problems && (
+              {context.vents && (
                 <Container className="x-fill column">
-                  {context.problems &&
-                    context.problems.map((problem, index) => (
-                      <Problem
+                  {context.vents &&
+                    context.vents.map((Vent, index) => (
+                      <Vent
                         key={index}
                         previewMode={true}
-                        problem={problem}
-                        problemIndex={index}
+                        Vent={Vent}
+                        ventIndex={index}
                         searchPreviewMode={true}
                       />
                     ))}
                   {context.canLoadMorePosts && (
-                    <LoadMoreProblems
+                    <LoadMoreVents
                       canLoadMorePosts={context.canLoadMorePosts}
                       loadMore={() => {
                         context.handleChange({ skip: context.skip + 10 }, () =>
-                          searchProblems(
+                          searchVents(
                             context.handleChange,
-                            context.problems,
+                            context.vents,
                             search,
                             context.skip + 10,
                             context.socket
@@ -75,9 +75,9 @@ class SearchPage extends Component {
                   )}
                 </Container>
               )}
-              {!context.problems && <LoadingHeart />}
-              {context.problems && context.problems.length === 0 && (
-                <Text className="fw-400" text="No problems found." type="h4" />
+              {!context.vents && <LoadingHeart />}
+              {context.vents && context.vents.length === 0 && (
+                <Text className="fw-400" text="No vents found." type="h4" />
               )}
             </Container>
           </Page>

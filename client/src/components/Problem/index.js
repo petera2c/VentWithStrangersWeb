@@ -30,11 +30,11 @@ import {
   isMobileOrTablet
 } from "../../util";
 import {
-  commentProblem,
-  getProblemComments,
-  likeProblem,
-  reportProblem,
-  unlikeProblem
+  commentVent,
+  getVentComments,
+  likeVent,
+  reportVent,
+  unlikeVent
 } from "./util";
 
 class SmartLink extends Component {
@@ -53,35 +53,30 @@ class SmartLink extends Component {
   }
 }
 
-class Problem extends Component {
+class Vent extends Component {
   state = {
     comments: undefined,
     commentString: "",
     displayCommentField: this.props.displayCommentField,
     postOptions: false,
     reportModal: false,
-    problem: this.props.problem
+    vent: this.props.vent
   };
 
   componentDidMount() {
     this.ismounted = true;
     const { socket } = this.context;
-    const { displayCommentField, problemIndex } = this.props; // Variables
-    let { problem } = this.state;
+    const { displayCommentField, ventIndex } = this.props; // Variables
+    let { vent } = this.state;
 
     if (displayCommentField)
-      getProblemComments(
-        this.context,
-        this.handleChange,
-        problem,
-        problemIndex
-      );
+      getVentComments(this.context, this.handleChange, vent, ventIndex);
 
-    socket.on(problem._id + "_like", obj => this.updateProblemLikes(obj));
-    socket.on(problem._id + "_unlike", obj => this.updateProblemLikes(obj));
+    socket.on(vent._id + "_like", obj => this.updateVentLikes(obj));
+    socket.on(vent._id + "_unlike", obj => this.updateVentLikes(obj));
 
-    socket.on(problem._id + "_comment", obj => this.addComment(obj));
-    socket.on(problem._id + "_comment_like", obj => {
+    socket.on(vent._id + "_comment", obj => this.addComment(obj));
+    socket.on(vent._id + "_comment_like", obj => {
       const { comments } = this.state;
 
       if (comments) {
@@ -92,7 +87,7 @@ class Problem extends Component {
         this.updateCommentLikes(commentIndex, obj);
       }
     });
-    socket.on(problem._id + "_comment_unlike", obj => {
+    socket.on(vent._id + "_comment_unlike", obj => {
       const { comments } = this.state;
       if (comments) {
         const { comment } = obj;
@@ -111,26 +106,25 @@ class Problem extends Component {
   };
 
   addComment = returnObj => {
-    let { comments, problem } = this.state;
+    let { comments, vent } = this.state;
     let { comment, commentsSize } = returnObj;
     if (comment.hasLiked === undefined) comment.hasLiked = false;
 
     if (!comments) comments = [];
     comments.unshift(comment);
-    problem.commentsSize = commentsSize;
+    vent.commentsSize = commentsSize;
 
-    this.handleChange({ comments, problem });
+    this.handleChange({ comments, vent });
   };
 
-  updateProblemLikes = updatetObj => {
-    let { problem } = this.state;
+  updateVentLikes = updatetObj => {
+    let { vent } = this.state;
 
-    problem.upVotes = updatetObj.upVotes;
-    problem.dailyUpvotes = updatetObj.dailyUpvotes;
-    if (updatetObj.hasLiked !== undefined)
-      problem.hasLiked = updatetObj.hasLiked;
+    vent.upVotes = updatetObj.upVotes;
+    vent.dailyUpvotes = updatetObj.dailyUpvotes;
+    if (updatetObj.hasLiked !== undefined) vent.hasLiked = updatetObj.hasLiked;
 
-    this.setState({ problem });
+    this.setState({ vent });
   };
 
   updateCommentLikes = (commentIndex, updatetObj) => {
@@ -151,26 +145,26 @@ class Problem extends Component {
       displayCommentField,
       postOptions,
       reportModal,
-      problem
+      vent
     } = this.state;
     const { history, location } = this.props; // Functions
     const { pathname } = location;
     const {
       disablePostOnClick,
       previewMode,
-      problemIndex,
+      ventIndex,
       searchPreviewMode
     } = this.props; // Variables
 
     let keywords = "";
-    for (let index in problem.tags) {
+    for (let index in vent.tags) {
       if (index !== 0) keywords += ",";
-      keywords += problem.tags[index];
+      keywords += vent.tags[index];
     }
 
-    let title = problem.title;
+    let title = vent.title;
 
-    let description = problem.description;
+    let description = vent.description;
     if (previewMode && description.length > 240)
       description = description.slice(0, 240) + "... Read More";
 
@@ -185,9 +179,9 @@ class Problem extends Component {
             disablePostOnClick={disablePostOnClick}
             to={
               "/problem/" +
-              problem._id +
+              vent._id +
               "/" +
-              problem.title
+              vent.title
                 .replace(/[^a-zA-Z ]/g, "")
                 .replace(/ /g, "-")
                 .toLowerCase()
@@ -198,25 +192,25 @@ class Problem extends Component {
               onClick={e => {
                 e.preventDefault();
 
-                history.push("/activity?" + problem.authorID);
+                history.push("/activity?" + vent.authorID);
               }}
             >
               <Container className="full-center">
                 <Text
                   className="round-icon bg-blue white mr8"
-                  text={capitolizeFirstChar(problem.author[0])}
+                  text={capitolizeFirstChar(vent.author[0])}
                   type="h6"
                 />
                 <Text
                   className="button-1 fw-400"
-                  text={capitolizeFirstChar(problem.author)}
+                  text={capitolizeFirstChar(vent.author)}
                   type="h5"
                 />
               </Container>
             </Container>
             <Container className="relative flex-fill align-center justify-end">
               <Container className="flex-fill wrap justify-end">
-                {problem.tags.map((tag, index) => (
+                {vent.tags.map((tag, index) => (
                   <Text
                     className="button-1 clickable mr8"
                     key={index}
@@ -253,7 +247,7 @@ class Problem extends Component {
                 }}
               >
                 <Container className="column x-fill bg-white border-all2 border-all px16 py8 br8">
-                  {false && problem.wasCreatedByUser && (
+                  {false && vent.wasCreatedByUser && (
                     <Container className="button-7 clickable align-center mb4">
                       <FontAwesomeIcon className="mr8" icon={faEdit} />
                       Edit Post
@@ -281,9 +275,9 @@ class Problem extends Component {
             disablePostOnClick={disablePostOnClick}
             to={
               "/problem/" +
-              problem._id +
+              vent._id +
               "/" +
-              problem.title
+              vent.title
                 .replace(/[^a-zA-Z ]/g, "")
                 .replace(/ /g, "-")
                 .toLowerCase()
@@ -317,47 +311,34 @@ class Problem extends Component {
                       displayCommentField: !displayCommentField
                     });
                     if (!displayCommentField)
-                      getProblemComments(
+                      getVentComments(
                         this.context,
                         this.handleChange,
-                        problem,
-                        problemIndex
+                        vent,
+                        ventIndex
                       );
                   }}
                 />
-                <Text
-                  className="blue mr8"
-                  text={problem.commentsSize}
-                  type="p"
-                />
+                <Text className="blue mr8" text={vent.commentsSize} type="p" />
                 <FontAwesomeIcon
                   className={`clickable heart ${
-                    problem.hasLiked ? "red" : "grey-5"
+                    vent.hasLiked ? "red" : "grey-5"
                   } mr4`}
-                  icon={problem.hasLiked ? faHeart2 : faHeart}
+                  icon={vent.hasLiked ? faHeart2 : faHeart}
                   onClick={e => {
                     e.preventDefault();
-                    if (problem.hasLiked)
-                      unlikeProblem(
-                        this.context,
-                        problem,
-                        this.updateProblemLikes
-                      );
-                    else
-                      likeProblem(
-                        this.context,
-                        problem,
-                        this.updateProblemLikes
-                      );
+                    if (vent.hasLiked)
+                      unlikeVent(this.context, vent, this.updateVentLikes);
+                    else likeVent(this.context, vent, this.updateVentLikes);
                   }}
                 />
-                <Text className="grey-5 mr16" text={problem.upVotes} type="p" />
+                <Text className="grey-5 mr16" text={vent.upVotes} type="p" />
               </Container>
               <Container className="align-center">
                 <FontAwesomeIcon className="grey-5 mr8" icon={faClock} />
                 <Text
                   className="grey-5"
-                  text={moment(problem.createdAt)
+                  text={moment(vent.createdAt)
                     .subtract(1, "minute")
                     .fromNow()}
                   type="p"
@@ -389,10 +370,10 @@ class Problem extends Component {
                     <Button
                       className="button-2 px32 py8 br4"
                       onClick={() => {
-                        commentProblem(
+                        commentVent(
                           commentString,
                           this.context,
-                          problem,
+                          vent,
                           this.addComment
                         );
                         this.handleChange({ commentString: "" });
@@ -430,13 +411,13 @@ class Problem extends Component {
           <ReportModal
             close={() => this.handleChange({ reportModal: false })}
             submit={option =>
-              reportProblem(
+              reportVent(
                 this.context,
                 history,
-                problem._id,
+                vent._id,
                 option,
                 pathname,
-                problemIndex
+                ventIndex
               )
             }
           />
@@ -446,6 +427,6 @@ class Problem extends Component {
   }
 }
 
-Problem.contextType = ExtraContext;
+Vent.contextType = ExtraContext;
 
-export default withRouter(Problem);
+export default withRouter(Vent);

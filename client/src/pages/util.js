@@ -28,7 +28,7 @@ export const getUsersComments = (
 export const getUsersPosts = (
   handleChange,
   notify,
-  oldProblems,
+  oldVents,
   search,
   skip,
   socket,
@@ -39,13 +39,13 @@ export const getUsersPosts = (
 
   socket.emit("get_users_posts", { searchID, skip }, result => {
     const { message, problems, success } = result;
-    let newProblems = problems;
+    let newVents = problems;
     let canLoadMorePosts = true;
 
-    if (problems && problems.length < 10) canLoadMorePosts = false;
-    if (skip && oldProblems) newProblems = oldProblems.concat(newProblems);
+    if (newVents && newVents.length < 10) canLoadMorePosts = false;
+    if (skip && oldVents) newVents = oldVents.concat(newVents);
 
-    handleChange({ canLoadMorePosts, problems: newProblems });
+    handleChange({ canLoadMorePosts, vents: newVents });
   });
 };
 

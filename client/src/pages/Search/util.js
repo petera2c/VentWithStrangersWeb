@@ -1,18 +1,18 @@
-export const searchProblems = (
+export const searchVents = (
   handleChange,
-  oldProblems,
+  oldVents,
   searchPostString,
   skip,
   socket
 ) => {
-  socket.emit("search_problems", { searchPostString, skip }, problems => {
-    let newProblems = problems;
+  socket.emit("search_problems", { searchPostString, skip }, vents => {
+    let newVents = vents;
     let canLoadMorePosts = true;
 
-    if (skip && oldProblems) newProblems = oldProblems.concat(newProblems);
+    if (skip && oldVents) newVents = oldVents.concat(newVents);
 
-    if (problems && problems.length < 10) canLoadMorePosts = false;
+    if (newVents && newVents.length < 10) canLoadMorePosts = false;
 
-    handleChange({ canLoadMorePosts, problems: newProblems });
+    handleChange({ canLoadMorePosts, vents: newVents });
   });
 };

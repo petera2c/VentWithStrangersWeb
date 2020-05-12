@@ -3,7 +3,7 @@ const Problem = require("../models/Problem");
 const User = require("../models/User");
 const Tag = require("../models/Tag");
 
-const { likeProblemNotification } = require("./notification");
+const { likeVentNotification } = require("./notification");
 
 const project = userID => {
   return {
@@ -84,7 +84,7 @@ const getProblem = (id, callback, socket) => {
     });
 };
 
-const getProblems = (callback, dataObj, socket) => {
+const getVents = (callback, dataObj, socket) => {
   const { page, skip = 0, tags = [] } = dataObj;
   const userID = socket.request.user._id;
   const match = {
@@ -149,7 +149,7 @@ const getUsersPosts = (dataObj, callback, socket) => {
     return callback({ message: "Invalid ID.", problems: [], success: false });
 };
 
-const likeProblem = (problemID, callback, socket, userSockets) => {
+const likeVent = (problemID, callback, socket, userSockets) => {
   const userID = socket.request.user._id;
   Problem.findById(
     problemID,
@@ -179,7 +179,7 @@ const likeProblem = (problemID, callback, socket, userSockets) => {
               upVotes: problem.upVotes.length
             });
 
-            likeProblemNotification(problem, socket, userSockets);
+            likeVentNotification(problem, socket, userSockets);
           });
         }
       } else callback({ message: "Problem not found.", success: false });
@@ -187,7 +187,7 @@ const likeProblem = (problemID, callback, socket, userSockets) => {
   );
 };
 
-const reportProblem = (dataObj, callback, socket) => {
+const reportVent = (dataObj, callback, socket) => {
   const userID = socket.request.user._id;
   const { option, problemID } = dataObj;
 
@@ -221,7 +221,7 @@ const returnProblemsFunction = (callback, err, problems) => {
   else callback({ success: false });
 };
 
-const saveProblem = (req, res) => {
+const saveVent = (req, res) => {
   const { description, gender, tags, title } = req.body;
 
   let counter = 0;
@@ -322,7 +322,7 @@ const saveProblem = (req, res) => {
     }
   else saveNewProblem(description, gender, undefined, title);
 };
-const searchProblems = (dataObj, callback) => {
+const searchVents = (dataObj, callback) => {
   let { searchPostString = "" } = dataObj;
   const { skip = 0 } = dataObj;
 
@@ -358,7 +358,7 @@ const searchProblems = (dataObj, callback) => {
   }
 };
 
-const unlikeProblem = (problemID, callback, socket) => {
+const unlikeVent = (problemID, callback, socket) => {
   const userID = socket.request.user._id;
 
   Problem.findById(problemID, (err, problem) => {
@@ -390,12 +390,12 @@ const unlikeProblem = (problemID, callback, socket) => {
 module.exports = {
   addUserToObject,
   getProblem,
-  getProblems,
+  getVents,
   getUsersPosts,
-  likeProblem,
-  reportProblem,
+  likeVent,
+  reportVent,
   resetDailyUpvotes,
-  saveProblem,
-  searchProblems,
-  unlikeProblem
+  saveVent,
+  searchVents,
+  unlikeVent
 };

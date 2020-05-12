@@ -153,7 +153,7 @@ const likeCommentNotification = (comment, problem, socket, userSockets) => {
   );
 };
 
-const likeProblemNotification = (problem, socket, userSockets) => {
+const likeVentNotification = (problem, socket, userSockets) => {
   const type = 3;
   const { user } = socket.request;
 
@@ -194,6 +194,6 @@ module.exports = {
   commentPostNotification,
   getNotifications,
   likeCommentNotification,
-  likeProblemNotification,
+  likeVentNotification,
   readNotifications
 };

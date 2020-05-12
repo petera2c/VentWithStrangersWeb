@@ -13,10 +13,10 @@ import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
 
-import Problem from "../../components/Problem";
+import Vent from "../../components/Vent";
 import Comment from "../../components/Comment";
 
-import LoadMoreProblems from "../../components/LoadMoreProblems";
+import LoadMoreVents from "../../components/LoadMoreVents";
 
 import { isMobileOrTablet } from "../../util";
 import { getUsersPosts } from "../util";
@@ -92,31 +92,27 @@ class ActivitySection extends Component {
             </Container>
             {postsSection && (
               <Container className="x-fill column">
-                {context.problems &&
-                  context.problems.map((problem, index) => (
-                    <Problem
+                {context.vents &&
+                  context.vents.map((vent, index) => (
+                    <Vent
                       key={index}
                       previewMode={true}
-                      problem={problem}
-                      problemIndex={index}
+                      vent={vent}
+                      ventIndex={index}
                     />
                   ))}
-                {context.problems && context.problems.length === 0 && (
-                  <Text
-                    className="fw-400"
-                    text="No problems found."
-                    type="h4"
-                  />
+                {context.vents && context.vents.length === 0 && (
+                  <Text className="fw-400" text="No vents found." type="h4" />
                 )}
                 {context.canLoadMorePosts && (
-                  <LoadMoreProblems
+                  <LoadMoreVents
                     canLoadMorePosts={context.canLoadMorePosts}
                     loadMore={() => {
                       context.handleChange({ skip: context.skip + 10 }, () => {
                         getUsersPosts(
                           context.handleChange,
                           context.notify,
-                          context.problems,
+                          context.vents,
                           search,
                           context.skip + 10,
                           context.socket,
@@ -150,7 +146,7 @@ class ActivitySection extends Component {
                 )}
               </Container>
             )}
-            {((!context.problems && postsSection) ||
+            {((!context.vents && postsSection) ||
               (!context.comments && !postsSection)) && (
               <Container className="x-fill full-center">
                 <LoadingHeart />

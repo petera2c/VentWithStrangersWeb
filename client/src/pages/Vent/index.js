@@ -5,7 +5,7 @@ import Consumer, { ExtraContext } from "../../context";
 
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
-import Problem from "../../components/Problem";
+import Vent from "../../components/Vent";
 
 import LoadingHeart from "../../components/loaders/Heart";
 
@@ -15,22 +15,22 @@ import Input from "../../components/views/Input";
 
 import { isMobileOrTablet } from "../../util";
 
-const getProblemIdFromURL = pathname => {
+const getVentIdFromURL = pathname => {
   // regular expression will not work due to catastrophic backtracing
   //pathname.match(/(?<=\/problem\/\s*).*?(?=\s*\/)/gs);
   if (pathname) {
-    const problemIdStart = pathname.slice(9, pathname.length);
-    let problemID = "";
-    for (let index in problemIdStart) {
-      if (problemIdStart[index] === "/") break;
-      problemID += problemIdStart[index];
+    const ventIdStart = pathname.slice(9, pathname.length);
+    let ventID = "";
+    for (let index in ventIdStart) {
+      if (ventIdStart[index] === "/") break;
+      ventID += ventIdStart[index];
     }
 
-    return problemID;
+    return ventID;
   }
 };
 
-class ProblemPage extends Component {
+class VentPage extends Component {
   componentDidMount() {
     this._ismounted = true;
 
@@ -38,17 +38,17 @@ class ProblemPage extends Component {
     const { handleChange, notify, socket } = this.context;
     const { pathname } = location;
 
-    const regexMatch = getProblemIdFromURL(pathname);
-    let problemID;
-    if (regexMatch) problemID = regexMatch;
+    const regexMatch = getVentIdFromURL(pathname);
+    let ventID;
+    if (regexMatch) ventID = regexMatch;
 
-    if (problemID)
-      socket.emit("get_problem", problemID, result => {
+    if (ventID)
+      socket.emit("get_problem", ventID, result => {
         const { message, problems, success } = result;
 
         if (success)
           handleChange({
-            problems
+            vents: problems
           });
         else if (message) notify({ message, type: "danger" });
         else
@@ -68,13 +68,13 @@ class ProblemPage extends Component {
     this._ismounted = false;
   }
   render() {
-    const { problems } = this.context;
+    const { vents } = this.context;
     let title = "";
     let description = "";
 
-    if (problems && problems[0] && problems[0].title) title = problems[0].title;
-    if (problems && problems[0] && problems[0].description)
-      description = problems[0].description;
+    if (vents && vents[0] && vents[0].title) title = vents[0].title;
+    if (vents && vents[0] && vents[0].description)
+      description = vents[0].description;
 
     return (
       <Page
@@ -84,7 +84,7 @@ class ProblemPage extends Component {
         title={title}
       >
         <Container className={isMobileOrTablet() ? "py16" : "py32"}>
-          {problems && (
+          {vents && (
             <Container
               className={
                 "column " +
@@ -93,20 +93,20 @@ class ProblemPage extends Component {
                   : "container large ")
               }
             >
-              <Problem
+              <Vent
                 disablePostOnClick={true}
                 displayCommentField
-                problem={problems[0]}
-                problemIndex={0}
+                vent={vents[0]}
+                ventIndex={0}
               />
             </Container>
           )}
-          {!problems && <LoadingHeart />}
+          {!vents && <LoadingHeart />}
         </Container>
       </Page>
     );
   }
 }
-ProblemPage.contextType = ExtraContext;
+VentPage.contextType = ExtraContext;
 
-export default ProblemPage;
+export default VentPage;

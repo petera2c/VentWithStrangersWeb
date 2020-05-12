@@ -15,18 +15,18 @@ import Text from "../../components/views/Text";
 import { getTextFromHtmlTag, isMobileOrTablet } from "../../util";
 import { createBlogDivs, createContentImagesArray } from "./util";
 
-const getProblemIdFromURL = pathname => {
+const getVentIdFromURL = pathname => {
   // regular expression will not work due to catastrophic backtracing
   //pathname.match(/(?<=\/problem\/\s*).*?(?=\s*\/)/gs);
   if (pathname) {
-    const problemIdStart = pathname.slice(6, pathname.length);
-    let problemID = "";
-    for (let index in problemIdStart) {
-      if (problemIdStart[index] === "/") break;
-      problemID += problemIdStart[index];
+    const ventIdStart = pathname.slice(6, pathname.length);
+    let ventID = "";
+    for (let index in ventIdStart) {
+      if (ventIdStart[index] === "/") break;
+      ventID += ventIdStart[index];
     }
 
-    return problemID;
+    return ventID;
   }
 };
 
@@ -41,7 +41,7 @@ class ViewWebsiteBlog extends Component {
     const { location } = this.props;
     const { pathname } = location;
 
-    const regexMatch = getProblemIdFromURL(pathname);
+    const regexMatch = getVentIdFromURL(pathname);
     let id;
     if (regexMatch) id = regexMatch;
 

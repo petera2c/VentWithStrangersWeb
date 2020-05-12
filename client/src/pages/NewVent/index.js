@@ -15,10 +15,10 @@ import Input from "../../components/views/Input";
 
 import Emoji from "../../components/Emoji";
 
-import { saveProblem } from "./util";
+import { saveVent } from "./util";
 import { isMobileOrTablet } from "../../util";
 
-class NewProblemPage extends Component {
+class NewVentPage extends Component {
   state = {
     description: "",
     gender: 0,
@@ -59,7 +59,7 @@ class NewProblemPage extends Component {
             className="column align-center bg-grey-2"
             description="You aren’t alone, and you should never feel alone. If you are feeling down, anonymously post your issue here. There is an entire community of people that want to help you."
             keywords=""
-            title="Post a Problem"
+            title="Post a Vent"
           >
             <Container
               className={
@@ -69,11 +69,7 @@ class NewProblemPage extends Component {
                   : "container large")
               }
             >
-              <Text
-                className="fw-600 mb16"
-                text="Post Your Problem"
-                type="h4"
-              />
+              <Text className="fw-600 mb16" text="Post Your Vent" type="h4" />
 
               <Container className="column bg-white border-all2 br8">
                 <Container className="column py32 px32 br4">
@@ -94,7 +90,7 @@ class NewProblemPage extends Component {
                   <Container className="column relative mb8">
                     <Text
                       className="fw-400 mb8"
-                      text="Tag this problem"
+                      text="Tag this vent"
                       type="h5"
                     />
 
@@ -173,15 +169,15 @@ class NewProblemPage extends Component {
                           if (description && title) {
                             this.handleChange({ saving: true });
 
-                            saveProblem(
-                              problem => {
+                            saveVent(
+                              vent => {
                                 this.handleChange({ saving: false });
                                 const { history } = this.props;
                                 history.push(
                                   "/problem/" +
-                                    problem._id +
+                                    vent._id +
                                     "/" +
-                                    problem.title
+                                    vent.title
                                       .replace(/[^a-zA-Z ]/g, "")
                                       .replace(/ /g, "-")
                                       .toLowerCase()
@@ -216,6 +212,6 @@ class NewProblemPage extends Component {
     );
   }
 }
-NewProblemPage.contextType = ExtraContext;
+NewVentPage.contextType = ExtraContext;
 
-export default NewProblemPage;
+export default NewVentPage;

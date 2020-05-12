@@ -40,11 +40,11 @@ class CreateWebsiteBlog extends Component {
       return history.push("/");
 
     const regexMatch = pathname.split("/create-blog/")[1];
-    let problemID;
-    if (regexMatch) problemID = regexMatch;
+    let ventID;
+    if (regexMatch) ventID = regexMatch;
 
-    if (problemID) {
-      axios.get("/api/blog/" + problemID).then(res => {
+    if (ventID) {
+      axios.get("/api/blog/" + ventID).then(res => {
         const { blog } = res.data;
         const { contentArray, images } = blog;
 

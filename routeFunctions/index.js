@@ -38,7 +38,7 @@ module.exports = app => {
     res.send({ success: true, user: req.user, port: process.env.PORT });
   });
   app.post("/api/new-problem", middleware, (req, res) =>
-    problem.saveProblem(req, res)
+    problem.saveVent(req, res)
   );
 
   app.get("/api/tags/trending", middleware, (req, res) =>

@@ -26,7 +26,7 @@ const getAggregate = (match, userID) => [
   { $limit: 10 }
 ];
 
-const commentProblem = (
+const commentVent = (
   commentString,
   problemID,
   callback,
@@ -97,7 +97,7 @@ const commentProblem = (
   );
 };
 
-const getProblemComments = (problemID, callback, socket) => {
+const getVentComments = (problemID, callback, socket) => {
   const userID = socket.request.user._id;
 
   Problem.findById(problemID, { comments: 1 }, (err, problem) => {
@@ -225,8 +225,8 @@ const unlikeComment = (dataObj, callback, socket) => {
 };
 
 module.exports = {
-  commentProblem,
-  getProblemComments,
+  commentVent,
+  getVentComments,
   getUsersComments,
   likeComment,
   unlikeComment

@@ -9,7 +9,7 @@ import LoadingHeart from "../loaders/Heart";
 import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
 
-class LoadMoreProblems extends Component {
+class LoadMoreVents extends Component {
   state = { hasScrolled: false };
   componentDidMount() {
     this._ismounted = true;
@@ -72,6 +72,6 @@ class LoadMoreProblems extends Component {
   }
 }
 
-LoadMoreProblems.contextType = ExtraContext;
+LoadMoreVents.contextType = ExtraContext;
 
-export default LoadMoreProblems;
+export default LoadMoreVents;

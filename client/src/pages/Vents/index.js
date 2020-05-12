@@ -15,15 +15,15 @@ import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
 import HotTags from "../../components/HotTags";
 import Filters from "../../components/Filters";
-import Problem from "../../components/Problem";
-import LoadMoreProblems from "../../components/LoadMoreProblems";
+import Vent from "../../components/Vent";
+import LoadMoreVents from "../../components/LoadMoreVents";
 
 import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
 
 //People care and help is here. Vent in our anonymous forum or chat anonymously to be apart of a community committed to making the world a better place.
-class Problems extends Component {
+class Vents extends Component {
   render() {
-    const { problems } = this.context;
+    const { vents } = this.context;
     const { location } = this.props;
     const { pathname, search } = location;
 
@@ -37,13 +37,13 @@ class Problems extends Component {
 
     if (pathname === "/popular")
       metaDescription =
-        "Problems and issues that have the most upvotes and comments of all time. Post, comment, and/or like anonymously.";
+        "Vents and issues that have the most upvotes and comments of all time. Post, comment, and/or like anonymously.";
     else if (pathname === "/recent")
       metaDescription =
-        "The latest problems and issues people have posted. Post, comment, and/or like anonymously.";
+        "The latest vents and issues people have posted. Post, comment, and/or like anonymously.";
     else if (pathname === "/trending")
       metaDescription =
-        "People’s problems and issues with the most upvotes in the past 24 hours. Post, comment, and/or like anonymously.";
+        "People’s vents and issues with the most upvotes in the past 24 hours. Post, comment, and/or like anonymously.";
 
     return (
       <Consumer>
@@ -83,44 +83,44 @@ class Problems extends Component {
                 <Container className="x-fill justify-between mb16">
                   <Text
                     className="primary fs-20"
-                    text={title + " Problems"}
+                    text={title + " Vents"}
                     type="h1"
                   />
                   <Filters />
                 </Container>
 
-                {problems && (
+                {vents && (
                   <Container className="x-fill column">
-                    {problems && problems.length === 0 && (
+                    {vents && vents.length === 0 && (
                       <Text
                         className="fw-400"
-                        text="No problems found."
+                        text="No vents found."
                         type="h4"
                       />
                     )}
-                    {context.problems &&
-                      context.problems.map((problem, index) => (
-                        <Problem
+                    {context.vents &&
+                      context.vents.map((vent, index) => (
+                        <Vent
                           key={index}
                           previewMode={true}
-                          problem={problem}
-                          problemIndex={index}
+                          vent={vent}
+                          ventIndex={index}
                         />
                       ))}
                     {context.canLoadMorePosts && (
-                      <LoadMoreProblems
+                      <LoadMoreVents
                         canLoadMorePosts={context.canLoadMorePosts}
                         loadMore={() => {
                           context.handleChange(
                             { skip: context.skip + 10 },
-                            () => context.getProblems(pathname, search)
+                            () => context.getVents(pathname, search)
                           );
                         }}
                       />
                     )}
                   </Container>
                 )}
-                {!problems && <LoadingHeart />}
+                {!vents && <LoadingHeart />}
               </Container>
 
               {!isMobileOrTablet() && (
@@ -128,7 +128,7 @@ class Problems extends Component {
                   <Container className="x-fill column align-start bg-white border-all2 pa16 mb16 br8">
                     <Link className="button-3 fs-18 mb16" to="/post-a-problem">
                       <FontAwesomeIcon className="mr8" icon={faPen} />
-                      Post a Problem
+                      Post a Vent
                     </Link>
                     <Link className="button-3 fs-18" to="/vent-to-a-stranger">
                       <FontAwesomeIcon className="mr8" icon={faComments} />
@@ -146,6 +146,6 @@ class Problems extends Component {
   }
 }
 
-Problems.contextType = ExtraContext;
+Vents.contextType = ExtraContext;
 
-export default withRouter(Problems);
+export default withRouter(Vents);

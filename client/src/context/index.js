@@ -17,10 +17,10 @@ class GIProvider extends Component {
       type: "danger"
     },
     notifications: [],
-    problems: undefined,
     saving: false,
     socket: undefined,
-    user: undefined
+    user: undefined,
+    vents: undefined
   };
   componentDidMount() {
     this._ismounted = true;
@@ -28,7 +28,7 @@ class GIProvider extends Component {
   componentWillUnmount() {
     this._ismounted = false;
   }
-  getProblems = (pathname, search) => {
+  getVents = (pathname, search) => {
     const { skip, socket } = this.state;
     let tagTemp = "";
     let tags = [];
@@ -53,17 +53,17 @@ class GIProvider extends Component {
       },
       returnObj => {
         const { problems, success } = returnObj;
-        let newProblems = problems;
+        let newVents = problems;
         let canLoadMorePosts = true;
 
-        if (problems && problems.length < 10) canLoadMorePosts = false;
-        if (skip && this.state.problems)
-          newProblems = this.state.problems.concat(newProblems);
+        if (newVents && newVents.length < 10) canLoadMorePosts = false;
+        if (skip && this.state.vents)
+          newVents = this.state.vents.concat(newVents);
 
         if (success)
           this.handleChange({
             canLoadMorePosts,
-            problems: newProblems
+            vents: newVents
           });
         else {
           // TODO: handle error
@@ -71,6 +71,7 @@ class GIProvider extends Component {
       }
     );
   };
+
   handleChange = (stateObject, callback) => {
     if (this._ismounted) this.setState(stateObject, callback);
   };
@@ -88,13 +89,15 @@ class GIProvider extends Component {
       }, 5000);
     }
   };
-  removeProblem = problemIndex => {
-    let { problems } = this.state;
 
-    problems.splice(problemIndex, 1);
+  removeVent = ventIndex => {
+    let { vents } = this.state;
 
-    this.handleChange({ problems });
+    vents.splice(ventIndex, 1);
+
+    this.handleChange({ vents });
   };
+
   render() {
     const {
       canLoadMorePosts,
@@ -103,10 +106,10 @@ class GIProvider extends Component {
       skip,
       notification,
       notifications,
-      problems,
       saving,
       socket,
-      user
+      user,
+      vents
     } = this.state;
 
     return (
@@ -115,18 +118,18 @@ class GIProvider extends Component {
           addComment: this.addComment,
           canLoadMorePosts,
           comments,
-          getProblems: this.getProblems,
+          getVents: this.getVents,
           handleChange: this.handleChange,
           hotTags,
           skip,
           notify: this.notify,
           notifications,
-          problems,
-          removeProblem: this.removeProblem,
+          removeVent: this.removeVent,
           saving,
           socket,
-          updateProblem: this.updateProblem,
-          user
+          updateVent: this.updateVent,
+          user,
+          vents
         }}
       >
         {this.props.children}
