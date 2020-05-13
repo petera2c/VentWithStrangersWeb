@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock } from "@fortawesome/pro-regular-svg-icons/faClock";
 import { faHeart } from "@fortawesome/pro-regular-svg-icons/faHeart";
 import { faHeart as faHeart2 } from "@fortawesome/pro-solid-svg-icons/faHeart";
-import { faComment } from "@fortawesome/pro-regular-svg-icons/faComment";
+import { faComment } from "@fortawesome/pro-light-svg-icons/faComment";
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 import { faEdit } from "@fortawesome/pro-light-svg-icons/faEdit";
 import { faExclamationTriangle } from "@fortawesome/pro-light-svg-icons/faExclamationTriangle";
@@ -318,20 +318,28 @@ class Vent extends Component {
                         ventIndex
                       );
                   }}
+                  size="2x"
                 />
                 <Text className="blue mr8" text={vent.commentsSize} type="p" />
-                <FontAwesomeIcon
+
+                <img
                   className={`clickable heart ${
                     vent.hasLiked ? "red" : "grey-5"
                   } mr4`}
-                  icon={vent.hasLiked ? faHeart2 : faHeart}
                   onClick={e => {
                     e.preventDefault();
                     if (vent.hasLiked)
                       unlikeVent(this.context, vent, this.updateVentLikes);
                     else likeVent(this.context, vent, this.updateVentLikes);
                   }}
+                  src={
+                    vent.hasLiked
+                      ? require("../../svgs/support-active.svg")
+                      : require("../../svgs/support.svg")
+                  }
+                  style={{ height: "32px" }}
                 />
+
                 <Text className="grey-5 mr16" text={vent.upVotes} type="p" />
               </Container>
               <Container className="align-center">

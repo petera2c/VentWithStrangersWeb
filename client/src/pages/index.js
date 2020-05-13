@@ -84,9 +84,9 @@ class Routes extends Component {
         pathname.substring(0, 9) === "/trending"
       )
         getVents(pathname, search);
-      else if (pathname === "/") getVents("/trending", search);
+      else if (pathname === "/") getVents("/recent", search);
       else if (pathname.substring(0, 5) === "/home")
-        getVents("/trending", search);
+        getVents("/recent", search);
       else if (pathname === "/search")
         searchVents(handleChange, undefined, search, skip, socket);
       else if (pathname === "/activity") {

@@ -86,7 +86,7 @@ class Header extends Component {
                 <img
                   alt=""
                   className="clickable"
-                  onClick={() => history.push("/trending")}
+                  onClick={() => history.push("/")}
                   src={require("../../svgs/icon.svg")}
                   style={{ height: "50px" }}
                 />
@@ -101,23 +101,23 @@ class Header extends Component {
                 <Link
                   className={
                     "button-3 py16 mr32 " +
-                    isPageActive("/trending", pathname.substring(0, 9)) +
+                    isPageActive("/recent", pathname.substring(0, 7)) +
                     isPageActive("/", pathname)
-                  }
-                  to="/trending"
-                >
-                  <FontAwesomeIcon className="mr8" icon={faAnalytics} />
-                  Trending
-                </Link>
-                <Link
-                  className={
-                    "button-3 py16 mr32 " +
-                    isPageActive("/recent", pathname.substring(0, 7))
                   }
                   to="/recent"
                 >
                   <FontAwesomeIcon className="mr8" icon={faConciergeBell} />
                   Recent
+                </Link>
+                <Link
+                  className={
+                    "button-3 py16 mr32 " +
+                    isPageActive("/trending", pathname.substring(0, 9))
+                  }
+                  to="/trending"
+                >
+                  <FontAwesomeIcon className="mr8" icon={faAnalytics} />
+                  Trending
                 </Link>
 
                 <Container className="border-all active py4 mr16 my16 br4">
