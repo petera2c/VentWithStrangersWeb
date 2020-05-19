@@ -32,6 +32,7 @@ import {
   getNotifications,
   getUsersComments,
   getUsersPosts,
+  initReceiveNotifications,
   initSocket
 } from "./util";
 
@@ -56,20 +57,20 @@ class Routes extends Component {
           this.getDataNeededForPage(this.props.location, undefined, true);
           stateObj.socket.emit("set_user_id");
           if (user.password) {
-            getNotifications(0, stateObj.socket);
-            this.initReceiveNotifications();
+            getNotifications(0, stateObj.socket, this.updateNotifications);
+            initReceiveNotifications(stateObj.socket, this.updateNotifications);
           }
         });
-      } else {
-        notify({ message, type: "danger" });
-      }
+      } else notify({ message, type: "danger" });
     });
 
     this.unlisten = this.props.history.listen(this.getDataNeededForPage);
   }
+
   componentWillUnmount() {
     this.unlisten();
   }
+
   getDataNeededForPage = (location, action, initialPageLoad) => {
     let { pathname, search } = location;
     const { getVents, handleChange, notify, socket } = this.context; // Functions
@@ -96,30 +97,27 @@ class Routes extends Component {
     });
   };
 
-  initReceiveNotifications = () => {
-    const { socket } = this.context;
-    socket.on("receive_new_notifications", dataObj => {
-      const { handleChange } = this.context; // Functions
-      const { notifications } = this.context; // Variables
-      const { newNotifications } = dataObj;
+  updateNotifications = newNotifications => {
+    const { handleChange } = this.context; // Functions
+    const { notifications } = this.context; // Variables
 
-      if (notifications.length > 0) {
-        if (newNotifications && newNotifications.length > 0) {
-          if (
-            moment(newNotifications[0].createdAt) <
-            moment(notifications[0].createdAt)
-          )
-            handleChange({
-              notifications: notifications.concat(newNotifications)
-            });
-          else
-            handleChange({
-              notifications: newNotifications.concat(notifications)
-            });
-        }
-      } else handleChange({ notifications: newNotifications });
-    });
+    if (notifications.length > 0) {
+      if (newNotifications && newNotifications.length > 0) {
+        if (
+          moment(newNotifications[0].createdAt) <
+          moment(notifications[0].createdAt)
+        )
+          handleChange({
+            notifications: notifications.concat(newNotifications)
+          });
+        else
+          handleChange({
+            notifications: newNotifications.concat(notifications)
+          });
+      }
+    } else handleChange({ notifications: newNotifications });
   };
+
   render() {
     const { databaseConnection, hasVisitedSite } = this.state;
     const { pathname } = this.props.location;

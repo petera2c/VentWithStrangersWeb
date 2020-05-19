@@ -95,8 +95,8 @@ module.exports = io => {
       saveSettings(dataObj, callback, socket)
     );
 
-    socket.on("get_notifications", dataObj =>
-      getNotifications(dataObj, socket)
+    socket.on("get_notifications", (dataObj, callback) =>
+      getNotifications(dataObj, callback, socket)
     );
     socket.on("read_notifications", callback =>
       readNotifications(callback, socket)

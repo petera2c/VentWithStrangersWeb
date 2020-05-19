@@ -32,13 +32,13 @@ const getProblemLink = problem => {
   );
 };
 
-const getNotifications = (dataObj, socket) => {
+const getNotifications = (dataObj, callback, socket) => {
   const userID = socket.request.user._id;
   const { skip } = dataObj;
 
   Notification.find({ receiverID: userID }, (err, notifications) => {
     if (notifications)
-      socket.emit("receive_new_notifications", {
+      callback({
         newNotifications: notifications
       });
   })

@@ -1,7 +1,11 @@
 import io from "socket.io-client";
 
-export const getNotifications = (skip, socket) => {
-  socket.emit("get_notifications", { skip });
+export const getNotifications = (skip, socket, updateNotifications) => {
+  socket.emit("get_notifications", { skip }, dataObj => {
+    const { newNotifications } = dataObj;
+
+    updateNotifications(newNotifications);
+  });
 };
 
 export const getUsersComments = (
@@ -56,4 +60,12 @@ export const initSocket = callback => {
   else socket = io();
 
   callback({ socket });
+};
+
+export const initReceiveNotifications = (socket, updateNotifications) => {
+  socket.on("receive_new_notifications", dataObj => {
+    const { newNotifications } = dataObj;
+
+    updateNotifications(newNotifications);
+  });
 };
