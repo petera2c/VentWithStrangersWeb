@@ -36,6 +36,8 @@ const getNotifications = (dataObj, callback, socket) => {
   const userID = socket.request.user._id;
   const { skip } = dataObj;
 
+  socket.join(userID);
+
   Notification.find({ receiverID: userID }, (err, notifications) => {
     if (notifications)
       callback({
@@ -80,9 +82,9 @@ const saveNotification = (
   objectID,
   receiverID,
   senderID,
+  socket,
   title,
-  type,
-  userSockets
+  type
 ) => {
   if (receiverID && senderID && String(receiverID) !== String(senderID))
     Settings.findOne({ userID: receiverID }, (err, settings) => {
@@ -98,10 +100,15 @@ const saveNotification = (
           type
         }).save((err, notification) => {
           if (notification) {
-            if (userSockets[receiverID])
-              userSockets[receiverID].emit("receive_new_notifications", {
+            socket
+              .to(receiverID)
+              .emit(receiverID + "_receive_new_notifications", {
                 newNotifications: [notification]
               });
+            socket.emit(receiverID + "_receive_new_notifications", {
+              newNotifications: [notification]
+            });
+
             if (receiverUser && receiverUser.email) {
               if (
                 (type === 1 && settings.postCommented) ||
@@ -121,7 +128,7 @@ const saveNotification = (
     });
 };
 
-const commentPostNotification = (problem, socket, userSockets) => {
+const commentPostNotification = (problem, socket) => {
   const type = 1;
   const { user } = socket.request;
 
@@ -131,13 +138,13 @@ const commentPostNotification = (problem, socket, userSockets) => {
     problem._id,
     problem.authorID,
     user._id,
+    socket,
     getNotificationTitle(type),
-    type,
-    userSockets
+    type
   );
 };
 
-const likeCommentNotification = (comment, problem, socket, userSockets) => {
+const likeCommentNotification = (comment, problem, socket) => {
   const type = 2;
   const { user } = socket.request;
 
@@ -147,13 +154,13 @@ const likeCommentNotification = (comment, problem, socket, userSockets) => {
     problem._id,
     comment.authorID,
     user._id,
+    socket,
     getNotificationTitle(type),
-    type,
-    userSockets
+    type
   );
 };
 
-const likeVentNotification = (problem, socket, userSockets) => {
+const likeVentNotification = (problem, socket) => {
   const type = 3;
   const { user } = socket.request;
 
@@ -163,9 +170,9 @@ const likeVentNotification = (problem, socket, userSockets) => {
     problem._id,
     problem.authorID,
     user._id,
+    socket,
     getNotificationTitle(type),
-    type,
-    userSockets
+    type
   );
 };
 

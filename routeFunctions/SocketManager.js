@@ -33,11 +33,7 @@ const {
 const { getSettings, saveSettings } = require("./settings");
 
 module.exports = io => {
-  var userSockets = [];
   return socket => {
-    socket.on("set_user_id", () => {
-      userSockets[socket.request.user._id] = socket;
-    });
     socket.on("get_users_waiting", getUsersWaiting);
     socket.on("find_conversation", (dataObj, callback) =>
       findConversation(dataObj, callback, socket)
@@ -53,7 +49,7 @@ module.exports = io => {
     socket.on("search_tags", searchTags);
     socket.on("search_problems", searchVents);
     socket.on("like_problem", (problemID, callback) =>
-      likeVent(problemID, callback, socket, userSockets)
+      likeVent(problemID, callback, socket)
     );
     socket.on("unlike_problem", (dataObj, callback) =>
       unlikeVent(dataObj, callback, socket)
@@ -66,10 +62,10 @@ module.exports = io => {
       getProblem(id, callback, socket)
     );
     socket.on("comment_problem", (commentString, problemID, callback) =>
-      commentVent(commentString, problemID, callback, socket, userSockets)
+      commentVent(commentString, problemID, callback, socket)
     );
     socket.on("like_comment", (dataObj, callback) =>
-      likeComment(dataObj, callback, socket, userSockets)
+      likeComment(dataObj, callback, socket)
     );
     socket.on("unlike_comment", (dataObj, callback) =>
       unlikeComment(dataObj, callback, socket)

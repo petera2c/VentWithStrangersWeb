@@ -55,10 +55,14 @@ class Routes extends Component {
           handleChange({ ...stateObj, user });
           this.setState({ databaseConnection: true });
           this.getDataNeededForPage(this.props.location, undefined, true);
-          stateObj.socket.emit("set_user_id");
           if (user.password) {
             getNotifications(0, stateObj.socket, this.updateNotifications);
-            initReceiveNotifications(stateObj.socket, this.updateNotifications);
+
+            initReceiveNotifications(
+              stateObj.socket,
+              this.updateNotifications,
+              user._id
+            );
           }
         });
       } else notify({ message, type: "danger" });

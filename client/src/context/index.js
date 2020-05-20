@@ -25,9 +25,11 @@ class GIProvider extends Component {
   componentDidMount() {
     this._ismounted = true;
   }
+
   componentWillUnmount() {
     this._ismounted = false;
   }
+
   getVents = (pathname, search) => {
     const { skip, socket } = this.state;
     let tagTemp = "";

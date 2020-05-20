@@ -26,13 +26,7 @@ const getAggregate = (match, userID) => [
   { $limit: 10 }
 ];
 
-const commentVent = (
-  commentString,
-  problemID,
-  callback,
-  socket,
-  userSockets
-) => {
+const commentVent = (commentString, problemID, callback, socket) => {
   const userID = socket.request.user._id;
   const userDisplayName = socket.request.user.displayName;
 
@@ -88,7 +82,7 @@ const commentVent = (
                 commentsSize: problem.comments.length,
                 success: true
               });
-              commentPostNotification(problem, socket, userSockets);
+              commentPostNotification(problem, socket);
             }
           );
         });
@@ -142,7 +136,7 @@ const getUsersComments = (dataObj, callback, socket) => {
   else callback({ comments: [], message: "Invalid ID.", success: false });
 };
 
-const likeComment = (dataObj, callback, socket, userSockets) => {
+const likeComment = (dataObj, callback, socket) => {
   const userID = socket.request.user._id;
   const { commentID } = dataObj;
 
@@ -163,7 +157,7 @@ const likeComment = (dataObj, callback, socket, userSockets) => {
             comment.problemID,
             { authorID: 1, title: 1 },
             (err, problem) => {
-              likeCommentNotification(comment, problem, socket, userSockets);
+              likeCommentNotification(comment, problem, socket);
             }
           );
 

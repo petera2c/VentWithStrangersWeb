@@ -62,8 +62,12 @@ export const initSocket = callback => {
   callback({ socket });
 };
 
-export const initReceiveNotifications = (socket, updateNotifications) => {
-  socket.on("receive_new_notifications", dataObj => {
+export const initReceiveNotifications = (
+  socket,
+  updateNotifications,
+  userID
+) => {
+  socket.on(userID + "_receive_new_notifications", dataObj => {
     const { newNotifications } = dataObj;
 
     updateNotifications(newNotifications);
