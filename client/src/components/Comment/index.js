@@ -19,6 +19,7 @@ import { likeComment, unlikeComment } from "./util";
 
 class Comment extends Component {
   render() {
+    const { history } = this.props;
     const { arrayLength, comment, index } = this.props; // Variables
     const { updateCommentLikes } = this.props;
 
@@ -33,14 +34,21 @@ class Comment extends Component {
         }}
       >
         <Container className="justify-between wrap py16 px32">
-          <Container className="align-center mb8">
+          <Container
+            className="clickable align-center mb8"
+            onClick={e => {
+              e.preventDefault();
+              console.log(comment);
+              history.push("/activity?" + comment.authorID);
+            }}
+          >
             <Text
               className="round-icon bg-blue white mr8"
               text={capitolizeFirstChar(comment.author[0])}
               type="h6"
             />
             <Text
-              className="fw-400"
+              className="button-1 fw-400"
               text={capitolizeFirstChar(comment.author)}
               type="h5"
             />

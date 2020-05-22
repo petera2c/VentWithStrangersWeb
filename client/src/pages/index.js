@@ -93,9 +93,9 @@ class Routes extends Component {
       else if (pathname.substring(0, 5) === "/home")
         getVents("/recent", search);
       else if (pathname === "/search")
-        searchVents(handleChange, undefined, search, skip, socket);
+        searchVents(handleChange, undefined, search, 0, socket);
       else if (pathname === "/activity") {
-        getUsersPosts(handleChange, notify, vents, search, skip, socket, user);
+        getUsersPosts(handleChange, notify, vents, search, 0, socket, user);
         getUsersComments(handleChange, notify, search, socket, user);
       }
     });

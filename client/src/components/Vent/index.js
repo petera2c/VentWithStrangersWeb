@@ -354,6 +354,7 @@ class Vent extends Component {
                       );
                   }}
                   size="2x"
+                  title="Comment"
                 />
                 <Text className="blue mr8" text={vent.commentsSize} type="p" />
 
@@ -373,6 +374,7 @@ class Vent extends Component {
                       : require("../../svgs/support.svg")
                   }
                   style={{ height: "32px" }}
+                  title="Give Support :)"
                 />
 
                 <Text className="grey-5 mr16" text={vent.upVotes} type="p" />

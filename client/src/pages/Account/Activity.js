@@ -128,17 +128,20 @@ class ActivitySection extends Component {
               <Container className="x-fill column">
                 <Container className="column border-all2 br8">
                   {context.comments &&
-                    context.comments.map((comment, index) => (
-                      <Comment
-                        arrayLength={context.comments.length}
-                        comment={comment}
-                        key={index}
-                        index={index}
-                        updateCommentLikes={something => {
-                          console.log(something);
-                        }}
-                      />
-                    ))}
+                    context.comments.map((comment, index) => {
+                      return (
+                        <Link
+                          key={index}
+                          to={"/problem/" + comment.problemID + "/"}
+                        >
+                          <Comment
+                            arrayLength={context.comments.length}
+                            comment={comment}
+                            index={index}
+                          />
+                        </Link>
+                      );
+                    })}
                 </Container>
                 {context.comments && context.comments.length === 0 && (
                   <Text
