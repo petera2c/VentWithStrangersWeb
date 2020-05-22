@@ -77,24 +77,59 @@ class Vent extends Component {
 
     socket.on(vent._id + "_comment", obj => this.addComment(obj));
     socket.on(vent._id + "_comment_like", obj => {
-      const { comments } = this.state;
+      const { comment } = obj;
 
-      if (comments) {
-        const { comment } = obj;
+      if (this._ismounted) {
+        const { comments } = this.state;
+
+        if (comments) {
+          const commentIndex = comments.findIndex(
+            commentObj => commentObj._id === comment._id
+          );
+          this.updateCommentLikes(commentIndex, obj);
+        }
+      } else {
+        const { comments } = this.context;
+        const { handleChange } = this.context;
+
         const commentIndex = comments.findIndex(
           commentObj => commentObj._id === comment._id
         );
-        this.updateCommentLikes(commentIndex, obj);
+
+        let comment2 = comments[commentIndex];
+
+        comment2.upVotes = comment.upVotes;
+        if (comment.hasLiked !== undefined)
+          comment2.hasLiked = comment.hasLiked;
+
+        handleChange({ comments });
       }
     });
     socket.on(vent._id + "_comment_unlike", obj => {
       const { comments } = this.state;
-      if (comments) {
-        const { comment } = obj;
+      const { comment } = obj;
+      if (this._ismounted) {
+        if (comments) {
+          const commentIndex = comments.findIndex(
+            commentObj => commentObj._id === comment._id
+          );
+          this.updateCommentLikes(commentIndex, obj);
+        }
+      } else {
+        const { comments } = this.context;
+        const { handleChange } = this.context;
+
         const commentIndex = comments.findIndex(
           commentObj => commentObj._id === comment._id
         );
-        this.updateCommentLikes(commentIndex, obj);
+
+        let comment2 = comments[commentIndex];
+
+        comment2.upVotes = comment.upVotes;
+        if (comment.hasLiked !== undefined)
+          comment2.hasLiked = comment.hasLiked;
+
+        handleChange({ comments });
       }
     });
   }
@@ -124,7 +159,7 @@ class Vent extends Component {
     vent.dailyUpvotes = updatetObj.dailyUpvotes;
     if (updatetObj.hasLiked !== undefined) vent.hasLiked = updatetObj.hasLiked;
 
-    this.setState({ vent });
+    this.handleChange({ vent });
   };
 
   updateCommentLikes = (commentIndex, updatetObj) => {
@@ -135,7 +170,7 @@ class Vent extends Component {
     if (updatetObj.comment.hasLiked !== undefined)
       comment.hasLiked = updatetObj.comment.hasLiked;
 
-    this.setState({ comments });
+    this.handleChange({ comments });
   };
 
   render() {
@@ -402,7 +437,6 @@ class Vent extends Component {
                     comment={comment}
                     key={index}
                     index={index}
-                    updateCommentLikes={this.updateCommentLikes}
                   />
                 ))}
               </Container>

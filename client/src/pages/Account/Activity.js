@@ -134,6 +134,9 @@ class ActivitySection extends Component {
                         comment={comment}
                         key={index}
                         index={index}
+                        updateCommentLikes={something => {
+                          console.log(something);
+                        }}
                       />
                     ))}
                 </Container>

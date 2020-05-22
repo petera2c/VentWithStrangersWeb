@@ -7,8 +7,8 @@ export const likeComment = (
   context.socket.emit("like_comment", { commentID: comment._id }, returnObj => {
     const { message, success } = returnObj;
 
-    if (success) {
-      //updateCommentLikes(commentIndex, returnObj);
+    if (success && updateCommentLikes) {
+      updateCommentLikes(commentIndex, returnObj);
     } else {
       context.notify({
         message,
@@ -29,8 +29,8 @@ export const unlikeComment = (
     returnObj => {
       const { message, success } = returnObj;
 
-      if (success) {
-        //updateCommentLikes(commentIndex, returnObj);
+      if (success && updateCommentLikes) {
+        updateCommentLikes(commentIndex, returnObj);
       } else {
         context.notify({
           message,
