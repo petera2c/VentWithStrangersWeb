@@ -79,7 +79,7 @@ class Vent extends Component {
     socket.on(vent._id + "_comment_like", obj => {
       const { comment } = obj;
 
-      if (this._ismounted) {
+      if (!this.context.comments) {
         const { comments } = this.state;
 
         if (comments) {
@@ -108,7 +108,8 @@ class Vent extends Component {
     socket.on(vent._id + "_comment_unlike", obj => {
       const { comments } = this.state;
       const { comment } = obj;
-      if (this._ismounted) {
+
+      if (!this.context.comments) {
         if (comments) {
           const commentIndex = comments.findIndex(
             commentObj => commentObj._id === comment._id

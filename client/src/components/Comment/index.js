@@ -65,18 +65,21 @@ class Comment extends Component {
           </Container>
         </Container>
         <Text className="px32" text={comment.text} type="p" />
-        <Container className="align-center py16 px32">
+        <Container
+          className="align-center py16 px32"
+          onClick={e => {
+            e.preventDefault();
+
+            if (comment.hasLiked)
+              unlikeComment(this.context, comment, index, updateCommentLikes);
+            else likeComment(this.context, comment, index, updateCommentLikes);
+          }}
+        >
           <FontAwesomeIcon
             className={`clickable heart ${
               comment.hasLiked ? "red" : "grey-5"
             } mr4`}
             icon={comment.hasLiked ? faHeart2 : faHeart}
-            onClick={() => {
-              if (comment.hasLiked)
-                unlikeComment(this.context, comment, index, updateCommentLikes);
-              else
-                likeComment(this.context, comment, index, updateCommentLikes);
-            }}
           />
           <Text
             className="grey-5"
