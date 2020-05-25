@@ -31,6 +31,7 @@ import {
 } from "../../util";
 import {
   commentVent,
+  findPossibleUsersToTag,
   getVentComments,
   likeVent,
   reportVent,
@@ -175,6 +176,7 @@ class Vent extends Component {
   };
 
   render() {
+    const { socket } = this.context;
     const {
       comments,
       commentString,
@@ -404,9 +406,14 @@ class Vent extends Component {
                   <Container className="column x-fill align-end border-all pa8 br8">
                     <TextArea
                       className="x-fill no-border no-resize"
-                      onChange={e =>
-                        this.handleChange({ commentString: e.target.value })
-                      }
+                      onChange={e => {
+                        findPossibleUsersToTag(
+                          e.target.value,
+                          socket,
+                          vent._id
+                        );
+                        this.handleChange({ commentString: e.target.value });
+                      }}
                       placeholder="Type a helpful message here..."
                       style={{
                         minHeight: isMobileOrTablet() ? "100px" : "60px"

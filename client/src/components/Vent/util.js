@@ -6,6 +6,32 @@ export const commentVent = (commentString, context, vent, addComment) => {
     } else context.notify({ message, type: "danger" });
   });
 };
+
+export const findPossibleUsersToTag = (commentString, socket, ventID) => {
+  const reg = /\B\@\w+/g;
+  const taggedUserList = commentString.match(reg);
+
+  let lastTypedTag;
+  if (taggedUserList) lastTypedTag = taggedUserList[taggedUserList.length - 1];
+  if (lastTypedTag) {
+    const currentTypingTag = commentString.slice(
+      commentString.length - lastTypedTag.length,
+      commentString.length
+    );
+    const isUserStillTaggingUser = currentTypingTag === lastTypedTag;
+
+    if (isUserStillTaggingUser) {
+      socket.emit(
+        "find_relevant_users_to_tag",
+        { currentTypingTag, ventID },
+        resultObj => {}
+      );
+    } else {
+    }
+  } else {
+  }
+};
+
 export const getVentComments = (context, handleChange, vent) => {
   context.socket.emit("get_problem_comments", vent._id, returnObj => {
     const { comments, message, success } = returnObj;

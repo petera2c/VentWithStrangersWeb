@@ -146,4 +146,9 @@ const updateUser = (dataObj, callback, socket) => {
         });
     });
 };
-module.exports = { login, randomLogin, register, updateUser };
+module.exports = {
+  login,
+  randomLogin,
+  register,
+  updateUser
+};

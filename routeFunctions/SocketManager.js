@@ -21,6 +21,7 @@ const { getNotifications, readNotifications } = require("./notification");
 
 const {
   addUserToObject,
+  findPossibleUsersToTag,
   getProblem,
   getVents,
   getUsersPosts,
@@ -96,6 +97,10 @@ module.exports = io => {
     );
     socket.on("read_notifications", callback =>
       readNotifications(callback, socket)
+    );
+
+    socket.on("find_relevant_users_to_tag", (dataObj, callback) =>
+      findPossibleUsersToTag(dataObj, callback)
     );
   };
 };

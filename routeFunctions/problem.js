@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Comment = require("../models/Comment");
 const Problem = require("../models/Problem");
 const User = require("../models/User");
 const Tag = require("../models/Tag");
@@ -56,6 +57,32 @@ const addUserToObject = (callback, objects) => {
     );
   }
 };
+
+const findPossibleUsersToTag = (dataObj, callback) => {
+  const { currentTypingTag, ventID } = dataObj;
+  Problem.findById(ventID, { authorID: 1, comments: 1 }, (err, vent) => {
+    let userIDList = [];
+
+    if (vent && vent.comments) {
+      if (vent.authorID) userIDList.push({ _id: vent.authorID });
+
+      let test = [];
+      for (let index in vent.comments) {
+        test.push({ _id: vent.comments[index].id });
+      }
+
+      Comment.find({ $or: test }, { authorID: 1 }, (err, comment) => {
+        if (comment && comment.authorID)
+          userIDList.push({ _id: comment.authorID });
+
+        User.find({ $or: userIDList }, { displayName: 1 }, (err, users) => {
+          console.log(userIDList);
+        });
+      });
+    }
+  });
+};
+
 const getProblem = (id, callback, socket) => {
   if (id && id !== "undefined") {
     Problem.aggregate(
@@ -389,6 +416,7 @@ const unlikeVent = (problemID, callback, socket) => {
 
 module.exports = {
   addUserToObject,
+  findPossibleUsersToTag,
   getProblem,
   getVents,
   getUsersPosts,

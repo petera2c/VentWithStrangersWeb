@@ -15,6 +15,7 @@ import { faBars } from "@fortawesome/pro-solid-svg-icons/faBars";
 import { faUser } from "@fortawesome/pro-solid-svg-icons/faUser";
 import { faChartNetwork } from "@fortawesome/pro-duotone-svg-icons/faChartNetwork";
 import { faCog } from "@fortawesome/pro-duotone-svg-icons/faCog";
+import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
 
 import Consumer, { ExtraContext } from "../../context";
 
@@ -31,6 +32,7 @@ import { newNotificationCounter } from "./util";
 
 class MobileHeader extends Component {
   state = {
+    isAppDownloadSectionOpen: true,
     mobileHeaderActive: false,
     loginModalBoolean: false,
     signUpModalBoolean: false,
@@ -68,6 +70,7 @@ class MobileHeader extends Component {
 
   render() {
     const {
+      isAppDownloadSectionOpen,
       loginModalBoolean,
       mobileHeaderActive,
       signUpModalBoolean,
@@ -275,6 +278,52 @@ class MobileHeader extends Component {
                     />
                   </Container>
                 )}
+              </Container>
+            )}
+            {isAppDownloadSectionOpen && (
+              <Container className="relative column x-fill full-center pt16">
+                <FontAwesomeIcon
+                  className=""
+                  icon={faTimes}
+                  onClick={() =>
+                    this.handleChange({ isAppDownloadSectionOpen: false })
+                  }
+                  size="2x"
+                  style={{ position: "absolute", top: "8px", right: "8px" }}
+                />
+                <Text
+                  className="bold primary px32"
+                  text="Download Mobile App Now!"
+                  type="p"
+                />
+                <Container className="wrap full-center py16">
+                  <img
+                    alt=""
+                    className="clickable mr8"
+                    onClick={() => {
+                      this.handleChange({ isAppDownloadSectionOpen: false });
+                      window.open(
+                        "https://play.google.com/store/apps/details?id=com.commontech.ventwithstrangers&hl=en"
+                      );
+                    }}
+                    src={require("../../../static/googleplay.png")}
+                    style={{ width: "150px" }}
+                    title="Download on Google Play!"
+                  />
+                  <img
+                    alt=""
+                    className="clickable mr8"
+                    onClick={() => {
+                      this.handleChange({ isAppDownloadSectionOpen: false });
+                      window.open(
+                        "https://apps.apple.com/us/app/vent-with-strangers/id1509120090"
+                      );
+                    }}
+                    src={require("../../../static/appstore.png")}
+                    style={{ width: "150px" }}
+                    title="Download on iPhone"
+                  />
+                </Container>
               </Container>
             )}
 

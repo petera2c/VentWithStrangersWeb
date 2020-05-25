@@ -14,6 +14,7 @@ import MobileHeader from "../components/Header/MobileHeader";
 import CookiesComponent from "../components/Cookies";
 
 import AccountPage from "./Account";
+import AppDownloadPage from "./AppDownload";
 import NotificationsPage from "./Notifications";
 import SearchPage from "./Search";
 import VentsPage from "./Vents";
@@ -41,11 +42,13 @@ const cookies = new Cookies();
 class Routes extends Component {
   state = {
     databaseConnection: false,
-    hasVisitedSite: cookies.get("hasVisitedSite")
+    hasVisitedSite: true
   };
 
   componentDidMount() {
     const { handleChange, notify } = this.context;
+
+    this.setState({ hasVisitedSite: cookies.get("hasVisitedSite") });
 
     axios.get("/api/user").then(res => {
       const { success, user, message } = res.data;
@@ -151,6 +154,10 @@ class Routes extends Component {
             {isMobileOrTablet() && <MobileHeader />}
             <Switch>
               <Route path="/account/" component={AccountPage} exact />
+              <Route
+                path="/vent-with-strangers-app-downloads/"
+                component={AppDownloadPage}
+              />
               <Route path="/activity/" component={AccountPage} />
               <Route path="/settings/" component={AccountPage} exact />
               <Route path="/notifications/" component={NotificationsPage} />
