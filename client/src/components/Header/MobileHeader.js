@@ -280,52 +280,53 @@ class MobileHeader extends Component {
                 )}
               </Container>
             )}
-            {isAppDownloadSectionOpen && (
-              <Container className="relative column x-fill full-center pt16">
-                <FontAwesomeIcon
-                  className=""
-                  icon={faTimes}
-                  onClick={() =>
-                    this.handleChange({ isAppDownloadSectionOpen: false })
-                  }
-                  size="2x"
-                  style={{ position: "absolute", top: "8px", right: "8px" }}
-                />
-                <Text
-                  className="bold primary px32"
-                  text="Download Mobile App Now!"
-                  type="p"
-                />
-                <Container className="wrap full-center py16">
-                  <img
-                    alt=""
-                    className="clickable mr8"
-                    onClick={() => {
-                      this.handleChange({ isAppDownloadSectionOpen: false });
-                      window.open(
-                        "https://play.google.com/store/apps/details?id=com.commontech.ventwithstrangers&hl=en"
-                      );
-                    }}
-                    src={require("../../../static/googleplay.png")}
-                    style={{ width: "150px" }}
-                    title="Download on Google Play!"
+            {isAppDownloadSectionOpen &&
+              pathname != "/vent-with-strangers-app-downloads" && (
+                <Container className="relative column x-fill full-center pt16">
+                  <FontAwesomeIcon
+                    className=""
+                    icon={faTimes}
+                    onClick={() =>
+                      this.handleChange({ isAppDownloadSectionOpen: false })
+                    }
+                    size="2x"
+                    style={{ position: "absolute", top: "8px", right: "8px" }}
                   />
-                  <img
-                    alt=""
-                    className="clickable mr8"
-                    onClick={() => {
-                      this.handleChange({ isAppDownloadSectionOpen: false });
-                      window.open(
-                        "https://apps.apple.com/us/app/vent-with-strangers/id1509120090"
-                      );
-                    }}
-                    src={require("../../../static/appstore.png")}
-                    style={{ width: "150px" }}
-                    title="Download on iPhone"
+                  <Text
+                    className="bold primary px32"
+                    text="Download Mobile App Now!"
+                    type="p"
                   />
+                  <Container className="wrap full-center py16">
+                    <img
+                      alt=""
+                      className="clickable mr8"
+                      onClick={() => {
+                        this.handleChange({ isAppDownloadSectionOpen: false });
+                        window.open(
+                          "https://play.google.com/store/apps/details?id=com.commontech.ventwithstrangers&hl=en"
+                        );
+                      }}
+                      src={require("../../../static/googleplay.png")}
+                      style={{ width: "150px" }}
+                      title="Download on Google Play!"
+                    />
+                    <img
+                      alt=""
+                      className="clickable mr8"
+                      onClick={() => {
+                        this.handleChange({ isAppDownloadSectionOpen: false });
+                        window.open(
+                          "https://apps.apple.com/us/app/vent-with-strangers/id1509120090"
+                        );
+                      }}
+                      src={require("../../../static/appstore.png")}
+                      style={{ width: "150px" }}
+                      title="Download on iPhone"
+                    />
+                  </Container>
                 </Container>
-              </Container>
-            )}
+              )}
 
             {loginModalBoolean && (
               <LoginModal
