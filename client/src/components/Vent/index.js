@@ -407,11 +407,11 @@ class Vent extends Component {
                     <TextArea
                       className="x-fill no-border no-resize"
                       onChange={e => {
-                        findPossibleUsersToTag(
+                        /*  findPossibleUsersToTag(
                           e.target.value,
                           socket,
                           vent._id
-                        );
+                        );*/
                         this.handleChange({ commentString: e.target.value });
                       }}
                       placeholder="Type a helpful message here..."
