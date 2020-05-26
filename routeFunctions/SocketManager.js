@@ -6,6 +6,7 @@ const {
   getVentComments,
   getUsersComments,
   likeComment,
+  reportComment,
   unlikeComment
 } = require("./comment");
 
@@ -73,6 +74,9 @@ module.exports = io => {
     );
     socket.on("get_problem_comments", (problemID, callback) =>
       getVentComments(problemID, callback, socket)
+    );
+    socket.on("report_comment", (dataObj, callback) =>
+      reportComment(dataObj, callback, socket)
     );
 
     socket.on("get_users_posts", (dataObj, callback) =>

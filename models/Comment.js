@@ -9,6 +9,12 @@ const commentSchema = new Schema(
       required: true,
       type: Schema.Types.ObjectId
     },
+    reports: [
+      {
+        complaint: { required: true, type: Number },
+        userID: { required: true, type: Schema.Types.ObjectId }
+      }
+    ],
     text: { require: true, type: String },
     upVotes: [{ type: Schema.Types.ObjectId }]
   },

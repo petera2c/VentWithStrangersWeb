@@ -181,6 +181,26 @@ const likeComment = (dataObj, callback, socket) => {
   });
 };
 
+const reportComment = (dataObj, callback, socket) => {
+  const userID = socket.request.user._id;
+  const { commentID, option } = dataObj;
+
+  Comment.findById(commentID, { reports: 1 }, (err, comment) => {
+    if (comment) {
+      if (
+        comment.reports.find(report => String(report.userID) === String(userID))
+      )
+        callback({ message: "Already reported post.", success: false });
+      else {
+        comment.reports.unshift({ complaint: option, userID });
+        comment.save((err, result) => {
+          callback({ success: true });
+        });
+      }
+    } else callback({ message: "Problem not found.", success: false });
+  });
+};
+
 const unlikeComment = (dataObj, callback, socket) => {
   const userID = socket.request.user._id;
   const { commentID } = dataObj;
@@ -223,5 +243,6 @@ module.exports = {
   getVentComments,
   getUsersComments,
   likeComment,
+  reportComment,
   unlikeComment
 };
