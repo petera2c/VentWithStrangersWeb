@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import axios from "axios";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFacebook } from "@fortawesome/free-brands-svg-icons/faFacebook";
+import { faInstagram } from "@fortawesome/free-brands-svg-icons/faInstagram";
+
 import Consumer, { ExtraContext } from "../../context";
 
 import Chat from "../../components/Chat/";
@@ -35,24 +39,56 @@ class AppDownloadPage extends Component {
           >
             <Container
               className={
-                "column flex-fill ov-auto full-center " +
-                (isMobileOrTablet() ? "" : "py32")
+                "column flex-fill ov-auto full-center py16 " +
+                (isMobileOrTablet() ? "" : "")
               }
             >
               <Container className="column full-center">
+                <Container className="column full-center mb16">
+                  <img
+                    alt=""
+                    className={
+                      "clickable column container extra-small br8 " +
+                      (isMobileOrTablet() ? "px16" : "")
+                    }
+                    onClick={() =>
+                      window.open(
+                        "https://apps.apple.com/us/app/vent-with-strangers/id1509120090"
+                      )
+                    }
+                    src={require("../../svgs/icon.svg")}
+                    title="Download on iPhone"
+                  />
+                  <Text
+                    className="fw-400 fs-40 primary tac"
+                    type="h1"
+                    style={{ fontSize: "40px", lineHeight: "30px" }}
+                  >
+                    <Text className="bold" type="span">
+                      Vent&nbsp;
+                    </Text>
+                    With
+                  </Text>
+                  <Text
+                    className="primary fw-400"
+                    type="h1"
+                    style={{ fontSize: "30px" }}
+                  >
+                    Strangers
+                  </Text>
+                </Container>
                 <Text
                   className={
-                    "primary fs-30 " +
-                    (isMobileOrTablet() ? "px32 pt32" : "pb32")
+                    "primary " + (isMobileOrTablet() ? "px32 pt32" : "")
                   }
                   text="Download Mobile App Now!"
-                  type="h1"
+                  type="h3"
                 />
                 <Container className="wrap full-center mt16">
                   <img
                     alt=""
                     className={
-                      "clickable column container small mb16 br8 " +
+                      "clickable column mb16 br8 " +
                       (isMobileOrTablet() ? "px16" : "mr16")
                     }
                     onClick={() =>
@@ -67,7 +103,7 @@ class AppDownloadPage extends Component {
                   <img
                     alt=""
                     className={
-                      "clickable column container small mb16 br8 " +
+                      "clickable column mb16 br8 " +
                       (isMobileOrTablet() ? "px16" : "")
                     }
                     onClick={() =>
@@ -79,6 +115,33 @@ class AppDownloadPage extends Component {
                     style={{ width: "200px" }}
                     title="Download on iPhone"
                   />
+                </Container>
+                <Container className="full-center column bg-white pa16 br8">
+                  <Container className="mb16">
+                    <FontAwesomeIcon
+                      className="clickable pr8"
+                      color="#3b5998"
+                      icon={faFacebook}
+                      onClick={() =>
+                        window.open(
+                          "https://www.facebook.com/Vent-With-Strangers-107974334114699/"
+                        )
+                      }
+                      size="4x"
+                    />
+                    <FontAwesomeIcon
+                      className="clickable pl8"
+                      color="#E1306C"
+                      icon={faInstagram}
+                      onClick={() =>
+                        window.open(
+                          "https://www.instagram.com/ventwithstrangers/"
+                        )
+                      }
+                      size="4x"
+                    />
+                  </Container>
+                  <Text className="primary" text="Follow us!" type="h3" />
                 </Container>
               </Container>
             </Container>

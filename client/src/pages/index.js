@@ -154,10 +154,7 @@ class Routes extends Component {
             {isMobileOrTablet() && <MobileHeader />}
             <Switch>
               <Route path="/account/" component={AccountPage} exact />
-              <Route
-                path="/vent-with-strangers-app-downloads/"
-                component={AppDownloadPage}
-              />
+              <Route path="/app-downloads/" component={AppDownloadPage} />
               <Route path="/activity/" component={AccountPage} />
               <Route path="/settings/" component={AccountPage} exact />
               <Route path="/notifications/" component={NotificationsPage} />
