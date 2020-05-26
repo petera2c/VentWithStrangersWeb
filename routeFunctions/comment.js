@@ -155,7 +155,7 @@ const likeComment = (dataObj, callback, socket) => {
     for (let index in comments) {
       if (comments[index]) {
         comments[index].reports = [];
-        //  comments[index].save();
+        comments[index].save();
       }
     }
   });
