@@ -8,7 +8,7 @@ const {
   likeCommentNotification
 } = require("./notification");
 
-const getAggregate = (match, userID) => [
+const getAggregate = (skip, sort, match, userID) => [
   {
     $match: match
   },
@@ -23,6 +23,7 @@ const getAggregate = (match, userID) => [
     }
   },
   { $sort: { createdAt: -1 } },
+  { $skip: skip },
   { $limit: 10 }
 ];
 
@@ -93,13 +94,19 @@ const commentVent = (commentString, problemID, callback, socket) => {
 
 const getVentComments = (problemID, callback, socket) => {
   const userID = socket.request.user._id;
+  const skip = 0;
+  const sort = {};
+  const match = {
+    $expr: { $not: { $in: [userID, "$reports.userID"] } },
+    problemID: problem._id
+  };
 
   Problem.findById(problemID, { comments: 1 }, (err, problem) => {
     let counter = 0;
     let commentList = [];
 
     Comment.aggregate(
-      getAggregate({ problemID: problem._id }, userID),
+      getAggregate(skip, sort, match, userID),
       (err, comments) => {
         if (comments && comments.length === 0)
           callback({ success: true, comments });
@@ -115,13 +122,14 @@ const getVentComments = (problemID, callback, socket) => {
 
 const getUsersComments = (dataObj, callback, socket) => {
   const { searchID } = dataObj;
+  const skip = 0;
+  const sort = {};
+  const match = { authorID: mongoose.Types.ObjectId(searchID) };
+  const userID = socket.request.user._id;
 
   if (searchID.match(/^[0-9a-fA-F]{24}$/))
     Comment.aggregate(
-      getAggregate(
-        { authorID: mongoose.Types.ObjectId(searchID) },
-        socket.request.user._id
-      ),
+      getAggregate(skip, sort, match, userID),
       (err, comments) => {
         if (comments) {
           if (comments.length === 0) callback({ comments, success: true });
@@ -190,14 +198,14 @@ const reportComment = (dataObj, callback, socket) => {
       if (
         comment.reports.find(report => String(report.userID) === String(userID))
       )
-        callback({ message: "Already reported post.", success: false });
+        callback({ message: "Already reported comment.", success: false });
       else {
         comment.reports.unshift({ complaint: option, userID });
         comment.save((err, result) => {
           callback({ success: true });
         });
       }
-    } else callback({ message: "Problem not found.", success: false });
+    } else callback({ message: "Comment not found.", success: false });
   });
 };
 
