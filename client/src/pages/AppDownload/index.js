@@ -35,7 +35,7 @@ class AppDownloadPage extends Component {
             className="bg-grey-2 ov-auto"
             description="Vent With Strangers app downloads."
             keywords=""
-            title="Vent With Strangers app downloads."
+            title="App Downloads"
           >
             <Container
               className={
@@ -48,16 +48,11 @@ class AppDownloadPage extends Component {
                   <img
                     alt=""
                     className={
-                      "clickable column container extra-small br8 " +
+                      "column container extra-small br8 " +
                       (isMobileOrTablet() ? "px16" : "")
                     }
-                    onClick={() =>
-                      window.open(
-                        "https://apps.apple.com/us/app/vent-with-strangers/id1509120090"
-                      )
-                    }
                     src={require("../../svgs/icon.svg")}
-                    title="Download on iPhone"
+                    title="Vent With Strangers"
                   />
                   <Text
                     className="fw-400 fs-40 primary tac"

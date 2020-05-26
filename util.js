@@ -39,6 +39,10 @@ const createSiteMap = () => {
         "<url>\n<loc>https://www.ventwithstrangers.com/trending</loc>\n<lastmod>" +
         new moment().format("YYYY-MM-DD") +
         "</lastmod>\n<changefreq>daily</changefreq>\n<priority>0.8</priority>\n</url>\n\n";
+      siteMapString +=
+        "<url>\n<loc>https://www.ventwithstrangers.com/app-downloads</loc>\n<lastmod>" +
+        new moment().format("YYYY-MM-DD") +
+        "</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.2</priority>\n</url>\n\n";
 
       for (let index in problems) {
         const problem = problems[index];
@@ -188,6 +192,12 @@ const getMetaInformation = (url, callback) => {
         "Sometimes, all we need is an available ear. This is where you can anonymously talk to someone that wants to listen, or anonymously listen to someone that wants to be heard.",
       metaImage: defaultMetaObject.metaImage,
       metaTitle: "Chat | Vent With Strangers"
+    });
+  else if (url === "/app-downloads")
+    return callback({
+      metaDescription: "Vent With Strangers app downloads.",
+      metaImage: defaultMetaObject.metaImage,
+      metaTitle: "App Downloads | Vent With Strangers"
     });
   else return callback(defaultMetaObject);
 };
