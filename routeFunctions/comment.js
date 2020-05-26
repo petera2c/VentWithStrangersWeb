@@ -150,17 +150,6 @@ const likeComment = (dataObj, callback, socket) => {
   const userID = socket.request.user._id;
   const { commentID } = dataObj;
 
-  //delete from here
-  Comment.find({}, (err, comments) => {
-    for (let index in comments) {
-      if (comments[index]) {
-        comments[index].reports = [];
-        comments[index].save();
-      }
-    }
-  });
-  // to here
-
   Comment.findById(commentID, (err, comment) => {
     if (comment) {
       if (
