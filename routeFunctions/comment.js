@@ -96,18 +96,20 @@ const getVentComments = (problemID, callback, socket) => {
   const userID = socket.request.user._id;
   const skip = 0;
   const sort = {};
-  const match = {
-    $expr: { $not: { $in: [userID, "$reports.userID"] } },
-    problemID: problem._id
-  };
 
   Problem.findById(problemID, { comments: 1 }, (err, problem) => {
     let counter = 0;
     let commentList = [];
+    const match = {
+      $expr: { $not: { $in: [userID, "$reports.userID"] } },
+      problemID: problem._id
+    };
 
+    //
     Comment.aggregate(
       getAggregate(skip, sort, match, userID),
       (err, comments) => {
+        console.log(err);
         if (comments && comments.length === 0)
           callback({ success: true, comments });
         else
@@ -147,6 +149,17 @@ const getUsersComments = (dataObj, callback, socket) => {
 const likeComment = (dataObj, callback, socket) => {
   const userID = socket.request.user._id;
   const { commentID } = dataObj;
+
+  //delete from here
+  Comment.find({}, (err, comments) => {
+    for (let index in comments) {
+      if (comments[index]) {
+        comments[index].reports = [];
+        //  comments[index].save();
+      }
+    }
+  });
+  // to here
 
   Comment.findById(commentID, (err, comment) => {
     if (comment) {

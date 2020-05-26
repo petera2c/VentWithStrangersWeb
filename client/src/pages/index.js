@@ -48,7 +48,7 @@ class Routes extends Component {
   componentDidMount() {
     const { handleChange, notify } = this.context;
 
-    this.setState({ hasVisitedSite: cookies.get("hasVisitedSite") });
+    //this.setState({ hasVisitedSite: cookies.get("hasVisitedSite") });
 
     axios.get("/api/user").then(res => {
       const { success, user, message } = res.data;
