@@ -40,9 +40,7 @@ const createSiteMap = () => {
         new moment().format("YYYY-MM-DD") +
         "</lastmod>\n<changefreq>daily</changefreq>\n<priority>0.8</priority>\n</url>\n\n";
       siteMapString +=
-        "<url>\n<loc>https://www.ventwithstrangers.com/app-downloads</loc>\n<lastmod>" +
-        new moment().format("YYYY-MM-DD") +
-        "</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.2</priority>\n</url>\n\n";
+        "<url>\n<loc>https://www.ventwithstrangers.com/app-downloads</loc>\n<lastmod>2020-05-26</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.2</priority>\n</url>\n\n";
 
       for (let index in problems) {
         const problem = problems[index];

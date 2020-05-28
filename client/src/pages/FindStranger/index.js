@@ -50,6 +50,15 @@ class ChatPage extends Component {
   }
   componentWillUnmount() {
     this._ismounted = false;
+
+    const { socket } = this.context;
+
+    if (socket) {
+      socket.off("get_users_waiting");
+      socket.off("users_waiting");
+      socket.off("user_left");
+    }
+
     window.removeEventListener("focus", this.onFocus);
     window.removeEventListener("blue", this.onFocus);
   }
