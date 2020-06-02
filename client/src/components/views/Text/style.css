@@ -2,6 +2,10 @@
   background-color: blue;
 }
 
+.inherit-color {
+  color: inherit;
+}
+
 .white {
   color: var(--white-color);
   fill: var(--white-color);

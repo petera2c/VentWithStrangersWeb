@@ -82,7 +82,10 @@ class MobileHeader extends Component {
     return (
       <Consumer>
         {context => (
-          <Container className="sticky top-0 column x-fill full-center bg-white border-top large active shadow-2">
+          <Container
+            className="sticky top-0 column x-fill full-center bg-white border-top large active shadow-2"
+            style={{ zIndex: 10 }}
+          >
             <Container className="x-fill align-center justify-between border-bottom py8 px16">
               <img
                 alt=""

@@ -48,11 +48,11 @@ class SearchPage extends Component {
               {context.vents && (
                 <Container className="x-fill column">
                   {context.vents &&
-                    context.vents.map((Vent, index) => (
+                    context.vents.map((vent, index) => (
                       <Vent
                         key={index}
                         previewMode={true}
-                        Vent={Vent}
+                        vent={vent}
                         ventIndex={index}
                         searchPreviewMode={true}
                       />

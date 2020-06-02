@@ -24,4 +24,6 @@ userSchema.methods.generateHash = password =>
 userSchema.methods.validPassword = password =>
   bcrypt.compareSync(password, this.password);
 
+userSchema.index({ title: "displayName" });
+
 module.exports = mongoose.model("users", userSchema);

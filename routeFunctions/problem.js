@@ -60,24 +60,59 @@ const addUserToObject = (callback, objects) => {
 
 const findPossibleUsersToTag = (dataObj, callback) => {
   const { currentTypingTag, ventID } = dataObj;
+
+  // First is to get authorID and userID's of all users who have commented on post
   Problem.findById(ventID, { authorID: 1, comments: 1 }, (err, vent) => {
     let userIDList = [];
+    let userIDList2 = [];
 
     if (vent && vent.comments) {
-      if (vent.authorID) userIDList.push({ _id: vent.authorID });
-
-      let test = [];
-      for (let index in vent.comments) {
-        test.push({ _id: vent.comments[index].id });
+      if (vent.authorID) {
+        userIDList.push({ _id: vent.authorID });
+        userIDList2.push(vent.authorID);
       }
 
-      Comment.find({ $or: test }, { authorID: 1 }, (err, comment) => {
-        if (comment && comment.authorID)
-          userIDList.push({ _id: comment.authorID });
+      let userIDArray = [];
+      for (let index in vent.comments) {
+        userIDArray.push({ _id: vent.comments[index].id });
+      }
 
-        User.find({ $or: userIDList }, { displayName: 1 }, (err, users) => {
-          console.log(userIDList);
-        });
+      Comment.find({ $or: userIDArray }, { authorID: 1 }, (err, comments) => {
+        for (let index in comments) {
+          const comment = comments[index];
+
+          if (comment && comment.authorID) {
+            userIDList.push({ _id: comment.authorID });
+            userIDList2.push(comment.authorID);
+          }
+        }
+
+        User.find(
+          {
+            $or: userIDList,
+            displayName: { $regex: currentTypingTag + ".*", $options: "i" }
+          },
+          { displayName: 1 },
+          (err, users) => {
+            User.find(
+              {
+                _id: { $nin: userIDList2 },
+                displayName: { $regex: currentTypingTag + ".*", $options: "i" }
+              },
+              { displayName: 1 },
+              (err, users2) => {
+                if (users && users2) {
+                  const fullUserArrayToSend = users.concat(users2);
+                  return callback({ users: fullUserArrayToSend });
+                } else {
+                  console.log("error");
+                }
+              }
+            )
+              .limit(10)
+              .lean();
+          }
+        );
       });
     }
   });

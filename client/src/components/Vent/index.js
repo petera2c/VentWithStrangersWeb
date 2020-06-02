@@ -59,6 +59,7 @@ class Vent extends Component {
     comments: undefined,
     commentString: "",
     displayCommentField: this.props.displayCommentField,
+    possibleUsersToTag: [],
     postOptions: false,
     reportModal: false,
     vent: this.props.vent
@@ -175,12 +176,25 @@ class Vent extends Component {
     this.handleChange({ comments });
   };
 
+  tagUser = (commentString, user) => {
+    for (let i = commentString.length - 1; i >= 0; i--) {
+      if (commentString[i] === " ") {
+        console.log("We have a bug.");
+      } else if (commentString[i] === "@") {
+        commentString = commentString.slice(0, i + 1) + user.displayName;
+
+        return this.handleChange({ commentString });
+      }
+    }
+  };
+
   render() {
     const { socket } = this.context;
     const {
       comments,
       commentString,
       displayCommentField,
+      possibleUsersToTag,
       postOptions,
       reportModal,
       vent
@@ -403,25 +417,52 @@ class Vent extends Component {
             >
               <Container className="x-fill column border-all2 py16 br8">
                 <Container className="x-fill px16">
-                  <Container className="column x-fill align-end border-all pa8 br8">
-                    <TextArea
-                      className="x-fill no-border no-resize"
-                      onChange={e => {
-                        /*  findPossibleUsersToTag(
-                          e.target.value,
-                          socket,
-                          vent._id
-                        );*/
-                        this.handleChange({ commentString: e.target.value });
-                      }}
-                      placeholder="Type a helpful message here..."
-                      style={{
-                        minHeight: isMobileOrTablet() ? "100px" : "60px"
-                      }}
-                      value={commentString}
-                    />
+                  <Container className="column x-fill align-end border-all br8">
+                    <Container className="relative x-fill pa8">
+                      <TextArea
+                        className="x-fill no-border no-resize"
+                        id="comment-textarea"
+                        onChange={(e, t) => {
+                          //const currentTypingIndex =
+                          //  e.currentTarget.selectionStart;
+
+                          /*  findPossibleUsersToTag(
+                            this.handleChange,
+                            currentTypingIndex,
+                            e.target.value,
+                            socket,
+                            vent._id
+                          );*/
+                          this.handleChange({ commentString: e.target.value });
+                        }}
+                        placeholder="Type a helpful message here..."
+                        style={{
+                          minHeight: isMobileOrTablet() ? "100px" : "60px"
+                        }}
+                        value={commentString}
+                      />
+                      <Container
+                        className="absolute top-100 shadow-3 ov-auto column bg-white br4"
+                        style={{ zIndex: 1, maxHeight: "200px" }}
+                      >
+                        {possibleUsersToTag.map((obj, index) => (
+                          <Container
+                            className="button-7 column pa16"
+                            key={index}
+                            onClick={() => {
+                              this.tagUser(commentString, obj);
+                              this.handleChange({ possibleUsersToTag: [] });
+                            }}
+                          >
+                            <Text text={obj.displayName} type="h6" />
+                            <Text text={obj._id} type="p" />
+                          </Container>
+                        ))}
+                      </Container>
+                    </Container>
+
                     <Button
-                      className="button-2 px32 py8 br4"
+                      className="button-2 px32 py8 ma8 br4"
                       onClick={() => {
                         commentVent(
                           commentString,

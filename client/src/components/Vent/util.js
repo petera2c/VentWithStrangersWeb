@@ -7,28 +7,44 @@ export const commentVent = (commentString, context, vent, addComment) => {
   });
 };
 
-export const findPossibleUsersToTag = (commentString, socket, ventID) => {
+export const findPossibleUsersToTag = (
+  callback,
+  currentTypingIndex,
+  commentString,
+  socket,
+  ventID
+) => {
   const reg = /\B\@\w+/g;
   const taggedUserList = commentString.match(reg);
 
-  let lastTypedTag;
-  if (taggedUserList) lastTypedTag = taggedUserList[taggedUserList.length - 1];
-  if (lastTypedTag) {
-    const currentTypingTag = commentString.slice(
-      commentString.length - lastTypedTag.length,
-      commentString.length
-    );
-    const isUserStillTaggingUser = currentTypingTag === lastTypedTag;
+  let currentTypingWord = "";
+  let isTag;
 
-    if (isUserStillTaggingUser) {
-      socket.emit(
-        "find_relevant_users_to_tag",
-        { currentTypingTag, ventID },
-        resultObj => {}
-      );
-    } else {
-    }
+  for (let i = currentTypingIndex; i >= 0; i--) {
+    if (commentString[i] === " ") break;
+    if (currentTypingWord)
+      currentTypingWord = commentString[i] + currentTypingWord;
+    else currentTypingWord = commentString[i];
+  }
+  for (let i = currentTypingIndex; i < commentString.length; i++) {
+    if (commentString[i] === " ") break;
+    if (currentTypingWord)
+      currentTypingWord = currentTypingWord + commentString[i];
+    else currentTypingWord = commentString[i];
+  }
+  //  console.log(currentTypingWord);
+
+  if (isTag && currentTypingWord) {
+    socket.emit(
+      "find_relevant_users_to_tag",
+      { currentTypingTag: currentTypingTag.substr(1), ventID },
+      resultObj => {
+        const { users } = resultObj;
+        callback({ possibleUsersToTag: users });
+      }
+    );
   } else {
+    callback({ possibleUsersToTag: [] });
   }
 };
 

@@ -77,7 +77,10 @@ class Header extends Component {
     return (
       <Consumer>
         {context => (
-          <Container className="sticky top-0 x-fill justify-center bg-white shadow-2 border-top large active">
+          <Container
+            className="sticky top-0 x-fill justify-center bg-white shadow-2 border-top large active"
+            style={{ zIndex: 10 }}
+          >
             <Container className="x-fill align-center">
               <Container
                 className="full-center"
