@@ -63,7 +63,9 @@ class Comment extends Component {
             />
           </Container>
         </Container>
-        <Text className="px32" text={swapTags(comment.text)} type="p" />
+        <Text className="px32" type="p">
+          {swapTags(comment.text)}
+        </Text>
         <Container
           className="align-center py16 px32"
           onClick={e => {
