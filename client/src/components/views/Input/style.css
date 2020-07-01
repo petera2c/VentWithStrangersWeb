@@ -1,5 +1,6 @@
 .no-border {
-  border: none;
+  border: none !important;
+  outline: 0px solid transparent;
 }
 .no-resize {
   resize: none;

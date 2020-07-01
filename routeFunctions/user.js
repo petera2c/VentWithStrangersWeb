@@ -47,7 +47,7 @@ const randomLogin = (req, res, next) => {
     const newUser = new User({
       displayName:
         adjectivesList[randomAdjectiveIndex] +
-        " " +
+        "_" +
         animalList[randomAnimalIndex],
       language: "english",
       settingsID: newSettings._id,
@@ -75,6 +75,8 @@ const randomLogin = (req, res, next) => {
 
 const register = (req, res, next) => {
   const { displayName, email, password } = req.body;
+
+  //  if(displayName.match)
 
   User.findOne({ email: req.body.email }, (err, user) => {
     if (!user) {

@@ -269,9 +269,6 @@
 .shadow-3 {
   box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
 }
-.test-mode {
-  background-color: var(--red-color);
-}
 .loading-animation {
   animation: loading-animation 2s infinite linear;
 }
@@ -285,4 +282,12 @@
   100% {
     transform: scale(1.2);
   }
+}
+
+.test-mode {
+  background-color: var(--red-color);
+}
+
+.test {
+  background-color: red;
 }

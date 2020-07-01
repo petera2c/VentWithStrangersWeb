@@ -9,7 +9,7 @@ import Button from "../../views/Button";
 import Input from "../../views/Input";
 
 import { isMobileOrTablet } from "../../../util";
-import { validateEmail } from "./util";
+import { getInvalidCharacters, validateEmail } from "./util";
 
 let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -48,6 +48,14 @@ class SignUpModal extends Component {
       passwordConfirm,
       displayName
     } = this.state;
+
+    if (getInvalidCharacters(displayName)) {
+      alert(
+        "These characters are not allowed in your display name. " +
+          getInvalidCharacters(displayName)
+      );
+      return;
+    }
 
     if (!validateEmail(email)) {
       alert("Not a real email address!");

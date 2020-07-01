@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import moment from "moment-timezone";
 import { withRouter } from "react-router-dom";
 import TextArea from "react-textarea-autosize";
+import ContentEditable from "react-contenteditable";
+import { Editor } from "@tinymce/tinymce-react";
+import { MentionsInput, Mention } from "react-mentions";
 
 import { ExtraContext } from "../../context";
 
@@ -31,37 +34,41 @@ import {
 } from "../../util";
 import {
   commentVent,
+  commentLikeUpdate,
   findPossibleUsersToTag,
+  getCurrentTypingIndex,
   getVentComments,
   likeVent,
   reportVent,
+  tagUser,
   unlikeVent
 } from "./util";
 
-class SmartLink extends Component {
-  render() {
-    const { children, className, disablePostOnClick, to } = this.props;
+import classNames from "./style.css";
 
-    if (disablePostOnClick) {
-      return <Container className={className}>{children}</Container>;
-    } else {
-      return (
-        <Link className={className} to={to}>
-          {children}
-        </Link>
-      );
-    }
+const SmartLink = props => {
+  const { children, className, disablePostOnClick, to } = props;
+  if (disablePostOnClick) {
+    return <Container className={className}>{children}</Container>;
+  } else {
+    return (
+      <Link className={className} to={to}>
+        {children}
+      </Link>
+    );
   }
-}
+};
 
 class Vent extends Component {
   state = {
     comments: undefined,
     commentString: "",
+    currentTypingIndex: 0,
     displayCommentField: this.props.displayCommentField,
-    possibleUsersToTag: [],
+    possibleUsersToTag: undefined,
     postOptions: false,
     reportModal: false,
+    taggedUsers: [],
     vent: this.props.vent
   };
 
@@ -78,69 +85,28 @@ class Vent extends Component {
     socket.on(vent._id + "_unlike", obj => this.updateVentLikes(obj));
 
     socket.on(vent._id + "_comment", obj => this.addComment(obj));
-    socket.on(vent._id + "_comment_like", obj => {
-      const { comment } = obj;
-
-      if (!this.context.comments) {
-        const { comments } = this.state;
-
-        if (comments) {
-          const commentIndex = comments.findIndex(
-            commentObj => commentObj._id === comment._id
-          );
-          this.updateCommentLikes(commentIndex, obj);
-        }
-      } else {
-        const { comments } = this.context;
-        const { handleChange } = this.context;
-
-        const commentIndex = comments.findIndex(
-          commentObj => commentObj._id === comment._id
-        );
-
-        let comment2 = comments[commentIndex];
-
-        comment2.upVotes = comment.upVotes;
-        if (comment.hasLiked !== undefined)
-          comment2.hasLiked = comment.hasLiked;
-
-        handleChange({ comments });
-      }
-    });
-    socket.on(vent._id + "_comment_unlike", obj => {
-      const { comments } = this.state;
-      const { comment } = obj;
-
-      if (!this.context.comments) {
-        if (comments) {
-          const commentIndex = comments.findIndex(
-            commentObj => commentObj._id === comment._id
-          );
-          this.updateCommentLikes(commentIndex, obj);
-        }
-      } else {
-        const { comments } = this.context;
-        const { handleChange } = this.context;
-
-        const commentIndex = comments.findIndex(
-          commentObj => commentObj._id === comment._id
-        );
-
-        let comment2 = comments[commentIndex];
-
-        comment2.upVotes = comment.upVotes;
-        if (comment.hasLiked !== undefined)
-          comment2.hasLiked = comment.hasLiked;
-
-        handleChange({ comments });
-      }
-    });
+    socket.on(vent._id + "_comment_like", dataObj =>
+      commentLikeUpdate(
+        this.state.comments,
+        this.context,
+        dataObj,
+        this.updateCommentLikes
+      )
+    );
+    socket.on(vent._id + "_comment_unlike", dataObj =>
+      commentLikeUpdate(
+        this.state.comments,
+        this.context,
+        dataObj,
+        this.updateCommentLikes
+      )
+    );
   }
   componentWillUnmount() {
     this.ismounted = false;
   }
-  handleChange = stateObj => {
-    if (this.ismounted) this.setState(stateObj);
+  handleChange = (stateObj, callback) => {
+    if (this.ismounted) this.setState(stateObj, callback);
   };
 
   addComment = returnObj => {
@@ -176,16 +142,14 @@ class Vent extends Component {
     this.handleChange({ comments });
   };
 
-  tagUser = (commentString, user) => {
-    for (let i = commentString.length - 1; i >= 0; i--) {
-      if (commentString[i] === " ") {
-        console.log("We have a bug.");
-      } else if (commentString[i] === "@") {
-        commentString = commentString.slice(0, i + 1) + user.displayName;
+  updateCommentString = (currentTypingIndex, newString) => {
+    let { taggedUsers } = this.state;
 
-        return this.handleChange({ commentString });
-      }
+    for (let index in taggedUsers) {
+      //if()
     }
+
+    this.handleChange({ commentString: newString });
   };
 
   render() {
@@ -193,10 +157,12 @@ class Vent extends Component {
     const {
       comments,
       commentString,
+      currentTypingIndex,
       displayCommentField,
       possibleUsersToTag,
       postOptions,
       reportModal,
+      taggedUsers,
       vent
     } = this.state;
     const { history, location } = this.props; // Functions
@@ -307,7 +273,9 @@ class Vent extends Component {
                   )}
                   <Container
                     className="button-8 clickable align-center"
-                    onClick={() => this.handleChange({ reportModal: true })}
+                    onClick={() =>
+                      this.handleChange({ reportModal: !reportModal })
+                    }
                   >
                     <FontAwesomeIcon
                       className="mr8"
@@ -418,47 +386,45 @@ class Vent extends Component {
               <Container className="x-fill column border-all2 py16 br8">
                 <Container className="x-fill px16">
                   <Container className="column x-fill align-end border-all br8">
-                    <Container className="relative x-fill pa8">
-                      <TextArea
-                        className="x-fill no-border no-resize"
-                        id="comment-textarea"
-                        onChange={(e, t) => {
-                          //const currentTypingIndex =
-                          //  e.currentTarget.selectionStart;
-
-                          /*  findPossibleUsersToTag(
-                            this.handleChange,
-                            currentTypingIndex,
-                            e.target.value,
-                            socket,
-                            vent._id
-                          );*/
+                    <Container className="relative x-fill px8">
+                      <MentionsInput
+                        className="mentions"
+                        onChange={e => {
                           this.handleChange({ commentString: e.target.value });
                         }}
-                        placeholder="Type a helpful message here..."
-                        style={{
-                          minHeight: isMobileOrTablet() ? "100px" : "60px"
-                        }}
                         value={commentString}
-                      />
-                      <Container
-                        className="absolute top-100 shadow-3 ov-auto column bg-white br4"
-                        style={{ zIndex: 1, maxHeight: "200px" }}
                       >
-                        {possibleUsersToTag.map((obj, index) => (
-                          <Container
-                            className="button-7 column pa16"
-                            key={index}
-                            onClick={() => {
-                              this.tagUser(commentString, obj);
-                              this.handleChange({ possibleUsersToTag: [] });
-                            }}
-                          >
-                            <Text text={obj.displayName} type="h6" />
-                            <Text text={obj._id} type="p" />
-                          </Container>
-                        ))}
-                      </Container>
+                        <Mention
+                          className="mentions__mention"
+                          data={(currentTypingTag, callback) => {
+                            findPossibleUsersToTag(
+                              this.handleChange,
+                              currentTypingTag,
+                              socket,
+                              vent._id,
+                              callback
+                            );
+                          }}
+                          markup="@{{[[[__id__]]]||[[[__display__]]]}}"
+                          renderSuggestion={(
+                            entry,
+                            search,
+                            highlightedDisplay,
+                            index,
+                            focused
+                          ) => {
+                            return (
+                              <Container
+                                className="button-7 column pa16"
+                                key={entry.id}
+                              >
+                                <Text text={entry.display} type="h6" />
+                              </Container>
+                            );
+                          }}
+                          trigger="@"
+                        />
+                      </MentionsInput>
                     </Container>
 
                     <Button

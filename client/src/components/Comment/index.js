@@ -15,7 +15,7 @@ import Container from "../containers/Container";
 import Text from "../views/Text";
 
 import { capitolizeFirstChar } from "../../util";
-import { likeComment, unlikeComment } from "./util";
+import { likeComment, swapTags, unlikeComment } from "./util";
 
 class Comment extends Component {
   render() {
@@ -38,7 +38,6 @@ class Comment extends Component {
             className="clickable align-center mb8"
             onClick={e => {
               e.preventDefault();
-              console.log(comment);
               history.push("/activity?" + comment.authorID);
             }}
           >
@@ -64,7 +63,7 @@ class Comment extends Component {
             />
           </Container>
         </Container>
-        <Text className="px32" text={comment.text} type="p" />
+        <Text className="px32" text={swapTags(comment.text)} type="p" />
         <Container
           className="align-center py16 px32"
           onClick={e => {
