@@ -13,7 +13,9 @@ class HandleOutsideClickContainer extends Component {
 
   handleClickOutside = event => {
     const { close } = this.props;
-    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) close();
+    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+      close();
+    }
   };
 
   setWrapperRef = node => {

@@ -11,7 +11,6 @@ import LoadingHeart from "../../components/loaders/Heart";
 
 import Text from "../../components/views/Text";
 import Button from "../../components/views/Button";
-import Input from "../../components/views/Input";
 
 import { isMobileOrTablet } from "../../util";
 

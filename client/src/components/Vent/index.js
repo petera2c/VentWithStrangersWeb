@@ -11,12 +11,27 @@ import { ExtraContext } from "../../context";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock } from "@fortawesome/pro-regular-svg-icons/faClock";
+import { faShare } from "@fortawesome/pro-regular-svg-icons/faShare";
 import { faHeart } from "@fortawesome/pro-regular-svg-icons/faHeart";
 import { faHeart as faHeart2 } from "@fortawesome/pro-solid-svg-icons/faHeart";
 import { faComment } from "@fortawesome/pro-light-svg-icons/faComment";
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 import { faEdit } from "@fortawesome/pro-light-svg-icons/faEdit";
 import { faExclamationTriangle } from "@fortawesome/pro-light-svg-icons/faExclamationTriangle";
+import {
+  FacebookShareButton,
+  PinterestShareButton,
+  RedditShareButton,
+  TumblrShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+  FacebookIcon,
+  PinterestIcon,
+  RedditIcon,
+  TumblrIcon,
+  TwitterIcon,
+  WhatsappIcon
+} from "react-share";
 
 import LoadingHeart from "../loaders/Heart";
 import Comment from "../Comment";
@@ -68,6 +83,7 @@ class Vent extends Component {
     possibleUsersToTag: undefined,
     postOptions: false,
     reportModal: false,
+    shareClicked: false,
     taggedUsers: [],
     vent: this.props.vent
   };
@@ -162,6 +178,7 @@ class Vent extends Component {
       possibleUsersToTag,
       postOptions,
       reportModal,
+      shareClicked,
       taggedUsers,
       vent
     } = this.state;
@@ -186,6 +203,17 @@ class Vent extends Component {
     if (previewMode && description.length > 240)
       description = description.slice(0, 240) + "... Read More";
 
+    const partialLink =
+      "/problem/" +
+      vent._id +
+      "/" +
+      vent.title
+        .replace(/[^a-zA-Z ]/g, "")
+        .replace(/ /g, "-")
+        .toLowerCase();
+
+    const fullLink = "https://www.ventwithstrangers.com" + partialLink;
+
     return (
       <Container className="x-fill column mb16">
         <Container className="x-fill column bg-white border-all2 mb8 br8">
@@ -195,15 +223,7 @@ class Vent extends Component {
               (disablePostOnClick ? "" : "clickable")
             }
             disablePostOnClick={disablePostOnClick}
-            to={
-              "/problem/" +
-              vent._id +
-              "/" +
-              vent.title
-                .replace(/[^a-zA-Z ]/g, "")
-                .replace(/ /g, "-")
-                .toLowerCase()
-            }
+            to={partialLink}
           >
             <Container
               className="mr16"
@@ -242,48 +262,50 @@ class Vent extends Component {
                   />
                 ))}
               </Container>
-              <FontAwesomeIcon
-                className="clickable grey-9 px16"
-                icon={faEllipsisV}
-                onClick={e => {
-                  e.preventDefault();
 
-                  this.handleChange({ postOptions: !postOptions });
-                }}
-              />
               <HandleOutsideClick
                 close={() => this.handleChange({ postOptions: false })}
-                onClick={e => {
-                  e.preventDefault();
-                }}
-                style={{
-                  position: "absolute",
-                  top: "100%",
-                  right: 0,
-                  display: postOptions ? "" : "none",
-                  zIndex: 1
-                }}
               >
-                <Container className="column x-fill bg-white border-all2 border-all px16 py8 br8">
-                  {false && vent.wasCreatedByUser && (
-                    <Container className="button-7 clickable align-center mb4">
-                      <FontAwesomeIcon className="mr8" icon={faEdit} />
-                      Edit Post
-                    </Container>
-                  )}
-                  <Container
-                    className="button-8 clickable align-center"
-                    onClick={() =>
-                      this.handleChange({ reportModal: !reportModal })
-                    }
+                <FontAwesomeIcon
+                  className="clickable grey-9 px16"
+                  icon={faEllipsisV}
+                  onClick={e => {
+                    e.preventDefault();
+
+                    this.handleChange({ postOptions: !postOptions });
+                  }}
+                />
+                {postOptions && (
+                  <div
+                    className="absolute flex right-0"
+                    style={{
+                      top: "calc(100% + 8px)",
+                      whiteSpace: "nowrap",
+                      zIndex: 1
+                    }}
                   >
-                    <FontAwesomeIcon
-                      className="mr8"
-                      icon={faExclamationTriangle}
-                    />
-                    Report Post
-                  </Container>
-                </Container>
+                    <Container className="column x-fill bg-white border-all2 border-all px16 py8 br8">
+                      {false && vent.wasCreatedByUser && (
+                        <Container className="button-7 clickable align-center mb4">
+                          <FontAwesomeIcon className="mr8" icon={faEdit} />
+                          Edit Post
+                        </Container>
+                      )}
+                      <Container
+                        className="button-8 clickable align-center"
+                        onClick={() =>
+                          this.handleChange({ reportModal: !reportModal })
+                        }
+                      >
+                        <FontAwesomeIcon
+                          className="mr8"
+                          icon={faExclamationTriangle}
+                        />
+                        Report Post
+                      </Container>
+                    </Container>
+                  </div>
+                )}
               </HandleOutsideClick>
             </Container>
           </SmartLink>
@@ -293,15 +315,7 @@ class Vent extends Component {
               (disablePostOnClick ? "" : "clickable")
             }
             disablePostOnClick={disablePostOnClick}
-            to={
-              "/problem/" +
-              vent._id +
-              "/" +
-              vent.title
-                .replace(/[^a-zA-Z ]/g, "")
-                .replace(/ /g, "-")
-                .toLowerCase()
-            }
+            to={partialLink}
           >
             <Text className="fs-20 primary mb8" text={title} type="h1" />
 
@@ -363,6 +377,66 @@ class Vent extends Component {
                 />
 
                 <Text className="grey-5 mr16" text={vent.upVotes} type="p" />
+
+                <Container className="relative">
+                  <HandleOutsideClick
+                    close={() => this.handleChange({ shareClicked: false })}
+                  >
+                    <FontAwesomeIcon
+                      className="button-8"
+                      onClick={() =>
+                        this.handleChange({ shareClicked: !shareClicked })
+                      }
+                      icon={faShare}
+                    />
+                    {shareClicked && (
+                      <div
+                        className="flex bg-white shadow-2 absolute left-0 px16 py16 br8"
+                        style={{ top: "calc(100% + 8px)", zIndex: 1 }}
+                      >
+                        <FacebookShareButton
+                          className="mr8"
+                          url={fullLink}
+                          quote=""
+                        >
+                          <FacebookIcon round={true} size={32} />
+                        </FacebookShareButton>
+                        <TwitterShareButton
+                          className="mr8"
+                          title=""
+                          url={fullLink}
+                        >
+                          <TwitterIcon round={true} size={32} />
+                        </TwitterShareButton>
+                        <RedditShareButton
+                          className="mr8"
+                          title=""
+                          url={fullLink}
+                        >
+                          <RedditIcon round={true} size={32} />
+                        </RedditShareButton>
+                        <PinterestShareButton
+                          className="mr8"
+                          description=""
+                          url={fullLink}
+                        >
+                          <PinterestIcon round={true} size={32} />
+                        </PinterestShareButton>
+                        <TumblrShareButton
+                          caption=""
+                          className="mr8"
+                          title=""
+                          url={fullLink}
+                        >
+                          <TumblrIcon round={true} size={32} />
+                        </TumblrShareButton>
+                        <WhatsappShareButton title="" url={fullLink}>
+                          <WhatsappIcon round={true} size={32} />
+                        </WhatsappShareButton>
+                      </div>
+                    )}
+                  </HandleOutsideClick>
+                </Container>
               </Container>
               <Container className="align-center">
                 <FontAwesomeIcon className="grey-5 mr8" icon={faClock} />
@@ -385,8 +459,8 @@ class Vent extends Component {
             >
               <Container className="x-fill column border-all2 py16 br8">
                 <Container className="x-fill px16">
-                  <Container className="column x-fill align-end border-all br8">
-                    <Container className="relative x-fill px8">
+                  <Container className="column x-fill align-end br8">
+                    <Container className="relative x-fill">
                       <MentionsInput
                         className="mentions"
                         onChange={e => {
@@ -422,13 +496,13 @@ class Vent extends Component {
                               </Container>
                             );
                           }}
-                          trigger="@"
+                          trigger=""
                         />
                       </MentionsInput>
                     </Container>
 
                     <Button
-                      className="button-2 px32 py8 ma8 br4"
+                      className="button-2 px32 py8 mt8 br4"
                       onClick={() => {
                         commentVent(
                           commentString,

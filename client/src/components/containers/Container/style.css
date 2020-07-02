@@ -285,7 +285,7 @@
 }
 
 .test-mode {
-  background-color: var(--red-color);
+  background-color: var(--red-color) !important;
 }
 
 .test {
