@@ -7,9 +7,8 @@ import ContentEditable from "react-contenteditable";
 import { Editor } from "@tinymce/tinymce-react";
 import { MentionsInput, Mention } from "react-mentions";
 
-import { ExtraContext } from "../../context";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCopy } from "@fortawesome/pro-regular-svg-icons/faCopy";
 import { faClock } from "@fortawesome/pro-regular-svg-icons/faClock";
 import { faShare } from "@fortawesome/pro-regular-svg-icons/faShare";
 import { faHeart } from "@fortawesome/pro-regular-svg-icons/faHeart";
@@ -19,15 +18,19 @@ import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 import { faEdit } from "@fortawesome/pro-light-svg-icons/faEdit";
 import { faExclamationTriangle } from "@fortawesome/pro-light-svg-icons/faExclamationTriangle";
 import {
+  EmailShareButton,
   FacebookShareButton,
   PinterestShareButton,
   RedditShareButton,
+  TelegramShareButton,
   TumblrShareButton,
   TwitterShareButton,
   WhatsappShareButton,
+  EmailIcon,
   FacebookIcon,
   PinterestIcon,
   RedditIcon,
+  TelegramIcon,
   TumblrIcon,
   TwitterIcon,
   WhatsappIcon
@@ -36,11 +39,14 @@ import {
 import LoadingHeart from "../loaders/Heart";
 import Comment from "../Comment";
 import ReportModal from "../modals/Report";
+import SuccessMessage from "../SuccessMessage";
 
 import Container from "../containers/Container";
 import HandleOutsideClick from "../containers/HandleOutsideClick";
 import Button from "../views/Button";
 import Text from "../views/Text";
+
+import { ExtraContext } from "../../context";
 
 import {
   addTagsToPage,
@@ -166,6 +172,17 @@ class Vent extends Component {
     }
 
     this.handleChange({ commentString: newString });
+  };
+
+  copyToClipboard = e => {
+    this.textArea.select();
+    document.execCommand("copy");
+    // This is just personal preference.
+    // I prefer to not show the the whole text area selected.
+    e.target.focus();
+    this.setState({ copySuccess: "Copied!" });
+    var tooltip = document.getElementById("copy-message");
+    tooltip.innerHTML = "Copied!";
   };
 
   render() {
@@ -391,48 +408,87 @@ class Vent extends Component {
                     />
                     {shareClicked && (
                       <div
-                        className="flex bg-white shadow-2 absolute left-0 px16 py16 br8"
+                        className="flex column bg-white shadow-2 absolute left-0 px16 py16 br8"
                         style={{ top: "calc(100% + 8px)", zIndex: 1 }}
                       >
-                        <FacebookShareButton
-                          className="mr8"
-                          url={fullLink}
-                          quote=""
-                        >
-                          <FacebookIcon round={true} size={32} />
-                        </FacebookShareButton>
-                        <TwitterShareButton
-                          className="mr8"
-                          title=""
-                          url={fullLink}
-                        >
-                          <TwitterIcon round={true} size={32} />
-                        </TwitterShareButton>
-                        <RedditShareButton
-                          className="mr8"
-                          title=""
-                          url={fullLink}
-                        >
-                          <RedditIcon round={true} size={32} />
-                        </RedditShareButton>
-                        <PinterestShareButton
-                          className="mr8"
-                          description=""
-                          url={fullLink}
-                        >
-                          <PinterestIcon round={true} size={32} />
-                        </PinterestShareButton>
-                        <TumblrShareButton
-                          caption=""
-                          className="mr8"
-                          title=""
-                          url={fullLink}
-                        >
-                          <TumblrIcon round={true} size={32} />
-                        </TumblrShareButton>
-                        <WhatsappShareButton title="" url={fullLink}>
-                          <WhatsappIcon round={true} size={32} />
-                        </WhatsappShareButton>
+                        <Container className="mb8">
+                          <FacebookShareButton
+                            className="mr8"
+                            url={fullLink}
+                            quote=""
+                          >
+                            <FacebookIcon round={true} size={32} />
+                          </FacebookShareButton>
+                          <TwitterShareButton
+                            className="mr8"
+                            title=""
+                            url={fullLink}
+                          >
+                            <TwitterIcon round={true} size={32} />
+                          </TwitterShareButton>
+                          <RedditShareButton
+                            className="mr8"
+                            title=""
+                            url={fullLink}
+                          >
+                            <RedditIcon round={true} size={32} />
+                          </RedditShareButton>
+                          <PinterestShareButton
+                            className="mr8"
+                            description=""
+                            url={fullLink}
+                          >
+                            <PinterestIcon round={true} size={32} />
+                          </PinterestShareButton>
+                          <TumblrShareButton
+                            caption=""
+                            className="mr8"
+                            title=""
+                            url={fullLink}
+                          >
+                            <TumblrIcon round={true} size={32} />
+                          </TumblrShareButton>
+                          <WhatsappShareButton
+                            className="mr8"
+                            title=""
+                            url={fullLink}
+                          >
+                            <WhatsappIcon round={true} size={32} />
+                          </WhatsappShareButton>
+                          <TelegramShareButton
+                            className="mr8"
+                            title=""
+                            url={fullLink}
+                          >
+                            <TelegramIcon round={true} size={32} />
+                          </TelegramShareButton>
+                          <EmailShareButton
+                            body=""
+                            className="mr8"
+                            subject=""
+                            url={fullLink}
+                          >
+                            <EmailIcon round={true} size={32} />
+                          </EmailShareButton>
+                        </Container>
+                        <Container className="relative">
+                          <Container
+                            className="success-message-button button-5 round-icon mr8"
+                            onClick={this.copyToClipboard}
+                          >
+                            <FontAwesomeIcon className="" icon={faCopy} />
+                            <SuccessMessage
+                              id="copy-message"
+                              text="Copy Link"
+                            />
+                          </Container>
+                          <input
+                            className="br4"
+                            onChange={() => {}}
+                            ref={textarea => (this.textArea = textarea)}
+                            value={fullLink}
+                          />
+                        </Container>
                       </div>
                     )}
                   </HandleOutsideClick>
@@ -496,7 +552,7 @@ class Vent extends Component {
                               </Container>
                             );
                           }}
-                          trigger=""
+                          trigger="{}{#}{@@?#?}"
                         />
                       </MentionsInput>
                     </Container>

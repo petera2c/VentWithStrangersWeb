@@ -1,0 +1,3 @@
+.success-message-button:hover .success-message {
+  display: flex !important;
+}
