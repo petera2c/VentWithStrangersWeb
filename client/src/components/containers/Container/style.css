@@ -1,6 +1,5 @@
 .main-container {
   flex-shrink: 0;
-  position: relative;
   display: flex;
   box-sizing: border-box;
   max-width: 100%;

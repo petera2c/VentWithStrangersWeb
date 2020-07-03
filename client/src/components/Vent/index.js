@@ -346,7 +346,7 @@ class Vent extends Component {
           {!searchPreviewMode && (
             <Container
               className={
-                "wrap justify-between py16 px32 " +
+                "relative wrap justify-between py16 px32 " +
                 (!searchPreviewMode && displayCommentField
                   ? "border-bottom"
                   : "")
@@ -395,7 +395,7 @@ class Vent extends Component {
 
                 <Text className="grey-5 mr16" text={vent.upVotes} type="p" />
 
-                <Container className="relative">
+                <Container className="">
                   <HandleOutsideClick
                     close={() => this.handleChange({ shareClicked: false })}
                   >
@@ -407,11 +407,14 @@ class Vent extends Component {
                       icon={faShare}
                     />
                     {shareClicked && (
-                      <div
-                        className="flex column bg-white shadow-2 absolute left-0 px16 py16 br8"
-                        style={{ top: "calc(100% + 8px)", zIndex: 1 }}
+                      <Container
+                        className="absolute left-0 flex column bg-white shadow-2 px16 py16 br8"
+                        style={{
+                          top: "calc(100% - 8px)",
+                          zIndex: 1
+                        }}
                       >
-                        <Container className="mb8">
+                        <Container className="wrap mb8">
                           <FacebookShareButton
                             className="mr8"
                             url={fullLink}
@@ -489,7 +492,7 @@ class Vent extends Component {
                             value={fullLink}
                           />
                         </Container>
-                      </div>
+                      </Container>
                     )}
                   </HandleOutsideClick>
                 </Container>
