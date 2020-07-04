@@ -21,6 +21,8 @@ export const likeComment = (
 };
 
 export const swapTags = commentText => {
+  return commentText;
+  /*
   //  @{{[[[__id__]]]||[[[__display__]]]}}
   //const test = "\u03A9";
 
@@ -66,6 +68,7 @@ export const swapTags = commentText => {
       commentText.slice(something[something.length - 1].end, commentText.length)
     ];
   }
+  */
 };
 
 export const unlikeComment = (
