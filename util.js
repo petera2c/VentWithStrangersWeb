@@ -2,21 +2,25 @@ const AWS = require("aws-sdk");
 const fs = require("fs");
 const moment = require("moment-timezone");
 const jsdom = require("jsdom");
+const nodemailer = require("nodemailer");
 
 const Blog = require("./models/Blog");
+const Comment = require("./models/Comment");
 const Problem = require("./models/Problem");
 const User = require("./models/User");
 const {
   amazonAccessKeyID,
   amazonSecretAccessKey,
-  amazonBucket
+  amazonBucket,
+  email,
+  emailPassword,
 } = require("./config/keys");
 
 const { JSDOM } = jsdom;
 
 const s3 = new AWS.S3({
   accessKeyId: amazonAccessKeyID,
-  secretAccessKey: amazonSecretAccessKey
+  secretAccessKey: amazonSecretAccessKey,
 });
 const createSiteMap = () => {
   Problem.find({}, { title: 1 }, (err, problems) => {
@@ -79,7 +83,7 @@ const createSiteMap = () => {
       const params = {
         Bucket: amazonBucket,
         Key: "sitemap.xml",
-        Body: siteMapString
+        Body: siteMapString,
       };
 
       s3.putObject(params, (err, data) => {
@@ -89,6 +93,48 @@ const createSiteMap = () => {
   });
 };
 
+const emailRahulData = () => {
+  Problem.find(
+    {
+      createdAt: {
+        $gte: new Date(new Date() - 1 * 60 * 60 * 24 * 1000),
+      },
+    },
+    (err, vents) => {
+      Comment.find(
+        {
+          createdAt: {
+            $gte: new Date(new Date() - 1 * 60 * 60 * 24 * 1000),
+          },
+        },
+        (err, comments) => {
+          var transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+              user: email,
+              pass: emailPassword,
+            },
+          });
+
+          var mailOptions = {
+            from: email,
+            to: "rahul@ghostit.co",
+            subject: "Daily VWS update",
+            text:
+              "Total posts for the day: " +
+              vents.length +
+              "\nTotal comments for the day: " +
+              comments.length,
+          };
+          transporter.sendMail(mailOptions, (error, info) => {
+            if (error) console.log(error);
+          });
+        }
+      );
+    }
+  );
+};
+
 const getMetaInformation = (url, callback) => {
   if (url && url[1] === "?") url = "/";
   const defaultMetaObject = {
@@ -96,7 +142,7 @@ const getMetaInformation = (url, callback) => {
       "Vent, and chat anonymously to be apart of a community committed to making the world a happier place.",
     metaImage:
       "https://res.cloudinary.com/dnc1t9z9o/image/upload/v1580431332/VENT.jpg",
-    metaTitle: "We Care | Vent With Strangers"
+    metaTitle: "We Care | Vent With Strangers",
   };
 
   const checkIsProblem = url.match(/(?<=\/problem\/\s*).*?(?=\s*\/)/gs);
@@ -115,7 +161,7 @@ const getMetaInformation = (url, callback) => {
             ? problem.description.substring(0, 200)
             : "",
           metaImage: defaultMetaObject.metaImage,
-          metaTitle: problem.title + " | Vent With Strangers"
+          metaTitle: problem.title + " | Vent With Strangers",
         });
       else return callback(defaultMetaObject);
     });
@@ -143,7 +189,7 @@ const getMetaInformation = (url, callback) => {
         return callback({
           metaDescription: metaDescription,
           metaImage: metaImage,
-          metaTitle: metaTitle + " | Vent With Strangers"
+          metaTitle: metaTitle + " | Vent With Strangers",
         });
       else return callback(defaultMetaObject);
     });
@@ -152,7 +198,7 @@ const getMetaInformation = (url, callback) => {
       if (!err && user)
         return callback({
           metaImage: defaultMetaObject.metaImage,
-          metaTitle: "Account | Vent With Strangers"
+          metaTitle: "Account | Vent With Strangers",
         });
       else return callback(defaultMetaObject);
     });
@@ -161,46 +207,47 @@ const getMetaInformation = (url, callback) => {
       metaDescription:
         "People’s problems and issues with the most upvotes in the past 24 hours. Post, comment, and/or like anonymously.",
       metaImage: defaultMetaObject.metaImage,
-      metaTitle: "We Care | Vent With Strangers"
+      metaTitle: "We Care | Vent With Strangers",
     });
   else if (url.substring(0, 7) === "/recent")
     return callback({
       metaDescription:
         "The latest problems and issues people have posted. Post, comment, and/or like anonymously.",
       metaImage: defaultMetaObject.metaImage,
-      metaTitle: "Recent | Vent With Strangers"
+      metaTitle: "Recent | Vent With Strangers",
     });
   else if (url.substring(0, 9) === "/trending")
     return callback({
       metaDescription:
         "People’s problems and issues with the most upvotes in the past 24 hours. Post, comment, and/or like anonymously.",
       metaImage: defaultMetaObject.metaImage,
-      metaTitle: "Trending | Vent With Strangers"
+      metaTitle: "Trending | Vent With Strangers",
     });
   else if (url === "/post-a-problem")
     return callback({
       metaDescription:
         "You aren’t alone, and you should never feel alone. If you are feeling down, anonymously post your issue here. There is an entire community of people that want to help you.",
       metaImage: defaultMetaObject.metaImage,
-      metaTitle: "Post a Problem | Vent With Strangers"
+      metaTitle: "Post a Problem | Vent With Strangers",
     });
   else if (url === "/vent-to-a-stranger")
     return callback({
       metaDescription:
         "Sometimes, all we need is an available ear. This is where you can anonymously talk to someone that wants to listen, or anonymously listen to someone that wants to be heard.",
       metaImage: defaultMetaObject.metaImage,
-      metaTitle: "Chat | Vent With Strangers"
+      metaTitle: "Chat | Vent With Strangers",
     });
   else if (url === "/app-downloads")
     return callback({
       metaDescription: "Vent With Strangers app downloads.",
       metaImage: defaultMetaObject.metaImage,
-      metaTitle: "App Downloads | Vent With Strangers"
+      metaTitle: "App Downloads | Vent With Strangers",
     });
   else return callback(defaultMetaObject);
 };
 
 module.exports = {
   createSiteMap,
-  getMetaInformation
+  emailRahulData,
+  getMetaInformation,
 };

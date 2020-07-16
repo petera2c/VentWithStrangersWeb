@@ -10,7 +10,7 @@ const bodyParser = require("body-parser"); // Read data in post requests from fr
 const passport = require("passport"); // For Login and Register
 const secure = require("express-force-https"); // force https so http does not work
 const fs = require("fs");
-const { createSiteMap, getMetaInformation } = require("./util");
+const { createSiteMap, emailRahulData, getMetaInformation } = require("./util");
 const { resetDailyUpvotes } = require("./routeFunctions/problem");
 const path = require("path");
 
@@ -40,7 +40,7 @@ io.on("connection", SocketManager(io));
 
 mongoose.connect(keys.mongoDevelopentURI, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 });
 const db = mongoose.connection;
 
@@ -60,8 +60,8 @@ app.use(
     store: sessionStore,
     cookie: {
       secure: false,
-      maxAge: 2592000000
-    }
+      maxAge: 2592000000,
+    },
   })
 );
 
@@ -73,6 +73,7 @@ require("./routeFunctions")(app); // Routes
 const schedule = require("node-schedule");
 schedule.scheduleJob("0 0 * * *", createSiteMap);
 schedule.scheduleJob("0 0 * * 0,3", resetDailyUpvotes);
+schedule.scheduleJob("0 13 * * *", emailRahulData);
 createSiteMap();
 
 // If using production then if a route is not found in express we send user to react routes
@@ -85,7 +86,7 @@ if (process.env.NODE_ENV === "production") {
         return console.log(err);
       }
 
-      getMetaInformation(req.originalUrl, metaObj => {
+      getMetaInformation(req.originalUrl, (metaObj) => {
         const { metaDescription, metaImage, metaTitle } = metaObj;
 
         data = data.replace(/\$OG_TITLE/g, metaTitle);
@@ -120,7 +121,7 @@ io.use(
     secret: keys.cookieKey,
     store: sessionStore,
     success: onAuthorizeSuccess,
-    fail: onAuthorizeFail
+    fail: onAuthorizeFail,
   })
 );
 
