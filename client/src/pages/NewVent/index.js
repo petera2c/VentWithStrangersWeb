@@ -22,15 +22,52 @@ class NewVentPage extends Component {
   state = {
     description: "",
     gender: 0,
+    id: undefined,
     tags: [],
     tagText: "",
     title: "",
-    saving: false
+    saving: false,
   };
-  handleChange = stateObject => {
+  componentDidMount() {
+    this.init();
+  }
+
+  componentDidUpdate() {
+    this.init();
+  }
+  init = () => {
+    let { description, gender, id, tags, tagText, title } = this.state;
+
+    let vent;
+    let state;
+
+    const { location } = this.props;
+
+    if (location) state = location.state;
+    if (state) vent = state.vent;
+    if (vent) {
+      description = vent.description;
+      gender = vent.gender;
+      id = vent._id;
+      tags = vent.tags;
+      title = vent.title;
+    }
+
+    if (id !== this.state.id)
+      this.handleChange({
+        description,
+        gender,
+        id,
+        tags,
+        title,
+      });
+  };
+
+  handleChange = (stateObject) => {
     this.setState(stateObject);
   };
-  updateTags = inputText => {
+
+  updateTags = (inputText) => {
     let { tags } = this.state;
 
     let word = "";
@@ -42,19 +79,29 @@ class NewVentPage extends Component {
     }
     this.handleChange({ saving: false, tags, tagText: word });
   };
-  removeTag = index => {
+
+  removeTag = (index) => {
     let { tags } = this.state;
 
     tags.splice(index, 1);
 
-    this.handleChange({ tags });
+    this.handleChange({ saving: false, tags });
   };
+
   render() {
-    const { description, gender, saving, tags, tagText, title } = this.state;
+    const {
+      description,
+      gender,
+      id,
+      saving,
+      tags,
+      tagText,
+      title,
+    } = this.state;
 
     return (
       <Consumer>
-        {context => (
+        {(context) => (
           <Page
             className="column align-center bg-grey-2"
             description="You aren’t alone, and you should never feel alone. If you are feeling down, anonymously post your issue here. There is an entire community of people that want to help you."
@@ -77,10 +124,10 @@ class NewVentPage extends Component {
 
                   <Input
                     className="py8 px16 mb8 br4"
-                    onChange={e =>
+                    onChange={(e) =>
                       this.handleChange({
                         saving: false,
-                        title: e.target.value
+                        title: e.target.value,
                       })
                     }
                     placeholder="We are here for you."
@@ -96,49 +143,54 @@ class NewVentPage extends Component {
 
                     <Input
                       className="py8 px16 br4"
-                      onChange={e => this.updateTags(e.target.value)}
+                      onChange={(e) => this.updateTags(e.target.value)}
                       placeholder="depression, relationships, covid-19"
                       type="text"
                       value={tagText}
                     />
                   </Container>
                   <Container>
-                    {tags.map((tag, index) => (
-                      <Container
-                        key={index}
-                        className="clickable mr8 mb8"
-                        onClick={() => this.removeTag(index)}
-                      >
-                        <Text
-                          className="flex-fill tac fw-300 border-all blue active large px16 py8"
-                          style={{
-                            marginRight: "1px",
-                            borderTopLeftRadius: "4px",
-                            borderBottomLeftRadius: "4px"
-                          }}
-                          text={tag}
-                          type="p"
-                        />
+                    {tags.map((tag, index) => {
+                      let text = tag;
+                      if (tag.name) text = tag.name;
+
+                      return (
                         <Container
-                          className="full-center border-all px16"
-                          style={{
-                            borderTopRightRadius: "4px",
-                            borderBottomRightRadius: "4px"
-                          }}
+                          key={index}
+                          className="clickable mr8 mb8"
+                          onClick={() => this.removeTag(index)}
                         >
-                          <FontAwesomeIcon className="" icon={faTimes} />
+                          <Text
+                            className="flex-fill tac fw-300 border-all blue active large px16 py8"
+                            style={{
+                              marginRight: "1px",
+                              borderTopLeftRadius: "4px",
+                              borderBottomLeftRadius: "4px",
+                            }}
+                            text={text}
+                            type="p"
+                          />
+                          <Container
+                            className="full-center border-all px16"
+                            style={{
+                              borderTopRightRadius: "4px",
+                              borderBottomRightRadius: "4px",
+                            }}
+                          >
+                            <FontAwesomeIcon className="" icon={faTimes} />
+                          </Container>
                         </Container>
-                      </Container>
-                    ))}
+                      );
+                    })}
                   </Container>
 
                   <Text className="fw-400 mb8" text="Description" type="h5" />
                   <TextArea
                     className="py8 px16 mb8 br4"
-                    onChange={event =>
+                    onChange={(event) =>
                       this.handleChange({
                         saving: false,
-                        description: event.target.value
+                        description: event.target.value,
                       })
                     }
                     placeholder="Let it all out. You are not alone."
@@ -147,9 +199,9 @@ class NewVentPage extends Component {
                   />
                   <Container className="justify-end">
                     <Emoji
-                      handleChange={emoji => {
+                      handleChange={(emoji) => {
                         this.handleChange({
-                          description: this.state.description + emoji
+                          description: this.state.description + emoji,
                         });
                       }}
                     />
@@ -161,16 +213,17 @@ class NewVentPage extends Component {
                           const {
                             description,
                             gender,
+                            id,
                             tags = [],
                             tagText,
-                            title
+                            title,
                           } = this.state;
                           if (tagText) tags.push(tagText);
                           if (description && title) {
-                            this.handleChange({ saving: true });
+                            this.handleChange({ saving: true, tagText: "" });
 
                             saveVent(
-                              vent => {
+                              (vent) => {
                                 this.handleChange({ saving: false });
                                 const { history } = this.props;
                                 history.push(
@@ -185,7 +238,7 @@ class NewVentPage extends Component {
 
                                 window.location.reload();
                               },
-                              { description, gender, tags, title },
+                              { description, gender, id, tags, title },
                               context.notify
                             );
                           } else alert("One or more fields is missing.");

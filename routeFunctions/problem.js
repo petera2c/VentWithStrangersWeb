@@ -6,7 +6,7 @@ const Tag = require("../models/Tag");
 
 const { likeVentNotification } = require("./notification");
 
-const project = userID => {
+const project = (userID) => {
   return {
     $project: {
       authorID: "$authorID",
@@ -18,26 +18,48 @@ const project = userID => {
       tags: "$tags",
       title: "$title",
       upVotes: { $size: "$upVotes" },
-      wasCreatedByUser: { $eq: ["$authorID", userID] }
-    }
+      wasCreatedByUser: { $eq: ["$authorID", userID] },
+    },
   };
+};
+
+const deleteVent = (callback, dataObj, socket) => {
+  const { ventID } = dataObj;
+  const userID = socket.request.user._id;
+
+  Problem.findById(ventID, (err, vent) => {
+    if (vent) {
+      if (userID == String(vent.authorID)) {
+        for (let index in vent.comments) {
+          const comment = vent.comments[index];
+          Comment.findById(comment.id, (err, foundComment) => {
+            if (foundComment) foundComment.remove();
+          });
+        }
+        vent.remove((err, vent) => {
+          if (!err) callback({ success: true });
+          else callback({ success: false });
+        });
+      } else callback({ message: "This is not your post", success: false });
+    } else callback({ message: "Post not found.", success: false });
+  });
 };
 
 const getAggregate = (skip, sort, match, userID) => [
   {
-    $match: match
+    $match: match,
   },
   project(userID),
   { $sort: sort },
   { $skip: skip },
-  { $limit: 10 }
+  { $limit: 10 },
 ];
 
 const getAggregateSingle = (userID, problemID) => [
   {
-    $match: { _id: mongoose.Types.ObjectId(problemID) }
+    $match: { _id: mongoose.Types.ObjectId(problemID) },
   },
-  project(userID)
+  project(userID),
 ];
 
 const addUserToObject = (callback, objects) => {
@@ -90,14 +112,14 @@ const findPossibleUsersToTag = (dataObj, callback) => {
         User.find(
           {
             $or: userIDList,
-            displayName: { $regex: currentTypingTag + ".*", $options: "i" }
+            displayName: { $regex: currentTypingTag + ".*", $options: "i" },
           },
           { displayName: 1 },
           (err, users) => {
             User.find(
               {
                 _id: { $nin: userIDList2 },
-                displayName: { $regex: currentTypingTag + ".*", $options: "i" }
+                displayName: { $regex: currentTypingTag + ".*", $options: "i" },
               },
               { displayName: 1 },
               (err, users2) => {
@@ -129,20 +151,20 @@ const getProblem = (id, callback, socket) => {
 
         if (problems && problems.length !== 0)
           addUserToObject(
-            problems => callback({ problems, success: true }),
+            (problems) => callback({ problems, success: true }),
             problems
           );
         else
           callback({
             message: "Incorrect ID, unable to find a post.",
-            success: false
+            success: false,
           });
       }
     );
   } else
     callback({
       message: "No id given.",
-      success: false
+      success: false,
     });
 };
 
@@ -150,7 +172,7 @@ const getVents = (callback, dataObj, socket) => {
   const { page, skip = 0, tags = [] } = dataObj;
   const userID = socket.request.user._id;
   const match = {
-    $expr: { $not: { $in: [userID, "$reports.userID"] } }
+    $expr: { $not: { $in: [userID, "$reports.userID"] } },
   };
   const sort = {};
 
@@ -175,7 +197,7 @@ const getVents = (callback, dataObj, socket) => {
           }
 
           return addUserToObject(
-            problems => returnProblemsFunction(callback, err, problems),
+            (problems) => returnProblemsFunction(callback, err, problems),
             problems
           );
         }
@@ -201,7 +223,7 @@ const getUsersPosts = (dataObj, callback, socket) => {
           if (problems.length === 0) callback({ problems, success: true });
           else
             addUserToObject(
-              problems => callback({ problems, success: true }),
+              (problems) => callback({ problems, success: true }),
               problems
             );
         } else callback({ message: "Unable to get posts.", success: false });
@@ -220,7 +242,7 @@ const likeVent = (problemID, callback, socket) => {
       if (problem) {
         if (
           problem.upVotes.find(
-            upVoteUserID => String(upVoteUserID) === String(userID)
+            (upVoteUserID) => String(upVoteUserID) === String(userID)
           )
         )
           callback({ message: "Already liked post.", success: false });
@@ -231,14 +253,14 @@ const likeVent = (problemID, callback, socket) => {
             socket.to(problem._id).emit(problem._id + "_like", {
               dailyUpvotes: problem.dailyUpvotes,
               hasLiked: undefined,
-              upVotes: problem.upVotes.length
+              upVotes: problem.upVotes.length,
             });
 
             socket.emit(problem._id + "_like", {
               dailyUpvotes: problem.dailyUpvotes,
               hasLiked: true,
               success: true,
-              upVotes: problem.upVotes.length
+              upVotes: problem.upVotes.length,
             });
 
             likeVentNotification(problem, socket);
@@ -256,7 +278,9 @@ const reportVent = (dataObj, callback, socket) => {
   Problem.findById(problemID, { reports: 1 }, (err, problem) => {
     if (problem) {
       if (
-        problem.reports.find(report => String(report.userID) === String(userID))
+        problem.reports.find(
+          (report) => String(report.userID) === String(userID)
+        )
       )
         callback({ message: "Already reported post.", success: false });
       else {
@@ -284,7 +308,7 @@ const returnProblemsFunction = (callback, err, problems) => {
 };
 
 const saveVent = (req, res) => {
-  const { description, gender, tags, title } = req.body;
+  const { description, gender, id, tags, title } = req.body;
 
   let counter = 0;
   const tagNameArray = [];
@@ -292,19 +316,19 @@ const saveVent = (req, res) => {
   if (!title) {
     return res.send({
       message: "You forgot to give it a title!",
-      success: false
+      success: false,
     });
   }
   if (!description) {
     return res.send({
       message: "You forgot to give it a description!",
-      success: false
+      success: false,
     });
   }
   if (title && title.length > 140) {
     return res.send({
       message: "Title is too long! The title must be less than 140 characters.",
-      success: false
+      success: false,
     });
   }
 
@@ -314,54 +338,94 @@ const saveVent = (req, res) => {
   ) {
     return res.send({
       message: "Your title or description has no content!",
-      success: false
+      success: false,
     });
   }
   let hasFoundRealTag = false;
   for (let index in tags) {
-    const tag = tags[index];
+    let tag = tags[index];
+    if (tag.name) tag = tag.name;
+
     if (!tag.replace(/\s/g, "").length) continue;
     else {
       hasFoundRealTag = true;
       break;
     }
   }
+
   if (!hasFoundRealTag) {
     return res.send({
       message: "Your tags have no content!",
-      success: false
+      success: false,
     });
   }
 
-  const saveNewProblem = (description, gender, tagNameArray, title) => {
-    const newProblem = new Problem({
-      description,
-      dailyUpvotes: 0,
-      gender,
-      tags: tagNameArray,
-      title
-    });
+  const updateOrSaveNewVent = (
+    description,
+    gender,
+    id,
+    tagNameArray,
+    title
+  ) => {
+    const finalVentSave = (newOrUpdatedVent, res) => {
+      return newOrUpdatedVent.save((err, newOrUpdatedVent) => {
+        if (!err && newOrUpdatedVent)
+          res.send({ problem: newOrUpdatedVent, success: true });
+        else if (err && err.code === 11000)
+          res.send({
+            message:
+              "This title has already been used, please try something different!",
+            success: false,
+          });
+        else res.send({ success: false });
+      });
+    };
+    if (id) {
+      Problem.findById(id, (err, oldVent) => {
+        if (
+          oldVent &&
+          !err &&
+          req.user &&
+          String(oldVent.authorID) == req.user._id
+        ) {
+          oldVent.description = description;
+          oldVent.dailyUpvotes = 0;
+          oldVent.gender = gender;
+          oldVent.tags = tagNameArray;
+          oldVent.title = title;
+          finalVentSave(oldVent, res);
+        } else
+          res.send({
+            message:
+              "Something went wrong editing this post. Please refresh and try again.",
+            success: false,
+          });
+      });
+    } else {
+      let newProblem = new Problem({
+        authorID: req.user._id,
+        description,
+        dailyUpvotes: 0,
+        gender,
+        tags: tagNameArray,
+        title,
+      });
 
-    newProblem.authorID = req.user._id;
-    newProblem.save((err, newProblem) => {
-      if (!err && newProblem) res.send({ problem: newProblem, success: true });
-      else if (err && err.code === 11000)
-        res.send({
-          message:
-            "This title has already been used, please try something different!",
-          success: false
-        });
-      else res.send({ success: false });
-    });
+      finalVentSave(newProblem, res);
+    }
   };
 
   if (tags && tags.length > 0)
     for (let index in tags) {
-      const tag = tags[index].toLowerCase();
-      if (!tag.replace(/\s/g, "").length) continue;
+      const tag = tags[index];
+
+      let text = tag;
+      if (tag.name) text = tag.name;
+
+      if (!text.replace(/\s/g, "").length) continue;
 
       counter++;
-      Tag.findOne({ name: tag }, (err, tagFromDB) => {
+      Tag.findOne({ name: text.toLowerCase() }, (err, tagFromDB) => {
         if (tagFromDB) {
           tagNameArray.push({ name: tagFromDB.name });
 
@@ -369,7 +433,7 @@ const saveVent = (req, res) => {
           tagFromDB.save(() => {
             counter--;
             if (counter === 0)
-              saveNewProblem(description, gender, tagNameArray, title);
+              updateOrSaveNewVent(description, gender, id, tagNameArray, title);
           });
         } else {
           const newTag = new Tag({ name: tag, uses: 1 });
@@ -377,12 +441,12 @@ const saveVent = (req, res) => {
           newTag.save(() => {
             counter--;
             if (counter === 0)
-              saveNewProblem(description, gender, tagNameArray, title);
+              updateOrSaveNewVent(description, gender, id, tagNameArray, title);
           });
         }
       });
     }
-  else saveNewProblem(description, gender, undefined, title);
+  else updateOrSaveNewVent(description, gender, id, undefined, title);
 };
 const searchVents = (dataObj, callback) => {
   let { searchPostString = "" } = dataObj;
@@ -398,7 +462,8 @@ const searchVents = (dataObj, callback) => {
       (err, problems) => {
         if (problems && problems.length === 0) {
           return callback([]);
-        } else return addUserToObject(problems => callback(problems), problems);
+        } else
+          return addUserToObject((problems) => callback(problems), problems);
       }
     )
       .skip(skip)
@@ -411,7 +476,8 @@ const searchVents = (dataObj, callback) => {
       (err, problems) => {
         if (problems && problems.length === 0) {
           return callback([]);
-        } else return addUserToObject(problems => callback(problems), problems);
+        } else
+          return addUserToObject((problems) => callback(problems), problems);
       }
     )
       .sort({ score: { $meta: "textScore" } })
@@ -426,7 +492,7 @@ const unlikeVent = (problemID, callback, socket) => {
   Problem.findById(problemID, (err, problem) => {
     if (problem) {
       const index = problem.upVotes.findIndex(
-        upVoteUserID => String(upVoteUserID) === String(userID)
+        (upVoteUserID) => String(upVoteUserID) === String(userID)
       );
       if (index >= 0) {
         problem.dailyUpvotes -= 1;
@@ -435,13 +501,13 @@ const unlikeVent = (problemID, callback, socket) => {
           socket.to(result._id).emit(result._id + "_unlike", {
             dailyUpvotes: result.dailyUpvotes,
             hasLiked: undefined,
-            upVotes: result.upVotes.length
+            upVotes: result.upVotes.length,
           });
           socket.emit(problem._id + "_unlike", {
             dailyUpvotes: result.dailyUpvotes,
             hasLiked: false,
             success: true,
-            upVotes: result.upVotes.length
+            upVotes: result.upVotes.length,
           });
         });
       } else callback({ message: "You haven't liked post.", success: false });
@@ -451,6 +517,7 @@ const unlikeVent = (problemID, callback, socket) => {
 
 module.exports = {
   addUserToObject,
+  deleteVent,
   findPossibleUsersToTag,
   getProblem,
   getVents,
@@ -460,5 +527,5 @@ module.exports = {
   resetDailyUpvotes,
   saveVent,
   searchVents,
-  unlikeVent
+  unlikeVent,
 };

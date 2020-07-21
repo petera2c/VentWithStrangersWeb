@@ -7,7 +7,7 @@ const {
   getUsersComments,
   likeComment,
   reportComment,
-  unlikeComment
+  unlikeComment,
 } = require("./comment");
 
 const {
@@ -15,13 +15,14 @@ const {
   findConversation,
   getUsersWaiting,
   leaveChat,
-  sendMessage
+  sendMessage,
 } = require("./conversation");
 
 const { getNotifications, readNotifications } = require("./notification");
 
 const {
   addUserToObject,
+  deleteVent,
   findPossibleUsersToTag,
   getProblem,
   getVents,
@@ -29,23 +30,26 @@ const {
   likeVent,
   reportVent,
   searchVents,
-  unlikeVent
+  unlikeVent,
 } = require("./problem");
 
 const { getSettings, saveSettings } = require("./settings");
 
-module.exports = io => {
-  return socket => {
+module.exports = (io) => {
+  return (socket) => {
     socket.on("get_users_waiting", getUsersWaiting);
     socket.on("find_conversation", (dataObj, callback) =>
       findConversation(dataObj, callback, socket)
     );
-    socket.on("send_message", dataObj => sendMessage(dataObj, socket));
+    socket.on("send_message", (dataObj) => sendMessage(dataObj, socket));
     socket.on("leave_chat", () => leaveChat(socket));
     socket.on("disconnecting", () => leaveChat(socket));
 
     socket.on("get_problems", (dataObj, callback) =>
       getVents(callback, dataObj, socket)
+    );
+    socket.on("delete_vent", (dataObj, callback) =>
+      deleteVent(callback, dataObj, socket)
     );
 
     socket.on("search_tags", searchTags);
@@ -91,7 +95,7 @@ module.exports = io => {
     );
     socket.on("user_reported", () => {});
 
-    socket.on("get_settings", callback => getSettings(callback, socket));
+    socket.on("get_settings", (callback) => getSettings(callback, socket));
     socket.on("save_settings", (dataObj, callback) =>
       saveSettings(dataObj, callback, socket)
     );
@@ -99,7 +103,7 @@ module.exports = io => {
     socket.on("get_notifications", (dataObj, callback) =>
       getNotifications(dataObj, callback, socket)
     );
-    socket.on("read_notifications", callback =>
+    socket.on("read_notifications", (callback) =>
       readNotifications(callback, socket)
     );
 

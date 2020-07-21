@@ -1,10 +1,15 @@
 export const commentVent = (commentString, context, vent, addComment) => {
-  context.socket.emit("comment_problem", commentString, vent._id, returnObj => {
-    const { comment, message, success } = returnObj;
-    if (success) {
-      //addComment({ comment });
-    } else context.notify({ message, type: "danger" });
-  });
+  context.socket.emit(
+    "comment_problem",
+    commentString,
+    vent._id,
+    (returnObj) => {
+      const { comment, message, success } = returnObj;
+      if (success) {
+        //addComment({ comment });
+      } else context.notify({ message, type: "danger" });
+    }
+  );
 };
 
 export const commentLikeUpdate = (
@@ -18,7 +23,7 @@ export const commentLikeUpdate = (
   if (!context.comments) {
     if (comments) {
       const commentIndex = comments.findIndex(
-        commentObj => commentObj._id === comment._id
+        (commentObj) => commentObj._id === comment._id
       );
       updateCommentLikes(commentIndex, dataObj);
     }
@@ -27,7 +32,7 @@ export const commentLikeUpdate = (
     const { handleChange } = this.context;
 
     const commentIndex = comments.findIndex(
-      commentObj => commentObj._id === comment._id
+      (commentObj) => commentObj._id === comment._id
     );
 
     let comment2 = comments[commentIndex];
@@ -39,6 +44,28 @@ export const commentLikeUpdate = (
   }
 };
 
+export const deleteVent = (
+  history,
+  isOnSingleVentPage,
+  removeVent,
+  socket,
+  ventID,
+  ventIndex
+) => {
+  socket.emit("delete_vent", { ventID }, (returnObj) => {
+    const { message, success } = returnObj;
+
+    if (success) {
+      alert("Vent deleted successfully");
+
+      if (removeVent && Number.isInteger(ventIndex) && !isOnSingleVentPage) {
+        removeVent(ventIndex);
+      } else {
+        history.push("/");
+      }
+    } else alert(message);
+  });
+};
 export const findPossibleUsersToTag = (
   callback,
   currentTypingWord,
@@ -65,7 +92,7 @@ export const findPossibleUsersToTag = (
     socket.emit(
       "find_relevant_users_to_tag",
       { currentTypingTag: currentTypingWord, ventID },
-      resultObj => {
+      (resultObj) => {
         const { users } = resultObj;
 
         if (users)
@@ -83,7 +110,8 @@ export const findPossibleUsersToTag = (
   }
 };
 
-export const getCurrentTypingIndex = element => {
+export const getCurrentTypingIndex = (element) => {
+  // Taken from stack overflow
   var caretOffset = 0;
   var doc = element.ownerDocument || element.document;
   var win = doc.defaultView || doc.parentWindow;
@@ -136,7 +164,7 @@ const getCurrentTypingWord = (currentTypingIndex, fullString) => {
 };
 
 export const getVentComments = (context, handleChange, vent) => {
-  context.socket.emit("get_problem_comments", vent._id, returnObj => {
+  context.socket.emit("get_problem_comments", vent._id, (returnObj) => {
     const { comments, message, success } = returnObj;
 
     if (success) handleChange({ comments });
@@ -145,7 +173,7 @@ export const getVentComments = (context, handleChange, vent) => {
 };
 
 export const likeVent = (context, vent, updateVentLikes) => {
-  context.socket.emit("like_problem", vent._id, returnObj => {
+  context.socket.emit("like_problem", vent._id, (returnObj) => {
     const { message, success } = returnObj;
 
     if (success) {
@@ -153,7 +181,7 @@ export const likeVent = (context, vent, updateVentLikes) => {
     } else {
       context.notify({
         message,
-        type: "danger"
+        type: "danger",
       });
     }
   });
@@ -170,7 +198,7 @@ export const reportVent = (
   context.socket.emit(
     "report_problem",
     { option, problemID: id },
-    returnObj => {
+    (returnObj) => {
       const { message, success } = returnObj;
 
       if (success && pathname.substring(0, 9) === "/problem/")
@@ -179,7 +207,7 @@ export const reportVent = (
       else
         context.notify({
           message,
-          type: "danger"
+          type: "danger",
         });
     }
   );
@@ -210,7 +238,7 @@ export const tagUser = (
 
   const taggedUser = {
     display: user._id,
-    id: user._id
+    id: user._id,
   };
 
   taggedUsers.push(taggedUser);
@@ -218,19 +246,19 @@ export const tagUser = (
   return callback({
     commentString,
     possibleUsersToTag: undefined,
-    taggedUsers
+    taggedUsers,
   });
 };
 
 export const unlikeVent = (context, vent, updateVentLikes) => {
-  context.socket.emit("unlike_problem", vent._id, returnObj => {
+  context.socket.emit("unlike_problem", vent._id, (returnObj) => {
     const { message, success } = returnObj;
 
     if (success) {
     } else {
       context.notify({
         message,
-        type: "danger"
+        type: "danger",
       });
     }
   });

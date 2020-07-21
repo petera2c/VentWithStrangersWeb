@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 
-import Consumer, { ExtraContext } from "../../context";
+import Consumer from "../../context";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
@@ -23,7 +23,6 @@ import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
 //People care and help is here. Vent in our anonymous forum or chat anonymously to be apart of a community committed to making the world a better place.
 class Vents extends Component {
   render() {
-    const { vents } = this.context;
     const { location } = this.props;
     const { pathname, search } = location;
 
@@ -51,7 +50,7 @@ class Vents extends Component {
 
     return (
       <Consumer>
-        {context => (
+        {(context) => (
           <Page
             className="column bg-grey-2"
             description={metaDescription}
@@ -93,9 +92,9 @@ class Vents extends Component {
                   <Filters />
                 </Container>
 
-                {vents && (
+                {context.vents && (
                   <Container className="x-fill column">
-                    {vents && vents.length === 0 && (
+                    {context.vents && context.vents.length === 0 && (
                       <Text
                         className="fw-400"
                         text="No vents found."
@@ -103,14 +102,16 @@ class Vents extends Component {
                       />
                     )}
                     {context.vents &&
-                      context.vents.map((vent, index) => (
-                        <Vent
-                          key={index}
-                          previewMode={true}
-                          vent={vent}
-                          ventIndex={index}
-                        />
-                      ))}
+                      context.vents.map((vent, index) => {
+                        return (
+                          <Vent
+                            key={index + vent._id}
+                            previewMode={true}
+                            vent={vent}
+                            ventIndex={index}
+                          />
+                        );
+                      })}
                     {context.canLoadMorePosts && (
                       <LoadMoreVents
                         canLoadMorePosts={context.canLoadMorePosts}
@@ -124,7 +125,7 @@ class Vents extends Component {
                     )}
                   </Container>
                 )}
-                {!vents && <LoadingHeart />}
+                {!context.vents && <LoadingHeart />}
               </Container>
 
               {!isMobileOrTablet() && (
@@ -149,7 +150,5 @@ class Vents extends Component {
     );
   }
 }
-
-Vents.contextType = ExtraContext;
 
 export default withRouter(Vents);

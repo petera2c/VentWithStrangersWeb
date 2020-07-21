@@ -14,7 +14,7 @@ import Button from "../../components/views/Button";
 
 import { isMobileOrTablet } from "../../util";
 
-const getVentIdFromURL = pathname => {
+const getVentIdFromURL = (pathname) => {
   // regular expression will not work due to catastrophic backtracing
   //pathname.match(/(?<=\/problem\/\s*).*?(?=\s*\/)/gs);
   if (pathname) {
@@ -42,25 +42,25 @@ class VentPage extends Component {
     if (regexMatch) ventID = regexMatch;
 
     if (ventID)
-      socket.emit("get_problem", ventID, result => {
+      socket.emit("get_problem", ventID, (result) => {
         const { message, problems, success } = result;
 
         if (success)
           handleChange({
-            vents: problems
+            vents: problems,
           });
         else if (message) notify({ message, type: "danger" });
         else
           notify({
             message:
               "Something unexpected has happened, please refresh the page and try again.",
-            type: "danger"
+            type: "danger",
           });
       });
     else
       notify({
         message: "No post ID.",
-        type: "danger"
+        type: "danger",
       });
   }
   componentWillUnmount() {
@@ -95,6 +95,7 @@ class VentPage extends Component {
               <Vent
                 disablePostOnClick={true}
                 displayCommentField
+                isOnSingleVentPage={true}
                 vent={vents[0]}
                 ventIndex={0}
               />

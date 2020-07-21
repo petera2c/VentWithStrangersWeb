@@ -17,6 +17,7 @@ import { faComment } from "@fortawesome/pro-light-svg-icons/faComment";
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 import { faEdit } from "@fortawesome/pro-light-svg-icons/faEdit";
 import { faExclamationTriangle } from "@fortawesome/pro-light-svg-icons/faExclamationTriangle";
+import { faTrash } from "@fortawesome/pro-duotone-svg-icons/faTrash";
 import {
   EmailShareButton,
   FacebookShareButton,
@@ -33,12 +34,13 @@ import {
   TelegramIcon,
   TumblrIcon,
   TwitterIcon,
-  WhatsappIcon
+  WhatsappIcon,
 } from "react-share";
 
 import LoadingHeart from "../loaders/Heart";
 import Comment from "../Comment";
 import ReportModal from "../modals/Report";
+import ConfirmAlertModal from "../modals/ConfirmAlert";
 import SuccessMessage from "../SuccessMessage";
 
 import Container from "../containers/Container";
@@ -51,23 +53,24 @@ import { ExtraContext } from "../../context";
 import {
   addTagsToPage,
   capitolizeFirstChar,
-  isMobileOrTablet
+  isMobileOrTablet,
 } from "../../util";
 import {
   commentVent,
   commentLikeUpdate,
+  deleteVent,
   findPossibleUsersToTag,
   getCurrentTypingIndex,
   getVentComments,
   likeVent,
   reportVent,
   tagUser,
-  unlikeVent
+  unlikeVent,
 } from "./util";
 
 import classNames from "./style.css";
 
-const SmartLink = props => {
+const SmartLink = (props) => {
   const { children, className, disablePostOnClick, to } = props;
   if (disablePostOnClick) {
     return <Container className={className}>{children}</Container>;
@@ -85,13 +88,14 @@ class Vent extends Component {
     comments: undefined,
     commentString: "",
     currentTypingIndex: 0,
+    deleteVentConfirm: false,
     displayCommentField: this.props.displayCommentField,
     possibleUsersToTag: undefined,
     postOptions: false,
     reportModal: false,
     shareClicked: false,
     taggedUsers: [],
-    vent: this.props.vent
+    vent: this.props.vent,
   };
 
   componentDidMount() {
@@ -103,11 +107,11 @@ class Vent extends Component {
     if (displayCommentField)
       getVentComments(this.context, this.handleChange, vent, ventIndex);
 
-    socket.on(vent._id + "_like", obj => this.updateVentLikes(obj));
-    socket.on(vent._id + "_unlike", obj => this.updateVentLikes(obj));
+    socket.on(vent._id + "_like", (obj) => this.updateVentLikes(obj));
+    socket.on(vent._id + "_unlike", (obj) => this.updateVentLikes(obj));
 
-    socket.on(vent._id + "_comment", obj => this.addComment(obj));
-    socket.on(vent._id + "_comment_like", dataObj =>
+    socket.on(vent._id + "_comment", (obj) => this.addComment(obj));
+    socket.on(vent._id + "_comment_like", (dataObj) =>
       commentLikeUpdate(
         this.state.comments,
         this.context,
@@ -115,7 +119,7 @@ class Vent extends Component {
         this.updateCommentLikes
       )
     );
-    socket.on(vent._id + "_comment_unlike", dataObj =>
+    socket.on(vent._id + "_comment_unlike", (dataObj) =>
       commentLikeUpdate(
         this.state.comments,
         this.context,
@@ -131,7 +135,7 @@ class Vent extends Component {
     if (this.ismounted) this.setState(stateObj, callback);
   };
 
-  addComment = returnObj => {
+  addComment = (returnObj) => {
     let { comments, vent } = this.state;
     let { comment, commentsSize } = returnObj;
     if (comment.hasLiked === undefined) comment.hasLiked = false;
@@ -143,7 +147,7 @@ class Vent extends Component {
     this.handleChange({ comments, vent });
   };
 
-  updateVentLikes = updatetObj => {
+  updateVentLikes = (updatetObj) => {
     let { vent } = this.state;
 
     vent.upVotes = updatetObj.upVotes;
@@ -168,13 +172,12 @@ class Vent extends Component {
     let { taggedUsers } = this.state;
 
     for (let index in taggedUsers) {
-      //if()
     }
 
     this.handleChange({ commentString: newString });
   };
 
-  copyToClipboard = e => {
+  copyToClipboard = (e) => {
     this.textArea.select();
     document.execCommand("copy");
     // This is just personal preference.
@@ -186,26 +189,28 @@ class Vent extends Component {
   };
 
   render() {
-    const { socket } = this.context;
+    const { handleChange, removeVent, socket } = this.context;
     const {
       comments,
       commentString,
       currentTypingIndex,
+      deleteVentConfirm,
       displayCommentField,
       possibleUsersToTag,
       postOptions,
       reportModal,
       shareClicked,
       taggedUsers,
-      vent
+      vent,
     } = this.state;
     const { history, location } = this.props; // Functions
     const { pathname } = location;
     const {
       disablePostOnClick,
+      isOnSingleVentPage,
       previewMode,
       ventIndex,
-      searchPreviewMode
+      searchPreviewMode,
     } = this.props; // Variables
 
     let keywords = "";
@@ -244,7 +249,7 @@ class Vent extends Component {
           >
             <Container
               className="mr16"
-              onClick={e => {
+              onClick={(e) => {
                 e.preventDefault();
 
                 history.push("/activity?" + vent.authorID);
@@ -269,7 +274,7 @@ class Vent extends Component {
                   <Text
                     className="button-1 clickable mr8"
                     key={index}
-                    onClick={e => {
+                    onClick={(e) => {
                       e.preventDefault();
 
                       addTagsToPage(this.props, [tag]);
@@ -286,7 +291,7 @@ class Vent extends Component {
                 <FontAwesomeIcon
                   className="clickable grey-9 px16"
                   icon={faEllipsisV}
-                  onClick={e => {
+                  onClick={(e) => {
                     e.preventDefault();
 
                     this.handleChange({ postOptions: !postOptions });
@@ -298,28 +303,67 @@ class Vent extends Component {
                     style={{
                       top: "calc(100% + 8px)",
                       whiteSpace: "nowrap",
-                      zIndex: 1
+                      zIndex: 1,
                     }}
                   >
                     <Container className="column x-fill bg-white border-all2 border-all px16 py8 br8">
-                      {false && vent.wasCreatedByUser && (
-                        <Container className="button-7 clickable align-center mb4">
-                          <FontAwesomeIcon className="mr8" icon={faEdit} />
-                          Edit Post
+                      {vent.wasCreatedByUser && (
+                        <Container
+                          className="button-8 clickable align-center mb8"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            history.push({
+                              pathname: "/post-a-problem",
+                              state: { vent },
+                            });
+                          }}
+                        >
+                          <Text
+                            className="flex-fill"
+                            text="Edit Vent"
+                            type="p"
+                          />
+                          <FontAwesomeIcon className="ml8" icon={faEdit} />
                         </Container>
                       )}
-                      <Container
-                        className="button-8 clickable align-center"
-                        onClick={() =>
-                          this.handleChange({ reportModal: !reportModal })
-                        }
-                      >
-                        <FontAwesomeIcon
-                          className="mr8"
-                          icon={faExclamationTriangle}
-                        />
-                        Report Post
-                      </Container>
+                      {vent.wasCreatedByUser && (
+                        <Container
+                          className="button-8 clickable align-center"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            this.handleChange({
+                              deleteVentConfirm: true,
+                              postOptions: false,
+                            });
+                          }}
+                        >
+                          <Text
+                            className="flex-fill"
+                            text="Delete Vent"
+                            type="p"
+                          />
+                          <FontAwesomeIcon className="ml8" icon={faTrash} />
+                        </Container>
+                      )}
+                      {!vent.wasCreatedByUser && (
+                        <Container
+                          className="button-8 clickable align-center"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            this.handleChange({ reportModal: !reportModal });
+                          }}
+                        >
+                          <Text
+                            className="flex-fill"
+                            text="Report Vent"
+                            type="p"
+                          />
+                          <FontAwesomeIcon
+                            className="ml8"
+                            icon={faExclamationTriangle}
+                          />
+                        </Container>
+                      )}
                     </Container>
                   </div>
                 )}
@@ -356,10 +400,10 @@ class Vent extends Component {
                 <FontAwesomeIcon
                   className="clickable blue mr4"
                   icon={faComment}
-                  onClick={e => {
+                  onClick={(e) => {
                     e.preventDefault();
                     this.handleChange({
-                      displayCommentField: !displayCommentField
+                      displayCommentField: !displayCommentField,
                     });
                     if (!displayCommentField)
                       getVentComments(
@@ -378,7 +422,7 @@ class Vent extends Component {
                   className={`clickable heart ${
                     vent.hasLiked ? "red" : "grey-5"
                   } mr4`}
-                  onClick={e => {
+                  onClick={(e) => {
                     e.preventDefault();
                     if (vent.hasLiked)
                       unlikeVent(this.context, vent, this.updateVentLikes);
@@ -411,7 +455,7 @@ class Vent extends Component {
                         className="absolute left-0 flex column bg-white shadow-2 px16 py16 br8"
                         style={{
                           top: "calc(100% - 8px)",
-                          zIndex: 1
+                          zIndex: 1,
                         }}
                       >
                         <Container className="wrap mb8">
@@ -488,7 +532,7 @@ class Vent extends Component {
                           <input
                             className="br4"
                             onChange={() => {}}
-                            ref={textarea => (this.textArea = textarea)}
+                            ref={(textarea) => (this.textArea = textarea)}
                             value={fullLink}
                           />
                         </Container>
@@ -501,9 +545,7 @@ class Vent extends Component {
                 <FontAwesomeIcon className="grey-5 mr8" icon={faClock} />
                 <Text
                   className="grey-5"
-                  text={moment(vent.createdAt)
-                    .subtract(1, "minute")
-                    .fromNow()}
+                  text={moment(vent.createdAt).subtract(1, "minute").fromNow()}
                   type="p"
                 />
               </Container>
@@ -522,7 +564,7 @@ class Vent extends Component {
                     <Container className="relative x-fill">
                       <MentionsInput
                         className="mentions"
-                        onChange={e => {
+                        onChange={(e) => {
                           this.handleChange({ commentString: e.target.value });
                         }}
                         value={commentString}
@@ -602,7 +644,7 @@ class Vent extends Component {
         {reportModal && (
           <ReportModal
             close={() => this.handleChange({ reportModal: false })}
-            submit={option =>
+            submit={(option) =>
               reportVent(
                 this.context,
                 history,
@@ -612,6 +654,23 @@ class Vent extends Component {
                 ventIndex
               )
             }
+          />
+        )}
+        {deleteVentConfirm && (
+          <ConfirmAlertModal
+            close={() => this.handleChange({ deleteVentConfirm: false })}
+            message="Are you sure you would like to delete this vent?"
+            submit={() =>
+              deleteVent(
+                history,
+                isOnSingleVentPage,
+                removeVent,
+                socket,
+                vent._id,
+                ventIndex
+              )
+            }
+            title="Delete Vent"
           />
         )}
       </Container>
