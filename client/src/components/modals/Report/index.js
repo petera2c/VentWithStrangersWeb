@@ -169,7 +169,7 @@ class ReportModal extends Component {
               {somethingChanged && (
                 <Container className="full-center border-top pa16">
                   <Button
-                    className="button-5 py8 px32 mx4 br4"
+                    className="button-2 py8 px32 mx4 br4"
                     text="Submit"
                     onClick={() => {
                       submit(option);

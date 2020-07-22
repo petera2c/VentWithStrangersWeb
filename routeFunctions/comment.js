@@ -5,12 +5,12 @@ const Problem = require("../models/Problem");
 const { addUserToObject } = require("./problem");
 const {
   commentPostNotification,
-  likeCommentNotification
+  likeCommentNotification,
 } = require("./notification");
 
 const getAggregate = (skip, sort, match, userID) => [
   {
-    $match: match
+    $match: match,
   },
   {
     $project: {
@@ -19,12 +19,13 @@ const getAggregate = (skip, sort, match, userID) => [
       hasLiked: { $in: [userID, "$upVotes"] },
       problemID: "$problemID",
       text: "$text",
-      upVotes: { $size: "$upVotes" }
-    }
+      upVotes: { $size: "$upVotes" },
+      wasCreatedByUser: { $eq: ["$authorID", userID] },
+    },
   },
   { $sort: { createdAt: -1 } },
   { $skip: skip },
-  { $limit: 10 }
+  { $limit: 10 },
 ];
 
 const commentVent = (commentString, problemID, callback, socket) => {
@@ -34,7 +35,7 @@ const commentVent = (commentString, problemID, callback, socket) => {
   if (!commentString.replace(/\s/g, "").length) {
     return callback({
       message: "Your comment has no content!",
-      success: false
+      success: false,
     });
   }
 
@@ -43,7 +44,7 @@ const commentVent = (commentString, problemID, callback, socket) => {
     problemID,
     text: commentString,
     upVotes: 0,
-    upVotes: []
+    upVotes: [],
   });
 
   Problem.update(
@@ -51,9 +52,9 @@ const commentVent = (commentString, problemID, callback, socket) => {
     {
       $push: {
         comments: {
-          id: comment._id
-        }
-      }
+          id: comment._id,
+        },
+      },
     },
     (err, saveData) => {
       if (saveData && !err)
@@ -75,13 +76,13 @@ const commentVent = (commentString, problemID, callback, socket) => {
                 .to(leanComment.problemID)
                 .emit(leanComment.problemID + "_comment", {
                   comment: leanComment,
-                  commentsSize: problem.comments.length
+                  commentsSize: problem.comments.length,
                 });
 
               socket.emit(leanComment.problemID + "_comment", {
                 comment: leanComment,
                 commentsSize: problem.comments.length,
-                success: true
+                success: true,
               });
               commentPostNotification(problem, socket);
             }
@@ -102,7 +103,7 @@ const getVentComments = (problemID, callback, socket) => {
     let commentList = [];
     const match = {
       $expr: { $not: { $in: [userID, "$reports.userID"] } },
-      problemID: problem._id
+      problemID: problem._id,
     };
 
     //
@@ -114,7 +115,7 @@ const getVentComments = (problemID, callback, socket) => {
           callback({ success: true, comments });
         else
           addUserToObject(
-            comments => callback({ success: true, comments }),
+            (comments) => callback({ success: true, comments }),
             comments
           );
       }
@@ -137,7 +138,7 @@ const getUsersComments = (dataObj, callback, socket) => {
           if (comments.length === 0) callback({ comments, success: true });
           else
             addUserToObject(
-              comments => callback({ comments, success: true }),
+              (comments) => callback({ comments, success: true }),
               comments
             );
         } else callback({ message: "Unable to get posts.", success: false });
@@ -154,7 +155,7 @@ const likeComment = (dataObj, callback, socket) => {
     if (comment) {
       if (
         comment.upVotes.find(
-          upVoteUserID => String(upVoteUserID) === String(userID)
+          (upVoteUserID) => String(upVoteUserID) === String(userID)
         )
       )
         callback({ message: "Already liked comment.", success: false });
@@ -178,12 +179,12 @@ const likeComment = (dataObj, callback, socket) => {
           socket
             .to(comment.problemID)
             .emit(comment.problemID + "_comment_like", {
-              comment: leanComment
+              comment: leanComment,
             });
           leanComment.hasLiked = true;
           socket.emit(comment.problemID + "_comment_like", {
             comment: leanComment,
-            success: true
+            success: true,
           });
         });
       }
@@ -198,7 +199,9 @@ const reportComment = (dataObj, callback, socket) => {
   Comment.findById(commentID, { reports: 1 }, (err, comment) => {
     if (comment) {
       if (
-        comment.reports.find(report => String(report.userID) === String(userID))
+        comment.reports.find(
+          (report) => String(report.userID) === String(userID)
+        )
       )
         callback({ message: "Already reported comment.", success: false });
       else {
@@ -218,7 +221,7 @@ const unlikeComment = (dataObj, callback, socket) => {
   Comment.findById(commentID, (err, comment) => {
     if (comment) {
       const index = comment.upVotes.findIndex(
-        upVoteUserID => String(upVoteUserID) === String(userID)
+        (upVoteUserID) => String(upVoteUserID) === String(userID)
       );
       if (index >= 0) {
         comment.dailyUpvotes -= 1;
@@ -231,18 +234,18 @@ const unlikeComment = (dataObj, callback, socket) => {
           socket
             .to(comment.problemID)
             .emit(comment.problemID + "_comment_unlike", {
-              comment: leanComment
+              comment: leanComment,
             });
           leanComment.hasLiked = false;
           socket.emit(comment.problemID + "_comment_unlike", {
             comment: leanComment,
-            success: true
+            success: true,
           });
         });
       } else
         callback({
           message: "You haven't liked this comment.",
-          success: false
+          success: false,
         });
     } else callback({ message: "Comment not found.", success: false });
   });
@@ -254,5 +257,5 @@ module.exports = {
   getUsersComments,
   likeComment,
   reportComment,
-  unlikeComment
+  unlikeComment,
 };

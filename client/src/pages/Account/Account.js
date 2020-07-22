@@ -202,7 +202,7 @@ class AccountSection extends Component {
             }
           />
           <Button
-            className="button-5 py8 px32 mx4 br4"
+            className="button-2 py8 px32 mx4 br4"
             text="Apply"
             onClick={this.updateUser}
           />

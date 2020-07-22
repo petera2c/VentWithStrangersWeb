@@ -23,7 +23,7 @@ class CookiesComponent extends Component {
             consent to the use of these cookies.
           </Text>
           <Button
-            className="button-5 px32 py16 br4"
+            className="button-2 px32 py16 br4"
             onClick={accept}
             style={{ whiteSpace: "nowrap" }}
           >

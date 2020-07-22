@@ -18,6 +18,7 @@ import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 import { faEdit } from "@fortawesome/pro-light-svg-icons/faEdit";
 import { faExclamationTriangle } from "@fortawesome/pro-light-svg-icons/faExclamationTriangle";
 import { faTrash } from "@fortawesome/pro-duotone-svg-icons/faTrash";
+
 import {
   EmailShareButton,
   FacebookShareButton,
@@ -188,6 +189,14 @@ class Vent extends Component {
     tooltip.innerHTML = "Copied!";
   };
 
+  removeComment = (commentIndex) => {
+    let { comments } = this.state;
+
+    comments.splice(commentIndex, 1);
+
+    this.setState({ comments });
+  };
+
   render() {
     const { handleChange, removeVent, socket } = this.context;
     const {
@@ -319,7 +328,7 @@ class Vent extends Component {
                           }}
                         >
                           <Text
-                            className="flex-fill"
+                            className="fw-400 flex-fill"
                             text="Edit Vent"
                             type="p"
                           />
@@ -338,7 +347,7 @@ class Vent extends Component {
                           }}
                         >
                           <Text
-                            className="flex-fill"
+                            className="fw-400 flex-fill"
                             text="Delete Vent"
                             type="p"
                           />
@@ -520,7 +529,7 @@ class Vent extends Component {
                         </Container>
                         <Container className="relative">
                           <Container
-                            className="success-message-button button-5 round-icon mr8"
+                            className="success-message-button button-2 round-icon mr8"
                             onClick={this.copyToClipboard}
                           >
                             <FontAwesomeIcon className="" icon={faCopy} />
@@ -608,7 +617,7 @@ class Vent extends Component {
                         commentVent(
                           commentString,
                           this.context,
-                          vent,
+                          vent._id,
                           this.addComment
                         );
                         this.handleChange({ commentString: "" });
@@ -627,8 +636,9 @@ class Vent extends Component {
                   <Comment
                     arrayLength={comments.length}
                     comment={comment}
-                    key={index}
-                    index={index}
+                    commentIndex={index}
+                    key={index + comment._id}
+                    removeComment={this.removeComment}
                   />
                 ))}
               </Container>

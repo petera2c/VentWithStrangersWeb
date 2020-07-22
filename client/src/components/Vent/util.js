@@ -1,12 +1,16 @@
-export const commentVent = (commentString, context, vent, addComment) => {
+export const commentVent = (
+  commentString,
+  commentID,
+  context,
+  ventID,
+  addComment
+) => {
   context.socket.emit(
     "comment_problem",
-    commentString,
-    vent._id,
+    { commentString, commentID, ventID },
     (returnObj) => {
       const { comment, message, success } = returnObj;
       if (success) {
-        //addComment({ comment });
       } else context.notify({ message, type: "danger" });
     }
   );

@@ -33,7 +33,7 @@ class ConfirmAlertModal extends Component {
                   onClick={() => close()}
                 />
                 <Button
-                  className="button-5 py8 px32 mx4 br4"
+                  className="button-2 py8 px32 mx4 br4"
                   text="Submit"
                   onClick={() => {
                     submit();

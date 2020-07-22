@@ -216,7 +216,7 @@ class AccountSection extends Component {
         {somethingChanged && (
           <Container className="full-center bg-white border-all2 pa16 br8">
             <Button
-              className="button-5 py8 px32 mx4 br4"
+              className="button-2 py8 px32 mx4 br4"
               text="Apply"
               onClick={this.updateSettings}
             />

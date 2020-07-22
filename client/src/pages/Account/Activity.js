@@ -24,7 +24,7 @@ import { getUsersPosts } from "../util";
 class ActivitySection extends Component {
   state = {
     commentsSection: false,
-    postsSection: true
+    postsSection: true,
   };
 
   componentDidMount() {
@@ -34,11 +34,11 @@ class ActivitySection extends Component {
     this._ismounted = false;
   }
 
-  handleChange = stateObj => {
+  handleChange = (stateObj) => {
     if (this._ismounted) this.setState(stateObj);
   };
 
-  isActive = test => {
+  isActive = (test) => {
     if (test) return " active";
     else return "";
   };
@@ -50,7 +50,7 @@ class ActivitySection extends Component {
 
     return (
       <Consumer>
-        {context => (
+        {(context) => (
           <Container
             className={
               "container column px16 " +
@@ -68,7 +68,7 @@ class ActivitySection extends Component {
                   onClick={() =>
                     this.handleChange({
                       commentsSection: false,
-                      postsSection: true
+                      postsSection: true,
                     })
                   }
                 >
@@ -82,7 +82,7 @@ class ActivitySection extends Component {
                   onClick={() => {
                     this.handleChange({
                       postsSection: false,
-                      commentsSection: true
+                      commentsSection: true,
                     });
                   }}
                 >
@@ -137,7 +137,7 @@ class ActivitySection extends Component {
                           <Comment
                             arrayLength={context.comments.length}
                             comment={comment}
-                            index={index}
+                            commentIndex={index}
                           />
                         </Link>
                       );
