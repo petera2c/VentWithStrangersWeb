@@ -623,7 +623,7 @@ class Vent extends Component {
                               </Container>
                             );
                           }}
-                          trigger="{}{#}{@@?#?}"
+                          trigger="@"
                         />
                       </MentionsInput>
                     </Container>

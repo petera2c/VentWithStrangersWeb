@@ -225,7 +225,7 @@ class Comment extends Component {
                       </Container>
                     );
                   }}
-                  trigger="{}{#}{@@?#?}"
+                  trigger="@"
                 />
               </MentionsInput>
             </Container>
