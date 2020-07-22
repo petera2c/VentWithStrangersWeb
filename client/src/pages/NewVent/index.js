@@ -149,7 +149,7 @@ class NewVentPage extends Component {
                       value={tagText}
                     />
                   </Container>
-                  <Container>
+                  <Container className="wrap">
                     {tags.map((tag, index) => {
                       let text = tag;
                       if (tag.name) text = tag.name;

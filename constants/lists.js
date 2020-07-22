@@ -79,7 +79,7 @@ const adjectivesList = [
   "Super",
   "Dramatic",
   "Logical",
-  "Above Average",
+  "Above_Average",
   "Irresistible",
   "Genuine",
   "Eager",
@@ -167,7 +167,7 @@ const adjectivesList = [
   "Graceful",
   "Pretty",
   "Methodical",
-  "Philosophical"
+  "Philosophical",
 ];
 const animalList = [
   "Bear",
@@ -185,7 +185,7 @@ const animalList = [
   "Hedgehog",
   "Hippopotamus",
   "Horse",
-  "Humpback Whale",
+  "Humpback_Whale",
   "Jaguar",
   "Kangaroo",
   "Koala",
@@ -199,7 +199,7 @@ const animalList = [
   "Orca",
   "Otter",
   "Ox",
-  "Polar Bear",
+  "Polar_Bear",
   "Porcupine",
   "Puma",
   "Rabbit",
@@ -211,7 +211,7 @@ const animalList = [
   "Walrus",
   "Wolf",
   "Zebra",
-  "Horse"
+  "Horse",
 ];
 
 module.exports = { animalList, adjectivesList };
