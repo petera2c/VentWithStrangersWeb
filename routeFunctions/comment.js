@@ -28,9 +28,10 @@ const getAggregate = (skip, sort, match, userID) => [
   { $limit: 10 },
 ];
 
-const commentVent = (commentString, problemID, callback, socket) => {
+const commentVent = (dataObj, callback, socket) => {
   const userID = socket.request.user._id;
   const userDisplayName = socket.request.user.displayName;
+  const { commentString, ventID } = dataObj;
 
   if (!commentString.replace(/\s/g, "").length) {
     return callback({
@@ -41,14 +42,14 @@ const commentVent = (commentString, problemID, callback, socket) => {
 
   const comment = new Comment({
     authorID: userID,
-    problemID,
+    problemID: ventID,
     text: commentString,
     upVotes: 0,
     upVotes: [],
   });
 
   Problem.update(
-    { _id: problemID },
+    { _id: ventID },
     {
       $push: {
         comments: {
@@ -60,7 +61,7 @@ const commentVent = (commentString, problemID, callback, socket) => {
       if (saveData && !err)
         comment.save((err, comment) => {
           Problem.findById(
-            problemID,
+            ventID,
             { authorID: 1, comments: 1, title: 1 },
             (err, problem) => {
               if (!problem.comments) {
@@ -91,6 +92,77 @@ const commentVent = (commentString, problemID, callback, socket) => {
       else callback({ success: false });
     }
   );
+};
+
+const deleteComment = (dataObj, callback, socket) => {
+  const { commentID } = dataObj;
+  const userID = socket.request.user._id;
+
+  Comment.findById(commentID, (err, comment) => {
+    if (comment) {
+      if (userID == String(comment.authorID)) {
+        Problem.findById(comment.problemID, (err, vent) => {
+          if (vent && !err) {
+            for (let index in vent.comments) {
+              if (String(vent.comments[index].id) == comment._id) {
+                vent.comments.splice(index, 1);
+                vent.save((err) => {
+                  if (!err)
+                    comment.remove((err, comment) => {
+                      if (!err) callback({ success: true });
+                      else
+                        callback({
+                          message: "Unable to remove comment at this time.",
+                          success: false,
+                        });
+                    });
+                  else
+                    callback({
+                      message: "Unable to remove comment at this time.",
+                      success: false,
+                    });
+                });
+                break;
+              }
+            }
+          } else
+            callback({
+              message: "Post from comment not found.",
+              success: false,
+            });
+        });
+      } else callback({ message: "This is not your comment.", success: false });
+    } else callback({ message: "Comment not found.", success: false });
+  });
+};
+
+const editComment = (dataObj, callback, socket) => {
+  const { commentID, commentString } = dataObj;
+  const userID = socket.request.user._id;
+
+  Comment.findById(commentID, (err, comment) => {
+    if (comment && !err) {
+      if (String(comment.authorID) == userID) {
+        comment.text = commentString;
+        comment.save((err, savedComment) => {
+          if (savedComment && !err) {
+            socket.emit(
+              savedComment.problemID + "_comment_edited",
+              savedComment
+            );
+          } else {
+            callback({
+              message: "Could not save comment at this time.",
+              success: false,
+            });
+          }
+        });
+      } else {
+        callback({ message: "This is not your comment.", success: false });
+      }
+    } else
+      callback({ message: "Could not find your comment.", success: false });
+  });
 };
 
 const getVentComments = (problemID, callback, socket) => {
@@ -253,6 +325,8 @@ const unlikeComment = (dataObj, callback, socket) => {
 
 module.exports = {
   commentVent,
+  deleteComment,
+  editComment,
   getVentComments,
   getUsersComments,
   likeComment,

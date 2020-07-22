@@ -3,6 +3,8 @@ const { updateUser } = require("./user");
 
 const {
   commentVent,
+  deleteComment,
+  editComment,
   getVentComments,
   getUsersComments,
   likeComment,
@@ -48,9 +50,6 @@ module.exports = (io) => {
     socket.on("get_problems", (dataObj, callback) =>
       getVents(callback, dataObj, socket)
     );
-    socket.on("delete_vent", (dataObj, callback) =>
-      deleteVent(callback, dataObj, socket)
-    );
 
     socket.on("search_tags", searchTags);
     socket.on("search_problems", searchVents);
@@ -64,11 +63,20 @@ module.exports = (io) => {
       reportVent(dataObj, callback, socket)
     );
 
+    socket.on("delete_vent", (dataObj, callback) =>
+      deleteVent(callback, dataObj, socket)
+    );
     socket.on("get_problem", (id, callback) =>
       getProblem(id, callback, socket)
     );
-    socket.on("comment_problem", (commentString, problemID, callback) =>
-      commentVent(commentString, problemID, callback, socket)
+    socket.on("comment_problem", (dataObj, callback) =>
+      commentVent(dataObj, callback, socket)
+    );
+    socket.on("edit_comment", (dataObj, callback) =>
+      editComment(dataObj, callback, socket)
+    );
+    socket.on("delete_comment", (dataObj, callback) =>
+      deleteComment(dataObj, callback, socket)
     );
     socket.on("like_comment", (dataObj, callback) =>
       likeComment(dataObj, callback, socket)

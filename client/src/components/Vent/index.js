@@ -128,6 +128,9 @@ class Vent extends Component {
         this.updateCommentLikes
       )
     );
+    socket.on(vent._id + "_comment_edited", (savedComment) =>
+      this.updateEditedComment(savedComment)
+    );
   }
   componentWillUnmount() {
     this.ismounted = false;
@@ -146,6 +149,20 @@ class Vent extends Component {
     vent.commentsSize = commentsSize;
 
     this.handleChange({ comments, vent });
+  };
+
+  updateEditedComment = (savedComment) => {
+    let { comments } = this.state;
+
+    for (let index in comments) {
+      const comment = comments[index];
+
+      if (comment._id === savedComment._id) {
+        comments[index].text = savedComment.text;
+      }
+    }
+
+    this.handleChange({ comments });
   };
 
   updateVentLikes = (updatetObj) => {

@@ -7,7 +7,7 @@ export const commentVent = (
 ) => {
   context.socket.emit(
     "comment_problem",
-    { commentString, commentID, ventID },
+    { commentString, ventID },
     (returnObj) => {
       const { comment, message, success } = returnObj;
       if (success) {
