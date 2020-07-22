@@ -235,8 +235,6 @@ class NewVentPage extends Component {
                                       .replace(/ /g, "-")
                                       .toLowerCase()
                                 );
-
-                                window.location.reload();
                               },
                               { description, gender, id, tags, title },
                               context.notify
