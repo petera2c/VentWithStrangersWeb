@@ -53,14 +53,10 @@ export const likeComment = (
 };
 
 export const swapTags = (commentText) => {
-  return commentText;
-  /*
-  //  @{{[[[__id__]]]||[[[__display__]]]}}
-  //const test = "\u03A9";
-
   const regexFull = /@\{\{\[\[\[[\x21-\x5A|\x61-\x7A]+\]\]\]\|\|\[\[\[[\x21-\x5A|\x61-\x7A|\x5f]+\]\]\]\}\}/gi;
-  const regexID = /(?<=@\{\{\[\[\[)[\x21-\x5A|\x61-\x7A]+(?=\]\]\]\|\|)/gi;
-  const regexDisplay = /(?<=\|\|\[\[\[)[\x21-\x5A|\x61-\x7A]+(?=\]\]\]\}\})/gi;
+  //const regexID = /(?<=@\{\{\[\[\[)[\x21-\x5A|\x61-\x7A]+(?=\]\]\]\|\|)/gi;
+  //const regexDisplay = /(?<=\|\|\[\[\[)[\x21-\x5A|\x61-\x7A]+(?=\]\]\]\}\})/gi;
+  const regexDisplay = /\|\|\[\[\[[\x21-\x5A|\x61-\x7A|\x5f]+\]\]\]\}\}/gi;
   const tags = commentText.match(regexFull) || [];
 
   let something = [];
@@ -69,10 +65,13 @@ export const swapTags = (commentText) => {
     const displayNameArray = possibleTag.match(regexDisplay);
 
     if (displayNameArray && displayNameArray[0]) {
+      let displayTag = displayNameArray[0];
+      if (displayTag) displayTag = displayTag.slice(5, displayTag.length - 5);
+
       something.push({
         start: index,
         end: possibleTag.length + index,
-        value: displayNameArray[0]
+        value: displayTag,
       });
       return displayNameArray[0];
     } else return possibleTag;
@@ -82,25 +81,28 @@ export const swapTags = (commentText) => {
   else {
     return [
       ...something.map((obj, index) => {
-        if (index === 0)
+        if (index === 0) {
           return [
             commentText.slice(0, obj.start),
             <span className="mentions__mention" key={index}>
               {obj.value}
-            </span>
+            </span>,
           ];
-        else
+        } else {
           return [
             commentText.slice(something[index - 1].end, obj.start),
             <span className="mentions__mention" key={index}>
               {obj.value}
-            </span>
+            </span>,
           ];
+        }
       }),
-      commentText.slice(something[something.length - 1].end, commentText.length)
+      commentText.slice(
+        something[something.length - 1].end,
+        commentText.length
+      ),
     ];
   }
-  */
 };
 
 export const unlikeComment = (

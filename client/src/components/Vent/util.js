@@ -1,10 +1,4 @@
-export const commentVent = (
-  commentString,
-  commentID,
-  context,
-  ventID,
-  addComment
-) => {
+export const commentVent = (addComment, commentString, context, ventID) => {
   context.socket.emit(
     "comment_problem",
     { commentString, ventID },
@@ -77,21 +71,8 @@ export const findPossibleUsersToTag = (
   ventID,
   callback2
 ) => {
-  /*const { currentTypingWord } = getCurrentTypingWord(
-    currentTypingIndex,
-    commentString
-  );*/
   let isTag;
 
-  // Regular expression to see if this word is a tagged user
-  //  const reg = /\B\@\w+/g;
-
-  // This will be an array, but should always have a length of 1.
-  //let taggedUserList;
-  //taggedUserList = currentTypingWord.match(reg);
-
-  //if (taggedUserList && taggedUserList[0]) {
-  // taggedUserList[0] will be @user_name taggedUserList[0].substr(1) will be user_name
   if (currentTypingWord) {
     socket.emit(
       "find_relevant_users_to_tag",

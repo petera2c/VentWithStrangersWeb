@@ -632,10 +632,10 @@ class Vent extends Component {
                       className="button-2 px32 py8 mt8 br4"
                       onClick={() => {
                         commentVent(
+                          this.addComment,
                           commentString,
                           this.context,
-                          vent._id,
-                          this.addComment
+                          vent._id
                         );
                         this.handleChange({ commentString: "" });
                       }}
