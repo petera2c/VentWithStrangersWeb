@@ -5,6 +5,7 @@ const Settings = require("../models/Settings");
 const User = require("../models/User");
 
 const { animalList, adjectivesList } = require("../constants/lists");
+const { getInvalidDisplayNameCharacters } = require("../util");
 
 const login = (req, res, next) => {
   passport.authenticate("local-login", (err, user, message) => {
@@ -14,7 +15,7 @@ const login = (req, res, next) => {
     if (!user) success = false;
 
     if (success) {
-      req.logIn(user, err => {
+      req.logIn(user, (err) => {
         if (err) {
           success = false;
           message =
@@ -42,7 +43,7 @@ const randomLogin = (req, res, next) => {
       postCommented: true,
       commentLiked: true,
       postLiked: true,
-      receiveEmails: true
+      receiveEmails: true,
     });
     const newUser = new User({
       displayName:
@@ -51,18 +52,18 @@ const randomLogin = (req, res, next) => {
         animalList[randomAnimalIndex],
       language: "english",
       settingsID: newSettings._id,
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     });
 
     newSettings.userID = newUser._id;
     newSettings.save((err, savedSettings) => {
       newUser.save((err2, savedUser) =>
-        req.logIn(savedUser, err3 => {
+        req.logIn(savedUser, (err3) => {
           if (err || err2 || err3)
             res.send({
               success: false,
               message:
-                "Could not log you in! :( Please refresh the page and try again :)"
+                "Could not log you in! :( Please refresh the page and try again :)",
             });
           else {
             res.send({ success: true, user: savedUser });
@@ -76,7 +77,14 @@ const randomLogin = (req, res, next) => {
 const register = (req, res, next) => {
   const { displayName, email, password } = req.body;
 
-  //  if(displayName.match)
+  if (getInvalidDisplayNameCharacters(displayName)) {
+    return res.send({
+      message:
+        "These characters are not allowed in your display name. " +
+        getInvalidDisplayNameCharacters(displayName),
+      success: false,
+    });
+  }
 
   User.findOne({ email: req.body.email }, (err, user) => {
     if (!user) {
@@ -90,7 +98,7 @@ const register = (req, res, next) => {
         });
       });
     } else {
-      res.send({ success: false, message: "Email already in use" });
+      res.send({ message: "Email already in use", success: false });
     }
   });
 };
@@ -101,7 +109,7 @@ const updateUser = (dataObj, callback, socket) => {
     displayName,
     email,
     oldPassword,
-    newPassword
+    newPassword,
   } = dataObj;
 
   if (
@@ -112,24 +120,31 @@ const updateUser = (dataObj, callback, socket) => {
     !confirmPassword
   )
     callback({ message: "All fields are empty!", success: false });
-  else if (
+  else if (getInvalidDisplayNameCharacters(displayName)) {
+    return callback({
+      message:
+        "These characters are not allowed in your display name. " +
+        getInvalidDisplayNameCharacters(displayName),
+      success: false,
+    });
+  } else if (
     (oldPassword || newPassword || confirmPassword) &&
     !(oldPassword && newPassword && confirmPassword)
   )
     callback({
       message:
         "If you would like to edit your password, please enter your old password, new password and confirm password.",
-      success: false
+      success: false,
     });
   else if (newPassword && confirmPassword && newPassword !== confirmPassword)
     callback({
       message: "New password and confirm password do not match!",
-      success: false
+      success: false,
     });
   else if (bcrypt.compareSync(oldPassword, socket.request.user.password))
     callback({
       message: "Your current password does not match!",
-      success: false
+      success: false,
     });
   else
     User.findById(socket.request.user._id, (err, user) => {
@@ -144,7 +159,7 @@ const updateUser = (dataObj, callback, socket) => {
       } else
         callback({
           message: "Something unexpected has happened.",
-          success: false
+          success: false,
         });
     });
 };
@@ -152,5 +167,5 @@ module.exports = {
   login,
   randomLogin,
   register,
-  updateUser
+  updateUser,
 };

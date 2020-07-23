@@ -19,7 +19,7 @@ class SignUpModal extends Component {
     displayName: "",
     timezone: timezone ? timezone : "America/Vancouver",
     password: "",
-    passwordConfirm: ""
+    passwordConfirm: "",
   };
 
   componentDidMount() {
@@ -31,12 +31,12 @@ class SignUpModal extends Component {
       history.push("/");
       notify({
         message: "You are already logged in!",
-        type: "danger"
+        type: "danger",
       });
     }
   }
 
-  handleChange = stateObj => {
+  handleChange = (stateObj) => {
     this.setState(stateObj);
   };
 
@@ -46,7 +46,7 @@ class SignUpModal extends Component {
       timezone,
       password,
       passwordConfirm,
-      displayName
+      displayName,
     } = this.state;
 
     if (getInvalidCharacters(displayName)) {
@@ -72,9 +72,9 @@ class SignUpModal extends Component {
           email: email.toLowerCase(),
           displayName,
           timezone,
-          password
+          password,
         })
-        .then(res => {
+        .then((res) => {
           const { success, message } = res.data;
           const { handleChange, notify } = this.context;
           const { close, history } = this.props;
@@ -84,7 +84,7 @@ class SignUpModal extends Component {
           } else {
             notify({
               message,
-              type: "danger"
+              type: "danger",
             });
           }
         });
@@ -105,13 +105,13 @@ class SignUpModal extends Component {
       email,
       errorMessage,
       password,
-      passwordConfirm
+      passwordConfirm,
     } = this.state;
     const { close, openLoginModal } = this.props;
 
     return (
       <Consumer>
-        {context => (
+        {(context) => (
           <Container className="modal-container full-center">
             <Container className="modal container medium column align-center ov-auto bg-white br4">
               <Container className="x-fill justify-center bg-blue py16">
@@ -142,7 +142,7 @@ class SignUpModal extends Component {
 
                 <form
                   className="x-fill column"
-                  onSubmit={e => e.preventDefault()}
+                  onSubmit={(e) => e.preventDefault()}
                 >
                   <Container className="x-fill column px32 py16">
                     <Text
@@ -153,7 +153,7 @@ class SignUpModal extends Component {
                     <Input
                       className="py8 px16 mb8 br4"
                       value={displayName}
-                      onChange={event =>
+                      onChange={(event) =>
                         this.handleChange({ displayName: event.target.value })
                       }
                       type="text"
@@ -169,7 +169,7 @@ class SignUpModal extends Component {
                     <Input
                       className="py8 px16 br4"
                       value={email}
-                      onChange={e =>
+                      onChange={(e) =>
                         this.handleChange({ email: e.target.value })
                       }
                       name="email"
@@ -197,7 +197,7 @@ class SignUpModal extends Component {
                         <Input
                           className="py8 px16 mb8 br4"
                           value={password}
-                          onChange={e =>
+                          onChange={(e) =>
                             this.handleChange({ password: e.target.value })
                           }
                           name="password"
@@ -220,9 +220,9 @@ class SignUpModal extends Component {
                         <Input
                           className="py8 px16 mb8 br4"
                           value={passwordConfirm}
-                          onChange={e =>
+                          onChange={(e) =>
                             this.handleChange({
-                              passwordConfirm: e.target.value
+                              passwordConfirm: e.target.value,
                             })
                           }
                           name="passwordConfirm"
@@ -236,7 +236,7 @@ class SignUpModal extends Component {
                   <Container className="x-fill full-center border-top px32 py16">
                     <Button
                       className="x-fill bg-blue white py8 br4"
-                      onClick={e => this.register(context, e)}
+                      onClick={(e) => this.register(context, e)}
                       text="Create Account"
                     />
                   </Container>
