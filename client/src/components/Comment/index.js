@@ -14,6 +14,7 @@ import { faHeart as faHeart2 } from "@fortawesome/free-solid-svg-icons/faHeart";
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 import { faEdit } from "@fortawesome/pro-light-svg-icons/faEdit";
 import { faTrash } from "@fortawesome/pro-duotone-svg-icons/faTrash";
+import { faExclamationTriangle } from "@fortawesome/pro-light-svg-icons/faExclamationTriangle";
 
 import Container from "../containers/Container";
 import Text from "../views/Text";
