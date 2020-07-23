@@ -12,10 +12,32 @@ const { login, randomLogin, register } = require("./user");
 const {
   amazonAccessKeyID,
   amazonSecretAccessKey,
-  amazonBucket
+  amazonBucket,
 } = require("../config/keys");
 
-module.exports = app => {
+User.find((err, users) => {
+  for (let index in users) {
+    let user = users[index];
+    if (user && user.displayName) {
+      /*const invalidCharactersArray = user.displayName.split(
+        /[\x30-\x39|\x41-\x5A|\x61-\x7a|\x5F]+/gi
+      );*/
+
+      const test = user.displayName.replace(
+        /[^\x30-\x39|\x41-\x5A|\x61-\x7a|\x5F]+/gi,
+        (something, index) => {
+          return "_";
+        }
+      );
+
+      user.displayName = test;
+      console.log(user.displayName);
+      user.save();
+    }
+  }
+});
+
+module.exports = (app) => {
   // Middleware
   const middleware = (req, res, next) => {
     if (!req.user) return randomLogin(req, res, next);
@@ -29,7 +51,7 @@ module.exports = app => {
       accessKeyId: amazonAccessKeyID,
       secretAccessKey: amazonSecretAccessKey,
       overrideCacheControl: "max-age=100000",
-      defaultKey: "sitemap.xml"
+      defaultKey: "sitemap.xml",
     })
   );
 
@@ -58,7 +80,7 @@ module.exports = app => {
   app.post("/api/register", register);
 
   app.get("/api/sign-out", (req, res) => {
-    req.session.destroy(err => {
+    req.session.destroy((err) => {
       res.redirect("/");
     });
   });
