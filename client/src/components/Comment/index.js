@@ -30,6 +30,7 @@ import {
   swapTags,
   unlikeComment,
 } from "./util";
+import { findPossibleUsersToTag } from "../Vent/util";
 
 class Comment extends Component {
   state = {
@@ -205,7 +206,7 @@ class Comment extends Component {
                       this.handleChange,
                       currentTypingTag,
                       socket,
-                      vent._id,
+                      comment.problemID,
                       callback
                     );
                   }}
