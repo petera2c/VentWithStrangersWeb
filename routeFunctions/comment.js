@@ -127,7 +127,7 @@ const deleteComment = (dataObj, callback, socket) => {
             }
           } else
             callback({
-              message: "Post from comment not found.",
+              message: "Can not find post from this comment.",
               success: false,
             });
         });

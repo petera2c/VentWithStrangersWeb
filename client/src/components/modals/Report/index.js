@@ -16,7 +16,7 @@ class ReportModal extends Component {
     option: undefined,
     privateInformation: false,
     violence: false,
-    somethingChanged: false
+    somethingChanged: false,
   };
   componentDidMount() {
     this._ismounted = true;
@@ -24,14 +24,14 @@ class ReportModal extends Component {
   componentWillUnmount() {
     this._ismounted = false;
   }
-  handleChange = stateObj => {
+  handleChange = (stateObj) => {
     const stateObj2 = {
       abuse: false,
       illegal: false,
       malicious: false,
       privateInformation: false,
       somethingChanged: true,
-      violence: false
+      violence: false,
     };
     for (let index in stateObj) {
       stateObj2[index] = stateObj[index];
@@ -47,16 +47,16 @@ class ReportModal extends Component {
       option,
       privateInformation,
       violence,
-      somethingChanged
+      somethingChanged,
     } = this.state;
 
     return (
       <Consumer>
-        {context => (
+        {(context) => (
           <Container className="modal-container full-center">
             <Container className="modal container medium column ov-auto bg-white br4">
               <Container className="x-fill justify-center bg-grey-10 py16">
-                <Text className="grey-11 tac" text="Report Post" type="h4" />
+                <Text className="grey-11 tac" text="Report Vent" type="h4" />
               </Container>
               <Container className="column x-fill pa16">
                 <Text
@@ -69,7 +69,7 @@ class ReportModal extends Component {
                   onClick={() =>
                     this.handleChange({
                       option: 1,
-                      violence: !violence
+                      violence: !violence,
                     })
                   }
                 >
@@ -90,7 +90,7 @@ class ReportModal extends Component {
                   onClick={() =>
                     this.handleChange({
                       abuse: !abuse,
-                      option: 2
+                      option: 2,
                     })
                   }
                 >
@@ -111,7 +111,7 @@ class ReportModal extends Component {
                   onClick={() =>
                     this.handleChange({
                       option: 3,
-                      privateInformation: !privateInformation
+                      privateInformation: !privateInformation,
                     })
                   }
                 >
@@ -132,7 +132,7 @@ class ReportModal extends Component {
                   onClick={() =>
                     this.handleChange({
                       illegal: !illegal,
-                      option: 4
+                      option: 4,
                     })
                   }
                 >
@@ -149,7 +149,7 @@ class ReportModal extends Component {
                   onClick={() =>
                     this.handleChange({
                       malicious: !malicious,
-                      option: 5
+                      option: 5,
                     })
                   }
                 >

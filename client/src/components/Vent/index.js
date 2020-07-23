@@ -380,7 +380,7 @@ class Vent extends Component {
                           }}
                         >
                           <Text
-                            className="flex-fill"
+                            className="fw-400 flex-fill"
                             text="Report Vent"
                             type="p"
                           />
