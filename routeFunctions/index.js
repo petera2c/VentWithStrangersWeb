@@ -15,28 +15,6 @@ const {
   amazonBucket,
 } = require("../config/keys");
 
-User.find((err, users) => {
-  for (let index in users) {
-    let user = users[index];
-    if (user && user.displayName) {
-      /*const invalidCharactersArray = user.displayName.split(
-        /[\x30-\x39|\x41-\x5A|\x61-\x7a|\x5F]+/gi
-      );*/
-
-      const test = user.displayName.replace(
-        /[^\x30-\x39|\x41-\x5A|\x61-\x7a|\x5F]+/gi,
-        (something, index) => {
-          return "_";
-        }
-      );
-
-      user.displayName = test;
-      console.log(user.displayName);
-      user.save();
-    }
-  }
-});
-
 module.exports = (app) => {
   // Middleware
   const middleware = (req, res, next) => {
