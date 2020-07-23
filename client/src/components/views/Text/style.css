@@ -131,6 +131,7 @@ p {
   margin: 0;
   text-align: left;
   font-size: var(--eighteen-font-size);
+  font-weight: normal;
 }
 
 text {
