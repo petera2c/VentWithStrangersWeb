@@ -57,11 +57,9 @@ class Chat extends Component {
         if (Notification.permission !== "granted")
           Notification.requestPermission();
         else {
-          if (notificationObj) {
-            var notification = new Notification("New message!", {
-              icon: "https://www.ventwithstrangers.com/favicon.ico",
-            });
-          }
+          var notification = new Notification("New message!", {
+            icon: "https://www.ventwithstrangers.com/favicon.ico",
+          });
         }
       }
 

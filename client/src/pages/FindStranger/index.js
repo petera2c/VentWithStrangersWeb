@@ -51,11 +51,9 @@ class ChatPage extends Component {
           if (Notification.permission !== "granted")
             Notification.requestPermission();
           else {
-            if (notificationObj) {
-              var notification = new Notification("New user waiting to chat!", {
-                icon: "https://www.ventwithstrangers.com/favicon.ico",
-              });
-            }
+            var notification = new Notification("New user waiting to chat!", {
+              icon: "https://www.ventwithstrangers.com/favicon.ico",
+            });
           }
         }
         this.handleChange(stateObj, this.onFocus);
@@ -94,11 +92,9 @@ class ChatPage extends Component {
         if (Notification.permission !== "granted")
           Notification.requestPermission();
         else {
-          if (notificationObj) {
-            var notification = new Notification("User joined chat!", {
-              icon: "https://www.ventwithstrangers.com/favicon.ico",
-            });
-          }
+          var notification = new Notification("User joined chat!", {
+            icon: "https://www.ventwithstrangers.com/favicon.ico",
+          });
         }
         this.startMetaChangeInterval(
           stateObj.chatPartner + " Joined",
