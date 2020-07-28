@@ -52,7 +52,18 @@ class Chat extends Component {
 
     socket.on("receive_message", (message) => {
       const { chatPartner } = this.props;
-      if (!document.hasFocus()) soundNotify();
+      if (!document.hasFocus()) {
+        soundNotify();
+        if (Notification.permission !== "granted")
+          Notification.requestPermission();
+        else {
+          if (notificationObj) {
+            var notification = new Notification("New message!", {
+              icon: "https://www.ventwithstrangers.com/favicon.ico",
+            });
+          }
+        }
+      }
 
       messages.push(message);
       this.handleChange({ messages });

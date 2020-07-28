@@ -46,12 +46,21 @@ class ChatPage extends Component {
           !conversation &&
           (stateObj.listenersWaiting > listenersWaiting ||
             stateObj.ventersWaiting > ventersWaiting)
-        )
+        ) {
           soundNotify();
+          if (Notification.permission !== "granted")
+            Notification.requestPermission();
+          else {
+            if (notificationObj) {
+              var notification = new Notification("New user waiting to chat!", {
+                icon: "https://www.ventwithstrangers.com/favicon.ico",
+              });
+            }
+          }
+        }
         this.handleChange(stateObj, this.onFocus);
       });
       socket.on("user_left", () => {
-        soundNotify();
         this.handleChange({ userLeft: true });
       });
     }
@@ -82,6 +91,15 @@ class ChatPage extends Component {
 
       if (!document.hasFocus() && stateObj.chatPartner) {
         soundNotify();
+        if (Notification.permission !== "granted")
+          Notification.requestPermission();
+        else {
+          if (notificationObj) {
+            var notification = new Notification("User joined chat!", {
+              icon: "https://www.ventwithstrangers.com/favicon.ico",
+            });
+          }
+        }
         this.startMetaChangeInterval(
           stateObj.chatPartner + " Joined",
           "Start Chatting"
