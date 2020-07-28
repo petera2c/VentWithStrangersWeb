@@ -81,6 +81,7 @@ export const initReceiveNotifications = (
           icon: "https://www.ventwithstrangers.com/favicon.ico",
           body: notificationObj.body,
         });
+
         notification.onclick = () => {
           window.open(notificationObj.link);
         };

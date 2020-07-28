@@ -12,15 +12,15 @@ const getNotificationBody = (title, type, userDisplayName) => {
   else if (type === 2)
     return userDisplayName + " loved your comment '" + title + "'";
   else if (type === 3)
-    return userDisplayName + " loved your post '" + title + "'";
+    return userDisplayName + " supported your post '" + title + "'";
 };
-const getNotificationTitle = type => {
+const getNotificationTitle = (type) => {
   if (type === 1) return "Someone commented on your post!";
   else if (type === 2) return "Someone loved your comment!";
   else if (type === 3) return "Someone loved your post!";
 };
 
-const getProblemLink = problem => {
+const getProblemLink = (problem) => {
   return (
     "https://www.ventwithstrangers.com/problem/" +
     problem._id +
@@ -41,7 +41,7 @@ const getNotifications = (dataObj, callback, socket) => {
   Notification.find({ receiverID: userID }, (err, notifications) => {
     if (notifications)
       callback({
-        newNotifications: notifications
+        newNotifications: notifications,
       });
   })
     .sort({ createdAt: -1 })
@@ -54,15 +54,15 @@ const sendEmail = (body, callback, sendToEmail, subject) => {
     service: "gmail",
     auth: {
       user: keys.email,
-      pass: keys.emailPassword
-    }
+      pass: keys.emailPassword,
+    },
   });
 
   var mailOptions = {
     from: keys.email,
     to: sendToEmail,
     subject: subject,
-    text: body
+    text: body,
   };
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
@@ -71,7 +71,7 @@ const sendEmail = (body, callback, sendToEmail, subject) => {
         callback({
           success: false,
           errorMessage:
-            "Could not send email to this address. Please contact us immediately for assistance."
+            "Could not send email to this address. Please contact us immediately for assistance.",
         });
     } else if (callback) callback({ success: true });
   });
@@ -97,16 +97,16 @@ const saveNotification = (
           receiverID,
           senderID,
           title,
-          type
+          type,
         }).save((err, notification) => {
           if (notification) {
             socket
               .to(receiverID)
               .emit(receiverID + "_receive_new_notifications", {
-                newNotifications: [notification]
+                newNotifications: [notification],
               });
             socket.emit(receiverID + "_receive_new_notifications", {
-              newNotifications: [notification]
+              newNotifications: [notification],
             });
 
             if (receiverUser && receiverUser.email) {
@@ -202,5 +202,5 @@ module.exports = {
   getNotifications,
   likeCommentNotification,
   likeVentNotification,
-  readNotifications
+  readNotifications,
 };

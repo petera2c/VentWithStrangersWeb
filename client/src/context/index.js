@@ -101,10 +101,16 @@ class GIProvider extends Component {
   };
 
   soundNotify = (sound = "bing") => {
-    var mp3Source = '<source src="static/' + sound + '.mp3" type="audio/mpeg">';
-    var oggSource = '<source src="static/' + sound + '.ogg" type="audio/ogg">';
+    let folderPath = "";
+    if (process.env.NODE_ENV === "development") folderPath = "static/";
+
+    var mp3Source =
+      '<source src="' + folderPath + sound + '.mp3" type="audio/mpeg">';
+    var oggSource =
+      '<source src="' + folderPath + sound + '.ogg" type="audio/ogg">';
     var embedSource =
-      '<embed hidden="true" autostart="true" loop="false" src="static/' +
+      '<embed hidden="true" autostart="true" loop="false" src="' +
+      folderPath +
       sound +
       '.mp3">';
     document.getElementById("sound").innerHTML =
