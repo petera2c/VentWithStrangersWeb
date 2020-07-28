@@ -34,7 +34,7 @@ import {
   getUsersComments,
   getUsersPosts,
   initReceiveNotifications,
-  initSocket
+  initSocket,
 } from "./util";
 
 const cookies = new Cookies();
@@ -42,19 +42,17 @@ const cookies = new Cookies();
 class Routes extends Component {
   state = {
     databaseConnection: false,
-    hasVisitedSite: true
+    hasVisitedSite: true,
   };
 
   componentDidMount() {
-    const { handleChange, notify } = this.context;
+    const { handleChange, notify, soundNotify } = this.context; // Functions
 
-    //this.setState({ hasVisitedSite: cookies.get("hasVisitedSite") });
-
-    axios.get("/api/user").then(res => {
+    axios.get("/api/user").then((res) => {
       const { success, user, message } = res.data;
 
       if (success) {
-        initSocket(stateObj => {
+        initSocket((stateObj) => {
           handleChange({ ...stateObj, user });
           this.setState({ databaseConnection: true });
           this.getDataNeededForPage(this.props.location, undefined, true);
@@ -63,6 +61,7 @@ class Routes extends Component {
 
             initReceiveNotifications(
               stateObj.socket,
+              soundNotify,
               this.updateNotifications,
               user._id
             );
@@ -104,7 +103,7 @@ class Routes extends Component {
     });
   };
 
-  updateNotifications = newNotifications => {
+  updateNotifications = (newNotifications) => {
     const { handleChange } = this.context; // Functions
     const { notifications } = this.context; // Variables
 
@@ -115,11 +114,11 @@ class Routes extends Component {
           moment(notifications[0].createdAt)
         )
           handleChange({
-            notifications: notifications.concat(newNotifications)
+            notifications: notifications.concat(newNotifications),
           });
         else
           handleChange({
-            notifications: newNotifications.concat(notifications)
+            notifications: newNotifications.concat(notifications),
           });
       }
     } else handleChange({ notifications: newNotifications });
@@ -143,11 +142,11 @@ class Routes extends Component {
 
     return (
       <Consumer>
-        {context => (
+        {(context) => (
           <Container
             className="screen-container column"
             style={{
-              maxHeight: pathname === "/vent-to-a-stranger" ? "100vh" : "auto"
+              maxHeight: pathname === "/vent-to-a-stranger" ? "100vh" : "auto",
             }}
           >
             {!isMobileOrTablet() && <Header />}
@@ -181,6 +180,7 @@ class Routes extends Component {
                 }}
               />
             )}
+            <div id="sound"></div>
           </Container>
         )}
       </Consumer>

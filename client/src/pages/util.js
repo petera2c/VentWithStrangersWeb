@@ -1,7 +1,7 @@
 import io from "socket.io-client";
 
 export const getNotifications = (skip, socket, updateNotifications) => {
-  socket.emit("get_notifications", { skip }, dataObj => {
+  socket.emit("get_notifications", { skip }, (dataObj) => {
     const { newNotifications } = dataObj;
 
     updateNotifications(newNotifications);
@@ -18,7 +18,7 @@ export const getUsersComments = (
   let searchID = user._id;
   if (search) searchID = search;
 
-  socket.emit("get_users_comments", { searchID }, result => {
+  socket.emit("get_users_comments", { searchID }, (result) => {
     const { comments, message, success } = result;
 
     if (success) handleChange({ comments });
@@ -41,7 +41,7 @@ export const getUsersPosts = (
   let searchID = user._id;
   if (search) searchID = search;
 
-  socket.emit("get_users_posts", { searchID, skip }, result => {
+  socket.emit("get_users_posts", { searchID, skip }, (result) => {
     const { message, problems, success } = result;
     let newVents = problems;
     let canLoadMorePosts = true;
@@ -53,7 +53,7 @@ export const getUsersPosts = (
   });
 };
 
-export const initSocket = callback => {
+export const initSocket = (callback) => {
   let socket;
   if (process.env.NODE_ENV === "development")
     socket = io("http://localhost:5000");
@@ -64,11 +64,25 @@ export const initSocket = callback => {
 
 export const initReceiveNotifications = (
   socket,
+  soundNotify,
   updateNotifications,
   userID
 ) => {
-  socket.on(userID + "_receive_new_notifications", dataObj => {
+  socket.on(userID + "_receive_new_notifications", (dataObj) => {
     const { newNotifications } = dataObj;
+
+    soundNotify("bing");
+
+    if (Notification.permission !== "granted") Notification.requestPermission();
+    else {
+      var notification = new Notification("Notification title", {
+        icon: "http://cdn.sstatic.net/stackexchange/img/logos/so/so-icon.png",
+        body: "Hey there! You've been notified!",
+      });
+      notification.onclick = function () {
+        window.open("http://stackoverflow.com/a/13328397/1269037");
+      };
+    }
 
     updateNotifications(newNotifications);
   });

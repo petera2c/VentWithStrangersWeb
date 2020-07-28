@@ -24,7 +24,7 @@ class Chat extends Component {
     leaveConfirm: false,
     message: "",
     messages: [],
-    metaTitle: ""
+    metaTitle: "",
   };
   componentDidMount() {
     this._ismounted = true;
@@ -41,17 +41,18 @@ class Chat extends Component {
     window.removeEventListener("keypress", this.submitByEnterKey);
   }
 
-  handleChange = stateObj => {
+  handleChange = (stateObj) => {
     if (this._ismounted) this.setState(stateObj);
   };
 
   chatInit = () => {
     const { startMetaChangeInterval } = this.props; // Functions
-    const { socket } = this.context;
+    const { socket, soundNotify } = this.context; // Functions
     const { messages } = this.state;
 
-    socket.on("receive_message", message => {
+    socket.on("receive_message", (message) => {
       const { chatPartner } = this.props;
+      if (!document.hasFocus()) soundNotify();
 
       messages.push(message);
       this.handleChange({ messages });
@@ -79,14 +80,14 @@ class Chat extends Component {
 
     messages.push({
       authorID: user._id,
-      body: message
+      body: message,
     });
 
     this.setState({ messages, message: "" });
     this.scrollToBottom();
   };
 
-  submitByEnterKey = e => {
+  submitByEnterKey = (e) => {
     if (e && e.keyCode && e.keyCode === 13) {
       // user pressed enter key
       this.sendMessage();
@@ -121,7 +122,7 @@ class Chat extends Component {
     }
     return (
       <Consumer>
-        {context => (
+        {(context) => (
           <Container
             className={
               "column full-center flex-fill ov-auto bg-white br4 " +
@@ -167,7 +168,7 @@ class Chat extends Component {
                 {messageDivs}
                 <div
                   style={{ float: "left", clear: "both" }}
-                  ref={el => {
+                  ref={(el) => {
                     this.messagesEnd = el;
                   }}
                 />
@@ -207,7 +208,7 @@ class Chat extends Component {
                   (isMobileOrTablet() ? "" : "align-center pr16")
                 }
                 style={{
-                  minHeight: isMobileOrTablet() ? "" : "80px"
+                  minHeight: isMobileOrTablet() ? "" : "80px",
                 }}
               >
                 <textarea
@@ -215,7 +216,7 @@ class Chat extends Component {
                     "send-message-textarea light-scrollbar " +
                     (isMobileOrTablet() ? "" : "pa16")
                   }
-                  onChange={event =>
+                  onChange={(event) =>
                     this.handleChange({ message: event.target.value })
                   }
                   placeholder="Type a helpful message here..."

@@ -100,6 +100,21 @@ class GIProvider extends Component {
     this.handleChange({ vents: newCopy });
   };
 
+  soundNotify = (sound = "bing") => {
+    var mp3Source = '<source src="static/' + sound + '.mp3" type="audio/mpeg">';
+    var oggSource = '<source src="static/' + sound + '.ogg" type="audio/ogg">';
+    var embedSource =
+      '<embed hidden="true" autostart="true" loop="false" src="static/' +
+      sound +
+      '.mp3">';
+    document.getElementById("sound").innerHTML =
+      '<audio autoplay="autoplay">' +
+      mp3Source +
+      oggSource +
+      embedSource +
+      "</audio>";
+  };
+
   render() {
     const {
       canLoadMorePosts,
@@ -129,6 +144,7 @@ class GIProvider extends Component {
           removeVent: this.removeVent,
           saving,
           socket,
+          soundNotify: this.soundNotify,
           updateVent: this.updateVent,
           user,
           vents,

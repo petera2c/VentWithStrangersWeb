@@ -27,27 +27,36 @@ class ChatPage extends Component {
     listenersWaiting: 0,
     metaTitle: INITIAL_META_TITLE,
     userLeft: false,
-    ventersWaiting: 0
+    ventersWaiting: 0,
   };
   componentDidMount() {
     this._ismounted = true;
     window.addEventListener("focus", this.onFocus);
     window.addEventListener("blur", this.onFocus);
-    const { socket } = this.context;
+    const { socket, soundNotify } = this.context;
 
     if (socket) {
-      socket.emit("get_users_waiting", stateObj => {
+      socket.emit("get_users_waiting", (stateObj) => {
         this.handleChange(stateObj, this.onFocus);
       });
-      this.initUserJoined(this.handleChange, socket);
-      socket.on("users_waiting", stateObj => {
+      this.initUserJoined(this.handleChange, socket, soundNotify);
+      socket.on("users_waiting", (stateObj) => {
+        const { conversation, listenersWaiting, ventersWaiting } = this.state;
+        if (
+          !conversation &&
+          (stateObj.listenersWaiting > listenersWaiting ||
+            stateObj.ventersWaiting > ventersWaiting)
+        )
+          soundNotify();
         this.handleChange(stateObj, this.onFocus);
       });
       socket.on("user_left", () => {
+        soundNotify();
         this.handleChange({ userLeft: true });
       });
     }
   }
+
   componentWillUnmount() {
     this._ismounted = false;
 
@@ -67,11 +76,12 @@ class ChatPage extends Component {
     if (this._ismounted) this.setState(stateObj, callback);
   };
 
-  initUserJoined = (callback, socket) => {
-    socket.on("user_joined_chat", stateObj => {
+  initUserJoined = (callback, socket, soundNotify) => {
+    socket.on("user_joined_chat", (stateObj) => {
       callback(stateObj);
 
       if (!document.hasFocus() && stateObj.chatPartner) {
+        soundNotify();
         this.startMetaChangeInterval(
           stateObj.chatPartner + " Joined",
           "Start Chatting"
@@ -79,6 +89,7 @@ class ChatPage extends Component {
       }
     });
   };
+
   onFocus = () => {
     const { conversation, listenersWaiting, ventersWaiting } = this.props;
     if (document.hasFocus()) {
@@ -145,13 +156,13 @@ class ChatPage extends Component {
       listenersWaiting,
       metaTitle,
       userLeft,
-      ventersWaiting
+      ventersWaiting,
     } = this.state;
     const { user } = this.context;
 
     return (
       <Consumer>
-        {context => (
+        {(context) => (
           <Page
             className="bg-grey-2 ov-auto"
             description="Sometimes, all we need is an available ear. This is where you can anonymously talk to someone that wants to listen, or anonymously listen to someone that wants to be heard."
@@ -196,7 +207,7 @@ class ChatPage extends Component {
                       onClick={() => {
                         this.handleChange({
                           conversation: true,
-                          userLeft: false
+                          userLeft: false,
                         });
                         findConversation(context.socket, "listener");
                       }}
@@ -234,7 +245,7 @@ class ChatPage extends Component {
                       onClick={() => {
                         this.handleChange({
                           conversation: true,
-                          userLeft: false
+                          userLeft: false,
                         });
                         findConversation(context.socket, "venter");
                       }}
@@ -291,7 +302,7 @@ class ChatPage extends Component {
                     leaveChat={() =>
                       this.handleChange({
                         chatPartner: undefined,
-                        conversation: false
+                        conversation: false,
                       })
                     }
                     startMetaChangeInterval={this.startMetaChangeInterval}
