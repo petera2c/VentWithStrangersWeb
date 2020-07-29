@@ -1,3 +1,4 @@
+const fetch = require("node-fetch");
 const Notification = require("../models/Notification");
 const Settings = require("../models/Settings");
 const User = require("../models/User");
@@ -88,50 +89,55 @@ const saveNotification = (
 ) => {
   if (receiverID && senderID && String(receiverID) !== String(senderID))
     Settings.findOne({ userID: receiverID }, (err, settings) => {
-      User.findById(receiverID, { email: 1 }, (err, receiverUser) => {
-        new Notification({
-          body,
-          hasSeen: false,
-          link,
-          objectID,
-          receiverID,
-          senderID,
-          title,
-          type,
-        }).save((err, notification) => {
-          if (notification) {
-            if (receiverUser && receiverUser.pushNotificationToken)
-              sendPushNotification(
-                notification.body,
-                receiverUser.pushNotificationToken,
-                notification.title
-              );
+      User.findById(
+        receiverID,
+        { email: 1, pushNotificationToken: 1 },
+        (err, receiverUser) => {
+          new Notification({
+            body,
+            hasSeen: false,
+            link,
+            objectID,
+            receiverID,
+            senderID,
+            title,
+            type,
+          }).save((err, notification) => {
+            if (notification) {
+              if (receiverUser && receiverUser.pushNotificationToken) {
+                sendPushNotification(
+                  notification.body,
+                  receiverUser.pushNotificationToken,
+                  notification.title
+                );
+              }
 
-            socket
-              .to(receiverID)
-              .emit(receiverID + "_receive_new_notifications", {
+              socket
+                .to(receiverID)
+                .emit(receiverID + "_receive_new_notifications", {
+                  newNotifications: [notification],
+                });
+              socket.emit(receiverID + "_receive_new_notifications", {
                 newNotifications: [notification],
               });
-            socket.emit(receiverID + "_receive_new_notifications", {
-              newNotifications: [notification],
-            });
 
-            if (receiverUser && receiverUser.email) {
-              if (
-                (type === 1 && settings.postCommented) ||
-                (type === 2 && settings.commentLiked) ||
-                (type === 3 && settings.postLiked)
-              )
-                sendEmail(
-                  body + " Check it out at " + link,
-                  undefined,
-                  receiverUser.email,
-                  title
-                );
+              if (receiverUser && receiverUser.email) {
+                if (
+                  (type === 1 && settings.postCommented) ||
+                  (type === 2 && settings.commentLiked) ||
+                  (type === 3 && settings.postLiked)
+                )
+                  sendEmail(
+                    body + " Check it out at " + link,
+                    undefined,
+                    receiverUser.email,
+                    title
+                  );
+              }
             }
-          }
-        });
-      });
+          });
+        }
+      );
     });
 };
 
