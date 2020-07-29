@@ -1,5 +1,5 @@
 const { searchTags } = require("./tag");
-const { updateUser } = require("./user");
+const { updateUser, updateUserToken } = require("./user");
 
 const {
   commentVent,
@@ -100,6 +100,9 @@ module.exports = (io) => {
 
     socket.on("update_user", (dataObj, callback) =>
       updateUser(dataObj, callback, socket)
+    );
+    socket.on("update_user_token", (dataObj, callback) =>
+      updateUserToken(dataObj, callback, socket)
     );
     socket.on("user_reported", () => {});
 

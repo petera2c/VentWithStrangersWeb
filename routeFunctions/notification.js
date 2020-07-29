@@ -100,6 +100,13 @@ const saveNotification = (
           type,
         }).save((err, notification) => {
           if (notification) {
+            if (receiverUser && receiverUser.pushNotificationToken)
+              sendPushNotification(
+                notification.body,
+                receiverUser.pushNotificationToken,
+                notification.title
+              );
+
             socket
               .to(receiverID)
               .emit(receiverID + "_receive_new_notifications", {
@@ -195,6 +202,27 @@ const readNotifications = (callback, socket) => {
       }
     }
   );
+};
+
+const sendPushNotification = async (body, notificationAuthToken, title) => {
+  const message = {
+    body,
+    data: { data: {} },
+    sound: "default",
+    title,
+    to: notificationAuthToken,
+    _displayInForeground: true,
+  };
+
+  const response = fetch("https://exp.host/--/api/v2/push/send", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Accept-encoding": "gzip, deflate",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(message),
+  });
 };
 
 module.exports = {

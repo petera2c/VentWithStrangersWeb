@@ -9,19 +9,20 @@ const userSchema = new Schema(
     email: { sparse: true, type: String, unique: true },
     language: String,
     password: { type: String },
+    pushNotificationToken: { type: String },
     recentTags: [{ name: String }],
     settingsID: { require: true, type: Schema.Types.ObjectId, unique: true },
-    timezone: String
+    timezone: String,
   },
   {
-    timestamps: true // Saves createdAt and updatedAt as dates. createdAt will be our timestamp.
+    timestamps: true, // Saves createdAt and updatedAt as dates. createdAt will be our timestamp.
   }
 );
 
-userSchema.methods.generateHash = password =>
+userSchema.methods.generateHash = (password) =>
   bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 
-userSchema.methods.validPassword = password =>
+userSchema.methods.validPassword = (password) =>
   bcrypt.compareSync(password, this.password);
 
 userSchema.index({ title: "displayName" });

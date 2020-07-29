@@ -110,6 +110,7 @@ const updateUser = (dataObj, callback, socket) => {
     email,
     oldPassword,
     newPassword,
+    pushNotificationToken,
   } = dataObj;
 
   if (
@@ -163,9 +164,23 @@ const updateUser = (dataObj, callback, socket) => {
         });
     });
 };
+
+const updateUserToken = (dataObj, callback, socket) => {
+  const { pushNotificationToken } = dataObj;
+
+  const userID = socket.request.user._id;
+
+  if (pushNotificationToken) {
+    User.findById(socket.request.user._id, (err, user) => {
+      user.pushNotificationToken = pushNotificationToken;
+      user.save();
+    });
+  }
+};
 module.exports = {
   login,
   randomLogin,
   register,
   updateUser,
+  updateUserToken,
 };
