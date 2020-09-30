@@ -70,6 +70,9 @@
 .bold {
   font-weight: bold;
 }
+.no-bold {
+  font-weight: normal;
+}
 .fs-12 {
   font-size: var(--twelve-font-size);
 }

@@ -18,6 +18,7 @@ import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 import { faEdit } from "@fortawesome/pro-light-svg-icons/faEdit";
 import { faExclamationTriangle } from "@fortawesome/pro-light-svg-icons/faExclamationTriangle";
 import { faTrash } from "@fortawesome/pro-duotone-svg-icons/faTrash";
+import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
 
 import {
   EmailShareButton,
@@ -416,66 +417,91 @@ class Vent extends Component {
           {!searchPreviewMode && (
             <Container
               className={
-                "relative wrap justify-between py16 px32 " +
+                "relative wrap justify-between pt16 px32 " +
                 (!searchPreviewMode && displayCommentField
                   ? "border-bottom"
                   : "")
               }
             >
-              <Container className="align-center">
-                <FontAwesomeIcon
-                  className="clickable blue mr4"
-                  icon={faComment}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    this.handleChange({
-                      displayCommentField: !displayCommentField,
-                    });
-                    if (!displayCommentField)
-                      getVentComments(
-                        this.context,
-                        this.handleChange,
-                        vent,
-                        ventIndex
-                      );
-                  }}
-                  size="2x"
-                  title="Comment"
-                />
-                <Text className="blue mr8" text={vent.commentsSize} type="p" />
+              <Container className="align-center wrap">
+                <Container className="align-center mb16">
+                  <FontAwesomeIcon
+                    className="clickable blue mr4"
+                    icon={faComment}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      this.handleChange({
+                        displayCommentField: !displayCommentField,
+                      });
+                      if (!displayCommentField)
+                        getVentComments(
+                          this.context,
+                          this.handleChange,
+                          vent,
+                          ventIndex
+                        );
+                    }}
+                    size="2x"
+                    title="Comment"
+                  />
+                  <Text
+                    className="blue mr8"
+                    text={vent.commentsSize}
+                    type="p"
+                  />
+                  <img
+                    className={`clickable heart ${
+                      vent.hasLiked ? "red" : "grey-5"
+                    } mr4`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (vent.hasLiked)
+                        unlikeVent(this.context, vent, this.updateVentLikes);
+                      else likeVent(this.context, vent, this.updateVentLikes);
+                    }}
+                    src={
+                      vent.hasLiked
+                        ? require("../../svgs/support-active.svg")
+                        : require("../../svgs/support.svg")
+                    }
+                    style={{ height: "32px" }}
+                    title="Give Support :)"
+                  />
 
-                <img
-                  className={`clickable heart ${
-                    vent.hasLiked ? "red" : "grey-5"
-                  } mr4`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (vent.hasLiked)
-                      unlikeVent(this.context, vent, this.updateVentLikes);
-                    else likeVent(this.context, vent, this.updateVentLikes);
-                  }}
-                  src={
-                    vent.hasLiked
-                      ? require("../../svgs/support-active.svg")
-                      : require("../../svgs/support.svg")
-                  }
-                  style={{ height: "32px" }}
-                  title="Give Support :)"
-                />
+                  <Text className="grey-5 mr16" text={vent.upVotes} type="p" />
+                </Container>
 
-                <Text className="grey-5 mr16" text={vent.upVotes} type="p" />
-
-                <Container className="">
+                <Container className="mb16">
                   <HandleOutsideClick
                     close={() => this.handleChange({ shareClicked: false })}
                   >
-                    <FontAwesomeIcon
-                      className="button-8"
+                    <Button
+                      className="button-2 px16 py8 mr16 br8"
                       onClick={() =>
                         this.handleChange({ shareClicked: !shareClicked })
                       }
-                      icon={faShare}
-                    />
+                    >
+                      <FontAwesomeIcon className="mr8" icon={faShare} />
+                      Share
+                    </Button>
+                    {false && (
+                      <Button
+                        className="button-2 px16 py8 br8"
+                        onClick={() => {
+                          socket.emit(
+                            "create_new_conversation",
+                            vent._id,
+                            (stateObj) => {
+                              this.handleChange(stateObj, this.onFocus);
+                            }
+                          );
+                        }}
+                      >
+                        <FontAwesomeIcon className="mr8" icon={faComments} />
+                        Message User
+                      </Button>
+                    )}
+
                     {shareClicked && (
                       <Container
                         className="absolute left-0 flex column bg-white shadow-2 px16 py16 br8"
@@ -567,7 +593,7 @@ class Vent extends Component {
                   </HandleOutsideClick>
                 </Container>
               </Container>
-              <Container className="align-center">
+              <Container className="align-center mb16">
                 <FontAwesomeIcon className="grey-5 mr8" icon={faClock} />
                 <Text
                   className="grey-5"

@@ -32,7 +32,7 @@ class Header extends Component {
     loginModalBoolean: false,
     signUpModalBoolean: false,
     searchPostString: "",
-    showNotificationDropdown: false
+    showNotificationDropdown: false,
   };
   componentDidMount() {
     this._ismounted = true;
@@ -40,11 +40,11 @@ class Header extends Component {
   componentWillUnmount() {
     this.ismounted = false;
   }
-  handleChange = stateObj => {
+  handleChange = (stateObj) => {
     if (this._ismounted) this.setState(stateObj);
   };
 
-  searchPosts = searchPostString => {
+  searchPosts = (searchPostString) => {
     const { history } = this.props;
 
     this.handleChange({ searchPostString });
@@ -53,7 +53,7 @@ class Header extends Component {
   readNotifications = () => {
     const { socket } = this.context;
 
-    socket.emit("read_notifications", result => {
+    socket.emit("read_notifications", (result) => {
       const { success } = result;
 
       const { handleChange, notifications } = this.context;
@@ -69,14 +69,14 @@ class Header extends Component {
       loginModalBoolean,
       signUpModalBoolean,
       searchPostString,
-      showNotificationDropdown
+      showNotificationDropdown,
     } = this.state;
     const { history, location } = this.props;
     const { pathname } = location;
 
     return (
       <Consumer>
-        {context => (
+        {(context) => (
           <Container
             className="sticky top-0 x-fill justify-center bg-white shadow-2 border-top large active"
             style={{ zIndex: 10 }}
@@ -98,7 +98,7 @@ class Header extends Component {
                 className="align-center wrap"
                 style={{
                   maxWidth: "1500px",
-                  width: "60vw"
+                  width: "60vw",
                 }}
               >
                 <Link
@@ -135,16 +135,24 @@ class Header extends Component {
                   </Link>
                 </Container>
 
-                <Container className="full-center bg-grey-4 py4 px8 my16 br4">
+                <Container className="full-center bg-grey-4 py4 px8 my16 mr16 br4">
                   <FontAwesomeIcon className="grey-5 mr8" icon={faSearch} />
                   <Input
                     className="no-border bg-grey-4 br4"
-                    onChange={e => this.searchPosts(e.target.value)}
+                    onChange={(e) => this.searchPosts(e.target.value)}
                     placeholder="Search"
                     type="text"
                     value={searchPostString}
                   />
                 </Container>
+
+                <a
+                  className="button-2 no-bold py8 px16 my16 br8"
+                  href="https://donorbox.org/vws-site-donation?default_interval=o"
+                  target="_blank"
+                >
+                  Donate
+                </a>
               </Container>
               <Container className="flex-fill full-center wrap mx32 my16">
                 {context.user && !context.user.password && (
@@ -187,7 +195,7 @@ class Header extends Component {
                       className="relative"
                       close={() =>
                         this.handleChange({
-                          showNotificationDropdown: false
+                          showNotificationDropdown: false,
                         })
                       }
                     >
@@ -196,7 +204,7 @@ class Header extends Component {
                         icon={faBell}
                         onClick={() => {
                           this.handleChange({
-                            showNotificationDropdown: !showNotificationDropdown
+                            showNotificationDropdown: !showNotificationDropdown,
                           });
 
                           this.readNotifications();
@@ -210,7 +218,7 @@ class Header extends Component {
                             position: "absolute",
                             top: "calc(100% + 8px)",
                             right: 0,
-                            maxHeight: "300px"
+                            maxHeight: "300px",
                           }}
                         >
                           <NotificationList />
@@ -224,7 +232,7 @@ class Header extends Component {
                               position: "absolute",
                               top: "-12px",
                               right: "-12px",
-                              pointerEvents: "none"
+                              pointerEvents: "none",
                             }}
                             type="p"
                           >
@@ -243,7 +251,7 @@ class Header extends Component {
                 openSignUpModal={() =>
                   this.handleChange({
                     signUpModalBoolean: true,
-                    loginModalBoolean: false
+                    loginModalBoolean: false,
                   })
                 }
               />
@@ -254,7 +262,7 @@ class Header extends Component {
                 openLoginModal={() =>
                   this.handleChange({
                     signUpModalBoolean: false,
-                    loginModalBoolean: true
+                    loginModalBoolean: true,
                   })
                 }
               />

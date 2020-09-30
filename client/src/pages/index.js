@@ -18,7 +18,7 @@ import AppDownloadPage from "./AppDownload";
 import NotificationsPage from "./Notifications";
 import SearchPage from "./Search";
 import VentsPage from "./Vents";
-import FindStrangerPage from "./FindStranger";
+import ConversationsPage from "./Conversations";
 import NewVentPage from "./NewVent";
 import VentPage from "./Vent";
 import HotTagsPage from "./HotTags";
@@ -164,7 +164,10 @@ class Routes extends Component {
               <Route path="/trending/" component={VentsPage} />
               <Route path="/recent/" component={VentsPage} />
               <Route path="/popular/" component={VentsPage} />
-              <Route path="/vent-to-a-stranger/" component={FindStrangerPage} />
+              <Route
+                path="/vent-to-a-stranger/"
+                component={ConversationsPage}
+              />
               <Route path="/post-a-problem/" component={NewVentPage} />
               <Route path="/problem/" component={VentPage} />
               <Route path="/blog/" component={BlogPage} />
