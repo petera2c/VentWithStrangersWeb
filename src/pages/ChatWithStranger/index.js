@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { withRouter } from "react-router-dom";
 
 import Consumer, { ExtraContext } from "../../context";
 
@@ -173,6 +174,7 @@ class ChatPage extends Component {
       ventersWaiting,
     } = this.state;
     const { user } = this.context;
+    const { history } = this.props;
 
     return (
       <Consumer>
@@ -189,20 +191,6 @@ class ChatPage extends Component {
                 (isMobileOrTablet() ? "" : "py32")
               }
             >
-              {!conversation && (
-                <Container className="x-fill justify-center align-start">
-                  <Text
-                    className={
-                      "fw-400 fs-20 " +
-                      (isMobileOrTablet()
-                        ? "container mobile-full pa16"
-                        : "container extra-large pr32 pb32")
-                    }
-                    text="People care and help is here. Vent and chat anonymously to be a part of a community committed to making the world a better place. This is a website for people that want to be heard and people that want to listen."
-                    type="h2"
-                  />
-                </Container>
-              )}
               {context.user && !conversation && (
                 <Container className="column">
                   <Text
@@ -313,12 +301,13 @@ class ChatPage extends Component {
                   <Chat
                     chatPartner={chatPartner}
                     conversation={conversation}
-                    leaveChat={() =>
+                    leaveChat={() => {
                       this.handleChange({
                         chatPartner: undefined,
                         conversation: false,
-                      })
-                    }
+                      });
+                      history.push("/chats");
+                    }}
                     startMetaChangeInterval={this.startMetaChangeInterval}
                     userLeft={userLeft}
                   />
@@ -333,4 +322,4 @@ class ChatPage extends Component {
 }
 ChatPage.contextType = ExtraContext;
 
-export default ChatPage;
+export default withRouter(ChatPage);

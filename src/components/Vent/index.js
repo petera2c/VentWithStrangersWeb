@@ -484,23 +484,21 @@ class Vent extends Component {
                       <FontAwesomeIcon className="mr8" icon={faShare} />
                       Share
                     </Button>
-                    {false && (
-                      <Button
-                        className="button-2 px16 py8 br8"
-                        onClick={() => {
-                          socket.emit(
-                            "create_new_conversation",
-                            vent._id,
-                            (stateObj) => {
-                              this.handleChange(stateObj, this.onFocus);
-                            }
-                          );
-                        }}
-                      >
-                        <FontAwesomeIcon className="mr8" icon={faComments} />
-                        Message User
-                      </Button>
-                    )}
+                    <Button
+                      className="button-2 px16 py8 br8"
+                      onClick={() => {
+                        socket.emit(
+                          "create_new_conversation",
+                          vent._id,
+                          (stateObj) => {
+                            this.handleChange(stateObj, this.onFocus);
+                          }
+                        );
+                      }}
+                    >
+                      <FontAwesomeIcon className="mr8" icon={faComments} />
+                      Message User
+                    </Button>
 
                     {shareClicked && (
                       <Container

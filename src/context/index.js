@@ -10,7 +10,6 @@ class GIProvider extends Component {
     canLoadMorePosts: true,
     comments: undefined,
     hotTags: [],
-    skip: 0,
     notification: {
       on: false,
       message: "",
@@ -18,8 +17,6 @@ class GIProvider extends Component {
     },
     notifications: [],
     saving: false,
-    socket: undefined,
-    user: undefined,
     vents: undefined,
   };
   componentDidMount() {
@@ -123,15 +120,12 @@ class GIProvider extends Component {
 
   render() {
     const {
-      canLoadMorePosts,
       comments,
       hotTags,
-      skip,
       notification,
       notifications,
       saving,
       socket,
-      user,
       vents,
     } = this.state;
 
@@ -139,20 +133,16 @@ class GIProvider extends Component {
       <Provider
         value={{
           addComment: this.addComment,
-          canLoadMorePosts,
           comments,
           getVents: this.getVents,
           handleChange: this.handleChange,
           hotTags,
-          skip,
           notify: this.notify,
           notifications,
           removeVent: this.removeVent,
           saving,
-          socket,
           soundNotify: this.soundNotify,
           updateVent: this.updateVent,
-          user,
           vents,
         }}
       >

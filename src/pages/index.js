@@ -18,7 +18,8 @@ import AppDownloadPage from "./AppDownload";
 import NotificationsPage from "./Notifications";
 import SearchPage from "./Search";
 import VentsPage from "./Vents";
-import ConversationsPage from "./Conversations";
+import ChatsPage from "./Conversations";
+import ChatWithStrangerPage from "./ChatWithStranger";
 import NewVentPage from "./NewVent";
 import VentPage from "./Vent";
 import HotTagsPage from "./HotTags";
@@ -41,94 +42,19 @@ const cookies = new Cookies();
 
 class Routes extends Component {
   state = {
-    databaseConnection: false,
     hasVisitedSite: true,
+    databaseConnection: false,
   };
 
-  componentDidMount() {
-    const { handleChange, notify, soundNotify } = this.context; // Functions
+  componentDidMount() {}
 
-    axios.get("/api/user").then((res) => {
-      const { success, user, message } = res.data;
-
-      if (success) {
-        initSocket((stateObj) => {
-          handleChange({ ...stateObj, user });
-          this.setState({ databaseConnection: true });
-          this.getDataNeededForPage(this.props.location, undefined, true);
-          if (user.password) {
-            getNotifications(0, stateObj.socket, this.updateNotifications);
-
-            initReceiveNotifications(
-              stateObj.socket,
-              soundNotify,
-              this.updateNotifications,
-              user._id
-            );
-          }
-        });
-      } else notify({ message, type: "danger" });
-    });
-
-    this.unlisten = this.props.history.listen(this.getDataNeededForPage);
-  }
-
-  componentWillUnmount() {
-    this.unlisten();
-  }
-
-  getDataNeededForPage = (location, action, initialPageLoad) => {
-    let { pathname, search } = location;
-    const { getVents, handleChange, notify, socket } = this.context; // Functions
-    const { vents, skip, user } = this.context; // Variables
-
-    handleChange({ vents: undefined, skip: 0 }, () => {
-      search = search.slice(1, search.length);
-
-      if (
-        pathname.substring(0, 8) === "/popular" ||
-        pathname.substring(0, 7) === "/recent" ||
-        pathname.substring(0, 9) === "/trending"
-      )
-        getVents(pathname, search);
-      else if (pathname === "/") getVents("/recent", search);
-      else if (pathname.substring(0, 5) === "/home")
-        getVents("/recent", search);
-      else if (pathname === "/search")
-        searchVents(handleChange, undefined, search, 0, socket);
-      else if (pathname === "/activity") {
-        getUsersPosts(handleChange, notify, vents, search, 0, socket, user);
-        getUsersComments(handleChange, notify, search, socket, user);
-      }
-    });
-  };
-
-  updateNotifications = (newNotifications) => {
-    const { handleChange } = this.context; // Functions
-    const { notifications } = this.context; // Variables
-
-    if (notifications.length > 0) {
-      if (newNotifications && newNotifications.length > 0) {
-        if (
-          moment(newNotifications[0].createdAt) <
-          moment(notifications[0].createdAt)
-        )
-          handleChange({
-            notifications: notifications.concat(newNotifications),
-          });
-        else
-          handleChange({
-            notifications: newNotifications.concat(notifications),
-          });
-      }
-    } else handleChange({ notifications: newNotifications });
-  };
+  componentWillUnmount() {}
 
   render() {
     const { databaseConnection, hasVisitedSite } = this.state;
     const { pathname } = this.props.location;
 
-    if (!databaseConnection)
+    /*  if (!databaseConnection)
       return (
         <Container className="screen-container full-center pr32">
           <img
@@ -138,7 +64,7 @@ class Routes extends Component {
             style={{ height: "280px" }}
           />
         </Container>
-      );
+      );*/
 
     return (
       <Consumer>
@@ -164,9 +90,10 @@ class Routes extends Component {
               <Route path="/trending/" component={VentsPage} />
               <Route path="/recent/" component={VentsPage} />
               <Route path="/popular/" component={VentsPage} />
+              <Route path="/chats/" component={ChatsPage} />
               <Route
                 path="/vent-to-a-stranger/"
-                component={ConversationsPage}
+                component={ChatWithStrangerPage}
               />
               <Route path="/post-a-problem/" component={NewVentPage} />
               <Route path="/problem/" component={VentPage} />

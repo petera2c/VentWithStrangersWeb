@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
+import * as firebase from "firebase";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
@@ -73,6 +74,7 @@ class Header extends Component {
     } = this.state;
     const { history, location } = this.props;
     const { pathname } = location;
+    const user = firebase.auth().currentUser;
 
     return (
       <Consumer>
@@ -130,7 +132,7 @@ class Header extends Component {
                   >
                     <FontAwesomeIcon className="" icon={faPen} />
                   </Link>
-                  <Link className="blue px8" to="/vent-to-a-stranger">
+                  <Link className="blue px8" to="/chats">
                     <FontAwesomeIcon className="" icon={faComments} />
                   </Link>
                 </Container>
@@ -155,7 +157,7 @@ class Header extends Component {
                 </a>
               </Container>
               <Container className="flex-fill full-center wrap mx32 my16">
-                {context.user && !context.user.password && (
+                {!user && (
                   <Button
                     className="blue fw-300 mx32"
                     text="Login"
@@ -164,7 +166,7 @@ class Header extends Component {
                     }
                   />
                 )}
-                {context.user && !context.user.password && (
+                {!user && (
                   <Button
                     className="white blue-fade px32 py8 br4"
                     text="Sign Up"
@@ -173,7 +175,7 @@ class Header extends Component {
                     }
                   />
                 )}
-                {context.user && context.user.password && (
+                {user && (
                   <Container className="align-center wrap">
                     <Link className="flex full-center mr16" to="/activity">
                       <Text
