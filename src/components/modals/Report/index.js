@@ -6,7 +6,7 @@ import Consumer from "../../../context";
 import Container from "../../containers/Container";
 import Text from "../../views/Text";
 import Button from "../../views/Button";
-import Input from "../../views/Input";
+ 
 
 class ReportModal extends Component {
   state = {
@@ -73,7 +73,7 @@ class ReportModal extends Component {
                     })
                   }
                 >
-                  <Input
+                  <input
                     className="mr8"
                     checked={violence}
                     style={{ minWidth: "13px" }}
@@ -94,7 +94,7 @@ class ReportModal extends Component {
                     })
                   }
                 >
-                  <Input
+                  <input
                     className="mr8"
                     checked={abuse}
                     style={{ minWidth: "13px" }}
@@ -115,7 +115,7 @@ class ReportModal extends Component {
                     })
                   }
                 >
-                  <Input
+                  <input
                     className="mr8"
                     checked={privateInformation}
                     style={{ minWidth: "13px" }}
@@ -136,7 +136,7 @@ class ReportModal extends Component {
                     })
                   }
                 >
-                  <Input
+                  <input
                     className="mr8"
                     checked={illegal}
                     style={{ minWidth: "13px" }}
@@ -153,7 +153,7 @@ class ReportModal extends Component {
                     })
                   }
                 >
-                  <Input
+                  <input
                     className="mr8"
                     checked={malicious}
                     style={{ minWidth: "13px" }}

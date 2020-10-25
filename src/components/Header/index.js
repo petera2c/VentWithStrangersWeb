@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
-import * as firebase from "firebase";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
@@ -18,7 +17,7 @@ import Consumer, { ExtraContext } from "../../context";
 import Container from "../containers/Container";
 import HandleOutsideClick from "../containers/HandleOutsideClick";
 import Text from "../views/Text";
-import Input from "../views/Input";
+
 import Button from "../views/Button";
 
 import LoginModal from "../modals/Login";
@@ -74,7 +73,6 @@ class Header extends Component {
     } = this.state;
     const { history, location } = this.props;
     const { pathname } = location;
-    const user = firebase.auth().currentUser;
 
     return (
       <Consumer>
@@ -139,7 +137,7 @@ class Header extends Component {
 
                 <Container className="full-center bg-grey-4 py4 px8 my16 mr16 br4">
                   <FontAwesomeIcon className="grey-5 mr8" icon={faSearch} />
-                  <Input
+                  <input
                     className="no-border bg-grey-4 br4"
                     onChange={(e) => this.searchPosts(e.target.value)}
                     placeholder="Search"
@@ -157,7 +155,7 @@ class Header extends Component {
                 </a>
               </Container>
               <Container className="flex-fill full-center wrap mx32 my16">
-                {!user && (
+                {!context.user && (
                   <Button
                     className="blue fw-300 mx32"
                     text="Login"
@@ -166,7 +164,7 @@ class Header extends Component {
                     }
                   />
                 )}
-                {!user && (
+                {!context.user && (
                   <Button
                     className="white blue-fade px32 py8 br4"
                     text="Sign Up"
@@ -175,7 +173,7 @@ class Header extends Component {
                     }
                   />
                 )}
-                {user && (
+                {context.user && (
                   <Container className="align-center wrap">
                     <Link className="flex full-center mr16" to="/activity">
                       <Text
@@ -183,6 +181,7 @@ class Header extends Component {
                         text={capitolizeFirstChar(context.user.displayName[0])}
                         type="h6"
                       />
+
                       <Text
                         className="mr8"
                         text={`Hello, ${capitolizeFirstChar(

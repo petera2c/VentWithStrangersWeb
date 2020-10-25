@@ -21,7 +21,7 @@ import Consumer, { ExtraContext } from "../../context";
 
 import Container from "../containers/Container";
 import Text from "../views/Text";
-import Input from "../views/Input";
+ 
 import Button from "../views/Button";
 
 import LoginModal from "../modals/Login";
@@ -36,7 +36,7 @@ class MobileHeader extends Component {
     mobileHeaderActive: false,
     loginModalBoolean: false,
     signUpModalBoolean: false,
-    searchPostString: ""
+    searchPostString: "",
   };
   componentDidMount() {
     this._ismounted = true;
@@ -44,11 +44,11 @@ class MobileHeader extends Component {
   componentWillUnmount() {
     this.ismounted = false;
   }
-  handleChange = stateObj => {
+  handleChange = (stateObj) => {
     if (this._ismounted) this.setState(stateObj);
   };
 
-  searchPosts = searchPostString => {
+  searchPosts = (searchPostString) => {
     const { history } = this.props;
 
     this.handleChange({ searchPostString });
@@ -57,7 +57,7 @@ class MobileHeader extends Component {
   readNotifications = () => {
     const { socket } = this.context;
 
-    socket.emit("read_notifications", result => {
+    socket.emit("read_notifications", (result) => {
       const { success } = result;
 
       const { handleChange, notifications } = this.context;
@@ -74,14 +74,14 @@ class MobileHeader extends Component {
       loginModalBoolean,
       mobileHeaderActive,
       signUpModalBoolean,
-      searchPostString
+      searchPostString,
     } = this.state;
     const { history, location } = this.props;
     const { pathname, search } = location;
 
     return (
       <Consumer>
-        {context => (
+        {(context) => (
           <Container
             className="sticky top-0 column x-fill full-center bg-white border-top large active shadow-2"
             style={{ zIndex: 10 }}
@@ -117,7 +117,7 @@ class MobileHeader extends Component {
                           top: "-12px",
                           right: "-12px",
                           pointerEvents: "none",
-                          zIndex: 1
+                          zIndex: 1,
                         }}
                         type="p"
                       >
@@ -192,15 +192,13 @@ class MobileHeader extends Component {
                       <Container className="full-center py16 mx16">
                         <Text
                           className="round-icon bg-blue white mr8"
-                          text={capitolizeFirstChar(
-                            context.user.displayName[0]
-                          )}
+                          text={capitolizeFirstChar(user.displayName[0])}
                           type="h6"
                         />
                         <Text
                           className="mr8"
                           text={`Hello, ${capitolizeFirstChar(
-                            context.user.displayName
+                            user.displayName
                           )}`}
                           type="p"
                         />
@@ -254,9 +252,9 @@ class MobileHeader extends Component {
                 )}
                 <Container className="bg-white align-center py4 px8 ma16 br4">
                   <FontAwesomeIcon className="grey-5 mr8" icon={faSearch} />
-                  <Input
+                  <input
                     className="no-border br4"
-                    onChange={e => this.searchPosts(e.target.value)}
+                    onChange={(e) => this.searchPosts(e.target.value)}
                     placeholder="Search"
                     type="text"
                     value={searchPostString}
@@ -337,7 +335,7 @@ class MobileHeader extends Component {
                 openSignUpModal={() =>
                   this.handleChange({
                     signUpModalBoolean: true,
-                    loginModalBoolean: false
+                    loginModalBoolean: false,
                   })
                 }
               />
@@ -348,7 +346,7 @@ class MobileHeader extends Component {
                 openLoginModal={() =>
                   this.handleChange({
                     signUpModalBoolean: false,
-                    loginModalBoolean: true
+                    loginModalBoolean: true,
                   })
                 }
               />

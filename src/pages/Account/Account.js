@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
+import firebase from "firebase/app";
+import "firebase/database";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
@@ -12,11 +14,9 @@ import { faMonument } from "@fortawesome/pro-light-svg-icons/faMonument";
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
-import Input from "../../components/views/Input";
 import Button from "../../components/views/Button";
 
 import { ExtraContext } from "../../context";
-
 import { isMobileOrTablet } from "../../util";
 
 class AccountSection extends Component {
@@ -25,7 +25,7 @@ class AccountSection extends Component {
     displayName: "",
     email: "",
     oldPassword: "",
-    newPassword: ""
+    newPassword: "",
   };
   componentDidMount() {
     this._ismounted = true;
@@ -33,7 +33,7 @@ class AccountSection extends Component {
   componentWillUnmount() {
     this._ismounted = false;
   }
-  handleChange = stateObj => {
+  handleChange = (stateObj) => {
     if (this._ismounted) this.setState(stateObj);
   };
   updateUser = () => {
@@ -42,14 +42,31 @@ class AccountSection extends Component {
       displayName,
       email,
       oldPassword,
-      newPassword
+      newPassword,
     } = this.state;
-    const { handleChange, notify, socket } = this.context;
+    const { handleChange, notify, user } = this.context;
+    const db = firebase.database();
+    console.log("here");
+    const userRef = db.ref("/users/" + user.uid);
+    userRef.on("value", (snapshot) => {
+      console.log(snapshot);
+    });
+    user
+      .updateProfile({
+        displayName,
+      })
+      .then((test) => {
+        console.log(test);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    return;
 
     socket.emit(
       "update_user",
       { confirmPassword, displayName, email, oldPassword, newPassword },
-      result => {
+      (result) => {
         const { message, success, user } = result;
 
         if (success) {
@@ -65,7 +82,7 @@ class AccountSection extends Component {
       displayName,
       email,
       oldPassword,
-      newPassword
+      newPassword,
     } = this.state;
     const { location } = this.props;
     const { pathname, search } = location;
@@ -93,9 +110,9 @@ class AccountSection extends Component {
               <Text className="mb8" text="Display Name" type="p" />
               <Container className="full-center bg-grey-4 py4 px8 br4">
                 <FontAwesomeIcon className="grey-5 mr8" icon={faMonument} />
-                <Input
+                <input
                   className="no-border bg-grey-4 br4"
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleChange({ displayName: e.target.value })
                   }
                   placeholder="Art Vandalay"
@@ -112,9 +129,9 @@ class AccountSection extends Component {
               <Text className="mb8 " text="Email" type="p" />
               <Container className="full-center bg-grey-4 py4 px8 br4">
                 <FontAwesomeIcon className="grey-5 mr8" icon={faPaperPlane} />
-                <Input
+                <input
                   className="no-border bg-grey-4 br4"
-                  onChange={e => this.handleChange({ email: e.target.value })}
+                  onChange={(e) => this.handleChange({ email: e.target.value })}
                   placeholder="artvandalay@gmail.com"
                   type="text"
                   value={email}
@@ -135,9 +152,9 @@ class AccountSection extends Component {
             <Text className="mb8 " text="Old Password" type="p" />
             <Container className="full-center bg-grey-4 py4 px8 br4">
               <FontAwesomeIcon className="grey-5 mr8" icon={faLockAlt} />
-              <Input
+              <input
                 className="no-border bg-grey-4 br4"
-                onChange={e =>
+                onChange={(e) =>
                   this.handleChange({ oldPassword: e.target.value })
                 }
                 placeholder="*******"
@@ -155,9 +172,9 @@ class AccountSection extends Component {
               <Text className="mb8 " text="New Password" type="p" />
               <Container className="full-center bg-grey-4 py4 px8 br4">
                 <FontAwesomeIcon className="grey-5 mr8" icon={faLockAlt} />
-                <Input
+                <input
                   className="no-border bg-grey-4 br4"
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleChange({ newPassword: e.target.value })
                   }
                   placeholder="*******"
@@ -174,9 +191,9 @@ class AccountSection extends Component {
               <Text className="mb8 " text="Confirm Password" type="p" />
               <Container className="full-center bg-grey-4 py4 px8 br4">
                 <FontAwesomeIcon className="grey-5 mr8" icon={faLockAlt} />
-                <Input
+                <input
                   className="no-border bg-grey-4 br4"
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleChange({ confirmPassword: e.target.value })
                   }
                   placeholder="*******"
@@ -197,7 +214,7 @@ class AccountSection extends Component {
                 displayName: "",
                 email: "",
                 oldPassword: "",
-                newPassword: ""
+                newPassword: "",
               })
             }
           />

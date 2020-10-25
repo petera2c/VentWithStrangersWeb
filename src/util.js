@@ -1,10 +1,12 @@
 import axios from "axios";
+import firebase from "firebase/app";
+import "firebase/auth";
 
 // Taken from stack overflow
-export const capitolizeWordsInString = str => {
-  return str.replace(/\b\w/g, l => l.toUpperCase());
+export const capitolizeWordsInString = (str) => {
+  return str.replace(/\b\w/g, (l) => l.toUpperCase());
 };
-export const capitolizeFirstChar = string => {
+export const capitolizeFirstChar = (string) => {
   if (string) return string.charAt(0).toUpperCase() + string.slice(1);
   else return;
 };
@@ -33,7 +35,7 @@ export const isPageActive = (page, pathname) => {
   else return "";
 };
 
-export const getTextFromHtmlTag = tagString => {
+export const getTextFromHtmlTag = (tagString) => {
   let div = document.createElement("div");
   div.innerHTML = "<div   dangerouslySetInnerHTML={{__html: " + tagString;
 
@@ -41,7 +43,10 @@ export const getTextFromHtmlTag = tagString => {
 };
 
 export const signOut = () => {
-  axios.get("/api/sign-out").then(result => {
-    window.location.reload();
-  });
+  firebase
+    .auth()
+    .signOut()
+    .then(() => {
+      window.location.reload();
+    });
 };

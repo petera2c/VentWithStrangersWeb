@@ -1,6 +1,8 @@
 import React, { Component, createContext } from "react";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
+import firebase from "firebase/app";
+import { initializeUser } from "./util";
 
 const ExtraContext = createContext();
 const { Provider, Consumer } = ExtraContext;
@@ -17,10 +19,12 @@ class GIProvider extends Component {
     },
     notifications: [],
     saving: false,
+    user: undefined,
     vents: undefined,
   };
   componentDidMount() {
     this._ismounted = true;
+    initializeUser(this.handleChange);
   }
 
   componentWillUnmount() {
@@ -126,6 +130,7 @@ class GIProvider extends Component {
       notifications,
       saving,
       socket,
+      user,
       vents,
     } = this.state;
 
@@ -143,6 +148,7 @@ class GIProvider extends Component {
           saving,
           soundNotify: this.soundNotify,
           updateVent: this.updateVent,
+          user,
           vents,
         }}
       >

@@ -2,7 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import { hydrate, render } from "react-dom";
-import * as firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/analytics";
 
 import { firebaseConfig } from "./config/firebase";
 
@@ -13,6 +14,7 @@ import "./theme.css";
 
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
+
 const rootElement = document.getElementById("root");
 
 render(

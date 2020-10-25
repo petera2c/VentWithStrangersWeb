@@ -43,7 +43,6 @@ const cookies = new Cookies();
 class Routes extends Component {
   state = {
     hasVisitedSite: true,
-    databaseConnection: false,
   };
 
   componentDidMount() {}
@@ -51,10 +50,11 @@ class Routes extends Component {
   componentWillUnmount() {}
 
   render() {
-    const { databaseConnection, hasVisitedSite } = this.state;
+    const { hasVisitedSite } = this.state;
     const { pathname } = this.props.location;
+    const { user } = this.context;
 
-    /*  if (!databaseConnection)
+    if (user === undefined)
       return (
         <Container className="screen-container full-center pr32">
           <img
@@ -64,7 +64,7 @@ class Routes extends Component {
             style={{ height: "280px" }}
           />
         </Container>
-      );*/
+      );
 
     return (
       <Consumer>

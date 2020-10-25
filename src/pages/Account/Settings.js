@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 
+import firebase from "firebase/app";
+import "firebase/database";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMonument } from "@fortawesome/free-solid-svg-icons/faMonument";
 
@@ -8,7 +11,6 @@ import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 
 import Button from "../../components/views/Button";
-import Input from "../../components/views/Input";
 import Text from "../../components/views/Text";
 
 import Consumer, { ExtraContext } from "../../context";
@@ -17,40 +19,39 @@ import { isMobileOrTablet } from "../../util";
 
 class AccountSection extends Component {
   state = {
-    adultContent: undefined,
-    commentLiked: undefined,
-    postCommented: undefined,
-    postLiked: undefined,
-    receiveEmails: undefined,
-    somethingChanged: false
+    adultContent: false,
+    commentLiked: true,
+    postCommented: true,
+    postLiked: true,
+    receiveEmails: true,
+    somethingChanged: false,
   };
   componentDidMount() {
-    const { socket } = this.context;
+    const { user } = this.context;
     this._ismounted = true;
 
-    socket.emit("get_settings", result => {
-      const { settings, success } = result;
-      const {
-        adultContent,
-        commentLiked,
-        postCommented,
-        postLiked,
-        receiveEmails
-      } = settings;
+    const db = firebase.database();
 
-      this.handleChange({
+    const userRef = db.ref("/users/" + user.uid);
+    userRef.on("value", (snapshot) => {
+      console.log(snapshot);
+
+      const value = snapshot.val();
+      const exists = snapshot.exists();
+    });
+
+    /*  this.handleChange({
         adultContent,
         commentLiked,
         postCommented,
         postLiked,
-        receiveEmails
-      });
-    });
+        receiveEmails,
+      });*/
   }
   componentWillUnmount() {
     this._ismounted = false;
   }
-  handleChange = stateObj => {
+  handleChange = (stateObj) => {
     if (this._ismounted) this.setState(stateObj);
   };
   updateSettings = () => {
@@ -59,20 +60,20 @@ class AccountSection extends Component {
       commentLiked,
       postCommented,
       postLiked,
-      receiveEmails
+      receiveEmails,
     } = this.state;
-    const { notify, socket } = this.context;
+    const { notify, user } = this.context;
+    const db = firebase.database();
 
-    socket.emit(
-      "save_settings",
-      { adultContent, commentLiked, postCommented, postLiked, receiveEmails },
-      result => {
-        const { message, success } = result;
-
-        if (success) this.handleChange({ somethingChanged: false });
-        else notify({ message, type: "danger" });
-      }
-    );
+    db.ref("users/" + user.uid).set({
+      settings: {
+        adultContent,
+        commentLiked,
+        postCommented,
+        postLiked,
+        receiveEmails,
+      },
+    });
   };
 
   render() {
@@ -82,7 +83,7 @@ class AccountSection extends Component {
       postCommented,
       postLiked,
       receiveEmails,
-      somethingChanged
+      somethingChanged,
     } = this.state;
     const { location } = this.props;
     const { pathname, search } = location;
@@ -102,11 +103,11 @@ class AccountSection extends Component {
             onClick={() =>
               this.handleChange({
                 postCommented: !postCommented,
-                somethingChanged: true
+                somethingChanged: true,
               })
             }
           >
-            <Input
+            <input
               className="mr8"
               defaultChecked={postCommented}
               style={{ minWidth: "13px" }}
@@ -123,11 +124,11 @@ class AccountSection extends Component {
             onClick={() =>
               this.handleChange({
                 commentLiked: !commentLiked,
-                somethingChanged: true
+                somethingChanged: true,
               })
             }
           >
-            <Input
+            <input
               className="mr8"
               defaultChecked={commentLiked}
               style={{ minWidth: "13px" }}
@@ -144,11 +145,11 @@ class AccountSection extends Component {
             onClick={() =>
               this.handleChange({
                 postLiked: !postLiked,
-                somethingChanged: true
+                somethingChanged: true,
               })
             }
           >
-            <Input
+            <input
               className="mr8"
               defaultChecked={postLiked}
               style={{ minWidth: "13px" }}
@@ -165,11 +166,11 @@ class AccountSection extends Component {
             onClick={() =>
               this.handleChange({
                 receiveEmails: !receiveEmails,
-                somethingChanged: true
+                somethingChanged: true,
               })
             }
           >
-            <Input
+            <input
               className="mr8"
               defaultChecked={receiveEmails}
               style={{ minWidth: "13px" }}
@@ -191,11 +192,11 @@ class AccountSection extends Component {
             onClick={() =>
               this.handleChange({
                 adultContent: !adultContent,
-                somethingChanged: true
+                somethingChanged: true,
               })
             }
           >
-            <Input
+            <input
               className="mr8"
               defaultChecked={adultContent}
               style={{ minWidth: "13px" }}

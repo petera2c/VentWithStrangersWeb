@@ -6,7 +6,7 @@ import Consumer from "../../../context";
 import Container from "../../containers/Container";
 import Text from "../../views/Text";
 import Button from "../../views/Button";
-import Input from "../../views/Input";
+ 
 
 class ConfirmAlertModal extends Component {
   handleChange = stateObj => {

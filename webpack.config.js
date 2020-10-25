@@ -12,15 +12,15 @@ module.exports = (env, argv) => {
       new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /de|en/),
       new webpack.DefinePlugin({
         "process.env": {
-          NODE_ENV: '"development"'
-        }
-      })
+          NODE_ENV: '"development"',
+        },
+      }),
     ];
   else {
     plugins = [
       new HtmlWebpackPlugin({ template: "./public/index.html" }),
       new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /de|en/),
-      new CopyWebpackPlugin([{ from: "./static" }])
+      new CopyWebpackPlugin([{ from: "./static" }]),
     ];
   }
   return {
@@ -30,8 +30,7 @@ module.exports = (env, argv) => {
     output: {
       path: path.join(__dirname, "/build"),
       publicPath: "/",
-
-      filename: "bundle.js"
+      filename: "bundle.js",
     },
     module: {
       rules: [
@@ -41,30 +40,24 @@ module.exports = (env, argv) => {
           use: {
             loader: "babel-loader",
             options: {
-              presets: ["es2015", "react", "stage-2"]
-            }
-          }
+              presets: ["es2015", "react", "stage-2"],
+            },
+          },
         },
         {
           test: /\.css$/,
           exclude: /node_modules/,
-          use: [{ loader: "style-loader" }, { loader: "css-loader" }]
+          use: [{ loader: "style-loader" }, { loader: "css-loader" }],
         },
         {
           test: /\.(jpe?g|ico|gif|png|svg|woff|ttf|wav|mp3)$/,
-          loader: "file-loader?name=[name].[ext]"
-        }
-      ]
+          loader: "file-loader?name=[name].[ext]",
+        },
+      ],
     },
-
-    plugins: plugins,
     devServer: {
-      proxy: {
-        "/api/*": "http://localhost:5000",
-        "/sitemap.xml": "http://localhost:5000"
-      },
-      disableHostCheck: true,
-      historyApiFallback: true
-    }
+      historyApiFallback: true,
+    },
+    plugins: plugins,
   };
 };

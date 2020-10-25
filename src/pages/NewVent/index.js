@@ -11,7 +11,6 @@ import Container from "../../components/containers/Container";
 
 import Text from "../../components/views/Text";
 import Button from "../../components/views/Button";
-import Input from "../../components/views/Input";
 
 import Emoji from "../../components/Emoji";
 
@@ -122,7 +121,7 @@ class NewVentPage extends Component {
                 <Container className="column py32 px32 br4">
                   <Text className="fw-400 mb8" text="Title" type="h5" />
 
-                  <Input
+                  <input
                     className="py8 px16 mb8 br4"
                     onChange={(e) =>
                       this.handleChange({
@@ -141,7 +140,7 @@ class NewVentPage extends Component {
                       type="h5"
                     />
 
-                    <Input
+                    <input
                       className="py8 px16 br4"
                       onChange={(e) => this.updateTags(e.target.value)}
                       placeholder="depression, relationships, covid-19"

@@ -5,7 +5,7 @@ import Consumer from "../../context";
 
 import Container from "../containers/Container";
 import Text from "../views/Text";
-import Input from "../views/Input";
+ 
 import Button from "../views/Button";
 
 class NotificationList extends Component {

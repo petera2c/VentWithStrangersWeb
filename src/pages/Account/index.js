@@ -26,7 +26,7 @@ class AccountPage extends Component {
     let search = { location };
     search = location.search.slice(1, search.length);
 
-    if (!search && !user.password) history.push("/");
+    if (!search && !user.displayName) history.push("/");
   }
 
   render() {
@@ -35,7 +35,7 @@ class AccountPage extends Component {
 
     return (
       <Consumer>
-        {context => (
+        {(context) => (
           <Page
             className="bg-grey-2"
             description=""

@@ -8,10 +8,10 @@ class Button extends Component {
       children,
       className,
       name,
-      onClick,
+      onClick = () => {},
       style,
       text,
-      type
+      type,
     } = this.props;
     return (
       <button
