@@ -1,17 +1,24 @@
 import React, { Component } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  useLocation,
+} from "react-router-dom";
 import axios from "axios";
 import moment from "moment-timezone";
-import { Route, Switch, withRouter } from "react-router-dom";
-import Cookies from "universal-cookie";
 
-import Consumer, { ExtraContext } from "../context";
+import firebase from "firebase/app";
+import "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
 
-import LoadingHeart from "../components/loaders/Heart";
+import Consumer, { UserContext } from "../context";
+
 import Container from "../components/containers/Container";
 
 import Header from "../components/Header";
 import MobileHeader from "../components/Header/MobileHeader";
-import CookiesComponent from "../components/Cookies";
+import LoadingHeart from "../components/loaders/Heart";
 
 import AccountPage from "./Account";
 import AppDownloadPage from "./AppDownload";
@@ -28,6 +35,8 @@ import CreateBlogPage from "./CreateBlog";
 import NotFoundPage from "./NotFound";
 import PrivacyPolicyPage from "./PrivacyPolicy";
 
+import { GIProvider } from "../context";
+
 import { searchVents } from "./Search/util";
 import { isMobileOrTablet } from "../util";
 import {
@@ -38,85 +47,67 @@ import {
   initSocket,
 } from "./util";
 
-const cookies = new Cookies();
+function Routes() {
+  const [user, loading, error] = useAuthState(firebase.auth());
 
-class Routes extends Component {
-  state = {
-    hasVisitedSite: true,
-  };
-
-  componentDidMount() {}
-
-  componentWillUnmount() {}
-
-  render() {
-    const { hasVisitedSite } = this.state;
-    const { pathname } = this.props.location;
-    const { user } = this.context;
-
-    if (user === undefined)
-      return (
-        <Container className="screen-container full-center pr32">
-          <img
-            alt=""
-            className="loading-animation"
-            src={require("../svgs/icon.svg")}
-            style={{ height: "280px" }}
-          />
-        </Container>
-      );
-
+  if (loading)
     return (
-      <Consumer>
-        {(context) => (
-          <Container
-            className="screen-container column"
-            style={{
-              maxHeight: pathname === "/vent-to-a-stranger" ? "100vh" : "auto",
-            }}
-          >
+      <Container className="screen-container full-center pr32">
+        <img
+          alt=""
+          className="loading-animation"
+          src={require("../svgs/icon.svg")}
+          style={{ height: "280px" }}
+        />
+      </Container>
+    );
+
+  return (
+    <GIProvider>
+      <UserContext.Provider value={user}>
+        <Router>
+          <Container className="screen-container column">
             {!isMobileOrTablet() && <Header />}
             {isMobileOrTablet() && <MobileHeader />}
-            <Switch>
-              <Route path="/account/" component={AccountPage} exact />
-              <Route path="/app-downloads/" component={AppDownloadPage} />
-              <Route path="/activity/" component={AccountPage} />
-              <Route path="/settings/" component={AccountPage} exact />
-              <Route path="/notifications/" component={NotificationsPage} />
-              <Route path="/search/" component={SearchPage} />
-              <Route path="/hot-tags/" component={HotTagsPage} />
-              <Route path="/" component={VentsPage} exact />
-              <Route path="/home/" component={VentsPage} />
-              <Route path="/trending/" component={VentsPage} />
-              <Route path="/recent/" component={VentsPage} />
-              <Route path="/popular/" component={VentsPage} />
-              <Route path="/chats/" component={ChatsPage} />
-              <Route
-                path="/vent-to-a-stranger/"
-                component={ChatWithStrangerPage}
-              />
-              <Route path="/post-a-problem/" component={NewVentPage} />
-              <Route path="/problem/" component={VentPage} />
-              <Route path="/blog/" component={BlogPage} />
-              <Route path="/create-blog/" component={CreateBlogPage} />
-              <Route path="/privacy-policy/" component={PrivacyPolicyPage} />
-              <Route component={NotFoundPage} />
-            </Switch>
-            {!hasVisitedSite && (
-              <CookiesComponent
-                accept={() => {
-                  cookies.set("hasVisitedSite", true);
-                  this.setState({ hasVisitedSite: true });
-                }}
-              />
+            {loading && (
+              <Container className="x-fill full-center">
+                <LoadingHeart />
+              </Container>
+            )}
+            {error && { error }}
+            {!loading && !error && (
+              <Switch>
+                <Route path="/account/" component={AccountPage} exact />
+                <Route path="/app-downloads/" component={AppDownloadPage} />
+                <Route path="/activity/" component={AccountPage} />
+                <Route path="/settings/" component={AccountPage} exact />
+                <Route path="/notifications/" component={NotificationsPage} />
+                <Route path="/search/" component={SearchPage} />
+                <Route path="/hot-tags/" component={HotTagsPage} />
+                <Route path="/" component={VentsPage} exact />
+                <Route path="/home/" component={VentsPage} />
+                <Route path="/trending/" component={VentsPage} />
+                <Route path="/recent/" component={VentsPage} />
+                <Route path="/popular/" component={VentsPage} />
+                <Route path="/chats/" component={ChatsPage} />
+                <Route
+                  path="/vent-to-a-stranger/"
+                  component={ChatWithStrangerPage}
+                />
+                <Route path="/post-a-problem/" component={NewVentPage} />
+                <Route path="/problem/" component={VentPage} />
+                <Route path="/blog/" component={BlogPage} />
+                <Route path="/create-blog/" component={CreateBlogPage} />
+                <Route path="/privacy-policy/" component={PrivacyPolicyPage} />
+                <Route component={NotFoundPage} />
+              </Switch>
             )}
             <div id="sound"></div>
           </Container>
-        )}
-      </Consumer>
-    );
-  }
+        </Router>
+      </UserContext.Provider>
+    </GIProvider>
+  );
 }
-Routes.contextType = ExtraContext;
 
-export default withRouter(Routes);
+export default Routes;

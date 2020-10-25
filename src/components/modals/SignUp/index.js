@@ -8,7 +8,7 @@ import Text from "../../views/Text";
 import Button from "../../views/Button";
 
 import { isMobileOrTablet } from "../../../util";
-import { getInvalidCharacters, signUp } from "./util";
+import { signUp } from "./util";
 
 function SignUpModal({ close, openLoginModal }) {
   const { register, handleSubmit } = useForm();

@@ -4,6 +4,7 @@ import axios from "axios";
 import firebase from "firebase/app";
 import { initializeUser } from "./util";
 
+const UserContext = createContext();
 const ExtraContext = createContext();
 const { Provider, Consumer } = ExtraContext;
 
@@ -158,6 +159,6 @@ class GIProvider extends Component {
   }
 }
 
-export { GIProvider, ExtraContext };
+export { GIProvider, ExtraContext, UserContext };
 
 export default withRouter(Consumer);

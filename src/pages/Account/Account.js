@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import firebase from "firebase/app";
 import "firebase/database";
 
@@ -16,219 +16,173 @@ import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
 import Button from "../../components/views/Button";
 
-import { ExtraContext } from "../../context";
+import { ExtraContext, UserContext } from "../../context";
 import { isMobileOrTablet } from "../../util";
 
-class AccountSection extends Component {
-  state = {
-    confirmPassword: "",
-    displayName: "",
-    email: "",
-    oldPassword: "",
-    newPassword: "",
-  };
-  componentDidMount() {
-    this._ismounted = true;
-  }
-  componentWillUnmount() {
-    this._ismounted = false;
-  }
-  handleChange = (stateObj) => {
-    if (this._ismounted) this.setState(stateObj);
-  };
-  updateUser = () => {
-    const {
-      confirmPassword,
-      displayName,
-      email,
-      oldPassword,
-      newPassword,
-    } = this.state;
-    const { handleChange, notify, user } = this.context;
-    const db = firebase.database();
-    console.log("here");
-    const userRef = db.ref("/users/" + user.uid);
-    userRef.on("value", (snapshot) => {
-      console.log(snapshot);
-    });
-    user
-      .updateProfile({
-        displayName,
-      })
-      .then((test) => {
-        console.log(test);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    return;
+function AccountSection() {
+  const updateUser = () => {
+    if (displayName && displayName !== user.displayName) {
+      user
+        .updateProfile({
+          displayName,
+        })
+        .then(() => {})
+        .catch((error) => {
+          alert(error.message);
+        });
+    }
 
-    socket.emit(
-      "update_user",
-      { confirmPassword, displayName, email, oldPassword, newPassword },
-      (result) => {
-        const { message, success, user } = result;
+    if (email && email !== user.email) {
+      user
+        .updateEmail(email)
+        .then(() => {
+          user
+            .sendEmailVerification()
+            .then(() => {
+              // Email sent.
+            })
+            .catch((error) => {
+              // An error happened.
+            });
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+    }
+    if (newPassword && confirmPassword)
+      if (newPassword === confirmPassword)
+        user
+          .updatePassword(newPassword)
+          .then(() => {
+            // Update successful.
+          })
+          .catch((error) => {
+            alert(error.message);
+          });
+      else alert("Passwords are not the same!");
+  };
 
-        if (success) {
-          notify({ message: "Done!", type: "success" });
-          handleChange({ user });
-        } else notify({ message, type: "danger" });
+  const user = useContext(UserContext);
+
+  const [displayName, setDisplayName] = useState(user.displayName);
+  const [email, setEmail] = useState(user.email);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const db = firebase.database();
+
+  const userRef = db.ref("/users/" + user.uid);
+
+  return (
+    <Container
+      className={
+        "container column px16 " +
+        (isMobileOrTablet() ? "mobile-full" : "large")
       }
-    );
-  };
-  render() {
-    const {
-      confirmPassword,
-      displayName,
-      email,
-      oldPassword,
-      newPassword,
-    } = this.state;
-    const { location } = this.props;
-    const { pathname, search } = location;
-
-    return (
-      <Container
-        className={
-          "container column px16 " +
-          (isMobileOrTablet() ? "mobile-full" : "large")
-        }
-      >
-        <Text className="mb16" text="Account" type="h4" />
-        <Container className="column bg-white border-all2 pa16 mb2 br8">
-          <Text
-            className="blue bold mb16"
-            text="Personal Information"
-            type="h6"
-          />
-          <Container className="wrap">
-            <Container
-              className={
-                "column pr8 mb16 " + (isMobileOrTablet() ? "x-100" : "x-50")
-              }
-            >
-              <Text className="mb8" text="Display Name" type="p" />
-              <Container className="full-center bg-grey-4 py4 px8 br4">
-                <FontAwesomeIcon className="grey-5 mr8" icon={faMonument} />
-                <input
-                  className="no-border bg-grey-4 br4"
-                  onChange={(e) =>
-                    this.handleChange({ displayName: e.target.value })
-                  }
-                  placeholder="Art Vandalay"
-                  type="text"
-                  value={displayName}
-                />
-              </Container>
-            </Container>
-            <Container
-              className={
-                "column pr8 mb16 " + (isMobileOrTablet() ? "x-100" : "x-50")
-              }
-            >
-              <Text className="mb8 " text="Email" type="p" />
-              <Container className="full-center bg-grey-4 py4 px8 br4">
-                <FontAwesomeIcon className="grey-5 mr8" icon={faPaperPlane} />
-                <input
-                  className="no-border bg-grey-4 br4"
-                  onChange={(e) => this.handleChange({ email: e.target.value })}
-                  placeholder="artvandalay@gmail.com"
-                  type="text"
-                  value={email}
-                />
-              </Container>
-            </Container>
-          </Container>
-          <Text
-            className="blue bold mb16"
-            text="Change your Password"
-            type="h6"
-          />
+    >
+      <Text className="mb16" text="Account" type="h4" />
+      <Container className="column bg-white border-all2 pa16 mb2 br8">
+        <Text
+          className="blue bold mb16"
+          text="Personal Information"
+          type="h6"
+        />
+        <Container className="wrap">
           <Container
             className={
               "column pr8 mb16 " + (isMobileOrTablet() ? "x-100" : "x-50")
             }
           >
-            <Text className="mb8 " text="Old Password" type="p" />
+            <Text className="mb8" text="Display Name" type="p" />
+            <Container className="full-center bg-grey-4 py4 px8 br4">
+              <FontAwesomeIcon className="grey-5 mr8" icon={faMonument} />
+              <input
+                className="no-border bg-grey-4 br4"
+                onChange={(e) => setDisplayName(e.target.value)}
+                placeholder="Art Vandalay"
+                type="text"
+                value={displayName}
+              />
+            </Container>
+          </Container>
+          <Container
+            className={
+              "column pr8 mb16 " + (isMobileOrTablet() ? "x-100" : "x-50")
+            }
+          >
+            <Text className="mb8 " text="Email" type="p" />
+            <Container className="full-center bg-grey-4 py4 px8 br4">
+              <FontAwesomeIcon className="grey-5 mr8" icon={faPaperPlane} />
+              <input
+                className="no-border bg-grey-4 br4"
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="artvandalay@gmail.com"
+                type="text"
+                value={email}
+              />
+            </Container>
+          </Container>
+        </Container>
+        <Text
+          className="blue bold mb16"
+          text="Change your Password"
+          type="h6"
+        />
+
+        <Container className="wrap">
+          <Container
+            className={
+              "column pr8 mb16 " + (isMobileOrTablet() ? "x-100" : "x-50")
+            }
+          >
+            <Text className="mb8 " text="New Password" type="p" />
             <Container className="full-center bg-grey-4 py4 px8 br4">
               <FontAwesomeIcon className="grey-5 mr8" icon={faLockAlt} />
               <input
                 className="no-border bg-grey-4 br4"
-                onChange={(e) =>
-                  this.handleChange({ oldPassword: e.target.value })
-                }
+                onChange={(e) => setNewPassword(e.target.value)}
                 placeholder="*******"
                 type="password"
-                value={oldPassword}
+                value={newPassword}
               />
             </Container>
           </Container>
-          <Container className="wrap">
-            <Container
-              className={
-                "column pr8 mb16 " + (isMobileOrTablet() ? "x-100" : "x-50")
-              }
-            >
-              <Text className="mb8 " text="New Password" type="p" />
-              <Container className="full-center bg-grey-4 py4 px8 br4">
-                <FontAwesomeIcon className="grey-5 mr8" icon={faLockAlt} />
-                <input
-                  className="no-border bg-grey-4 br4"
-                  onChange={(e) =>
-                    this.handleChange({ newPassword: e.target.value })
-                  }
-                  placeholder="*******"
-                  type="password"
-                  value={newPassword}
-                />
-              </Container>
-            </Container>
-            <Container
-              className={
-                "column mb16 " + (isMobileOrTablet() ? "x-100" : "x-50")
-              }
-            >
-              <Text className="mb8 " text="Confirm Password" type="p" />
-              <Container className="full-center bg-grey-4 py4 px8 br4">
-                <FontAwesomeIcon className="grey-5 mr8" icon={faLockAlt} />
-                <input
-                  className="no-border bg-grey-4 br4"
-                  onChange={(e) =>
-                    this.handleChange({ confirmPassword: e.target.value })
-                  }
-                  placeholder="*******"
-                  type="password"
-                  value={confirmPassword}
-                />
-              </Container>
+          <Container
+            className={"column mb16 " + (isMobileOrTablet() ? "x-100" : "x-50")}
+          >
+            <Text className="mb8 " text="Confirm Password" type="p" />
+            <Container className="full-center bg-grey-4 py4 px8 br4">
+              <FontAwesomeIcon className="grey-5 mr8" icon={faLockAlt} />
+              <input
+                className="no-border bg-grey-4 br4"
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="*******"
+                type="password"
+                value={confirmPassword}
+              />
             </Container>
           </Container>
         </Container>
-        <Container className="full-center bg-white border-all2 pa16 br8">
-          <Button
-            className="cancel py8 px32 mx4 br4"
-            text="Cancel"
-            onClick={() =>
-              this.handleChange({
-                confirmPassword: "",
-                displayName: "",
-                email: "",
-                oldPassword: "",
-                newPassword: "",
-              })
-            }
-          />
-          <Button
-            className="button-2 py8 px32 mx4 br4"
-            text="Apply"
-            onClick={this.updateUser}
-          />
-        </Container>
       </Container>
-    );
-  }
+      <Container className="full-center bg-white border-all2 pa16 br8">
+        <Button
+          className="cancel py8 px32 mx4 br4"
+          text="Cancel"
+          onClick={() => {
+            setDisplayName(user.displayName);
+            setEmail(user.email);
+            setNewPassword("");
+            setConfirmPassword("");
+          }}
+        />
+        <Button
+          className="button-2 py8 px32 mx4 br4"
+          text="Apply"
+          onClick={updateUser}
+        />
+      </Container>
+    </Container>
+  );
 }
 
-AccountSection.contextType = ExtraContext;
-
-export default withRouter(AccountSection);
+export default AccountSection;

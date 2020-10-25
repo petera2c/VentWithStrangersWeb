@@ -14,6 +14,8 @@ export const getInvalidCharacters = (displayName) => {
 };
 
 export const signUp = ({ email, displayName, password, passwordConfirm }) => {
+  const db = firebase.database();
+
   if (getInvalidCharacters(displayName)) {
     alert(
       "These characters are not allowed in your display name. " +
@@ -31,6 +33,16 @@ export const signUp = ({ email, displayName, password, passwordConfirm }) => {
     .createUserWithEmailAndPassword(email, password)
     .then((res) => {
       if (res.user) {
+        req.user.sendEmailVerification();
+        db.ref("users/" + res.user.uid).set({
+          settings: {
+            adultContent: false,
+            commentLiked: true,
+            postCommented: true,
+            postLiked: true,
+            receiveEmails: true,
+          },
+        });
         res.user.updateProfile({
           displayName,
         });
