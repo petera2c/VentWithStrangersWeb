@@ -1,13 +1,18 @@
-import axios from "axios";
+import firebase from "firebase/app";
+import "firebase/database";
 
-export const saveVent = (callback, ventObject, notify) => {
-  axios.post("/api/new-problem", ventObject).then(res => {
-    const { message, problem, success } = res.data;
+export const saveVent = (callback, ventObject, id, user, notify) => {
+  const db = firebase.database();
+  let postsRef = db.ref("/posts/").push();
+  if (user) {
+    ventObject.userID = user.uid;
+  }
+  if (id) postsRef = db.ref("/posts/" + id).push();
 
-    if (success) {
-      callback(problem);
-    } else {
-      notify({ message, type: "danger" });
-    }
-  });
+  postsRef
+    .set(ventObject)
+    .then(() => {
+      callback({ _id: postsRef.getKey(), title: ventObject.title });
+    })
+    .catch((error) => alert(error.message));
 };

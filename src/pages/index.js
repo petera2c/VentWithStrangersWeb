@@ -37,15 +37,7 @@ import PrivacyPolicyPage from "./PrivacyPolicy";
 
 import { GIProvider } from "../context";
 
-import { searchVents } from "./Search/util";
 import { isMobileOrTablet } from "../util";
-import {
-  getNotifications,
-  getUsersComments,
-  getUsersPosts,
-  initReceiveNotifications,
-  initSocket,
-} from "./util";
 
 function Routes() {
   const [user, loading, error] = useAuthState(firebase.auth());

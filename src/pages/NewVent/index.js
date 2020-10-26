@@ -12,6 +12,8 @@ import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
 import Button from "../../components/views/Button";
 
+import WarningModal from "../../components/modals/Warning";
+
 import Emoji from "../../components/Emoji";
 
 import { saveVent } from "./util";
@@ -26,6 +28,7 @@ class NewVentPage extends Component {
     tagText: "",
     title: "",
     saving: false,
+    warningModalIsActive: true,
   };
   componentDidMount() {
     this.init();
@@ -96,7 +99,10 @@ class NewVentPage extends Component {
       tags,
       tagText,
       title,
+      warningModalIsActive,
     } = this.state;
+
+    const { user } = this.context;
 
     return (
       <Consumer>
@@ -235,7 +241,9 @@ class NewVentPage extends Component {
                                       .toLowerCase()
                                 );
                               },
-                              { description, gender, id, tags, title },
+                              { description, gender, tags, title },
+                              id,
+                              user,
                               context.notify
                             );
                           } else alert("One or more fields is missing.");
@@ -256,6 +264,11 @@ class NewVentPage extends Component {
                 </Container>
               </Container>
             </Container>
+            {warningModalIsActive && !user && (
+              <WarningModal
+                close={() => this.handleChange({ warningModalIsActive: false })}
+              />
+            )}
           </Page>
         )}
       </Consumer>

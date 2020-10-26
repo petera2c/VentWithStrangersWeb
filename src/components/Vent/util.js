@@ -1,13 +1,25 @@
-export const commentVent = (addComment, commentString, context, ventID) => {
-  context.socket.emit(
-    "comment_problem",
-    { commentString, ventID },
-    (returnObj) => {
-      const { comment, message, success } = returnObj;
-      if (success) {
-      } else context.notify({ message, type: "danger" });
-    }
-  );
+import firebase from "firebase/app";
+import "firebase/database";
+
+export const commentVent = (commentString, userID, ventID) => {
+  let commentObj = {
+    server_timestamp: {
+      ".sv": "timestamp",
+    },
+    text: commentString,
+    ventID,
+  };
+
+  const db = firebase.database();
+  let commentsRef = db.ref("/comments/").push();
+  if (userID) {
+    commentObj.userID = userID;
+  }
+
+  commentsRef
+    .set(commentObj)
+    .then(() => {})
+    .catch((error) => alert(error.message));
 };
 
 export const commentLikeUpdate = (

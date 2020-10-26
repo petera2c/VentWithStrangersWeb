@@ -58,12 +58,7 @@ class Comment extends Component {
       editingComment,
     } = this.state;
     const { arrayLength, comment, commentIndex } = this.props; // Variables
-    const {
-      handleChange,
-      history,
-      removeComment,
-      updateCommentLikes,
-    } = this.props; // Functions
+    const { handleChange, history, updateCommentLikes } = this.props; // Functions
     const { socket } = this.context;
 
     return (
@@ -87,7 +82,7 @@ class Comment extends Component {
           >
             <Text
               className="round-icon bg-blue white mr8"
-              text={capitolizeFirstChar(comment.author[0])}
+              text={capitolizeFirstChar(comment.author)}
               type="h6"
             />
             <Text
@@ -284,7 +279,9 @@ class Comment extends Component {
             <FontAwesomeIcon className="clickable grey-5 mr8" icon={faClock} />
             <Text
               className="grey-5"
-              text={moment(comment.createdAt).subtract(1, "minute").fromNow()}
+              text={moment(comment.server_timestamp)
+                .subtract(1, "minute")
+                .fromNow()}
               type="p"
             />
           </Container>
@@ -293,9 +290,7 @@ class Comment extends Component {
           <ConfirmAlertModal
             close={() => this.handleChange({ deleteCommentConfirm: false })}
             message="Are you sure you would like to delete this comment?"
-            submit={() =>
-              deleteComment(comment._id, commentIndex, removeComment, socket)
-            }
+            submit={() => deleteComment(comment._id, commentIndex, socket)}
             title="Delete Comment"
           />
         )}

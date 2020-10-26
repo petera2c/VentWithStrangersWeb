@@ -1,7 +1,10 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment-timezone";
+import { useLocation } from "react-router-dom";
 import TextArea from "react-textarea-autosize";
-import Consumer, { ExtraContext } from "../../context";
+
+import firebase from "firebase/app";
+import "firebase/database";
 
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
@@ -29,84 +32,68 @@ const getVentIdFromURL = (pathname) => {
   }
 };
 
-class VentPage extends Component {
-  componentDidMount() {
-    this._ismounted = true;
+function VentPage() {
+  const [vent, setVent] = useState();
 
-    const { location } = this.props;
-    const { handleChange, notify, socket } = this.context;
-    const { pathname } = location;
+  const location = useLocation();
+  const { pathname } = location;
 
-    const regexMatch = getVentIdFromURL(pathname);
-    let ventID;
-    if (regexMatch) ventID = regexMatch;
+  const regexMatch = getVentIdFromURL(pathname);
+  let ventID;
+  if (regexMatch) ventID = regexMatch;
 
-    if (ventID)
-      socket.emit("get_problem", ventID, (result) => {
-        const { message, problems, success } = result;
+  const db = firebase.database();
 
-        if (success)
-          handleChange({
-            vents: problems,
-          });
-        else if (message) notify({ message, type: "danger" });
-        else
-          notify({
-            message:
-              "Something unexpected has happened, please refresh the page and try again.",
-            type: "danger",
-          });
-      });
-    else
-      notify({
-        message: "No post ID.",
-        type: "danger",
-      });
-  }
-  componentWillUnmount() {
-    this._ismounted = false;
-  }
-  render() {
-    const { vents } = this.context;
-    let title = "";
-    let description = "";
+  const postRef = db.ref("/posts/" + ventID);
 
-    if (vents && vents[0] && vents[0].title) title = vents[0].title;
-    if (vents && vents[0] && vents[0].description)
-      description = vents[0].description;
+  useEffect(() => {
+    let test = postRef.on("value", (snapshot) => {
+      if (!snapshot) return;
+      const value = snapshot.val();
+      const exists = snapshot.exists();
 
-    return (
-      <Page
-        className="justify-start align-center bg-grey-2"
-        description={description}
-        keywords=""
-        title={title}
-      >
-        <Container className={isMobileOrTablet() ? "py16" : "py32"}>
-          {vents && (
-            <Container
-              className={
-                "column " +
-                (isMobileOrTablet()
-                  ? "container mobile-full px16"
-                  : "container large ")
-              }
-            >
-              <Vent
-                disablePostOnClick={true}
-                displayCommentField
-                isOnSingleVentPage={true}
-                vent={vents[0]}
-                ventIndex={0}
-              />
-            </Container>
-          )}
-          {!vents && <LoadingHeart />}
-        </Container>
-      </Page>
-    );
-  }
+      if (exists) setVent({ id: snapshot.key, ...value });
+    });
+
+    return () => test();
+  }, []);
+
+  let title = "";
+  let description = "";
+
+  if (vent && vent.title) title = vent.title;
+  if (vent && vent.description) description = vent.description;
+
+  if (!vent) return <LoadingHeart />;
+
+  return (
+    <Page
+      className="justify-start align-center bg-grey-2"
+      description={description}
+      keywords=""
+      title={title}
+    >
+      <Container className={isMobileOrTablet() ? "py16" : "py32"}>
+        {vent && (
+          <Container
+            className={
+              "column " +
+              (isMobileOrTablet()
+                ? "container mobile-full px16"
+                : "container large ")
+            }
+          >
+            <Vent
+              disablePostOnClick={true}
+              displayCommentField
+              isOnSingleVentPage={true}
+              vent={vent}
+            />
+          </Container>
+        )}
+      </Container>
+    </Page>
+  );
 }
-VentPage.contextType = ExtraContext;
 
 export default VentPage;
