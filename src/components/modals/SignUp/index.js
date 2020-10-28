@@ -36,7 +36,10 @@ function SignUpModal({ close, openLoginModal }) {
                 </Text>
               </Container>
 
-              <form className="x-fill column" onSubmit={handleSubmit(signUp)}>
+              <form
+                className="x-fill column"
+                onSubmit={handleSubmit((data) => signUp(data, context))}
+              >
                 <Container className="x-fill column px32 py16">
                   <Text className="fw-400 mb8" text="Display Name" type="h5" />
                   <input

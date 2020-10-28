@@ -241,7 +241,12 @@ class NewVentPage extends Component {
                                       .toLowerCase()
                                 );
                               },
-                              { description, gender, tags, title },
+                              {
+                                description,
+                                gender,
+                                tags,
+                                title,
+                              },
                               id,
                               user,
                               context.notify

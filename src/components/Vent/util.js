@@ -169,19 +169,15 @@ export const getVentComments = (context, handleChange, vent) => {
   });
 };
 
-export const likeVent = (context, vent, updateVentLikes) => {
-  context.socket.emit("like_problem", vent._id, (returnObj) => {
-    const { message, success } = returnObj;
+export const likeVent = (user, vent) => {
+  console.log(user);
+  console.log(vent);
 
-    if (success) {
-      //updateVentLikes(returnObj);
-    } else {
-      context.notify({
-        message,
-        type: "danger",
-      });
-    }
-  });
+  const db = firebase.database();
+
+  const userLikedPostsRef = db.ref("posts/" + vent.uid + "/upVotes");
+
+  console.log(userLikedPostsRef.where("hello"));
 };
 
 export const reportVent = (

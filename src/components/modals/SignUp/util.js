@@ -13,7 +13,10 @@ export const getInvalidCharacters = (displayName) => {
   return invalidCharacters;
 };
 
-export const signUp = ({ email, displayName, password, passwordConfirm }) => {
+export const signUp = (
+  { email, displayName, password, passwordConfirm },
+  context
+) => {
   const db = firebase.database();
 
   if (getInvalidCharacters(displayName)) {
@@ -33,7 +36,7 @@ export const signUp = ({ email, displayName, password, passwordConfirm }) => {
     .createUserWithEmailAndPassword(email, password)
     .then((res) => {
       if (res.user) {
-        req.user.sendEmailVerification();
+        res.user.sendEmailVerification();
         db.ref("users/" + res.user.uid).set({
           settings: {
             adultContent: false,
@@ -43,9 +46,16 @@ export const signUp = ({ email, displayName, password, passwordConfirm }) => {
             receiveEmails: true,
           },
         });
-        res.user.updateProfile({
-          displayName,
-        });
+        res.user
+          .updateProfile({
+            displayName,
+          })
+          .then(() => {
+            console.log("ere");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
         window.location.reload();
       }
     })

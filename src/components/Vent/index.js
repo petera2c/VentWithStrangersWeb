@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import moment from "moment-timezone";
 import { withRouter } from "react-router-dom";
@@ -54,7 +54,7 @@ import HandleOutsideClick from "../containers/HandleOutsideClick";
 import Button from "../views/Button";
 import Text from "../views/Text";
 
-import { ExtraContext } from "../../context";
+import { UserContext } from "../../context";
 
 import {
   addTagsToPage,
@@ -91,6 +91,7 @@ const SmartLink = (props) => {
 
 function Vent(props) {
   const [comments, setComments] = useState();
+  const user = useContext(UserContext);
 
   const [commentString, setCommentString] = useState("");
   const [currentTypingIndex, setCurrentTypingIndex] = useState(0);
@@ -347,7 +348,7 @@ function Vent(props) {
                   onClick={(e) => {
                     e.preventDefault();
                     if (vent.hasLiked) unlikeVent(vent);
-                    else likeVent(vent);
+                    else likeVent(user, vent);
                   }}
                   src={
                     vent.hasLiked
