@@ -1,21 +1,26 @@
 import firebase from "firebase/app";
 import "firebase/database";
 
-export const commentVent = (commentString, userID, ventID) => {
+export const commentLikeUpdate = (
+  comments,
+  context,
+  dataObj,
+  updateCommentLikes
+) => {};
+
+export const commentVent = (commentString, user, ventID) => {
+  if (!user) return alert("Only users can comment! Please login or register.");
   let commentObj = {
     server_timestamp: {
       ".sv": "timestamp",
     },
     text: commentString,
+    userID: user.uid,
     ventID,
   };
 
   const db = firebase.database();
   let commentsRef = db.ref("/comments/" + ventID).push();
-  if (userID) {
-    commentObj.userID = userID;
-  }
-
   commentsRef
     .set(commentObj)
     .then(() => {
@@ -35,38 +40,6 @@ export const commentVent = (commentString, userID, ventID) => {
     .catch((error) => alert(error.message));
 };
 
-export const commentLikeUpdate = (
-  comments,
-  context,
-  dataObj,
-  updateCommentLikes
-) => {
-  const { comment } = dataObj;
-
-  if (!context.comments) {
-    if (comments) {
-      const commentIndex = comments.findIndex(
-        (commentObj) => commentObj._id === comment._id
-      );
-      updateCommentLikes(commentIndex, dataObj);
-    }
-  } else {
-    const { comments } = this.context;
-    const { handleChange } = this.context;
-
-    const commentIndex = comments.findIndex(
-      (commentObj) => commentObj._id === comment._id
-    );
-
-    let comment2 = comments[commentIndex];
-
-    comment2.upVotes = comment.upVotes;
-    if (comment.hasLiked !== undefined) comment2.hasLiked = comment.hasLiked;
-
-    handleChange({ comments });
-  }
-};
-
 export const deleteVent = (
   history,
   isOnSingleVentPage,
@@ -74,21 +47,8 @@ export const deleteVent = (
   socket,
   ventID,
   ventIndex
-) => {
-  socket.emit("delete_vent", { ventID }, (returnObj) => {
-    const { message, success } = returnObj;
+) => {};
 
-    if (success) {
-      alert("Vent deleted successfully");
-
-      if (removeVent && Number.isInteger(ventIndex) && !isOnSingleVentPage) {
-        removeVent(ventIndex);
-      } else {
-        history.push("/");
-      }
-    } else alert(message);
-  });
-};
 export const findPossibleUsersToTag = (
   callback,
   currentTypingWord,
@@ -173,42 +133,101 @@ const getCurrentTypingWord = (currentTypingIndex, fullString) => {
   return { currentTypingWord, distanceToLeft, distanceToRight };
 };
 
-export const ventCommentListener = (setComments, setHasLiked, user, ventID) => {
-  const db = firebase.database();
-  const commentsRef = db.ref("/comments/" + ventID);
-  const query = commentsRef.orderByChild("server_timestamp").limitToLast(10);
+export const getVentDescription = (previewMode, vent) => {
+  let description = vent.description;
+  if (previewMode && description.length > 240)
+    description = description.slice(0, 240) + "... Read More";
+  return description;
+};
 
-  query.on("value", (snapshot) => {
+export const getVentFullLink = (vent) => {
+  const partialLink =
+    "/problem/" +
+    vent.id +
+    "/" +
+    vent.title
+      .replace(/[^a-zA-Z ]/g, "")
+      .replace(/ /g, "-")
+      .toLowerCase();
+  return "https://www.ventwithstrangers.com" + partialLink;
+};
+
+export const getVentPartialLink = (vent) => {
+  return (
+    "/problem/" +
+    vent.id +
+    "/" +
+    vent.title
+      .replace(/[^a-zA-Z ]/g, "")
+      .replace(/ /g, "-")
+      .toLowerCase()
+  );
+};
+
+export const ventCommentListener = (setComments, ventID) => {
+  const db = firebase.database();
+  const query = db
+    .ref("/comments/" + ventID)
+    .orderByChild("server_timestamp")
+    .limitToLast(10);
+
+  const listener = query.on("value", (snapshot) => {
     if (!snapshot) return;
 
     const value = snapshot.val();
     const exists = snapshot.exists();
 
-    if (user) {
-      const postLikedRef = db.ref(ventID + "/" + user.uid);
-      const listener = postLikedRef.on("value", (snapshot) => {
-        if (!snapshot) return;
-        const value = snapshot.val();
-
-        setHasLiked(value);
-      });
-    }
-
     if (exists) {
       const arrayResult = Object.keys(value).map((commentID) => {
         return { id: commentID, ...value[commentID] };
       });
+
       arrayResult.sort((a, b) => {
         if (a.server_timestamp < b.server_timestamp) return 1;
         else return -1;
       });
+
       setComments(arrayResult);
     } else setComments([]);
-    return () => listener();
   });
+
+  return () => query.off("value", listener);
+};
+
+export const ventHasLikedListener = (setHasLiked, userID, ventID) => {
+  const db = firebase.database();
+
+  const postLikedRef = db.ref(ventID + "/" + userID);
+  const listener = postLikedRef.on("value", (snapshot) => {
+    if (!snapshot) return;
+    const value = snapshot.val();
+
+    setHasLiked(value);
+  });
+
+  return () => postLikedRef.off("value", listener);
+};
+
+export const ventListener = (setVent, ventID) => {
+  const db = firebase.database();
+
+  const ventRef = db.ref("/posts/" + ventID);
+
+  const listener = ventRef.on("value", (snapshot) => {
+    if (!snapshot) return;
+    const value = snapshot.val();
+    const exists = snapshot.exists();
+
+    if (exists) setVent({ id: snapshot.key, ...value });
+    else setVent(false);
+  });
+
+  return () => ventRef.off("value", listener);
 };
 
 export const likeOrUnlikeVent = (user, vent) => {
+  if (!user)
+    return alert("You must sign in or register an account to support a vent!");
   const db = firebase.database();
 
   const postLikedRef = db.ref(vent.id + "/" + user.uid);
@@ -241,31 +260,7 @@ export const likeOrUnlikeVent = (user, vent) => {
   });
 };
 
-export const reportVent = (
-  context,
-  history,
-  id,
-  option,
-  pathname,
-  ventIndex
-) => {
-  context.socket.emit(
-    "report_problem",
-    { option, problemID: id },
-    (returnObj) => {
-      const { message, success } = returnObj;
-
-      if (success && pathname.substring(0, 9) === "/problem/")
-        history.push("/trending/reported");
-      else if (success) context.removeVent(ventIndex);
-      else
-        context.notify({
-          message,
-          type: "danger",
-        });
-    }
-  );
-};
+export const reportVent = () => {};
 
 export const tagUser = (
   callback,

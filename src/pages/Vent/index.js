@@ -10,8 +10,6 @@ import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import Vent from "../../components/Vent";
 
-import LoadingHeart from "../../components/loaders/Heart";
-
 import Text from "../../components/views/Text";
 import Button from "../../components/views/Button";
 
@@ -33,8 +31,6 @@ const getVentIdFromURL = (pathname) => {
 };
 
 function VentPage() {
-  const [vent, setVent] = useState();
-
   const location = useLocation();
   const { pathname } = location;
 
@@ -42,25 +38,10 @@ function VentPage() {
   let ventID;
   if (regexMatch) ventID = regexMatch;
 
-  const db = firebase.database();
-
-  const postRef = db.ref("/posts/" + ventID);
-
-  useEffect(() => {
-    const listener = postRef.on("value", (snapshot) => {
-      if (!snapshot) return;
-      const value = snapshot.val();
-      const exists = snapshot.exists();
-
-      if (exists) setVent({ id: snapshot.key, ...value });
-      else setVent(false);
-    });
-
-    return () => listener();
-  }, []);
-
   let title = "";
   let description = "";
+
+  let vent;
 
   if (vent && vent.title) title = vent.title;
   if (vent && vent.description) description = vent.description;
@@ -73,7 +54,7 @@ function VentPage() {
       title={title}
     >
       <Container className={isMobileOrTablet() ? "py16" : "py32"}>
-        {vent && (
+        {ventID && (
           <Container
             className={
               "column " +
@@ -86,12 +67,10 @@ function VentPage() {
               disablePostOnClick={true}
               displayCommentField
               isOnSingleVentPage={true}
-              vent={vent}
+              ventID={ventID}
             />
           </Container>
         )}
-        {vent === undefined && <LoadingHeart />}
-        {vent === false && <h4>No vent found with this id.</h4>}
       </Container>
     </Page>
   );

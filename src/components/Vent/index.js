@@ -66,14 +66,23 @@ import {
   deleteVent,
   findPossibleUsersToTag,
   getCurrentTypingIndex,
+  getVentDescription,
+  getVentFullLink,
+  getVentPartialLink,
   likeOrUnlikeVent,
   reportVent,
   startMessage,
   tagUser,
   ventCommentListener,
+  ventHasLikedListener,
+  ventListener,
 } from "./util";
 
 import classNames from "./style.css";
+
+let ventListenerReturn;
+let ventCommentListenerReturn;
+let ventHasLikedListenerReturn;
 
 const SmartLink = (props) => {
   const { children, className, disablePostOnClick, to } = props;
@@ -92,6 +101,7 @@ function Vent(props) {
   const [comments, setComments] = useState();
   const user = useContext(UserContext);
 
+  const [vent, setVent] = useState();
   const [commentString, setCommentString] = useState("");
   const [currentTypingIndex, setCurrentTypingIndex] = useState(0);
   const [deleteVentConfirm, setDeleteVentConfirm] = useState(false);
@@ -117,35 +127,27 @@ function Vent(props) {
     isOnSingleVentPage,
     previewMode,
     searchPreviewMode,
-    vent,
+    ventID,
   } = props; // Variables
 
   useEffect(() => {
+    ventListenerReturn = ventListener(setVent, ventID);
+
     if (displayCommentField)
-      ventCommentListener(setComments, setHasLiked, user, vent.id);
+      ventCommentListenerReturn = ventCommentListener(setComments, ventID);
+    if (user)
+      ventHasLikedListenerReturn = ventHasLikedListener(
+        setHasLiked,
+        user.uid,
+        ventID
+      );
+
+    return () => {
+      if (ventListenerReturn) ventListenerReturn();
+      if (ventCommentListenerReturn) ventCommentListenerReturn();
+      if (ventHasLikedListenerReturn) ventHasLikedListenerReturn();
+    };
   }, []);
-
-  let keywords = "";
-  for (let index in vent.tags) {
-    if (index !== 0) keywords += ",";
-    keywords += vent.tags[index];
-  }
-
-  let title = vent.title;
-
-  let description = vent.description;
-  if (previewMode && description.length > 240)
-    description = description.slice(0, 240) + "... Read More";
-
-  const partialLink =
-    "/problem/" +
-    vent.id +
-    "/" +
-    vent.title
-      .replace(/[^a-zA-Z ]/g, "")
-      .replace(/ /g, "-")
-      .toLowerCase();
-  const fullLink = "https://www.ventwithstrangers.com" + partialLink;
 
   const copyToClipboard = (e) => {
     textAreaRef.current.select();
@@ -158,409 +160,412 @@ function Vent(props) {
 
   return (
     <Container className="x-fill column mb16">
-      <Container className="x-fill column bg-white border-all2 mb8 br8">
-        <SmartLink
-          className={
-            "main-container x-fill wrap justify-between border-bottom py16 pl32 pr16 " +
-            (disablePostOnClick ? "" : "clickable")
-          }
-          disablePostOnClick={disablePostOnClick}
-          to={partialLink}
-        >
-          <Container
-            className="mr16"
-            onClick={(e) => {
-              e.preventDefault();
-
-              history.push("/activity?" + vent.authorID);
-            }}
-          >
-            <Container className="full-center">
-              <Text
-                className="round-icon bg-blue white mr8"
-                text={capitolizeFirstChar(vent.author)}
-                type="h6"
-              />
-              <Text
-                className="button-1 fw-400"
-                text={capitolizeFirstChar(vent.author)}
-                type="h5"
-              />
-            </Container>
-          </Container>
-          <Container className="relative flex-fill align-center justify-end">
-            <Container className="flex-fill wrap justify-end">
-              {vent.tags.map((tag, index) => (
-                <Text
-                  className="button-1 clickable mr8"
-                  key={index}
-                  onClick={(e) => {
-                    e.preventDefault();
-
-                    addTagsToPage(props, [tag]);
-                  }}
-                  text={tag.name}
-                  type="p"
-                />
-              ))}
-            </Container>
-
-            <HandleOutsideClick close={() => setPostOptions(false)}>
-              <FontAwesomeIcon
-                className="clickable grey-9 px16"
-                icon={faEllipsisV}
-                onClick={(e) => {
-                  e.preventDefault();
-
-                  setPostOptions(!postOptions);
-                }}
-              />
-              {postOptions && (
-                <div
-                  className="absolute flex right-0"
-                  style={{
-                    top: "calc(100% + 8px)",
-                    whiteSpace: "nowrap",
-                    zIndex: 1,
-                  }}
-                >
-                  <Container className="column x-fill bg-white border-all2 border-all px16 py8 br8">
-                    {vent.wasCreatedByUser && (
-                      <Container
-                        className="button-8 clickable align-center mb8"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          history.push({
-                            pathname: "/post-a-problem",
-                            state: { vent },
-                          });
-                        }}
-                      >
-                        <Text
-                          className="fw-400 flex-fill"
-                          text="Edit Vent"
-                          type="p"
-                        />
-                        <FontAwesomeIcon className="ml8" icon={faEdit} />
-                      </Container>
-                    )}
-                    {vent.wasCreatedByUser && (
-                      <Container
-                        className="button-8 clickable align-center"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setDeleteVentConfirm(true);
-                          setPostOptions(false);
-                        }}
-                      >
-                        <Text
-                          className="fw-400 flex-fill"
-                          text="Delete Vent"
-                          type="p"
-                        />
-                        <FontAwesomeIcon className="ml8" icon={faTrash} />
-                      </Container>
-                    )}
-                    {!vent.wasCreatedByUser && (
-                      <Container
-                        className="button-8 clickable align-center"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setReportModal(!reportModal);
-                        }}
-                      >
-                        <Text
-                          className="fw-400 flex-fill"
-                          text="Report Vent"
-                          type="p"
-                        />
-                        <FontAwesomeIcon
-                          className="ml8"
-                          icon={faExclamationTriangle}
-                        />
-                      </Container>
-                    )}
-                  </Container>
-                </div>
-              )}
-            </HandleOutsideClick>
-          </Container>
-        </SmartLink>
-        <SmartLink
-          className={
-            "main-container column border-bottom py16 px32 " +
-            (disablePostOnClick ? "" : "clickable")
-          }
-          disablePostOnClick={disablePostOnClick}
-          to={partialLink}
-        >
-          <Text className="fs-20 primary mb8" text={title} type="h1" />
-
-          <Text
-            className="fs-18 fw-400 grey-1"
-            style={{ whiteSpace: "pre-line" }}
-            text={description}
-            type="p"
-          />
-        </SmartLink>
-        {!searchPreviewMode && (
-          <Container
+      {vent && (
+        <Container className="x-fill column bg-white border-all2 mb8 br8">
+          <SmartLink
             className={
-              "relative wrap justify-between pt16 px32 " +
-              (!searchPreviewMode && displayCommentField ? "border-bottom" : "")
+              "main-container x-fill wrap justify-between border-bottom py16 pl32 pr16 " +
+              (disablePostOnClick ? "" : "clickable")
             }
+            disablePostOnClick={disablePostOnClick}
+            to={getVentPartialLink(vent)}
           >
-            <Container className="align-center wrap">
-              <Container className="align-center mb16">
-                <FontAwesomeIcon
-                  className="clickable blue mr4"
-                  icon={faComment}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setDisplayCommentField(!displayCommentField);
-                    if (!displayCommentField) {
-                      return;
-                      ventCommentListener(
-                        setComments,
-                        setHasLiked,
-                        user.uid,
-                        vent.id
-                      );
-                    }
-                  }}
-                  size="2x"
-                  title="Comment"
-                />
-                <Text
-                  className="blue mr8"
-                  text={vent.commentCounter ? vent.commentCounter : 0}
-                  type="p"
-                />
-                <img
-                  className={`clickable heart ${
-                    hasLiked ? "red" : "grey-5"
-                  } mr4`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    likeOrUnlikeVent(user, vent);
-                  }}
-                  src={
-                    hasLiked
-                      ? require("../../svgs/support-active.svg")
-                      : require("../../svgs/support.svg")
-                  }
-                  style={{ height: "32px" }}
-                  title="Give Support :)"
-                />
+            <Container
+              className="mr16"
+              onClick={(e) => {
+                e.preventDefault();
 
+                history.push("/activity?" + vent.authorID);
+              }}
+            >
+              <Container className="full-center">
                 <Text
-                  className="grey-5 mr16"
-                  text={vent.likeCounter ? vent.likeCounter : 0}
-                  type="p"
+                  className="round-icon bg-blue white mr8"
+                  text={capitolizeFirstChar(vent.author)}
+                  type="h6"
+                />
+                <Text
+                  className="button-1 fw-400"
+                  text={capitolizeFirstChar(vent.author)}
+                  type="h5"
                 />
               </Container>
+            </Container>
+            <Container className="relative flex-fill align-center justify-end">
+              <Container className="flex-fill wrap justify-end">
+                {vent.tags.map((tag, index) => (
+                  <Text
+                    className="button-1 clickable mr8"
+                    key={index}
+                    onClick={(e) => {
+                      e.preventDefault();
 
-              <Container className="mb16">
-                <HandleOutsideClick close={() => setShareClicked(false)}>
-                  <Button
-                    className="button-2 px16 py8 mr16 br8"
-                    onClick={() => setShareClicked(!shareClicked)}
-                  >
-                    <FontAwesomeIcon className="mr8" icon={faShare} />
-                    Share
-                  </Button>
-                  <Button
-                    className="button-2 px16 py8 br8"
-                    onClick={() => startMessage(user.uid, vent.userID)}
-                  >
-                    <FontAwesomeIcon className="mr8" icon={faComments} />
-                    Message User
-                  </Button>
+                      addTagsToPage(props, [tag]);
+                    }}
+                    text={tag.name}
+                    type="p"
+                  />
+                ))}
+              </Container>
 
-                  {shareClicked && (
-                    <Container
-                      className="absolute left-0 flex column bg-white shadow-2 px16 py16 br8"
-                      style={{
-                        top: "calc(100% - 8px)",
-                        zIndex: 1,
-                      }}
-                    >
-                      <Container className="wrap mb8">
-                        <FacebookShareButton
-                          className="mr8"
-                          url={fullLink}
-                          quote=""
-                        >
-                          <FacebookIcon round={true} size={32} />
-                        </FacebookShareButton>
-                        <TwitterShareButton
-                          className="mr8"
-                          title=""
-                          url={fullLink}
-                        >
-                          <TwitterIcon round={true} size={32} />
-                        </TwitterShareButton>
-                        <RedditShareButton
-                          className="mr8"
-                          title=""
-                          url={fullLink}
-                        >
-                          <RedditIcon round={true} size={32} />
-                        </RedditShareButton>
-                        <PinterestShareButton
-                          className="mr8"
-                          description=""
-                          url={fullLink}
-                        >
-                          <PinterestIcon round={true} size={32} />
-                        </PinterestShareButton>
-                        <TumblrShareButton
-                          caption=""
-                          className="mr8"
-                          title=""
-                          url={fullLink}
-                        >
-                          <TumblrIcon round={true} size={32} />
-                        </TumblrShareButton>
-                        <WhatsappShareButton
-                          className="mr8"
-                          title=""
-                          url={fullLink}
-                        >
-                          <WhatsappIcon round={true} size={32} />
-                        </WhatsappShareButton>
-                        <TelegramShareButton
-                          className="mr8"
-                          title=""
-                          url={fullLink}
-                        >
-                          <TelegramIcon round={true} size={32} />
-                        </TelegramShareButton>
-                        <EmailShareButton
-                          body=""
-                          className="mr8"
-                          subject=""
-                          url={fullLink}
-                        >
-                          <EmailIcon round={true} size={32} />
-                        </EmailShareButton>
-                      </Container>
-                      <Container className="relative">
+              <HandleOutsideClick close={() => setPostOptions(false)}>
+                <FontAwesomeIcon
+                  className="clickable grey-9 px16"
+                  icon={faEllipsisV}
+                  onClick={(e) => {
+                    e.preventDefault();
+
+                    setPostOptions(!postOptions);
+                  }}
+                />
+                {postOptions && (
+                  <div
+                    className="absolute flex right-0"
+                    style={{
+                      top: "calc(100% + 8px)",
+                      whiteSpace: "nowrap",
+                      zIndex: 1,
+                    }}
+                  >
+                    <Container className="column x-fill bg-white border-all2 border-all px16 py8 br8">
+                      {vent.wasCreatedByUser && (
                         <Container
-                          className="success-message-button button-2 round-icon mr8"
-                          onClick={copyToClipboard}
+                          className="button-8 clickable align-center mb8"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            history.push({
+                              pathname: "/post-a-problem",
+                              state: { vent },
+                            });
+                          }}
                         >
-                          <FontAwesomeIcon className="" icon={faCopy} />
-                          <SuccessMessage
-                            id="copy-message"
-                            text={copySuccess}
+                          <Text
+                            className="fw-400 flex-fill"
+                            text="Edit Vent"
+                            type="p"
+                          />
+                          <FontAwesomeIcon className="ml8" icon={faEdit} />
+                        </Container>
+                      )}
+                      {vent.wasCreatedByUser && (
+                        <Container
+                          className="button-8 clickable align-center"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setDeleteVentConfirm(true);
+                            setPostOptions(false);
+                          }}
+                        >
+                          <Text
+                            className="fw-400 flex-fill"
+                            text="Delete Vent"
+                            type="p"
+                          />
+                          <FontAwesomeIcon className="ml8" icon={faTrash} />
+                        </Container>
+                      )}
+                      {!vent.wasCreatedByUser && (
+                        <Container
+                          className="button-8 clickable align-center"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setReportModal(!reportModal);
+                          }}
+                        >
+                          <Text
+                            className="fw-400 flex-fill"
+                            text="Report Vent"
+                            type="p"
+                          />
+                          <FontAwesomeIcon
+                            className="ml8"
+                            icon={faExclamationTriangle}
                           />
                         </Container>
-                        <input
-                          className="br4"
-                          onChange={() => {}}
-                          ref={textAreaRef}
-                          value={fullLink}
-                        />
-                      </Container>
+                      )}
                     </Container>
-                  )}
-                </HandleOutsideClick>
+                  </div>
+                )}
+              </HandleOutsideClick>
+            </Container>
+          </SmartLink>
+          <SmartLink
+            className={
+              "main-container column border-bottom py16 px32 " +
+              (disablePostOnClick ? "" : "clickable")
+            }
+            disablePostOnClick={disablePostOnClick}
+            to={getVentPartialLink(vent)}
+          >
+            <Text className="fs-20 primary mb8" text={vent.title} type="h1" />
+
+            <Text
+              className="fs-18 fw-400 grey-1"
+              style={{ whiteSpace: "pre-line" }}
+              text={getVentDescription(previewMode, vent)}
+              type="p"
+            />
+          </SmartLink>
+          {!searchPreviewMode && (
+            <Container
+              className={
+                "relative wrap justify-between pt16 px32 " +
+                (!searchPreviewMode && displayCommentField
+                  ? "border-bottom"
+                  : "")
+              }
+            >
+              <Container className="align-center wrap">
+                <Container className="align-center mb16">
+                  <FontAwesomeIcon
+                    className="clickable blue mr4"
+                    icon={faComment}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setDisplayCommentField(!displayCommentField);
+
+                      if (displayCommentField && ventCommentListenerReturn)
+                        ventCommentListenerReturn();
+                      if (!displayCommentField)
+                        ventCommentListenerReturn = ventCommentListener(
+                          setComments,
+                          vent.id
+                        );
+                    }}
+                    size="2x"
+                    title="Comment"
+                  />
+                  <Text
+                    className="blue mr8"
+                    text={vent.commentCounter ? vent.commentCounter : 0}
+                    type="p"
+                  />
+                  <img
+                    className={`clickable heart ${
+                      hasLiked ? "red" : "grey-5"
+                    } mr4`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      likeOrUnlikeVent(user, vent);
+                    }}
+                    src={
+                      hasLiked
+                        ? require("../../svgs/support-active.svg")
+                        : require("../../svgs/support.svg")
+                    }
+                    style={{ height: "32px" }}
+                    title="Give Support :)"
+                  />
+
+                  <Text
+                    className="grey-5 mr16"
+                    text={vent.likeCounter ? vent.likeCounter : 0}
+                    type="p"
+                  />
+                </Container>
+
+                <Container className="mb16">
+                  <HandleOutsideClick close={() => setShareClicked(false)}>
+                    <Button
+                      className="button-2 px16 py8 mr16 br8"
+                      onClick={() => setShareClicked(!shareClicked)}
+                    >
+                      <FontAwesomeIcon className="mr8" icon={faShare} />
+                      Share
+                    </Button>
+                    <Button
+                      className="button-2 px16 py8 br8"
+                      onClick={() => startMessage(user.uid, vent.userID)}
+                    >
+                      <FontAwesomeIcon className="mr8" icon={faComments} />
+                      Message User
+                    </Button>
+
+                    {shareClicked && (
+                      <Container
+                        className="absolute left-0 flex column bg-white shadow-2 px16 py16 br8"
+                        style={{
+                          top: "calc(100% - 8px)",
+                          zIndex: 1,
+                        }}
+                      >
+                        <Container className="wrap mb8">
+                          <FacebookShareButton
+                            className="mr8"
+                            url={getVentFullLink(vent)}
+                            quote=""
+                          >
+                            <FacebookIcon round={true} size={32} />
+                          </FacebookShareButton>
+                          <TwitterShareButton
+                            className="mr8"
+                            title=""
+                            url={getVentFullLink(vent)}
+                          >
+                            <TwitterIcon round={true} size={32} />
+                          </TwitterShareButton>
+                          <RedditShareButton
+                            className="mr8"
+                            title=""
+                            url={getVentFullLink(vent)}
+                          >
+                            <RedditIcon round={true} size={32} />
+                          </RedditShareButton>
+                          <PinterestShareButton
+                            className="mr8"
+                            description=""
+                            url={getVentFullLink(vent)}
+                          >
+                            <PinterestIcon round={true} size={32} />
+                          </PinterestShareButton>
+                          <TumblrShareButton
+                            caption=""
+                            className="mr8"
+                            title=""
+                            url={getVentFullLink(vent)}
+                          >
+                            <TumblrIcon round={true} size={32} />
+                          </TumblrShareButton>
+                          <WhatsappShareButton
+                            className="mr8"
+                            title=""
+                            url={getVentFullLink(vent)}
+                          >
+                            <WhatsappIcon round={true} size={32} />
+                          </WhatsappShareButton>
+                          <TelegramShareButton
+                            className="mr8"
+                            title=""
+                            url={getVentFullLink(vent)}
+                          >
+                            <TelegramIcon round={true} size={32} />
+                          </TelegramShareButton>
+                          <EmailShareButton
+                            body=""
+                            className="mr8"
+                            subject=""
+                            url={getVentFullLink(vent)}
+                          >
+                            <EmailIcon round={true} size={32} />
+                          </EmailShareButton>
+                        </Container>
+                        <Container className="relative">
+                          <Container
+                            className="success-message-button button-2 round-icon mr8"
+                            onClick={copyToClipboard}
+                          >
+                            <FontAwesomeIcon className="" icon={faCopy} />
+                            <SuccessMessage
+                              id="copy-message"
+                              text={copySuccess}
+                            />
+                          </Container>
+                          <input
+                            className="br4"
+                            onChange={() => {}}
+                            ref={textAreaRef}
+                            value={getVentFullLink(vent)}
+                          />
+                        </Container>
+                      </Container>
+                    )}
+                  </HandleOutsideClick>
+                </Container>
+              </Container>
+              <Container className="align-center mb16">
+                <FontAwesomeIcon className="grey-5 mr8" icon={faClock} />
+                <Text
+                  className="grey-5"
+                  text={moment(vent.server_timestamp)
+                    .subtract(1, "minute")
+                    .fromNow()}
+                  type="p"
+                />
               </Container>
             </Container>
-            <Container className="align-center mb16">
-              <FontAwesomeIcon className="grey-5 mr8" icon={faClock} />
-              <Text
-                className="grey-5"
-                text={moment(vent.server_timestamp)
-                  .subtract(1, "minute")
-                  .fromNow()}
-                type="p"
-              />
-            </Container>
-          </Container>
-        )}
-        {!searchPreviewMode && displayCommentField && (
-          <Container
-            className={
-              "x-fill " +
-              (comments && comments.length > 0 ? "border-bottom" : "")
-            }
-          >
-            <Container className="x-fill column border-all2 py16 br8">
-              <Container className="x-fill px16">
-                <Container className="column x-fill align-end br8">
-                  <Container className="relative x-fill">
-                    <MentionsInput
-                      className="mentions"
-                      onChange={(e) => setCommentString(e.target.value)}
-                      value={commentString}
-                    >
-                      <Mention
-                        className="mentions__mention"
-                        data={(currentTypingTag, callback) => {
-                          findPossibleUsersToTag(
-                            setPossibleUsersToTag,
-                            currentTypingTag,
-                            vent.id,
-                            callback
-                          );
-                        }}
-                        markup="@{{[[[__id__]]]||[[[__display__]]]}}"
-                        renderSuggestion={(
-                          entry,
-                          search,
-                          highlightedDisplay,
-                          index,
-                          focused
-                        ) => {
-                          return (
-                            <Container
-                              className="button-7 column pa16"
-                              key={entry.id}
-                            >
-                              <Text text={entry.display} type="h6" />
-                            </Container>
-                          );
-                        }}
-                        trigger="@"
-                      />
-                    </MentionsInput>
-                  </Container>
+          )}
+          {!searchPreviewMode && displayCommentField && (
+            <Container
+              className={
+                "x-fill " +
+                (comments && comments.length > 0 ? "border-bottom" : "")
+              }
+            >
+              <Container className="x-fill column border-all2 py16 br8">
+                <Container className="x-fill px16">
+                  <Container className="column x-fill align-end br8">
+                    <Container className="relative x-fill">
+                      <MentionsInput
+                        className="mentions"
+                        onChange={(e) => setCommentString(e.target.value)}
+                        value={commentString}
+                      >
+                        <Mention
+                          className="mentions__mention"
+                          data={(currentTypingTag, callback) => {
+                            findPossibleUsersToTag(
+                              setPossibleUsersToTag,
+                              currentTypingTag,
+                              vent.id,
+                              callback
+                            );
+                          }}
+                          markup="@{{[[[__id__]]]||[[[__display__]]]}}"
+                          renderSuggestion={(
+                            entry,
+                            search,
+                            highlightedDisplay,
+                            index,
+                            focused
+                          ) => {
+                            return (
+                              <Container
+                                className="button-7 column pa16"
+                                key={entry.id}
+                              >
+                                <Text text={entry.display} type="h6" />
+                              </Container>
+                            );
+                          }}
+                          trigger="@"
+                        />
+                      </MentionsInput>
+                    </Container>
 
-                  <Button
-                    className="button-2 px32 py8 mt8 br4"
-                    onClick={() => {
-                      commentVent(commentString, vent.userID, vent.id);
-                      setCommentString("");
-                    }}
-                    text="Send"
-                  />
+                    <Button
+                      className="button-2 px32 py8 mt8 br4"
+                      onClick={() => {
+                        commentVent(commentString, user, vent.id);
+                        setCommentString("");
+                      }}
+                      text="Send"
+                    />
+                  </Container>
                 </Container>
               </Container>
             </Container>
-          </Container>
-        )}
-        {displayCommentField && comments && (
-          <Container className="column mb16">
-            <Container className="column border-all2 br8">
-              {comments.reverse().map((comment, index) => (
-                <Comment
-                  arrayLength={comments.length}
-                  comment={comment}
-                  commentIndex={index}
-                  key={index}
-                />
-              ))}
+          )}
+          {displayCommentField && comments && (
+            <Container className="column mb16">
+              <Container className="column border-all2 br8">
+                {comments.map((comment, index) => (
+                  <Comment
+                    arrayLength={comments.length}
+                    comment={comment}
+                    commentIndex={index}
+                    key={index}
+                  />
+                ))}
+              </Container>
             </Container>
-          </Container>
-        )}
-        {displayCommentField && !comments && (
-          <Container className="x-fill full-center">
-            <LoadingHeart />
-          </Container>
-        )}
-      </Container>
+          )}
+          {displayCommentField && !comments && (
+            <Container className="x-fill full-center">
+              <LoadingHeart />
+            </Container>
+          )}
+        </Container>
+      )}
 
       {reportModal && (
         <ReportModal

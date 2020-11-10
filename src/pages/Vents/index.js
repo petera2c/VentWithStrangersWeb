@@ -32,7 +32,10 @@ function Vents(props) {
   const db = firebase.database();
 
   const commentsRef = db.ref("/posts/");
-  const query = commentsRef.orderByChild("likeCounter").limitToLast(10);
+  let query = commentsRef.orderByChild("server_timestamp").limitToLast(10);
+  if (pathname === "/trending")
+    query = commentsRef.orderByChild("likeCounter").limitToLast(10);
+
   useEffect(() => {
     setVents(null);
     query.once("value", (snapshot) => {
@@ -100,8 +103,7 @@ function Vents(props) {
                     <Vent
                       key={index + vent.id}
                       previewMode={true}
-                      vent={vent}
-                      ventIndex={index}
+                      ventID={vent.id}
                     />
                   );
                 })}
