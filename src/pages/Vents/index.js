@@ -1,154 +1,140 @@
-import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
-
-import Consumer from "../../context";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 import { faPen } from "@fortawesome/pro-solid-svg-icons/faPen";
 import { faComments } from "@fortawesome/pro-solid-svg-icons/faComments";
 
+import firebase from "firebase/app";
+import "firebase/database";
+
 import LoadingHeart from "../../components/loaders/Heart";
 
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
-import HotTags from "../../components/HotTags";
 import Filters from "../../components/Filters";
 import Vent from "../../components/Vent";
 import LoadMoreVents from "../../components/LoadMoreVents";
 
 import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
+import { getMetaInformation } from "./util";
 
-//People care and help is here. Vent in our anonymous forum or chat anonymously to be apart of a community committed to making the world a better place.
-class Vents extends Component {
-  render() {
-    const { location } = this.props;
-    const { pathname, search } = location;
+function Vents(props) {
+  const [vents, setVents] = useState();
+  const location = useLocation();
+  const { pathname, search } = location;
 
-    let title = "";
-    let metaDescription =
-      "People care. Vent and chat anonymously to be apart of a community committed to making the world a better place.";
+  const { metaDescription, metaTitle } = getMetaInformation(pathname);
+  const canLoadMorePosts = false;
 
-    if (pathname === "/popular") {
-      title = "Popular";
-      metaDescription =
-        "Vents and issues that have the most upvotes and comments of all time. Post, comment, and/or like anonymously.";
-    } else if (pathname === "/recent") {
-      title = "Recent";
-      metaDescription =
-        "The latest vents and issues people have posted. Post, comment, and/or like anonymously.";
-    } else if (pathname === "/trending") {
-      title = "Trending";
-      metaDescription =
-        "People’s vents and issues with the most upvotes in the past 24 hours. Post, comment, and/or like anonymously.";
-    } else {
-      title = "Recent";
-      metaDescription =
-        "The latest vents and issues people have posted. Post, comment, and/or like anonymously.";
-    }
+  const db = firebase.database();
 
-    return (
-      <Consumer>
-        {(context) => (
-          <Page
-            className="column bg-grey-2"
-            description={metaDescription}
-            keywords=""
-            title={title}
-          >
-            <Container className="x-fill justify-center align-start">
-              <Text
-                className={
-                  "fw-400 fs-20 " +
-                  (isMobileOrTablet()
-                    ? "container mobile-full pa16"
-                    : "container extra-large pr32 pt32")
-                }
-                text="People care and help is here. Vent and chat anonymously to be a part of a community committed to making the world a better place. This is a website for people that want to be heard and people that want to listen. Your emotional health is our priority."
-                type="h2"
-              />
-            </Container>
-            <Container
-              className={
-                "x-fill justify-center align-start " +
-                (isMobileOrTablet() ? "py16" : "py32")
-              }
-            >
-              <Container
-                className={
-                  "column align-center " +
-                  (isMobileOrTablet()
-                    ? "container mobile-full pa16"
-                    : "container large mr32")
-                }
-              >
-                <Container className="x-fill justify-between mb16">
-                  <Text
-                    className="primary fs-20"
-                    text={title + " Vents"}
-                    type="h1"
-                  />
-                  <Filters />
-                </Container>
+  const commentsRef = db.ref("/posts/");
+  const query = commentsRef.orderByChild("likeCounter").limitToLast(10);
 
-                {context.vents && (
-                  <Container className="x-fill column">
-                    {context.vents && context.vents.length === 0 && (
-                      <Text
-                        className="fw-400"
-                        text="No vents found."
-                        type="h4"
-                      />
-                    )}
-                    {context.vents &&
-                      context.vents.map((vent, index) => {
-                        return (
-                          <Vent
-                            key={index + vent._id}
-                            previewMode={true}
-                            vent={vent}
-                            ventIndex={index}
-                          />
-                        );
-                      })}
-                    {context.canLoadMorePosts && (
-                      <LoadMoreVents
-                        canLoadMorePosts={context.canLoadMorePosts}
-                        loadMore={() => {
-                          context.handleChange(
-                            { skip: context.skip + 10 },
-                            () => context.getVents(pathname, search)
-                          );
-                        }}
-                      />
-                    )}
-                  </Container>
-                )}
-                {!context.vents && <LoadingHeart />}
-              </Container>
+  useEffect(() => {
+    query.once("value", (snapshot) => {
+      if (!snapshot) return;
+      const value = snapshot.val();
+      const exists = snapshot.exists();
 
-              {!isMobileOrTablet() && (
-                <Container className="container small column">
-                  <Container className="x-fill column align-start bg-white border-all2 pa16 mb16 br8">
-                    <Link className="button-3 fs-18 mb16" to="/post-a-problem">
-                      <FontAwesomeIcon className="mr8" icon={faPen} />
-                      Post a Vent
-                    </Link>
-                    <Link className="button-3 fs-18" to="/vent-to-a-stranger">
-                      <FontAwesomeIcon className="mr8" icon={faComments} />
-                      Chat with a Stranger
-                    </Link>
-                  </Container>
-                  <HotTags />
-                </Container>
+      if (exists)
+        setVents(
+          Object.keys(value).map((ventID) => {
+            return { id: ventID, ...value[ventID] };
+          })
+        );
+    });
+  }, []);
+
+  return (
+    <Page
+      className="column bg-grey-2"
+      description={metaDescription}
+      keywords=""
+      title={metaTitle}
+    >
+      <Container className="x-fill justify-center align-start">
+        <Text
+          className={
+            "fw-400 fs-20 " +
+            (isMobileOrTablet()
+              ? "container mobile-full pa16"
+              : "container extra-large pr32 pt32")
+          }
+          text="People care and help is here. Vent and chat anonymously to be a part of a community committed to making the world a better place. This is a website for people that want to be heard and people that want to listen. Your emotional health is our priority."
+          type="h2"
+        />
+      </Container>
+      <Container
+        className={
+          "x-fill justify-center align-start " +
+          (isMobileOrTablet() ? "py16" : "py32")
+        }
+      >
+        <Container
+          className={
+            "column align-center " +
+            (isMobileOrTablet()
+              ? "container mobile-full pa16"
+              : "container large mr32")
+          }
+        >
+          <Container className="x-fill justify-between mb16">
+            <Text
+              className="primary fs-20"
+              text={metaTitle + " Vents"}
+              type="h1"
+            />
+            <Filters />
+          </Container>
+
+          {vents && (
+            <Container className="x-fill column">
+              {vents && vents.length === 0 && (
+                <Text className="fw-400" text="No vents found." type="h4" />
+              )}
+              {vents &&
+                vents.map((vent, index) => {
+                  return (
+                    <Vent
+                      key={index + vent.id}
+                      previewMode={true}
+                      vent={vent}
+                      ventIndex={index}
+                    />
+                  );
+                })}
+              {canLoadMorePosts && (
+                <LoadMoreVents
+                  canLoadMorePosts={canLoadMorePosts}
+                  loadMore={() => {}}
+                />
               )}
             </Container>
-          </Page>
+          )}
+          {!vents && <LoadingHeart />}
+        </Container>
+
+        {!isMobileOrTablet() && (
+          <Container className="container small column">
+            <Container className="x-fill column align-start bg-white border-all2 pa16 mb16 br8">
+              <Link className="button-3 fs-18 mb16" to="/post-a-problem">
+                <FontAwesomeIcon className="mr8" icon={faPen} />
+                Post a Vent
+              </Link>
+              <Link className="button-3 fs-18" to="/vent-to-a-stranger">
+                <FontAwesomeIcon className="mr8" icon={faComments} />
+                Chat with a Stranger
+              </Link>
+            </Container>
+          </Container>
         )}
-      </Consumer>
-    );
-  }
+      </Container>
+    </Page>
+  );
 }
 
-export default withRouter(Vents);
+export default Vents;

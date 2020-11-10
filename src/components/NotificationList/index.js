@@ -5,14 +5,14 @@ import Consumer from "../../context";
 
 import Container from "../containers/Container";
 import Text from "../views/Text";
- 
+
 import Button from "../views/Button";
 
 class NotificationList extends Component {
   render() {
     return (
       <Consumer>
-        {context => {
+        {(context) => {
           return (
             <Container className="column x-fill">
               {context.notifications.map((notification, index) => {
@@ -29,7 +29,7 @@ class NotificationList extends Component {
                   >
                     <Text text={notification.body} type="h6" />
                     <Text
-                      text={moment(notification.createdAt)
+                      text={moment(notification.server_timestamp)
                         .subtract(1, "minute")
                         .fromNow()}
                       type="p"

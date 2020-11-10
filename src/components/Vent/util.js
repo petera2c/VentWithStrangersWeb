@@ -11,14 +11,27 @@ export const commentVent = (commentString, userID, ventID) => {
   };
 
   const db = firebase.database();
-  let commentsRef = db.ref("/comments/").push();
+  let commentsRef = db.ref("/comments/" + ventID).push();
   if (userID) {
     commentObj.userID = userID;
   }
 
   commentsRef
     .set(commentObj)
-    .then(() => {})
+    .then(() => {
+      const postCounterRef = db.ref("posts/" + ventID + "/commentCounter");
+
+      postCounterRef.once("value", (snapshot) => {
+        if (!snapshot) return;
+
+        const value = snapshot.val();
+
+        const valueToUpdateBy = 1;
+
+        if (!value) postCounterRef.set(1);
+        else postCounterRef.set(value + valueToUpdateBy);
+      });
+    })
     .catch((error) => alert(error.message));
 };
 
@@ -160,24 +173,76 @@ const getCurrentTypingWord = (currentTypingIndex, fullString) => {
   return { currentTypingWord, distanceToLeft, distanceToRight };
 };
 
-export const getVentComments = (context, handleChange, vent) => {
-  context.socket.emit("get_problem_comments", vent._id, (returnObj) => {
-    const { comments, message, success } = returnObj;
+export const ventCommentListener = (
+  setComments,
+  setHasLiked,
+  userID,
+  ventID
+) => {
+  const db = firebase.database();
+  const commentsRef = db.ref("/comments/" + ventID);
+  const query = commentsRef.orderByChild("server_timestamp").limitToLast(10);
 
-    if (success) handleChange({ comments });
-    else context.notify({ message, type: "danger" });
+  query.on("value", (snapshot) => {
+    console.log("here");
+    if (!snapshot) return;
+
+    const value = snapshot.val();
+    const exists = snapshot.exists();
+
+    const postLikedRef = db.ref(ventID + "/" + userID);
+    const listener = postLikedRef.on("value", (snapshot) => {
+      if (!snapshot) return;
+      const value = snapshot.val();
+
+      setHasLiked(value);
+    });
+
+    if (exists) {
+      const arrayResult = Object.keys(value).map((commentID) => {
+        return { id: commentID, ...value[commentID] };
+      });
+      arrayResult.sort((a, b) => {
+        if (a.server_timestamp < b.server_timestamp) return 1;
+        else return -1;
+      });
+      setComments(arrayResult);
+    }
+    return () => listener();
   });
 };
 
-export const likeVent = (user, vent) => {
-  console.log(user);
-  console.log(vent);
-
+export const likeOrUnlikeVent = (user, vent) => {
   const db = firebase.database();
 
-  const userLikedPostsRef = db.ref("posts/" + vent.uid + "/upVotes");
+  const postLikedRef = db.ref(vent.id + "/" + user.uid);
+  const postCounterRef = db.ref("posts/" + vent.id + "/likeCounter");
 
-  console.log(userLikedPostsRef.where("hello"));
+  postLikedRef.once("value", (snapshot) => {
+    if (!snapshot) return;
+    const value = snapshot.val();
+    const exists = snapshot.exists();
+
+    postCounterRef.once("value", (snapshot) => {
+      if (!snapshot) return;
+
+      const value2 = snapshot.val();
+      const exists = snapshot.exists();
+
+      let valueToUpdateBy = 1;
+
+      if (value) valueToUpdateBy = -1;
+
+      if (!value2) postCounterRef.set(1);
+      else postCounterRef.set(value + valueToUpdateBy);
+    });
+
+    if (!value) {
+      postLikedRef.set(true);
+    } else {
+      postLikedRef.set(null);
+    }
+  });
 };
 
 export const reportVent = (
@@ -243,16 +308,29 @@ export const tagUser = (
   });
 };
 
-export const unlikeVent = (context, vent, updateVentLikes) => {
-  context.socket.emit("unlike_problem", vent._id, (returnObj) => {
-    const { message, success } = returnObj;
+export const startMessage = (userID, ventUserID) => {
+  const db = firebase.database();
 
-    if (success) {
+  const doesConversationExistRef = db.ref(
+    "users/" + userID + "chats/" + ventUserID
+  );
+  /*
+  const superCoolDatabaseModel = {
+    user: {
+      chats: {
+        otherUserFromChatID: chatID,
+      },
+    },
+  };
+
+    if(user.chats.otherUserFromChatID.exists()) then this conversation between these two users works
+*/
+  doesConversationExistRef.once("value", (snapshot) => {
+    const value = snapshot.val();
+    const exists = snapshot.exists();
+
+    if (exists) {
     } else {
-      context.notify({
-        message,
-        type: "danger",
-      });
     }
   });
 };

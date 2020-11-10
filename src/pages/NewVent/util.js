@@ -7,6 +7,8 @@ export const saveVent = (callback, ventObject, id, user, notify) => {
   if (user) {
     ventObject.userID = user.uid;
   }
+  ventObject.server_timestamp = { ".sv": "timestamp" };
+
   if (id) postsRef = db.ref("/posts/" + id).push();
 
   postsRef

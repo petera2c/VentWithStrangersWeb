@@ -29,7 +29,6 @@ import ChatsPage from "./Conversations";
 import ChatWithStrangerPage from "./ChatWithStranger";
 import NewVentPage from "./NewVent";
 import VentPage from "./Vent";
-import HotTagsPage from "./HotTags";
 import BlogPage from "./Blog";
 import CreateBlogPage from "./CreateBlog";
 import NotFoundPage from "./NotFound";
@@ -75,7 +74,6 @@ function Routes() {
                 <Route path="/settings/" component={AccountPage} exact />
                 <Route path="/notifications/" component={NotificationsPage} />
                 <Route path="/search/" component={SearchPage} />
-                <Route path="/hot-tags/" component={HotTagsPage} />
                 <Route path="/" component={VentsPage} exact />
                 <Route path="/home/" component={VentsPage} />
                 <Route path="/trending/" component={VentsPage} />

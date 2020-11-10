@@ -21,7 +21,7 @@ import Consumer, { ExtraContext } from "../../context";
 
 import Container from "../containers/Container";
 import Text from "../views/Text";
- 
+
 import Button from "../views/Button";
 
 import LoginModal from "../modals/Login";
@@ -170,17 +170,6 @@ class MobileHeader extends Component {
                 >
                   <FontAwesomeIcon className="mr8" icon={faAnalytics} />
                   Trending
-                </Link>
-
-                <Link
-                  className={
-                    "button-3 tac py16 mx16 " +
-                    isPageActive("/hot-tags", pathname)
-                  }
-                  to="/hot-tags"
-                >
-                  <FontAwesomeIcon className="mr8" icon={faFire} />
-                  Hot Tags
                 </Link>
               </Container>
             )}

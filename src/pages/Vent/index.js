@@ -47,7 +47,7 @@ function VentPage() {
   const postRef = db.ref("/posts/" + ventID);
 
   useEffect(() => {
-    let test = postRef.on("value", (snapshot) => {
+    const listener = postRef.on("value", (snapshot) => {
       if (!snapshot) return;
       const value = snapshot.val();
       const exists = snapshot.exists();
@@ -55,7 +55,7 @@ function VentPage() {
       if (exists) setVent({ id: snapshot.key, ...value });
     });
 
-    return () => test();
+    return () => listener();
   }, []);
 
   let title = "";

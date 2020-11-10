@@ -10,7 +10,6 @@ import LoadingHeart from "../../components/loaders/Heart";
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
-import HotTags from "../../components/HotTags";
 import Filters from "../../components/Filters";
 import Vent from "../../components/Vent";
 import LoadMoreVents from "../../components/LoadMoreVents";
@@ -26,7 +25,7 @@ class SearchPage extends Component {
 
     return (
       <Consumer>
-        {context => (
+        {(context) => (
           <Page
             className="align-center bg-grey-2"
             description="Search"

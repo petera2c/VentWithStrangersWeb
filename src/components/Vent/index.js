@@ -9,7 +9,6 @@ import { MentionsInput, Mention } from "react-mentions";
 
 import firebase from "firebase/app";
 import "firebase/database";
-import { useCollectionData } from "react-firebase-hooks/firestore";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy } from "@fortawesome/pro-regular-svg-icons/faCopy";
@@ -67,11 +66,11 @@ import {
   deleteVent,
   findPossibleUsersToTag,
   getCurrentTypingIndex,
-  getVentComments,
-  likeVent,
+  likeOrUnlikeVent,
   reportVent,
+  startMessage,
   tagUser,
-  unlikeVent,
+  ventCommentListener,
 } from "./util";
 
 import classNames from "./style.css";
@@ -99,6 +98,8 @@ function Vent(props) {
   const [displayCommentField, setDisplayCommentField] = useState(
     props.displayCommentField
   );
+  const [hasLiked, setHasLiked] = useState();
+
   const [possibleUsersToTag, setPossibleUsersToTag] = useState();
   const [postOptions, setPostOptions] = useState(false);
   const [reportModal, setReportModal] = useState(false);
@@ -119,27 +120,10 @@ function Vent(props) {
     vent,
   } = props; // Variables
 
-  const db = firebase.database();
-
-  const commentsRef = db.ref("/comments/");
-  const query = commentsRef.orderByChild("server_timestamp").limitToLast(25);
-  useEffect(
-    () =>
-      query.on("value", (snapshot) => {
-        if (!snapshot) return;
-
-        const value = snapshot.val();
-        const exists = snapshot.exists();
-
-        if (exists) {
-          const arrayResult = Object.keys(value).map((commentID) => {
-            return { id: commentID, ...value[commentID] };
-          });
-          setComments(arrayResult);
-        }
-      }),
-    []
-  );
+  useEffect(() => {
+    if (displayCommentField)
+      ventCommentListener(setComments, setHasLiked, user.uid, vent.id);
+  }, []);
 
   let keywords = "";
   for (let index in vent.tags) {
@@ -155,13 +139,13 @@ function Vent(props) {
 
   const partialLink =
     "/problem/" +
-    vent._id +
+    vent.id +
     "/" +
     vent.title
       .replace(/[^a-zA-Z ]/g, "")
       .replace(/ /g, "-")
       .toLowerCase();
-
+  console.log(vent);
   const fullLink = "https://www.ventwithstrangers.com" + partialLink;
 
   const copyToClipboard = (e) => {
@@ -335,23 +319,34 @@ function Vent(props) {
                   onClick={(e) => {
                     e.preventDefault();
                     setDisplayCommentField(!displayCommentField);
-                    if (!displayCommentField) getVentComments(vent);
+                    if (!displayCommentField) {
+                      return;
+                      ventCommentListener(
+                        setComments,
+                        setHasLiked,
+                        user.uid,
+                        vent.id
+                      );
+                    }
                   }}
                   size="2x"
                   title="Comment"
                 />
-                <Text className="blue mr8" text={vent.commentsSize} type="p" />
+                <Text
+                  className="blue mr8"
+                  text={vent.commentCounter ? vent.commentCounter : 0}
+                  type="p"
+                />
                 <img
                   className={`clickable heart ${
-                    vent.hasLiked ? "red" : "grey-5"
+                    hasLiked ? "red" : "grey-5"
                   } mr4`}
                   onClick={(e) => {
                     e.preventDefault();
-                    if (vent.hasLiked) unlikeVent(vent);
-                    else likeVent(user, vent);
+                    likeOrUnlikeVent(user, vent);
                   }}
                   src={
-                    vent.hasLiked
+                    hasLiked
                       ? require("../../svgs/support-active.svg")
                       : require("../../svgs/support.svg")
                   }
@@ -359,7 +354,11 @@ function Vent(props) {
                   title="Give Support :)"
                 />
 
-                <Text className="grey-5 mr16" text={vent.upVotes} type="p" />
+                <Text
+                  className="grey-5 mr16"
+                  text={vent.likeCounter ? vent.likeCounter : 0}
+                  type="p"
+                />
               </Container>
 
               <Container className="mb16">
@@ -371,7 +370,10 @@ function Vent(props) {
                     <FontAwesomeIcon className="mr8" icon={faShare} />
                     Share
                   </Button>
-                  <Button className="button-2 px16 py8 br8" onClick={() => {}}>
+                  <Button
+                    className="button-2 px16 py8 br8"
+                    onClick={() => startMessage(user.uid, vent.userID)}
+                  >
                     <FontAwesomeIcon className="mr8" icon={faComments} />
                     Message User
                   </Button>
@@ -471,7 +473,9 @@ function Vent(props) {
               <FontAwesomeIcon className="grey-5 mr8" icon={faClock} />
               <Text
                 className="grey-5"
-                text={moment(vent.createdAt).subtract(1, "minute").fromNow()}
+                text={moment(vent.server_timestamp)
+                  .subtract(1, "minute")
+                  .fromNow()}
                 type="p"
               />
             </Container>

@@ -6,7 +6,7 @@ export const login = ({ email, password }, close, notify) => {
     .auth()
     .signInWithEmailAndPassword(email, password)
     .then((res) => {
-      close();
+      window.location.reload();
     })
     .catch((error) => {
       notify(error);

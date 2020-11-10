@@ -7,7 +7,6 @@ import { faConciergeBell } from "@fortawesome/pro-duotone-svg-icons/faConciergeB
 import { faBell } from "@fortawesome/pro-duotone-svg-icons/faBell";
 import { faFireAlt } from "@fortawesome/pro-duotone-svg-icons/faFireAlt";
 import { faFire } from "@fortawesome/pro-solid-svg-icons/faFire";
-import { faPen } from "@fortawesome/pro-solid-svg-icons/faPen";
 import { faComments } from "@fortawesome/pro-solid-svg-icons/faComments";
 import { faSearch } from "@fortawesome/pro-solid-svg-icons/faSearch";
 import { faChevronDown } from "@fortawesome/pro-solid-svg-icons/faChevronDown";
@@ -128,10 +127,10 @@ class Header extends Component {
                     className="border-right active blue px8"
                     to="/post-a-problem"
                   >
-                    <FontAwesomeIcon className="" icon={faPen} />
+                    Vent
                   </Link>
                   <Link className="blue px8" to="/chats">
-                    <FontAwesomeIcon className="" icon={faComments} />
+                    Chat
                   </Link>
                 </Container>
 

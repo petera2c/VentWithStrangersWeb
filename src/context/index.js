@@ -12,7 +12,6 @@ class GIProvider extends Component {
   state = {
     canLoadMorePosts: true,
     comments: undefined,
-    hotTags: [],
     notification: {
       on: false,
       message: "",
@@ -32,50 +31,6 @@ class GIProvider extends Component {
     this._ismounted = false;
   }
 
-  getVents = (pathname, search) => {
-    const { skip, socket } = this.state;
-    let tagTemp = "";
-    let tags = [];
-
-    if (search && search.slice(0, 5) === "tags=") {
-      const tagString = search.slice(5, search.length);
-      for (let index in tagString) {
-        if (tagString[index] == "+") {
-          tags.push(tagTemp);
-          tagTemp = "";
-        } else tagTemp += tagString[index];
-      }
-      if (tagTemp) tags.push(tagTemp);
-    }
-
-    socket.emit(
-      "get_problems",
-      {
-        page: pathname.slice(1, pathname.length),
-        skip,
-        tags,
-      },
-      (returnObj) => {
-        const { problems, success } = returnObj;
-        let newVents = problems;
-        let canLoadMorePosts = true;
-
-        if (newVents && newVents.length < 10) canLoadMorePosts = false;
-        if (skip && this.state.vents)
-          newVents = this.state.vents.concat(newVents);
-
-        if (success)
-          this.handleChange({
-            canLoadMorePosts,
-            vents: newVents,
-          });
-        else {
-          // TODO: handle error
-        }
-      }
-    );
-  };
-
   handleChange = (stateObject, callback) => {
     if (this._ismounted) this.setState(stateObject, callback);
   };
@@ -92,14 +47,6 @@ class GIProvider extends Component {
         this.setState({ notification });
       }, 5000);
     }
-  };
-
-  removeVent = (ventIndex) => {
-    let newCopy = [...this.state.vents];
-
-    newCopy.splice(ventIndex, 1);
-
-    this.handleChange({ vents: newCopy });
   };
 
   soundNotify = (sound = "bing") => {
@@ -126,7 +73,6 @@ class GIProvider extends Component {
   render() {
     const {
       comments,
-      hotTags,
       notification,
       notifications,
       saving,
@@ -140,12 +86,9 @@ class GIProvider extends Component {
         value={{
           addComment: this.addComment,
           comments,
-          getVents: this.getVents,
           handleChange: this.handleChange,
-          hotTags,
           notify: this.notify,
           notifications,
-          removeVent: this.removeVent,
           saving,
           soundNotify: this.soundNotify,
           updateVent: this.updateVent,
