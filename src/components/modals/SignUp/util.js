@@ -38,6 +38,7 @@ export const signUp = (
       if (res.user) {
         res.user.sendEmailVerification();
         db.ref("users/" + res.user.uid).set({
+          profile: { displayName, email },
           settings: {
             adultContent: false,
             commentLiked: true,

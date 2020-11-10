@@ -184,7 +184,6 @@ export const ventCommentListener = (
   const query = commentsRef.orderByChild("server_timestamp").limitToLast(10);
 
   query.on("value", (snapshot) => {
-    console.log("here");
     if (!snapshot) return;
 
     const value = snapshot.val();
@@ -207,7 +206,7 @@ export const ventCommentListener = (
         else return -1;
       });
       setComments(arrayResult);
-    }
+    } else setComments([]);
     return () => listener();
   });
 };

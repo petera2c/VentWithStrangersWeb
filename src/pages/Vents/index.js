@@ -22,7 +22,7 @@ import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
 import { getMetaInformation } from "./util";
 
 function Vents(props) {
-  const [vents, setVents] = useState();
+  const [vents, setVents] = useState(null);
   const location = useLocation();
   const { pathname, search } = location;
 
@@ -33,8 +33,8 @@ function Vents(props) {
 
   const commentsRef = db.ref("/posts/");
   const query = commentsRef.orderByChild("likeCounter").limitToLast(10);
-
   useEffect(() => {
+    setVents(null);
     query.once("value", (snapshot) => {
       if (!snapshot) return;
       const value = snapshot.val();
@@ -46,8 +46,9 @@ function Vents(props) {
             return { id: ventID, ...value[ventID] };
           })
         );
+      else setVents([]);
     });
-  }, []);
+  }, [props.location]);
 
   return (
     <Page
@@ -93,9 +94,6 @@ function Vents(props) {
 
           {vents && (
             <Container className="x-fill column">
-              {vents && vents.length === 0 && (
-                <Text className="fw-400" text="No vents found." type="h4" />
-              )}
               {vents &&
                 vents.map((vent, index) => {
                   return (
@@ -115,7 +113,10 @@ function Vents(props) {
               )}
             </Container>
           )}
-          {!vents && <LoadingHeart />}
+          {vents === null && <LoadingHeart />}
+          {vents && vents.length === 0 && (
+            <Text className="fw-400" text="No vents found." type="h4" />
+          )}
         </Container>
 
         {!isMobileOrTablet() && (

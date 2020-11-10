@@ -53,6 +53,7 @@ function VentPage() {
       const exists = snapshot.exists();
 
       if (exists) setVent({ id: snapshot.key, ...value });
+      else setVent(false);
     });
 
     return () => listener();
@@ -63,8 +64,6 @@ function VentPage() {
 
   if (vent && vent.title) title = vent.title;
   if (vent && vent.description) description = vent.description;
-
-  if (!vent) return <LoadingHeart />;
 
   return (
     <Page
@@ -91,6 +90,8 @@ function VentPage() {
             />
           </Container>
         )}
+        {vent === undefined && <LoadingHeart />}
+        {vent === false && <h4>No vent found with this id.</h4>}
       </Container>
     </Page>
   );

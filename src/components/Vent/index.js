@@ -145,7 +145,6 @@ function Vent(props) {
       .replace(/[^a-zA-Z ]/g, "")
       .replace(/ /g, "-")
       .toLowerCase();
-  console.log(vent);
   const fullLink = "https://www.ventwithstrangers.com" + partialLink;
 
   const copyToClipboard = (e) => {
