@@ -122,7 +122,7 @@ function Vent(props) {
 
   useEffect(() => {
     if (displayCommentField)
-      ventCommentListener(setComments, setHasLiked, user.uid, vent.id);
+      ventCommentListener(setComments, setHasLiked, user, vent.id);
   }, []);
 
   let keywords = "";

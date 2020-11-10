@@ -9,6 +9,7 @@ import { faHandsHelping } from "@fortawesome/pro-duotone-svg-icons/faHandsHelpin
 import { faWalkieTalkie } from "@fortawesome/pro-duotone-svg-icons/faWalkieTalkie";
 
 import Chat from "../../components/Chat/";
+import WarningModal from "../../components/modals/Warning";
 
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
@@ -57,6 +58,12 @@ class Conversations extends Component {
                 Vent or Help a Stranger
               </Link>
             </Container>
+            {!context.user && (
+              <WarningModal
+                close={() => {}}
+                text="You can not chat with a stranger unless you sign up for an account!"
+              />
+            )}
           </Page>
         )}
       </Consumer>

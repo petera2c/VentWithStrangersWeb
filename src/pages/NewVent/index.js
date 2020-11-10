@@ -272,6 +272,7 @@ class NewVentPage extends Component {
             {warningModalIsActive && !user && (
               <WarningModal
                 close={() => this.handleChange({ warningModalIsActive: false })}
+                text="If you create a Vent without signing in, you will not be able to receive notifications, edit, or delete this post!"
               />
             )}
           </Page>

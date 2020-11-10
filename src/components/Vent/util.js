@@ -173,12 +173,7 @@ const getCurrentTypingWord = (currentTypingIndex, fullString) => {
   return { currentTypingWord, distanceToLeft, distanceToRight };
 };
 
-export const ventCommentListener = (
-  setComments,
-  setHasLiked,
-  userID,
-  ventID
-) => {
+export const ventCommentListener = (setComments, setHasLiked, user, ventID) => {
   const db = firebase.database();
   const commentsRef = db.ref("/comments/" + ventID);
   const query = commentsRef.orderByChild("server_timestamp").limitToLast(10);
@@ -189,13 +184,15 @@ export const ventCommentListener = (
     const value = snapshot.val();
     const exists = snapshot.exists();
 
-    const postLikedRef = db.ref(ventID + "/" + userID);
-    const listener = postLikedRef.on("value", (snapshot) => {
-      if (!snapshot) return;
-      const value = snapshot.val();
+    if (user) {
+      const postLikedRef = db.ref(ventID + "/" + user.uid);
+      const listener = postLikedRef.on("value", (snapshot) => {
+        if (!snapshot) return;
+        const value = snapshot.val();
 
-      setHasLiked(value);
-    });
+        setHasLiked(value);
+      });
+    }
 
     if (exists) {
       const arrayResult = Object.keys(value).map((commentID) => {

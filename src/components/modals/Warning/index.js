@@ -6,7 +6,7 @@ import Container from "../../containers/Container";
 import Text from "../../views/Text";
 import Button from "../../views/Button";
 
-function LoginPage({ close }) {
+function WarningModal({ close, text }) {
   return (
     <Consumer>
       {(context) => (
@@ -17,10 +17,7 @@ function LoginPage({ close }) {
             </Container>
             <Container className="x-fill column">
               <Container className="x-fill full-center px32">
-                <Text className="x-fill tac py16" type="p">
-                  If you create a Vent without signing in, you will not be able
-                  to receive notifications, edit, or delete this post!
-                </Text>
+                <p className="x-fill tac py16">{text}</p>
               </Container>
             </Container>
           </Container>
@@ -31,4 +28,4 @@ function LoginPage({ close }) {
   );
 }
 
-export default LoginPage;
+export default WarningModal;
