@@ -33,7 +33,7 @@ export const commentVent = (commentString, user, ventID) => {
 
         const valueToUpdateBy = 1;
 
-        if (!value) postCounterRef.set(1);
+        if (!value) postCounterRef.set(valueToUpdateBy);
         else postCounterRef.set(value + valueToUpdateBy);
       });
     })
@@ -164,21 +164,57 @@ export const getVentPartialLink = (vent) => {
   );
 };
 
-export const ventCommentListener = (setComments, ventID) => {
+export const newVentCommentListener = (setComments, ventID, first = true) => {
+  console.log("heresss");
   const db = firebase.database();
   const query = db
     .ref("/comments/" + ventID)
     .orderByChild("server_timestamp")
-    .limitToLast(10);
-
+    .limitToLast(1);
   const listener = query.on("value", (snapshot) => {
+    if (!snapshot) return;
+    if (first) {
+      first = false;
+      return;
+    }
+
+    const value = snapshot.val();
+    const exists = snapshot.exists();
+
+    if (exists) {
+      let arrayResult = Object.keys(value).map((commentID) => {
+        return { id: commentID, ...value[commentID] };
+      });
+
+      setComments((oldComments) => {
+        if (oldComments) return [...arrayResult, ...oldComments];
+        else return arrayResult;
+      });
+    } else setComments([]);
+  });
+
+  return () => query.off("value", listener);
+};
+
+export const getVentComments = (comments, setComments, ventID) => {
+  let endAt = 10000000000000;
+  if (comments && comments[comments.length - 1].server_timestamp)
+    endAt = comments[comments.length - 1].server_timestamp - 1;
+
+  const db = firebase.database();
+  const query = db
+    .ref("/comments/" + ventID)
+    .orderByChild("server_timestamp")
+    .endAt(endAt)
+    .limitToLast(10);
+  const listener = query.once("value", (snapshot) => {
     if (!snapshot) return;
 
     const value = snapshot.val();
     const exists = snapshot.exists();
 
     if (exists) {
-      const arrayResult = Object.keys(value).map((commentID) => {
+      let arrayResult = Object.keys(value).map((commentID) => {
         return { id: commentID, ...value[commentID] };
       });
 
@@ -187,11 +223,12 @@ export const ventCommentListener = (setComments, ventID) => {
         else return -1;
       });
 
-      setComments(arrayResult);
+      setComments((oldComments) => {
+        if (oldComments) return [...oldComments, ...arrayResult];
+        else return arrayResult;
+      });
     } else setComments([]);
   });
-
-  return () => query.off("value", listener);
 };
 
 export const ventHasLikedListener = (setHasLiked, userID, ventID) => {

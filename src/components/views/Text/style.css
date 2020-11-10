@@ -73,6 +73,9 @@
 .no-bold {
   font-weight: normal;
 }
+.underline {
+  text-decoration: underline;
+}
 .fs-12 {
   font-size: var(--twelve-font-size);
 }

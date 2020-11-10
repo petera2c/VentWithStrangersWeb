@@ -66,14 +66,15 @@ import {
   deleteVent,
   findPossibleUsersToTag,
   getCurrentTypingIndex,
+  getVentComments,
   getVentDescription,
   getVentFullLink,
   getVentPartialLink,
   likeOrUnlikeVent,
+  newVentCommentListener,
   reportVent,
   startMessage,
   tagUser,
-  ventCommentListener,
   ventHasLikedListener,
   ventListener,
 } from "./util";
@@ -81,7 +82,7 @@ import {
 import classNames from "./style.css";
 
 let ventListenerReturn;
-let ventCommentListenerReturn;
+let newCommentListenerReturn;
 let ventHasLikedListenerReturn;
 
 const SmartLink = (props) => {
@@ -134,7 +135,7 @@ function Vent(props) {
     ventListenerReturn = ventListener(setVent, ventID);
 
     if (displayCommentField)
-      ventCommentListenerReturn = ventCommentListener(setComments, ventID);
+      newCommentListenerReturn = newVentCommentListener(setComments, ventID);
     if (user)
       ventHasLikedListenerReturn = ventHasLikedListener(
         setHasLiked,
@@ -142,9 +143,11 @@ function Vent(props) {
         ventID
       );
 
+    getVentComments(comments, setComments, ventID);
+
     return () => {
       if (ventListenerReturn) ventListenerReturn();
-      if (ventCommentListenerReturn) ventCommentListenerReturn();
+      if (newCommentListenerReturn) newCommentListenerReturn();
       if (ventHasLikedListenerReturn) ventHasLikedListenerReturn();
     };
   }, []);
@@ -324,10 +327,10 @@ function Vent(props) {
                       e.preventDefault();
                       setDisplayCommentField(!displayCommentField);
 
-                      if (displayCommentField && ventCommentListenerReturn)
-                        ventCommentListenerReturn();
+                      if (displayCommentField && newCommentListenerReturn)
+                        newCommentListenerReturn();
                       if (!displayCommentField)
-                        ventCommentListenerReturn = ventCommentListener(
+                        newCommentListenerReturn = newVentCommentListener(
                           setComments,
                           vent.id
                         );
@@ -556,6 +559,16 @@ function Vent(props) {
                     key={index}
                   />
                 ))}
+                {vent.commentCounter > comments.length && (
+                  <Button
+                    className="blue underline"
+                    onClick={() => {
+                      getVentComments(comments, setComments, ventID);
+                    }}
+                  >
+                    Load More Comments
+                  </Button>
+                )}
               </Container>
             </Container>
           )}
