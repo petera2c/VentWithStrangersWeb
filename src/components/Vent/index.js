@@ -99,6 +99,7 @@ const SmartLink = (props) => {
 };
 
 function Vent(props) {
+  const [test, setTest] = useState(true);
   const [comments, setComments] = useState();
   const user = useContext(UserContext);
 
@@ -559,12 +560,13 @@ function Vent(props) {
                     key={index}
                   />
                 ))}
-                {vent.commentCounter > comments.length && (
+                {test && vent.commentCounter > comments.length - 1 && (
                   <Button
                     className="blue underline"
                     onClick={() => {
                       getVentComments(comments, setComments, ventID);
                     }}
+                    key={comments.length}
                   >
                     Load More Comments
                   </Button>

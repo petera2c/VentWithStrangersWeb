@@ -165,7 +165,6 @@ export const getVentPartialLink = (vent) => {
 };
 
 export const newVentCommentListener = (setComments, ventID, first = true) => {
-  console.log("heresss");
   const db = firebase.database();
   const query = db
     .ref("/comments/" + ventID)
@@ -187,6 +186,9 @@ export const newVentCommentListener = (setComments, ventID, first = true) => {
       });
 
       setComments((oldComments) => {
+        for (let index in oldComments)
+          if (oldComments[index].id === arrayResult[0].id) return oldComments;
+
         if (oldComments) return [...arrayResult, ...oldComments];
         else return arrayResult;
       });
