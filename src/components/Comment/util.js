@@ -1,56 +1,29 @@
 import React from "react";
 
-export const deleteComment = (
-  commentID,
-  commentIndex,
-  removeComment,
-  socket
-) => {
-  socket.emit("delete_comment", { commentID }, (returnObj) => {
-    const { message, success } = returnObj;
+import firebase from "firebase/app";
+import "firebase/database";
 
-    if (success) {
-      alert("Comment deleted successfully");
+export const commentListener = (commentID, setComment, ventID) => {
+  const db = firebase.database();
 
-      if (removeComment && Number.isInteger(commentIndex)) {
-        removeComment(commentIndex);
-      }
-    } else alert(message);
+  const commentRef = db.ref("/comments/" + ventID + "/" + commentID);
+
+  const listener = commentRef.on("value", (snapshot) => {
+    if (!snapshot) return;
+    const value = snapshot.val();
+    const exists = snapshot.exists();
+
+    if (exists) setComment({ id: snapshot.key, ...value });
+    else setComment(false);
   });
+
+  return () => commentRef.off("value", listener);
 };
+export const deleteComment = (commentID) => {};
 
-export const editComment = (commentID, commentString, socket) => {
-  socket.emit("edit_comment", { commentID, commentString }, (returnObj) => {
-    const { message, success } = returnObj;
+export const editComment = (commentID, commentString) => {};
 
-    if (success) {
-    } else alert(message);
-  });
-};
-
-export const likeComment = (
-  context,
-  comment,
-  commentIndex,
-  updateCommentLikes
-) => {
-  context.socket.emit(
-    "like_comment",
-    { commentID: comment._id },
-    (returnObj) => {
-      const { message, success } = returnObj;
-
-      if (success && updateCommentLikes) {
-        updateCommentLikes(commentIndex, returnObj);
-      } else {
-        context.notify({
-          message,
-          type: "danger",
-        });
-      }
-    }
-  );
-};
+export const likeComment = (commentID, user) => {};
 
 export const swapTags = (commentText) => {
   if (!commentText) return;
@@ -104,28 +77,4 @@ export const swapTags = (commentText) => {
       ),
     ];
   }
-};
-
-export const unlikeComment = (
-  context,
-  comment,
-  commentIndex,
-  updateCommentLikes
-) => {
-  context.socket.emit(
-    "unlike_comment",
-    { commentID: comment._id },
-    (returnObj) => {
-      const { message, success } = returnObj;
-
-      if (success && updateCommentLikes) {
-        updateCommentLikes(commentIndex, returnObj);
-      } else {
-        context.notify({
-          message,
-          type: "danger",
-        });
-      }
-    }
-  );
 };

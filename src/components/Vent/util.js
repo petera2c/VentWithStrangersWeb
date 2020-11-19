@@ -216,18 +216,18 @@ export const getVentComments = (comments, setComments, ventID) => {
     const exists = snapshot.exists();
 
     if (exists) {
-      let arrayResult = Object.keys(value).map((commentID) => {
+      let newComments = Object.keys(value).map((commentID) => {
         return { id: commentID, ...value[commentID] };
       });
 
-      arrayResult.sort((a, b) => {
+      newComments.sort((a, b) => {
         if (a.server_timestamp < b.server_timestamp) return 1;
         else return -1;
       });
 
       setComments((oldComments) => {
-        if (oldComments) return [...oldComments, ...arrayResult];
-        else return arrayResult;
+        if (oldComments) return [...oldComments, ...newComments];
+        else return newComments;
       });
     } else setComments([]);
   });

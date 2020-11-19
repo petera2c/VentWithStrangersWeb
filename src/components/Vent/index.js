@@ -7,9 +7,6 @@ import ContentEditable from "react-contenteditable";
 import { Editor } from "@tinymce/tinymce-react";
 import { MentionsInput, Mention } from "react-mentions";
 
-import firebase from "firebase/app";
-import "firebase/database";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy } from "@fortawesome/pro-regular-svg-icons/faCopy";
 import { faClock } from "@fortawesome/pro-regular-svg-icons/faClock";
@@ -85,8 +82,7 @@ let ventListenerReturn;
 let newCommentListenerReturn;
 let ventHasLikedListenerReturn;
 
-const SmartLink = (props) => {
-  const { children, className, disablePostOnClick, to } = props;
+const SmartLink = ({ children, className, disablePostOnClick, to }) => {
   if (disablePostOnClick) {
     return <Container className={className}>{children}</Container>;
   } else {
@@ -98,7 +94,14 @@ const SmartLink = (props) => {
   }
 };
 
-function Vent(props) {
+function Vent({
+  displayCommentField,
+  disablePostOnClick,
+  isOnSingleVentPage,
+  previewMode,
+  searchPreviewMode,
+  ventID,
+}) {
   const [test, setTest] = useState(true);
   const [comments, setComments] = useState();
   const user = useContext(UserContext);
@@ -107,8 +110,8 @@ function Vent(props) {
   const [commentString, setCommentString] = useState("");
   const [currentTypingIndex, setCurrentTypingIndex] = useState(0);
   const [deleteVentConfirm, setDeleteVentConfirm] = useState(false);
-  const [displayCommentField, setDisplayCommentField] = useState(
-    props.displayCommentField
+  const [displayCommentField2, setDisplayCommentField] = useState(
+    displayCommentField
   );
   const [hasLiked, setHasLiked] = useState();
 
@@ -124,18 +127,11 @@ function Vent(props) {
   const history = useHistory();
   const location = useLocation();
   const { pathname } = location;
-  const {
-    disablePostOnClick,
-    isOnSingleVentPage,
-    previewMode,
-    searchPreviewMode,
-    ventID,
-  } = props; // Variables
 
   useEffect(() => {
     ventListenerReturn = ventListener(setVent, ventID);
 
-    if (displayCommentField)
+    if (displayCommentField2)
       newCommentListenerReturn = newVentCommentListener(setComments, ventID);
     if (user)
       ventHasLikedListenerReturn = ventHasLikedListener(
@@ -314,7 +310,7 @@ function Vent(props) {
             <Container
               className={
                 "relative wrap justify-between pt16 px32 " +
-                (!searchPreviewMode && displayCommentField
+                (!searchPreviewMode && displayCommentField2
                   ? "border-bottom"
                   : "")
               }
@@ -326,11 +322,11 @@ function Vent(props) {
                     icon={faComment}
                     onClick={(e) => {
                       e.preventDefault();
-                      setDisplayCommentField(!displayCommentField);
+                      setDisplayCommentField(!displayCommentField2);
 
-                      if (displayCommentField && newCommentListenerReturn)
+                      if (displayCommentField2 && newCommentListenerReturn)
                         newCommentListenerReturn();
-                      if (!displayCommentField)
+                      if (!displayCommentField2)
                         newCommentListenerReturn = newVentCommentListener(
                           setComments,
                           vent.id
@@ -488,7 +484,7 @@ function Vent(props) {
               </Container>
             </Container>
           )}
-          {!searchPreviewMode && displayCommentField && (
+          {!searchPreviewMode && displayCommentField2 && (
             <Container
               className={
                 "x-fill " +
@@ -549,21 +545,23 @@ function Vent(props) {
               </Container>
             </Container>
           )}
-          {displayCommentField && comments && (
+          {displayCommentField2 && comments && (
             <Container className="column mb16">
               <Container className="column border-all2 br8">
                 {comments.map((comment, index) => (
                   <Comment
                     arrayLength={comments.length}
-                    comment={comment}
+                    commentID={comment.id}
                     commentIndex={index}
+                    comment={comment}
                     key={index}
                   />
                 ))}
-                {test && vent.commentCounter > comments.length - 1 && (
+                {vent.commentCounter > comments.length - 1 && (
                   <Button
                     className="blue underline"
                     onClick={() => {
+                      setTest(false);
                       getVentComments(comments, setComments, ventID);
                     }}
                     key={comments.length}
@@ -574,7 +572,7 @@ function Vent(props) {
               </Container>
             </Container>
           )}
-          {displayCommentField && !comments && (
+          {displayCommentField2 && !comments && (
             <Container className="x-fill full-center">
               <LoadingHeart />
             </Container>

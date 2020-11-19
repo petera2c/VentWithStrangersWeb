@@ -10,6 +10,7 @@ import moment from "moment-timezone";
 
 import firebase from "firebase/app";
 import "firebase/auth";
+import "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import Consumer, { UserContext } from "../context";
@@ -40,6 +41,11 @@ import { isMobileOrTablet } from "../util";
 
 function Routes() {
   const [user, loading, error] = useAuthState(firebase.auth());
+  /*
+  const db = firebase.firestore();
+  const test2 = db.collection("cities").doc("LA").set({
+    here: "true",
+  });*/
 
   if (loading)
     return (

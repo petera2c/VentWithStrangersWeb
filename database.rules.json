@@ -1,0 +1,15 @@
+{
+  "rules": {
+    ".read": true,
+    ".write": true,
+    "comments": {
+      "$user_id":{
+      	".indexOn": ["server_timestamp"]
+      }
+    },
+    "posts": {
+    	".indexOn": ["likeCounter","server_timestamp"]
+    },
+      
+  }
+}

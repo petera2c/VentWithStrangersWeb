@@ -53,6 +53,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --mode development --hot --port 3000",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "deploy": "webpack --mode production && firebase deploy"
   }
 }
