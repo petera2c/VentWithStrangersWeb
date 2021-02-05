@@ -12,11 +12,11 @@ export const commentVent = (commentString, user, ventID) => {
   if (!user) return alert("Only users can comment! Please login or register.");
   let commentObj = {
     server_timestamp: {
-      ".sv": "timestamp",
+      ".sv": "timestamp"
     },
     text: commentString,
     userID: user.uid,
-    ventID,
+    ventID
   };
 
   const db = firebase.database();
@@ -26,7 +26,7 @@ export const commentVent = (commentString, user, ventID) => {
     .then(() => {
       const postCounterRef = db.ref("posts/" + ventID + "/commentCounter");
 
-      postCounterRef.once("value", (snapshot) => {
+      postCounterRef.once("value", snapshot => {
         if (!snapshot) return;
 
         const value = snapshot.val();
@@ -37,7 +37,7 @@ export const commentVent = (commentString, user, ventID) => {
         else postCounterRef.set(value + valueToUpdateBy);
       });
     })
-    .catch((error) => alert(error.message));
+    .catch(error => alert(error.message));
 };
 
 export const deleteVent = (
@@ -62,7 +62,7 @@ export const findPossibleUsersToTag = (
     socket.emit(
       "find_relevant_users_to_tag",
       { currentTypingTag: currentTypingWord, ventID },
-      (resultObj) => {
+      resultObj => {
         const { users } = resultObj;
 
         if (users)
@@ -80,7 +80,7 @@ export const findPossibleUsersToTag = (
   }
 };
 
-export const getCurrentTypingIndex = (element) => {
+export const getCurrentTypingIndex = element => {
   // Taken from stack overflow
   var caretOffset = 0;
   var doc = element.ownerDocument || element.document;
@@ -140,7 +140,7 @@ export const getVentDescription = (previewMode, vent) => {
   return description;
 };
 
-export const getVentFullLink = (vent) => {
+export const getVentFullLink = vent => {
   const partialLink =
     "/problem/" +
     vent.id +
@@ -152,7 +152,7 @@ export const getVentFullLink = (vent) => {
   return "https://www.ventwithstrangers.com" + partialLink;
 };
 
-export const getVentPartialLink = (vent) => {
+export const getVentPartialLink = vent => {
   return (
     "/problem/" +
     vent.id +
@@ -166,11 +166,12 @@ export const getVentPartialLink = (vent) => {
 
 export const newVentCommentListener = (setComments, ventID, first = true) => {
   const db = firebase.database();
+
   const query = db
     .ref("/comments/" + ventID)
     .orderByChild("server_timestamp")
     .limitToLast(1);
-  const listener = query.on("value", (snapshot) => {
+  const listener = query.on("value", snapshot => {
     if (!snapshot) return;
     if (first) {
       first = false;
@@ -181,11 +182,11 @@ export const newVentCommentListener = (setComments, ventID, first = true) => {
     const exists = snapshot.exists();
 
     if (exists) {
-      let arrayResult = Object.keys(value).map((commentID) => {
+      let arrayResult = Object.keys(value).map(commentID => {
         return { id: commentID, ...value[commentID] };
       });
 
-      setComments((oldComments) => {
+      setComments(oldComments => {
         for (let index in oldComments)
           if (oldComments[index].id === arrayResult[0].id) return oldComments;
 
@@ -204,19 +205,20 @@ export const getVentComments = (comments, setComments, ventID) => {
     endAt = comments[comments.length - 1].server_timestamp - 1;
 
   const db = firebase.database();
+
   const query = db
     .ref("/comments/" + ventID)
     .orderByChild("server_timestamp")
     .endAt(endAt)
     .limitToLast(10);
-  const listener = query.once("value", (snapshot) => {
+  const listener = query.once("value", snapshot => {
     if (!snapshot) return;
 
     const value = snapshot.val();
     const exists = snapshot.exists();
 
     if (exists) {
-      let newComments = Object.keys(value).map((commentID) => {
+      let newComments = Object.keys(value).map(commentID => {
         return { id: commentID, ...value[commentID] };
       });
 
@@ -225,7 +227,7 @@ export const getVentComments = (comments, setComments, ventID) => {
         else return -1;
       });
 
-      setComments((oldComments) => {
+      setComments(oldComments => {
         if (oldComments) return [...oldComments, ...newComments];
         else return newComments;
       });
@@ -237,7 +239,7 @@ export const ventHasLikedListener = (setHasLiked, userID, ventID) => {
   const db = firebase.database();
 
   const postLikedRef = db.ref(ventID + "/" + userID);
-  const listener = postLikedRef.on("value", (snapshot) => {
+  const listener = postLikedRef.on("value", snapshot => {
     if (!snapshot) return;
     const value = snapshot.val();
 
@@ -252,7 +254,7 @@ export const ventListener = (setVent, ventID) => {
 
   const ventRef = db.ref("/posts/" + ventID);
 
-  const listener = ventRef.on("value", (snapshot) => {
+  const listener = ventRef.on("value", snapshot => {
     if (!snapshot) return;
     const value = snapshot.val();
     const exists = snapshot.exists();
@@ -272,12 +274,12 @@ export const likeOrUnlikeVent = (user, vent) => {
   const postLikedRef = db.ref(vent.id + "/" + user.uid);
   const postCounterRef = db.ref("posts/" + vent.id + "/likeCounter");
 
-  postLikedRef.once("value", (snapshot) => {
+  postLikedRef.once("value", snapshot => {
     if (!snapshot) return;
     const value = snapshot.val();
     const exists = snapshot.exists();
 
-    postCounterRef.once("value", (snapshot) => {
+    postCounterRef.once("value", snapshot => {
       if (!snapshot) return;
 
       const value2 = snapshot.val();
@@ -326,7 +328,7 @@ export const tagUser = (
 
   const taggedUser = {
     display: user._id,
-    id: user._id,
+    id: user._id
   };
 
   taggedUsers.push(taggedUser);
@@ -334,7 +336,7 @@ export const tagUser = (
   return callback({
     commentString,
     possibleUsersToTag: undefined,
-    taggedUsers,
+    taggedUsers
   });
 };
 
@@ -355,7 +357,7 @@ export const startMessage = (userID, ventUserID) => {
 
     if(user.chats.otherUserFromChatID.exists()) then this conversation between these two users works
 */
-  doesConversationExistRef.once("value", (snapshot) => {
+  doesConversationExistRef.once("value", snapshot => {
     const value = snapshot.val();
     const exists = snapshot.exists();
 

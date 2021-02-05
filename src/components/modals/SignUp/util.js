@@ -1,7 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 
-export const getInvalidCharacters = (displayName) => {
+export const getInvalidCharacters = displayName => {
   const invalidCharactersArray = displayName.split(
     /[\x30-\x39|\x41-\x5A|\x61-\x7a|\x5F]+/gi
   );
@@ -34,7 +34,7 @@ export const signUp = (
   firebase
     .auth()
     .createUserWithEmailAndPassword(email, password)
-    .then((res) => {
+    .then(res => {
       if (res.user) {
         res.user.sendEmailVerification();
         db.ref("users/" + res.user.uid).set({
@@ -44,23 +44,23 @@ export const signUp = (
             commentLiked: true,
             postCommented: true,
             postLiked: true,
-            receiveEmails: true,
-          },
+            receiveEmails: true
+          }
         });
         res.user
           .updateProfile({
-            displayName,
+            displayName
           })
           .then(() => {
             console.log("ere");
           })
-          .catch((error) => {
+          .catch(error => {
             console.log(error);
           });
         window.location.reload();
       }
     })
-    .catch((e) => {
+    .catch(e => {
       context.notify(e);
     });
 };

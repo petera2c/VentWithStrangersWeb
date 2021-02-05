@@ -38,14 +38,14 @@ function Vents(props) {
 
   useEffect(() => {
     setVents(null);
-    query.once("value", (snapshot) => {
+    query.once("value", snapshot => {
       if (!snapshot) return;
       const value = snapshot.val();
       const exists = snapshot.exists();
 
       if (exists)
         setVents(
-          Object.keys(value).map((ventID) => {
+          Object.keys(value).map(ventID => {
             return { id: ventID, ...value[ventID] };
           })
         );

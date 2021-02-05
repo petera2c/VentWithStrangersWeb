@@ -24,10 +24,10 @@ function AccountSection() {
     if (displayName && displayName !== user.displayName) {
       user
         .updateProfile({
-          displayName,
+          displayName
         })
         .then(() => {})
-        .catch((error) => {
+        .catch(error => {
           alert(error.message);
         });
     }
@@ -41,11 +41,11 @@ function AccountSection() {
             .then(() => {
               // Email sent.
             })
-            .catch((error) => {
+            .catch(error => {
               // An error happened.
             });
         })
-        .catch((error) => {
+        .catch(error => {
           alert(error.message);
         });
     }
@@ -56,7 +56,7 @@ function AccountSection() {
           .then(() => {
             // Update successful.
           })
-          .catch((error) => {
+          .catch(error => {
             alert(error.message);
           });
       else alert("Passwords are not the same!");
@@ -98,7 +98,7 @@ function AccountSection() {
               <FontAwesomeIcon className="grey-5 mr8" icon={faMonument} />
               <input
                 className="no-border bg-grey-4 br4"
-                onChange={(e) => setDisplayName(e.target.value)}
+                onChange={e => setDisplayName(e.target.value)}
                 placeholder="Art Vandalay"
                 type="text"
                 value={displayName}
@@ -115,7 +115,7 @@ function AccountSection() {
               <FontAwesomeIcon className="grey-5 mr8" icon={faPaperPlane} />
               <input
                 className="no-border bg-grey-4 br4"
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 placeholder="artvandalay@gmail.com"
                 type="text"
                 value={email}
@@ -140,7 +140,7 @@ function AccountSection() {
               <FontAwesomeIcon className="grey-5 mr8" icon={faLockAlt} />
               <input
                 className="no-border bg-grey-4 br4"
-                onChange={(e) => setNewPassword(e.target.value)}
+                onChange={e => setNewPassword(e.target.value)}
                 placeholder="*******"
                 type="password"
                 value={newPassword}
@@ -155,7 +155,7 @@ function AccountSection() {
               <FontAwesomeIcon className="grey-5 mr8" icon={faLockAlt} />
               <input
                 className="no-border bg-grey-4 br4"
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={e => setConfirmPassword(e.target.value)}
                 placeholder="*******"
                 type="password"
                 value={confirmPassword}

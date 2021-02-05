@@ -8,7 +8,7 @@ export const commentListener = (commentID, setComment, ventID) => {
 
   const commentRef = db.ref("/comments/" + ventID + "/" + commentID);
 
-  const listener = commentRef.on("value", (snapshot) => {
+  const listener = commentRef.on("value", snapshot => {
     if (!snapshot) return;
     const value = snapshot.val();
     const exists = snapshot.exists();
@@ -19,13 +19,13 @@ export const commentListener = (commentID, setComment, ventID) => {
 
   return () => commentRef.off("value", listener);
 };
-export const deleteComment = (commentID) => {};
+export const deleteComment = commentID => {};
 
 export const editComment = (commentID, commentString) => {};
 
 export const likeComment = (commentID, user) => {};
 
-export const swapTags = (commentText) => {
+export const swapTags = commentText => {
   if (!commentText) return;
   const regexFull = /@\{\{\[\[\[[\x21-\x5A|\x61-\x7A]+\]\]\]\|\|\[\[\[[\x21-\x5A|\x61-\x7A|\x5f]+\]\]\]\}\}/gi;
   //const regexID = /(?<=@\{\{\[\[\[)[\x21-\x5A|\x61-\x7A]+(?=\]\]\]\|\|)/gi;
@@ -45,7 +45,7 @@ export const swapTags = (commentText) => {
       something.push({
         start: index,
         end: possibleTag.length + index,
-        value: displayTag,
+        value: displayTag
       });
       return displayNameArray[0];
     } else return possibleTag;
@@ -60,21 +60,18 @@ export const swapTags = (commentText) => {
             commentText.slice(0, obj.start),
             <span className="mentions__mention" key={index}>
               {obj.value}
-            </span>,
+            </span>
           ];
         } else {
           return [
             commentText.slice(something[index - 1].end, obj.start),
             <span className="mentions__mention" key={index}>
               {obj.value}
-            </span>,
+            </span>
           ];
         }
       }),
-      commentText.slice(
-        something[something.length - 1].end,
-        commentText.length
-      ),
+      commentText.slice(something[something.length - 1].end, commentText.length)
     ];
   }
 };

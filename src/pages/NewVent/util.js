@@ -16,5 +16,5 @@ export const saveVent = (callback, ventObject, id, user, notify) => {
     .then(() => {
       callback({ _id: postsRef.getKey(), title: ventObject.title });
     })
-    .catch((error) => alert(error.message));
+    .catch(error => alert(error.message));
 };

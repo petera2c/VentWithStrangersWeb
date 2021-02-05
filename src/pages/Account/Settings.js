@@ -24,14 +24,14 @@ function AccountSection() {
   const settingsRef = db.ref("/users/" + user.uid + "/settings");
 
   useEffect(() => {
-    settingsRef.on("value", (snapshot) => {
+    settingsRef.on("value", snapshot => {
       const value = snapshot.val();
       const exists = snapshot.exists();
       if (exists) setSettings(value);
     });
   }, [user]);
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     const { name, checked } = e.target;
 
     settingsRef.child(name).set(checked);
@@ -64,7 +64,7 @@ function AccountSection() {
             className="mr8"
             checked={settings.postCommented}
             name="postCommented"
-            onChange={(e) => handleChange(e)}
+            onChange={e => handleChange(e)}
             style={{ minWidth: "13px" }}
             type="checkbox"
           />
@@ -79,7 +79,7 @@ function AccountSection() {
             className="mr8"
             checked={settings.commentLiked}
             name="commentLiked"
-            onChange={(e) => handleChange(e)}
+            onChange={e => handleChange(e)}
             style={{ minWidth: "13px" }}
             type="checkbox"
           />
@@ -94,7 +94,7 @@ function AccountSection() {
             className="mr8"
             checked={settings.postLiked}
             name="postLiked"
-            onChange={(e) => handleChange(e)}
+            onChange={e => handleChange(e)}
             style={{ minWidth: "13px" }}
             type="checkbox"
           />
@@ -109,7 +109,7 @@ function AccountSection() {
             className="mr8"
             checked={settings.receiveEmails}
             name="receiveEmails"
-            onChange={(e) => handleChange(e)}
+            onChange={e => handleChange(e)}
             style={{ minWidth: "13px" }}
             type="checkbox"
           />
@@ -129,7 +129,7 @@ function AccountSection() {
             className="mr8"
             checked={settings.adultContent}
             name="adultContent"
-            onChange={(e) => handleChange(e)}
+            onChange={e => handleChange(e)}
             style={{ minWidth: "13px" }}
             type="checkbox"
           />
