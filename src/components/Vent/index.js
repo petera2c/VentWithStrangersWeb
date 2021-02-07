@@ -36,7 +36,7 @@ import {
   TelegramIcon,
   TumblrIcon,
   TwitterIcon,
-  WhatsappIcon,
+  WhatsappIcon
 } from "react-share";
 
 import LoadingHeart from "../loaders/Heart";
@@ -55,7 +55,7 @@ import { UserContext } from "../../context";
 import {
   addTagsToPage,
   capitolizeFirstChar,
-  isMobileOrTablet,
+  isMobileOrTablet
 } from "../../util";
 import {
   commentVent,
@@ -73,7 +73,7 @@ import {
   startMessage,
   tagUser,
   ventHasLikedListener,
-  ventListener,
+  ventListener
 } from "./util";
 
 import classNames from "./style.css";
@@ -100,7 +100,7 @@ function Vent({
   isOnSingleVentPage,
   previewMode,
   searchPreviewMode,
-  ventID,
+  ventID
 }) {
   const [test, setTest] = useState(true);
   const [comments, setComments] = useState();
@@ -149,7 +149,7 @@ function Vent({
     };
   }, []);
 
-  const copyToClipboard = (e) => {
+  const copyToClipboard = e => {
     textAreaRef.current.select();
     document.execCommand("copy");
     // This is just personal preference.
@@ -172,7 +172,7 @@ function Vent({
           >
             <Container
               className="mr16"
-              onClick={(e) => {
+              onClick={e => {
                 e.preventDefault();
 
                 history.push("/activity?" + vent.authorID);
@@ -197,7 +197,7 @@ function Vent({
                   <Text
                     className="button-1 clickable mr8"
                     key={index}
-                    onClick={(e) => {
+                    onClick={e => {
                       e.preventDefault();
 
                       addTagsToPage(props, [tag]);
@@ -212,7 +212,7 @@ function Vent({
                 <FontAwesomeIcon
                   className="clickable grey-9 px16"
                   icon={faEllipsisV}
-                  onClick={(e) => {
+                  onClick={e => {
                     e.preventDefault();
 
                     setPostOptions(!postOptions);
@@ -224,18 +224,18 @@ function Vent({
                     style={{
                       top: "calc(100% + 8px)",
                       whiteSpace: "nowrap",
-                      zIndex: 1,
+                      zIndex: 1
                     }}
                   >
                     <Container className="column x-fill bg-white border-all2 border-all px16 py8 br8">
                       {vent.wasCreatedByUser && (
                         <Container
                           className="button-8 clickable align-center mb8"
-                          onClick={(e) => {
+                          onClick={e => {
                             e.preventDefault();
                             history.push({
                               pathname: "/post-a-problem",
-                              state: { vent },
+                              state: { vent }
                             });
                           }}
                         >
@@ -250,7 +250,7 @@ function Vent({
                       {vent.wasCreatedByUser && (
                         <Container
                           className="button-8 clickable align-center"
-                          onClick={(e) => {
+                          onClick={e => {
                             e.preventDefault();
                             setDeleteVentConfirm(true);
                             setPostOptions(false);
@@ -267,7 +267,7 @@ function Vent({
                       {!vent.wasCreatedByUser && (
                         <Container
                           className="button-8 clickable align-center"
-                          onClick={(e) => {
+                          onClick={e => {
                             e.preventDefault();
                             setReportModal(!reportModal);
                           }}
@@ -320,7 +320,7 @@ function Vent({
                   <FontAwesomeIcon
                     className="clickable blue mr4"
                     icon={faComment}
-                    onClick={(e) => {
+                    onClick={e => {
                       e.preventDefault();
                       setDisplayCommentField(!displayCommentField2);
 
@@ -344,7 +344,7 @@ function Vent({
                     className={`clickable heart ${
                       hasLiked ? "red" : "grey-5"
                     } mr4`}
-                    onClick={(e) => {
+                    onClick={e => {
                       e.preventDefault();
                       likeOrUnlikeVent(user, vent);
                     }}
@@ -386,7 +386,7 @@ function Vent({
                         className="absolute left-0 flex column bg-white shadow-2 px16 py16 br8"
                         style={{
                           top: "calc(100% - 8px)",
-                          zIndex: 1,
+                          zIndex: 1
                         }}
                       >
                         <Container className="wrap mb8">
@@ -497,7 +497,7 @@ function Vent({
                     <Container className="relative x-fill">
                       <MentionsInput
                         className="mentions"
-                        onChange={(e) => setCommentString(e.target.value)}
+                        onChange={e => setCommentString(e.target.value)}
                         value={commentString}
                       >
                         <Mention
@@ -554,6 +554,7 @@ function Vent({
                     commentID={comment.id}
                     commentIndex={index}
                     comment={comment}
+                    ventID={ventID}
                     key={index}
                   />
                 ))}
@@ -583,7 +584,7 @@ function Vent({
       {reportModal && (
         <ReportModal
           close={() => this.handleChange({ reportModal: false })}
-          submit={(option) => reportVent(history, vent._id, option, pathname)}
+          submit={option => reportVent(history, vent._id, option, pathname)}
         />
       )}
       {deleteVentConfirm && (

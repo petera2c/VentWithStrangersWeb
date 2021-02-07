@@ -4,15 +4,8 @@ admin.initializeApp();
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
-//
 
-/*
-
-export const test = () => {
-  console.log("hfd");
-};*/
-
-exports.helloworld = functions.database
+exports.newPostListener = functions.database
   .ref("/posts/")
   .onCreate((snapshot, context) => {
     // Grab the current value of what was written to the Realtime Database.
@@ -24,4 +17,10 @@ exports.helloworld = functions.database
     // writing to the Firebase Realtime Database.
     // Setting an "uppercase" sibling in the Realtime Database returns a Promise.
     //  return snapshot.ref.parent.child("uppercase").set(uppercase);
+  });
+
+exports.postChangeListener = functions.database
+  .ref("/posts/")
+  .onUpdate((snapshot, context) => {
+    console.log(snapshot);
   });

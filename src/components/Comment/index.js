@@ -24,11 +24,11 @@ import {
   deleteComment,
   editComment,
   likeComment,
-  swapTags,
+  swapTags
 } from "./util";
 import { findPossibleUsersToTag } from "../Vent/util";
 
-function Comment({ arrayLength, commentID, commentIndex }) {
+function Comment({ arrayLength, commentID, commentIndex, ventID }) {
   const [comment, setComment] = useState(false);
   const [commentOptions, setCommentOptions] = useState(false);
   const [commentString, setCommentString] = useState("");
@@ -36,7 +36,7 @@ function Comment({ arrayLength, commentID, commentIndex }) {
   const [editingComment, setEditingComment] = useState(false);
 
   useEffect(() => {
-    commentListener(commentID, setComment);
+    commentListener(commentID, setComment, ventID);
   }, []);
 
   return (
@@ -46,13 +46,13 @@ function Comment({ arrayLength, commentID, commentIndex }) {
         borderTopLeftRadius: commentIndex === 0 ? "8px" : "",
         borderTopRightRadius: commentIndex === 0 ? "8px" : "",
         borderBottomLeftRadius: arrayLength - 1 === commentIndex ? "8px" : "",
-        borderBottomRightRadius: arrayLength - 1 === commentIndex ? "8px" : "",
+        borderBottomRightRadius: arrayLength - 1 === commentIndex ? "8px" : ""
       }}
     >
       <Container className="justify-between wrap py16 px32">
         <Container
           className="clickable align-center mb8"
-          onClick={(e) => {
+          onClick={e => {
             e.preventDefault();
             history.push("/activity?" + comment.authorID);
           }}
@@ -73,7 +73,7 @@ function Comment({ arrayLength, commentID, commentIndex }) {
             <FontAwesomeIcon
               className="clickable grey-9 pl16"
               icon={faEllipsisV}
-              onClick={(e) => {
+              onClick={e => {
                 e.preventDefault();
                 setCommentOptions(!commentOptions);
               }}
@@ -84,14 +84,14 @@ function Comment({ arrayLength, commentID, commentIndex }) {
                 style={{
                   top: "calc(100% - 8px)",
                   whiteSpace: "nowrap",
-                  zIndex: 1,
+                  zIndex: 1
                 }}
               >
                 <Container className="column x-fill bg-white border-all2 border-all px16 py8 br8">
                   {comment.wasCreatedByUser && (
                     <Container
                       className="button-8 clickable align-center mb8"
-                      onClick={(e) => {
+                      onClick={e => {
                         e.preventDefault();
                         setCommentOptions(false);
                         setCommenetString(comment.text);
@@ -109,7 +109,7 @@ function Comment({ arrayLength, commentID, commentIndex }) {
                   {comment.wasCreatedByUser && (
                     <Container
                       className="button-8 clickable align-center"
-                      onClick={(e) => {
+                      onClick={e => {
                         e.preventDefault();
                         setDeleteCommentConfirm(true);
                         setCommentOptions(false);
@@ -126,7 +126,7 @@ function Comment({ arrayLength, commentID, commentIndex }) {
                   {!comment.wasCreatedByUser && (
                     <Container
                       className="button-8 clickable align-center"
-                      onClick={(e) => {
+                      onClick={e => {
                         e.preventDefault();
                         setReportModal(!reportModal);
                       }}
@@ -158,7 +158,7 @@ function Comment({ arrayLength, commentID, commentIndex }) {
           <Container className="relative x-fill">
             <MentionsInput
               className="mentions"
-              onChange={(e) => {
+              onChange={e => {
                 setCommenetString(e.target.value);
               }}
               value={commentString}
@@ -212,7 +212,7 @@ function Comment({ arrayLength, commentID, commentIndex }) {
       <Container className="align-center justify-between">
         <Container
           className="clickable align-center py16 px32"
-          onClick={(e) => {
+          onClick={e => {
             e.preventDefault();
 
             if (comment.hasLiked) likeComment(comment);

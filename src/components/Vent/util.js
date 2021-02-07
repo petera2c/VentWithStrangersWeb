@@ -238,7 +238,7 @@ export const getVentComments = (comments, setComments, ventID) => {
 export const ventHasLikedListener = (setHasLiked, userID, ventID) => {
   const db = firebase.database();
 
-  const postLikedRef = db.ref(ventID + "/" + userID);
+  const postLikedRef = db.ref("post_likes/" + ventID + "/" + userID);
   const listener = postLikedRef.on("value", snapshot => {
     if (!snapshot) return;
     const value = snapshot.val();
@@ -271,7 +271,7 @@ export const likeOrUnlikeVent = (user, vent) => {
     return alert("You must sign in or register an account to support a vent!");
   const db = firebase.database();
 
-  const postLikedRef = db.ref(vent.id + "/" + user.uid);
+  const postLikedRef = db.ref("post_likes/" + vent.id + "/" + user.uid);
   const postCounterRef = db.ref("posts/" + vent.id + "/likeCounter");
 
   postLikedRef.once("value", snapshot => {

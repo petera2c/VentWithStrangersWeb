@@ -31,6 +31,7 @@ export const signUp = (
     alert("Passwords do not match.");
     return;
   }
+
   firebase
     .auth()
     .createUserWithEmailAndPassword(email, password)
@@ -57,7 +58,7 @@ export const signUp = (
           .catch(error => {
             console.log(error);
           });
-        window.location.reload();
+        //window.location.reload();
       }
     })
     .catch(e => {

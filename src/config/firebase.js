@@ -1,4 +1,4 @@
-export const firebaseConfig = {
+var firebaseConfig = {
   apiKey: "AIzaSyCk8EfNyqarIzBAQSCFgU8634o-e0iA_Os",
   authDomain: "vent-with-strangers-2acc6.firebaseapp.com",
   databaseURL: "https://vent-with-strangers-2acc6.firebaseio.com",
@@ -6,5 +6,18 @@ export const firebaseConfig = {
   storageBucket: "vent-with-strangers-2acc6.appspot.com",
   messagingSenderId: "440569980458",
   appId: "1:440569980458:web:870c6bde68871e5fd78553",
-  measurementId: "G-N5NTVEZHSN",
+  measurementId: "G-N5NTVEZHSN"
 };
+if (location.hostname === "localhost") {
+  firebaseConfig = {
+    databaseURL: "http://localhost:9000?ns=emulatorui",
+    projectId: "emulatorui",
+
+    apiKey: "AIzaSyCk8EfNyqarIzBAQSCFgU8634o-e0iA_Os",
+    authDomain: "emulatorui.firebaseapp.com",
+    storageBucket: "emulatorui.appspot.com",
+    messagingSenderId: "2",
+    appId: "24324"
+  };
+}
+export default firebaseConfig;
