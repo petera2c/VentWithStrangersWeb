@@ -190,8 +190,9 @@ export const newVentCommentListener = (setComments, ventID, first = true) => {
         for (let index in oldComments)
           if (oldComments[index].id === arrayResult[0].id) return oldComments;
 
-        if (oldComments) return [...arrayResult, ...oldComments];
-        else return arrayResult;
+        if (oldComments) {
+          return [...arrayResult, ...oldComments];
+        } else return arrayResult;
       });
     } else setComments([]);
   });

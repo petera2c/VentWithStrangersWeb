@@ -102,7 +102,6 @@ function Vent({
   searchPreviewMode,
   ventID
 }) {
-  const [test, setTest] = useState(true);
   const [comments, setComments] = useState();
   const user = useContext(UserContext);
 
@@ -555,14 +554,13 @@ function Vent({
                     commentIndex={index}
                     comment={comment}
                     ventID={ventID}
-                    key={index}
+                    key={comment.id}
                   />
                 ))}
-                {vent.commentCounter > comments.length - 1 && (
+                {vent.commentCounter > comments.length && (
                   <Button
                     className="blue underline"
                     onClick={() => {
-                      setTest(false);
                       getVentComments(comments, setComments, ventID);
                     }}
                     key={comments.length}
