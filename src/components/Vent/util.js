@@ -24,7 +24,7 @@ export const commentVent = (commentString, user, ventID) => {
   commentsRef
     .set(commentObj)
     .then(() => {
-      const postCounterRef = db.ref("posts/" + ventID + "/commentCounter");
+      const postCounterRef = db.ref("vents/" + ventID + "/commentCounter");
 
       postCounterRef.once("value", snapshot => {
         if (!snapshot) return;
@@ -253,7 +253,7 @@ export const ventHasLikedListener = (setHasLiked, userID, ventID) => {
 export const ventListener = (setVent, ventID) => {
   const db = firebase.database();
 
-  const ventRef = db.ref("/posts/" + ventID);
+  const ventRef = db.ref("/vents/" + ventID);
 
   const listener = ventRef.on("value", snapshot => {
     if (!snapshot) return;
@@ -273,7 +273,7 @@ export const likeOrUnlikeVent = (user, vent) => {
   const db = firebase.database();
 
   const postLikedRef = db.ref("post_likes/" + vent.id + "/" + user.uid);
-  const postCounterRef = db.ref("posts/" + vent.id + "/likeCounter");
+  const postCounterRef = db.ref("vents/" + vent.id + "/likeCounter");
 
   postLikedRef.once("value", snapshot => {
     if (!snapshot) return;

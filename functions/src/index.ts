@@ -1,4 +1,6 @@
 import * as functions from "firebase-functions";
+import firebase from "firebase/app";
+import "firebase/database";
 const admin = require("firebase-admin");
 admin.initializeApp();
 
@@ -6,21 +8,27 @@ admin.initializeApp();
 // // https://firebase.google.com/docs/functions/typescript
 
 exports.newPostListener = functions.database
-  .ref("/posts/")
+  .ref("/vents/")
   .onCreate((snapshot, context) => {
     // Grab the current value of what was written to the Realtime Database.
-    const original = snapshot.val();
-    console.log(original);
-    //console.log("Uppercasing", context.params.pushId, original);
-    //const uppercase = original.toUpperCase();
-    // You must return a Promise when performing asynchronous tasks inside a Functions such as
-    // writing to the Firebase Realtime Database.
-    // Setting an "uppercase" sibling in the Realtime Database returns a Promise.
-    //  return snapshot.ref.parent.child("uppercase").set(uppercase);
-  });
+    const vent = snapshot.val();
+    console.log(vent);
 
-exports.postChangeListener = functions.database
-  .ref("/posts/")
-  .onUpdate((snapshot, context) => {
-    console.log(snapshot);
+    const db = firebase.database();
+    let notificationsRef = db.ref("/notifications/" + vent.userID);
+
+    const notificationsObject = {
+      message: "Your new vent is live!",
+      server_timestamp: { ".sv": "timestamp" },
+    };
+    console.log(notificationsObject);
+
+    notificationsRef
+      .set(notificationsObject)
+      .then(() => {
+        console.log("here");
+      })
+      .catch(error => console.log(error.message));
+
+    return "hello world";
   });

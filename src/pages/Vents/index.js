@@ -31,7 +31,7 @@ function Vents(props) {
 
   const db = firebase.database();
 
-  const commentsRef = db.ref("/posts/");
+  const commentsRef = db.ref("/vents/");
   let query = commentsRef.orderByChild("server_timestamp").limitToLast(10);
   if (pathname === "/trending")
     query = commentsRef.orderByChild("likeCounter").limitToLast(10);

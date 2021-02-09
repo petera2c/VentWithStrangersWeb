@@ -3,13 +3,13 @@ import "firebase/database";
 
 export const saveVent = (callback, ventObject, id, user, notify) => {
   const db = firebase.database();
-  let postsRef = db.ref("/posts/").push();
+  let postsRef = db.ref("/vents/").push();
   if (user) {
     ventObject.userID = user.uid;
   }
   ventObject.server_timestamp = { ".sv": "timestamp" };
 
-  if (id) postsRef = db.ref("/posts/" + id).push();
+  if (id) postsRef = db.ref("/vents/" + id).push();
 
   postsRef
     .set(ventObject)
