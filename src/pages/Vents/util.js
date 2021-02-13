@@ -1,4 +1,40 @@
-export const getMetaInformation = (pathname) => {
+import firebase from "firebase/app";
+import "firebase/database";
+import { combineInsideObjectWithID, getEndAtValue } from "../../util";
+
+export const getVents = (pathname, setCanLoadMorePosts, setVents, vents) => {
+  const db = firebase.database();
+  let endAt = getEndAtValue(vents);
+
+  let getVentsQuery = db
+    .ref("/vents/")
+    .orderByChild("server_timestamp")
+    .endAt(endAt)
+    .limitToLast(10);
+  if (pathname === "/trending")
+    getVentsQuery = db
+      .ref("/vents/")
+      .orderByChild("likeCounter")
+      .endAt(endAt)
+      .limitToLast(10);
+
+  getVentsQuery.once("value", snapshot => {
+    if (!snapshot.exists()) return setCanLoadMorePosts(false);
+    else {
+      const newVents = combineInsideObjectWithID(snapshot.val());
+
+      newVents.sort((a, b) => {
+        if (a.server_timestamp < b.server_timestamp) return 1;
+        else return -1;
+      });
+
+      if (vents) return setVents([...vents, ...newVents]);
+      else return setVents(newVents);
+    }
+  });
+};
+
+export const getMetaInformation = pathname => {
   let metaTitle = "";
   let metaDescription =
     "People care. Vent and chat anonymously to be apart of a community committed to making the world a better place.";

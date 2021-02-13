@@ -2,11 +2,30 @@ import axios from "axios";
 import firebase from "firebase/app";
 import "firebase/auth";
 
-// Taken from stack overflow
-export const capitolizeWordsInString = (str) => {
-  return str.replace(/\b\w/g, (l) => l.toUpperCase());
+export const combineInsideObjectWithID = object => {
+  return Object.keys(object).map(objectID => {
+    return { id: objectID, ...object[objectID] };
+  });
 };
-export const capitolizeFirstChar = (string) => {
+
+export const combineObjectWithID = (id, object) => {
+  object.id = id;
+  return object;
+};
+
+export const getEndAtValue = array => {
+  let endAt = 10000000000000;
+
+  if (array && array[array.length - 1].server_timestamp)
+    endAt = array[array.length - 1].server_timestamp - 1;
+  return endAt;
+};
+
+// Taken from stack overflow
+export const capitolizeWordsInString = str => {
+  return str.replace(/\b\w/g, l => l.toUpperCase());
+};
+export const capitolizeFirstChar = string => {
   if (string) return string.charAt(0).toUpperCase() + string.slice(1);
   else return;
 };
@@ -35,7 +54,7 @@ export const isPageActive = (page, pathname) => {
   else return "";
 };
 
-export const getTextFromHtmlTag = (tagString) => {
+export const getTextFromHtmlTag = tagString => {
   let div = document.createElement("div");
   div.innerHTML = "<div   dangerouslySetInnerHTML={{__html: " + tagString;
 

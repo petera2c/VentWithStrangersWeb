@@ -9,8 +9,9 @@ import LoadingHeart from "../loaders/Heart";
 import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
 
+let hasScrolled = false;
+
 class LoadMoreVents extends Component {
-  state = { hasScrolled: false };
   componentDidMount() {
     this._ismounted = true;
     window.addEventListener("scroll", this.scrollListener);
@@ -24,17 +25,18 @@ class LoadMoreVents extends Component {
   };
   scrollListener = () => {
     const { loadMore = () => {} } = this.props;
-    const { hasScrolled } = this.state;
 
     if (
       window.innerHeight + window.scrollY + 5 >= document.body.scrollHeight &&
       !hasScrolled
     ) {
-      this.handleChange({ hasScrolled: true });
+      hasScrolled = true;
       loadMore();
     }
 
-    setTimeout(() => this.handleChange({ hasScrolled: false }), 100);
+    setTimeout(() => {
+      hasScrolled = false;
+    }, 1000);
   };
   render() {
     const { loadMore = () => {} } = this.props;

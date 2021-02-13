@@ -1,6 +1,8 @@
 import firebase from "firebase/app";
 import "firebase/database";
 
+import { getEndAtValue } from "../../util";
+
 export const commentLikeUpdate = (
   comments,
   context,
@@ -201,9 +203,7 @@ export const newVentCommentListener = (setComments, ventID, first = true) => {
 };
 
 export const getVentComments = (comments, setComments, ventID) => {
-  let endAt = 10000000000000;
-  if (comments && comments[comments.length - 1].server_timestamp)
-    endAt = comments[comments.length - 1].server_timestamp - 1;
+  let endAt = getEndAtValue(comments);
 
   const db = firebase.database();
 

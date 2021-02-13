@@ -1,7 +1,7 @@
 import io from "socket.io-client";
 
 export const getNotifications = (skip, socket, updateNotifications) => {
-  socket.emit("get_notifications", { skip }, (dataObj) => {
+  socket.emit("get_notifications", { skip }, dataObj => {
     const { newNotifications } = dataObj;
 
     updateNotifications(newNotifications);
@@ -18,7 +18,7 @@ export const getUsersComments = (
   let searchID = user._id;
   if (search) searchID = search;
 
-  socket.emit("get_users_comments", { searchID }, (result) => {
+  socket.emit("get_users_comments", { searchID }, result => {
     const { comments, message, success } = result;
 
     if (success) handleChange({ comments });
@@ -41,7 +41,7 @@ export const getUsersPosts = (
   let searchID = user._id;
   if (search) searchID = search;
 
-  socket.emit("get_users_posts", { searchID, skip }, (result) => {
+  socket.emit("get_users_posts", { searchID, skip }, result => {
     const { message, problems, success } = result;
     let newVents = problems;
     let canLoadMorePosts = true;
@@ -53,7 +53,7 @@ export const getUsersPosts = (
   });
 };
 
-export const initSocket = (callback) => {
+export const initSocket = callback => {
   let socket;
   if (process.env.NODE_ENV === "development")
     socket = io("http://localhost:5000");
@@ -68,7 +68,7 @@ export const initReceiveNotifications = (
   updateNotifications,
   userID
 ) => {
-  socket.on(userID + "_receive_new_notifications", (dataObj) => {
+  socket.on(userID + "_receive_new_notifications", dataObj => {
     const { newNotifications } = dataObj;
 
     soundNotify("bing");
@@ -79,7 +79,7 @@ export const initReceiveNotifications = (
       if (notificationObj) {
         var notification = new Notification(notificationObj.title, {
           icon: "https://www.ventwithstrangers.com/favicon.ico",
-          body: notificationObj.body,
+          body: notificationObj.body
         });
 
         notification.onclick = () => {

@@ -6,9 +6,6 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 import { faPen } from "@fortawesome/pro-solid-svg-icons/faPen";
 import { faComments } from "@fortawesome/pro-solid-svg-icons/faComments";
 
-import firebase from "firebase/app";
-import "firebase/database";
-
 import LoadingHeart from "../../components/loaders/Heart";
 
 import Page from "../../components/containers/Page";
@@ -19,7 +16,7 @@ import Vent from "../../components/Vent";
 import LoadMoreVents from "../../components/LoadMoreVents";
 
 import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
-import { getMetaInformation } from "./util";
+import { getMetaInformation, getVents } from "./util";
 
 function Vents(props) {
   const [vents, setVents] = useState(null);
@@ -27,30 +24,10 @@ function Vents(props) {
   const { pathname, search } = location;
 
   const { metaDescription, metaTitle } = getMetaInformation(pathname);
-  const canLoadMorePosts = false;
-
-  const db = firebase.database();
-
-  const ventsRef = db.ref("/vents/");
-  let query = ventsRef.orderByChild("server_timestamp").limitToLast(10);
-  if (pathname === "/trending")
-    query = ventsRef.orderByChild("likeCounter").limitToLast(10);
+  const [canLoadMorePosts, setCanLoadMorePosts] = useState(true);
 
   useEffect(() => {
-    setVents(null);
-    query.once("value", snapshot => {
-      if (!snapshot) return;
-      const value = snapshot.val();
-      const exists = snapshot.exists();
-
-      if (exists)
-        setVents(
-          Object.keys(value).map(ventID => {
-            return { id: ventID, ...value[ventID] };
-          })
-        );
-      else setVents([]);
-    });
+    getVents(pathname, setCanLoadMorePosts, setVents, vents);
   }, [props.location]);
 
   return (
@@ -110,7 +87,9 @@ function Vents(props) {
               {canLoadMorePosts && (
                 <LoadMoreVents
                   canLoadMorePosts={canLoadMorePosts}
-                  loadMore={() => {}}
+                  loadMore={() =>
+                    getVents(pathname, setCanLoadMorePosts, setVents, vents)
+                  }
                 />
               )}
             </Container>
