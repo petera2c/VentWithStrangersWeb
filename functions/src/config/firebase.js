@@ -1,4 +1,4 @@
-var firebaseConfig = {
+let firebaseConfig = {
   apiKey: "AIzaSyCk8EfNyqarIzBAQSCFgU8634o-e0iA_Os",
   appId: "1:440569980458:web:870c6bde68871e5fd78553",
   authDomain: "vent-with-strangers-2acc6.firebaseapp.com",
@@ -6,7 +6,7 @@ var firebaseConfig = {
   measurementId: "G-N5NTVEZHSN",
   messagingSenderId: "440569980458",
   projectId: "vent-with-strangers-2acc6",
-  storageBucket: "vent-with-strangers-2acc6.appspot.com"
+  storageBucket: "vent-with-strangers-2acc6.appspot.com",
 };
 if (location.hostname === "localhost") {
   firebaseConfig = {
@@ -17,22 +17,7 @@ if (location.hostname === "localhost") {
     measurementId: "G-N5NTVEZHSN",
     messagingSenderId: "440569980458",
     projectId: "vent-with-strangers-2acc6",
-    storageBucket: "vent-with-strangers-2acc6.appspot.com"
+    storageBucket: "vent-with-strangers-2acc6.appspot.com",
   };
 }
 export default firebaseConfig;
-
-/*
-
-
-apiKey: "AIzaSyCk8EfNyqarIzBAQSCFgU8634o-e0iA_Os",
-appId: "24324"
-authDomain: "emulatorui.firebaseapp.com",
-databaseURL: "http://localhost:9000?ns=emulatorui",
-messagingSenderId: "2",
-projectId: "emulatorui",
-storageBucket: "emulatorui.appspot.com",
-
-
-
-  */

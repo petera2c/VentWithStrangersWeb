@@ -31,10 +31,10 @@ function Vents(props) {
 
   const db = firebase.database();
 
-  const commentsRef = db.ref("/vents/");
-  let query = commentsRef.orderByChild("server_timestamp").limitToLast(10);
+  const ventsRef = db.ref("/vents/");
+  let query = ventsRef.orderByChild("server_timestamp").limitToLast(10);
   if (pathname === "/trending")
-    query = commentsRef.orderByChild("likeCounter").limitToLast(10);
+    query = ventsRef.orderByChild("likeCounter").limitToLast(10);
 
   useEffect(() => {
     setVents(null);

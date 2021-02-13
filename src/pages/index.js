@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Route,
   Switch,
-  useLocation,
+  useLocation
 } from "react-router-dom";
 import axios from "axios";
 import moment from "moment-timezone";
@@ -41,11 +41,6 @@ import { isMobileOrTablet } from "../util";
 
 function Routes() {
   const [user, loading, error] = useAuthState(firebase.auth());
-  /*
-  const db = firebase.firestore();
-  const test2 = db.collection("cities").doc("LA").set({
-    here: "true",
-  });*/
 
   if (loading)
     return (

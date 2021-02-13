@@ -15,12 +15,11 @@ class GIProvider extends Component {
     notification: {
       on: false,
       message: "",
-      type: "danger",
+      type: "danger"
     },
-    notifications: [],
     saving: false,
     user: undefined,
-    vents: undefined,
+    vents: undefined
   };
   componentDidMount() {
     this._ismounted = true;
@@ -35,7 +34,7 @@ class GIProvider extends Component {
     if (this._ismounted) this.setState(stateObject, callback);
   };
 
-  notify = (newNotification) => {
+  notify = newNotification => {
     newNotification.on = true;
     this.setState({ notification: newNotification });
     alert(newNotification.message);
@@ -71,15 +70,7 @@ class GIProvider extends Component {
   };
 
   render() {
-    const {
-      comments,
-      notification,
-      notifications,
-      saving,
-      socket,
-      user,
-      vents,
-    } = this.state;
+    const { comments, notification, saving, socket, user, vents } = this.state;
 
     return (
       <Provider
@@ -88,12 +79,10 @@ class GIProvider extends Component {
           comments,
           handleChange: this.handleChange,
           notify: this.notify,
-          notifications,
           saving,
           soundNotify: this.soundNotify,
-          updateVent: this.updateVent,
           user,
-          vents,
+          vents
         }}
       >
         {this.props.children}
