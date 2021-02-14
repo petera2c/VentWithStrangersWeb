@@ -13,7 +13,7 @@ export const combineObjectWithID = (id, object) => {
   return object;
 };
 
-export const getEndAtValue = array => {
+export const getEndAtValueTimestamp = array => {
   let endAt = 10000000000000;
 
   if (array && array[array.length - 1].server_timestamp)

@@ -27,7 +27,7 @@ function Vents(props) {
   const [canLoadMorePosts, setCanLoadMorePosts] = useState(true);
 
   useEffect(() => {
-    getVents(pathname, setCanLoadMorePosts, setVents, vents);
+    getVents(pathname, setCanLoadMorePosts, setVents, null);
   }, [props.location]);
 
   return (

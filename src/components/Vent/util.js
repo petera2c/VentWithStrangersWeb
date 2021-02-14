@@ -1,7 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/database";
 
-import { getEndAtValue } from "../../util";
+import { getEndAtValueTimestamp } from "../../util";
 
 export const commentLikeUpdate = (
   comments,
@@ -13,6 +13,7 @@ export const commentLikeUpdate = (
 export const commentVent = (commentString, user, ventID) => {
   if (!user) return alert("Only users can comment! Please login or register.");
   let commentObj = {
+    likeCounter: 0,
     server_timestamp: {
       ".sv": "timestamp"
     },
@@ -203,7 +204,7 @@ export const newVentCommentListener = (setComments, ventID, first = true) => {
 };
 
 export const getVentComments = (comments, setComments, ventID) => {
-  let endAt = getEndAtValue(comments);
+  let endAt = getEndAtValueTimestamp(comments);
 
   const db = firebase.database();
 

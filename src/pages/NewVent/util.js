@@ -8,6 +8,8 @@ export const saveVent = (callback, ventObject, id, user, notify) => {
     ventObject.userID = user.uid;
   }
   ventObject.server_timestamp = { ".sv": "timestamp" };
+  ventObject.commentCounter = 0;
+  ventObject.likeCounter = 0;
 
   if (id) postsRef = db.ref("/vents/" + id).push();
 

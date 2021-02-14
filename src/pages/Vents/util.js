@@ -1,26 +1,30 @@
 import firebase from "firebase/app";
 import "firebase/database";
-import { combineInsideObjectWithID, getEndAtValue } from "../../util";
+import { combineInsideObjectWithID, getEndAtValueTimestamp } from "../../util";
 
 export const getVents = (pathname, setCanLoadMorePosts, setVents, vents) => {
   const db = firebase.database();
-  let endAt = getEndAtValue(vents);
+  let getVentsQuery;
 
-  let getVentsQuery = db
-    .ref("/vents/")
-    .orderByChild("server_timestamp")
-    .endAt(endAt)
-    .limitToLast(10);
-  if (pathname === "/trending")
+  if (vents) {
+    let endAt = vents[vents.length - 1].server_timestamp;
+
     getVentsQuery = db
       .ref("/vents/")
-      .orderByChild("likeCounter")
+      .orderByChild("server_timestamp")
       .endAt(endAt)
       .limitToLast(10);
+  } else {
+    getVentsQuery = db
+      .ref("/vents/")
+      .orderByChild("server_timestamp")
+      .limitToLast(10);
+  }
 
   getVentsQuery.once("value", snapshot => {
-    if (!snapshot.exists()) return setCanLoadMorePosts(false);
-    else {
+    if (!snapshot.exists()) {
+      return setCanLoadMorePosts(false);
+    } else {
       const newVents = combineInsideObjectWithID(snapshot.val());
 
       newVents.sort((a, b) => {
