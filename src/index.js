@@ -8,9 +8,10 @@ import firebaseConfig from "./config/firebase";
 
 import Routes from "./pages/";
 
+import "./config/firebase";
+
 import "./theme.css";
 
-firebase.initializeApp(firebaseConfig);
 if (location.hostname !== "localhost") firebase.analytics();
 const rootElement = document.getElementById("root");
 

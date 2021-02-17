@@ -1,9 +1,6 @@
-import firebase from "firebase/app";
-import "firebase/database";
+import db from "../../config/firebase";
 
-export const saveVent = (callback, ventObject, id, user, notify) => {
-  const db = firebase.database();
-  let postsRef = db.ref("/vents/").push();
+export const saveVent = async (callback, ventObject, id, user, notify) => {
   if (user) {
     ventObject.userID = user.uid;
   }
@@ -11,12 +8,6 @@ export const saveVent = (callback, ventObject, id, user, notify) => {
   ventObject.commentCounter = 0;
   ventObject.likeCounter = 0;
 
-  if (id) postsRef = db.ref("/vents/" + id).push();
-
-  postsRef
-    .set(ventObject)
-    .then(() => {
-      callback({ _id: postsRef.getKey(), title: ventObject.title });
-    })
-    .catch(error => alert(error.message));
+  const newVent = await db.collection("/vents/").add(ventObject);
+  callback({ _id: newVent.id, title: ventObject.title });
 };

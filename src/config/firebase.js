@@ -1,3 +1,7 @@
+import firebase from "firebase/app";
+import "firebase/analytics";
+import "firebase/firestore";
+
 var firebaseConfig = {
   apiKey: "AIzaSyCk8EfNyqarIzBAQSCFgU8634o-e0iA_Os",
   appId: "1:440569980458:web:870c6bde68871e5fd78553",
@@ -8,6 +12,7 @@ var firebaseConfig = {
   projectId: "vent-with-strangers-2acc6",
   storageBucket: "vent-with-strangers-2acc6.appspot.com"
 };
+
 if (location.hostname === "localhost") {
   firebaseConfig = {
     apiKey: "AIzaSyCk8EfNyqarIzBAQSCFgU8634o-e0iA_Os",
@@ -20,19 +25,9 @@ if (location.hostname === "localhost") {
     storageBucket: "vent-with-strangers-2acc6.appspot.com"
   };
 }
-export default firebaseConfig;
+const firebaseApp = firebase.initializeApp(firebaseConfig);
 
-/*
+var db = firebase.firestore();
+if (location.hostname === "localhost") db.useEmulator("localhost", 8080);
 
-
-apiKey: "AIzaSyCk8EfNyqarIzBAQSCFgU8634o-e0iA_Os",
-appId: "24324"
-authDomain: "emulatorui.firebaseapp.com",
-databaseURL: "http://localhost:9000?ns=emulatorui",
-messagingSenderId: "2",
-projectId: "emulatorui",
-storageBucket: "emulatorui.appspot.com",
-
-
-
-  */
+export default db;
