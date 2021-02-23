@@ -16,7 +16,7 @@ firebase.initializeApp({
   storageBucket: "vent-with-strangers-2acc6.appspot.com",
 });
 
-const createVentLink = vent => {
+const createVentLink = (vent) => {
   let link =
     "https://www.ventwithstrangers.com/problem/" +
     vent.id +
@@ -39,15 +39,15 @@ const createNotification = (link, message, userID) => {
     hasSeen: false,
     link,
     message,
-    server_timestamp: { ".sv": "timestamp" },
+    server_timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     userID,
   };
 
   return notificationsRef.push(notificationsObject);
 };
 
-const combineInsideObjectWithID = object => {
-  return Object.keys(object).map(objectID => {
+const combineInsideObjectWithID = (object) => {
+  return Object.keys(object).map((objectID) => {
     return { id: objectID, ...object[objectID] };
   });
 };
@@ -66,7 +66,7 @@ exports.newCommentListener = functions.database
     const db = firebase.database();
     const ventRef = db.ref("/vents/" + ventID);
 
-    return ventRef.once("value", snapshot => {
+    return ventRef.once("value", (snapshot) => {
       if (!snapshot.exists()) return "Cannot find post.";
       const vent = combineObjectWithID(ventID, snapshot.val());
 

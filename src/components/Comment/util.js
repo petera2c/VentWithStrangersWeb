@@ -1,23 +1,20 @@
 import React from "react";
-
-import firebase from "firebase/app";
-import "firebase/database";
+import db from "../../config/firebase";
 
 export const commentListener = (commentID, setComment, ventID) => {
-  const db = firebase.database();
+  const unsubscribe = db
+    .collection("vent_data")
+    .doc(ventID)
+    .collection("comments")
+    .doc(commentID)
+    .onSnapshot("value", doc => {
+      const value = doc.data();
 
-  const commentRef = db.ref("/comments/" + ventID + "/" + commentID);
+      if (value) setComment({ id: doc.id, ...value });
+      else setComment(false);
+    });
 
-  const listener = commentRef.on("value", snapshot => {
-    if (!snapshot) return;
-    const value = snapshot.val();
-    const exists = snapshot.exists();
-
-    if (exists) setComment({ id: snapshot.key, ...value });
-    else setComment(false);
-  });
-
-  return () => commentRef.off("value", listener);
+  return () => unsubscribe();
 };
 export const deleteComment = commentID => {};
 

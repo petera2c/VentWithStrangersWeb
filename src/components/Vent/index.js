@@ -147,7 +147,6 @@ function Vent({
       if (ventHasLikedListenerReturn) ventHasLikedListenerReturn();
     };
   }, []);
-
   const copyToClipboard = e => {
     textAreaRef.current.select();
     document.execCommand("copy");
@@ -533,7 +532,7 @@ function Vent({
 
                     <Button
                       className="button-2 px32 py8 mt8 br4"
-                      onClick={() => {
+                      onClick={async () => {
                         commentVent(commentString, user, vent.id);
                         setCommentString("");
                       }}
@@ -547,16 +546,18 @@ function Vent({
           {displayCommentField2 && comments && (
             <Container className="column mb16">
               <Container className="column border-all2 br8">
-                {comments.map((comment, index) => (
-                  <Comment
-                    arrayLength={comments.length}
-                    commentID={comment.id}
-                    commentIndex={index}
-                    comment={comment}
-                    ventID={ventID}
-                    key={comment.id}
-                  />
-                ))}
+                {comments.map((comment, index) => {
+                  return (
+                    <Comment
+                      arrayLength={comments.length}
+                      commentID={comment.id}
+                      commentIndex={index}
+                      comment={comment}
+                      ventID={ventID}
+                      key={comment.id}
+                    />
+                  );
+                })}
                 {vent.commentCounter > comments.length && (
                   <Button
                     className="blue underline"

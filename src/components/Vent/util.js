@@ -1,5 +1,5 @@
+import db from "../../config/firebase";
 import firebase from "firebase/app";
-import "firebase/firestore";
 
 import { getEndAtValueTimestamp } from "../../util";
 
@@ -10,37 +10,25 @@ export const commentLikeUpdate = (
   updateCommentLikes
 ) => {};
 
-export const commentVent = (commentString, user, ventID) => {
+export const commentVent = async (commentString, user, ventID) => {
   if (!user) return alert("Only users can comment! Please login or register.");
   let commentObj = {
     likeCounter: 0,
-    server_timestamp: {
-      ".sv": "timestamp"
-    },
+    server_timestamp: firebase.firestore.Timestamp.now().seconds * 1000,
     text: commentString,
     userID: user.uid,
     ventID
   };
+  const res = await db
+    .collection("vent_data")
+    .doc(ventID)
+    .collection("comments")
+    .add(commentObj);
 
-  const db = firebase.database();
-  let commentsRef = db.ref("/comments/" + ventID).push();
-  commentsRef
-    .set(commentObj)
-    .then(() => {
-      const postCounterRef = db.ref("vents/" + ventID + "/commentCounter");
-
-      postCounterRef.once("value", snapshot => {
-        if (!snapshot) return;
-
-        const value = snapshot.val();
-
-        const valueToUpdateBy = 1;
-
-        if (!value) postCounterRef.set(valueToUpdateBy);
-        else postCounterRef.set(value + valueToUpdateBy);
-      });
-    })
-    .catch(error => alert(error.message));
+  if (res.id)
+    db.collection("vents")
+      .doc(ventID)
+      .update({ commentCounter: firebase.firestore.FieldValue.increment(1) });
 };
 
 export const deleteVent = (
@@ -168,78 +156,64 @@ export const getVentPartialLink = vent => {
 };
 
 export const newVentCommentListener = (setComments, ventID, first = true) => {
-  const db = firebase.database();
-
   const query = db
-    .ref("/comments/" + ventID)
-    .orderByChild("server_timestamp")
-    .limitToLast(1);
-  const listener = query.on("value", snapshot => {
-    if (!snapshot) return;
-    if (first) {
-      first = false;
-      return;
-    }
-
-    const value = snapshot.val();
-    const exists = snapshot.exists();
-
-    if (exists) {
-      let arrayResult = Object.keys(value).map(commentID => {
-        return { id: commentID, ...value[commentID] };
-      });
-
-      setComments(oldComments => {
-        for (let index in oldComments)
-          if (oldComments[index].id === arrayResult[0].id) return oldComments;
-
-        if (oldComments) {
-          return [...arrayResult, ...oldComments];
-        } else return arrayResult;
-      });
-    } else setComments([]);
-  });
-
-  return () => query.off("value", listener);
+    .collection("vent_data")
+    .doc(ventID)
+    .collection("comments")
+    .orderBy("server_timestamp", "desc")
+    .startAt(10000000000000000)
+    .limit(1)
+    .onSnapshot(
+      querySnapshot => {
+        if (first) {
+          first = false;
+        } else if (querySnapshot.docs && querySnapshot.docs[0]) {
+          setComments(oldComments => [
+            {
+              ...querySnapshot.docs[0].data(),
+              id: querySnapshot.docs[0].id,
+              doc: querySnapshot.docs[0]
+            },
+            ...oldComments
+          ]);
+        }
+      },
+      err => {}
+    );
+  return () => {
+    query();
+  };
 };
 
-export const getVentComments = (comments, setComments, ventID) => {
-  let endAt = getEndAtValueTimestamp(comments);
+export const getVentComments = async (comments, setComments, ventID) => {
+  let startAt = getEndAtValueTimestamp(comments);
 
-  const db = firebase.database();
+  const snapshot = await db
+    .collection("vent_data")
+    .doc(ventID)
+    .collection("comments")
+    .orderBy("server_timestamp", "desc")
+    .startAfter(startAt)
+    .limit(10)
+    .get();
 
-  const query = db
-    .ref("/comments/" + ventID)
-    .orderByChild("server_timestamp")
-    .endAt(endAt)
-    .limitToLast(10);
-  const listener = query.once("value", snapshot => {
-    if (!snapshot) return;
+  if (snapshot.docs && snapshot.docs.length > 0) {
+    let newComments = [];
+    snapshot.docs.forEach((doc, index) => {
+      const value = doc.data();
 
-    const value = snapshot.val();
-    const exists = snapshot.exists();
+      newComments.push({ ...doc.data(), id: doc.id, doc });
+    });
 
-    if (exists) {
-      let newComments = Object.keys(value).map(commentID => {
-        return { id: commentID, ...value[commentID] };
-      });
-
-      newComments.sort((a, b) => {
-        if (a.server_timestamp < b.server_timestamp) return 1;
-        else return -1;
-      });
-
-      setComments(oldComments => {
-        if (oldComments) return [...oldComments, ...newComments];
-        else return newComments;
-      });
-    } else setComments([]);
-  });
+    setComments(oldComments => {
+      if (oldComments) return [...oldComments, ...newComments];
+      else return newComments;
+    });
+  }
 };
 
 export const ventHasLikedListener = (setHasLiked, userID, ventID) => {
-  const db = firebase.database();
-
+  return;
   const postLikedRef = db.ref("post_likes/" + ventID + "/" + userID);
   const listener = postLikedRef.on("value", snapshot => {
     if (!snapshot) return;
@@ -252,32 +226,38 @@ export const ventHasLikedListener = (setHasLiked, userID, ventID) => {
 };
 
 export const ventListener = (setVent, ventID) => {
-  const db = firebase.database();
+  const ventRef = db.collection("vents").doc(ventID);
 
-  const ventRef = db.ref("/vents/" + ventID);
-
-  const listener = ventRef.on("value", snapshot => {
+  const listener = ventRef.onSnapshot("value", snapshot => {
     if (!snapshot) return;
-    const value = snapshot.val();
-    const exists = snapshot.exists();
+    const vent = snapshot.data();
 
-    if (exists) setVent({ id: snapshot.key, ...value });
+    if (vent) setVent({ id: ventID, ...vent });
     else setVent(false);
   });
 
-  return () => ventRef.off("value", listener);
+  return () => listener();
 };
 
-export const likeOrUnlikeVent = (user, vent) => {
+export const likeOrUnlikeVent = async (user, vent) => {
   if (!user)
     return alert("You must sign in or register an account to support a vent!");
-  const db = firebase.database();
 
-  const postLikedRef = db.ref("post_likes/" + vent.id + "/" + user.uid);
-  const postCounterRef = db.ref("vents/" + vent.id + "/likeCounter");
+  const postLikedRef = db
+    .collection("post_likes")
+    .doc(vent.id)
+    .doc(user.uid);
+  const postCounterRef = db
+    .collection("vents")
+    .doc(vent.id)
+    .doc("likeCounter");
+
+  const value = postLikedRef.get();
+
+  if (!value) return;
+  const value2 = postCounterRef.get();
 
   postLikedRef.once("value", snapshot => {
-    if (!snapshot) return;
     const value = snapshot.val();
     const exists = snapshot.exists();
 
@@ -343,8 +323,6 @@ export const tagUser = (
 };
 
 export const startMessage = (userID, ventUserID) => {
-  const db = firebase.database();
-
   const doesConversationExistRef = db.ref(
     "users/" + userID + "chats/" + ventUserID
   );

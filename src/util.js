@@ -14,11 +14,11 @@ export const combineObjectWithID = (id, object) => {
 };
 
 export const getEndAtValueTimestamp = array => {
-  let endAt = 10000000000000;
+  let startAt = 10000000000000;
 
-  if (array && array[array.length - 1].server_timestamp)
-    endAt = array[array.length - 1].server_timestamp - 1;
-  return endAt;
+  if (array && array[array.length - 1] && array[array.length - 1].doc)
+    startAt = array[array.length - 1].doc;
+  return startAt;
 };
 
 // Taken from stack overflow
