@@ -447,6 +447,25 @@
   margin-left: 1px;
 }
 
+.gap2 {
+  gap: 2px;
+}
+.gap4 {
+  gap: 4px;
+}
+.gap8 {
+  gap: 8px;
+}
+.gap16 {
+  gap: 16px;
+}
+.gap32 {
+  gap: 32px;
+}
+.gap64 {
+  gap: 64px;
+}
+
 .br4 {
   border-radius: 4px;
 }

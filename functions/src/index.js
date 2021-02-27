@@ -39,7 +39,7 @@ const createNotification = (link, message, userID) => {
     hasSeen: false,
     link,
     message,
-    server_timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    server_timestamp: firebase.firestore.Timestamp.now().seconds * 1000,
     userID,
   };
 

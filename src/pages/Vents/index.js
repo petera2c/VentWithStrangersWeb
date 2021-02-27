@@ -18,17 +18,16 @@ import LoadMoreVents from "../../components/LoadMoreVents";
 import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
 import { getMetaInformation, getVents } from "./util";
 
-function Vents(props) {
+function Vents() {
   const [vents, setVents] = useState(null);
   const location = useLocation();
   const { pathname, search } = location;
-
   const { metaDescription, metaTitle } = getMetaInformation(pathname);
   const [canLoadMorePosts, setCanLoadMorePosts] = useState(true);
 
   useEffect(() => {
     getVents(pathname, setCanLoadMorePosts, setVents, null);
-  }, [props.location]);
+  }, [location]);
 
   return (
     <Page
@@ -78,6 +77,7 @@ function Vents(props) {
                 vents.map((vent, index) => {
                   return (
                     <Vent
+                      history={history}
                       key={index + vent.id}
                       previewMode={true}
                       ventID={vent.id}

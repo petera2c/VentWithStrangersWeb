@@ -3,13 +3,6 @@ import firebase from "firebase/app";
 
 import { getEndAtValueTimestamp } from "../../util";
 
-export const commentLikeUpdate = (
-  comments,
-  context,
-  dataObj,
-  updateCommentLikes
-) => {};
-
 export const commentVent = async (commentString, user, ventID) => {
   if (!user) return alert("Only users can comment! Please login or register.");
   let commentObj = {
@@ -186,7 +179,7 @@ export const newVentCommentListener = (setComments, ventID, first = true) => {
 };
 
 export const getVentComments = async (comments, setComments, ventID) => {
-  let startAt = getEndAtValueTimestamp(comments);
+  const startAt = getEndAtValueTimestamp(comments);
 
   const snapshot = await db
     .collection("vent_data")
@@ -200,8 +193,6 @@ export const getVentComments = async (comments, setComments, ventID) => {
   if (snapshot.docs && snapshot.docs.length > 0) {
     let newComments = [];
     snapshot.docs.forEach((doc, index) => {
-      const value = doc.data();
-
       newComments.push({ ...doc.data(), id: doc.id, doc });
     });
 
@@ -322,27 +313,27 @@ export const tagUser = (
   });
 };
 
-export const startMessage = (userID, ventUserID) => {
-  const doesConversationExistRef = db.ref(
-    "users/" + userID + "chats/" + ventUserID
-  );
-  /*
-  const superCoolDatabaseModel = {
-    user: {
-      chats: {
-        otherUserFromChatID: chatID,
-      },
-    },
+export const startMessage = async (history, userID, ventUserID) => {
+  const sortedMemberIDs = [userID, ventUserID].sort();
+  const conversationQuerySnapshot = await db
+    .collection("conversations")
+    .where("members", "==", sortedMemberIDs)
+    .get();
+
+  const goToPage = conversationID => {
+    history.push("/conversations?" + conversationID);
   };
 
-    if(user.chats.otherUserFromChatID.exists()) then this conversation between these two users works
-*/
-  doesConversationExistRef.once("value", snapshot => {
-    const value = snapshot.val();
-    const exists = snapshot.exists();
-
-    if (exists) {
-    } else {
-    }
-  });
+  if (!conversationQuerySnapshot.empty) {
+    conversationQuerySnapshot.forEach((conversationDoc, i) => {
+      goToPage(conversationDoc.id);
+    });
+  } else {
+    const conversationDocNew = await db.collection("conversations").add({
+      lastUpdated: firebase.firestore.Timestamp.now().seconds * 1000,
+      members: sortedMemberIDs,
+      server_timestamp: firebase.firestore.Timestamp.now().seconds * 1000
+    });
+    goToPage(conversationDocNew.id);
+  }
 };

@@ -1,75 +1,59 @@
-import React, { Component } from "react";
-import axios from "axios";
-import { Link } from "react-router-dom";
-
-import Consumer, { ExtraContext } from "../../context";
+import React, { useContext, useEffect, useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHandsHelping } from "@fortawesome/pro-duotone-svg-icons/faHandsHelping";
 import { faWalkieTalkie } from "@fortawesome/pro-duotone-svg-icons/faWalkieTalkie";
-
-import Chat from "../../components/Chat/";
-import WarningModal from "../../components/modals/Warning";
+import { UserContext } from "../../context";
 
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import Button from "../../components/views/Button";
-import Text from "../../components/views/Text";
+
+import Conversation from "./conversation";
 
 import { isMobileOrTablet } from "../../util";
 
-class Conversations extends Component {
-  state = {
-    conversations: [],
-  };
-  componentDidMount() {
-    axios.get("/api/conversations").then((res) => {
-      const { conversations } = res;
-      console.log(res);
-    });
-  }
+import { getConversations } from "./util";
 
-  componentWillUnmount() {}
+function Conversations() {
+  const user = useContext(UserContext);
 
-  handleChange = (stateObj, callback) => {
-    if (this._ismounted) this.setState(stateObj, callback);
-  };
+  if (!user) return <div />;
 
-  render() {
-    return (
-      <Consumer>
-        {(context) => (
-          <Page
-            className="bg-grey-2 ov-auto"
-            description="Sometimes, all we need is an available ear. This is where you can anonymously talk to someone that wants to listen, or anonymously listen to someone that wants to be heard."
-            keywords="vent, strangers, help"
-            title="Chats"
-          >
-            <Container
-              className={
-                "column flex-fill ov-auto align-center " +
-                (isMobileOrTablet() ? "" : "py32")
-              }
-            >
-              <Link
-                className="button-2 no-bold py8 px16 my16 br8"
-                to="/vent-to-a-stranger"
-              >
-                Vent or Help a Stranger
-              </Link>
-            </Container>
-            {!context.user && (
-              <WarningModal
-                close={() => {}}
-                text="You can not chat with a stranger unless you sign up for an account!"
+  const [conversations, setConversations] = useState([]);
+  const [activeConversation, setActiveConversation] = useState(0);
+  useEffect(() => {
+    getConversations(conversations, setConversations, user.uid);
+  }, []);
+
+  return (
+    <Page
+      className="bg-grey-2 ov-auto pa32"
+      description="Sometimes, all we need is an available ear. This is where you can anonymously talk to someone that wants to listen, or anonymously listen to someone that wants to be heard."
+      keywords="vent, strangers, help"
+      title="Chats"
+    >
+      <Container className="x-fill full-center wrap gap16">
+        <Container className="container small column bg-white px16 py8 br8">
+          {conversations.map((conversation, index) => {
+            return (
+              <Conversation
+                conversationID={conversation.id}
+                isLastItem={index === conversations.length - 1}
+                key={index}
+                userID={user.uid}
               />
-            )}
-          </Page>
-        )}
-      </Consumer>
-    );
-  }
+            );
+          })}
+        </Container>
+        <Container className="container large bg-white pa16 br8">
+          {conversations && conversations[activeConversation] && (
+            <div>{conversations[activeConversation].server_timestamp}</div>
+          )}
+        </Container>
+      </Container>
+    </Page>
+  );
 }
-Conversations.contextType = ExtraContext;
 
 export default Conversations;

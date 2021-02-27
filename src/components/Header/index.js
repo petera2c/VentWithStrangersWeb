@@ -45,25 +45,26 @@ function Header({ history, location }) {
 
   const db = firebase.database();
 
-  const notificationsRef = db.ref("/notifications/" + user.uid);
-  const notificationsQuery = notificationsRef
-    .orderByChild("server_timestamp")
-    .limitToLast(5);
-
   useEffect(() => {
-    notificationsQuery.on("value", snapshot => {
-      if (!snapshot) return;
-      const value = snapshot.val();
-      const exists = snapshot.exists();
+    if (user) {
+      const notificationsRef = db.ref("/notifications/" + user.uid);
+      const notificationsQuery = notificationsRef
+        .orderByChild("server_timestamp")
+        .limitToLast(5);
+      notificationsQuery.on("value", snapshot => {
+        if (!snapshot) return;
+        const value = snapshot.val();
+        const exists = snapshot.exists();
 
-      if (exists)
-        setNotifications(
-          Object.keys(value).map(ventID => {
-            return { id: ventID, ...value[ventID] };
-          })
-        );
-      else setNotifications([]);
-    });
+        if (exists)
+          setNotifications(
+            Object.keys(value).map(ventID => {
+              return { id: ventID, ...value[ventID] };
+            })
+          );
+        else setNotifications([]);
+      });
+    }
   }, [location]);
 
   const readNotifications = () => {

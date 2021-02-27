@@ -1,41 +1,46 @@
+import db from "../../config/firebase";
 import firebase from "firebase/app";
-import "firebase/database";
 import { combineInsideObjectWithID, getEndAtValueTimestamp } from "../../util";
 
-export const getVents = (pathname, setCanLoadMorePosts, setVents, vents) => {
-  const db = firebase.database();
-  let getVentsQuery;
+export const getVents = async (
+  pathname,
+  setCanLoadMorePosts,
+  setVents,
+  vents
+) => {
+  let startAt = getEndAtValueTimestamp(vents);
 
-  if (vents) {
-    let endAt = vents[vents.length - 1].server_timestamp;
+  let snapshot;
+  if (pathname === "trending")
+    snapshot = await db
+      .collection("/vents/")
+      .orderBy("server_timestamp", "desc")
+      .startAfter(startAt)
+      .limitToLast(10)
+      .get();
+  else
+    snapshot = await db
+      .collection("/vents/")
+      .orderBy("likeCounter", "desc")
+      .startAfter(startAt)
+      .limitToLast(10)
+      .get();
 
-    getVentsQuery = db
-      .ref("/vents/")
-      .orderByChild("server_timestamp")
-      .endAt(endAt)
-      .limitToLast(10);
-  } else {
-    getVentsQuery = db
-      .ref("/vents/")
-      .orderByChild("server_timestamp")
-      .limitToLast(10);
-  }
+  if (snapshot.docs && snapshot.docs.length > 0) {
+    let newVents = [];
+    snapshot.docs.forEach((doc, index) => {
+      const value = doc.data();
 
-  getVentsQuery.once("value", snapshot => {
-    if (!snapshot.exists()) {
-      return setCanLoadMorePosts(false);
-    } else {
-      const newVents = combineInsideObjectWithID(snapshot.val());
+      newVents.push({ ...doc.data(), id: doc.id, doc });
+    });
 
-      newVents.sort((a, b) => {
-        if (a.server_timestamp < b.server_timestamp) return 1;
-        else return -1;
+    if (vents)
+      return setVents(oldVents => {
+        if (oldVents) return [...oldVents, ...newVents];
+        else return newVents;
       });
-
-      if (vents) return setVents([...vents, ...newVents]);
-      else return setVents(newVents);
-    }
-  });
+    else return setVents(newVents);
+  } else return setCanLoadMorePosts(false);
 };
 
 export const getMetaInformation = pathname => {

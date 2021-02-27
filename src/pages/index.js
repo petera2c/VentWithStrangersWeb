@@ -26,7 +26,7 @@ import AppDownloadPage from "./AppDownload";
 import NotificationsPage from "./Notifications";
 import SearchPage from "./Search";
 import VentsPage from "./Vents";
-import ChatsPage from "./Conversations";
+import ConversationsPage from "./Conversations";
 import ChatWithStrangerPage from "./ChatWithStranger";
 import NewVentPage from "./NewVent";
 import VentPage from "./Vent";
@@ -80,7 +80,7 @@ function Routes() {
                 <Route path="/trending/" component={VentsPage} />
                 <Route path="/recent/" component={VentsPage} />
                 <Route path="/popular/" component={VentsPage} />
-                <Route path="/chats/" component={ChatsPage} />
+                <Route path="/conversations/" component={ConversationsPage} />
                 <Route
                   path="/vent-to-a-stranger/"
                   component={ChatWithStrangerPage}

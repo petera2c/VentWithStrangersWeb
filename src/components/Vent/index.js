@@ -59,7 +59,6 @@ import {
 } from "../../util";
 import {
   commentVent,
-  commentLikeUpdate,
   deleteVent,
   findPossibleUsersToTag,
   getCurrentTypingIndex,
@@ -373,7 +372,9 @@ function Vent({
                     </Button>
                     <Button
                       className="button-2 px16 py8 br8"
-                      onClick={() => startMessage(user.uid, vent.userID)}
+                      onClick={() =>
+                        startMessage(history, user.uid, vent.userID)
+                      }
                     >
                       <FontAwesomeIcon className="mr8" icon={faComments} />
                       Message User
