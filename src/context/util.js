@@ -1,7 +1,7 @@
 import firebase from "firebase/app";
 
-export const initializeUser = (handleChange) => {
-  firebase.auth().onAuthStateChanged((user) => {
+export const initializeUser = handleChange => {
+  firebase.auth().onAuthStateChanged(user => {
     const setCurrentUserToContext = () => {
       if (
         firebase.auth().currentUser &&

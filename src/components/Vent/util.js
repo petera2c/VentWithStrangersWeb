@@ -219,11 +219,21 @@ export const ventHasLikedListener = (setHasLiked, userID, ventID) => {
 export const ventListener = (setVent, ventID) => {
   const ventRef = db.collection("vents").doc(ventID);
 
-  const listener = ventRef.onSnapshot("value", snapshot => {
-    if (!snapshot) return;
+  const listener = ventRef.onSnapshot("value", async snapshot => {
+    if (!snapshot.exists) return;
     const vent = snapshot.data();
 
-    if (vent) setVent({ id: ventID, ...vent });
+    const authorDoc = await db
+      .collection("users_display_name")
+      .doc(vent.userID)
+      .get();
+
+    let author = "";
+
+    if (authorDoc.exists && authorDoc.data().displayName)
+      author = authorDoc.data().displayName;
+
+    if (vent) setVent({ id: ventID, ...vent, author, authorID: authorDoc.id });
     else setVent(false);
   });
 

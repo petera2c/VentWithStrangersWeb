@@ -176,11 +176,13 @@ function Vent({
               }}
             >
               <Container className="full-center">
-                <Text
-                  className="round-icon bg-blue white mr8"
-                  text={capitolizeFirstChar(vent.author)}
-                  type="h6"
-                />
+                {vent.author && (
+                  <Text
+                    className="round-icon bg-blue white mr8"
+                    text={capitolizeFirstChar(vent.author[0])}
+                    type="h6"
+                  />
+                )}
                 <Text
                   className="button-1 fw-400"
                   text={capitolizeFirstChar(vent.author)}

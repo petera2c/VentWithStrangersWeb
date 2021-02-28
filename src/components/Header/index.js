@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, withRouter } from "react-router-dom";
-import firebase from "firebase/app";
-import "firebase/database";
+import db from "../../config/firebase";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
@@ -43,23 +42,22 @@ function Header({ history, location }) {
     history.push("/search?" + ventSearchString);
   };
 
-  const db = firebase.database();
-
   useEffect(() => {
     if (user) {
-      const notificationsRef = db.ref("/notifications/" + user.uid);
-      const notificationsQuery = notificationsRef
-        .orderByChild("server_timestamp")
+      return;
+      const notificationsQuery = db
+        .collection("notifications")
+        .doc(user.uid)
+        .orderBy("server_timestamp")
         .limitToLast(5);
-      notificationsQuery.on("value", snapshot => {
-        if (!snapshot) return;
-        const value = snapshot.val();
-        const exists = snapshot.exists();
+      notificationsQuery.onSnapshot("value", snapshot => {
+        const value = snapshot.data();
+        const exists = snapshot.exists;
 
         if (exists)
           setNotifications(
-            Object.keys(value).map(ventID => {
-              return { id: ventID, ...value[ventID] };
+            value.docs.forEach((item, i) => {
+              return { id: item.id, ...item, doc: item };
             })
           );
         else setNotifications([]);
@@ -172,11 +170,13 @@ function Header({ history, location }) {
           {user && (
             <Container className="align-center wrap">
               <Link className="flex full-center mr16" to="/activity">
-                <Text
-                  className="round-icon bg-blue white mr8"
-                  text={capitolizeFirstChar(user.displayName[0])}
-                  type="h6"
-                />
+                {user.displayName && (
+                  <Text
+                    className="round-icon bg-blue white mr8"
+                    text={capitolizeFirstChar(user.displayName[0])}
+                    type="h6"
+                  />
+                )}
 
                 <Text
                   className="mr8"
