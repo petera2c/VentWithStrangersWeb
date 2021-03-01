@@ -8,7 +8,7 @@ import { getConversation } from "./util";
 
 import { isMobileOrTablet } from "../../util";
 
-function Conversations({ conversationID, isLastItem, userID }) {
+function Conversations({ active, conversationID, isLastItem, userID }) {
   const [conversation, setConversation] = useState(undefined);
 
   useEffect(() => {
@@ -18,8 +18,12 @@ function Conversations({ conversationID, isLastItem, userID }) {
   if (!conversation) return <div>loading</div>;
 
   return (
-    <Container className={"py8 " + (isLastItem ? "" : "border-bottom")}>
-      {conversation.server_timestamp}
+    <Container
+      className={
+        "py8 " + (isLastItem ? "" : "border-bottom ") + active ? "" : ""
+      }
+    >
+      {conversation.name}
     </Container>
   );
 }

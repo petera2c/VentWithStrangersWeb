@@ -38,6 +38,7 @@ function Conversations() {
           {conversations.map((conversation, index) => {
             return (
               <Conversation
+                active={index === activeConversation}
                 conversationID={conversation.id}
                 isLastItem={index === conversations.length - 1}
                 key={index}

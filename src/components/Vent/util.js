@@ -204,16 +204,18 @@ export const getVentComments = async (comments, setComments, ventID) => {
 };
 
 export const ventHasLikedListener = (setHasLiked, userID, ventID) => {
-  return;
-  const postLikedRef = db.ref("post_likes/" + ventID + "/" + userID);
-  const listener = postLikedRef.on("value", snapshot => {
-    if (!snapshot) return;
-    const value = snapshot.val();
+  const listener = db
+    .collection("vent_likes")
+    .doc(ventID + userID)
+    .onSnapshot("value", snapshot => {
+      if (!snapshot) return;
+      let value = snapshot.data();
+      if (value) value = value.liked;
 
-    setHasLiked(value);
-  });
+      setHasLiked(Boolean(value));
+    });
 
-  return () => postLikedRef.off("value", listener);
+  return () => listener();
 };
 
 export const ventListener = (setVent, ventID) => {
@@ -240,48 +242,24 @@ export const ventListener = (setVent, ventID) => {
   return () => listener();
 };
 
-export const likeOrUnlikeVent = async (user, vent) => {
+export const likeOrUnlikeVent = async (hasLiked, user, vent) => {
   if (!user)
     return alert("You must sign in or register an account to support a vent!");
 
-  const postLikedRef = db
-    .collection("post_likes")
-    .doc(vent.id)
-    .doc(user.uid);
-  const postCounterRef = db
+  await db
+    .collection("vent_likes")
+    .doc(vent.id + user.uid)
+    .set({ liked: !hasLiked });
+
+  let valueToIncreaseBy = 1;
+  if (hasLiked) valueToIncreaseBy = -1;
+
+  await db
     .collection("vents")
     .doc(vent.id)
-    .doc("likeCounter");
-
-  const value = postLikedRef.get();
-
-  if (!value) return;
-  const value2 = postCounterRef.get();
-
-  postLikedRef.once("value", snapshot => {
-    const value = snapshot.val();
-    const exists = snapshot.exists();
-
-    postCounterRef.once("value", snapshot => {
-      if (!snapshot) return;
-
-      const value2 = snapshot.val();
-      const exists = snapshot.exists();
-
-      let valueToUpdateBy = 1;
-
-      if (value) valueToUpdateBy = -1;
-
-      if (!value2) postCounterRef.set(1);
-      else postCounterRef.set(value + valueToUpdateBy);
+    .update({
+      likeCounter: firebase.firestore.FieldValue.increment(valueToIncreaseBy)
     });
-
-    if (!value) {
-      postLikedRef.set(true);
-    } else {
-      postLikedRef.set(null);
-    }
-  });
 };
 
 export const reportVent = () => {};

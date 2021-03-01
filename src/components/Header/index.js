@@ -124,15 +124,6 @@ function Header({ history, location }) {
             Trending
           </Link>
 
-          <Container className="border-all active py4 mr16 my16 br4">
-            <Link className="border-right active blue px8" to="/post-a-problem">
-              Vent
-            </Link>
-            <Link className="blue px8" to="/chats">
-              Chat
-            </Link>
-          </Container>
-
           <Container className="full-center bg-grey-4 py4 px8 my16 mr16 br4">
             <FontAwesomeIcon className="grey-5 mr8" icon={faSearch} />
             <input
@@ -143,14 +134,12 @@ function Header({ history, location }) {
               value={ventSearchString}
             />
           </Container>
-
-          <a
+          <Link
             className="button-2 no-bold py8 px16 my16 br8"
-            href="https://donorbox.org/vws-site-donation?default_interval=o"
-            target="_blank"
+            to="/post-a-problem"
           >
-            Donate
-          </a>
+            Post a Vent
+          </Link>
         </Container>
         <Container className="flex-fill full-center wrap mx32 my16">
           {!user && (

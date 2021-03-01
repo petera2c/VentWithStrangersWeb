@@ -11,7 +11,7 @@ export const getConversation = async (
     .doc(conversationID)
     .onSnapshot("value", async doc => {
       if (!doc.exists) return;
-      let conversation = doc.data();
+      const conversation = doc.data();
 
       if (!conversation.name) {
         let conversationFriendUserID;
@@ -21,13 +21,16 @@ export const getConversation = async (
         }
 
         if (conversationFriendUserID) {
-          let test = await db
-            .collection("users")
+          const userDisplayDoc = await db
+            .collection("users_display_name")
             .doc(conversationFriendUserID)
             .get();
-          console.log(test.exists);
+
+          if (userDisplayDoc.data() && userDisplayDoc.data().displayName)
+            conversation.name = userDisplayDoc.data().displayName;
         }
       }
+
       if (conversation) setConversation({ id: doc.id, ...conversation });
       else setConversation(false);
     });

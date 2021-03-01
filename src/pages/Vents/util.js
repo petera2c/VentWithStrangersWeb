@@ -34,12 +34,15 @@ export const getVents = async (
       newVents.push({ ...doc.data(), id: doc.id, doc });
     });
 
-    if (vents)
+    if (newVents.length < 10) setCanLoadMorePosts(false);
+    if (vents) {
       return setVents(oldVents => {
         if (oldVents) return [...oldVents, ...newVents];
         else return newVents;
       });
-    else return setVents(newVents);
+    } else {
+      return setVents(newVents);
+    }
   } else return setCanLoadMorePosts(false);
 };
 

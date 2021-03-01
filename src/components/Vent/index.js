@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy } from "@fortawesome/pro-regular-svg-icons/faCopy";
 import { faClock } from "@fortawesome/pro-regular-svg-icons/faClock";
 import { faShare } from "@fortawesome/pro-regular-svg-icons/faShare";
-import { faHeart } from "@fortawesome/pro-regular-svg-icons/faHeart";
+import { faHeart } from "@fortawesome/pro-light-svg-icons/faHeart";
 import { faHeart as faHeart2 } from "@fortawesome/pro-solid-svg-icons/faHeart";
 import { faComment } from "@fortawesome/pro-light-svg-icons/faComment";
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
@@ -111,7 +111,7 @@ function Vent({
   const [displayCommentField2, setDisplayCommentField] = useState(
     displayCommentField
   );
-  const [hasLiked, setHasLiked] = useState();
+  const [hasLiked, setHasLiked] = useState(false);
 
   const [possibleUsersToTag, setPossibleUsersToTag] = useState();
   const [postOptions, setPostOptions] = useState(false);
@@ -339,20 +339,16 @@ function Vent({
                     text={vent.commentCounter ? vent.commentCounter : 0}
                     type="p"
                   />
-                  <img
+                  <FontAwesomeIcon
                     className={`clickable heart ${
                       hasLiked ? "red" : "grey-5"
                     } mr4`}
+                    icon={hasLiked ? faHeart2 : faHeart}
                     onClick={e => {
                       e.preventDefault();
-                      likeOrUnlikeVent(user, vent);
+                      likeOrUnlikeVent(hasLiked, user, vent);
                     }}
-                    src={
-                      hasLiked
-                        ? require("../../svgs/support-active.svg")
-                        : require("../../svgs/support.svg")
-                    }
-                    style={{ height: "32px" }}
+                    size="2x"
                     title="Give Support :)"
                   />
 
