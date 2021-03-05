@@ -1,9 +1,11 @@
+import firebase from "firebase/app";
 import db from "../../config/firebase";
 import { getEndAtValueTimestamp } from "../../util";
 
 export const getConversation = async (
   conversationID,
   setConversation,
+  setConversationName,
   userID
 ) => {
   const unsubscribe = await db
@@ -26,8 +28,10 @@ export const getConversation = async (
             .doc(conversationFriendUserID)
             .get();
 
-          if (userDisplayDoc.data() && userDisplayDoc.data().displayName)
+          if (userDisplayDoc.data() && userDisplayDoc.data().displayName) {
             conversation.name = userDisplayDoc.data().displayName;
+            setConversationName(userDisplayDoc.data().displayName);
+          }
         }
       }
 
@@ -66,4 +70,47 @@ export const getConversations = async (
     });
     return setConversations(conversations);
   }
+};
+
+export const getMessages = async (messages, setMessages) => {
+  const startAt = getEndAtValueTimestamp(comments);
+
+  const snapshot = await db
+    .collection("vent_data")
+    .doc(ventID)
+    .collection("comments")
+    .orderBy("server_timestamp", "desc")
+    .startAfter(startAt)
+    .limit(10)
+    .get();
+
+  if (snapshot.docs && snapshot.docs.length > 0) {
+    let newComments = [];
+    snapshot.docs.forEach((doc, index) => {
+      newComments.push({ ...doc.data(), id: doc.id, doc });
+    });
+
+    setMessages(oldComments => {
+      if (oldComments) return [...oldComments, ...newComments];
+      else return newComments;
+    });
+  } else setMessages([]);
+
+  const messagesRef = db
+    .collection("conversation_extra_data")
+    .doc(conversation.id)
+    .collection("messages");
+  const query = messagesRef.orderBy("server_timestamp").limit(25);
+};
+
+export const sendMessage = async (conversationID, message, userID) => {
+  await db
+    .collection("conversation_extra_data")
+    .doc(conversationID)
+    .collection("messages")
+    .add({
+      body: message,
+      server_timestamp: firebase.firestore.Timestamp.now().seconds * 1000,
+      userID
+    });
 };

@@ -1,5 +1,5 @@
-import db from "../../config/firebase";
 import firebase from "firebase/app";
+import db from "../../config/firebase";
 
 import { getEndAtValueTimestamp } from "../../util";
 
@@ -153,22 +153,30 @@ export const newVentCommentListener = (setComments, ventID, first = true) => {
     .collection("vent_data")
     .doc(ventID)
     .collection("comments")
+    .where(
+      "server_timestamp",
+      ">=",
+      firebase.firestore.Timestamp.now().seconds * 1000
+    )
     .orderBy("server_timestamp", "desc")
-    .startAt(10000000000000000)
     .limit(1)
     .onSnapshot(
       querySnapshot => {
         if (first) {
           first = false;
         } else if (querySnapshot.docs && querySnapshot.docs[0]) {
-          setComments(oldComments => [
-            {
-              ...querySnapshot.docs[0].data(),
-              id: querySnapshot.docs[0].id,
-              doc: querySnapshot.docs[0]
-            },
-            ...oldComments
-          ]);
+          if (
+            querySnapshot.docChanges()[0].type === "added" ||
+            querySnapshot.docChanges()[0].type === "removed"
+          )
+            setComments(oldComments => [
+              {
+                ...querySnapshot.docs[0].data(),
+                id: querySnapshot.docs[0].id,
+                doc: querySnapshot.docs[0]
+              },
+              ...oldComments
+            ]);
         }
       },
       err => {}
@@ -200,7 +208,7 @@ export const getVentComments = async (comments, setComments, ventID) => {
       if (oldComments) return [...oldComments, ...newComments];
       else return newComments;
     });
-  }
+  } else setComments([]);
 };
 
 export const ventHasLikedListener = (setHasLiked, userID, ventID) => {

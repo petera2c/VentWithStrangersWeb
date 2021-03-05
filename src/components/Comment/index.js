@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import moment from "moment-timezone";
 import TextArea from "react-textarea-autosize";
 import { MentionsInput, Mention } from "react-mentions";
@@ -18,25 +18,41 @@ import Button from "../views/Button";
 import HandleOutsideClick from "../containers/HandleOutsideClick";
 import ConfirmAlertModal from "../modals/ConfirmAlert";
 
+import { UserContext } from "../../context";
+
 import { capitolizeFirstChar } from "../../util";
 import {
+  commentHasLikedListener,
   commentListener,
   deleteComment,
   editComment,
-  likeComment,
+  likeOrUnlikeComment,
   swapTags
 } from "./util";
 import { findPossibleUsersToTag } from "../Vent/util";
 
+let commentHasLikedUnsubscribe;
+
 function Comment({ arrayLength, commentID, commentIndex, ventID }) {
+  const user = useContext(UserContext);
   const [comment, setComment] = useState(false);
   const [commentOptions, setCommentOptions] = useState(false);
   const [commentString, setCommentString] = useState("");
   const [deleteCommentConfirm, setDeleteCommentConfirm] = useState(false);
   const [editingComment, setEditingComment] = useState(false);
+  const [hasLiked, setHasLiked] = useState(false);
 
   useEffect(() => {
     commentListener(commentID, setComment, ventID);
+    if (user)
+      commentHasLikedUnsubscribe = commentHasLikedListener(
+        commentID,
+        setHasLiked,
+        user.uid
+      );
+    return () => {
+      if (commentHasLikedUnsubscribe) commentHasLikedUnsubscribe();
+    };
   }, []);
 
   return (
@@ -215,17 +231,16 @@ function Comment({ arrayLength, commentID, commentIndex, ventID }) {
           onClick={e => {
             e.preventDefault();
 
-            if (comment.hasLiked) likeComment(comment);
-            else likeComment(comment);
+            likeOrUnlikeComment(comment, hasLiked, user, ventID);
           }}
         >
           <FontAwesomeIcon
-            className={`heart ${comment.hasLiked ? "red" : "grey-5"} mr4`}
-            icon={comment.hasLiked ? faHeart2 : faHeart}
+            className={`heart ${hasLiked ? "red" : "grey-5"} mr4`}
+            icon={hasLiked ? faHeart2 : faHeart}
           />
           <Text
             className="grey-5"
-            text={comment.upVotes ? comment.upVotes : 0}
+            text={comment.likeCounter ? comment.likeCounter : 0}
             type="p"
           />
         </Container>

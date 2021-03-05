@@ -107,9 +107,9 @@ function Vents() {
                 <FontAwesomeIcon className="mr8" icon={faPen} />
                 Post a Vent
               </Link>
-              <Link className="button-3 fs-18" to="/vent-to-a-stranger">
+              <Link className="button-3 fs-18" to="/conversations">
                 <FontAwesomeIcon className="mr8" icon={faComments} />
-                Chat with a Stranger
+                Chat
               </Link>
             </Container>
           </Container>

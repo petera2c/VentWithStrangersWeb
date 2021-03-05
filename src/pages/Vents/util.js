@@ -14,14 +14,14 @@ export const getVents = async (
   if (pathname === "trending")
     snapshot = await db
       .collection("/vents/")
-      .orderBy("server_timestamp", "desc")
+      .orderBy("likeCounter", "desc")
       .startAfter(startAt)
       .limitToLast(10)
       .get();
   else
     snapshot = await db
       .collection("/vents/")
-      .orderBy("likeCounter", "desc")
+      .orderBy("server_timestamp", "desc")
       .startAfter(startAt)
       .limitToLast(10)
       .get();

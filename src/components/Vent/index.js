@@ -77,9 +77,9 @@ import {
 
 import classNames from "./style.css";
 
-let ventListenerReturn;
-let newCommentListenerReturn;
-let ventHasLikedListenerReturn;
+let ventListenerUnsubscribe;
+let newCommentListenerUnsubscribe;
+let ventHasLikedListenerUnsubscribe;
 
 const SmartLink = ({ children, className, disablePostOnClick, to }) => {
   if (disablePostOnClick) {
@@ -127,12 +127,15 @@ function Vent({
   const { pathname } = location;
 
   useEffect(() => {
-    ventListenerReturn = ventListener(setVent, ventID);
+    ventListenerUnsubscribe = ventListener(setVent, ventID);
 
     if (displayCommentField2)
-      newCommentListenerReturn = newVentCommentListener(setComments, ventID);
+      newCommentListenerUnsubscribe = newVentCommentListener(
+        setComments,
+        ventID
+      );
     if (user)
-      ventHasLikedListenerReturn = ventHasLikedListener(
+      ventHasLikedListenerUnsubscribe = ventHasLikedListener(
         setHasLiked,
         user.uid,
         ventID
@@ -141,9 +144,9 @@ function Vent({
     getVentComments(comments, setComments, ventID);
 
     return () => {
-      if (ventListenerReturn) ventListenerReturn();
-      if (newCommentListenerReturn) newCommentListenerReturn();
-      if (ventHasLikedListenerReturn) ventHasLikedListenerReturn();
+      if (ventListenerUnsubscribe) ventListenerUnsubscribe();
+      if (newCommentListenerUnsubscribe) newCommentListenerUnsubscribe();
+      if (ventHasLikedListenerUnsubscribe) ventHasLikedListenerUnsubscribe();
     };
   }, []);
   const copyToClipboard = e => {
@@ -323,10 +326,10 @@ function Vent({
                       e.preventDefault();
                       setDisplayCommentField(!displayCommentField2);
 
-                      if (displayCommentField2 && newCommentListenerReturn)
-                        newCommentListenerReturn();
+                      if (displayCommentField2 && newCommentListenerUnsubscribe)
+                        newCommentListenerUnsubscribe();
                       if (!displayCommentField2)
-                        newCommentListenerReturn = newVentCommentListener(
+                        newCommentListenerUnsubscribe = newVentCommentListener(
                           setComments,
                           vent.id
                         );

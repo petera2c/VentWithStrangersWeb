@@ -9,7 +9,8 @@ import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import Button from "../../components/views/Button";
 
-import Conversation from "./conversation";
+import ConversationOption from "./conversation";
+import Conversation from "./chat";
 
 import { isMobileOrTablet } from "../../util";
 
@@ -33,25 +34,34 @@ function Conversations() {
       keywords="vent, strangers, help"
       title="Chats"
     >
-      <Container className="x-fill full-center wrap gap16">
-        <Container className="container small column bg-white px16 py8 br8">
+      <Container className="x-fill justify-center align-start wrap gap16">
+        <Container className="container small column bg-white pa8 br4">
           {conversations.map((conversation, index) => {
             return (
-              <Conversation
-                active={index === activeConversation}
+              <ConversationOption
                 conversationID={conversation.id}
+                index={index}
+                isActive={index === activeConversation}
                 isLastItem={index === conversations.length - 1}
                 key={index}
+                onClick={setActiveConversation}
+                setConversationName={name => {
+                  setConversations(conversations => {
+                    conversations[index].name = name;
+                    return [...conversations];
+                  });
+                }}
                 userID={user.uid}
               />
             );
           })}
         </Container>
-        <Container className="container large bg-white pa16 br8">
-          {conversations && conversations[activeConversation] && (
-            <div>{conversations[activeConversation].server_timestamp}</div>
-          )}
-        </Container>
+        {conversations && conversations[activeConversation] && (
+          <Conversation
+            conversation={conversations[activeConversation]}
+            userID={user.uid}
+          />
+        )}
       </Container>
     </Page>
   );

@@ -1,4 +1,5 @@
 import React from "react";
+import firebase from "firebase/app";
 import db from "../../config/firebase";
 
 export const commentListener = (commentID, setComment, ventID) => {
@@ -11,7 +12,6 @@ export const commentListener = (commentID, setComment, ventID) => {
       const value = doc.data();
 
       if (value) setComment({ id: doc.id, ...value });
-      else setComment(false);
     });
 
   return () => unsubscribe();
@@ -20,7 +20,44 @@ export const deleteComment = commentID => {};
 
 export const editComment = (commentID, commentString) => {};
 
-export const likeComment = (commentID, user) => {};
+export const likeOrUnlikeComment = async (comment, hasLiked, user, ventID) => {
+  if (!user)
+    return alert(
+      "You must sign in or register an account to support a comment!"
+    );
+
+  await db
+    .collection("comment_likes")
+    .doc(comment.id + user.uid)
+    .set({ liked: !hasLiked });
+
+  let valueToIncreaseBy = 1;
+  if (hasLiked) valueToIncreaseBy = -1;
+
+  await db
+    .collection("vent_data")
+    .doc(ventID)
+    .collection("comments")
+    .doc(comment.id)
+    .update({
+      likeCounter: firebase.firestore.FieldValue.increment(valueToIncreaseBy)
+    });
+};
+
+export const commentHasLikedListener = (commentID, setHasLiked, userID) => {
+  const listener = db
+    .collection("comment_likes")
+    .doc(commentID + userID)
+    .onSnapshot("value", snapshot => {
+      if (!snapshot) return;
+      let value = snapshot.data();
+      if (value) value = value.liked;
+
+      setHasLiked(Boolean(value));
+    });
+
+  return () => listener();
+};
 
 export const swapTags = commentText => {
   if (!commentText) return;
