@@ -342,16 +342,21 @@ function Vent({
                     text={vent.commentCounter ? vent.commentCounter : 0}
                     type="p"
                   />
-                  <FontAwesomeIcon
+
+                  <img
                     className={`clickable heart ${
                       hasLiked ? "red" : "grey-5"
                     } mr4`}
-                    icon={hasLiked ? faHeart2 : faHeart}
                     onClick={e => {
                       e.preventDefault();
                       likeOrUnlikeVent(hasLiked, user, vent);
                     }}
-                    size="2x"
+                    src={
+                      hasLiked
+                        ? require("../../svgs/support-active.svg")
+                        : require("../../svgs/support.svg")
+                    }
+                    style={{ height: "32px" }}
                     title="Give Support :)"
                   />
 

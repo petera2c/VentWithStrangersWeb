@@ -8,6 +8,7 @@ import { faConciergeBell } from "@fortawesome/pro-duotone-svg-icons/faConciergeB
 import { faBell } from "@fortawesome/pro-duotone-svg-icons/faBell";
 import { faSearch } from "@fortawesome/pro-solid-svg-icons/faSearch";
 import { faChevronDown } from "@fortawesome/pro-solid-svg-icons/faChevronDown";
+import { faInstagram } from "@fortawesome/free-brands-svg-icons/faInstagram";
 
 import { UserContext } from "../../context";
 
@@ -94,7 +95,21 @@ function Header({ history, location }) {
             src={require("../../svgs/icon.svg")}
             style={{ height: "50px" }}
           />
+          <a
+            href="https://www.instagram.com/ventwithstrangers/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <FontAwesomeIcon
+              className="clickable common-border white round-icon round pa8"
+              icon={faInstagram}
+              style={{
+                backgroundColor: "#cd486b"
+              }}
+            />
+          </a>
         </Container>
+
         <Container
           className="align-center wrap"
           style={{

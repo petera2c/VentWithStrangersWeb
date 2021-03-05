@@ -513,6 +513,11 @@
   cursor: pointer;
 }
 
+.round-icon {
+  width: 32px !important;
+  height: 32px;
+}
+
 body {
   margin: 0;
   padding: 0;
