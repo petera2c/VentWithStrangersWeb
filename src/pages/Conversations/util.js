@@ -42,6 +42,50 @@ export const getConversation = async (
   return () => unsubscribe();
 };
 
+export const messageListener = (
+  conversationID,
+  scrollToBottom,
+  setMessages,
+  first = true
+) => {
+  const unsubscribe = db
+    .collection("conversation_extra_data")
+    .doc(conversationID)
+    .collection("messages")
+    .where(
+      "server_timestamp",
+      ">=",
+      firebase.firestore.Timestamp.now().seconds * 1000
+    )
+    .orderBy("server_timestamp", "desc")
+    .limit(1)
+    .onSnapshot(
+      querySnapshot => {
+        if (first) {
+          first = false;
+        } else if (querySnapshot.docs && querySnapshot.docs[0]) {
+          if (
+            querySnapshot.docChanges()[0].type === "added" ||
+            querySnapshot.docChanges()[0].type === "removed"
+          ) {
+            scrollToBottom();
+
+            setMessages(oldMessages => [
+              {
+                ...querySnapshot.docs[0].data(),
+                id: querySnapshot.docs[0].id,
+                doc: querySnapshot.docs[0]
+              },
+              ...oldMessages
+            ]);
+          }
+        }
+      },
+      err => {}
+    );
+  return () => unsubscribe();
+};
+
 export const getConversations = async (
   conversations,
   setConversations,
@@ -72,35 +116,36 @@ export const getConversations = async (
   }
 };
 
-export const getMessages = async (messages, setMessages) => {
-  const startAt = getEndAtValueTimestamp(comments);
+export const getMessages = async (
+  conversationID,
+  messages,
+  scrollToBottom,
+  setMessages,
+  first = true
+) => {
+  const startAt = getEndAtValueTimestamp(messages);
 
   const snapshot = await db
-    .collection("vent_data")
-    .doc(ventID)
-    .collection("comments")
+    .collection("conversation_extra_data")
+    .doc(conversationID)
+    .collection("messages")
     .orderBy("server_timestamp", "desc")
     .startAfter(startAt)
     .limit(10)
     .get();
 
   if (snapshot.docs && snapshot.docs.length > 0) {
-    let newComments = [];
+    let newMessages = [];
     snapshot.docs.forEach((doc, index) => {
-      newComments.push({ ...doc.data(), id: doc.id, doc });
+      newMessages.push({ ...doc.data(), id: doc.id, doc });
     });
 
-    setMessages(oldComments => {
-      if (oldComments) return [...oldComments, ...newComments];
-      else return newComments;
+    setMessages(oldMessages => {
+      if (oldMessages) return [...oldMessages, ...newMessages];
+      else return newMessages;
     });
+    if (first) scrollToBottom();
   } else setMessages([]);
-
-  const messagesRef = db
-    .collection("conversation_extra_data")
-    .doc(conversation.id)
-    .collection("messages");
-  const query = messagesRef.orderBy("server_timestamp").limit(25);
 };
 
 export const sendMessage = async (conversationID, message, userID) => {
