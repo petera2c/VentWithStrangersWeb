@@ -9,6 +9,7 @@ import { faBell } from "@fortawesome/pro-duotone-svg-icons/faBell";
 import { faSearch } from "@fortawesome/pro-solid-svg-icons/faSearch";
 import { faChevronDown } from "@fortawesome/pro-solid-svg-icons/faChevronDown";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons/faInstagram";
+import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
 
 import { UserContext } from "../../context";
 
@@ -28,6 +29,7 @@ import { newNotificationCounter } from "./util";
 function Header({ history, location }) {
   const user = useContext(UserContext);
 
+  const [showFeedback, setShowFeedback] = useState(true);
   const [loginModalBoolean, setLoginModalBoolean] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [showNotificationDropdown, setShowNotificationDropdown] = useState(
@@ -80,7 +82,7 @@ function Header({ history, location }) {
 
   return (
     <Container
-      className="sticky top-0 x-fill justify-center bg-white shadow-2 border-top large active"
+      className="column sticky top-0 x-fill justify-center bg-white shadow-2 border-top large active"
       style={{ zIndex: 10 }}
     >
       <Container className="x-fill align-center">
@@ -137,6 +139,16 @@ function Header({ history, location }) {
           >
             <FontAwesomeIcon className="mr8" icon={faAnalytics} />
             Trending
+          </Link>
+          <Link
+            className={
+              "button-3 py16 mr32 " +
+              isPageActive("/about-us", pathname.substring(0, 9))
+            }
+            to="/about-us"
+          >
+            <FontAwesomeIcon className="mr8" icon={faAnalytics} />
+            About Us
           </Link>
 
           <Container className="full-center bg-grey-4 py4 px8 my16 mr16 br4">
@@ -237,6 +249,22 @@ function Header({ history, location }) {
           )}
         </Container>
       </Container>
+
+      {showFeedback && (
+        <Container className="flex-fill wrap full-center bg-grey-4 px32">
+          <p className="flex-fill tac py16">
+            <Link to="/feedback">
+              Give us feedback on our website <span className="blue">here</span>
+            </Link>
+          </p>
+          <Container
+            className="clickable round-icon bg-red"
+            onClick={() => setShowFeedback(false)}
+          >
+            <FontAwesomeIcon className="white" icon={faTimes} />
+          </Container>
+        </Container>
+      )}
 
       {loginModalBoolean && (
         <LoginModal
