@@ -16,7 +16,7 @@ import Text from "../../components/views/Text";
 import Vent from "../../components/Vent";
 import Comment from "../../components/Comment";
 
-import LoadMoreVents from "../../components/LoadMoreVents";
+import LoadMore from "../../components/LoadMore";
 
 import { isMobileOrTablet } from "../../util";
 import { getUsersPosts } from "../util";
@@ -24,7 +24,7 @@ import { getUsersPosts } from "../util";
 class ActivitySection extends Component {
   state = {
     commentsSection: false,
-    postsSection: true,
+    postsSection: true
   };
 
   componentDidMount() {
@@ -34,11 +34,11 @@ class ActivitySection extends Component {
     this._ismounted = false;
   }
 
-  handleChange = (stateObj) => {
+  handleChange = stateObj => {
     if (this._ismounted) this.setState(stateObj);
   };
 
-  isActive = (test) => {
+  isActive = test => {
     if (test) return " active";
     else return "";
   };
@@ -50,7 +50,7 @@ class ActivitySection extends Component {
 
     return (
       <Consumer>
-        {(context) => (
+        {context => (
           <Container
             className={
               "container column px16 " +
@@ -68,7 +68,7 @@ class ActivitySection extends Component {
                   onClick={() =>
                     this.handleChange({
                       commentsSection: false,
-                      postsSection: true,
+                      postsSection: true
                     })
                   }
                 >
@@ -82,7 +82,7 @@ class ActivitySection extends Component {
                   onClick={() => {
                     this.handleChange({
                       postsSection: false,
-                      commentsSection: true,
+                      commentsSection: true
                     });
                   }}
                 >
@@ -104,9 +104,9 @@ class ActivitySection extends Component {
                 {context.vents && context.vents.length === 0 && (
                   <Text className="fw-400" text="No vents found." type="h4" />
                 )}
-                {context.canLoadMorePosts && (
-                  <LoadMoreVents
-                    canLoadMorePosts={context.canLoadMorePosts}
+                {context.canLoadMore && (
+                  <LoadMore
+                    canLoadMore={context.canLoadMore}
                     loadMore={() => {
                       context.handleChange({ skip: context.skip + 10 }, () => {
                         getUsersPosts(
@@ -120,7 +120,35 @@ class ActivitySection extends Component {
                         );
                       });
                     }}
-                  />
+                  >
+                    <Container className="clickable x-fill column bg-white border-all2 mb16 br8">
+                      <Container className="justify-between pt16 px32">
+                        <Container>
+                          <div className="round-icon bg-grey-2 mr8" />
+                          <div
+                            className=" bg-grey-2 br16"
+                            style={{ width: "140px", height: "24px" }}
+                          />
+                        </Container>
+                        <div
+                          className="bg-grey-2 br16"
+                          style={{ width: "140px", height: "24px" }}
+                        />
+                      </Container>
+                      <Container className="pt16 px32">
+                        <div
+                          className="x-fill bg-grey-2 br8"
+                          style={{ height: "100px" }}
+                        />
+                      </Container>
+                      <Container className="py16 px32">
+                        <div
+                          className=" bg-grey-2 br16"
+                          style={{ width: "140px", height: "24px" }}
+                        />
+                      </Container>
+                    </Container>
+                  </LoadMore>
                 )}
               </Container>
             )}

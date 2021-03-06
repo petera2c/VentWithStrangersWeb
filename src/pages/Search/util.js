@@ -7,12 +7,12 @@ export const searchVents = (
 ) => {
   socket.emit("search_problems", { searchPostString, skip }, vents => {
     let newVents = vents;
-    let canLoadMorePosts = true;
+    let canLoadMore = true;
 
     if (skip && oldVents) newVents = oldVents.concat(newVents);
 
-    if (newVents && newVents.length < 10) canLoadMorePosts = false;
+    if (newVents && newVents.length < 10) canLoadMore = false;
 
-    handleChange({ canLoadMorePosts, vents: newVents });
+    handleChange({ canLoadMore, vents: newVents });
   });
 };

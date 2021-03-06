@@ -120,11 +120,12 @@ export const getMessages = async (
   conversationID,
   messages,
   scrollToBottom,
+  setCanLoadMore,
   setMessages,
   first = true
 ) => {
-  const startAt = getEndAtValueTimestamp(messages);
-
+  let startAt = getEndAtValueTimestamp(messages);
+  if (first) startAt = getEndAtValueTimestamp([]);
   const snapshot = await db
     .collection("conversation_extra_data")
     .doc(conversationID)
@@ -140,12 +141,17 @@ export const getMessages = async (
       newMessages.push({ ...doc.data(), id: doc.id, doc });
     });
 
-    setMessages(oldMessages => {
-      if (oldMessages) return [...oldMessages, ...newMessages];
-      else return newMessages;
-    });
-    if (first) scrollToBottom();
-  } else setMessages([]);
+    if (first) {
+      setMessages(newMessages);
+      scrollToBottom();
+    } else {
+      if (newMessages.length < 10) setCanLoadMore(false);
+      setMessages(oldMessages => {
+        if (oldMessages) return [...oldMessages, ...newMessages];
+        else return newMessages;
+      });
+    }
+  } else setCanLoadMore(false);
 };
 
 export const sendMessage = async (conversationID, message, userID) => {

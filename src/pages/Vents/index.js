@@ -6,14 +6,12 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 import { faPen } from "@fortawesome/pro-solid-svg-icons/faPen";
 import { faComments } from "@fortawesome/pro-solid-svg-icons/faComments";
 
-import LoadingHeart from "../../components/loaders/Heart";
-
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
 import Filters from "../../components/Filters";
 import Vent from "../../components/Vent";
-import LoadMoreVents from "../../components/LoadMoreVents";
+import LoadMore from "../../components/LoadMore";
 
 import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
 import { getMetaInformation, getVents } from "./util";
@@ -23,10 +21,10 @@ function Vents() {
   const location = useLocation();
   const { pathname, search } = location;
   const { metaDescription, metaTitle } = getMetaInformation(pathname);
-  const [canLoadMorePosts, setCanLoadMorePosts] = useState(true);
+  const [canLoadMore, setCanLoadMore] = useState(true);
 
   useEffect(() => {
-    getVents(pathname, setCanLoadMorePosts, setVents, null);
+    getVents(pathname, setCanLoadMore, setVents, null);
   }, [location]);
 
   return (
@@ -70,7 +68,6 @@ function Vents() {
             />
             <Filters />
           </Container>
-
           {vents && (
             <Container className="x-fill column">
               {vents &&
@@ -84,17 +81,45 @@ function Vents() {
                     />
                   );
                 })}
-              {canLoadMorePosts && (
-                <LoadMoreVents
-                  canLoadMorePosts={canLoadMorePosts}
-                  loadMore={() =>
-                    getVents(pathname, setCanLoadMorePosts, setVents, vents)
-                  }
-                />
-              )}
             </Container>
           )}
-          {vents === null && <LoadingHeart />}
+          {vents === null && canLoadMore && (
+            <LoadMore
+              canLoadMore={canLoadMore}
+              loadMore={() =>
+                getVents(pathname, setCanLoadMore, setVents, vents)
+              }
+            >
+              <Container className="bg-red clickable x-fill column bg-white border-all2 mb16 br8">
+                <Container className="justify-between pt16 px32">
+                  <Container>
+                    <div className="round-icon bg-grey-2 mr8" />
+                    <div
+                      className=" bg-grey-2 br16"
+                      style={{ width: "140px", height: "24px" }}
+                    />
+                  </Container>
+                  <div
+                    className="bg-grey-2 br16"
+                    style={{ width: "140px", height: "24px" }}
+                  />
+                </Container>
+                <Container className="pt16 px32">
+                  <div
+                    className="x-fill bg-grey-2 br8"
+                    style={{ height: "100px" }}
+                  />
+                </Container>
+                <Container className="py16 px32">
+                  <div
+                    className=" bg-grey-2 br16"
+                    style={{ width: "140px", height: "24px" }}
+                  />
+                </Container>
+              </Container>
+            </LoadMore>
+          )}
+
           {vents && vents.length === 0 && (
             <Text className="fw-400" text="No vents found." type="h4" />
           )}

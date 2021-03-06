@@ -4,7 +4,7 @@ import { combineInsideObjectWithID, getEndAtValueTimestamp } from "../../util";
 
 export const getVents = async (
   pathname,
-  setCanLoadMorePosts,
+  setCanLoadMore,
   setVents,
   vents
 ) => {
@@ -34,7 +34,7 @@ export const getVents = async (
       newVents.push({ ...doc.data(), id: doc.id, doc });
     });
 
-    if (newVents.length < 10) setCanLoadMorePosts(false);
+    if (newVents.length < 10) setCanLoadMore(false);
     if (vents) {
       return setVents(oldVents => {
         if (oldVents) return [...oldVents, ...newVents];
@@ -43,7 +43,7 @@ export const getVents = async (
     } else {
       return setVents(newVents);
     }
-  } else return setCanLoadMorePosts(false);
+  } else return setCanLoadMore(false);
 };
 
 export const getMetaInformation = pathname => {

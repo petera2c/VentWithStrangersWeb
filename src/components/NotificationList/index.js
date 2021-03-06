@@ -7,7 +7,6 @@ import Text from "../views/Text";
 import Button from "../views/Button";
 
 function NotificationList({ notifications }) {
-  console.log(notifications);
   return (
     <Container className="column x-fill">
       {notifications.map((notification, index) => {

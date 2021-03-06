@@ -10,7 +10,7 @@ const { Provider, Consumer } = ExtraContext;
 
 class GIProvider extends Component {
   state = {
-    canLoadMorePosts: true,
+    canLoadMore: true,
     comments: undefined,
     notification: {
       on: false,

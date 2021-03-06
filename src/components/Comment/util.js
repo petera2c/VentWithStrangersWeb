@@ -14,10 +14,7 @@ export const commentListener = (commentID, setComment, ventID) => {
       if (value) setComment({ id: doc.id, ...value });
     });
 
-  return () => {
-    console.log(commentID);
-    unsubscribe();
-  };
+  return unsubscribe;
 };
 export const deleteComment = commentID => {};
 

@@ -8,7 +8,7 @@ import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
 import db from "../../config/firebase";
 import Consumer, { ExtraContext } from "../../context";
 
-import LoadingHeart from "../../components/loaders/Heart";
+import LoadMore from "../../components/LoadMore";
 
 import ConfirmAlertModal from "../../components/modals/ConfirmAlert";
 import Container from "../../components/containers/Container";
@@ -19,48 +19,57 @@ import Text from "../../components/views/Text";
 import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
 
 import { getMessages, messageListener, sendMessage } from "./util";
-let messageEndRef;
+let messageListenerUnsubscribe;
 
 function Chat({ conversation, userID }) {
-  const dummy = useRef();
+  const dummyRef = useRef();
   const scrollToBottom = () => {
-    dummy.current.scrollIntoView();
+    dummyRef.current.scrollIntoView();
   };
 
+  const [canLoadMore, setCanLoadMore] = useState(true);
+  const [conversationID, setConversationID] = useState();
   const [messages, setMessages] = useState();
   const [messageString, setMessageString] = useState("");
   let messageDivs = [];
 
-  useEffect(() => {
-    const unsubscribe = messageListener(
+  if (conversation.id !== conversationID) {
+    getMessages(
+      conversation.id,
+      messages,
+      scrollToBottom,
+      setCanLoadMore,
+      setMessages
+    );
+
+    if (messageListenerUnsubscribe) messageListenerUnsubscribe();
+    messageListenerUnsubscribe = messageListener(
       conversation.id,
       scrollToBottom,
       setMessages
     );
-    getMessages(conversation.id, messages, scrollToBottom, setMessages);
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+    setConversationID(conversation.id);
+  }
 
   for (let index in messages) {
     const message = messages[index];
-    if (message.userID === userID)
-      messageDivs.unshift(
-        <Container className="x-fill justify-end" key={index}>
-          <Container className="message-container bg-blue white px16 py8 mb8 br4">
-            {message.body}
-          </Container>
+    messageDivs.unshift(
+      <Container
+        className={
+          "x-fill " + (message.userID === userID ? "wrap" : "justify-end")
+        }
+        key={index}
+      >
+        <Container
+          className={
+            "message-container px16 py8 mb8 br4 " +
+            (message.userID === userID ? "bg-blue white" : "grey-1 bg-grey-10")
+          }
+        >
+          {message.body}
         </Container>
-      );
-    else
-      messageDivs.unshift(
-        <Container className="x-fill wrap" key={index}>
-          <Container className="message-container grey-1 bg-grey-10 px16 py8 mb8 br4">
-            {message.body}
-          </Container>
-        </Container>
-      );
+      </Container>
+    );
   }
 
   return (
@@ -82,8 +91,23 @@ function Chat({ conversation, userID }) {
       </Container>
 
       <Container className="column x-fill flex-fill ov-auto pa16">
+        {canLoadMore && (
+          <LoadMore
+            canLoadMore={canLoadMore}
+            loadMore={() => {
+              getMessages(
+                conversation.id,
+                messages,
+                scrollToBottom,
+                setCanLoadMore,
+                setMessages,
+                false
+              );
+            }}
+          />
+        )}
         {messageDivs}
-        <div ref={dummy} />
+        <div ref={dummyRef} />
       </Container>
 
       <Container className="column x-fill">

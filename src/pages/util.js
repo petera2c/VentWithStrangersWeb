@@ -44,12 +44,12 @@ export const getUsersPosts = (
   socket.emit("get_users_posts", { searchID, skip }, result => {
     const { message, problems, success } = result;
     let newVents = problems;
-    let canLoadMorePosts = true;
+    let canLoadMore = true;
 
-    if (newVents && newVents.length < 10) canLoadMorePosts = false;
+    if (newVents && newVents.length < 10) canLoadMore = false;
     if (skip && oldVents) newVents = oldVents.concat(newVents);
 
-    handleChange({ canLoadMorePosts, vents: newVents });
+    handleChange({ canLoadMore, vents: newVents });
   });
 };
 
