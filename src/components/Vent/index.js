@@ -69,7 +69,7 @@ import {
   likeOrUnlikeVent,
   newVentCommentListener,
   reportVent,
-  startMessage,
+  startConversation,
   tagUser,
   ventHasLikedListener,
   ventListener
@@ -144,7 +144,10 @@ function Vent({
     getVentComments(comments, setComments, ventID);
 
     return () => {
-      if (ventListenerUnsubscribe) ventListenerUnsubscribe();
+      if (ventListenerUnsubscribe) {
+        ventListenerUnsubscribe();
+      }
+
       if (newCommentListenerUnsubscribe) newCommentListenerUnsubscribe();
       if (ventHasLikedListenerUnsubscribe) ventHasLikedListenerUnsubscribe();
     };
@@ -379,7 +382,7 @@ function Vent({
                     <Button
                       className="button-2 px16 py8 br8"
                       onClick={() =>
-                        startMessage(history, user.uid, vent.userID)
+                        startConversation(history, user.uid, vent.userID)
                       }
                     >
                       <FontAwesomeIcon className="mr8" icon={faComments} />

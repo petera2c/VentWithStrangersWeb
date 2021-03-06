@@ -28,7 +28,6 @@ import NotificationsPage from "./Notifications";
 import SearchPage from "./Search";
 import VentsPage from "./Vents";
 import ConversationsPage from "./Conversations";
-import ChatWithStrangerPage from "./ChatWithStranger";
 import NewVentPage from "./NewVent";
 import VentPage from "./Vent";
 import BlogPage from "./Blog";
@@ -83,10 +82,6 @@ function Routes() {
                 <Route path="/recent/" component={VentsPage} />
                 <Route path="/popular/" component={VentsPage} />
                 <Route path="/conversations/" component={ConversationsPage} />
-                <Route
-                  path="/vent-to-a-stranger/"
-                  component={ChatWithStrangerPage}
-                />
                 <Route path="/post-a-problem/" component={NewVentPage} />
                 <Route path="/problem/" component={VentPage} />
                 <Route path="/blog/" component={BlogPage} />

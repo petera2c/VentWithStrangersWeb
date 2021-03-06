@@ -7,8 +7,6 @@ import { faInstagram } from "@fortawesome/free-brands-svg-icons/faInstagram";
 
 import Consumer, { ExtraContext } from "../../context";
 
-import Chat from "../../components/Chat/";
-
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";

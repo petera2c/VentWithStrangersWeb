@@ -227,27 +227,29 @@ export const ventHasLikedListener = (setHasLiked, userID, ventID) => {
 };
 
 export const ventListener = (setVent, ventID) => {
-  const ventRef = db.collection("vents").doc(ventID);
+  const unsubscribe = db
+    .collection("vents")
+    .doc(ventID)
+    .onSnapshot("value", async snapshot => {
+      if (!snapshot.exists) return;
+      const vent = snapshot.data();
 
-  const listener = ventRef.onSnapshot("value", async snapshot => {
-    if (!snapshot.exists) return;
-    const vent = snapshot.data();
+      const authorDoc = await db
+        .collection("users_display_name")
+        .doc(vent.userID)
+        .get();
 
-    const authorDoc = await db
-      .collection("users_display_name")
-      .doc(vent.userID)
-      .get();
+      let author = "";
 
-    let author = "";
+      if (authorDoc.exists && authorDoc.data().displayName)
+        author = authorDoc.data().displayName;
 
-    if (authorDoc.exists && authorDoc.data().displayName)
-      author = authorDoc.data().displayName;
+      if (vent)
+        setVent({ id: ventID, ...vent, author, authorID: authorDoc.id });
+      else setVent(false);
+    });
 
-    if (vent) setVent({ id: ventID, ...vent, author, authorID: authorDoc.id });
-    else setVent(false);
-  });
-
-  return () => listener();
+  return () => unsubscribe();
 };
 
 export const likeOrUnlikeVent = async (hasLiked, user, vent) => {
@@ -309,7 +311,7 @@ export const tagUser = (
   });
 };
 
-export const startMessage = async (history, userID, ventUserID) => {
+export const startConversation = async (history, userID, ventUserID) => {
   const sortedMemberIDs = [userID, ventUserID].sort();
   const conversationQuerySnapshot = await db
     .collection("conversations")
