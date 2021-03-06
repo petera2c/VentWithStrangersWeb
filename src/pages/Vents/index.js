@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 import { faPen } from "@fortawesome/pro-solid-svg-icons/faPen";
 import { faComments } from "@fortawesome/pro-solid-svg-icons/faComments";
 
@@ -66,7 +65,7 @@ function Vents() {
               text={metaTitle + " Vents"}
               type="h1"
             />
-            <Filters />
+            {false && <Filters />}
           </Container>
           {vents && (
             <Container className="x-fill column">

@@ -35,8 +35,6 @@ import CreateBlogPage from "./CreateBlog";
 import NotFoundPage from "./NotFound";
 import PrivacyPolicyPage from "./PrivacyPolicy";
 
-import { GIProvider } from "../context";
-
 import { isMobileOrTablet } from "../util";
 
 function Routes() {
@@ -55,46 +53,44 @@ function Routes() {
     );
 
   return (
-    <GIProvider>
-      <UserContext.Provider value={user}>
-        <Router>
-          <Container className="screen-container column">
-            {!isMobileOrTablet() && <Header />}
-            {isMobileOrTablet() && <MobileHeader />}
-            {loading && (
-              <Container className="x-fill full-center">
-                <LoadingHeart />
-              </Container>
-            )}
-            {error && { error }}
-            {!loading && !error && (
-              <Switch>
-                <Route path="/about-us/" component={AboutUsPage} />
-                <Route path="/account/" component={AccountPage} exact />
-                <Route path="/app-downloads/" component={AppDownloadPage} />
-                <Route path="/activity/" component={AccountPage} />
-                <Route path="/settings/" component={AccountPage} exact />
-                <Route path="/notifications/" component={NotificationsPage} />
-                <Route path="/search/" component={SearchPage} />
-                <Route path="/" component={VentsPage} exact />
-                <Route path="/home/" component={VentsPage} />
-                <Route path="/trending/" component={VentsPage} />
-                <Route path="/recent/" component={VentsPage} />
-                <Route path="/popular/" component={VentsPage} />
-                <Route path="/conversations/" component={ConversationsPage} />
-                <Route path="/post-a-problem/" component={NewVentPage} />
-                <Route path="/problem/" component={VentPage} />
-                <Route path="/blog/" component={BlogPage} />
-                <Route path="/create-blog/" component={CreateBlogPage} />
-                <Route path="/privacy-policy/" component={PrivacyPolicyPage} />
-                <Route component={NotFoundPage} />
-              </Switch>
-            )}
-            <div id="sound"></div>
-          </Container>
-        </Router>
-      </UserContext.Provider>
-    </GIProvider>
+    <UserContext.Provider value={user}>
+      <Router>
+        <Container className="screen-container column">
+          {!isMobileOrTablet() && <Header />}
+          {isMobileOrTablet() && <MobileHeader />}
+          {loading && (
+            <Container className="x-fill full-center">
+              <LoadingHeart />
+            </Container>
+          )}
+          {error && { error }}
+          {!loading && !error && (
+            <Switch>
+              <Route path="/about-us/" component={AboutUsPage} />
+              <Route path="/account/" component={AccountPage} exact />
+              <Route path="/app-downloads/" component={AppDownloadPage} />
+              <Route path="/activity/" component={AccountPage} />
+              <Route path="/settings/" component={AccountPage} exact />
+              <Route path="/notifications/" component={NotificationsPage} />
+              <Route path="/search/" component={SearchPage} />
+              <Route path="/" component={VentsPage} exact />
+              <Route path="/home/" component={VentsPage} />
+              <Route path="/trending/" component={VentsPage} />
+              <Route path="/recent/" component={VentsPage} />
+              <Route path="/popular/" component={VentsPage} />
+              <Route path="/conversations/" component={ConversationsPage} />
+              <Route path="/post-a-problem/" component={NewVentPage} />
+              <Route path="/problem/" component={VentPage} />
+              <Route path="/blog/" component={BlogPage} />
+              <Route path="/create-blog/" component={CreateBlogPage} />
+              <Route path="/privacy-policy/" component={PrivacyPolicyPage} />
+              <Route component={NotFoundPage} />
+            </Switch>
+          )}
+          <div id="sound"></div>
+        </Container>
+      </Router>
+    </UserContext.Provider>
   );
 }
 

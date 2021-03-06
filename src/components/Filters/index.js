@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import Consumer, { ExtraContext } from "../../context";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
@@ -44,7 +43,5 @@ class Filters extends Component {
     );
   }
 }
-
-Filters.contextType = ExtraContext;
 
 export default Filters;

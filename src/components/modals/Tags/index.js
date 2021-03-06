@@ -9,8 +9,6 @@ import Container from "../../../components/containers/Container";
 import Text from "../../../components/views/Text";
 import Button from "../../../components/views/Button";
 
-import Consumer, { ExtraContext } from "../../../context";
-
 import { addTagsToPage } from "../../../util";
 
 //https://www.youtube.com/trending?search_query=test
@@ -22,7 +20,7 @@ class TagsModal extends Component {
   state = {
     searchedTags: [],
     searchString: "",
-    selectedTags: getWordsFromSearch(this.props.location.search),
+    selectedTags: getWordsFromSearch(this.props.location.search)
   };
   componentDidMount() {
     this.ismounted = true;
@@ -34,40 +32,40 @@ class TagsModal extends Component {
   componentWillUnmount() {
     this.ismounted = false;
   }
-  handleChange = (stateObj) => {
+  handleChange = stateObj => {
     if (this.ismounted) this.setState(stateObj);
   };
-  addSelectedTag = (tag) => {
+  addSelectedTag = tag => {
     let { selectedTags } = this.state;
 
     const { notify } = this.context;
 
-    if (selectedTags.find((selectedtag) => selectedtag._id === tag._id))
+    if (selectedTags.find(selectedtag => selectedtag._id === tag._id))
       notify({
         message: "You already have this tag selected!",
-        type: "danger",
+        type: "danger"
       });
     else if (selectedTags.length >= 2)
       notify({
         message: "You can not have more than two tags!",
-        type: "danger",
+        type: "danger"
       });
     else {
       selectedTags.push(tag);
       this.handleChange({ selectedTags });
     }
   };
-  removeSelectedTag = (index) => {
+  removeSelectedTag = index => {
     let { selectedTags } = this.state;
 
     selectedTags.splice(index, 1);
     this.handleChange({ selectedTags });
   };
-  searchTags = (tag) => {
+  searchTags = tag => {
     const { socket } = this.context;
 
     this.handleChange({ searchString: tag });
-    socket.emit("search_tags", tag, (tags) =>
+    socket.emit("search_tags", tag, tags =>
       this.handleChange({ searchedTags: tags })
     );
   };
@@ -89,7 +87,7 @@ class TagsModal extends Component {
                 <FontAwesomeIcon icon={faSearch} />
                 <input
                   className="flex-fill no-border py8 px16 br4"
-                  onChange={(event) => this.searchTags(event.target.value)}
+                  onChange={event => this.searchTags(event.target.value)}
                   type="text"
                   placeholder="Search"
                   required
@@ -161,7 +159,7 @@ class TagsModal extends Component {
                       style={{
                         marginRight: "1px",
                         borderTopLeftRadius: "4px",
-                        borderBottomLeftRadius: "4px",
+                        borderBottomLeftRadius: "4px"
                       }}
                       text={tag.name}
                       type="p"
@@ -170,7 +168,7 @@ class TagsModal extends Component {
                       className="full-center border-all px16"
                       style={{
                         borderTopRightRadius: "4px",
-                        borderBottomRightRadius: "4px",
+                        borderBottomRightRadius: "4px"
                       }}
                     >
                       <FontAwesomeIcon className="" icon={faTimes} />
@@ -191,7 +189,7 @@ class TagsModal extends Component {
               text="Apply"
               onClick={() => {
                 updateRecentTags(
-                  (user) => this.context.handleChange({ user }),
+                  user => this.context.handleChange({ user }),
                   selectedTags
                 );
                 addTagsToPage(this.props, selectedTags);
@@ -205,7 +203,5 @@ class TagsModal extends Component {
     );
   }
 }
-
-TagsModal.contextType = ExtraContext;
 
 export default withRouter(TagsModal);

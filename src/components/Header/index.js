@@ -9,6 +9,7 @@ import { faSearch } from "@fortawesome/pro-solid-svg-icons/faSearch";
 import { faChevronDown } from "@fortawesome/pro-solid-svg-icons/faChevronDown";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons/faInstagram";
 import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
+import { faComments } from "@fortawesome/pro-solid-svg-icons/faComments";
 
 import { UserContext } from "../../context";
 
@@ -115,11 +116,20 @@ function Header({ history, location }) {
           <Link
             className={
               "button-3 py16 mr32 " +
+              isPageActive("/conversations", pathname.substring(0, 14))
+            }
+            to="/conversations"
+          >
+            <FontAwesomeIcon className="mr8" icon={faComments} />
+            Inbox
+          </Link>
+          <Link
+            className={
+              "button-3 py16 mr32 " +
               isPageActive("/about-us", pathname.substring(0, 9))
             }
             to="/about-us"
           >
-            <FontAwesomeIcon className="mr8" icon={faAnalytics} />
             About Us
           </Link>
 

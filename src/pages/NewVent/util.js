@@ -1,6 +1,6 @@
 import db from "../../config/firebase";
 import firebase from "firebase/app";
-export const saveVent = async (callback, ventObject, id, user, notify) => {
+export const saveVent = async (callback, ventObject, id, user) => {
   if (user) {
     ventObject.userID = user.uid;
   }
