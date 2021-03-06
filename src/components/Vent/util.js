@@ -326,7 +326,7 @@ export const startConversation = async (history, userID, ventUserID) => {
     });
   } else {
     const conversationDocNew = await db.collection("conversations").add({
-      lastUpdated: firebase.firestore.Timestamp.now().seconds * 1000,
+      last_updated: firebase.firestore.Timestamp.now().seconds * 1000,
       members: sortedMemberIDs,
       server_timestamp: firebase.firestore.Timestamp.now().seconds * 1000
     });

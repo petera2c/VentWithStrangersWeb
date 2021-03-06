@@ -1,11 +1,9 @@
 const functions = require("firebase-functions");
-const firebase = require("firebase/app");
-require("firebase/database");
 const admin = require("firebase-admin");
 
-//const firebaseCongif = require("./config/firebase");
-admin.initializeApp();
-firebase.initializeApp({
+//const config = require("./config/firebase");
+admin.initializeApp(functions.config().firebase);
+/*firebase.initializeApp({
   apiKey: "AIzaSyCk8EfNyqarIzBAQSCFgU8634o-e0iA_Os",
   appId: "1:440569980458:web:870c6bde68871e5fd78553",
   authDomain: "vent-with-strangers-2acc6.firebaseapp.com",
@@ -14,7 +12,9 @@ firebase.initializeApp({
   messagingSenderId: "440569980458",
   projectId: "vent-with-strangers-2acc6",
   storageBucket: "vent-with-strangers-2acc6.appspot.com",
-});
+});*/
+
+console.log("here");
 
 const createVentLink = (vent) => {
   let link =
@@ -32,18 +32,17 @@ const createVentLink = (vent) => {
 };
 
 const createNotification = (link, message, userID) => {
-  const db = firebase.database();
-  const notificationsRef = db.ref("/notifications/" + userID);
-
-  const notificationsObject = {
-    hasSeen: false,
-    link,
-    message,
-    server_timestamp: firebase.firestore.Timestamp.now().seconds * 1000,
-    userID,
-  };
-
-  return notificationsRef.push(notificationsObject);
+  return admin
+    .firestore()
+    .collection("notifications")
+    .doc(userID)
+    .push({
+      hasSeen: false,
+      link,
+      message,
+      server_timestamp: firebase.firestore.Timestamp.now().seconds * 1000,
+      userID,
+    });
 };
 
 const combineInsideObjectWithID = (object) => {
@@ -57,30 +56,33 @@ const combineObjectWithID = (id, object) => {
   return object;
 };
 
-exports.newCommentListener = functions.database
-  .ref("/comments/{ventID}/{commentID}")
-  .onCreate((snapshot, context) => {
+exports.newCommentListener = functions.firestore
+  .document("/comments/{ventID}/{commentID}")
+  .onCreate(async (snapshot, context) => {
     if (!snapshot.exists()) return "Error";
     const { ventID } = context.params;
 
-    const db = firebase.database();
-    const ventRef = db.ref("/vents/" + ventID);
+    const snapshot = admin
+      .firestore()
+      .collection("vents")
+      .doc(ventID)
+      .get();
 
-    return ventRef.once("value", (snapshot) => {
-      if (!snapshot.exists()) return "Cannot find post.";
-      const vent = combineObjectWithID(ventID, snapshot.val());
+    if (!snapshot.exists()) return "Cannot find post.";
 
-      return createNotification(
-        createVentLink(vent),
-        "Your vent has a new comment!",
-        vent.userID
-      );
-    });
+    const vent = combineObjectWithID(ventID, snapshot.val());
+
+    return createNotification(
+      createVentLink(vent),
+      "Your vent has a new comment!",
+      vent.userID
+    );
   });
 
-exports.newPostListener = functions.database
-  .ref("/vents/{ventID}")
+exports.newPostListener = functions.firestore
+  .document("/vents/{ventID}")
   .onCreate((snapshot, context) => {
+    console.log(snapshot);
     if (!snapshot.exists()) return "Error";
     const { ventID } = context.params;
     const vent = combineObjectWithID(ventID, snapshot.val());

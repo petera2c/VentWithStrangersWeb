@@ -83,7 +83,7 @@ export const messageListener = (
       },
       err => {}
     );
-  return () => unsubscribe();
+  return unsubscribe;
 };
 
 export const getConversations = async (
@@ -96,7 +96,7 @@ export const getConversations = async (
   const conversationsQuerySnapshot = await db
     .collection("conversations")
     .where("members", "array-contains", userID)
-    .orderBy("server_timestamp", "desc")
+    .orderBy("last_updated", "desc")
     .startAfter(startAt)
     .limitToLast(10)
     .get();

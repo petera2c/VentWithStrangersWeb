@@ -376,15 +376,19 @@ function Vent({
                       <FontAwesomeIcon className="mr8" icon={faShare} />
                       Share
                     </Button>
-                    <Button
-                      className="button-2 px16 py8 br8"
-                      onClick={() =>
-                        startConversation(history, user.uid, vent.userID)
-                      }
-                    >
-                      <FontAwesomeIcon className="mr8" icon={faComments} />
-                      Message User
-                    </Button>
+                    {(!user || (user && user.uid !== vent.userID)) && (
+                      <Button
+                        className="button-2 px16 py8 br8"
+                        onClick={() => {
+                          if (!user)
+                            alert("You must make an account to message user!");
+                          startConversation(history, user.uid, vent.userID);
+                        }}
+                      >
+                        <FontAwesomeIcon className="mr8" icon={faComments} />
+                        Message User
+                      </Button>
+                    )}
 
                     {shareClicked && (
                       <Container
