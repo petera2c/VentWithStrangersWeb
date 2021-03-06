@@ -33,7 +33,7 @@ import { findPossibleUsersToTag } from "../Vent/util";
 
 let commentHasLikedUnsubscribe;
 
-function Comment({ arrayLength, commentID, commentIndex, ventID }) {
+function Comment({ arrayLength, comment2, commentID, commentIndex, ventID }) {
   const user = useContext(UserContext);
   const [comment, setComment] = useState(false);
   const [commentOptions, setCommentOptions] = useState(false);
@@ -43,7 +43,7 @@ function Comment({ arrayLength, commentID, commentIndex, ventID }) {
   const [hasLiked, setHasLiked] = useState(false);
 
   useEffect(() => {
-    commentListener(commentID, setComment, ventID);
+    const unsubscribe = commentListener(commentID, setComment, ventID);
     if (user)
       commentHasLikedUnsubscribe = commentHasLikedListener(
         commentID,
@@ -51,6 +51,7 @@ function Comment({ arrayLength, commentID, commentIndex, ventID }) {
         user.uid
       );
     return () => {
+      unsubscribe();
       if (commentHasLikedUnsubscribe) commentHasLikedUnsubscribe();
     };
   }, []);

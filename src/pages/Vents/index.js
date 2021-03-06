@@ -78,7 +78,7 @@ function Vents() {
                   return (
                     <Vent
                       history={history}
-                      key={index + vent.id}
+                      key={index}
                       previewMode={true}
                       ventID={vent.id}
                     />
@@ -109,7 +109,7 @@ function Vents() {
               </Link>
               <Link className="button-3 fs-18" to="/conversations">
                 <FontAwesomeIcon className="mr8" icon={faComments} />
-                Chat
+                Inbox
               </Link>
             </Container>
           </Container>

@@ -149,7 +149,7 @@ export const getVentPartialLink = vent => {
 };
 
 export const newVentCommentListener = (setComments, ventID, first = true) => {
-  const query = db
+  const unsubscribe = db
     .collection("vent_data")
     .doc(ventID)
     .collection("comments")
@@ -181,9 +181,7 @@ export const newVentCommentListener = (setComments, ventID, first = true) => {
       },
       err => {}
     );
-  return () => {
-    query();
-  };
+  return unsubscribe;
 };
 
 export const getVentComments = async (comments, setComments, ventID) => {
@@ -212,7 +210,7 @@ export const getVentComments = async (comments, setComments, ventID) => {
 };
 
 export const ventHasLikedListener = (setHasLiked, userID, ventID) => {
-  const listener = db
+  const unsubscribe = db
     .collection("vent_likes")
     .doc(ventID + userID)
     .onSnapshot("value", snapshot => {
@@ -223,16 +221,16 @@ export const ventHasLikedListener = (setHasLiked, userID, ventID) => {
       setHasLiked(Boolean(value));
     });
 
-  return () => listener();
+  return unsubscribe;
 };
 
 export const ventListener = (setVent, ventID) => {
   const unsubscribe = db
     .collection("vents")
     .doc(ventID)
-    .onSnapshot("value", async snapshot => {
-      if (!snapshot.exists) return;
-      const vent = snapshot.data();
+    .onSnapshot("value", async doc => {
+      if (!doc.exists) return;
+      const vent = doc.data();
 
       const authorDoc = await db
         .collection("users_display_name")
@@ -249,7 +247,7 @@ export const ventListener = (setVent, ventID) => {
       else setVent(false);
     });
 
-  return () => unsubscribe();
+  return unsubscribe;
 };
 
 export const likeOrUnlikeVent = async (hasLiked, user, vent) => {

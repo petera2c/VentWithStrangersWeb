@@ -14,7 +14,10 @@ export const commentListener = (commentID, setComment, ventID) => {
       if (value) setComment({ id: doc.id, ...value });
     });
 
-  return () => unsubscribe();
+  return () => {
+    console.log(commentID);
+    unsubscribe();
+  };
 };
 export const deleteComment = commentID => {};
 
@@ -45,7 +48,7 @@ export const likeOrUnlikeComment = async (comment, hasLiked, user, ventID) => {
 };
 
 export const commentHasLikedListener = (commentID, setHasLiked, userID) => {
-  const listener = db
+  const unsubscribe = db
     .collection("comment_likes")
     .doc(commentID + userID)
     .onSnapshot("value", snapshot => {
@@ -56,7 +59,7 @@ export const commentHasLikedListener = (commentID, setHasLiked, userID) => {
       setHasLiked(Boolean(value));
     });
 
-  return () => listener();
+  return unsubscribe;
 };
 
 export const swapTags = commentText => {

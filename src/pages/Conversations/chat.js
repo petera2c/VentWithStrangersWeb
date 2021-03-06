@@ -71,7 +71,7 @@ function Chat({ conversation, userID }) {
           ? "container mobile-full"
           : "container large border-all2")
       }
-      style={{ maxHeight: "80vh" }}
+      style={{ height: "80vh" }}
     >
       <Container className="x-fill justify-between border-bottom pa16">
         <Text

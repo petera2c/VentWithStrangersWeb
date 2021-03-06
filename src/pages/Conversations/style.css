@@ -1,0 +1,24 @@
+.message-container {
+  overflow: hidden;
+  word-break: break-all;
+  max-width: 60%;
+}
+.authors-message {
+  background-color: var(--main-color);
+  color: var(--white-color);
+}
+
+.send-message-textarea {
+  flex-grow: 1;
+
+  height: 100%;
+
+  overflow: auto;
+
+  outline: 0;
+  resize: none;
+  border: none;
+  border-radius: 0 0 8px 8px;
+
+  font-size: var(--large-font-size);
+}

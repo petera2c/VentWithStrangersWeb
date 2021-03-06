@@ -16,6 +16,8 @@ import { isMobileOrTablet } from "../../util";
 
 import { getConversations } from "./util";
 
+import "./style.css";
+
 function Conversations() {
   const user = useContext(UserContext);
 

@@ -29,7 +29,7 @@ import { newNotificationCounter } from "./util";
 function Header({ history, location }) {
   const user = useContext(UserContext);
 
-  const [showFeedback, setShowFeedback] = useState(true);
+  const [showFeedback, setShowFeedback] = useState(false);
   const [loginModalBoolean, setLoginModalBoolean] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [showNotificationDropdown, setShowNotificationDropdown] = useState(

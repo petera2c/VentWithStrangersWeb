@@ -6,6 +6,7 @@ import TextArea from "react-textarea-autosize";
 import ContentEditable from "react-contenteditable";
 import { Editor } from "@tinymce/tinymce-react";
 import { MentionsInput, Mention } from "react-mentions";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy } from "@fortawesome/pro-regular-svg-icons/faCopy";
@@ -38,6 +39,7 @@ import {
   TwitterIcon,
   WhatsappIcon
 } from "react-share";
+import db from "../../config/firebase";
 
 import LoadingHeart from "../loaders/Heart";
 import Comment from "../Comment";
@@ -72,12 +74,12 @@ import {
   startConversation,
   tagUser,
   ventHasLikedListener,
-  ventListener
+  ventListener,
+  ventListener2
 } from "./util";
 
 import classNames from "./style.css";
 
-let ventListenerUnsubscribe;
 let newCommentListenerUnsubscribe;
 let ventHasLikedListenerUnsubscribe;
 
@@ -101,7 +103,6 @@ function Vent({
   searchPreviewMode,
   ventID
 }) {
-  const [comments, setComments] = useState();
   const user = useContext(UserContext);
 
   const [vent, setVent] = useState();
@@ -112,6 +113,7 @@ function Vent({
     displayCommentField
   );
   const [hasLiked, setHasLiked] = useState(false);
+  const [comments, setComments] = useState();
 
   const [possibleUsersToTag, setPossibleUsersToTag] = useState();
   const [postOptions, setPostOptions] = useState(false);
@@ -127,13 +129,15 @@ function Vent({
   const { pathname } = location;
 
   useEffect(() => {
-    ventListenerUnsubscribe = ventListener(setVent, ventID);
+    const ventListenerUnsubscribe = ventListener(setVent, ventID);
 
     if (displayCommentField2)
       newCommentListenerUnsubscribe = newVentCommentListener(
         setComments,
         ventID
       );
+    getVentComments(comments, setComments, ventID);
+
     if (user)
       ventHasLikedListenerUnsubscribe = ventHasLikedListener(
         setHasLiked,
@@ -141,13 +145,8 @@ function Vent({
         ventID
       );
 
-    getVentComments(comments, setComments, ventID);
-
     return () => {
-      if (ventListenerUnsubscribe) {
-        ventListenerUnsubscribe();
-      }
-
+      ventListenerUnsubscribe();
       if (newCommentListenerUnsubscribe) newCommentListenerUnsubscribe();
       if (ventHasLikedListenerUnsubscribe) ventHasLikedListenerUnsubscribe();
     };
@@ -155,8 +154,6 @@ function Vent({
   const copyToClipboard = e => {
     textAreaRef.current.select();
     document.execCommand("copy");
-    // This is just personal preference.
-    // I prefer to not show the whole text area selected.
     e.target.focus();
     setCopySuccess("Copied!");
   };
@@ -564,7 +561,7 @@ function Vent({
                       commentIndex={index}
                       comment={comment}
                       ventID={ventID}
-                      key={comment.id}
+                      key={index}
                     />
                   );
                 })}
