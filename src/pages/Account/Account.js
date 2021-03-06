@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import firebase from "firebase/app";
-import "firebase/database";
+import db from "../../config/firebase";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
@@ -26,7 +26,13 @@ function AccountSection() {
         .updateProfile({
           displayName
         })
-        .then(() => {})
+        .then(async () => {
+          await db
+            .collection("users_display_name")
+            .doc(user.uid)
+            .update({ displayName });
+          alert("Display name updated!");
+        })
         .catch(error => {
           alert(error.message);
         });
@@ -39,7 +45,7 @@ function AccountSection() {
           user
             .sendEmailVerification()
             .then(() => {
-              // Email sent.
+              alert("We have sent you an email verification link");
             })
             .catch(error => {
               // An error happened.
@@ -54,7 +60,7 @@ function AccountSection() {
         user
           .updatePassword(newPassword)
           .then(() => {
-            // Update successful.
+            alert("Changed password successfully!");
           })
           .catch(error => {
             alert(error.message);
@@ -68,10 +74,6 @@ function AccountSection() {
   const [email, setEmail] = useState(user.email);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
-  const db = firebase.database();
-
-  const userRef = db.ref("/users/" + user.uid);
 
   return (
     <Container

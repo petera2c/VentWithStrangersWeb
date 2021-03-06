@@ -41,8 +41,6 @@ export const signUp = (
           .collection("users")
           .doc(res.user.uid)
           .set({
-            displayName,
-            email,
             settings: {
               adultContent: false,
               commentLiked: true,
