@@ -53,21 +53,19 @@ const combineObjectWithID = (id, object) => {
   object.id = id;
   return object;
 };
-console.log("here");
-exports.newCommentListener = functions.firestore
-  .document("/vent_data/{ventID}/comments/{commentID}")
-  .onCreate(async (doc, context) => {
-    const { ventID } = context.params;
 
+exports.newCommentListener = functions.firestore
+  .document("/comments/{commentID}")
+  .onCreate(async (doc, context) => {
     const ventDoc = await admin
       .firestore()
       .collection("vents")
-      .doc(ventID)
+      .doc(doc.data().ventID)
       .get();
 
     if (!ventDoc.exists) return "Cannot find post.";
 
-    const vent = combineObjectWithID(ventID, ventDoc.data());
+    const vent = combineObjectWithID(ventDoc.id, ventDoc.data());
 
     return createNotification(
       createVentLink(vent),

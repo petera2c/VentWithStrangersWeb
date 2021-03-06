@@ -6,22 +6,18 @@ import { getEndAtValueTimestamp } from "../../util";
 export const commentVent = async (commentString, user, ventID) => {
   if (!user) return alert("Only users can comment! Please login or register.");
   let commentObj = {
-    likeCounter: 0,
+    like_counter: 0,
     server_timestamp: firebase.firestore.Timestamp.now().seconds * 1000,
     text: commentString,
     userID: user.uid,
     ventID
   };
-  const res = await db
-    .collection("vent_data")
-    .doc(ventID)
-    .collection("comments")
-    .add(commentObj);
+  const res = await db.collection("comments").add(commentObj);
 
   if (res.id)
     db.collection("vents")
       .doc(ventID)
-      .update({ commentCounter: firebase.firestore.FieldValue.increment(1) });
+      .update({ comment_counter: firebase.firestore.FieldValue.increment(1) });
 };
 
 export const deleteVent = (
@@ -150,9 +146,8 @@ export const getVentPartialLink = vent => {
 
 export const newVentCommentListener = (setComments, ventID, first = true) => {
   const unsubscribe = db
-    .collection("vent_data")
-    .doc(ventID)
     .collection("comments")
+    .where("ventID", "==", ventID)
     .where(
       "server_timestamp",
       ">=",
@@ -188,9 +183,8 @@ export const getVentComments = async (comments, setComments, ventID) => {
   const startAt = getEndAtValueTimestamp(comments);
 
   const snapshot = await db
-    .collection("vent_data")
-    .doc(ventID)
     .collection("comments")
+    .where("ventID", "==", ventID)
     .orderBy("server_timestamp", "desc")
     .startAfter(startAt)
     .limit(10)
@@ -268,7 +262,7 @@ export const likeOrUnlikeVent = async (hasLiked, user, vent) => {
     .collection("vents")
     .doc(vent.id)
     .update({
-      likeCounter: firebase.firestore.FieldValue.increment(valueToIncreaseBy)
+      like_counter: firebase.firestore.FieldValue.increment(valueToIncreaseBy)
     });
 };
 

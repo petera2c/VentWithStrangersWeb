@@ -6,7 +6,7 @@ import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faChartNetwork } from "@fortawesome/pro-solid-svg-icons/faChartNetwork";
 import { faCog } from "@fortawesome/free-solid-svg-icons/faCog";
 
-import Consumer, { UserContext } from "../../context";
+import { UserContext } from "../../context";
 
 import Account from "./Account";
 import Activity from "./Activity";
@@ -30,78 +30,74 @@ function AccountPage() {
   }
 
   return (
-    <Consumer>
-      {(context) => (
-        <Page className="bg-grey-2" description="" keywords="" title="Account">
-          <Container
-            className={
-              "x-fill align-start justify-center " +
-              (isMobileOrTablet() ? "py16" : "py32")
-            }
-          >
-            {!isMobileOrTablet() && !search && (
-              <Container className="container small column align-center bg-white border-all2 px16 br8">
-                <Link className="x-fill" to={"/activity" + search}>
-                  <Container
-                    className={
-                      "grid-1 button-4 clickable x-fill align-center py16" +
-                      isPageActive("/activity", pathname)
-                    }
-                  >
-                    <Container className="flex x-fill full-center">
-                      <FontAwesomeIcon icon={faChartNetwork} />
-                    </Container>
-                    <Text text="Activity" type="h5" />
-                  </Container>
-                </Link>
-
-                <Link className="x-fill" to="/account">
-                  <Container
-                    className={
-                      "grid-1 button-4 clickable x-fill align-center py16" +
-                      isPageActive("/account", pathname)
-                    }
-                  >
-                    <Container className="flex x-fill full-center">
-                      <FontAwesomeIcon icon={faUser} />
-                    </Container>
-                    <Text text="Account" type="h5" />
-                  </Container>
-                </Link>
-
-                <Link className="x-fill" to="/settings">
-                  <Container
-                    className={
-                      "grid-1 button-4 clickable x-fill align-center py16" +
-                      isPageActive("/settings", pathname)
-                    }
-                  >
-                    <Container className="flex x-fill full-center">
-                      <FontAwesomeIcon icon={faCog} />
-                    </Container>
-                    <Text text="Settings" type="h5" />
-                  </Container>
-                </Link>
-
-                <Container className="clickable x-fill align-center pa16">
-                  <Text
-                    className="button-1"
-                    onClick={signOut}
-                    text="Sign Out"
-                    type="h5"
-                  />
+    <Page className="bg-grey-2" description="" keywords="" title="Account">
+      <Container
+        className={
+          "x-fill align-start justify-center " +
+          (isMobileOrTablet() ? "py16" : "py32")
+        }
+      >
+        {!isMobileOrTablet() && !search && (
+          <Container className="container small column align-center bg-white border-all2 px16 br8">
+            <Link className="x-fill" to={"/activity" + search}>
+              <Container
+                className={
+                  "grid-1 button-4 clickable x-fill align-center py16" +
+                  isPageActive("/activity", pathname)
+                }
+              >
+                <Container className="flex x-fill full-center">
+                  <FontAwesomeIcon icon={faChartNetwork} />
                 </Container>
+                <Text text="Activity" type="h5" />
               </Container>
-            )}
-            <Container className={isMobileOrTablet() ? "x-fill pt16" : "pl32"}>
-              {pathname === "/account" && <Account />}
-              {pathname === "/activity" && <Activity />}
-              {pathname === "/settings" && <Settings />}
+            </Link>
+
+            <Link className="x-fill" to="/account">
+              <Container
+                className={
+                  "grid-1 button-4 clickable x-fill align-center py16" +
+                  isPageActive("/account", pathname)
+                }
+              >
+                <Container className="flex x-fill full-center">
+                  <FontAwesomeIcon icon={faUser} />
+                </Container>
+                <Text text="Account" type="h5" />
+              </Container>
+            </Link>
+
+            <Link className="x-fill" to="/settings">
+              <Container
+                className={
+                  "grid-1 button-4 clickable x-fill align-center py16" +
+                  isPageActive("/settings", pathname)
+                }
+              >
+                <Container className="flex x-fill full-center">
+                  <FontAwesomeIcon icon={faCog} />
+                </Container>
+                <Text text="Settings" type="h5" />
+              </Container>
+            </Link>
+
+            <Container className="clickable x-fill align-center pa16">
+              <Text
+                className="button-1"
+                onClick={signOut}
+                text="Sign Out"
+                type="h5"
+              />
             </Container>
           </Container>
-        </Page>
-      )}
-    </Consumer>
+        )}
+        <Container className={isMobileOrTablet() ? "x-fill pt16" : "pl32"}>
+          {pathname === "/account" && <Account user={user} />}
+          {pathname === "/activity" && <Activity user={user} />}
+          {pathname === "/settings" && <Settings user={user} />}
+        </Container>
+      </Container>
+    </Page>
   );
 }
 

@@ -4,8 +4,6 @@ import db from "../../config/firebase";
 
 export const commentListener = (commentID, setComment, ventID) => {
   const unsubscribe = db
-    .collection("vent_data")
-    .doc(ventID)
     .collection("comments")
     .doc(commentID)
     .onSnapshot("value", doc => {
@@ -35,12 +33,10 @@ export const likeOrUnlikeComment = async (comment, hasLiked, user, ventID) => {
   if (hasLiked) valueToIncreaseBy = -1;
 
   await db
-    .collection("vent_data")
-    .doc(ventID)
     .collection("comments")
     .doc(comment.id)
     .update({
-      likeCounter: firebase.firestore.FieldValue.increment(valueToIncreaseBy)
+      like_counter: firebase.firestore.FieldValue.increment(valueToIncreaseBy)
     });
 };
 

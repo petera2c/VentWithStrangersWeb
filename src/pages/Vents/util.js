@@ -1,20 +1,15 @@
-import db from "../../config/firebase";
 import firebase from "firebase/app";
+import db from "../../config/firebase";
 import { combineInsideObjectWithID, getEndAtValueTimestamp } from "../../util";
 
-export const getVents = async (
-  pathname,
-  setCanLoadMore,
-  setVents,
-  vents
-) => {
+export const getVents = async (pathname, setCanLoadMore, setVents, vents) => {
   let startAt = getEndAtValueTimestamp(vents);
 
   let snapshot;
   if (pathname === "trending")
     snapshot = await db
       .collection("/vents/")
-      .orderBy("likeCounter", "desc")
+      .orderBy("like_counter", "desc")
       .startAfter(startAt)
       .limitToLast(10)
       .get();

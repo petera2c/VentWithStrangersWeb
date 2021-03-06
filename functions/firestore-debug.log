@@ -5,101 +5,307 @@ If you are using a library that supports the FIRESTORE_EMULATOR_HOST environment
 
 Dev App Server is now running.
 
-Mar. 06, 2021 11:25:03 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:54:27 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:03 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:54:27 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:04 A.M. com.google.cloud.datastore.emulator.impl.context.EmulatorAuthorization warnAboutSecuredJwt
-WARNING: expected an unsecured JWT, the emulator does not validate JWTs and IS NOT SECURE
-Mar. 06, 2021 11:25:05 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:54:28 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:05 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
-INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:05 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
-INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:07 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
-INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:07 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:54:28 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected HTTP/2 connection.
-Mar. 06, 2021 11:25:07 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:54:28 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:08 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:54:29 A.M. com.google.cloud.datastore.emulator.impl.context.EmulatorAuthorization warnAboutSecuredJwt
+WARNING: expected an unsecured JWT, the emulator does not validate JWTs and IS NOT SECURE
+Mar. 06, 2021 11:54:29 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:08 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:54:29 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:08 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:54:29 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:15 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:54:29 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:15 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:54:33 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:15 A.M. com.google.cloud.datastore.emulator.firestore.webchannel.FirestoreV1WebChannelAdapter$FirestoreListenHandler onClose
+Mar. 06, 2021 11:54:33 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:54:33 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:54:39 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:54:39 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:54:39 A.M. com.google.cloud.datastore.emulator.firestore.webchannel.FirestoreV1WebChannelAdapter$FirestoreListenHandler onClose
 INFO: channel closed
-Mar. 06, 2021 11:25:15 A.M. com.google.cloud.datastore.emulator.impl.context.EmulatorAuthorization warnAboutSecuredJwt
+Mar. 06, 2021 11:54:39 A.M. com.google.cloud.datastore.emulator.impl.context.EmulatorAuthorization warnAboutSecuredJwt
 WARNING: expected an unsecured JWT, the emulator does not validate JWTs and IS NOT SECURE
-Mar. 06, 2021 11:25:15 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:54:39 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:15 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:54:39 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:15 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:54:39 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:16 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:54:40 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:16 A.M. com.google.cloud.datastore.emulator.impl.context.EmulatorAuthorization warnAboutSecuredJwt
+Mar. 06, 2021 11:54:40 A.M. com.google.cloud.datastore.emulator.impl.context.EmulatorAuthorization warnAboutSecuredJwt
 WARNING: expected an unsecured JWT, the emulator does not validate JWTs and IS NOT SECURE
-Mar. 06, 2021 11:25:17 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:54:40 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:17 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:54:40 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:23 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:54:44 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:23 A.M. com.google.cloud.datastore.emulator.impl.context.EmulatorAuthorization warnAboutSecuredJwt
+Mar. 06, 2021 11:54:44 A.M. com.google.cloud.datastore.emulator.impl.context.EmulatorAuthorization warnAboutSecuredJwt
 WARNING: expected an unsecured JWT, the emulator does not validate JWTs and IS NOT SECURE
-Mar. 06, 2021 11:25:23 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:54:44 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:23 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:54:44 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:23 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:54:44 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:23 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:54:44 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:23 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:54:44 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:24 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:54:44 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:24 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:54:44 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:24 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:54:45 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected HTTP/2 connection.
-Mar. 06, 2021 11:25:25 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:54:46 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:27 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:54:46 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:27 A.M. com.google.cloud.datastore.emulator.impl.context.EmulatorAuthorization warnAboutSecuredJwt
+Mar. 06, 2021 11:54:46 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:54:46 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:54:46 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:54:46 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:54:47 A.M. com.google.cloud.datastore.emulator.impl.events.FunctionsEmulatorEventPublisher sendHttpRequest
+WARNING: Unsuccessful HTTP response when publishing event for projects/vent-with-strangers-2acc6/triggers/newCommentListener-0: 500 Internal Server Error
+ReferenceError: ventID is not defined
+    at /Users/petermirm/Documents/dev_projects/vent_with_strangers_web/functions/index.js:63:12
+    at cloudFunction (/Users/petermirm/Documents/dev_projects/vent_with_strangers_web/functions/node_modules/firebase-functions/lib/cloud-functions.js:134:23)
+    at /Users/petermirm/.npm/lib/node_modules/firebase-tools/lib/emulator/functionsEmulatorRuntime.js:588:16
+    at runFunction (/Users/petermirm/.npm/lib/node_modules/firebase-tools/lib/emulator/functionsEmulatorRuntime.js:575:15)
+    at runBackground (/Users/petermirm/.npm/lib/node_modules/firebase-tools/lib/emulator/functionsEmulatorRuntime.js:587:11)
+    at processBackground (/Users/petermirm/.npm/lib/node_modules/firebase-tools/lib/emulator/functionsEmulatorRuntime.js:570:11)
+    at invokeTrigger (/Users/petermirm/.npm/lib/node_modules/firebase-tools/lib/emulator/functionsEmulatorRuntime.js:645:19)
+    at handleMessage (/Users/petermirm/.npm/lib/node_modules/firebase-tools/lib/emulator/functionsEmulatorRuntime.js:732:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+Mar. 06, 2021 11:54:50 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:54:50 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:54:54 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:54:54 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:54:54 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:54:54 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:54:54 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:54:54 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:54:56 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:54:56 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:54:56 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:54:56 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:54:56 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:54:57 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:54:57 A.M. com.google.cloud.datastore.emulator.impl.events.FunctionsEmulatorEventPublisher sendHttpRequest
+WARNING: Unsuccessful HTTP response when publishing event for projects/vent-with-strangers-2acc6/triggers/newCommentListener-0: 500 Internal Server Error
+ReferenceError: ventID is not defined
+    at /Users/petermirm/Documents/dev_projects/vent_with_strangers_web/functions/index.js:63:12
+    at cloudFunction (/Users/petermirm/Documents/dev_projects/vent_with_strangers_web/functions/node_modules/firebase-functions/lib/cloud-functions.js:134:23)
+    at /Users/petermirm/.npm/lib/node_modules/firebase-tools/lib/emulator/functionsEmulatorRuntime.js:588:16
+    at runFunction (/Users/petermirm/.npm/lib/node_modules/firebase-tools/lib/emulator/functionsEmulatorRuntime.js:575:15)
+    at runBackground (/Users/petermirm/.npm/lib/node_modules/firebase-tools/lib/emulator/functionsEmulatorRuntime.js:587:11)
+    at processBackground (/Users/petermirm/.npm/lib/node_modules/firebase-tools/lib/emulator/functionsEmulatorRuntime.js:570:11)
+    at invokeTrigger (/Users/petermirm/.npm/lib/node_modules/firebase-tools/lib/emulator/functionsEmulatorRuntime.js:645:19)
+    at handleMessage (/Users/petermirm/.npm/lib/node_modules/firebase-tools/lib/emulator/functionsEmulatorRuntime.js:732:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+Mar. 06, 2021 11:55:00 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:55:00 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:55:30 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:55:33 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:55:45 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:00 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:00 A.M. com.google.cloud.datastore.emulator.firestore.webchannel.FirestoreV1WebChannelAdapter$FirestoreWriteHandler onClose
+INFO: channel closed
+Mar. 06, 2021 11:56:10 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:10 A.M. com.google.cloud.datastore.emulator.impl.context.EmulatorAuthorization warnAboutSecuredJwt
 WARNING: expected an unsecured JWT, the emulator does not validate JWTs and IS NOT SECURE
-Mar. 06, 2021 11:25:27 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:56:10 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:27 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:56:10 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:27 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:56:10 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:27 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:56:11 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:28 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:56:11 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:28 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:56:12 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:29 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:56:12 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:29 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:56:12 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:29 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:56:12 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:29 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:56:13 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:29 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:56:13 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:30 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:56:13 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Mar. 06, 2021 11:25:30 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Mar. 06, 2021 11:56:13 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:14 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:14 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:14 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:14 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:14 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:14 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:14 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:16 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:16 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:16 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:16 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:16 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:16 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:16 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:16 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:16 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:17 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:17 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:19 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:19 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:20 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:20 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:21 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:21 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:25 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:25 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:28 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:28 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:28 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:32 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:32 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:32 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:35 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:36 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:36 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:37 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:37 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:38 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:38 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:39 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:39 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:39 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:39 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:46 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:46 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:46 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:46 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:47 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:47 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:48 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:48 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:48 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:48 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:48 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:48 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:51 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:51 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:51 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:51 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:51 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:51 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:53 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:53 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Mar. 06, 2021 11:56:55 A.M. io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.

@@ -8,7 +8,7 @@
       }
     },
     "posts": {
-    	".indexOn": ["likeCounter","server_timestamp"]
+    	".indexOn": ["like_counter","server_timestamp"]
     },
       
   }

@@ -241,7 +241,7 @@ function Comment({ arrayLength, comment2, commentID, commentIndex, ventID }) {
           />
           <Text
             className="grey-5"
-            text={comment.likeCounter ? comment.likeCounter : 0}
+            text={comment.like_counter ? comment.like_counter : 0}
             type="p"
           />
         </Container>

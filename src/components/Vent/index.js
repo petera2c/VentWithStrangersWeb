@@ -345,7 +345,7 @@ function Vent({
                   />
                   <Text
                     className="blue mr8"
-                    text={vent.commentCounter ? vent.commentCounter : 0}
+                    text={vent.comment_counter ? vent.comment_counter : 0}
                     type="p"
                   />
 
@@ -368,7 +368,7 @@ function Vent({
 
                   <Text
                     className="grey-5 mr16"
-                    text={vent.likeCounter ? vent.likeCounter : 0}
+                    text={vent.like_counter ? vent.like_counter : 0}
                     type="p"
                   />
                 </Container>
@@ -575,7 +575,7 @@ function Vent({
                     />
                   );
                 })}
-                {vent.commentCounter > comments.length && (
+                {vent.comment_counter > comments.length && (
                   <Button
                     className="blue underline"
                     onClick={() => {
