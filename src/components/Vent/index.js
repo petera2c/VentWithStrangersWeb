@@ -74,14 +74,10 @@ import {
   startConversation,
   tagUser,
   ventHasLikedListener,
-  ventListener,
-  ventListener2
+  ventListener
 } from "./util";
 
 import classNames from "./style.css";
-
-let newCommentListenerUnsubscribe;
-let ventHasLikedListenerUnsubscribe;
 
 const SmartLink = ({ children, className, disablePostOnClick, to }) => {
   if (disablePostOnClick) {
@@ -101,6 +97,8 @@ function Vent({
   isOnSingleVentPage,
   previewMode,
   searchPreviewMode,
+  setDescription,
+  setTitle,
   ventID
 }) {
   const user = useContext(UserContext);
@@ -128,8 +126,16 @@ function Vent({
   const location = useLocation();
   const { pathname } = location;
 
+  let newCommentListenerUnsubscribe;
+  let ventHasLikedListenerUnsubscribe;
+
   useEffect(() => {
-    const ventListenerUnsubscribe = ventListener(setVent, ventID);
+    const ventListenerUnsubscribe = ventListener(
+      setDescription,
+      setTitle,
+      setVent,
+      ventID
+    );
 
     if (displayCommentField2)
       newCommentListenerUnsubscribe = newVentCommentListener(

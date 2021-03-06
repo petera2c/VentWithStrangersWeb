@@ -15,7 +15,7 @@ import Button from "../../components/views/Button";
 
 import { isMobileOrTablet } from "../../util";
 
-const getVentIdFromURL = (pathname) => {
+const getVentIdFromURL = pathname => {
   // regular expression will not work due to catastrophic backtracing
   //pathname.match(/(?<=\/problem\/\s*).*?(?=\s*\/)/gs);
   if (pathname) {
@@ -34,17 +34,12 @@ function VentPage() {
   const location = useLocation();
   const { pathname } = location;
 
+  const [description, setDescription] = useState("");
+  const [title, setTitle] = useState("");
+
   const regexMatch = getVentIdFromURL(pathname);
   let ventID;
   if (regexMatch) ventID = regexMatch;
-
-  let title = "";
-  let description = "";
-
-  let vent;
-
-  if (vent && vent.title) title = vent.title;
-  if (vent && vent.description) description = vent.description;
 
   return (
     <Page
@@ -67,6 +62,8 @@ function VentPage() {
               disablePostOnClick={true}
               displayCommentField
               isOnSingleVentPage={true}
+              setDescription={setDescription}
+              setTitle={setTitle}
               ventID={ventID}
             />
           </Container>

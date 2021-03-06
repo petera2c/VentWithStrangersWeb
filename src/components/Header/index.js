@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, withRouter } from "react-router-dom";
-import db from "../../config/firebase";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
@@ -24,7 +23,11 @@ import SignUpModal from "../modals/SignUp";
 import NotificationList from "../NotificationList";
 
 import { capitolizeFirstChar, isPageActive } from "../../util";
-import { newNotificationCounter } from "./util";
+import {
+  getNotifications,
+  newNotificationCounter,
+  readNotifications
+} from "./util";
 
 function Header({ history, location }) {
   const user = useContext(UserContext);
@@ -46,39 +49,8 @@ function Header({ history, location }) {
   };
 
   useEffect(() => {
-    if (user) {
-      return;
-      const notificationsQuery = db
-        .collection("notifications")
-        .doc(user.uid)
-        .orderBy("server_timestamp")
-        .limitToLast(5);
-      notificationsQuery.onSnapshot("value", snapshot => {
-        const value = snapshot.data();
-        const exists = snapshot.exists;
-
-        if (exists)
-          setNotifications(
-            value.docs.forEach((item, i) => {
-              return { id: item.id, ...item, doc: item };
-            })
-          );
-        else setNotifications([]);
-      });
-    }
+    if (user) getNotifications(setNotifications, user);
   }, [location]);
-
-  const readNotifications = () => {
-    for (let index in notifications) {
-      const notification = notifications[index];
-      if (!notification.hasSeen) {
-        const notificationRef = notificationsRef.child(notification.id);
-        notificationRef.update({
-          hasSeen: "true"
-        });
-      }
-    }
-  };
 
   return (
     <Container
@@ -212,7 +184,7 @@ function Header({ history, location }) {
                   onClick={() => {
                     setShowNotificationDropdown(!showNotificationDropdown);
 
-                    readNotifications();
+                    readNotifications(notifications);
                   }}
                   size="2x"
                 />
