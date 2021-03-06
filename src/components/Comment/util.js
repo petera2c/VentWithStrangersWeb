@@ -6,10 +6,21 @@ export const commentListener = (commentID, setComment, ventID) => {
   const unsubscribe = db
     .collection("comments")
     .doc(commentID)
-    .onSnapshot("value", doc => {
-      const value = doc.data();
+    .onSnapshot("value", async doc => {
+      const comment = doc.data();
 
-      if (value) setComment({ id: doc.id, ...value });
+      const authorDoc = await db
+        .collection("users_display_name")
+        .doc(comment.userID)
+        .get();
+
+      let author = "";
+
+      if (authorDoc.exists && authorDoc.data().displayName)
+        author = authorDoc.data().displayName;
+
+      if (comment)
+        setComment({ id: doc.id, ...comment, author, authorID: authorDoc.id });
     });
 
   return unsubscribe;

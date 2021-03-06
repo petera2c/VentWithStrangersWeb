@@ -35,13 +35,12 @@ function ActivitySection({ user }) {
   const [vents] = useCollectionData(ventQuery, { idField: "id" });
 
   const commentQuery = db
-    .collection("/vent_data/")
+    .collection("/comments/")
     .where("userID", "==", user.uid)
     .orderBy("server_timestamp", "desc")
     .limitToLast(20);
 
   const [comments] = useCollectionData(commentQuery, { idField: "id" });
-
   const isActive = test => {
     if (test) return " active";
     else return "";
@@ -138,8 +137,11 @@ function ActivitySection({ user }) {
                   <Link key={index} to={"/problem/" + comment.problemID + "/"}>
                     <Comment
                       arrayLength={comments.length}
-                      comment={comment}
+                      commentID={comment.id}
                       commentIndex={index}
+                      comment={comment}
+                      ventID={comment.ventID}
+                      key={index}
                     />
                   </Link>
                 );

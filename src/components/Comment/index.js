@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import moment from "moment-timezone";
 import TextArea from "react-textarea-autosize";
 import { MentionsInput, Mention } from "react-mentions";
+import { useHistory } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock } from "@fortawesome/free-regular-svg-icons/faClock";
@@ -34,6 +35,7 @@ import { findPossibleUsersToTag } from "../Vent/util";
 let commentHasLikedUnsubscribe;
 
 function Comment({ arrayLength, comment2, commentID, commentIndex, ventID }) {
+  const history = useHistory();
   const user = useContext(UserContext);
   const [comment, setComment] = useState(false);
   const [commentOptions, setCommentOptions] = useState(false);
@@ -74,11 +76,13 @@ function Comment({ arrayLength, comment2, commentID, commentIndex, ventID }) {
             history.push("/activity?" + comment.authorID);
           }}
         >
-          <Text
-            className="round-icon bg-blue white mr8"
-            text={capitolizeFirstChar(comment.author)}
-            type="h6"
-          />
+          {comment.author && (
+            <Text
+              className="round-icon bg-blue white mr8"
+              text={capitolizeFirstChar(comment.author[0])}
+              type="h6"
+            />
+          )}
           <Text
             className="button-1 fw-400"
             text={capitolizeFirstChar(comment.author)}
