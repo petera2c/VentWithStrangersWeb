@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
+import { useDocument } from "react-firebase-hooks/firestore";
 import firebase from "firebase/app";
-import "firebase/database";
+import db from "../../config/firebase";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMonument } from "@fortawesome/free-solid-svg-icons/faMonument";
@@ -17,27 +18,19 @@ import { UserContext } from "../../context";
 import { isMobileOrTablet } from "../../util";
 
 function AccountSection() {
-  const [settings, setSettings] = useState();
   const user = useContext(UserContext);
-  const db = firebase.database();
 
-  const settingsRef = db.ref("/users/" + user.uid + "/settings");
+  const settingsRef = db.collection("users").doc(user.uid);
+  const [settingsSnapshot] = useDocument(settingsRef, {
+    idField: "id"
+  });
 
-  useEffect(() => {
-    settingsRef.on("value", snapshot => {
-      const value = snapshot.val();
-      const exists = snapshot.exists();
-      if (exists) setSettings(value);
-    });
-  }, [user]);
-
-  const handleChange = e => {
-    const { name, checked } = e.target;
-
-    settingsRef.child(name).set(checked);
+  const handleChange = async (name, checked) => {
+    await settingsRef.update({ [name]: checked });
+    alert("Setting updated!");
   };
 
-  if (!settings)
+  if (!settingsSnapshot)
     return (
       <Container
         className={
@@ -59,12 +52,20 @@ function AccountSection() {
       <Text className="mb16" text="Settings" type="h4" />
       <Container className="column bg-white border-all2 pa16 mb2 br8">
         <Text className="blue bold mb16" text="Notifications" type="h6" />
-        <Container className="align-center mb16">
+        <Container
+          className="clickable align-center mb16"
+          onClick={() =>
+            handleChange(
+              "post_commented",
+              !settingsSnapshot.data().post_commented
+            )
+          }
+        >
           <input
             className="mr8"
-            checked={settings.postCommented}
-            name="postCommented"
-            onChange={e => handleChange(e)}
+            checked={settingsSnapshot.data().post_commented}
+            name="post_commented"
+            onChange={() => {}}
             style={{ minWidth: "13px" }}
             type="checkbox"
           />
@@ -74,12 +75,20 @@ function AccountSection() {
             type="p"
           />
         </Container>
-        <Container className="align-center mb16">
+        <Container
+          className="clickable align-center mb16"
+          onClick={() =>
+            handleChange(
+              "comment_liked",
+              !settingsSnapshot.data().comment_liked
+            )
+          }
+        >
           <input
             className="mr8"
-            checked={settings.commentLiked}
-            name="commentLiked"
-            onChange={e => handleChange(e)}
+            checked={settingsSnapshot.data().comment_liked}
+            name="comment_liked"
+            onChange={() => {}}
             style={{ minWidth: "13px" }}
             type="checkbox"
           />
@@ -89,12 +98,17 @@ function AccountSection() {
             type="p"
           />
         </Container>
-        <Container className="align-center mb16">
+        <Container
+          className="clickable align-center mb16"
+          onClick={() =>
+            handleChange("post_liked", !settingsSnapshot.data().post_liked)
+          }
+        >
           <input
             className="mr8"
-            checked={settings.postLiked}
-            name="postLiked"
-            onChange={e => handleChange(e)}
+            checked={settingsSnapshot.data().post_liked}
+            name="post_liked"
+            onChange={() => {}}
             style={{ minWidth: "13px" }}
             type="checkbox"
           />
@@ -104,12 +118,20 @@ function AccountSection() {
             type="p"
           />
         </Container>
-        <Container className="align-center mb16">
+        <Container
+          className="clickable align-center mb16"
+          onClick={() =>
+            handleChange(
+              "receive_emails",
+              !settingsSnapshot.data().receive_emails
+            )
+          }
+        >
           <input
             className="mr8"
-            checked={settings.receiveEmails}
-            name="receiveEmails"
-            onChange={e => handleChange(e)}
+            checked={settingsSnapshot.data().receive_emails}
+            name="receive_emails"
+            onChange={() => {}}
             style={{ minWidth: "13px" }}
             type="checkbox"
           />
@@ -124,12 +146,20 @@ function AccountSection() {
           text="Privacy and Content Preferences"
           type="h6"
         />
-        <Container className="align-center mb16">
+        <Container
+          className="clickable align-center mb16"
+          onClick={() =>
+            handleChange(
+              "adult_content",
+              !settingsSnapshot.data().adult_content
+            )
+          }
+        >
           <input
             className="mr8"
-            checked={settings.adultContent}
-            name="adultContent"
-            onChange={e => handleChange(e)}
+            checked={settingsSnapshot.data().adult_content}
+            name="adult_content"
+            onChange={() => {}}
             style={{ minWidth: "13px" }}
             type="checkbox"
           />

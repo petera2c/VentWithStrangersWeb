@@ -41,13 +41,11 @@ export const signUp = (
           .collection("users")
           .doc(res.user.uid)
           .set({
-            settings: {
-              adultContent: false,
-              commentLiked: true,
-              postCommented: true,
-              postLiked: true,
-              receiveEmails: true
-            }
+            adult_content: false,
+            comment_liked: true,
+            post_commented: true,
+            post_liked: true,
+            receive_emails: true
           });
         await db
           .collection("users_display_name")
