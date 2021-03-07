@@ -137,14 +137,14 @@ function Vent({
       ventID
     );
 
-    if (displayCommentField2)
+    if (!searchPreviewMode && displayCommentField2)
       newCommentListenerUnsubscribe = newVentCommentListener(
         setComments,
         ventID
       );
-    getVentComments(comments, setComments, ventID);
+    if (!searchPreviewMode) getVentComments(comments, setComments, ventID);
 
-    if (user)
+    if (user && !searchPreviewMode)
       ventHasLikedListenerUnsubscribe = ventHasLikedListener(
         setHasLiked,
         user.uid,
@@ -560,7 +560,7 @@ function Vent({
               </Container>
             </Container>
           )}
-          {displayCommentField2 && comments && (
+          {!searchPreviewMode && displayCommentField2 && comments && (
             <Container className="column mb16">
               <Container className="column border-all2 br8">
                 {comments.map((comment, index) => {

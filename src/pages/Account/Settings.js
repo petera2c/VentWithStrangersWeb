@@ -30,7 +30,7 @@ function AccountSection() {
     alert("Setting updated!");
   };
 
-  if (!settingsSnapshot)
+  if (!settingsSnapshot || !settingsSnapshot.data())
     return (
       <Container
         className={

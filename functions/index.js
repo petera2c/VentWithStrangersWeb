@@ -1,19 +1,24 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
-const test = require("firebase-admin").firestore.FieldValue;
+const moment = require("moment-timezone");
 
-//const config = require("./config/firebase");
+const express = require("express");
+const s3Proxy = require("s3-proxy");
+const AWS = require("aws-sdk");
+const app = express();
+
+const {
+  amazonAccessKeyID,
+  amazonSecretAccessKey,
+  amazonBucket,
+} = require("./config/keys");
+
+const s3 = new AWS.S3({
+  accessKeyId: amazonAccessKeyID,
+  secretAccessKey: amazonSecretAccessKey,
+});
+
 admin.initializeApp(functions.config().firebase);
-/*firebase.initializeApp({
-  apiKey: "AIzaSyCk8EfNyqarIzBAQSCFgU8634o-e0iA_Os",
-  appId: "1:440569980458:web:870c6bde68871e5fd78553",
-  authDomain: "vent-with-strangers-2acc6.firebaseapp.com",
-  databaseURL: "http://localhost:9000?ns=vent-with-strangers-2acc6",
-  measurementId: "G-N5NTVEZHSN",
-  messagingSenderId: "440569980458",
-  projectId: "vent-with-strangers-2acc6",
-  storageBucket: "vent-with-strangers-2acc6.appspot.com",
-});*/
 
 const createVentLink = (vent) => {
   let link =
@@ -85,3 +90,77 @@ exports.newPostListener = functions.firestore
       vent.userID
     );
   });
+
+exports.cronUpdateSitemap = functions.pubsub
+  .schedule("0 0 * * *")
+  .onRun(async () => {
+    const vents = await admin
+      .firestore()
+      .collection("vents")
+      .get();
+
+    let siteMapString =
+      '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n';
+    siteMapString +=
+      "<url>\n<loc>https://www.ventwithstrangers.com/</loc>\n<lastmod>" +
+      new moment().format("YYYY-MM-DD") +
+      "</lastmod>\n<changefreq>daily</changefreq>\n<priority>1</priority>\n</url>\n\n";
+    siteMapString +=
+      "<url>\n<loc>https://www.ventwithstrangers.com/post-a-problem</loc>\n<lastmod>2020-02-04</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.8</priority>\n</url>\n\n";
+    siteMapString +=
+      "<url>\n<loc>https://www.ventwithstrangers.com/vent-to-a-stranger</loc>\n<lastmod>2020-02-04</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.8</priority>\n</url>\n\n";
+    siteMapString +=
+      "<url>\n<loc>https://www.ventwithstrangers.com/recent</loc>\n<lastmod>" +
+      new moment().format("YYYY-MM-DD") +
+      "</lastmod>\n<changefreq>daily</changefreq>\n<priority>0.8</priority>\n</url>\n\n";
+    siteMapString +=
+      "<url>\n<loc>https://www.ventwithstrangers.com/trending</loc>\n<lastmod>" +
+      new moment().format("YYYY-MM-DD") +
+      "</lastmod>\n<changefreq>daily</changefreq>\n<priority>0.8</priority>\n</url>\n\n";
+    siteMapString +=
+      "<url>\n<loc>https://www.ventwithstrangers.com/app-downloads</loc>\n<lastmod>2020-05-26</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.2</priority>\n</url>\n\n";
+
+    for (let index in vents.docs) {
+      const vent = vents.docs[index].data();
+
+      let url =
+        "https://www.ventwithstrangers.com/problem/" +
+        vent._id +
+        "/" +
+        vent.title
+          .replace(/[^a-zA-Z ]/g, "")
+          .replace(/ /g, "-")
+          .toLowerCase();
+
+      siteMapString +=
+        "<url>\n<loc>" +
+        url +
+        "</loc>\n<lastmod>" +
+        new moment(vent.server_timestamp).format("YYYY-MM-DD") +
+        "</lastmod>\n<changefreq>monthly</changefreq>\n</url>\n\n";
+    }
+
+    siteMapString += "</urlset>";
+
+    const params = {
+      Bucket: amazonBucket,
+      Key: "sitemap.xml",
+      Body: siteMapString,
+    };
+    return params;
+
+    s3.putObject(params, (err, data) => {
+      if (err) console.log(err);
+    });
+  });
+app.get(
+  "/sitemap.xml",
+  s3Proxy({
+    bucket: amazonBucket,
+    accessKeyId: amazonAccessKeyID,
+    secretAccessKey: amazonSecretAccessKey,
+    overrideCacheControl: "max-age=100000",
+    defaultKey: "sitemap.xml",
+  })
+);
+exports.app = functions.https.onRequest(app);

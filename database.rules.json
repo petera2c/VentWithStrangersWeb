@@ -3,13 +3,10 @@
     ".read": true,
     ".write": true,
     "comments": {
-      "$user_id":{
-      	".indexOn": ["server_timestamp"]
-      }
+      ".indexOn": ["server_timestamp", "userID", "ventID"]
     },
-    "posts": {
-    	".indexOn": ["like_counter","server_timestamp"]
-    },
-      
+    "vents": {
+      ".indexOn": ["like_counter", "server_timestamp"]
+    }
   }
 }

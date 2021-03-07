@@ -31,7 +31,6 @@ import ConversationsPage from "./Conversations";
 import NewVentPage from "./NewVent";
 import VentPage from "./Vent";
 import BlogPage from "./Blog";
-import CreateBlogPage from "./CreateBlog";
 import NotFoundPage from "./NotFound";
 import PrivacyPolicyPage from "./PrivacyPolicy";
 
@@ -82,7 +81,6 @@ function Routes() {
               <Route path="/post-a-problem/" component={NewVentPage} />
               <Route path="/problem/" component={VentPage} />
               <Route path="/blog/" component={BlogPage} />
-              <Route path="/create-blog/" component={CreateBlogPage} />
               <Route path="/privacy-policy/" component={PrivacyPolicyPage} />
               <Route component={NotFoundPage} />
             </Switch>

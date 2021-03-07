@@ -14,10 +14,7 @@ export const getInvalidCharacters = displayName => {
   return invalidCharacters;
 };
 
-export const signUp = (
-  { email, displayName, password, passwordConfirm },
-  context
-) => {
+export const signUp = ({ email, displayName, password, passwordConfirm }) => {
   if (getInvalidCharacters(displayName)) {
     alert(
       "These characters are not allowed in your display name. " +
@@ -60,6 +57,6 @@ export const signUp = (
       }
     })
     .catch(e => {
-      context.notify(e);
+      alert(e);
     });
 };

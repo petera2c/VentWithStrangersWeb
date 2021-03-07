@@ -45,7 +45,7 @@ function Header({ history, location }) {
   const { pathname } = location;
 
   const searchPosts = ventSearchString => {
-    setVentSearchString({ ventSearchString });
+    setVentSearchString(ventSearchString);
     history.push("/search?" + ventSearchString);
   };
 
