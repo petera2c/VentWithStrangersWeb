@@ -1,4 +1,4 @@
-const functions = require("firebase-functions");
+/* const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const moment = require("moment-timezone");
 
@@ -36,7 +36,6 @@ const createVentLink = (vent) => {
 };
 
 const createNotification = (link, message, userID) => {
-  return;
   if (!userID) return;
   return admin
     .firestore()
@@ -165,4 +164,4 @@ app.get(
     defaultKey: "sitemap.xml",
   })
 );
-exports.app = functions.https.onRequest(app);
+exports.app = functions.https.onRequest(app);*/

@@ -77,7 +77,7 @@ function Vents() {
                 })}
             </Container>
           )}
-          {vents === null && canLoadMore && (
+          {canLoadMore && (
             <LoadMore
               canLoadMore={canLoadMore}
               loadMore={() =>

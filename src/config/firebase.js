@@ -13,7 +13,7 @@ var firebaseConfig = {
   storageBucket: "vent-with-strangers-2acc6.appspot.com"
 };
 
-if (location.hostname === "localhost") {
+if (location.hostname === "localhost" && false) {
   firebaseConfig = {
     apiKey: "AIzaSyCk8EfNyqarIzBAQSCFgU8634o-e0iA_Os",
     appId: "1:440569980458:web:870c6bde68871e5fd78553",
@@ -28,6 +28,6 @@ if (location.hostname === "localhost") {
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 var db = firebase.firestore();
-if (location.hostname === "localhost") db.useEmulator("localhost", 8080);
+//if (location.hostname === "localhost") db.useEmulator("localhost", 8080);
 
 export default db;

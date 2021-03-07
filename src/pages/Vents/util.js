@@ -11,14 +11,14 @@ export const getVents = async (pathname, setCanLoadMore, setVents, vents) => {
       .collection("/vents/")
       .orderBy("like_counter", "desc")
       .startAfter(startAt)
-      .limitToLast(10)
+      .limit(10)
       .get();
   else
     snapshot = await db
       .collection("/vents/")
       .orderBy("server_timestamp", "desc")
       .startAfter(startAt)
-      .limitToLast(10)
+      .limit(10)
       .get();
 
   if (snapshot.docs && snapshot.docs.length > 0) {
