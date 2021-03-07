@@ -1,0 +1,14 @@
+[debug] [2021-03-07T00:37:13.678Z] ----------------------------------------------------------------------
+[debug] [2021-03-07T00:37:13.679Z] Command:       /usr/local/bin/node /Users/petermirm/.npm/bin/firebase deploy
+[debug] [2021-03-07T00:37:13.679Z] CLI Version:   9.3.0
+[debug] [2021-03-07T00:37:13.679Z] Platform:      darwin
+[debug] [2021-03-07T00:37:13.679Z] Node Version:  v14.15.1
+[debug] [2021-03-07T00:37:13.680Z] Time:          Sat Mar 06 2021 18:37:13 GMT-0600 (Central Standard Time)
+[debug] [2021-03-07T00:37:13.680Z] ----------------------------------------------------------------------
+[debug] [2021-03-07T00:37:13.680Z] 
+[debug] [2021-03-07T00:37:13.687Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-03-07T00:37:13.688Z] > authorizing via signed-in user
+[debug] [2021-03-07T00:37:13.688Z] [iam] checking project vent-with-strangers-2acc6 for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebasedatabase.instances.update","firebasehosting.sites.update","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]
+[debug] [2021-03-07T00:37:13.690Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2021-03-07T00:37:13.690Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
