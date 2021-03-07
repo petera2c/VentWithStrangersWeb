@@ -232,12 +232,16 @@ export const ventListener = (setDescription, setTitle, setVent, ventID) => {
         .get();
 
       let author = "";
-
-      if (authorDoc.exists && authorDoc.data().displayName)
+      let authorID;
+      if (authorDoc.exists && authorDoc.data().displayName) {
         author = authorDoc.data().displayName;
+        authorID = authorDoc.id;
+      }
+
+      if (!author) author = "Anonymous";
 
       if (vent) {
-        setVent({ id: ventID, ...vent, author, authorID: authorDoc.id });
+        setVent({ id: ventID, ...vent, author, authorID });
         if (setDescription) setDescription(vent.description);
         if (setTitle) setTitle(vent.title);
       } else setVent(false);

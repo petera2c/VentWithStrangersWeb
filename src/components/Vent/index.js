@@ -180,8 +180,7 @@ function Vent({
               className="mr16"
               onClick={e => {
                 e.preventDefault();
-
-                history.push("/activity?" + vent.authorID);
+                if (vent.authorID) history.push("/activity?" + vent.authorID);
               }}
             >
               <Container className="full-center">

@@ -36,6 +36,7 @@ const createVentLink = (vent) => {
 };
 
 const createNotification = (link, message, userID) => {
+  if (!userID) return;
   return admin
     .firestore()
     .collection("notifications")

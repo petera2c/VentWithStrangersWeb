@@ -1,14 +1,14 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 
-export const login = ({ email, password }, close, notify) => {
+export const login = ({ email, password }, close) => {
   firebase
     .auth()
     .signInWithEmailAndPassword(email, password)
-    .then((res) => {
+    .then(res => {
       window.location.reload();
     })
-    .catch((error) => {
-      notify(error);
+    .catch(error => {
+      alert(error);
     });
 };
