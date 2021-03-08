@@ -30,7 +30,7 @@ function ActivitySection({ user }) {
     .collection("/vents/")
     .where("userID", "==", user.uid)
     .orderBy("server_timestamp", "desc")
-    .limitToLast(20);
+    .limit(20);
 
   const [vents] = useCollectionData(ventQuery, { idField: "id" });
 
@@ -38,7 +38,7 @@ function ActivitySection({ user }) {
     .collection("/comments/")
     .where("userID", "==", user.uid)
     .orderBy("server_timestamp", "desc")
-    .limitToLast(20);
+    .limit(20);
 
   const [comments] = useCollectionData(commentQuery, { idField: "id" });
   const isActive = test => {

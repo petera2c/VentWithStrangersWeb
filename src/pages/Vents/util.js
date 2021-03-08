@@ -1,3 +1,4 @@
+import moment from "moment-timezone";
 import firebase from "firebase/app";
 import db from "../../config/firebase";
 import { combineInsideObjectWithID, getEndAtValueTimestamp } from "../../util";
@@ -6,14 +7,15 @@ export const getVents = async (pathname, setCanLoadMore, setVents, vents) => {
   let startAt = getEndAtValueTimestamp(vents);
 
   let snapshot;
-  if (pathname === "trending")
+  if (pathname === "/trending") {
+    let startDate = moment();
+    startDate.subtract(3, "days");
     snapshot = await db
       .collection("/vents/")
-      .orderBy("like_counter", "desc")
-      .startAfter(startAt)
+      .where("server_timestamp", ">", startDate.valueOf())
       .limit(10)
       .get();
-  else
+  } else
     snapshot = await db
       .collection("/vents/")
       .orderBy("server_timestamp", "desc")
@@ -22,12 +24,19 @@ export const getVents = async (pathname, setCanLoadMore, setVents, vents) => {
       .get();
 
   if (snapshot.docs && snapshot.docs.length > 0) {
-    let newVents = [];
-    snapshot.docs.forEach((doc, index) => {
-      const value = doc.data();
-
-      newVents.push({ ...doc.data(), id: doc.id, doc });
-    });
+    let newVents = snapshot.docs.map((doc, index) => ({
+      ...doc.data(),
+      id: doc.id,
+      doc
+    }));
+    if (pathname === "/trending")
+      newVents.sort(function(a, b) {
+        return a.like_counter > b.like_counter
+          ? -1
+          : b.like_counter > a.like_counter
+          ? 1
+          : 0;
+      });
 
     if (newVents.length < 10) setCanLoadMore(false);
     if (vents) {

@@ -1,4 +1,4 @@
-/* const functions = require("firebase-functions");
+const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const moment = require("moment-timezone");
 
@@ -164,4 +164,4 @@ app.get(
     defaultKey: "sitemap.xml",
   })
 );
-exports.app = functions.https.onRequest(app);*/
+exports.app = functions.https.onRequest(app);

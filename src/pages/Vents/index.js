@@ -21,6 +21,13 @@ function Vents() {
   const { pathname, search } = location;
   const { metaDescription, metaTitle } = getMetaInformation(pathname);
   const [canLoadMore, setCanLoadMore] = useState(true);
+  const [pathname2, setPathname2] = useState(pathname);
+
+  if (pathname !== pathname2) {
+    setVents(null);
+    getVents(pathname, setCanLoadMore, setVents, null);
+    setPathname2(pathname);
+  }
 
   useEffect(() => {
     getVents(pathname, setCanLoadMore, setVents, null);

@@ -48,7 +48,7 @@ function Conversations() {
       keywords="vent, strangers, help"
       title="Chats"
     >
-      <Container className="x-fill justify-center align-start wrap gap16">
+      <Container className="container extra-large justify-center align-start wrap gap16">
         <Container className="container small column bg-white pa8 br4">
           {conversations.map((conversation, index) => {
             return (
