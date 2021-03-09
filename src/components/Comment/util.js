@@ -54,7 +54,7 @@ export const likeOrUnlikeComment = async (comment, hasLiked, user, ventID) => {
 export const commentHasLikedListener = (commentID, setHasLiked, userID) => {
   const unsubscribe = db
     .collection("comment_likes")
-    .doc(commentID + userID)
+    .doc(commentID + "|||" + userID)
     .onSnapshot("value", snapshot => {
       if (!snapshot) return;
       let value = snapshot.data();

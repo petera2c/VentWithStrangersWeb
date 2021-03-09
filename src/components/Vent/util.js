@@ -206,7 +206,7 @@ export const getVentComments = async (comments, setComments, ventID) => {
 export const ventHasLikedListener = (setHasLiked, userID, ventID) => {
   const unsubscribe = db
     .collection("vent_likes")
-    .doc(ventID + userID)
+    .doc(ventID + "|||" + userID)
     .onSnapshot("value", snapshot => {
       if (!snapshot) return;
       let value = snapshot.data();
