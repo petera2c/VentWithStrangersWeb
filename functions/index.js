@@ -7,19 +7,19 @@ const app = express();
 
 const { createProxy, createSitemap } = require("./helpers/sitemap");
 const { newCommentListener } = require("./helpers/comment");
-const { newPostLikeListener, newPostListener } = require("./helpers/post");
+const { newVentLikeListener, newVentListener } = require("./helpers/vent");
 
 exports.newCommentListener = functions.firestore
   .document("/comments/{commentID}")
   .onCreate(newCommentListener);
 
-exports.newPostListener = functions.firestore
+exports.newVentListener = functions.firestore
   .document("/vents/{ventID}")
-  .onCreate(newPostListener);
+  .onCreate(newVentListener);
 
-exports.newPostLikeListener = functions.firestore
+exports.newVentLikeListener = functions.firestore
   .document("/vent_likes/{ventIDuserID}")
-  .onCreate(newPostLikeListener);
+  .onCreate(newVentLikeListener);
 
 exports.cronUpdateSitemap = functions.pubsub
   .schedule("0 0 * * *")
