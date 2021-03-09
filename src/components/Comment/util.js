@@ -37,7 +37,7 @@ export const likeOrUnlikeComment = async (comment, hasLiked, user, ventID) => {
 
   await db
     .collection("comment_likes")
-    .doc(comment.id + user.uid)
+    .doc(comment.id + "|||" + user.uid)
     .set({ liked: !hasLiked });
 
   let valueToIncreaseBy = 1;
