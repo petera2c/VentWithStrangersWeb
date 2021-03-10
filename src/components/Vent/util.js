@@ -325,9 +325,13 @@ export const startConversation = async (history, userID, ventUserID) => {
       goToPage(conversationDoc.id);
     });
   } else {
+    const members = sortedMemberIDs.map((someObject, index) => ({
+      hasSeen: false,
+      userID: someObject
+    }));
     const conversationDocNew = await db.collection("conversations").add({
       last_updated: firebase.firestore.Timestamp.now().seconds * 1000,
-      members: sortedMemberIDs,
+      members,
       server_timestamp: firebase.firestore.Timestamp.now().seconds * 1000
     });
     goToPage(conversationDocNew.id);

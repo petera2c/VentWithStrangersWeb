@@ -29,7 +29,7 @@ function Chat({ conversation, userID }) {
 
   const [canLoadMore, setCanLoadMore] = useState(true);
   const [conversationID, setConversationID] = useState();
-  const [messages, setMessages] = useState();
+  const [messages, setMessages] = useState([]);
   const [messageString, setMessageString] = useState("");
   let messageDivs = [];
 
@@ -56,7 +56,7 @@ function Chat({ conversation, userID }) {
     messageDivs.unshift(
       <Container
         className={
-          "x-fill " + (message.userID === userID ? "wrap" : "justify-end")
+          "x-fill " + (message.userID !== userID ? "wrap" : "justify-end")
         }
         key={index}
       >

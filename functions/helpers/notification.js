@@ -14,4 +14,17 @@ const createNotification = (link, message, userID) => {
     });
 };
 
-module.exports = { createNotification };
+const createConversationNotification = (userID) => {
+  if (!userID) return;
+  return admin
+    .firestore()
+    .collection("notifications")
+    .add({
+      hasSeen: false,
+      message,
+      server_timestamp: admin.firestore.FieldValue.serverTimestamp(),
+      userID,
+    });
+};
+
+module.exports = { createConversationNotification, createNotification };

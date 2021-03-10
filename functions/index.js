@@ -8,6 +8,7 @@ const app = express();
 const { createProxy, createSitemap } = require("./helpers/sitemap");
 const { newCommentListener } = require("./helpers/comment");
 const { newVentLikeListener, newVentListener } = require("./helpers/vent");
+const { updatedConversationListener } = require("./helpers/conversation");
 
 exports.newCommentListener = functions.firestore
   .document("/comments/{commentID}")
@@ -20,6 +21,10 @@ exports.newVentListener = functions.firestore
 exports.newVentLikeListener = functions.firestore
   .document("/vent_likes/{ventIDuserID}")
   .onCreate(newVentLikeListener);
+
+exports.updatedConversationListener = functions.firestore
+  .document("/conversations/{conversationID}")
+  .onCreate(updatedConversationListener);
 
 exports.cronUpdateSitemap = functions.pubsub
   .schedule("0 0 * * *")

@@ -18,7 +18,7 @@ export const getConversation = async (
       if (!conversation.name) {
         let conversationFriendUserID;
         for (let index in conversation.members) {
-          if (conversation.members[index] !== userID)
+          if (conversation.members[index].userID !== userID)
             conversationFriendUserID = conversation.members[index];
         }
 
