@@ -34,6 +34,7 @@ function Chat({ conversation, userID }) {
   let messageDivs = [];
 
   if (conversation.id !== conversationID) {
+    setMessages([]);
     getMessages(
       conversation.id,
       messages,

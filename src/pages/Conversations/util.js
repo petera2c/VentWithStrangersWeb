@@ -140,7 +140,7 @@ export const getMessages = async (
     snapshot.docs.forEach((doc, index) => {
       newMessages.push({ ...doc.data(), id: doc.id, doc });
     });
-
+    console.log(newMessages);
     if (first) {
       setMessages(newMessages);
       scrollToBottom();
@@ -151,7 +151,9 @@ export const getMessages = async (
         else return newMessages;
       });
     }
-  } else setCanLoadMore(false);
+  } else {
+    setCanLoadMore(false);
+  }
 };
 
 export const sendMessage = async (conversationID, message, userID) => {
