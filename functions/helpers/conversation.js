@@ -2,6 +2,7 @@ const admin = require("firebase-admin");
 const { createConversationNotification } = require("./notification");
 
 const updatedConversationListener = async (doc, context) => {
+  return;
   const ventDoc = await admin
     .firestore()
     .collection("vents")
