@@ -29,8 +29,6 @@ const createSitemap = async () => {
     .firestore()
     .collection("vents")
     .get();
-  console.log(vents);
-  return;
 
   let siteMapString =
     '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n';
@@ -69,10 +67,9 @@ const createSitemap = async () => {
       "<url>\n<loc>" +
       url +
       "</loc>\n<lastmod>" +
-      "2021-03-13" +
+      new moment(vent.server_timestamp).format("YYYY-MM-DD") +
       "</lastmod>\n<changefreq>monthly</changefreq>\n</url>\n\n";
   }
-  //  new moment(vent.server_timestamp).format("YYYY-MM-DD")
 
   siteMapString += "</urlset>";
 

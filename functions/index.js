@@ -48,7 +48,7 @@ const injectMetaData = (req, res) => {
       data = data.replace(/\$OG_TITLE/g, metaTitle);
       data = data.replace(/\$OG_DESCRIPTION/g, metaDescription);
       data = data.replace(/\$OG_IMAGE/g, metaImage);
-
+      res.set("Cache-Control", "public", "max-age=600", "s-maxage=1200");
       res.send(data);
     });
   });
