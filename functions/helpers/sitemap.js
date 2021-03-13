@@ -25,10 +25,12 @@ const createProxy = () =>
   });
 
 const createSitemap = async () => {
-  const vents = await admin
+  console.log("here");
+  /*  const vents = await admin
     .firestore()
     .collection("vents")
-    .get();
+    .get();*/
+  console.log("here1");
 
   let siteMapString =
     '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n';
@@ -51,6 +53,7 @@ const createSitemap = async () => {
   siteMapString +=
     "<url>\n<loc>https://www.ventwithstrangers.com/app-downloads</loc>\n<lastmod>2021-03-13</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.2</priority>\n</url>\n\n";
 
+  /*
   for (let index in vents.docs) {
     const vent = vents.docs[index].data();
 
@@ -69,7 +72,7 @@ const createSitemap = async () => {
       "</loc>\n<lastmod>" +
       "2021-03-13" +
       "</lastmod>\n<changefreq>monthly</changefreq>\n</url>\n\n";
-  }
+  }*/
   //  new moment(vent.server_timestamp).format("YYYY-MM-DD")
 
   siteMapString += "</urlset>";
