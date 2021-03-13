@@ -100,6 +100,7 @@ export const getConversations = async (
     .startAfter(startAt)
     .limitToLast(10)
     .get();
+  console.log(conversationsQuerySnapshot.docs);
 
   if (!conversationsQuerySnapshot.empty) {
     let counter = 0;
@@ -154,6 +155,17 @@ export const getMessages = async (
   } else {
     setCanLoadMore(false);
   }
+};
+
+export const readConversation = async (
+  conversation,
+  conversationID,
+  userID
+) => {
+  await db
+    .collection("conversations")
+    .doc(conversationID)
+    .set({ [userID]: true }, { merge: true });
 };
 
 export const sendMessage = async (conversationID, message, userID) => {

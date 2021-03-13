@@ -13,6 +13,7 @@ const { newCommentListener } = require("./helpers/comment");
 const { newVentLikeListener, newVentListener } = require("./helpers/vent");
 const { updatedConversationListener } = require("./helpers/conversation");
 const { getMetaInformation } = require("./helpers/util");
+const { messagesListener } = require("./helpers/messages");
 
 exports.newCommentListener = functions.firestore
   .document("/comments/{commentID}")
@@ -29,6 +30,10 @@ exports.newVentLikeListener = functions.firestore
 exports.updatedConversationListener = functions.firestore
   .document("/conversations/{conversationID}")
   .onCreate(updatedConversationListener);
+
+exports.messagesListener = functions.firestore
+  .document("/conversation_extra_data/{conversationID}/messages/{messageID}")
+  .onCreate(messagesListener);
 
 exports.cronUpdateSitemap = functions.pubsub
   .schedule("0 0 * * *")

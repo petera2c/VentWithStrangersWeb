@@ -9,7 +9,7 @@ const createNotification = (link, message, userID) => {
       hasSeen: false,
       link,
       message,
-      server_timestamp: admin.firestore.FieldValue.serverTimestamp(),
+      server_timestamp: admin.firestore.Timestamp.now().seconds * 1000,
       userID,
     });
 };
@@ -22,7 +22,7 @@ const createConversationNotification = (userID) => {
     .add({
       hasSeen: false,
       message,
-      server_timestamp: admin.firestore.FieldValue.serverTimestamp(),
+      server_timestamp: admin.firestore.Timestamp.now().seconds * 1000,
       userID,
     });
 };

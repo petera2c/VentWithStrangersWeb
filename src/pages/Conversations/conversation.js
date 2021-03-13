@@ -4,7 +4,7 @@ import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import Button from "../../components/views/Button";
 
-import { getConversation } from "./util";
+import { getConversation, readConversation } from "./util";
 
 import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
 
@@ -29,13 +29,18 @@ function Conversations({
   }, []);
 
   if (!conversation) return <div>loading</div>;
+  const hasSeen = conversation[userID];
+  if (isActive && !hasSeen)
+    readConversation(conversation, conversationID, userID);
 
   return (
     <Container
       className={"clickable pa8 br4 " + (isActive ? "bg-grey-2" : "")}
       onClick={() => onClick(index)}
     >
-      {capitolizeFirstChar(conversation.name)}
+      <p className={" " + (hasSeen ? "" : "primary")}>
+        {capitolizeFirstChar(conversation.name)}
+      </p>
     </Container>
   );
 }

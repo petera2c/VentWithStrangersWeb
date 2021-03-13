@@ -21,7 +21,7 @@ function NotificationList({ notifications }) {
           >
             <Text text={notification.message} type="h6" />
             <Text
-              text={moment(notification.server_timestamp.seconds * 1000)
+              text={moment(notification.server_timestamp)
                 .subtract(1, "minute")
                 .fromNow()}
               type="p"

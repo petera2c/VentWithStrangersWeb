@@ -35,7 +35,7 @@ function Conversations() {
       </Page>
     );
 
-  const [conversations, setConversations] = useState([]);
+  const [conversations, setConversations] = useState();
   const [activeConversation, setActiveConversation] = useState(0);
   useEffect(() => {
     getConversations(conversations, setConversations, user.uid);
@@ -48,35 +48,45 @@ function Conversations() {
       keywords="vent, strangers, help"
       title="Chats"
     >
-      <Container className="container extra-large justify-center align-start wrap gap16">
-        <Container className="container small column bg-white pa8 br4">
-          {conversations.map((conversation, index) => {
-            return (
-              <ConversationOption
-                conversationID={conversation.id}
-                index={index}
-                isActive={index === activeConversation}
-                isLastItem={index === conversations.length - 1}
-                key={index}
-                onClick={setActiveConversation}
-                setConversationName={name => {
-                  setConversations(conversations => {
-                    conversations[index].name = name;
-                    return [...conversations];
-                  });
-                }}
-                userID={user.uid}
-              />
-            );
-          })}
+      {conversations && (
+        <Container className="container extra-large justify-center align-start wrap gap16">
+          <Container className="container small column bg-white pa8 br4">
+            {conversations.map((conversation, index) => {
+              return (
+                <ConversationOption
+                  conversationID={conversation.id}
+                  index={index}
+                  isActive={index === activeConversation}
+                  isLastItem={index === conversations.length - 1}
+                  key={index}
+                  onClick={setActiveConversation}
+                  setConversationName={name => {
+                    setConversations(conversations => {
+                      conversations[index].name = name;
+                      return [...conversations];
+                    });
+                  }}
+                  userID={user.uid}
+                />
+              );
+            })}
+          </Container>
+          {conversations && conversations[activeConversation] && (
+            <Conversation
+              conversation={conversations[activeConversation]}
+              userID={user.uid}
+            />
+          )}
         </Container>
-        {conversations && conversations[activeConversation] && (
-          <Conversation
-            conversation={conversations[activeConversation]}
-            userID={user.uid}
-          />
-        )}
-      </Container>
+      )}
+      {!conversations && (
+        <Container className="x-fill full-center">
+          <h4>
+            No conversations found! Message someone from a post on our recent or
+            trending page :)
+          </h4>
+        </Container>
+      )}
     </Page>
   );
 }
