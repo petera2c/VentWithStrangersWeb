@@ -31,11 +31,10 @@ exports.updatedConversationListener = functions.firestore
   .onCreate(updatedConversationListener);
 
 exports.cronUpdateSitemap = functions.pubsub
-  .schedule("every 2 minutes")
+  .schedule("0 0 * * *")
   .onRun(async () => createSitemap());
 
 const injectMetaData = (req, res) => {
-  createSitemap();
   const filePath = path.resolve(__dirname, "./build/index.html");
 
   fs.readFile(filePath, "utf8", (err, data) => {
@@ -49,7 +48,7 @@ const injectMetaData = (req, res) => {
       data = data.replace(/\$OG_TITLE/g, metaTitle);
       data = data.replace(/\$OG_DESCRIPTION/g, metaDescription);
       data = data.replace(/\$OG_IMAGE/g, metaImage);
-      res.set("Cache-Control", "public", "max-age=600", "s-maxage=1200");
+
       res.send(data);
     });
   });
