@@ -37,9 +37,9 @@ const createSitemap = async () => {
     new moment().format("YYYY-MM-DD") +
     "</lastmod>\n<changefreq>daily</changefreq>\n<priority>1</priority>\n</url>\n\n";
   siteMapString +=
-    "<url>\n<loc>https://www.ventwithstrangers.com/post-a-problem</loc>\n<lastmod>2020-02-04</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.8</priority>\n</url>\n\n";
+    "<url>\n<loc>https://www.ventwithstrangers.com/post-a-problem</loc>\n<lastmod>2021-03-13</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.8</priority>\n</url>\n\n";
   siteMapString +=
-    "<url>\n<loc>https://www.ventwithstrangers.com/vent-to-a-stranger</loc>\n<lastmod>2020-02-04</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.8</priority>\n</url>\n\n";
+    "<url>\n<loc>https://www.ventwithstrangers.com/vent-to-a-stranger</loc>\n<lastmod>2021-03-13</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.8</priority>\n</url>\n\n";
   siteMapString +=
     "<url>\n<loc>https://www.ventwithstrangers.com/recent</loc>\n<lastmod>" +
     new moment().format("YYYY-MM-DD") +
@@ -49,7 +49,7 @@ const createSitemap = async () => {
     new moment().format("YYYY-MM-DD") +
     "</lastmod>\n<changefreq>daily</changefreq>\n<priority>0.8</priority>\n</url>\n\n";
   siteMapString +=
-    "<url>\n<loc>https://www.ventwithstrangers.com/app-downloads</loc>\n<lastmod>2020-05-26</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.2</priority>\n</url>\n\n";
+    "<url>\n<loc>https://www.ventwithstrangers.com/app-downloads</loc>\n<lastmod>2021-03-13</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.2</priority>\n</url>\n\n";
 
   for (let index in vents.docs) {
     const vent = vents.docs[index].data();
@@ -67,9 +67,10 @@ const createSitemap = async () => {
       "<url>\n<loc>" +
       url +
       "</loc>\n<lastmod>" +
-      new moment(vent.server_timestamp).format("YYYY-MM-DD") +
+      "2021-03-13" +
       "</lastmod>\n<changefreq>monthly</changefreq>\n</url>\n\n";
   }
+  //  new moment(vent.server_timestamp).format("YYYY-MM-DD")
 
   siteMapString += "</urlset>";
 
