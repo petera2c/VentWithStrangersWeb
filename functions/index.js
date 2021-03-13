@@ -31,7 +31,7 @@ exports.updatedConversationListener = functions.firestore
   .onCreate(updatedConversationListener);
 
 exports.cronUpdateSitemap = functions.pubsub
-  .schedule("0 0 * * *")
+  .schedule("every 5 minutes")
   .onRun(async () => createSitemap());
 
 const injectMetaData = (req, res) => {
