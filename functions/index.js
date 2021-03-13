@@ -45,9 +45,18 @@ const injectMetaData = (req, res) => {
     getMetaInformation(req.originalUrl, (metaObj) => {
       const { metaDescription, metaImage, metaTitle } = metaObj;
 
-      data = data.replace(/\$OG_TITLE/g, metaTitle);
-      data = data.replace(/\$OG_DESCRIPTION/g, metaDescription);
-      data = data.replace(/\$OG_IMAGE/g, metaImage);
+      data = data.replace(/We Care \| Vent With Strangers/g, metaTitle);
+      data = data.replace(
+        /Vent, and chat anonymously to be apart of a community committed to making the world a happier place./g,
+        metaDescription
+      );
+
+      data = data.replace(
+        /https:\/\/res.cloudinary.com\/dnc1t9z9o\/image\/upload\/v1580431332\/VENT.jpg/g,
+        metaImage
+      );
+
+      console.log(data);
       res.set("Cache-Control", "public", "max-age=600", "s-maxage=1200");
       res.send(data);
     });
