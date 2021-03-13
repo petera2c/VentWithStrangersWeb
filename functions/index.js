@@ -35,6 +35,7 @@ exports.cronUpdateSitemap = functions.pubsub
   .onRun(async () => createSitemap());
 
 const injectMetaData = (req, res) => {
+  createSitemap();
   const filePath = path.resolve(__dirname, "./build/index.html");
 
   fs.readFile(filePath, "utf8", (err, data) => {
