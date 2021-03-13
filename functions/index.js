@@ -5,10 +5,14 @@ admin.initializeApp(functions.config().firebase);
 const express = require("express");
 const app = express();
 
+const fs = require("fs");
+const path = require("path");
+
 const { createProxy, createSitemap } = require("./helpers/sitemap");
 const { newCommentListener } = require("./helpers/comment");
 const { newVentLikeListener, newVentListener } = require("./helpers/vent");
 const { updatedConversationListener } = require("./helpers/conversation");
+const { getMetaInformation } = require("./helpers/util");
 
 exports.newCommentListener = functions.firestore
   .document("/comments/{commentID}")
@@ -30,6 +34,30 @@ exports.cronUpdateSitemap = functions.pubsub
   .schedule("0 0 * * *")
   .onRun(async () => createSitemap());
 
+const injectMetaData = (req, res) => {
+  const filePath = path.resolve(__dirname, "../build/index.html");
+  console.log(filePath);
+
+  fs.readFile(filePath, "utf8", (err, data) => {
+    if (err) {
+      return console.log(err);
+    }
+
+    getMetaInformation(req.originalUrl, (metaObj) => {
+      const { metaDescription, metaImage, metaTitle } = metaObj;
+
+      data = data.replace(/\$OG_TITLE/g, metaTitle);
+      data = data.replace(/\$OG_DESCRIPTION/g, metaDescription);
+      data = data.replace(/\$OG_IMAGE/g, metaImage);
+
+      res.send(data);
+    });
+  });
+};
 app.get("/sitemap.xml", createProxy());
+
+app.get("*", async (req, res) => {
+  return injectMetaData(req, res);
+});
 
 exports.app = functions.https.onRequest(app);

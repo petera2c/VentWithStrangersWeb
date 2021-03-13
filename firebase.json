@@ -6,16 +6,12 @@
     "source": "functions"
   },
   "hosting": {
-    "public": "build",
+    "public": "test",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
-        "source": "/sitemap.xml",
+        "source": "/**",
         "function": "app"
-      },
-      {
-        "source": "**",
-        "destination": "/index.html"
       }
     ]
   },
