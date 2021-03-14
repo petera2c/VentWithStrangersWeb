@@ -2,68 +2,46 @@ import React from "react";
 import firebase from "firebase/app";
 import db from "../../config/firebase";
 
-export const commentListener = (commentID, setComment, ventID) => {
-  const unsubscribe = db
+export const getComment = async (commentID, setComment, ventID) => {
+  const doc = db
     .collection("comments")
     .doc(commentID)
-    .onSnapshot("value", async doc => {
-      const comment = doc.data();
+    .get();
+  const comment = doc.data();
+  const authorDoc = await db
+    .collection("users_display_name")
+    .doc(comment.userID)
+    .get();
 
-      const authorDoc = await db
-        .collection("users_display_name")
-        .doc(comment.userID)
-        .get();
+  let author = "";
 
-      let author = "";
+  if (authorDoc.exists && authorDoc.data().displayName)
+    author = authorDoc.data().displayName;
 
-      if (authorDoc.exists && authorDoc.data().displayName)
-        author = authorDoc.data().displayName;
-
-      if (comment)
-        setComment({ id: doc.id, ...comment, author, authorID: authorDoc.id });
-    });
-
-  return unsubscribe;
+  if (comment)
+    setComment({ id: doc.id, ...comment, author, authorID: authorDoc.id });
 };
 export const deleteComment = commentID => {};
 
 export const editComment = (commentID, commentString) => {};
 
 export const likeOrUnlikeComment = async (comment, hasLiked, user, ventID) => {
-  if (!user)
-    return alert(
-      "You must sign in or register an account to support a comment!"
-    );
-
   await db
     .collection("comment_likes")
     .doc(comment.id + "|||" + user.uid)
     .set({ liked: !hasLiked });
-
-  let valueToIncreaseBy = 1;
-  if (hasLiked) valueToIncreaseBy = -1;
-
-  await db
-    .collection("comments")
-    .doc(comment.id)
-    .update({
-      like_counter: firebase.firestore.FieldValue.increment(valueToIncreaseBy)
-    });
 };
 
-export const commentHasLikedListener = (commentID, setHasLiked, userID) => {
-  const unsubscribe = db
+export const getCommentHasLiked = async (commentID, setHasLiked, userID) => {
+  const snapshot = await db
     .collection("comment_likes")
     .doc(commentID + "|||" + userID)
-    .onSnapshot("value", snapshot => {
-      if (!snapshot) return;
-      let value = snapshot.data();
-      if (value) value = value.liked;
+    .get();
 
-      setHasLiked(Boolean(value));
-    });
-
-  return unsubscribe;
+  if (!snapshot || !snapshot.data()) return;
+  let value = snapshot.data();
+  value = value.liked;
+  setHasLiked(Boolean(value));
 };
 
 export const swapTags = commentText => {

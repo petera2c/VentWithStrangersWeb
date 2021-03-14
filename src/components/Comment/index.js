@@ -23,8 +23,8 @@ import { UserContext } from "../../context";
 
 import { capitolizeFirstChar } from "../../util";
 import {
-  commentHasLikedListener,
-  commentListener,
+  getCommentHasLiked,
+  getComment,
   deleteComment,
   editComment,
   likeOrUnlikeComment,
@@ -32,12 +32,10 @@ import {
 } from "./util";
 import { findPossibleUsersToTag } from "../Vent/util";
 
-let commentHasLikedUnsubscribe;
-
 function Comment({ arrayLength, comment2, commentID, commentIndex, ventID }) {
   const history = useHistory();
   const user = useContext(UserContext);
-  const [comment, setComment] = useState(false);
+  const [comment, setComment] = useState(comment2);
   const [commentOptions, setCommentOptions] = useState(false);
   const [commentString, setCommentString] = useState("");
   const [deleteCommentConfirm, setDeleteCommentConfirm] = useState(false);
@@ -45,17 +43,7 @@ function Comment({ arrayLength, comment2, commentID, commentIndex, ventID }) {
   const [hasLiked, setHasLiked] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = commentListener(commentID, setComment, ventID);
-    if (user)
-      commentHasLikedUnsubscribe = commentHasLikedListener(
-        commentID,
-        setHasLiked,
-        user.uid
-      );
-    return () => {
-      unsubscribe();
-      if (commentHasLikedUnsubscribe) commentHasLikedUnsubscribe();
-    };
+    if (user) getCommentHasLiked(commentID, setHasLiked, user.uid);
   }, []);
 
   return (
@@ -233,10 +221,15 @@ function Comment({ arrayLength, comment2, commentID, commentIndex, ventID }) {
       <Container className="align-center justify-between">
         <Container
           className="clickable align-center py16 px32"
-          onClick={e => {
+          onClick={async e => {
             e.preventDefault();
-
-            likeOrUnlikeComment(comment, hasLiked, user, ventID);
+            if (!user)
+              return alert(
+                "You must sign in or register an account to support a comment!"
+              );
+            await likeOrUnlikeComment(comment, hasLiked, user, ventID);
+            getCommentHasLiked(commentID, setHasLiked, user.uid);
+            getComment(commentID, setComment, ventID);
           }}
         >
           <FontAwesomeIcon

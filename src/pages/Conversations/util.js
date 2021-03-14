@@ -100,7 +100,6 @@ export const getConversations = async (
     .startAfter(startAt)
     .limitToLast(10)
     .get();
-  console.log(conversationsQuerySnapshot.docs);
 
   if (!conversationsQuerySnapshot.empty) {
     let counter = 0;
@@ -141,7 +140,7 @@ export const getMessages = async (
     snapshot.docs.forEach((doc, index) => {
       newMessages.push({ ...doc.data(), id: doc.id, doc });
     });
-    console.log(newMessages);
+
     if (first) {
       setMessages(newMessages);
       scrollToBottom();

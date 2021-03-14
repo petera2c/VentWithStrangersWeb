@@ -2,6 +2,10 @@ const admin = require("firebase-admin");
 const { createNotification } = require("./notification");
 const { createVentLink } = require("./util");
 
+const commentLikeListener = async (doc, context) => {
+  return "";
+};
+
 const newCommentListener = async (doc, context) => {
   const ventDoc = await admin
     .firestore()
@@ -19,4 +23,4 @@ const newCommentListener = async (doc, context) => {
     vent.userID
   );
 };
-module.exports = { newCommentListener };
+module.exports = { commentLikeListener, newCommentListener };

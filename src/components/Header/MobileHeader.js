@@ -1,111 +1,95 @@
-import React, { Component } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, withRouter } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
 import { faConciergeBell } from "@fortawesome/pro-duotone-svg-icons/faConciergeBell";
 import { faBell } from "@fortawesome/pro-duotone-svg-icons/faBell";
-import { faFireAlt } from "@fortawesome/pro-duotone-svg-icons/faFireAlt";
-import { faFire } from "@fortawesome/pro-solid-svg-icons/faFire";
-import { faPen } from "@fortawesome/pro-solid-svg-icons/faPen";
-import { faComments } from "@fortawesome/pro-solid-svg-icons/faComments";
 import { faSearch } from "@fortawesome/pro-solid-svg-icons/faSearch";
 import { faChevronDown } from "@fortawesome/pro-solid-svg-icons/faChevronDown";
-import { faBars } from "@fortawesome/pro-solid-svg-icons/faBars";
-import { faUser } from "@fortawesome/pro-solid-svg-icons/faUser";
-import { faChartNetwork } from "@fortawesome/pro-duotone-svg-icons/faChartNetwork";
-import { faCog } from "@fortawesome/pro-duotone-svg-icons/faCog";
+import { faInstagram } from "@fortawesome/free-brands-svg-icons/faInstagram";
 import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
+import { faComments } from "@fortawesome/pro-solid-svg-icons/faComments";
+import { faCog } from "@fortawesome/pro-solid-svg-icons/faCog";
+import { faBars } from "@fortawesome/pro-solid-svg-icons/faBars";
+import { faChartNetwork } from "@fortawesome/pro-solid-svg-icons/faChartNetwork";
+import { faUser } from "@fortawesome/pro-solid-svg-icons/faUser";
+
+import { UserContext } from "../../context";
 
 import Container from "../containers/Container";
+import HandleOutsideClick from "../containers/HandleOutsideClick";
 import Text from "../views/Text";
 
 import Button from "../views/Button";
 
 import LoginModal from "../modals/Login";
 import SignUpModal from "../modals/SignUp";
+import NotificationList from "../NotificationList";
 
 import { capitolizeFirstChar, isPageActive, signOut } from "../../util";
-import { newNotificationCounter } from "./util";
+import {
+  getNotifications,
+  newNotificationCounter,
+  readNotifications
+} from "./util";
 
-class MobileHeader extends Component {
-  state = {
-    isAppDownloadSectionOpen: true,
-    mobileHeaderActive: false,
-    loginModalBoolean: false,
-    signUpModalBoolean: false,
-    searchPostString: ""
-  };
-  componentDidMount() {
-    this._ismounted = true;
-  }
-  componentWillUnmount() {
-    this.ismounted = false;
-  }
-  handleChange = stateObj => {
-    if (this._ismounted) this.setState(stateObj);
-  };
+function Header({ history, location }) {
+  const user = useContext(UserContext);
 
-  searchPosts = searchPostString => {
-    const { history } = this.props;
+  const [mobileHeaderActive, setMobileHeaderActive] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [loginModalBoolean, setLoginModalBoolean] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [showNotificationDropdown, setShowNotificationDropdown] = useState(
+    false
+  );
+  const [signUpModalBoolean, setSignUpModalBoolean] = useState(false);
+  const [ventSearchString, setVentSearchString] = useState("");
 
-    this.handleChange({ searchPostString });
-    history.push("/search?" + searchPostString);
-  };
-  readNotifications = () => {
-    const { socket } = this.context;
+  const { pathname } = location;
 
-    socket.emit("read_notifications", result => {
-      const { success } = result;
-
-      const { handleChange, notifications } = this.context;
-      for (let index in notifications) {
-        notifications[index].hasSeen = true;
-      }
-      handleChange({ notifications });
-    });
+  const searchPosts = ventSearchString => {
+    setVentSearchString(ventSearchString);
+    history.push("/search?" + ventSearchString);
   };
 
-  render() {
-    const {
-      isAppDownloadSectionOpen,
-      loginModalBoolean,
-      mobileHeaderActive,
-      signUpModalBoolean,
-      searchPostString
-    } = this.state;
-    const { history, location } = this.props;
-    const { pathname, search } = location;
+  useEffect(() => {
+    if (user) getNotifications(setNotifications, user);
+  }, [location]);
 
-    return (
-      <Container
-        className="sticky top-0 column x-fill full-center bg-white border-top large active shadow-2"
-        style={{ zIndex: 10 }}
-      >
-        <Container className="x-fill align-center justify-between border-bottom py8 px16">
-          <img
-            alt=""
-            className="clickable"
-            onClick={() => history.push("/")}
-            src={require("../../svgs/icon.svg")}
-            style={{ height: "50px" }}
-          />
+  return (
+    <Container
+      className="sticky top-0 column x-fill full-center bg-white border-top large active shadow-2"
+      style={{ zIndex: 10 }}
+    >
+      <Container className="x-fill align-center justify-between border-bottom py8 px16">
+        <img
+          alt=""
+          className="clickable"
+          onClick={() => history.push("/")}
+          src={require("../../svgs/icon.svg")}
+          style={{ height: "50px" }}
+        />
 
-          <Container>
-            {context.user && context.user.password && (
-              <Container className="align-center mr8">
-                <Link to="/notifications">
-                  <FontAwesomeIcon
-                    className="clickable blue"
-                    icon={faBell}
-                    onClick={() => {
-                      this.readNotifications();
-                    }}
-                    size="2x"
-                  />
-                </Link>
+        <Container className="align-center">
+          {user && (
+            <Container className="align-center mr8">
+              <Link to="/notifications">
+                <FontAwesomeIcon
+                  className="clickable blue"
+                  icon={faBell}
+                  onClick={() => {
+                    setShowNotificationDropdown(!showNotificationDropdown);
 
-                {newNotificationCounter(context.notifications) && (
+                    readNotifications(notifications);
+                  }}
+                  size="2x"
+                />
+              </Link>
+
+              {newNotificationCounter(notifications) &&
+                !showNotificationDropdown && (
                   <Text
                     className="fs-14 bg-red white pa4 br8"
                     style={{
@@ -117,220 +101,159 @@ class MobileHeader extends Component {
                     }}
                     type="p"
                   >
-                    {newNotificationCounter(context.notifications)}
+                    {newNotificationCounter(notifications)}
                   </Text>
                 )}
-              </Container>
-            )}
-            <Container className="full-center border-all active py8 mr16 br4">
-              <Link
-                className="border-right active blue px8"
-                to="/post-a-problem"
-              >
-                <FontAwesomeIcon icon={faPen} />
-              </Link>
-              <Link className="blue px8" to="/vent-to-a-stranger">
-                <FontAwesomeIcon icon={faComments} />
-              </Link>
             </Container>
-            <Container className="full-center border-all active pa8 br4">
-              <FontAwesomeIcon
-                className="blue"
-                icon={faBars}
-                onClick={() =>
-                  this.setState({ mobileHeaderActive: !mobileHeaderActive })
-                }
-              />
-            </Container>
+          )}
+          <Link
+            className="button-2 no-bold py8 px16 my16 mr8 br8"
+            to="/post-a-problem"
+          >
+            Post a Vent
+          </Link>
+          <Container className="full-center border-all active pa8 br4">
+            <FontAwesomeIcon
+              className="blue"
+              icon={faBars}
+              onClick={() => setMobileHeaderActive(!mobileHeaderActive)}
+            />
           </Container>
         </Container>
-        {mobileHeaderActive && (
-          <Container className="x-fill full-center">
-            <Link
-              className={
-                "button-3 tac py16 mx16 " +
-                isPageActive("/recent", pathname) +
-                isPageActive("/", pathname)
-              }
-              to="/recent"
-            >
-              <FontAwesomeIcon className="mr8" icon={faConciergeBell} />
-              Recent
-            </Link>
-            <Link
-              className={
-                "button-3 tac py16 mx16 " + isPageActive("/trending", pathname)
-              }
-              to="/trending"
-            >
-              <FontAwesomeIcon className="mr8" icon={faAnalytics} />
-              Trending
-            </Link>
-          </Container>
-        )}
-        {mobileHeaderActive && (
-          <Container className="column x-fill bg-grey-4">
-            {context.user && context.user.password && (
-              <Container className="column">
-                <Link to="/activity">
-                  <Container className="full-center py16 mx16">
-                    <Text
-                      className="round-icon bg-blue white mr8"
-                      text={capitolizeFirstChar(user.displayName[0])}
-                      type="h6"
-                    />
-                    <Text
-                      className="mr8"
-                      text={`Hello, ${capitolizeFirstChar(user.displayName)}`}
-                      type="p"
-                    />
-                    <FontAwesomeIcon icon={faChevronDown} />
-                  </Container>
-                </Link>
-                <Container className="bg-white x-fill">
-                  <Link
-                    className={
-                      "button-3 tac py16 mx16 " +
-                      isPageActive("/activity", pathname)
-                    }
-                    to={"/activity" + search}
-                  >
-                    <FontAwesomeIcon className="mr8" icon={faChartNetwork} />
-                    Activity
-                  </Link>
-
-                  <Link
-                    className={
-                      "button-3 tac py16 mx16 " +
-                      isPageActive("/account", pathname)
-                    }
-                    to="/account"
-                  >
-                    <FontAwesomeIcon className="mr8" icon={faUser} />
-                    Account
-                  </Link>
-
-                  <Link
-                    className={
-                      "button-3 tac py16 mx16 " +
-                      isPageActive("/settings", pathname)
-                    }
-                    to="/settings"
-                  >
-                    <FontAwesomeIcon className="mr8" icon={faCog} />
-                    Settings
-                  </Link>
+      </Container>
+      {mobileHeaderActive && (
+        <Container className="x-fill full-center">
+          <Link
+            className={
+              "button-3 tac py16 mx16 " +
+              isPageActive("/recent", pathname) +
+              isPageActive("/", pathname)
+            }
+            to="/recent"
+          >
+            <FontAwesomeIcon className="mr8" icon={faConciergeBell} />
+            Recent
+          </Link>
+          <Link
+            className={
+              "button-3 tac py16 mx16 " + isPageActive("/trending", pathname)
+            }
+            to="/trending"
+          >
+            <FontAwesomeIcon className="mr8" icon={faAnalytics} />
+            Trending
+          </Link>
+        </Container>
+      )}
+      {mobileHeaderActive && (
+        <Container className="column x-fill bg-grey-4">
+          {user && (
+            <Container className="column">
+              <Link to="/activity">
+                <Container className="full-center py16 mx16">
                   <Text
-                    className="button-1 full-center fw-400 tac py16 mx16"
-                    onClick={signOut}
-                    text="Sign Out"
-                    type="h5"
+                    className="round-icon bg-blue white mr8"
+                    text={capitolizeFirstChar(user.displayName[0])}
+                    type="h6"
                   />
+                  <Text
+                    className="mr8"
+                    text={`Hello, ${capitolizeFirstChar(user.displayName)}`}
+                    type="p"
+                  />
+                  <FontAwesomeIcon icon={faChevronDown} />
                 </Container>
-              </Container>
-            )}
-            <Container className="bg-white align-center py4 px8 ma16 br4">
-              <FontAwesomeIcon className="grey-5 mr8" icon={faSearch} />
-              <input
-                className="no-border br4"
-                onChange={e => this.searchPosts(e.target.value)}
-                placeholder="Search"
-                type="text"
-                value={searchPostString}
-              />
-            </Container>
-            {context.user && !context.user.password && (
-              <Container className="x-fill">
-                <Button
-                  className="x-50 blue fw-300 bg-white border-all active px32 mr8 br4"
-                  text="Login"
-                  onClick={() => this.handleChange({ loginModalBoolean: true })}
-                />
-
-                <Button
-                  className="x-50 white blue-fade px32 py8 ml8 br4"
-                  text="Sign Up"
-                  onClick={() =>
-                    this.handleChange({ signUpModalBoolean: true })
+              </Link>
+              <Container className="bg-white x-fill">
+                <Link
+                  className={
+                    "button-3 tac py16 mx16 " +
+                    isPageActive("/activity", pathname)
                   }
-                />
-              </Container>
-            )}
-          </Container>
-        )}
-        {isAppDownloadSectionOpen &&
-          pathname != "/vent-with-strangers-app-downloads" && (
-            <Container className="relative column x-fill full-center pt16">
-              <FontAwesomeIcon
-                className=""
-                icon={faTimes}
-                onClick={() =>
-                  this.handleChange({ isAppDownloadSectionOpen: false })
-                }
-                size="2x"
-                style={{ position: "absolute", top: "8px", right: "8px" }}
-              />
-              <Text
-                className="bold primary px32"
-                text="Download Mobile App Now!"
-                type="p"
-              />
-              <Container className="wrap full-center py16">
-                <img
-                  alt=""
-                  className="clickable mr8"
-                  onClick={() => {
-                    this.handleChange({ isAppDownloadSectionOpen: false });
-                    window.open(
-                      "https://play.google.com/store/apps/details?id=com.commontech.ventwithstrangers&hl=en"
-                    );
-                  }}
-                  src={require("../../../static/googleplay.png")}
-                  style={{ width: "150px" }}
-                  title="Download on Google Play!"
-                />
-                <img
-                  alt=""
-                  className="clickable mr8"
-                  onClick={() => {
-                    this.handleChange({ isAppDownloadSectionOpen: false });
-                    window.open(
-                      "https://apps.apple.com/us/app/vent-with-strangers/id1509120090"
-                    );
-                  }}
-                  src={require("../../../static/appstore.png")}
-                  style={{ width: "150px" }}
-                  title="Download on iPhone"
+                  to={"/activity"}
+                >
+                  <FontAwesomeIcon className="mx8" icon={faChartNetwork} />
+                  Activity
+                </Link>
+
+                <Link
+                  className={
+                    "button-3 tac py16 mx16 " +
+                    isPageActive("/account", pathname)
+                  }
+                  to="/account"
+                >
+                  <FontAwesomeIcon className="mx8" icon={faUser} />
+                  Account
+                </Link>
+
+                <Link
+                  className={
+                    "button-3 tac py16 mx16 " +
+                    isPageActive("/settings", pathname)
+                  }
+                  to="/settings"
+                >
+                  <FontAwesomeIcon className="mx8" icon={faCog} />
+                  Settings
+                </Link>
+                <Text
+                  className="button-1 full-center fw-400 tac fs-16 py16 mx16"
+                  onClick={signOut}
+                  text="Sign Out"
+                  type="h5"
                 />
               </Container>
             </Container>
           )}
+          <Container className="bg-white align-center py4 px8 ma16 br4">
+            <FontAwesomeIcon className="grey-5 mr8" icon={faSearch} />
+            <input
+              className="no-border br4"
+              onChange={e => searchPosts(e.target.value)}
+              placeholder="Search"
+              type="text"
+              value={ventSearchString}
+            />
+          </Container>
+          {!user && (
+            <Container className="x-fill">
+              <Button
+                className="x-50 blue fw-300 bg-white border-all active px32 mr8 br4"
+                text="Login"
+                onClick={() => setLoginModalBoolean(true)}
+              />
 
-        {loginModalBoolean && (
-          <LoginModal
-            close={() => this.handleChange({ loginModalBoolean: false })}
-            openSignUpModal={() =>
-              this.handleChange({
-                signUpModalBoolean: true,
-                loginModalBoolean: false
-              })
-            }
-          />
-        )}
-        {signUpModalBoolean && (
-          <SignUpModal
-            close={() => this.handleChange({ signUpModalBoolean: false })}
-            openLoginModal={() =>
-              this.handleChange({
-                signUpModalBoolean: false,
-                loginModalBoolean: true
-              })
-            }
-          />
-        )}
-      </Container>
-    );
-  }
+              <Button
+                className="x-50 white blue-fade px32 py8 ml8 br4"
+                text="Sign Up"
+                onClick={() => setSignUpModalBoolean(true)}
+              />
+            </Container>
+          )}
+        </Container>
+      )}
+
+      {loginModalBoolean && (
+        <LoginModal
+          close={() => setLoginModalBoolean(false)}
+          openSignUpModal={() => {
+            setSignUpModalBoolean(true);
+            setLoginModalBoolean(false);
+          }}
+        />
+      )}
+      {signUpModalBoolean && (
+        <SignUpModal
+          close={() => setSignUpModalBoolean(false)}
+          openLoginModal={() => {
+            setSignUpModalBoolean(false);
+            setLoginModalBoolean(true);
+          }}
+        />
+      )}
+    </Container>
+  );
 }
 
-export default withRouter(MobileHeader);
+export default withRouter(Header);

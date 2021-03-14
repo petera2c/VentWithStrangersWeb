@@ -163,7 +163,9 @@ export const newVentCommentListener = (setComments, ventID, first = true) => {
           if (
             querySnapshot.docChanges()[0].type === "added" ||
             querySnapshot.docChanges()[0].type === "removed"
-          )
+          ) {
+            console.log(querySnapshot.docs[0].data());
+
             setComments(oldComments => [
               {
                 ...querySnapshot.docs[0].data(),
@@ -172,6 +174,7 @@ export const newVentCommentListener = (setComments, ventID, first = true) => {
               },
               ...oldComments
             ]);
+          }
         }
       },
       err => {}
