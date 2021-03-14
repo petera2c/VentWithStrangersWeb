@@ -2,24 +2,28 @@ import React from "react";
 import firebase from "firebase/app";
 import db from "../../config/firebase";
 
-export const getComment = async (commentID, setComment, ventID) => {
-  const doc = db
-    .collection("comments")
-    .doc(commentID)
-    .get();
-  const comment = doc.data();
+export const getAuthor = async (setAuthor, userID) => {
   const authorDoc = await db
     .collection("users_display_name")
-    .doc(comment.userID)
+    .doc(userID)
     .get();
 
   let author = "";
 
-  if (authorDoc.exists && authorDoc.data().displayName)
+  if (authorDoc.exists && authorDoc.data().displayName) {
     author = authorDoc.data().displayName;
+    setAuthor(author);
+  }
+};
 
-  if (comment)
-    setComment({ id: doc.id, ...comment, author, authorID: authorDoc.id });
+export const getComment = async (commentID, setComment, ventID) => {
+  const doc = await db
+    .collection("comments")
+    .doc(commentID)
+    .get();
+  const comment = doc.data();
+
+  if (comment) setComment({ id: doc.id, ...comment });
 };
 export const deleteComment = commentID => {};
 

@@ -3,7 +3,20 @@ const { createNotification } = require("./notification");
 const { createVentLink } = require("./util");
 
 const commentLikeListener = async (doc, context) => {
-  return "";
+  const { commentIDUserID } = context.params;
+  const commentIDuserIDArray = commentIDUserID.split("|||");
+  const hasLiked = doc.after.data().liked;
+  let increment = 1;
+  if (!hasLiked) increment = -1;
+
+  var docRef = admin
+    .firestore()
+    .collection("comments")
+    .doc(commentIDuserIDArray[0]);
+
+  docRef.update({
+    like_counter: admin.firestore.FieldValue.increment(increment),
+  });
 };
 
 const newCommentListener = async (doc, context) => {

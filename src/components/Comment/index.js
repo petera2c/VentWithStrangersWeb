@@ -23,6 +23,7 @@ import { UserContext } from "../../context";
 
 import { capitolizeFirstChar } from "../../util";
 import {
+  getAuthor,
   getCommentHasLiked,
   getComment,
   deleteComment,
@@ -41,8 +42,10 @@ function Comment({ arrayLength, comment2, commentID, commentIndex, ventID }) {
   const [deleteCommentConfirm, setDeleteCommentConfirm] = useState(false);
   const [editingComment, setEditingComment] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
+  const [author, setAuthor] = useState();
 
   useEffect(() => {
+    getAuthor(setAuthor, comment2.userID);
     if (user) getCommentHasLiked(commentID, setHasLiked, user.uid);
   }, []);
 
@@ -61,19 +64,19 @@ function Comment({ arrayLength, comment2, commentID, commentIndex, ventID }) {
           className="clickable align-center mb8"
           onClick={e => {
             e.preventDefault();
-            history.push("/activity?" + comment.authorID);
+            history.push("/activity?" + comment.userID);
           }}
         >
-          {comment.author && (
+          {author && (
             <Text
               className="round-icon bg-blue white mr8"
-              text={capitolizeFirstChar(comment.author[0])}
+              text={capitolizeFirstChar(author[0])}
               type="h6"
             />
           )}
           <Text
             className="button-1 fw-400"
-            text={capitolizeFirstChar(comment.author)}
+            text={capitolizeFirstChar(author)}
             type="h5"
           />
         </Container>

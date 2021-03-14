@@ -563,15 +563,14 @@ function Vent({
             <Container className="column mb16">
               <Container className="column border-all2 br8">
                 {comments.map((comment, index) => {
-                  console.log(comment);
                   return (
                     <Comment
                       arrayLength={comments.length}
                       commentID={comment.id}
                       commentIndex={index}
-                      comment={comment}
+                      comment2={comment}
                       ventID={ventID}
-                      key={index}
+                      key={comment.id}
                     />
                   );
                 })}

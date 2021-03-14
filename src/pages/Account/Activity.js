@@ -139,7 +139,7 @@ function ActivitySection({ user }) {
                       arrayLength={comments.length}
                       commentID={comment.id}
                       commentIndex={index}
-                      comment={comment}
+                      comment2={comment}
                       ventID={comment.ventID}
                       key={index}
                     />

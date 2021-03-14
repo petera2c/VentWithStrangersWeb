@@ -34,13 +34,9 @@ exports.updatedConversationListener = functions.firestore
   .document("/conversations/{conversationID}")
   .onCreate(updatedConversationListener);
 
-exports.messagesListener = functions.firestore
-  .document("/conversation_extra_data/{conversationID}/messages/{messageID}")
-  .onCreate(messagesListener);
-
 exports.commentLikeListener = functions.firestore
   .document("/comment_likes/{commentIDUserID}")
-  .onCreate(commentLikeListener);
+  .onWrite(commentLikeListener);
 
 exports.cronUpdateSitemap = functions.pubsub
   .schedule("0 0 * * *")
@@ -68,7 +64,6 @@ const injectMetaData = (req, res) => {
         metaImage
       );
 
-      console.log(data);
       res.set("Cache-Control", "public", "max-age=600", "s-maxage=1200");
       res.send(data);
     });
