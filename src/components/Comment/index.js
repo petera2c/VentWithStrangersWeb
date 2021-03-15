@@ -231,8 +231,10 @@ function Comment({ arrayLength, comment2, commentID, commentIndex, ventID }) {
                 "You must sign in or register an account to support a comment!"
               );
             await likeOrUnlikeComment(comment, hasLiked, user, ventID);
-            getCommentHasLiked(commentID, setHasLiked, user.uid);
-            getComment(commentID, setComment, ventID);
+            await getCommentHasLiked(commentID, setHasLiked, user.uid);
+            setTimeout(() => {
+              getComment(commentID, setComment, ventID);
+            }, 100);
           }}
         >
           <FontAwesomeIcon
