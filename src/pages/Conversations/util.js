@@ -2,44 +2,28 @@ import firebase from "firebase/app";
 import db from "../../config/firebase";
 import { getEndAtValueTimestamp } from "../../util";
 
-export const getConversation = async (
-  conversationID,
-  setConversation,
-  setConversationName,
+export const getConversationName = async (
+  conversation,
+  setConversationNames,
   userID
 ) => {
-  const unsubscribe = await db
-    .collection("conversations")
-    .doc(conversationID)
-    .onSnapshot("value", async doc => {
-      if (!doc.exists) return;
-      const conversation = doc.data();
+  let conversationFriendUserID;
+  for (let index in conversation.members) {
+    if (conversation.members[index] !== userID)
+      conversationFriendUserID = conversation.members[index];
+  }
+  if (!conversationFriendUserID) return;
+  const userDisplayDoc = await db
+    .collection("users_display_name")
+    .doc(conversationFriendUserID)
+    .get();
 
-      if (!conversation.name) {
-        let conversationFriendUserID;
-        for (let index in conversation.members) {
-          if (conversation.members[index] !== userID)
-            conversationFriendUserID = conversation.members[index];
-        }
-
-        if (conversationFriendUserID) {
-          const userDisplayDoc = await db
-            .collection("users_display_name")
-            .doc(conversationFriendUserID)
-            .get();
-
-          if (userDisplayDoc.data() && userDisplayDoc.data().displayName) {
-            conversation.name = userDisplayDoc.data().displayName;
-            setConversationName(userDisplayDoc.data().displayName);
-          }
-        }
-      }
-
-      if (conversation) setConversation({ id: doc.id, ...conversation });
-      else setConversation(false);
+  if (userDisplayDoc.data() && userDisplayDoc.data().displayName) {
+    setConversationNames(oldNames => {
+      oldNames[conversation.id] = userDisplayDoc.data().displayName;
+      return { ...oldNames };
     });
-
-  return () => unsubscribe();
+  }
 };
 
 export const messageListener = (
@@ -88,6 +72,7 @@ export const messageListener = (
 
 export const getConversations = async (
   conversations,
+  setActiveConversation,
   setConversations,
   userID
 ) => {
@@ -102,8 +87,6 @@ export const getConversations = async (
     .get();
 
   if (!conversationsQuerySnapshot.empty) {
-    let counter = 0;
-
     let conversations = [];
     conversationsQuerySnapshot.docs.forEach((item, i) => {
       conversations.push({
@@ -112,7 +95,7 @@ export const getConversations = async (
         doc: conversationsQuerySnapshot.docs[i]
       });
     });
-    return setConversations(conversations);
+    setConversations(conversations);
   }
 };
 

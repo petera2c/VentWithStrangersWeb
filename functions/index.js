@@ -30,10 +30,6 @@ exports.newVentLikeListener = functions.firestore
   .document("/vent_likes/{ventIDuserID}")
   .onCreate(newVentLikeListener);
 
-exports.updatedConversationListener = functions.firestore
-  .document("/conversations/{conversationID}")
-  .onCreate(updatedConversationListener);
-
 exports.commentLikeListener = functions.firestore
   .document("/comment_likes/{commentIDUserID}")
   .onWrite(commentLikeListener);

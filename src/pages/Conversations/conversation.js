@@ -4,28 +4,21 @@ import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import Button from "../../components/views/Button";
 
-import { getConversation, readConversation } from "./util";
+import { getConversationName, readConversation } from "./util";
 
 import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
 
 function Conversations({
-  conversationID,
-  index,
+  conversation,
+  conversationName,
   isActive,
   isLastItem,
-  onClick,
-  setConversationName,
+  setActiveConversation,
+  setConversationNames,
   userID
 }) {
-  const [conversation, setConversation] = useState(undefined);
-
   useEffect(() => {
-    getConversation(
-      conversationID,
-      setConversation,
-      setConversationName,
-      userID
-    );
+    getConversationName(conversation, setConversationNames, userID);
   }, []);
 
   if (!conversation) return <div>loading</div>;
@@ -36,10 +29,10 @@ function Conversations({
   return (
     <Container
       className={"clickable pa8 br4 " + (isActive ? "bg-grey-2" : "")}
-      onClick={() => onClick(index)}
+      onClick={() => setActiveConversation(conversation.id)}
     >
       <p className={" " + (hasSeen ? "" : "primary")}>
-        {capitolizeFirstChar(conversation.name)}
+        {capitolizeFirstChar(conversationName)}
       </p>
     </Container>
   );

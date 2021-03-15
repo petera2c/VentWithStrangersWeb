@@ -1,4 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { useLocation } from "react-router-dom";
+import db from "../../config/firebase";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHandsHelping } from "@fortawesome/pro-duotone-svg-icons/faHandsHelping";
@@ -10,7 +13,7 @@ import Container from "../../components/containers/Container";
 import Button from "../../components/views/Button";
 
 import ConversationOption from "./conversation";
-import Conversation from "./chat";
+import Chat from "./chat";
 
 import { isMobileOrTablet } from "../../util";
 
@@ -35,11 +38,27 @@ function Conversations() {
       </Page>
     );
 
-  const [conversations, setConversations] = useState();
-  const [activeConversation, setActiveConversation] = useState(0);
-  useEffect(() => {
-    getConversations(conversations, setConversations, user.uid);
-  }, []);
+  const conversationsQuery = db
+    .collection("conversations")
+    .where("members", "array-contains", user.uid)
+    .orderBy("last_updated", "desc")
+    .limitToLast(20);
+
+  const [conversations] = useCollectionData(conversationsQuery, {
+    idField: "id"
+  });
+
+  const location = useLocation();
+  const { search } = location;
+  const [activeConversation, setActiveConversation] = useState(
+    search ? search : ""
+  );
+  const [conversationNames, setConversationNames] = useState({});
+
+  if (conversations && conversations.length !== 0 && !activeConversation)
+    setActiveConversation(conversations[0].id);
+
+  console.log(conversations);
 
   return (
     <Page
@@ -48,45 +67,49 @@ function Conversations() {
       keywords="vent, strangers, help"
       title="Chats"
     >
-      {conversations && (
+      {conversations && conversations.length !== 0 && (
         <Container className="container extra-large justify-center align-start wrap gap16">
           <Container className="container small column bg-white pa8 br4">
             {conversations.map((conversation, index) => {
               return (
                 <ConversationOption
-                  conversationID={conversation.id}
-                  index={index}
-                  isActive={index === activeConversation}
+                  conversation={conversation}
+                  conversationName={conversationNames[conversation.id]}
+                  isActive={conversation.id === activeConversation}
                   isLastItem={index === conversations.length - 1}
-                  key={index}
-                  onClick={setActiveConversation}
-                  setConversationName={name => {
-                    setConversations(conversations => {
-                      conversations[index].name = name;
-                      return [...conversations];
-                    });
-                  }}
+                  key={conversation.id}
+                  setActiveConversation={setActiveConversation}
+                  setConversationNames={setConversationNames}
                   userID={user.uid}
                 />
               );
             })}
           </Container>
-          {conversations && conversations[activeConversation] && (
-            <Conversation
-              conversation={conversations[activeConversation]}
+          {conversations.find(
+            conversation => conversation.id === activeConversation
+          ) && (
+            <Chat
+              conversation={conversations.find(
+                conversation => conversation.id === activeConversation
+              )}
+              conversationName={conversationNames[activeConversation]}
               userID={user.uid}
             />
           )}
+          {!conversations.find(
+            conversation => conversation.id === activeConversation
+          ) && <div>Can not find this conversation!</div>}
         </Container>
       )}
-      {!conversations && (
-        <Container className="x-fill full-center">
-          <h4>
-            No conversations found! Message someone from a post on our recent or
-            trending page :)
-          </h4>
-        </Container>
-      )}
+      {!conversations ||
+        (conversations.length === 0 && (
+          <Container className="x-fill full-center">
+            <h4>
+              No conversations found! Message someone from a post on our recent
+              or trending page :)
+            </h4>
+          </Container>
+        ))}
     </Page>
   );
 }

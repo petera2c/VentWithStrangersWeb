@@ -13,6 +13,29 @@ const messagesListener = async (doc, context) => {
       },
       { merge: true }
     );
+
+  const conversationDoc = await admin
+    .firestore()
+    .collection("conversations")
+    .doc(conversationID);
+
+  console.log(conversationDoc.id);
+  return "";
+
+  if (!conversationDoc || !conversationDoc.data()) {
+    return "";
+  }
+
+  let conversation = conversationDoc.data();
+  for (let index in conversation) {
+    if (typeof conversation[index] === "boolean") conversation[index] = false;
+  }
+
+  await admin
+    .firestore()
+    .collection("conversations")
+    .doc(conversationID)
+    .set(conversation);
 };
 
 module.exports = { messagesListener };

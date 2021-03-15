@@ -56,7 +56,7 @@ const createSitemap = async () => {
 
     let url =
       "https://www.ventwithstrangers.com/problem/" +
-      vent._id +
+      vents.docs[index].id +
       "/" +
       vent.title
         .replace(/[^a-zA-Z ]/g, "")

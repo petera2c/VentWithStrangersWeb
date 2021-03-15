@@ -21,7 +21,7 @@ import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
 import { getMessages, messageListener, sendMessage } from "./util";
 let messageListenerUnsubscribe;
 
-function Chat({ conversation, userID }) {
+function Chat({ conversation, conversationName, userID }) {
   const dummyRef = useRef();
   const scrollToBottom = () => {
     dummyRef.current.scrollIntoView();
@@ -86,7 +86,7 @@ function Chat({ conversation, userID }) {
       <Container className="x-fill justify-between border-bottom pa16">
         <Text
           className="fw-400"
-          text={capitolizeFirstChar(conversation.name)}
+          text={capitolizeFirstChar(conversationName)}
           type="h5"
         />
       </Container>
