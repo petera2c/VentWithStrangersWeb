@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import moment from "moment-timezone";
 import axios from "axios";
 import { useCollectionData } from "react-firebase-hooks/firestore";
@@ -52,6 +53,12 @@ function Chat({ conversation, conversationName, userID }) {
     setConversationID(conversation.id);
   }
 
+  let conversationPartnerID;
+  if (conversation.members.length === 2)
+    conversationPartnerID = conversation.members.find(memberID => {
+      return memberID !== userID;
+    });
+
   for (let index in messages) {
     const message = messages[index];
     messageDivs.unshift(
@@ -84,11 +91,18 @@ function Chat({ conversation, conversationName, userID }) {
       style={{ height: "80vh" }}
     >
       <Container className="x-fill justify-between border-bottom pa16">
-        <Text
-          className="fw-400"
-          text={capitolizeFirstChar(conversationName)}
-          type="h5"
-        />
+        {conversationPartnerID && (
+          <Link to={"/activity?" + conversationPartnerID}>
+            <h5 className={"button-1"}>
+              {capitolizeFirstChar(conversationName)}
+            </h5>
+          </Link>
+        )}
+        {!conversationPartnerID && (
+          <h5 className={"button-1"}>
+            {capitolizeFirstChar(conversationName)}
+          </h5>
+        )}
       </Container>
 
       <Container className="column x-fill flex-fill ov-auto pa16">

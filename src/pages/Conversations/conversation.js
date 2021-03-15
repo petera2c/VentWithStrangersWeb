@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useLocation, useHistory } from "react-router-dom";
 
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
@@ -17,6 +18,8 @@ function Conversations({
   setConversationNames,
   userID
 }) {
+  const location = useLocation();
+  const history = useHistory();
   useEffect(() => {
     getConversationName(conversation, setConversationNames, userID);
   }, []);
@@ -28,7 +31,10 @@ function Conversations({
   return (
     <Container
       className={"clickable pa8 br4 " + (isActive ? "bg-grey-2" : "")}
-      onClick={() => setActiveConversation(conversation.id)}
+      onClick={() => {
+        setActiveConversation(conversation.id);
+        history.push("/conversations?" + conversation.id);
+      }}
     >
       <p className={" " + (hasSeen ? "" : "primary")}>
         {capitolizeFirstChar(conversationName)}
