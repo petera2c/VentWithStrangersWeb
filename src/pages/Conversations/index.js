@@ -58,8 +58,6 @@ function Conversations() {
   if (conversations && conversations.length !== 0 && !activeConversation)
     setActiveConversation(conversations[0].id);
 
-  console.log(activeConversation);
-
   return (
     <Page
       className="bg-grey-2 ov-auto pa32"

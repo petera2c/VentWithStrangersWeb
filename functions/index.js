@@ -14,7 +14,6 @@ const {
   newCommentListener,
 } = require("./helpers/comment");
 const { newVentLikeListener, newVentListener } = require("./helpers/vent");
-const { updatedConversationListener } = require("./helpers/conversation");
 const { getMetaInformation } = require("./helpers/util");
 const { messagesListener } = require("./helpers/messages");
 
@@ -64,7 +63,7 @@ const injectMetaData = (req, res) => {
         metaImage
       );
 
-      res.set("Cache-Control", "public", "max-age=600", "s-maxage=1200");
+      //  res.set("Cache-Control", "public", "max-age=600", "s-maxage=1200");
       res.send(data);
     });
   });
