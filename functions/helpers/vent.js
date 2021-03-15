@@ -5,7 +5,7 @@ const { createVentLink } = require("./util");
 const newVentListener = (doc, context) => {
   const vent = { id: doc.id, ...doc.data() };
 
-  return createNotification(
+  createNotification(
     createVentLink(vent),
     "Your new vent is live!",
     vent.userID
@@ -24,7 +24,7 @@ const newVentLikeListener = async (doc, context) => {
     .get();
   const vent = { id: ventDoc.id, ...ventDoc.data() };
 
-  return createNotification(
+  createNotification(
     createVentLink(vent),
     "Someone has supported your vent!",
     vent.userID

@@ -381,7 +381,8 @@ function Vent({
                       <FontAwesomeIcon className="mr8" icon={faShare} />
                       Share
                     </Button>
-                    {(!user || (user && user.uid !== vent.userID)) && (
+                    {(!user ||
+                      (user && user.uid !== vent.userID && vent.authorID)) && (
                       <Button
                         className="button-2 px16 py8 br8"
                         onClick={() => {
