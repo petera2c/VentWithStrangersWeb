@@ -51,14 +51,14 @@ function Conversations() {
   const location = useLocation();
   const { search } = location;
   const [activeConversation, setActiveConversation] = useState(
-    search ? search : ""
+    search ? search.substring(1) : ""
   );
   const [conversationNames, setConversationNames] = useState({});
 
   if (conversations && conversations.length !== 0 && !activeConversation)
     setActiveConversation(conversations[0].id);
 
-  console.log(conversations);
+  console.log(activeConversation);
 
   return (
     <Page

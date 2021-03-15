@@ -23,8 +23,7 @@ function Conversations({
 
   if (!conversation) return <div>loading</div>;
   const hasSeen = conversation[userID];
-  if (isActive && !hasSeen)
-    readConversation(conversation, conversationID, userID);
+  if (isActive && !hasSeen) readConversation(conversation, userID);
 
   return (
     <Container

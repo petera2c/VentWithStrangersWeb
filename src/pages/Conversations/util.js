@@ -139,14 +139,10 @@ export const getMessages = async (
   }
 };
 
-export const readConversation = async (
-  conversation,
-  conversationID,
-  userID
-) => {
+export const readConversation = async (conversation, userID) => {
   await db
     .collection("conversations")
-    .doc(conversationID)
+    .doc(conversation.id)
     .set({ [userID]: true }, { merge: true });
 };
 
