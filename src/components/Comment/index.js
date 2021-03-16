@@ -182,7 +182,7 @@ function Comment({ arrayLength, comment2, commentID, commentIndex, ventID }) {
                     this.handleChange,
                     currentTypingTag,
                     socket,
-                    comment.problemID,
+                    comment.ventID,
                     callback
                   );
                 }}

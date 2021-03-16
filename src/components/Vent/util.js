@@ -36,6 +36,7 @@ export const findPossibleUsersToTag = (
   ventID,
   callback2
 ) => {
+  return;
   let isTag;
 
   if (currentTypingWord) {
