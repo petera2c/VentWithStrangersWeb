@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, withRouter } from "react-router-dom";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import db from "../../config/firebase";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
@@ -48,6 +50,16 @@ function Header({ history, location }) {
     setVentSearchString(ventSearchString);
     history.push("/search?" + ventSearchString);
   };
+
+  if (user) {
+    var conversationsQuery = db
+      .collection("conversations")
+      .where(user.uid, "==", false);
+
+    var [unreadConversations] = useCollectionData(conversationsQuery, {
+      idField: "id"
+    });
+  }
 
   useEffect(() => {
     if (user) getNotifications(setNotifications, user);
@@ -115,13 +127,19 @@ function Header({ history, location }) {
           </Link>
           <Link
             className={
-              "button-3 py16 mr32 " +
+              "full-center flex button-3 relative mr32 " +
               isPageActive("/conversations", pathname.substring(0, 14))
             }
             to="/conversations"
           >
-            <FontAwesomeIcon className="mr8" icon={faComments} />
-            Inbox
+            <FontAwesomeIcon className="py16 mr8" icon={faComments} />
+            <p className="py16">Inbox</p>
+
+            {unreadConversations && unreadConversations.length !== 0 && (
+              <p className="fs-14 bg-red white round ml4 pa4 br4">
+                {unreadConversations.length}
+              </p>
+            )}
           </Link>
           <Link
             className={

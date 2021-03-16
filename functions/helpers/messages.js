@@ -17,10 +17,8 @@ const messagesListener = async (doc, context) => {
   const conversationDoc = await admin
     .firestore()
     .collection("conversations")
-    .doc(conversationID);
-
-  console.log(conversationDoc.id);
-  return "";
+    .doc(conversationID)
+    .get();
 
   if (!conversationDoc || !conversationDoc.data()) {
     return "";

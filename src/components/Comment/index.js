@@ -234,7 +234,7 @@ function Comment({ arrayLength, comment2, commentID, commentIndex, ventID }) {
             await getCommentHasLiked(commentID, setHasLiked, user.uid);
             setTimeout(() => {
               getComment(commentID, setComment, ventID);
-            }, 100);
+            }, 1000);
           }}
         >
           <FontAwesomeIcon
