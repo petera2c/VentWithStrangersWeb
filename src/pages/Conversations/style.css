@@ -25,13 +25,15 @@
   display: none;
   position: absolute;
   top: 0;
-  right: 102%;
-  min-width: auto;
 
-  overflow: visible;
   white-space: nowrap;
-  background-color: black;
-  opacity: 0.8;
+  background-color: var(--grey-color-8);
+}
+.message-date.right {
+  right: calc(100% + 8px);
+}
+.message-date.left {
+  left: calc(100% + 8px);
 }
 .message-container:hover > .message-date {
   display: flex;

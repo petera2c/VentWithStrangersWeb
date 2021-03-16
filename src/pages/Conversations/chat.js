@@ -75,7 +75,12 @@ function Chat({ conversation, conversationName, userID }) {
           }
         >
           {message.body}
-          <div className="message-date pa4 br4">
+          <div
+            className={
+              "message-date ov-visible white pa4 br4" +
+              (message.userID === userID ? " right" : " left")
+            }
+          >
             {moment(message.server_timestamp).format("YYYY MMM DD h:m A")}
           </div>
         </div>
