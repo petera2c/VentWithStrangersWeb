@@ -23,12 +23,22 @@ import { isMobileOrTablet } from "../../util";
 import { getUsersPosts } from "./util";
 
 function ActivitySection({ user }) {
+  const history = useHistory();
+  const location = useLocation();
+  let { search } = location;
+  if (!user && !search) {
+    history.push("/");
+    return <div />;
+  }
   const [postsSection, setPostsSection] = useState(true);
   const [canLoadMore, setCanLoadMore] = useState();
 
+  if (search) search = search.substring(1);
+  if (!search) search = user.uid;
+
   const ventQuery = db
     .collection("/vents/")
-    .where("userID", "==", user.uid)
+    .where("userID", "==", search)
     .orderBy("server_timestamp", "desc")
     .limit(20);
 
@@ -36,18 +46,14 @@ function ActivitySection({ user }) {
 
   const commentQuery = db
     .collection("/comments/")
-    .where("userID", "==", user.uid)
+    .where("userID", "==", search)
     .orderBy("server_timestamp", "desc")
     .limit(20);
-
   const [comments] = useCollectionData(commentQuery, { idField: "id" });
   const isActive = test => {
     if (test) return " active";
     else return "";
   };
-
-  const location = useLocation();
-  const { search } = location;
 
   return (
     <Container

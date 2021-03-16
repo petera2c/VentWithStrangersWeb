@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
@@ -20,14 +20,9 @@ import { isMobileOrTablet, isPageActive, signOut } from "../../util";
 
 function AccountPage() {
   const user = useContext(UserContext);
-  const history = useHistory();
-  const location = useLocation();
-  const { pathname, search } = location;
 
-  if (!user) {
-    history.push("/");
-    return <div />;
-  }
+  const location = useLocation();
+  let { pathname, search } = location;
 
   return (
     <Page className="bg-grey-2" description="" keywords="" title="Account">

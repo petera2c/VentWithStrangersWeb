@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { useDocument } from "react-firebase-hooks/firestore";
+import { useHistory } from "react-router-dom";
 import firebase from "firebase/app";
 import db from "../../config/firebase";
 
@@ -13,12 +14,14 @@ import LoadingHeart from "../../components/loaders/Heart";
 import Button from "../../components/views/Button";
 import Text from "../../components/views/Text";
 
-import { UserContext } from "../../context";
-
 import { isMobileOrTablet } from "../../util";
 
-function AccountSection() {
-  const user = useContext(UserContext);
+function AccountSection({ user }) {
+  const history = useHistory();
+  if (!user) {
+    history.push("/");
+    return <div />;
+  }
 
   const settingsRef = db.collection("users").doc(user.uid);
   const [settingsSnapshot] = useDocument(settingsRef, {

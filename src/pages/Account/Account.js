@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import db from "../../config/firebase";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,10 +15,20 @@ import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
 import Button from "../../components/views/Button";
 
-import { ExtraContext, UserContext } from "../../context";
 import { isMobileOrTablet } from "../../util";
 
-function AccountSection() {
+function AccountSection({ user }) {
+  const history = useHistory();
+  if (!user) {
+    history.push("/");
+    return <div />;
+  }
+
+  const [displayName, setDisplayName] = useState(user.displayName);
+  const [email, setEmail] = useState(user.email);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
   const updateUser = () => {
     if (displayName && displayName !== user.displayName) {
       user
@@ -66,13 +76,6 @@ function AccountSection() {
           });
       else alert("Passwords are not the same!");
   };
-
-  const user = useContext(UserContext);
-
-  const [displayName, setDisplayName] = useState(user.displayName);
-  const [email, setEmail] = useState(user.email);
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
 
   return (
     <Container
