@@ -1,6 +1,4 @@
 .message-container {
-  overflow: hidden;
-  word-break: break-all;
   max-width: 60%;
 }
 .authors-message {
@@ -21,4 +19,20 @@
   border-radius: 0 0 8px 8px;
 
   font-size: var(--large-font-size);
+}
+
+.message-date {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 102%;
+  min-width: auto;
+
+  overflow: visible;
+  white-space: nowrap;
+  background-color: black;
+  opacity: 0.8;
+}
+.message-container:hover > .message-date {
+  display: flex;
 }

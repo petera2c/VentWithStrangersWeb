@@ -68,14 +68,17 @@ function Chat({ conversation, conversationName, userID }) {
         }
         key={index}
       >
-        <Container
+        <div
           className={
-            "message-container px16 py8 mb8 br4 " +
+            "relative message-container px16 py8 mb8 br4 " +
             (message.userID === userID ? "bg-blue white" : "grey-1 bg-grey-10")
           }
         >
           {message.body}
-        </Container>
+          <div className="message-date pa4 br4">
+            {moment(message.server_timestamp).format("YYYY MMM DD h:m A")}
+          </div>
+        </div>
       </Container>
     );
   }
