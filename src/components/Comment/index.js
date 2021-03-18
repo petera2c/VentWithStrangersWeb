@@ -114,7 +114,7 @@ function Comment({
                       onClick={e => {
                         e.preventDefault();
                         setCommentOptions(false);
-                        setCommenetString(comment.text);
+                        setCommentString(comment.text);
                         setEditingComment(true);
                       }}
                     >
@@ -183,7 +183,7 @@ function Comment({
             <MentionsInput
               className="mentions"
               onChange={e => {
-                setCommenetString(e.target.value);
+                setCommentString(e.target.value);
               }}
               value={commentString}
             >
@@ -193,7 +193,6 @@ function Comment({
                   findPossibleUsersToTag(
                     this.handleChange,
                     currentTypingTag,
-                    socket,
                     comment.ventID,
                     callback
                   );
@@ -225,7 +224,7 @@ function Comment({
             <Button
               className="button-2 px32 py8 br4"
               onClick={() => {
-                editComment(comment._id, commentString, socket);
+                editComment(comment.id, commentString, setComments);
                 setEditingComment(false);
               }}
               text="Save"

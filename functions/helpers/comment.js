@@ -30,12 +30,11 @@ const commentDeleteListener = async (doc, context) => {
       });
 };
 
-const commentLikeListener = async (doc, context) => {
-  console.log(doc);
-  console.log(context);
+const commentLikeListener = async (change, context) => {
+  if (!change.after.data()) return "";
   const { commentIDUserID } = context.params;
   const commentIDuserIDArray = commentIDUserID.split("|||");
-  const hasLiked = doc.after.data() ? doc.after.data().liked : false;
+  const hasLiked = change.after.data() ? change.after.data().liked : false;
   let increment = 1;
   if (!hasLiked) increment = -1;
 

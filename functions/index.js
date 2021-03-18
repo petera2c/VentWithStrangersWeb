@@ -30,10 +30,7 @@ exports.commentDeleteListener = functions.firestore
   .onDelete(commentDeleteListener);
 exports.commentLikeListener = functions.firestore
   .document("/comment_likes/{commentIDUserID}")
-  .onCreate(commentLikeListener);
-exports.commentLikeListener = functions.firestore
-  .document("/comment_likes/{commentIDUserID}")
-  .onUpdate(commentLikeListener);
+  .onWrite(commentLikeListener);
 
 exports.newVentListener = functions.firestore
   .document("/vents/{ventID}")

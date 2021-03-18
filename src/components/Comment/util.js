@@ -42,7 +42,26 @@ export const deleteComment = async (commentID, setComments) => {
   alert("Comment deleted!");
 };
 
-export const editComment = (commentID, commentString) => {};
+export const editComment = async (commentID, commentString, setComments) => {
+  await db
+    .collection("comments")
+    .doc(commentID)
+    .set(
+      {
+        text: commentString,
+        last_updated: firebase.firestore.Timestamp.now().seconds * 1000
+      },
+      { merge: true }
+    );
+
+  setComments(comments => {
+    const commentIndex = comments.findIndex(
+      comment => comment.id === commentID
+    );
+    comments[commentIndex].text = commentString;
+    setComments([...comments]);
+  });
+};
 
 export const likeOrUnlikeComment = async (comment, hasLiked, user, ventID) => {
   await db
