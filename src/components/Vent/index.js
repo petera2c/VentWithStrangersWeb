@@ -235,15 +235,12 @@ function Vent({
                     }}
                   >
                     <Container className="column x-fill bg-white border-all2 border-all px16 py8 br8">
-                      {vent.wasCreatedByUser && (
+                      {user && vent.userID === user.uid && (
                         <Container
                           className="button-8 clickable align-center mb8"
                           onClick={e => {
                             e.preventDefault();
-                            history.push({
-                              pathname: "/post-a-problem",
-                              state: { vent }
-                            });
+                            history.push("/post-a-problem?" + vent.id);
                           }}
                         >
                           <Text
@@ -254,7 +251,7 @@ function Vent({
                           <FontAwesomeIcon className="ml8" icon={faEdit} />
                         </Container>
                       )}
-                      {vent.wasCreatedByUser && (
+                      {user && vent.userID === user.uid && (
                         <Container
                           className="button-8 clickable align-center"
                           onClick={e => {
@@ -271,7 +268,7 @@ function Vent({
                           <FontAwesomeIcon className="ml8" icon={faTrash} />
                         </Container>
                       )}
-                      {!vent.wasCreatedByUser && (
+                      {(!user || !vent.userID === user.uid) && (
                         <Container
                           className="button-8 clickable align-center"
                           onClick={e => {

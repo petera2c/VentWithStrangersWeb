@@ -79,6 +79,7 @@ function Routes() {
               <Route path="/popular/" component={VentsPage} />
               <Route path="/conversations/" component={ConversationsPage} />
               <Route path="/post-a-problem/" component={NewVentPage} />
+              <Route path="/vent-to-a-stranger/" component={NewVentPage} />
               <Route path="/problem/" component={VentPage} />
               <Route path="/blog/" component={BlogPage} />
               <Route path="/privacy-policy/" component={PrivacyPolicyPage} />

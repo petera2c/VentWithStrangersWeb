@@ -1,5 +1,5 @@
-import React, { Component, useContext, useState } from "react";
-import { useHistory } from "react-router-dom";
+import React, { Component, useContext, useEffect, useState } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 import { UserContext } from "../../context";
 
 import TextArea from "react-textarea-autosize";
@@ -17,21 +17,26 @@ import WarningModal from "../../components/modals/Warning";
 
 import Emoji from "../../components/Emoji";
 
-import { saveVent } from "./util";
+import { getVent, saveVent } from "./util";
 import { isMobileOrTablet } from "../../util";
 
-function NewVentPage({ location }) {
+function NewVentPage() {
   const history = useHistory();
+  const location = useLocation();
+  const { search } = location;
   const [description, setDescription] = useState("");
   const [gender, setGender] = useState(0);
-  const [id, setID] = useState();
+  const [saving, setSaving] = useState(false);
   const [tags, setTags] = useState([]);
   const [tagText, setTagText] = useState("");
   const [title, setTitle] = useState("");
-  const [saving, setSaving] = useState(false);
+  const [ventID, setVentID] = useState(search ? search.substring(1) : null);
   const [warningModalIsActive, setWarningModalIsActive] = useState(true);
   const user = useContext(UserContext);
 
+  useEffect(() => {
+    if (ventID) getVent(setDescription, setTags, setTitle, ventID);
+  }, []);
   const updateTags = (inputText, tags) => {
     let word = "";
     for (let index in inputText) {
@@ -158,7 +163,7 @@ function NewVentPage({ location }) {
                           setSaving(false);
                           history.push(
                             "/problem/" +
-                              vent._id +
+                              vent.id +
                               "/" +
                               vent.title
                                 .replace(/[^a-zA-Z ]/g, "")
@@ -172,7 +177,7 @@ function NewVentPage({ location }) {
                           tags,
                           title
                         },
-                        id,
+                        ventID,
                         user
                       );
                     } else alert("One or more fields is missing.");
