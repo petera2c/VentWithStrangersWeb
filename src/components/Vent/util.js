@@ -20,14 +20,14 @@ export const commentVent = async (commentString, user, ventID) => {
       .update({ comment_counter: firebase.firestore.FieldValue.increment(1) });
 };
 
-export const deleteVent = (
-  history,
-  isOnSingleVentPage,
-  removeVent,
-  socket,
-  ventID,
-  ventIndex
-) => {};
+export const deleteVent = async (history, ventID) => {
+  await db
+    .collection("vents")
+    .doc(ventID)
+    .delete();
+  alert("Vent deleted!");
+  history.push("/");
+};
 
 export const findPossibleUsersToTag = (
   callback,
@@ -259,7 +259,7 @@ export const likeOrUnlikeVent = async (hasLiked, user, vent) => {
   await db
     .collection("vent_likes")
     .doc(vent.id + "|||" + user.uid)
-    .set({ liked: !hasLiked });
+    .set({ liked: !hasLiked, ventID: vent.id });
 
   let valueToIncreaseBy = 1;
   if (hasLiked) valueToIncreaseBy = -1;

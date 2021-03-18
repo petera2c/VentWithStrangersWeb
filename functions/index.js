@@ -10,28 +10,40 @@ const path = require("path");
 
 const { createProxy, createSitemap } = require("./helpers/sitemap");
 const {
+  commentDeleteListener,
   commentLikeListener,
   newCommentListener,
 } = require("./helpers/comment");
-const { newVentLikeListener, newVentListener } = require("./helpers/vent");
-const { getMetaInformation } = require("./helpers/util");
+const {
+  newVentLikeListener,
+  newVentListener,
+  ventDeleteListener,
+} = require("./helpers/vent");
 const { messagesListener } = require("./helpers/messages");
+const { getMetaInformation } = require("./helpers/util");
 
 exports.newCommentListener = functions.firestore
   .document("/comments/{commentID}")
   .onCreate(newCommentListener);
+exports.commentDeleteListener = functions.firestore
+  .document("/comments/{commentID}")
+  .onDelete(commentDeleteListener);
+exports.commentLikeListener = functions.firestore
+  .document("/comment_likes/{commentIDUserID}")
+  .onCreate(commentLikeListener);
+exports.commentLikeListener = functions.firestore
+  .document("/comment_likes/{commentIDUserID}")
+  .onUpdate(commentLikeListener);
 
 exports.newVentListener = functions.firestore
   .document("/vents/{ventID}")
   .onCreate(newVentListener);
-
+exports.ventDeleteListener = functions.firestore
+  .document("/vents/{ventID}")
+  .onDelete(ventDeleteListener);
 exports.newVentLikeListener = functions.firestore
   .document("/vent_likes/{ventIDuserID}")
   .onCreate(newVentLikeListener);
-
-exports.commentLikeListener = functions.firestore
-  .document("/comment_likes/{commentIDUserID}")
-  .onWrite(commentLikeListener);
 
 exports.messagesListener = functions.firestore
   .document("/conversation_extra_data/{conversationID}/messages/{messageID}")

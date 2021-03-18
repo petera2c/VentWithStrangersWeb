@@ -567,7 +567,9 @@ function Vent({
                       commentID={comment.id}
                       commentIndex={index}
                       comment2={comment}
+                      setComments={setComments}
                       ventID={ventID}
+                      ventUserID={vent.userID}
                       key={comment.id}
                     />
                   );
@@ -596,15 +598,15 @@ function Vent({
 
       {reportModal && (
         <ReportModal
-          close={() => this.handleChange({ reportModal: false })}
+          close={() => setReportModal(false)}
           submit={option => reportVent(history, vent._id, option, pathname)}
         />
       )}
       {deleteVentConfirm && (
         <ConfirmAlertModal
-          close={() => this.handleChange({ deleteVentConfirm: false })}
+          close={() => setDeleteVentConfirm(false)}
           message="Are you sure you would like to delete this vent?"
-          submit={() => deleteVent(history, isOnSingleVentPage, vent.id)}
+          submit={() => deleteVent(history, vent.id)}
           title="Delete Vent"
         />
       )}

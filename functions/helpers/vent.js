@@ -5,7 +5,7 @@ const { createVentLink } = require("./util");
 const newVentListener = (doc, context) => {
   const vent = { id: doc.id, ...doc.data() };
 
-  createNotification(
+  return createNotification(
     createVentLink(vent),
     "Your new vent is live!",
     vent.userID
@@ -31,4 +31,38 @@ const newVentLikeListener = async (doc, context) => {
   );
 };
 
-module.exports = { newVentLikeListener, newVentListener };
+const ventDeleteListener = async (doc, context) => {
+  const ventID = doc.id;
+  const commentsOfVentSnapshot = await admin
+    .firestore()
+    .collection("comments")
+    .where("ventID", "==", ventID)
+    .get();
+
+  if (commentsOfVentSnapshot.docs) {
+    for (let index in commentsOfVentSnapshot.docs) {
+      admin
+        .firestore()
+        .collection("comments")
+        .doc(commentsOfVentSnapshot.docs[index].id)
+        .delete();
+    }
+  }
+
+  const ventLikesSnapshot = await admin
+    .firestore()
+    .collection("vent_likes")
+    .where("ventID", "==", ventID)
+    .get();
+
+  if (ventLikesSnapshot.docs)
+    for (let index in ventLikesSnapshot.docs) {
+      admin
+        .firestore()
+        .collection("vent_likes")
+        .doc(ventLikesSnapshot.docs[index].id)
+        .delete();
+    }
+};
+
+module.exports = { newVentLikeListener, newVentListener, ventDeleteListener };

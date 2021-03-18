@@ -33,16 +33,24 @@ import {
 } from "./util";
 import { findPossibleUsersToTag } from "../Vent/util";
 
-function Comment({ arrayLength, comment2, commentID, commentIndex, ventID }) {
+function Comment({
+  arrayLength,
+  comment2,
+  commentID,
+  commentIndex,
+  setComments,
+  ventID,
+  ventUserID
+}) {
   const history = useHistory();
   const user = useContext(UserContext);
+  const [author, setAuthor] = useState();
   const [comment, setComment] = useState(comment2);
   const [commentOptions, setCommentOptions] = useState(false);
   const [commentString, setCommentString] = useState("");
   const [deleteCommentConfirm, setDeleteCommentConfirm] = useState(false);
   const [editingComment, setEditingComment] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
-  const [author, setAuthor] = useState();
 
   useEffect(() => {
     getAuthor(setAuthor, comment2.userID);
@@ -100,7 +108,7 @@ function Comment({ arrayLength, comment2, commentID, commentIndex, ventID }) {
                 }}
               >
                 <Container className="column x-fill bg-white border-all2 border-all px16 py8 br8">
-                  {comment.wasCreatedByUser && (
+                  {user && comment.userID === user.uid && (
                     <Container
                       className="button-8 clickable align-center mb8"
                       onClick={e => {
@@ -118,42 +126,46 @@ function Comment({ arrayLength, comment2, commentID, commentIndex, ventID }) {
                       <FontAwesomeIcon className="ml8" icon={faEdit} />
                     </Container>
                   )}
-                  {comment.wasCreatedByUser && (
-                    <Container
-                      className="button-8 clickable align-center"
-                      onClick={e => {
-                        e.preventDefault();
-                        setDeleteCommentConfirm(true);
-                        setCommentOptions(false);
-                      }}
-                    >
-                      <Text
-                        className="flex-fill"
-                        text="Delete Comment"
-                        type="p"
-                      />
-                      <FontAwesomeIcon className="ml8" icon={faTrash} />
-                    </Container>
-                  )}
-                  {!comment.wasCreatedByUser && (
-                    <Container
-                      className="button-8 clickable align-center"
-                      onClick={e => {
-                        e.preventDefault();
-                        setReportModal(!reportModal);
-                      }}
-                    >
-                      <Text
-                        className="flex-fill"
-                        text="Report Comment"
-                        type="p"
-                      />
-                      <FontAwesomeIcon
-                        className="ml8"
-                        icon={faExclamationTriangle}
-                      />
-                    </Container>
-                  )}
+                  {user &&
+                    (comment.userID === user.uid ||
+                      (ventUserID && ventUserID === user.uid)) && (
+                      <Container
+                        className="button-8 clickable align-center"
+                        onClick={e => {
+                          e.preventDefault();
+                          setDeleteCommentConfirm(true);
+                          setCommentOptions(false);
+                        }}
+                      >
+                        <Text
+                          className="flex-fill"
+                          text="Delete Comment"
+                          type="p"
+                        />
+                        <FontAwesomeIcon className="ml8" icon={faTrash} />
+                      </Container>
+                    )}
+                  {!user ||
+                    (comment.userID !== user.uid &&
+                      !(ventUserID && ventUserID === user.uid) && (
+                        <Container
+                          className="button-8 clickable align-center"
+                          onClick={e => {
+                            e.preventDefault();
+                            setReportModal(!reportModal);
+                          }}
+                        >
+                          <Text
+                            className="flex-fill"
+                            text="Report Comment"
+                            type="p"
+                          />
+                          <FontAwesomeIcon
+                            className="ml8"
+                            icon={faExclamationTriangle}
+                          />
+                        </Container>
+                      ))}
                 </Container>
               </div>
             )}
@@ -260,9 +272,9 @@ function Comment({ arrayLength, comment2, commentID, commentIndex, ventID }) {
       </Container>
       {deleteCommentConfirm && (
         <ConfirmAlertModal
-          close={() => setDeleteCommentConfirm(faslse)}
+          close={() => setDeleteCommentConfirm(false)}
           message="Are you sure you would like to delete this comment?"
-          submit={() => deleteComment(comment._id)}
+          submit={() => deleteComment(comment.id, setComments)}
           title="Delete Comment"
         />
       )}

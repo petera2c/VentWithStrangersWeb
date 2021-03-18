@@ -25,7 +25,22 @@ export const getComment = async (commentID, setComment, ventID) => {
 
   if (comment) setComment({ id: doc.id, ...comment });
 };
-export const deleteComment = commentID => {};
+export const deleteComment = async (commentID, setComments) => {
+  let res = await db
+    .collection("comments")
+    .doc(commentID)
+    .delete();
+
+  if (setComments)
+    setComments(comments => {
+      comments.splice(
+        comments.findIndex(comment => comment.id === commentID),
+        1
+      );
+      return [...comments];
+    });
+  alert("Comment deleted!");
+};
 
 export const editComment = (commentID, commentString) => {};
 
@@ -33,7 +48,7 @@ export const likeOrUnlikeComment = async (comment, hasLiked, user, ventID) => {
   await db
     .collection("comment_likes")
     .doc(comment.id + "|||" + user.uid)
-    .set({ liked: !hasLiked });
+    .set({ liked: !hasLiked, commentID: comment.id });
 };
 
 export const getCommentHasLiked = async (commentID, setHasLiked, userID) => {

@@ -139,7 +139,6 @@ function ActivitySection({ user }) {
           <Container className="column border-all2 br8">
             {comments &&
               comments.map((comment, index) => {
-                console.log();
                 return (
                   <Link key={index} to={"/problem/" + comment.ventID + "/"}>
                     <Comment

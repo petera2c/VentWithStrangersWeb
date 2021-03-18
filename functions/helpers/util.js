@@ -101,4 +101,8 @@ const getInvalidDisplayNameCharacters = (displayName) => {
   return invalidCharacters;
 };
 
-module.exports = { combineObjectWithID, createVentLink, getMetaInformation };
+module.exports = {
+  combineObjectWithID,
+  createVentLink,
+  getMetaInformation,
+};
