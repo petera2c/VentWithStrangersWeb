@@ -547,6 +547,7 @@ function Vent({
                     <Button
                       className="button-2 px32 py8 mt8 br4"
                       onClick={async () => {
+                        if (!commentString) return;
                         commentVent(commentString, user, vent.id);
                         setCommentString("");
                       }}
