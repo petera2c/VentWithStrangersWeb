@@ -69,3 +69,27 @@ export const signOut = () => {
       window.location.reload();
     });
 };
+
+export const soundNotify = (sound = "bing") => {
+  let folderPath = "";
+  if (process.env.NODE_ENV === "development") folderPath = "static/";
+
+  var mp3Source =
+    '<source src="' + folderPath + sound + '.mp3" type="audio/mpeg">';
+  var oggSource =
+    '<source src="' + folderPath + sound + '.ogg" type="audio/ogg">';
+  var embedSource =
+    '<embed hidden="true" autostart="true" loop="false" src="' +
+    folderPath +
+    sound +
+    '.mp3">';
+
+  var audio = new Audio("static/bing.mp3");
+  audio.play();
+  document.getElementById("sound").innerHTML =
+    '<audio autoplay="autoplay">' +
+    mp3Source +
+    oggSource +
+    embedSource +
+    "</audio>";
+};
