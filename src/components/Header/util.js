@@ -2,15 +2,17 @@ import db from "../../config/firebase";
 
 export const getNotifications = (setNotifications, user) => {
   db.collection("notifications")
+    .orderBy("server_timestamp")
     .where("userID", "==", user.uid)
-    .orderBy("server_timestamp", "desc")
-    .limitToLast(5)
+    .limitToLast(10)
     .onSnapshot("value", snapshot => {
       if (snapshot.docs)
         setNotifications(
-          snapshot.docs.map((item, i) => {
-            return { id: item.id, ...item.data(), doc: item };
-          })
+          snapshot.docs
+            .map((item, i) => {
+              return { id: item.id, ...item.data(), doc: item };
+            })
+            .reverse()
         );
       else setNotifications([]);
     });

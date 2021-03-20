@@ -1,8 +1,9 @@
 const admin = require("firebase-admin");
 
-const createNotification = (link, message, userID) => {
+const createNotification = async (link, message, userID) => {
   if (!userID) return;
-  return admin
+
+  await admin
     .firestore()
     .collection("notifications")
     .add({
