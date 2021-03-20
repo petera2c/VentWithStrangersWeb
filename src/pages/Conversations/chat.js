@@ -157,6 +157,7 @@ function Chat({ conversation, conversationName, userID }) {
               "button-2 " + (isMobileOrTablet() ? "px8 py4" : "px32 py8 br4")
             }
             onClick={() => {
+              if (!messageString) return;
               sendMessage(conversation.id, messageString, userID);
               setMessageString("");
             }}
