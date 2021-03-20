@@ -79,7 +79,7 @@ const getMetaInformation = async (url, callback) => {
       metaImage: defaultMetaObject.metaImage,
       metaTitle: "Trending | Vent With Strangers",
     });
-  else if (url === "/post-a-problem")
+  else if (url === "/vent-to-strangers")
     return callback({
       metaDescription:
         "You aren’t alone, and you should never feel alone. If you are feeling down, anonymously post your issue here. There is an entire community of people that want to help you.",

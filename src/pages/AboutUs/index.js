@@ -59,7 +59,7 @@ class AboutUsPage extends Component {
             -
             <a
               className="a-tag-common-link"
-              href="https://www.ventwithstrangers.com/post-a-problem"
+              href="https://www.ventwithstrangers.com/vent-to-strangers"
             >
               Post on our board
             </a>

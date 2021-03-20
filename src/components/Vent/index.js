@@ -241,7 +241,7 @@ function Vent({
                             className="button-8 clickable align-center mb8"
                             onClick={e => {
                               e.preventDefault();
-                              history.push("/post-a-problem?" + vent.id);
+                              history.push("/vent-to-strangers?" + vent.id);
                             }}
                           >
                             <Text

@@ -129,7 +129,7 @@ function Vents() {
         {!isMobileOrTablet() && (
           <Container className="container small column">
             <Container className="x-fill column align-start bg-white border-all2 pa16 mb16 br8">
-              <Link className="button-3 fs-18 mb16" to="/post-a-problem">
+              <Link className="button-3 fs-18 mb16" to="/vent-to-strangers">
                 <FontAwesomeIcon className="mr8" icon={faPen} />
                 Post a Vent
               </Link>

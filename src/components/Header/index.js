@@ -163,7 +163,7 @@ function Header({ history, location }) {
           </Container>
           <Link
             className="button-2 no-bold py8 px16 my16 br8"
-            to="/post-a-problem"
+            to="/vent-to-strangers"
           >
             Post a Vent
           </Link>
