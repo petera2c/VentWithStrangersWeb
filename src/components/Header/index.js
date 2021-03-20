@@ -1,7 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, withRouter } from "react-router-dom";
-import { useCollectionData } from "react-firebase-hooks/firestore";
-import db from "../../config/firebase";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
@@ -28,8 +26,10 @@ import NotificationList from "../NotificationList";
 import { capitolizeFirstChar, isPageActive } from "../../util";
 import {
   getNotifications,
+  getUnreadConversations,
   newNotificationCounter,
-  readNotifications
+  readNotifications,
+  resetUnreadConversationCount
 } from "./util";
 
 function Header({ history, location }) {
@@ -38,6 +38,7 @@ function Header({ history, location }) {
   const [showFeedback, setShowFeedback] = useState(false);
   const [loginModalBoolean, setLoginModalBoolean] = useState(false);
   const [notifications, setNotifications] = useState([]);
+  const [unreadConversationsCount, setUnreadConversationsCount] = useState();
   const [showNotificationDropdown, setShowNotificationDropdown] = useState(
     false
   );
@@ -51,19 +52,13 @@ function Header({ history, location }) {
     history.push("/search?" + ventSearchString);
   };
 
-  if (user) {
-    var conversationsQuery = db
-      .collection("conversations")
-      .where(user.uid, "==", false);
-
-    var [unreadConversations] = useCollectionData(conversationsQuery, {
-      idField: "id"
-    });
-  }
-
   useEffect(() => {
     if (user) getNotifications(setNotifications, user);
+    if (user) getUnreadConversations(setUnreadConversationsCount, user.uid);
   }, [location]);
+
+  if (pathname === "/conversations" && user && unreadConversationsCount > 0)
+    resetUnreadConversationCount(user.uid);
 
   return (
     <Container
@@ -135,9 +130,9 @@ function Header({ history, location }) {
             <FontAwesomeIcon className="py16 mr8" icon={faComments} />
             <p className="py16">Inbox</p>
 
-            {unreadConversations && unreadConversations.length !== 0 && (
+            {Boolean(unreadConversationsCount) && (
               <p className="fs-14 bg-red white round ml4 pa4 br4">
-                {unreadConversations.length}
+                {unreadConversationsCount}
               </p>
             )}
           </Link>

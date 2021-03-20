@@ -29,6 +29,24 @@ export const getNotifications = (setNotifications, user, firstLoad = true) => {
     });
 };
 
+export const getUnreadConversations = (
+  setUnreadConversations,
+  userID,
+  first = true
+) => {
+  db.collection("unread_conversations_count")
+    .doc(userID)
+    .onSnapshot("value", doc => {
+      if (doc.data() && doc.data().count) {
+        setUnreadConversations(doc.data().count);
+        if (!first) {
+          soundNotify();
+        }
+      } else setUnreadConversations(0);
+      first = false;
+    });
+};
+
 export const newNotificationCounter = notifications => {
   let counter = 0;
 
@@ -51,4 +69,10 @@ export const readNotifications = notifications => {
         });
     }
   }
+};
+
+export const resetUnreadConversationCount = userID => {
+  db.collection("unread_conversations_count")
+    .doc(userID)
+    .set({ count: 0 });
 };

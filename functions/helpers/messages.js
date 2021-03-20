@@ -3,17 +3,6 @@ const admin = require("firebase-admin");
 const messagesListener = async (doc, context) => {
   const { conversationID, messageID } = context.params;
 
-  await admin
-    .firestore()
-    .collection("conversations")
-    .doc(conversationID)
-    .set(
-      {
-        last_updated: admin.firestore.Timestamp.now().seconds * 1000,
-      },
-      { merge: true }
-    );
-
   const conversationDoc = await admin
     .firestore()
     .collection("conversations")
@@ -26,8 +15,18 @@ const messagesListener = async (doc, context) => {
 
   let conversation = conversationDoc.data();
   for (let index in conversation) {
-    if (typeof conversation[index] === "boolean") conversation[index] = false;
+    if (typeof conversation[index] === "boolean") {
+      conversation[index] = false;
+      if (doc.data().userID !== index) {
+        await admin
+          .firestore()
+          .collection("unread_conversations_count")
+          .doc(index)
+          .set({ count: admin.firestore.FieldValue.increment(1) });
+      }
+    }
   }
+  conversation.last_updated = admin.firestore.Timestamp.now().seconds * 1000;
 
   await admin
     .firestore()

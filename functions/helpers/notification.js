@@ -15,17 +15,4 @@ const createNotification = async (link, message, userID) => {
     });
 };
 
-const createConversationNotification = (userID) => {
-  if (!userID) return;
-  return admin
-    .firestore()
-    .collection("notifications")
-    .add({
-      hasSeen: false,
-      message,
-      server_timestamp: admin.firestore.Timestamp.now().seconds * 1000,
-      userID,
-    });
-};
-
-module.exports = { createConversationNotification, createNotification };
+module.exports = { createNotification };
