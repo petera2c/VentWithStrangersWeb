@@ -89,64 +89,64 @@ function Comment({
           />
         </Container>
         <Container className="relative column full-center">
-          <HandleOutsideClick close={() => setCommentOptions(false)}>
-            <FontAwesomeIcon
-              className="clickable grey-9 pl16"
-              icon={faEllipsisV}
-              onClick={e => {
-                e.preventDefault();
-                setCommentOptions(!commentOptions);
-              }}
-            />
-            {commentOptions && (
-              <div
-                className="absolute flex right-0"
-                style={{
-                  top: "calc(100% - 8px)",
-                  whiteSpace: "nowrap",
-                  zIndex: 1
+          {user && (
+            <HandleOutsideClick close={() => setCommentOptions(false)}>
+              <FontAwesomeIcon
+                className="clickable grey-9 pl16"
+                icon={faEllipsisV}
+                onClick={e => {
+                  e.preventDefault();
+                  setCommentOptions(!commentOptions);
                 }}
-              >
-                <Container className="column x-fill bg-white border-all2 border-all px16 py8 br8">
-                  {user && comment.userID === user.uid && (
-                    <Container
-                      className="button-8 clickable align-center mb8"
-                      onClick={e => {
-                        e.preventDefault();
-                        setCommentOptions(false);
-                        setCommentString(comment.text);
-                        setEditingComment(true);
-                      }}
-                    >
-                      <Text
-                        className="flex-fill"
-                        text="Edit Comment"
-                        type="p"
-                      />
-                      <FontAwesomeIcon className="ml8" icon={faEdit} />
-                    </Container>
-                  )}
-                  {user &&
-                    (comment.userID === user.uid ||
-                      (ventUserID && ventUserID === user.uid)) && (
+              />
+              {commentOptions && (
+                <div
+                  className="absolute flex right-0"
+                  style={{
+                    top: "calc(100% - 8px)",
+                    whiteSpace: "nowrap",
+                    zIndex: 1
+                  }}
+                >
+                  <Container className="column x-fill bg-white border-all2 border-all px16 py8 br8">
+                    {user && comment.userID === user.uid && (
                       <Container
-                        className="button-8 clickable align-center"
+                        className="button-8 clickable align-center mb8"
                         onClick={e => {
                           e.preventDefault();
-                          setDeleteCommentConfirm(true);
                           setCommentOptions(false);
+                          setCommentString(comment.text);
+                          setEditingComment(true);
                         }}
                       >
                         <Text
                           className="flex-fill"
-                          text="Delete Comment"
+                          text="Edit Comment"
                           type="p"
                         />
-                        <FontAwesomeIcon className="ml8" icon={faTrash} />
+                        <FontAwesomeIcon className="ml8" icon={faEdit} />
                       </Container>
                     )}
-                  {!user ||
-                    (comment.userID !== user.uid &&
+                    {user &&
+                      (comment.userID === user.uid ||
+                        (ventUserID && ventUserID === user.uid)) && (
+                        <Container
+                          className="button-8 clickable align-center"
+                          onClick={e => {
+                            e.preventDefault();
+                            setDeleteCommentConfirm(true);
+                            setCommentOptions(false);
+                          }}
+                        >
+                          <Text
+                            className="flex-fill"
+                            text="Delete Comment"
+                            type="p"
+                          />
+                          <FontAwesomeIcon className="ml8" icon={faTrash} />
+                        </Container>
+                      )}
+                    {comment.userID !== user.uid &&
                       !(ventUserID && ventUserID === user.uid) && (
                         <Container
                           className="button-8 clickable align-center"
@@ -165,11 +165,12 @@ function Comment({
                             icon={faExclamationTriangle}
                           />
                         </Container>
-                      ))}
-                </Container>
-              </div>
-            )}
-          </HandleOutsideClick>
+                      )}
+                  </Container>
+                </div>
+              )}
+            </HandleOutsideClick>
+          )}
         </Container>
       </Container>
       {!editingComment && (

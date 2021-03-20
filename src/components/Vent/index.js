@@ -215,82 +215,84 @@ function Vent({
                 ))}
               </Container>
 
-              <HandleOutsideClick close={() => setPostOptions(false)}>
-                <FontAwesomeIcon
-                  className="clickable grey-9 px16"
-                  icon={faEllipsisV}
-                  onClick={e => {
-                    e.preventDefault();
+              {user && (
+                <HandleOutsideClick close={() => setPostOptions(false)}>
+                  <FontAwesomeIcon
+                    className="clickable grey-9 px16"
+                    icon={faEllipsisV}
+                    onClick={e => {
+                      e.preventDefault();
 
-                    setPostOptions(!postOptions);
-                  }}
-                />
-                {postOptions && (
-                  <div
-                    className="absolute flex right-0"
-                    style={{
-                      top: "calc(100% + 8px)",
-                      whiteSpace: "nowrap",
-                      zIndex: 1
+                      setPostOptions(!postOptions);
                     }}
-                  >
-                    <Container className="column x-fill bg-white border-all2 border-all px16 py8 br8">
-                      {user && vent.userID === user.uid && (
-                        <Container
-                          className="button-8 clickable align-center mb8"
-                          onClick={e => {
-                            e.preventDefault();
-                            history.push("/post-a-problem?" + vent.id);
-                          }}
-                        >
-                          <Text
-                            className="fw-400 flex-fill"
-                            text="Edit Vent"
-                            type="p"
-                          />
-                          <FontAwesomeIcon className="ml8" icon={faEdit} />
-                        </Container>
-                      )}
-                      {user && vent.userID === user.uid && (
-                        <Container
-                          className="button-8 clickable align-center"
-                          onClick={e => {
-                            e.preventDefault();
-                            setDeleteVentConfirm(true);
-                            setPostOptions(false);
-                          }}
-                        >
-                          <Text
-                            className="fw-400 flex-fill"
-                            text="Delete Vent"
-                            type="p"
-                          />
-                          <FontAwesomeIcon className="ml8" icon={faTrash} />
-                        </Container>
-                      )}
-                      {(!user || !vent.userID === user.uid) && (
-                        <Container
-                          className="button-8 clickable align-center"
-                          onClick={e => {
-                            e.preventDefault();
-                            setReportModal(!reportModal);
-                          }}
-                        >
-                          <Text
-                            className="fw-400 flex-fill"
-                            text="Report Vent"
-                            type="p"
-                          />
-                          <FontAwesomeIcon
-                            className="ml8"
-                            icon={faExclamationTriangle}
-                          />
-                        </Container>
-                      )}
-                    </Container>
-                  </div>
-                )}
-              </HandleOutsideClick>
+                  />
+                  {postOptions && (
+                    <div
+                      className="absolute flex right-0"
+                      style={{
+                        top: "calc(100% + 8px)",
+                        whiteSpace: "nowrap",
+                        zIndex: 1
+                      }}
+                    >
+                      <Container className="column x-fill bg-white border-all2 border-all px16 py8 br8">
+                        {vent.userID === user.uid && (
+                          <Container
+                            className="button-8 clickable align-center mb8"
+                            onClick={e => {
+                              e.preventDefault();
+                              history.push("/post-a-problem?" + vent.id);
+                            }}
+                          >
+                            <Text
+                              className="fw-400 flex-fill"
+                              text="Edit Vent"
+                              type="p"
+                            />
+                            <FontAwesomeIcon className="ml8" icon={faEdit} />
+                          </Container>
+                        )}
+                        {vent.userID === user.uid && (
+                          <Container
+                            className="button-8 clickable align-center"
+                            onClick={e => {
+                              e.preventDefault();
+                              setDeleteVentConfirm(true);
+                              setPostOptions(false);
+                            }}
+                          >
+                            <Text
+                              className="fw-400 flex-fill"
+                              text="Delete Vent"
+                              type="p"
+                            />
+                            <FontAwesomeIcon className="ml8" icon={faTrash} />
+                          </Container>
+                        )}
+                        {vent.userID !== user.uid && (
+                          <Container
+                            className="button-8 clickable align-center"
+                            onClick={e => {
+                              e.preventDefault();
+                              setReportModal(!reportModal);
+                            }}
+                          >
+                            <Text
+                              className="fw-400 flex-fill"
+                              text="Report Vent"
+                              type="p"
+                            />
+                            <FontAwesomeIcon
+                              className="ml8"
+                              icon={faExclamationTriangle}
+                            />
+                          </Container>
+                        )}
+                      </Container>
+                    </div>
+                  )}
+                </HandleOutsideClick>
+              )}
             </Container>
           </SmartLink>
           <SmartLink
