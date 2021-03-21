@@ -27,6 +27,7 @@ const messagesListener = async (doc, context) => {
     }
   }
   conversation.last_updated = admin.firestore.Timestamp.now().seconds * 1000;
+  conversation.last_message = doc.data().body;
 
   await admin
     .firestore()

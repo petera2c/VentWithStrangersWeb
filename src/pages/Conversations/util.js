@@ -157,3 +157,14 @@ export const sendMessage = async (conversationID, message, userID) => {
       userID
     });
 };
+
+export const setConversationIsTyping = async (
+  conversationID,
+  isTyping,
+  userID
+) => {
+  await db
+    .collection("conversations")
+    .doc(conversationID)
+    .set({ isTyping: { [userID]: isTyping } }, { merge: true });
+};

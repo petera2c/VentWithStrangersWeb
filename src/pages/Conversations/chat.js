@@ -19,7 +19,12 @@ import Text from "../../components/views/Text";
 
 import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
 
-import { getMessages, messageListener, sendMessage } from "./util";
+import {
+  getMessages,
+  messageListener,
+  sendMessage,
+  setConversationIsTyping
+} from "./util";
 let messageListenerUnsubscribe;
 
 function Chat({ conversation, conversationName, userID }) {
@@ -32,6 +37,7 @@ function Chat({ conversation, conversationName, userID }) {
   const [conversationID, setConversationID] = useState();
   const [messages, setMessages] = useState([]);
   const [messageString, setMessageString] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
   let messageDivs = [];
 
   if (conversation.id !== conversationID) {
@@ -88,6 +94,16 @@ function Chat({ conversation, conversationName, userID }) {
     );
   }
 
+  let typingTimer;
+
+  let isOtherUserTyping = false;
+  if (conversation.isTyping) {
+    for (let memberID in conversation.isTyping) {
+      if (memberID !== userID && conversation.isTyping[memberID])
+        isOtherUserTyping = true;
+    }
+  }
+
   return (
     <Container
       className={
@@ -130,8 +146,14 @@ function Chat({ conversation, conversationName, userID }) {
           />
         )}
         {messageDivs}
+
         <div ref={dummyRef} />
       </Container>
+      {isOtherUserTyping && (
+        <Container className="x-fill">
+          <p className="pa16">{conversationName} is typing...</p>
+        </Container>
+      )}
 
       <Container className="column x-fill">
         <Container
@@ -148,7 +170,26 @@ function Chat({ conversation, conversationName, userID }) {
               "send-message-textarea light-scrollbar " +
               (isMobileOrTablet() ? "" : "pa16")
             }
-            onChange={event => setMessageString(event.target.value)}
+            onChange={event => {
+              if (event.target.value === "\n") return;
+              setMessageString(event.target.value);
+              if (!isTyping) {
+                setConversationIsTyping(conversationID, true, userID);
+                setIsTyping(true);
+              }
+              if (typingTimer) clearTimeout(typingTimer);
+              typingTimer = setTimeout(() => {
+                setIsTyping(false);
+                setConversationIsTyping(conversationID, false, userID);
+              }, 5000);
+            }}
+            onKeyDown={e => {
+              if (e.key === "Enter") {
+                if (!messageString) return;
+                sendMessage(conversation.id, messageString, userID);
+                setMessageString("");
+              }
+            }}
             placeholder="Type a helpful message here..."
             value={messageString}
           />
