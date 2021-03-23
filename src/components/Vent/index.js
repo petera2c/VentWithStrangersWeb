@@ -128,6 +128,7 @@ function Vent({
   let ventHasLikedListenerUnsubscribe;
 
   useEffect(() => {
+    setVent();
     const ventListenerUnsubscribe = ventListener(setVent, ventID);
 
     if (!searchPreviewMode && displayCommentField2)

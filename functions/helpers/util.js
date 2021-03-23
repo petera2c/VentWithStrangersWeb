@@ -49,7 +49,9 @@ const getMetaInformation = async (url, callback) => {
           ? vent.description.substring(0, 200)
           : "",
         metaImage: defaultMetaObject.metaImage,
-        metaTitle: vent.title + " | Vent With Strangers",
+        metaTitle:
+          (vent.title ? vent.title.substring(0, 140) : "") +
+          " | Vent With Strangers",
       });
     else return callback(defaultMetaObject);
   } else if (userObjectID) {
