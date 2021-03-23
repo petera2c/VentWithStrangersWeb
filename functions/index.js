@@ -47,7 +47,7 @@ exports.messagesListener = functions.firestore
   .onCreate(messagesListener);
 
 exports.cronUpdateSitemap = functions.pubsub
-  .schedule("* * * * *")
+  .schedule("0 0 * * *")
   .onRun(async () => createSitemap());
 
 const injectMetaData = (req, res) => {
