@@ -162,7 +162,7 @@ function Chat({ conversation, conversationName, userID }) {
               typingTimer = setTimeout(() => {
                 setIsTyping(false);
                 setConversationIsTyping(conversationID, false, userID);
-              }, 5000);
+              }, 2000);
             }}
             onKeyDown={e => {
               if (e.key === "Enter") {
