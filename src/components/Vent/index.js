@@ -128,20 +128,6 @@ function Vent({
   let ventHasLikedListenerUnsubscribe;
 
   useEffect(() => {
-    setVent({
-      id: "s7J3Bbk82o6rZrffcR2W",
-      server_timestamp: 1616261473000,
-      last_updated: 1616261473000,
-      gender: 0,
-      description: "sdfg",
-      title: "dsgf",
-      like_counter: 0,
-      userID: "vhs78vyFXvZv8zkHpLVQsvT78YS2",
-      tags: ["sdfg"],
-      comment_counter: 6,
-      author: "sam",
-      authorID: "vhs78vyFXvZv8zkHpLVQsvT78YS2"
-    });
     const ventListenerUnsubscribe = ventListener(setVent, ventID);
 
     if (!searchPreviewMode && displayCommentField2)
@@ -171,7 +157,6 @@ function Vent({
     setCopySuccess("Copied!");
   };
 
-  console.log(vent);
   if (!vent && isOnSingleVentPage)
     return (
       <Container className="x-fill full-center">
