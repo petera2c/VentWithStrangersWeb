@@ -64,7 +64,7 @@ const createSitemap = async () => {
       "<url>\n<loc>" +
       url +
       "</loc>\n<lastmod>" +
-      "2021-03-20" +
+      "2021-03-23" +
       "</lastmod>\n<changefreq>yearly</changefreq>\n</url>\n\n";
   }
 

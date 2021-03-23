@@ -25,3 +25,7 @@ functions/database-debug.log
 functions/firestore-debug.log
 functions/pubsub-debug.log
 functions/firebase-debug.log
+database-debug.log
+firestore-debug.log
+pubsub-debug.log
+firebase-debug.log

@@ -128,6 +128,10 @@ function Vent({
   let ventHasLikedListenerUnsubscribe;
 
   useEffect(() => {
+    // Very weird line of code that makes the google search console view all vent pages properly
+    // Without this google search console does not wait for the ventListener code to execute
+    // and pull the vent - so it just shows a loading screen creating many duplicate pages in
+    // google search console
     setVent({
       id: "",
       server_timestamp: 0,
