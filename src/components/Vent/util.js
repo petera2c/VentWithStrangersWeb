@@ -220,7 +220,7 @@ export const ventHasLikedListener = (setHasLiked, userID, ventID) => {
   return unsubscribe;
 };
 
-export const ventListener = (setDescription, setTitle, setVent, ventID) => {
+export const ventListener = (setVent, ventID) => {
   const unsubscribe = db
     .collection("vents")
     .doc(ventID)
@@ -244,8 +244,6 @@ export const ventListener = (setDescription, setTitle, setVent, ventID) => {
 
       if (vent) {
         setVent({ id: ventID, ...vent, author, authorID });
-        if (setDescription) setDescription(vent.description);
-        if (setTitle) setTitle(vent.title);
       } else setVent(false);
     });
 

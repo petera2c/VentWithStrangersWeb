@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment-timezone";
-import axios from "axios";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import db from "../../config/firebase";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
-import db from "../../config/firebase";
-import Consumer, { ExtraContext } from "../../context";
+import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons/faExclamationTriangle";
+import { faTrash } from "@fortawesome/pro-solid-svg-icons/faTrash";
+import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 
 import LoadMore from "../../components/LoadMore";
 
@@ -16,6 +17,7 @@ import Container from "../../components/containers/Container";
 
 import Button from "../../components/views/Button";
 import Text from "../../components/views/Text";
+import Message from "./message";
 
 import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
 
@@ -25,9 +27,10 @@ import {
   sendMessage,
   setConversationIsTyping
 } from "./util";
-let messageListenerUnsubscribe;
 
 function Chat({ conversation, conversationName, userID }) {
+  let messageListenerUnsubscribe;
+
   const dummyRef = useRef();
   const scrollToBottom = () => {
     dummyRef.current.scrollIntoView();
@@ -68,29 +71,7 @@ function Chat({ conversation, conversationName, userID }) {
   for (let index in messages) {
     const message = messages[index];
     messageDivs.unshift(
-      <Container
-        className={
-          "x-fill " + (message.userID !== userID ? "wrap" : "justify-end")
-        }
-        key={index}
-      >
-        <div
-          className={
-            "relative message-container px16 py8 mb8 br4 " +
-            (message.userID === userID ? "bg-blue white" : "grey-1 bg-grey-10")
-          }
-        >
-          {message.body}
-          <div
-            className={
-              "message-date ov-visible white pa4 br4" +
-              (message.userID === userID ? " right" : " left")
-            }
-          >
-            {moment(message.server_timestamp).format("YYYY MMM DD h:m A")}
-          </div>
-        </div>
-      </Container>
+      <Message key={index} message={message} userID={userID} />
     );
   }
 

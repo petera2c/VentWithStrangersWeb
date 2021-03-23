@@ -34,20 +34,12 @@ function VentPage() {
   const location = useLocation();
   const { pathname } = location;
 
-  const [description, setDescription] = useState("");
-  const [title, setTitle] = useState("");
-
   const regexMatch = getVentIdFromURL(pathname);
   let ventID;
   if (regexMatch) ventID = regexMatch;
 
   return (
-    <Page
-      className="justify-start align-center bg-grey-2"
-      description={description}
-      keywords=""
-      title={title}
-    >
+    <Page className="justify-start align-center bg-grey-2">
       <Container className={isMobileOrTablet() ? "py16" : "py32"}>
         {ventID && (
           <Container
@@ -62,8 +54,6 @@ function VentPage() {
               disablePostOnClick={true}
               displayCommentField
               isOnSingleVentPage={true}
-              setDescription={setDescription}
-              setTitle={setTitle}
               ventID={ventID}
             />
           </Container>

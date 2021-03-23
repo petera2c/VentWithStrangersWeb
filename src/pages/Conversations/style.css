@@ -27,13 +27,15 @@
   top: 0;
 
   white-space: nowrap;
-  background-color: var(--grey-color-8);
+}
+.message-date:hover {
+  display: flex;
 }
 .message-date.right {
-  right: calc(100% + 8px);
+  right: calc(100%);
 }
 .message-date.left {
-  left: calc(100% + 8px);
+  left: calc(100%);
 }
 .message-container:hover > .message-date {
   display: flex;
