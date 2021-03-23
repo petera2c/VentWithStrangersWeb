@@ -128,7 +128,20 @@ function Vent({
   let ventHasLikedListenerUnsubscribe;
 
   useEffect(() => {
-    setVent();
+    setVent({
+      id: "",
+      server_timestamp: 0,
+      last_updated: 0,
+      gender: 0,
+      description: "",
+      title: "",
+      like_counter: 0,
+      userID: "",
+      tags: [""],
+      comment_counter: 0,
+      author: "",
+      authorID: ""
+    });
     const ventListenerUnsubscribe = ventListener(setVent, ventID);
 
     if (!searchPreviewMode && displayCommentField2)
