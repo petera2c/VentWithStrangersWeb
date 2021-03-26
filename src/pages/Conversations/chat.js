@@ -71,7 +71,13 @@ function Chat({ conversation, conversationName, userID }) {
   for (let index in messages) {
     const message = messages[index];
     messageDivs.unshift(
-      <Message key={index} message={message} userID={userID} />
+      <Message
+        conversationID={conversation.id}
+        key={index}
+        message={message}
+        setMessages={setMessages}
+        userID={userID}
+      />
     );
   }
 
@@ -86,15 +92,7 @@ function Chat({ conversation, conversationName, userID }) {
   }
 
   return (
-    <Container
-      className={
-        "column full-center flex-fill ov-auto bg-white br4 " +
-        (isMobileOrTablet()
-          ? "container mobile-full"
-          : "container large border-all2")
-      }
-      style={{ height: "80vh" }}
-    >
+    <Container className="column x-fill full-center bg-white br4">
       <Container className="x-fill justify-between border-bottom pa16">
         {conversationPartnerID && (
           <Link to={"/activity?" + conversationPartnerID}>

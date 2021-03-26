@@ -58,13 +58,12 @@ const createSitemap = async () => {
         .replace(/[^a-zA-Z ]/g, "")
         .replace(/ /g, "-")
         .toLowerCase();
-    //  new moment(vent.server_timestamp).format("YYYY-MM-DD")
 
     siteMapString +=
       "<url>\n<loc>" +
       url +
       "</loc>\n<lastmod>" +
-      "2021-03-23" +
+      new moment(vent.server_timestamp).format("YYYY-MM-DD") +
       "</lastmod>\n<changefreq>yearly</changefreq>\n</url>\n\n";
   }
 

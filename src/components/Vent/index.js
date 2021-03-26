@@ -128,24 +128,6 @@ function Vent({
   let ventHasLikedListenerUnsubscribe;
 
   useEffect(() => {
-    // Very weird line of code that makes the google search console view all vent pages properly
-    // Without this google search console does not wait for the ventListener code to execute
-    // and pull the vent - so it just shows a loading screen creating many duplicate pages in
-    // google search console
-    setVent({
-      id: "",
-      server_timestamp: 0,
-      last_updated: 0,
-      gender: 0,
-      description: "",
-      title: "",
-      like_counter: 0,
-      userID: "",
-      tags: [""],
-      comment_counter: 0,
-      author: "",
-      authorID: ""
-    });
     const ventListenerUnsubscribe = ventListener(setVent, ventID);
 
     if (!searchPreviewMode && displayCommentField2)
@@ -185,7 +167,7 @@ function Vent({
   return (
     <Container className="x-fill column mb16">
       {vent && (
-        <Container className="x-fill column bg-white border-all2 mb8 br8">
+        <Container className="x-fill column bg-white mb8 br8">
           <SmartLink
             className={
               "main-container x-fill wrap justify-between border-bottom py16 pl32 pr16 " +
@@ -253,7 +235,7 @@ function Vent({
                         zIndex: 1
                       }}
                     >
-                      <Container className="column x-fill bg-white border-all2 border-all px16 py8 br8">
+                      <Container className="column x-fill bg-white border-all px16 py8 br8">
                         {vent.userID === user.uid && (
                           <Container
                             className="button-8 clickable align-center mb8"
@@ -523,7 +505,7 @@ function Vent({
                 (comments && comments.length > 0 ? "border-bottom" : "")
               }
             >
-              <Container className="x-fill column border-all2 py16 br8">
+              <Container className="x-fill column py16 br8">
                 <Container className="x-fill px16">
                   <Container className="column x-fill align-end br8">
                     <Container className="relative x-fill">
@@ -580,7 +562,7 @@ function Vent({
           )}
           {!searchPreviewMode && displayCommentField2 && comments && (
             <Container className="column mb16">
-              <Container className="column border-all2 br8">
+              <Container className="column br8">
                 {comments.map((comment, index) => {
                   return (
                     <Comment

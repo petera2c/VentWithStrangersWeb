@@ -5,8 +5,6 @@
 .bg-grey-2 {
   background-color: #e7f4fe;
 }
-.border-all2 {
-}
 :root {
   --main-color: #2096f2;
 
@@ -255,6 +253,30 @@
   padding-left: 2px;
 }
 
+.pa1 {
+  padding: 1px;
+}
+.px1 {
+  padding-right: 1px;
+  padding-left: 1px;
+}
+.py1 {
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+.pt1 {
+  padding-top: 1px;
+}
+.pr1 {
+  padding-right: 1px;
+}
+.pb1 {
+  padding-bottom: 1px;
+}
+.pl1 {
+  padding-left: 1px;
+}
+
 .ma64 {
   margin: 64px;
 }
@@ -447,6 +469,9 @@
   margin-left: 1px;
 }
 
+.gap1 {
+  gap: 1px;
+}
 .gap2 {
   gap: 2px;
 }
@@ -511,6 +536,10 @@
 
 .clickable {
   cursor: pointer;
+}
+
+.normal-cursor {
+  cursor: default;
 }
 
 .round-icon {

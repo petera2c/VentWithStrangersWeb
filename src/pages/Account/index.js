@@ -33,7 +33,7 @@ function AccountPage() {
         }
       >
         {!isMobileOrTablet() && !search && (
-          <Container className="container small column align-center bg-white border-all2 px16 br8">
+          <Container className="container small column align-center bg-white px16 br8">
             <Link className="x-fill" to={"/activity" + search}>
               <Container
                 className={

@@ -14,7 +14,7 @@ class ConfirmAlertModal extends Component {
     const { close, message, submit, title } = this.props; // Functions
 
     return (
-      <Container className="modal-container full-center">
+      <Container className="modal-container full-center normal-cursor">
         <Container className="modal container medium column ov-auto bg-white br4">
           <Container className="x-fill justify-center bg-grey-10 py16">
             <Text className="grey-11 tac" text={title} type="h4" />

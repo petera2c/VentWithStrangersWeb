@@ -91,7 +91,7 @@ function Vents() {
                 getVents(pathname, setCanLoadMore, setVents, vents)
               }
             >
-              <Container className="bg-red clickable x-fill column bg-white border-all2 mb16 br8">
+              <Container className="bg-red clickable x-fill column bg-white mb16 br8">
                 <Container className="justify-between pt16 px32">
                   <Container>
                     <div className="round-icon bg-grey-2 mr8" />
@@ -128,7 +128,7 @@ function Vents() {
 
         {!isMobileOrTablet() && (
           <Container className="container small column">
-            <Container className="x-fill column align-start bg-white border-all2 pa16 mb16 br8">
+            <Container className="x-fill column align-start bg-white pa16 mb16 br8">
               <Link className="button-3 fs-18 mb16" to="/vent-to-strangers">
                 <FontAwesomeIcon className="mr8" icon={faPen} />
                 Post a Vent

@@ -29,6 +29,10 @@
 .fixed.left-0 {
   left: 0;
 }
+.absolute.left-100,
+.fixed.left-100 {
+  left: 100%;
+}
 .absolute.top-100 {
   top: 100%;
 }

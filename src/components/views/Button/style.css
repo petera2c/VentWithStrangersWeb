@@ -78,6 +78,14 @@
 .button-8:hover {
   color: var(--main-color);
 }
+
+.button-9 {
+  cursor: pointer;
+  color: var(--grey-color-1);
+}
+.button-9:hover {
+  color: var(--red-color);
+}
 .heart:hover {
   color: var(--red-color);
 }

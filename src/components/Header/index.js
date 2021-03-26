@@ -62,7 +62,7 @@ function Header({ history, location }) {
 
   return (
     <Container
-      className="column sticky top-0 x-fill justify-center bg-white shadow-2 border-top large active"
+      className="column sticky top-0 x-fill justify-center bg-white border-top large active"
       style={{ zIndex: 10 }}
     >
       <Container className="x-fill align-center">

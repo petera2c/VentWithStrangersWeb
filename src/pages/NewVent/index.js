@@ -74,7 +74,7 @@ function NewVentPage() {
       >
         <Text className="fw-600 mb16" text="Post Your Vent" type="h4" />
 
-        <Container className="column bg-white border-all2 br8">
+        <Container className="column bg-white br8">
           <Container className="column py32 px32 br4">
             <Text className="fw-400 mb8" text="Title" type="h5" />
 

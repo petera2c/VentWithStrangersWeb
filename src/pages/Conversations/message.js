@@ -13,97 +13,88 @@ import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
 
 import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
+import { deleteMessage } from "./util";
 
-function Message({ message, userID }) {
+function Message({ conversationID, message, setMessages, userID }) {
+  const [deleteMessageConfirm, setDeleteMessageConfirm] = useState(false);
   const [messageOptions, setMessageOptions] = useState(false);
+  const [reportModal, setReportModal] = useState(false);
+
   return (
-    <Container
-      className={
-        "x-fill " + (message.userID !== userID ? "wrap" : "justify-end")
-      }
-    >
+    <Container className={"x-fill " + (message.userID !== userID ? "" : "")}>
       <div
         className={
-          "relative message-container px16 py8 mb8 br4 " +
+          "message-container relative px16 py8 mb8 br4 " +
           (message.userID === userID ? "bg-blue white" : "grey-1 bg-grey-10")
         }
       >
         {message.body}
         <div
-          className={
-            "message-date align-center ov-visible" +
-            (message.userID === userID ? " right" : " left")
-          }
+          className={"message-date align-center ov-visible left"}
+          onMouseLeave={() => setMessageOptions(false)}
         >
-          {message.userID !== userID && (
-            <FontAwesomeIcon
-              className="clickable grey-9 px8"
-              icon={faEllipsisV}
-              onClick={() => {
-                return;
-                setMessageOptions(true);
-              }}
-            />
-          )}
-          <div className="bg-grey-8 white pa4 br4">
+          <FontAwesomeIcon
+            className="clickable grey-9 px8"
+            icon={faEllipsisV}
+            onClick={() => {
+              setMessageOptions(!messageOptions);
+            }}
+          />
+          <div className="relative bg-grey-8 white pa4 br4">
             {moment(message.server_timestamp).format("YYYY MMM DD h:mm A")}
+
+            {messageOptions && (
+              <div
+                className="absolute top-100 left-0 pt4"
+                style={{ zIndex: 1 }}
+              >
+                <Container className="column x-fill bg-white border-all px16 py8 br8">
+                  <Container
+                    className="button-8 clickable align-center"
+                    onClick={e => {
+                      e.preventDefault();
+                      if (message.userID === userID) {
+                        setDeleteMessageConfirm(true);
+                        setMessageOptions(false);
+                      } else {
+                        setReportModal(!reportModal);
+                      }
+                    }}
+                  >
+                    <Text
+                      className="flex-fill"
+                      text={
+                        message.userID === userID
+                          ? "Delete Message"
+                          : "Report User"
+                      }
+                      type="p"
+                    />
+                    <FontAwesomeIcon
+                      className="ml8"
+                      icon={
+                        message.userID === userID
+                          ? faTrash
+                          : faExclamationTriangle
+                      }
+                    />
+                  </Container>
+                </Container>
+              </div>
+            )}
           </div>
-          {message.userID === userID && (
-            <FontAwesomeIcon
-              className="clickable grey-9 px8"
-              icon={faEllipsisV}
-              onClick={() => {
-                return;
-                setMessageOptions(true);
-              }}
-            />
-          )}
         </div>
       </div>
+      {deleteMessageConfirm && (
+        <ConfirmAlertModal
+          close={() => setDeleteMessageConfirm(false)}
+          message="Are you sure you would like to delete this message?"
+          submit={() => deleteMessage(conversationID, message.id, setMessages)}
+          title="Delete Message"
+        />
+      )}
     </Container>
   );
 }
-
-/*{messageOptions && (
-  <div
-    className="absolute flex right-0"
-    style={{
-      top: "calc(100% - 8px)",
-      whiteSpace: "nowrap",
-      zIndex: 1
-    }}
-  >
-    <Container className="column x-fill bg-white border-all2 border-all px16 py8 br8">
-      {message.userID === userID && (
-        <Container
-          className="button-8 clickable align-center"
-          onClick={e => {
-            e.preventDefault();
-            setDeleteCommentConfirm(true);
-            setMessageOptions(false);
-          }}
-        >
-          <Text className="flex-fill" text="Delete Comment" type="p" />
-          <FontAwesomeIcon className="ml8" icon={faTrash} />
-        </Container>
-      )}
-      {message.userID !== userID && (
-        <Container
-          className="button-8 clickable align-center"
-          onClick={e => {
-            e.preventDefault();
-            setReportModal(!reportModal);
-          }}
-        >
-          <Text className="flex-fill" text="Report Comment" type="p" />
-          <FontAwesomeIcon
-            className="ml8"
-            icon={faExclamationTriangle}
-          />
-        </Container>
-      )}
-    </Container>
-  </div>
-)}*/
 
 export default Message;

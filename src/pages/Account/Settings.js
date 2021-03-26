@@ -53,7 +53,7 @@ function AccountSection({ user }) {
       }
     >
       <Text className="mb16" text="Settings" type="h4" />
-      <Container className="column bg-white border-all2 pa16 mb2 br8">
+      <Container className="column bg-white pa16 mb2 br8">
         <Text className="blue bold mb16" text="Notifications" type="h6" />
         <Container
           className="clickable align-center mb16"

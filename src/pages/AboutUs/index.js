@@ -66,17 +66,7 @@ class AboutUsPage extends Component {
             anonymously
           </p>
           <p className="mb8">- Comment on our board anonymously</p>
-          <p className="mb8">
-            -
-            <a
-              className="a-tag-common-link"
-              href="https://www.ventwithstrangers.com/vent-to-a-stranger"
-            >
-              Have a private conversation
-            </a>
-            with someone. You can choose to either help someone in need or
-            confide in someone that wants to help you.
-          </p>
+
           <p className="mb16">
             - Tag someone in a post or comment by placing @ before their
             username

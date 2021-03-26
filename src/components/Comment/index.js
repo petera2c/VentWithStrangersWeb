@@ -48,6 +48,7 @@ function Comment({
   const [comment, setComment] = useState(comment2);
   const [commentOptions, setCommentOptions] = useState(false);
   const [commentString, setCommentString] = useState("");
+  const [reportModal, setReportModal] = useState(false);
   const [deleteCommentConfirm, setDeleteCommentConfirm] = useState(false);
   const [editingComment, setEditingComment] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
@@ -108,7 +109,7 @@ function Comment({
                     zIndex: 1
                   }}
                 >
-                  <Container className="column x-fill bg-white border-all2 border-all px16 py8 br8">
+                  <Container className="column x-fill bg-white border-all px16 py8 br8">
                     {user && comment.userID === user.uid && (
                       <Container
                         className="button-8 clickable align-center mb8"

@@ -1,5 +1,6 @@
 .message-container {
-  max-width: 60%;
+  max-width: 80%;
+  box-sizing: border-box;
 }
 .authors-message {
   background-color: var(--main-color);
@@ -39,4 +40,7 @@
 }
 .message-container:hover > .message-date {
   display: flex;
+}
+.fdj {
+  transform: translate(306px, 175px) translate(-50%, 0px);
 }

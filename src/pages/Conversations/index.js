@@ -60,14 +60,22 @@ function Conversations() {
 
   return (
     <Page
-      className="bg-grey-2 ov-auto pa32"
+      className={"bg-grey-2 pa4 " + (isMobileOrTablet() ? "" : "ov-hidden")}
       description="Sometimes, all we need is an available ear. This is where you can anonymously talk to someone that wants to listen, or anonymously listen to someone that wants to be heard."
       keywords="vent, strangers, help"
       title="Chats"
     >
       {conversations && conversations.length !== 0 && (
-        <Container className="container extra-large justify-center align-start wrap gap16">
-          <Container className="container small column bg-white pa8 br4">
+        <Container
+          className={
+            "flex-fill x-fill gap4 " +
+            (isMobileOrTablet() ? "column align-center py32" : "ov-hidden")
+          }
+        >
+          <Container
+            className="container small column ov-auto bg-white pa8 br4"
+            style={{ height: isMobileOrTablet() ? "200px" : "default" }}
+          >
             {conversations.map((conversation, index) => {
               return (
                 <ConversationOption
@@ -86,19 +94,28 @@ function Conversations() {
           {conversations.find(
             conversation => conversation.id === activeConversation
           ) && (
-            <Chat
-              conversation={conversations.find(
-                conversation => conversation.id === activeConversation
-              )}
-              conversationName={conversationNames[activeConversation]}
-              userID={user.uid}
-            />
+            <Container
+              className={
+                "ov-hidden " +
+                (isMobileOrTablet() ? "container mobile-full" : "flex-fill")
+              }
+              style={{ height: isMobileOrTablet() ? "500px" : "default" }}
+            >
+              <Chat
+                conversation={conversations.find(
+                  conversation => conversation.id === activeConversation
+                )}
+                conversationName={conversationNames[activeConversation]}
+                userID={user.uid}
+              />
+            </Container>
           )}
           {!conversations.find(
             conversation => conversation.id === activeConversation
           ) && <div>Can not find this conversation!</div>}
         </Container>
       )}
+
       {!conversations ||
         (conversations.length === 0 && (
           <Container className="x-fill full-center">
@@ -111,5 +128,10 @@ function Conversations() {
     </Page>
   );
 }
+
+/*
+
+
+*/
 
 export default Conversations;

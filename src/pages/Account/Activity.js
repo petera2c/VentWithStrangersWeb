@@ -63,7 +63,7 @@ function ActivitySection({ user }) {
       }
     >
       <Text className="mb16" text="Activity" type="h4" />
-      <Container className="ov-hidden column bg-white border-all2 mb16 br8">
+      <Container className="ov-hidden column bg-white mb16 br8">
         <Container>
           <Container
             className={
@@ -103,7 +103,7 @@ function ActivitySection({ user }) {
           )}
           {canLoadMore && (
             <LoadMore canLoadMore={canLoadMore} loadMore={() => {}}>
-              <Container className="clickable x-fill column bg-white border-all2 mb16 br8">
+              <Container className="clickable x-fill column bg-white mb16 br8">
                 <Container className="justify-between pt16 px32">
                   <Container>
                     <div className="round-icon bg-grey-2 mr8" />
@@ -136,7 +136,7 @@ function ActivitySection({ user }) {
       )}
       {!postsSection && (
         <Container className="x-fill column">
-          <Container className="column border-all2 br8">
+          <Container className="column br8">
             {comments &&
               comments.map((comment, index) => {
                 return (

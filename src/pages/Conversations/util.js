@@ -1,6 +1,40 @@
 import firebase from "firebase/app";
 import db from "../../config/firebase";
+
 import { getEndAtValueTimestamp } from "../../util";
+
+export const deleteConversation = async (conversationID, setConversations) => {
+  await db
+    .collection("conversations")
+    .doc(conversationID)
+    .delete();
+  /*
+  setConversations(conversations => {
+    conversations.splice(
+      conversations.findIndex(conversation => conversation.id === messageID),
+      1
+    );
+    return [...conversations];
+  });*/
+  alert("Conversation deleted!");
+};
+export const deleteMessage = async (conversationID, messageID, setMessages) => {
+  await db
+    .collection("conversation_extra_data")
+    .doc(conversationID)
+    .collection("messages")
+    .doc(messageID)
+    .delete();
+
+  setMessages(messages => {
+    messages.splice(
+      messages.findIndex(message => message.id === messageID),
+      1
+    );
+    return [...messages];
+  });
+  alert("Message deleted!");
+};
 
 export const getConversationName = async (
   conversation,
