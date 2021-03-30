@@ -40,14 +40,14 @@ function Message({ conversationID, message, setMessages, userID }) {
               setMessageOptions(!messageOptions);
             }}
           />
-          <div className="relative bg-grey-8 white pa4 br4">
+          <div
+            className="relative bg-grey-8 white pa4 br4"
+            style={{ zIndex: 1 }}
+          >
             {moment(message.server_timestamp).format("YYYY MMM DD h:mm A")}
 
             {messageOptions && (
-              <div
-                className="absolute top-100 left-0 pt4"
-                style={{ zIndex: 1 }}
-              >
+              <div className="absolute top-100 left-0 pt4">
                 <Container className="column x-fill bg-white border-all px16 py8 br8">
                   <Container
                     className="button-8 clickable align-center"
