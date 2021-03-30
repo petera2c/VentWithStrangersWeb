@@ -29,33 +29,38 @@ export const deleteVent = async (history, ventID) => {
   history.push("/");
 };
 
-export const findPossibleUsersToTag = (
+export const findPossibleUsersToTag = async (
   callback,
   currentTypingWord,
-  socket,
   ventID,
   callback2
 ) => {
-  return;
   let isTag;
 
   if (currentTypingWord) {
-    socket.emit(
-      "find_relevant_users_to_tag",
-      { currentTypingTag: currentTypingWord, ventID },
-      resultObj => {
-        const { users } = resultObj;
+    const snapshot = await db
+      .collection("users_display_name")
+      .where("displayName", ">=", currentTypingWord)
+      .where("displayName", "<=", currentTypingWord + "\uf8ff")
+      .limit(10)
+      .get();
+    let users;
 
-        if (users)
-          callback2(
-            users.map((user, index) => {
-              return { id: user._id, display: user.displayName };
-            })
-          );
+    if (snapshot && snapshot.docs && snapshot.docs.length > 0)
+      users = snapshot.docs.map((doc, index) => ({
+        ...doc.data(),
+        id: doc.id,
+        doc
+      }));
 
-        callback({ possibleUsersToTag: users });
-      }
-    );
+    if (users)
+      callback2(
+        users.map((user, index) => {
+          return { id: user.id, display: user.displayName };
+        })
+      );
+
+    callback({ possibleUsersToTag: users });
   } else {
     callback({ possibleUsersToTag: undefined });
   }

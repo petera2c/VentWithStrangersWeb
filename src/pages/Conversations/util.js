@@ -157,12 +157,11 @@ export const getMessages = async (
       newMessages.push({ ...doc.data(), id: doc.id, doc });
     });
 
+    if (newMessages.length < 10) setCanLoadMore(false);
     if (first) {
       setMessages(newMessages);
-      setCanLoadMore(false);
       scrollToBottom();
     } else {
-      if (newMessages.length < 10) setCanLoadMore(false);
       setMessages(oldMessages => {
         if (oldMessages) return [...oldMessages, ...newMessages];
         else return newMessages;
