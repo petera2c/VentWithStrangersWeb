@@ -159,6 +159,7 @@ export const getMessages = async (
 
     if (first) {
       setMessages(newMessages);
+      setCanLoadMore(false);
       scrollToBottom();
     } else {
       if (newMessages.length < 10) setCanLoadMore(false);
