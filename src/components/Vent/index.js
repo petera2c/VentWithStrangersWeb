@@ -518,8 +518,8 @@ function Vent({
                           className="mentions__mention"
                           data={(currentTypingTag, callback) => {
                             findPossibleUsersToTag(
-                              setPossibleUsersToTag,
                               currentTypingTag,
+                              setPossibleUsersToTag,
                               vent.id,
                               callback
                             );
@@ -571,6 +571,7 @@ function Vent({
                       commentIndex={index}
                       comment2={comment}
                       setComments={setComments}
+                      setPossibleUsersToTag={setPossibleUsersToTag}
                       ventID={ventID}
                       ventUserID={vent.userID}
                       key={comment.id}

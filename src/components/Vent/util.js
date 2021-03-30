@@ -30,10 +30,10 @@ export const deleteVent = async (history, ventID) => {
 };
 
 export const findPossibleUsersToTag = async (
-  callback,
   currentTypingWord,
+  setPossibleUsersToTag,
   ventID,
-  callback2
+  callback
 ) => {
   let isTag;
 
@@ -54,15 +54,15 @@ export const findPossibleUsersToTag = async (
       }));
 
     if (users)
-      callback2(
+      callback(
         users.map((user, index) => {
           return { id: user.id, display: user.displayName };
         })
       );
 
-    callback({ possibleUsersToTag: users });
+    setPossibleUsersToTag({ possibleUsersToTag: users });
   } else {
-    callback({ possibleUsersToTag: undefined });
+    setPossibleUsersToTag({ possibleUsersToTag: undefined });
   }
 };
 

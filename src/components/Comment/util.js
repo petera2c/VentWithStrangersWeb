@@ -90,7 +90,7 @@ export const swapTags = commentText => {
   const regexDisplay = /\|\|\[\[\[[\x21-\x5A|\x61-\x7A|\x5f]+\]\]\]\}\}/gi;
   const tags = commentText.match(regexFull) || [];
 
-  let something = [];
+  let listOfTaggedDisplayNames = [];
 
   commentText.replace(regexFull, (possibleTag, index) => {
     const displayNameArray = possibleTag.match(regexDisplay);
@@ -99,7 +99,7 @@ export const swapTags = commentText => {
       let displayTag = displayNameArray[0];
       if (displayTag) displayTag = displayTag.slice(5, displayTag.length - 5);
 
-      something.push({
+      listOfTaggedDisplayNames.push({
         start: index,
         end: possibleTag.length + index,
         value: displayTag
@@ -108,10 +108,10 @@ export const swapTags = commentText => {
     } else return possibleTag;
   });
 
-  if (something.length === 0) return commentText;
+  if (listOfTaggedDisplayNames.length === 0) return commentText;
   else {
     return [
-      ...something.map((obj, index) => {
+      ...listOfTaggedDisplayNames.map((obj, index) => {
         if (index === 0) {
           return [
             commentText.slice(0, obj.start),
@@ -121,14 +121,20 @@ export const swapTags = commentText => {
           ];
         } else {
           return [
-            commentText.slice(something[index - 1].end, obj.start),
+            commentText.slice(
+              listOfTaggedDisplayNames[index - 1].end,
+              obj.start
+            ),
             <span className="mentions__mention" key={index}>
               {obj.value}
             </span>
           ];
         }
       }),
-      commentText.slice(something[something.length - 1].end, commentText.length)
+      commentText.slice(
+        listOfTaggedDisplayNames[listOfTaggedDisplayNames.length - 1].end,
+        commentText.length
+      )
     ];
   }
 };

@@ -39,6 +39,7 @@ function Comment({
   commentID,
   commentIndex,
   setComments,
+  setPossibleUsersToTag,
   ventID,
   ventUserID
 }) {
@@ -193,8 +194,8 @@ function Comment({
                 className="mentions__mention"
                 data={(currentTypingTag, callback) => {
                   findPossibleUsersToTag(
-                    this.handleChange,
                     currentTypingTag,
+                    setPossibleUsersToTag,
                     comment.ventID,
                     callback
                   );

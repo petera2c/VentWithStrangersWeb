@@ -2,7 +2,7 @@ const admin = require("firebase-admin");
 const { createNotification } = require("./notification");
 const { createVentLink } = require("./util");
 
-const commentDeleteListener = async (doc, context) => {
+const deleteAllCommentLikes = async (doc, context) => {
   const commentID = doc.id;
 
   const commentLikesSnapshot = await admin
@@ -48,7 +48,7 @@ const commentLikeListener = async (change, context) => {
   });
 };
 
-const newCommentListener = async (doc, context) => {
+const createNewCommentNotification = async (doc, context) => {
   const ventDoc = await admin
     .firestore()
     .collection("vents")
@@ -65,8 +65,61 @@ const newCommentListener = async (doc, context) => {
     vent.userID
   );
 };
+
+const createNotificationsToAnyTaggedUsers = async (doc, context) => {
+  const commentText = doc.data().text;
+
+  if (!commentText) return;
+  const regexFull = /@\{\{\[\[\[[\x21-\x5A|\x61-\x7A]+\]\]\]\|\|\[\[\[[\x21-\x5A|\x61-\x7A|\x5f]+\]\]\]\}\}/gi;
+  const regexFindID = /@\{\{\[\[\[[\x21-\x5A|\x61-\x7A]+\]\]\]\|\|\[\[\[/gi;
+  const tags = commentText.match(regexFull) || [];
+
+  let listOfTaggedIDs = [];
+
+  commentText.replace(regexFull, (possibleTag, index) => {
+    const displayNameArray = possibleTag.match(regexFindID);
+
+    if (displayNameArray && displayNameArray[0]) {
+      let displayTag = displayNameArray[0];
+
+      if (displayTag) displayTag = displayTag.slice(6, displayTag.length - 8);
+
+      listOfTaggedIDs.push(displayTag);
+      return displayNameArray[0];
+    } else return possibleTag;
+  });
+
+  if (listOfTaggedIDs && listOfTaggedIDs.length > 0) {
+    const ventDoc = await admin
+      .firestore()
+      .collection("vents")
+      .doc(doc.data().ventID)
+      .get();
+
+    if (!ventDoc.exists) return "Cannot find post.";
+
+    const vent = { id: ventDoc.id, ...ventDoc.data() };
+
+    for (let index in listOfTaggedIDs)
+      createNotification(
+        createVentLink(vent),
+        "You have been tagged in a comment!",
+        listOfTaggedIDs[index]
+      );
+  }
+};
+
+const commentUpdateListener = async (change, context) => {
+  if (!change.after.data()) {
+    deleteAllCommentLikes(change.before, context);
+  } else if (!change.before.data()) {
+    createNotificationsToAnyTaggedUsers(change.after, context);
+    createNewCommentNotification(change.after, context);
+  } else {
+  }
+};
+
 module.exports = {
-  commentDeleteListener,
   commentLikeListener,
-  newCommentListener,
+  commentUpdateListener,
 };

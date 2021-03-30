@@ -10,9 +10,8 @@ const path = require("path");
 
 const { createProxy, createSitemap } = require("./helpers/sitemap");
 const {
-  commentDeleteListener,
   commentLikeListener,
-  newCommentListener,
+  commentUpdateListener,
 } = require("./helpers/comment");
 const {
   newVentLikeListener,
@@ -23,12 +22,9 @@ const { messagesListener } = require("./helpers/messages");
 const { conversationUpdateListener } = require("./helpers/conversation");
 const { getMetaInformation } = require("./helpers/util");
 
-exports.newCommentListener = functions.firestore
+exports.commentUpdateListener = functions.firestore
   .document("/comments/{commentID}")
-  .onCreate(newCommentListener);
-exports.commentDeleteListener = functions.firestore
-  .document("/comments/{commentID}")
-  .onDelete(commentDeleteListener);
+  .onWrite(commentUpdateListener);
 exports.commentLikeListener = functions.firestore
   .document("/comment_likes/{commentIDUserID}")
   .onWrite(commentLikeListener);
