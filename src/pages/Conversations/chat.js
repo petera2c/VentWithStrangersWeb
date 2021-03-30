@@ -27,6 +27,7 @@ import {
   sendMessage,
   setConversationIsTyping
 } from "./util";
+let typingTimer;
 
 function Chat({ conversation, conversationName, userID }) {
   let messageListenerUnsubscribe;
@@ -40,7 +41,7 @@ function Chat({ conversation, conversationName, userID }) {
   const [conversationID, setConversationID] = useState();
   const [messages, setMessages] = useState([]);
   const [messageString, setMessageString] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
+  const [isUserCurrentlyTyping, setIsUserCurrentlyTyping] = useState(false);
   let messageDivs = [];
 
   if (conversation.id !== conversationID) {
@@ -80,8 +81,6 @@ function Chat({ conversation, conversationName, userID }) {
       />
     );
   }
-
-  let typingTimer;
 
   let isOtherUserTyping = false;
   if (conversation.isTyping) {
@@ -152,15 +151,15 @@ function Chat({ conversation, conversationName, userID }) {
             onChange={event => {
               if (event.target.value === "\n") return;
               setMessageString(event.target.value);
-              if (!isTyping) {
-                setConversationIsTyping(conversationID, true, userID);
-                setIsTyping(true);
+              if (isUserCurrentlyTyping) {
+                if (typingTimer) clearTimeout(typingTimer);
+                typingTimer = setTimeout(() => {
+                  setIsUserCurrentlyTyping(false);
+                }, 2000);
+              } else {
+                setIsUserCurrentlyTyping(true);
+                setConversationIsTyping(conversationID, userID);
               }
-              if (typingTimer) clearTimeout(typingTimer);
-              typingTimer = setTimeout(() => {
-                setIsTyping(false);
-                setConversationIsTyping(conversationID, false, userID);
-              }, 2000);
             }}
             onKeyDown={e => {
               if (e.key === "Enter") {

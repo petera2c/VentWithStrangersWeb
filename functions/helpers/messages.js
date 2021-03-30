@@ -2,7 +2,6 @@ const admin = require("firebase-admin");
 
 const messagesListener = async (doc, context) => {
   const { conversationID, messageID } = context.params;
-
   const conversationDoc = await admin
     .firestore()
     .collection("conversations")

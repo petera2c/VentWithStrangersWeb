@@ -3,19 +3,18 @@ import db from "../../config/firebase";
 
 import { getEndAtValueTimestamp } from "../../util";
 
-export const deleteConversation = async (conversationID, setConversations) => {
+export const deleteConversation = async (
+  conversationID,
+  setConversations,
+  userID
+) => {
   await db
     .collection("conversations")
     .doc(conversationID)
-    .delete();
-  /*
-  setConversations(conversations => {
-    conversations.splice(
-      conversations.findIndex(conversation => conversation.id === messageID),
-      1
-    );
-    return [...conversations];
-  });*/
+    .update({
+      members: firebase.firestore.FieldValue.arrayRemove(userID)
+    });
+
   alert("Conversation deleted!");
 };
 export const deleteMessage = async (conversationID, messageID, setMessages) => {
@@ -192,13 +191,10 @@ export const sendMessage = async (conversationID, message, userID) => {
     });
 };
 
-export const setConversationIsTyping = async (
-  conversationID,
-  isTyping,
-  userID
-) => {
+export const setConversationIsTyping = async (conversationID, userID) => {
+  console.log("here");
   await db
     .collection("conversations")
     .doc(conversationID)
-    .set({ isTyping: { [userID]: isTyping } }, { merge: true });
+    .set({ isTyping: { [userID]: true } }, { merge: true });
 };
