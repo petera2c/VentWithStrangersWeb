@@ -31,6 +31,7 @@ import ConversationsPage from "./Conversations";
 import NewVentPage from "./NewVent";
 import VentPage from "./Vent";
 import BlogPage from "./Blog";
+import FeedbackPage from "./Feedback";
 import NotFoundPage from "./NotFound";
 import PrivacyPolicyPage from "./PrivacyPolicy";
 
@@ -82,11 +83,11 @@ function Routes() {
               <Route path="/vent-to-a-stranger/" component={NewVentPage} />
               <Route path="/problem/" component={VentPage} />
               <Route path="/blog/" component={BlogPage} />
+              <Route path="/feedback/" component={FeedbackPage} />
               <Route path="/privacy-policy/" component={PrivacyPolicyPage} />
               <Route component={NotFoundPage} />
             </Switch>
           )}
-          <div id="sound"></div>
         </Container>
       </Router>
     </UserContext.Provider>

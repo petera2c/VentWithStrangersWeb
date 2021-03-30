@@ -35,7 +35,7 @@ import {
 function Header({ history, location }) {
   const user = useContext(UserContext);
 
-  const [showFeedback, setShowFeedback] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(true);
   const [loginModalBoolean, setLoginModalBoolean] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [unreadConversationsCount, setUnreadConversationsCount] = useState();
@@ -260,7 +260,6 @@ function Header({ history, location }) {
           </Container>
         </Container>
       )}
-
       {loginModalBoolean && (
         <LoginModal
           close={() => setLoginModalBoolean(false)}
