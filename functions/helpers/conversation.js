@@ -19,7 +19,6 @@ const conversationUpdateListener = async (change, context) => {
 
   // If user has deleted conversation code
   if (!arraysEqual(conversationBefore.members, conversationAfter.members)) {
-    console.log("Members changed");
     for (let index in conversationBefore.members) {
       if (
         conversationBefore.members[index] !== conversationAfter.members[index]
@@ -33,7 +32,6 @@ const conversationUpdateListener = async (change, context) => {
           .get();
         if (snapshot && snapshot.docs)
           for (let index in snapshot.docs) {
-            console.log(snapshot.docs[index].id);
             await admin
               .firestore()
               .collection("conversation_extra_data")
@@ -51,7 +49,6 @@ const conversationUpdateListener = async (change, context) => {
     JSON.stringify(conversationBefore.isTyping) !==
     JSON.stringify(conversationAfter.isTyping)
   ) {
-    console.log("Is user typing changed");
     let areAnyUsersTyping = false;
     let isTypingChangeObject = {};
     for (let index in conversationAfter.isTyping) {
@@ -64,7 +61,6 @@ const conversationUpdateListener = async (change, context) => {
       )
         isTypingChangeObject[index] = false;
     }
-    console.log(areAnyUsersTyping);
     if (areAnyUsersTyping) {
       setTimeout(async () => {
         await admin

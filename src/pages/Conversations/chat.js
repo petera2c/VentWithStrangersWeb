@@ -10,8 +10,6 @@ import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons/faExclam
 import { faTrash } from "@fortawesome/pro-solid-svg-icons/faTrash";
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 
-import LoadMore from "../../components/LoadMore";
-
 import ConfirmAlertModal from "../../components/modals/ConfirmAlert";
 import Container from "../../components/containers/Container";
 
@@ -45,6 +43,7 @@ function Chat({ conversation, conversationName, userID }) {
   let messageDivs = [];
 
   if (conversation.id !== conversationID) {
+    setCanLoadMore(true);
     setMessages([]);
     getMessages(
       conversation.id,
@@ -109,9 +108,9 @@ function Chat({ conversation, conversationName, userID }) {
 
       <Container className="column x-fill flex-fill ov-auto pa16">
         {canLoadMore && (
-          <LoadMore
-            canLoadMore={canLoadMore}
-            loadMore={() => {
+          <button
+            className="button-2 pa8 mb8 br4"
+            onClick={() =>
               getMessages(
                 conversation.id,
                 messages,
@@ -119,9 +118,11 @@ function Chat({ conversation, conversationName, userID }) {
                 setCanLoadMore,
                 setMessages,
                 false
-              );
-            }}
-          />
+              )
+            }
+          >
+            Load More Messages
+          </button>
         )}
         {messageDivs}
 

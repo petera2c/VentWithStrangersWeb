@@ -192,7 +192,6 @@ export const sendMessage = async (conversationID, message, userID) => {
 };
 
 export const setConversationIsTyping = async (conversationID, userID) => {
-  console.log("here");
   await db
     .collection("conversations")
     .doc(conversationID)

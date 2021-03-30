@@ -55,7 +55,10 @@ function Conversations({
         (isActive ? "bg-grey-2" : "")
       }
       onClick={() => {
-        setActiveConversation(conversation.id);
+        setActiveConversation(oldActiveConversationID => {
+          if (oldActiveConversationID !== conversation.id)
+            return conversation.id;
+        });
         history.push("/conversations?" + conversation.id);
       }}
     >

@@ -1,26 +1,31 @@
-import React, { Component } from "react";
+import React from "react";
 
 import "./style.css";
 
-class Container extends Component {
-  render() {
-    const { children, forwardedRef, id, onClick, style, testMode } = this.props; // Variables
-    let { className } = this.props;
+function Container({
+  children,
+  className,
+  forwardedRef,
+  id,
+  onClick,
+  onScroll,
+  style,
+  testMode
+}) {
+  if (testMode) className += " test-mode";
 
-    if (testMode) className += " test-mode";
-
-    return (
-      <div
-        className={`main-container light-scrollbar ${className}`}
-        id={id}
-        onClick={onClick}
-        ref={forwardedRef}
-        style={style}
-      >
-        {children}
-      </div>
-    );
-  }
+  return (
+    <div
+      className={`main-container light-scrollbar ${className}`}
+      id={id}
+      onClick={onClick}
+      onScroll={onScroll}
+      ref={forwardedRef}
+      style={style}
+    >
+      {children}
+    </div>
+  );
 }
 
 export default Container;
