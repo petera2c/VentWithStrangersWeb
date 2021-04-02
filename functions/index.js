@@ -58,7 +58,7 @@ const injectMetaData = (req, res) => {
       return console.log(err);
     }
 
-    getMetaInformation(req.originalUrl, (metaObj) => {
+    getMetaInformation(req.originalUrl, (metaObj, foundPage) => {
       const { metaDescription, metaImage, metaTitle } = metaObj;
 
       data = data.replace(/We Care \| Vent With Strangers/g, metaTitle);
@@ -73,7 +73,8 @@ const injectMetaData = (req, res) => {
       );
 
       //  res.set("Cache-Control", "public", "max-age=600", "s-maxage=1200");
-      res.send(data);
+      if (foundPage) res.send(data);
+      else res.send(404, data);
     });
   });
 };

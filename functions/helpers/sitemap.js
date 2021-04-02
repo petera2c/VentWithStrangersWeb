@@ -37,8 +37,6 @@ const createSitemap = async () => {
     new moment().format("YYYY-MM-DD") +
     "</lastmod>\n<changefreq>daily</changefreq>\n<priority>1</priority>\n</url>\n\n";
   siteMapString +=
-    "<url>\n<loc>https://www.ventwithstrangers.com/vent-to-strangers</loc>\n<lastmod>2021-03-13</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.8</priority>\n</url>\n\n";
-  siteMapString +=
     "<url>\n<loc>https://www.ventwithstrangers.com/recent</loc>\n<lastmod>" +
     new moment().format("YYYY-MM-DD") +
     "</lastmod>\n<changefreq>daily</changefreq>\n<priority>0.8</priority>\n</url>\n\n";
@@ -46,6 +44,12 @@ const createSitemap = async () => {
     "<url>\n<loc>https://www.ventwithstrangers.com/trending</loc>\n<lastmod>" +
     new moment().format("YYYY-MM-DD") +
     "</lastmod>\n<changefreq>daily</changefreq>\n<priority>0.8</priority>\n</url>\n\n";
+  siteMapString +=
+    "<url>\n<loc>https://www.ventwithstrangers.com/vent-to-strangers</loc>\n<lastmod>2021-03-13</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.8</priority>\n</url>\n\n";
+  siteMapString +=
+    "<url>\n<loc>https://www.ventwithstrangers.com/about-us</loc>\n<lastmod>2021-03-13</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.6</priority>\n</url>\n\n";
+  siteMapString +=
+    "<url>\n<loc>https://www.ventwithstrangers.com/conversations</loc>\n<lastmod>2021-04-01</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.6</priority>\n</url>\n\n";
 
   for (let index in vents.docs) {
     const vent = vents.docs[index].data();
