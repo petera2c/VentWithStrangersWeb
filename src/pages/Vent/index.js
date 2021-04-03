@@ -14,6 +14,7 @@ import Text from "../../components/views/Text";
 import Button from "../../components/views/Button";
 
 import { isMobileOrTablet } from "../../util";
+import { getMeta } from "./util";
 
 const getVentIdFromURL = pathname => {
   // regular expression will not work due to catastrophic backtracing
@@ -34,14 +35,24 @@ function VentPage() {
   const location = useLocation();
   const { pathname } = location;
 
+  const objectFromMetaData = getMeta("vent-data");
+  let ventFromMeta;
+  if (objectFromMetaData && objectFromMetaData !== "vent-data-example")
+    ventFromMeta = JSON.parse(objectFromMetaData);
+
+  const [ventFound, setVentFound] = useState();
+
   const regexMatch = getVentIdFromURL(pathname);
   let ventID;
   if (regexMatch) ventID = regexMatch;
 
+  useEffect(() => {}, []);
+
   return (
     <Page className="justify-start align-center bg-grey-2">
       <Container className={isMobileOrTablet() ? "py16" : "py32"}>
-        {ventID && (
+        {ventFound === false && <h4>Vent Not Found</h4>}
+        {ventFound === undefined && ventID && (
           <Container
             className={
               "column " +
@@ -54,6 +65,8 @@ function VentPage() {
               disablePostOnClick={true}
               displayCommentField
               isOnSingleVentPage={true}
+              setVentFound={setVentFound}
+              ventFromMeta={ventFromMeta}
               ventID={ventID}
             />
           </Container>

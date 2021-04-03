@@ -54,7 +54,8 @@ const getMetaInformation = async (url, callback) => {
             (vent.title ? vent.title.substring(0, 140) : "") +
             " | Vent With Strangers",
         },
-        Boolean(ventDoc.id)
+        Boolean(ventDoc.id),
+        { id: ventDoc.id, ...vent }
       );
     else return callback(defaultMetaObject);
   } else if (userObjectID) {

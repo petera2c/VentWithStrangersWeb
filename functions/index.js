@@ -58,7 +58,7 @@ const injectMetaData = (req, res) => {
       return console.log(err);
     }
 
-    getMetaInformation(req.originalUrl, (metaObj, foundPage) => {
+    getMetaInformation(req.originalUrl, (metaObj, foundPage, vent) => {
       const { metaDescription, metaImage, metaTitle } = metaObj;
 
       data = data.replace(/We Care \| Vent With Strangers/g, metaTitle);
@@ -72,7 +72,7 @@ const injectMetaData = (req, res) => {
         metaImage
       );
 
-      //  res.set("Cache-Control", "public", "max-age=600", "s-maxage=1200");
+      if (vent) data = data.replace(/vent-data-example/g, JSON.stringify(vent));
       if (foundPage) res.send(data);
       else res.send(404, data);
     });

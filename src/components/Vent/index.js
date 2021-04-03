@@ -97,11 +97,12 @@ function Vent({
   isOnSingleVentPage,
   previewMode,
   searchPreviewMode,
+  ventFromMeta,
   ventID
 }) {
   const user = useContext(UserContext);
 
-  const [vent, setVent] = useState();
+  const [vent, setVent] = useState(ventFromMeta);
   const [commentString, setCommentString] = useState("");
   const [currentTypingIndex, setCurrentTypingIndex] = useState(0);
   const [deleteVentConfirm, setDeleteVentConfirm] = useState(false);
