@@ -71,8 +71,12 @@ const injectMetaData = (req, res) => {
         /https:\/\/res.cloudinary.com\/dnc1t9z9o\/image\/upload\/v1580431332\/VENT.jpg/g,
         metaImage
       );
-
-      if (vent) data = data.replace(/vent-data-example/g, JSON.stringify(vent));
+      // res.set("Cache-Control", "public", "max-age=600", "s-maxage=1200");
+      if (vent)
+        data = data.replace(
+          /vent-data-example/g,
+          JSON.stringify(vent).replace(/"/g, "&quot;")
+        );
       if (foundPage) res.send(data);
       else res.send(404, data);
     });
