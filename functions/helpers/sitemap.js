@@ -67,9 +67,10 @@ const createSitemap = async () => {
       "<url>\n<loc>" +
       url +
       "</loc>\n<lastmod>" +
-      new moment(vent.server_timestamp).format("YYYY-MM-DD") +
+      new moment().format("YYYY-MM-DD") +
       "</lastmod>\n<changefreq>yearly</changefreq>\n</url>\n\n";
   }
+  //  new moment(vent.server_timestamp).format("YYYY-MM-DD") +
 
   siteMapString += "</urlset>";
 
