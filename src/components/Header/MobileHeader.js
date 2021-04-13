@@ -162,7 +162,7 @@ function Header({ history, location }) {
             to="/conversations"
           >
             <FontAwesomeIcon className="py16 mr8" icon={faComments} />
-            <p className="py16">Inbox</p>
+            <p className="bold py16">Inbox</p>
 
             {unreadConversations && unreadConversations.length !== 0 && (
               <p className="fs-14 bg-red white round ml4 pa4 br4">

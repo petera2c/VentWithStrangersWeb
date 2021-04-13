@@ -13,7 +13,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-import Consumer, { UserContext } from "../context";
+import { UserContext } from "../context";
 
 import Container from "../components/containers/Container";
 

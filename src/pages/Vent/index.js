@@ -46,8 +46,6 @@ function VentPage() {
   let ventID;
   if (regexMatch) ventID = regexMatch;
 
-  useEffect(() => {}, []);
-
   return (
     <Page className="justify-start align-center bg-grey-2">
       <Container className={isMobileOrTablet() ? "py16" : "py32"}>

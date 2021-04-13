@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import axios from "axios";
+import React from "react";
 import { useForm } from "react-hook-form";
 
 import Container from "../../containers/Container";
@@ -11,7 +10,7 @@ import { login } from "./util";
 import "./style.css";
 
 function LoginPage({ close, openSignUpModal }) {
-  const { register, handleSubmit } = useForm();
+  const { loginRef, handleSubmit } = useForm();
 
   return (
     <Container className="modal-container full-center">
@@ -43,7 +42,7 @@ function LoginPage({ close, openSignUpModal }) {
                 type="text"
                 name="email"
                 placeholder="Email"
-                ref={register}
+                ref={loginRef}
                 required
               />
               <Text className="fw-400 mb8" text="Password" type="h5" />
@@ -52,7 +51,7 @@ function LoginPage({ close, openSignUpModal }) {
                 name="password"
                 type="password"
                 placeholder="Password"
-                ref={register}
+                ref={loginRef}
                 required
               />
             </Container>

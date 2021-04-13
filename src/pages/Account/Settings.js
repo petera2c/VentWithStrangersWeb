@@ -16,7 +16,7 @@ import Text from "../../components/views/Text";
 
 import { isMobileOrTablet } from "../../util";
 
-function AccountSection({ user }) {
+function SettingsSection({ user }) {
   const history = useHistory();
   if (!user) {
     history.push("/");
@@ -178,4 +178,4 @@ function AccountSection({ user }) {
   );
 }
 
-export default AccountSection;
+export default SettingsSection;

@@ -31,21 +31,20 @@ const deleteAllCommentLikes = async (doc, context) => {
 };
 
 const commentLikeListener = async (change, context) => {
-  if (!change.after.data()) return "";
   const { commentIDUserID } = context.params;
   const commentIDuserIDArray = commentIDUserID.split("|||");
+
   const hasLiked = change.after.data() ? change.after.data().liked : false;
   let increment = 1;
   if (!hasLiked) increment = -1;
 
-  var docRef = admin
+  await admin
     .firestore()
     .collection("comments")
-    .doc(commentIDuserIDArray[0]);
-
-  docRef.update({
-    like_counter: admin.firestore.FieldValue.increment(increment),
-  });
+    .doc(commentIDuserIDArray[0])
+    .update({
+      like_counter: admin.firestore.FieldValue.increment(increment),
+    });
 };
 
 const createNewCommentNotification = async (doc, context) => {
