@@ -246,9 +246,9 @@ function Comment({
               );
             await likeOrUnlikeComment(comment, hasLiked, user, ventID);
             await getCommentHasLiked(commentID, setHasLiked, user.uid);
-            setTimeout(() => {
-              getComment(commentID, setComment, ventID);
-            }, 1000);
+            if (hasLiked) comment.like_counter--;
+            else comment.like_counter++;
+            setComment({ ...comment });
           }}
         >
           <FontAwesomeIcon
