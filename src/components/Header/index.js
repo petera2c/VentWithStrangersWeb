@@ -253,7 +253,7 @@ function Header({ history, location }) {
             </Link>
           </p>
           <Container
-            className="clickable round-icon bg-red"
+            className="clickable round-icon"
             onClick={() => setShowFeedback(false)}
           >
             <FontAwesomeIcon className="white" icon={faTimes} />

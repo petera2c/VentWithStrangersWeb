@@ -67,8 +67,28 @@ const createSitemap = async () => {
       "<url>\n<loc>" +
       url +
       "</loc>\n<lastmod>" +
-      "2021-04-06" +
-      "</lastmod>\n<changefreq>yearly</changefreq>\n</url>\n\n";
+      "2021-04-18" +
+      "</lastmod>\n<changefreq>daily</changefreq>\n</url>\n\n";
+  }
+
+  for (let index in vents.docs) {
+    const vent = vents.docs[index].data();
+
+    let url =
+      "https://www.ventwithstrangers.com/problem/" +
+      "undefined" +
+      "/" +
+      vent.title
+        .replace(/[^a-zA-Z ]/g, "")
+        .replace(/ /g, "-")
+        .toLowerCase();
+
+    siteMapString +=
+      "<url>\n<loc>" +
+      url +
+      "</loc>\n<lastmod>" +
+      "2021-04-18" +
+      "</lastmod>\n<changefreq>daily</changefreq>\n</url>\n\n";
   }
   //  new moment(vent.server_timestamp).format("YYYY-MM-DD") +
 
