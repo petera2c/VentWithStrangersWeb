@@ -10,7 +10,7 @@ import { login } from "./util";
 import "./style.css";
 
 function LoginPage({ close, openSignUpModal }) {
-  const { loginRef, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm();
 
   return (
     <Container className="modal-container full-center">
@@ -42,7 +42,7 @@ function LoginPage({ close, openSignUpModal }) {
                 type="text"
                 name="email"
                 placeholder="Email"
-                ref={loginRef}
+                ref={register}
                 required
               />
               <Text className="fw-400 mb8" text="Password" type="h5" />
@@ -51,7 +51,7 @@ function LoginPage({ close, openSignUpModal }) {
                 name="password"
                 type="password"
                 placeholder="Password"
-                ref={loginRef}
+                ref={register}
                 required
               />
             </Container>
