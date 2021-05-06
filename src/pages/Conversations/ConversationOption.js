@@ -20,7 +20,7 @@ import {
 
 import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
 
-function Conversations({
+function ConversationOption({
   conversation,
   conversationName,
   isActive,
@@ -30,7 +30,6 @@ function Conversations({
   setConversations,
   userID
 }) {
-  const location = useLocation();
   const history = useHistory();
   const [conversationOptions, setConversationOptions] = useState(false);
   const [deleteConversationConfirm, setDeleteConversationConfirm] = useState(
@@ -129,4 +128,4 @@ function Conversations({
   );
 }
 
-export default Conversations;
+export default ConversationOption;

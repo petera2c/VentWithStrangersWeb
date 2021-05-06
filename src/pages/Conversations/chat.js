@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment-timezone";
 import { useCollectionData } from "react-firebase-hooks/firestore";

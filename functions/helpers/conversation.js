@@ -18,7 +18,10 @@ const conversationUpdateListener = async (change, context) => {
   const conversationAfter = change.after.data();
 
   // If user has deleted conversation code
-  if (!arraysEqual(conversationBefore.members, conversationAfter.members)) {
+  if (
+    conversationBefore &&
+    !arraysEqual(conversationBefore.members, conversationAfter.members)
+  ) {
     for (let index in conversationBefore.members) {
       if (
         conversationBefore.members[index] !== conversationAfter.members[index]

@@ -3,16 +3,13 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useLocation } from "react-router-dom";
 import db from "../../config/firebase";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHandsHelping } from "@fortawesome/pro-duotone-svg-icons/faHandsHelping";
-import { faWalkieTalkie } from "@fortawesome/pro-duotone-svg-icons/faWalkieTalkie";
 import { UserContext } from "../../context";
 
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import Button from "../../components/views/Button";
 
-import ConversationOption from "./conversation";
+import ConversationOption from "./ConversationOption";
 import Chat from "./chat";
 
 import { isMobileOrTablet } from "../../util";
