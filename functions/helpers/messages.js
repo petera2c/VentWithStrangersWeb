@@ -1,4 +1,5 @@
 const admin = require("firebase-admin");
+const { sendMobilePushNotifications } = require("./notification");
 
 const messagesListener = async (doc, context) => {
   const { conversationID, messageID } = context.params;
@@ -22,6 +23,7 @@ const messagesListener = async (doc, context) => {
           .collection("unread_conversations_count")
           .doc(index)
           .set({ count: admin.firestore.FieldValue.increment(1) });
+        sendMobilePushNotifications("You have a new message!", index);
       }
     }
   }
