@@ -9,7 +9,7 @@ import { login } from "./util";
 
 import "./style.css";
 
-function LoginPage({ close, openSignUpModal }) {
+function LoginModal({ setActiveModal }) {
   const { register, handleSubmit } = useForm();
 
   return (
@@ -24,7 +24,7 @@ function LoginPage({ close, openSignUpModal }) {
               Don't have an account?&nbsp;
               <Text
                 className="clickable blue"
-                onClick={() => openSignUpModal()}
+                onClick={() => setActiveModal("signUp")}
                 type="span"
               >
                 Create One
@@ -33,7 +33,9 @@ function LoginPage({ close, openSignUpModal }) {
           </Container>
           <form
             className="x-fill column"
-            onSubmit={handleSubmit(formData => login(formData, close))}
+            onSubmit={handleSubmit(formData =>
+              login(formData, () => setActiveModal(""))
+            )}
           >
             <Container className="x-fill column px32 py16">
               <Text className="fw-400 mb8" text="Email Address" type="h5" />
@@ -55,19 +57,33 @@ function LoginPage({ close, openSignUpModal }) {
                 required
               />
             </Container>
-            <Container className="x-fill full-center border-top px32 py16">
+
+            <Container className="column x-fill full-center border-top px32 py16">
+              <p
+                className="tac clickable mb8"
+                onClick={e => {
+                  e.preventDefault();
+                  setActiveModal("forgotPassword");
+                }}
+              >
+                Have you forgotten your password?{" "}
+                <span className="underline blue">Password reset</span>
+              </p>
               <Button
                 className="x-fill bg-blue white py8 br4"
                 text="Log in"
-                type="submits"
+                type="submit"
               />
             </Container>
           </form>
         </Container>
       </Container>
-      <Container className="modal-background" onClick={close} />
+      <Container
+        className="modal-background"
+        onClick={() => setActiveModal("")}
+      />
     </Container>
   );
 }
 
-export default LoginPage;
+export default LoginModal;

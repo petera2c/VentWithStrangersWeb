@@ -27,6 +27,7 @@ import Button from "../views/Button";
 
 import LoginModal from "../modals/Login";
 import SignUpModal from "../modals/SignUp";
+import ForgotPasswordModal from "../modals/ForgotPassword";
 import NotificationList from "../NotificationList";
 
 import { capitolizeFirstChar, isPageActive, signOut } from "../../util";
@@ -39,14 +40,13 @@ import {
 function Header({ history, location }) {
   const user = useContext(UserContext);
 
+  const [activeModal, setActiveModal] = useState("");
   const [mobileHeaderActive, setMobileHeaderActive] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
-  const [loginModalBoolean, setLoginModalBoolean] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [showNotificationDropdown, setShowNotificationDropdown] = useState(
     false
   );
-  const [signUpModalBoolean, setSignUpModalBoolean] = useState(false);
   const [ventSearchString, setVentSearchString] = useState("");
 
   const { pathname } = location;
@@ -248,36 +248,27 @@ function Header({ history, location }) {
               <Button
                 className="x-50 blue fw-300 bg-white border-all active px32 mr8 br4"
                 text="Login"
-                onClick={() => setLoginModalBoolean(true)}
+                onClick={() => setActiveModal("login")}
               />
 
               <Button
                 className="x-50 white blue-fade px32 py8 ml8 br4"
                 text="Sign Up"
-                onClick={() => setSignUpModalBoolean(true)}
+                onClick={() => setActiveModal("signUp")}
               />
             </Container>
           )}
         </Container>
       )}
 
-      {loginModalBoolean && (
-        <LoginModal
-          close={() => setLoginModalBoolean(false)}
-          openSignUpModal={() => {
-            setSignUpModalBoolean(true);
-            setLoginModalBoolean(false);
-          }}
-        />
+      {activeModal === "login" && (
+        <LoginModal setActiveModal={setActiveModal} />
       )}
-      {signUpModalBoolean && (
-        <SignUpModal
-          close={() => setSignUpModalBoolean(false)}
-          openLoginModal={() => {
-            setSignUpModalBoolean(false);
-            setLoginModalBoolean(true);
-          }}
-        />
+      {activeModal === "signUp" && (
+        <SignUpModal setActiveModal={setActiveModal} />
+      )}
+      {activeModal === "forgotPassword" && (
+        <ForgotPasswordModal setActiveModal={setActiveModal} />
       )}
     </Container>
   );

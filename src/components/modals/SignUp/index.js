@@ -8,7 +8,7 @@ import Button from "../../views/Button";
 import { isMobileOrTablet } from "../../../util";
 import { signUp } from "./util";
 
-function SignUpModal({ close, openLoginModal }) {
+function SignUpModal({ setActiveModal }) {
   const { register, handleSubmit } = useForm();
 
   return (
@@ -24,7 +24,7 @@ function SignUpModal({ close, openLoginModal }) {
               Already have an account?&nbsp;
               <Text
                 className="clickable blue"
-                onClick={() => openLoginModal()}
+                onClick={() => setActiveModal("login")}
                 type="span"
               >
                 Login
@@ -107,7 +107,10 @@ function SignUpModal({ close, openLoginModal }) {
           </form>
         </Container>
       </Container>
-      <Container className="modal-background" onClick={close} />
+      <Container
+        className="modal-background"
+        onClick={() => setActiveModal("")}
+      />
     </Container>
   );
 }
