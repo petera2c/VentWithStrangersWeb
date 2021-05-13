@@ -37,7 +37,7 @@ exports.ventDeleteListener = functions.firestore
   .onDelete(ventDeleteListener);
 exports.newVentLikeListener = functions.firestore
   .document("/vent_likes/{ventIDuserID}")
-  .onCreate(newVentLikeListener);
+  .onWrite(newVentLikeListener);
 
 exports.messagesListener = functions.firestore
   .document("/conversation_extra_data/{conversationID}/messages/{messageID}")

@@ -263,16 +263,6 @@ export const likeOrUnlikeVent = async (hasLiked, user, vent) => {
     .collection("vent_likes")
     .doc(vent.id + "|||" + user.uid)
     .set({ liked: !hasLiked, ventID: vent.id });
-
-  let valueToIncreaseBy = 1;
-  if (hasLiked) valueToIncreaseBy = -1;
-
-  await db
-    .collection("vents")
-    .doc(vent.id)
-    .update({
-      like_counter: firebase.firestore.FieldValue.increment(valueToIncreaseBy)
-    });
 };
 
 export const reportVent = () => {};

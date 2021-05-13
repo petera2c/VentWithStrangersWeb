@@ -64,6 +64,11 @@ export const editComment = async (commentID, commentString, setComments) => {
 };
 
 export const likeOrUnlikeComment = async (comment, hasLiked, user, ventID) => {
+  if (!user)
+    return alert(
+      "You must sign in or register an account to support a comment!"
+    );
+
   await db
     .collection("comment_likes")
     .doc(comment.id + "|||" + user.uid)
