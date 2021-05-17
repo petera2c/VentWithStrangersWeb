@@ -13,11 +13,6 @@ export const commentVent = async (commentString, user, ventID) => {
     ventID
   };
   const res = await db.collection("comments").add(commentObj);
-
-  if (res.id)
-    db.collection("vents")
-      .doc(ventID)
-      .update({ comment_counter: firebase.firestore.FieldValue.increment(1) });
 };
 
 export const deleteVent = async (history, ventID) => {

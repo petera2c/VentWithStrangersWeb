@@ -32,7 +32,7 @@ function Chat({ conversation, conversationName, userID }) {
 
   const dummyRef = useRef();
   const scrollToBottom = () => {
-    dummyRef.current.scrollIntoView();
+    if (dummyRef.current) dummyRef.current.scrollIntoView();
   };
 
   const [canLoadMore, setCanLoadMore] = useState(true);

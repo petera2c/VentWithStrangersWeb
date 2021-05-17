@@ -2,7 +2,7 @@ const admin = require("firebase-admin");
 const { createNotification } = require("./notification");
 const { createVentLink } = require("./util");
 
-const deleteAllCommentLikes = async (doc, context) => {
+const deleteAllCommentLikesAndSubtractCommentCounter = async (doc, context) => {
   const commentID = doc.id;
 
   const commentLikesSnapshot = await admin
@@ -110,10 +110,16 @@ const createNotificationsToAnyTaggedUsers = async (doc, context) => {
 
 const commentUpdateListener = async (change, context) => {
   if (!change.after.data()) {
-    deleteAllCommentLikes(change.before, context);
+    deleteAllCommentLikesAndSubtractCommentCounter(change.before, context);
   } else if (!change.before.data()) {
     createNotificationsToAnyTaggedUsers(change.after, context);
     createNewCommentNotification(change.after, context);
+
+    await admin
+      .firestore()
+      .collection("vents")
+      .doc(change.after.data().ventID)
+      .update({ comment_counter: admin.firestore.FieldValue.increment(1) });
   } else {
   }
 };

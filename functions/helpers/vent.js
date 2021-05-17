@@ -16,13 +16,6 @@ const newVentLikeListener = async (change, context) => {
   const { ventIDuserID } = context.params;
   const ventIDuserIDArray = ventIDuserID.split("|||");
 
-  const ventDoc = await admin
-    .firestore()
-    .collection("vents")
-    .doc(ventIDuserIDArray[0])
-    .get();
-  const vent = { id: ventDoc.id, ...ventDoc.data() };
-
   const hasLiked = change.after.data() ? change.after.data().liked : false;
   let increment = 1;
   if (!hasLiked) increment = -1;
@@ -34,6 +27,15 @@ const newVentLikeListener = async (change, context) => {
     .update({
       like_counter: admin.firestore.FieldValue.increment(increment),
     });
+
+  if (change.before.data()) return;
+
+  const ventDoc = await admin
+    .firestore()
+    .collection("vents")
+    .doc(ventIDuserIDArray[0])
+    .get();
+  const vent = { id: ventDoc.id, ...ventDoc.data() };
 
   createNotification(
     createVentLink(vent),
