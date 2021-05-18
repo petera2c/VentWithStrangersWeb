@@ -30,7 +30,10 @@ function AccountSection({ user }) {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const updateUser = () => {
+    let changesFound = false;
+
     if (displayName && displayName !== user.displayName) {
+      changesFound = true;
       user
         .updateProfile({
           displayName
@@ -48,6 +51,7 @@ function AccountSection({ user }) {
     }
 
     if (email && email !== user.email) {
+      changesFound = true;
       user
         .updateEmail(email)
         .then(() => {
@@ -65,7 +69,9 @@ function AccountSection({ user }) {
         });
     }
     if (newPassword && confirmPassword)
-      if (newPassword === confirmPassword)
+      if (newPassword === confirmPassword) {
+        changesFound = true;
+
         user
           .updatePassword(newPassword)
           .then(() => {
@@ -74,7 +80,9 @@ function AccountSection({ user }) {
           .catch(error => {
             alert(error.message);
           });
-      else alert("Passwords are not the same!");
+      } else alert("Passwords are not the same!");
+
+    if (!changesFound) alert("No changes!");
   };
 
   return (
