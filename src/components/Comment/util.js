@@ -8,12 +8,12 @@ export const getAuthor = async (setAuthor, userID) => {
     .doc(userID)
     .get();
 
-  let author = "";
+  let author = "Anonymous";
 
   if (authorDoc.exists && authorDoc.data().displayName) {
     author = authorDoc.data().displayName;
-    setAuthor(author);
   }
+  setAuthor(author);
 };
 
 export const getComment = async (commentID, setComment, ventID) => {
