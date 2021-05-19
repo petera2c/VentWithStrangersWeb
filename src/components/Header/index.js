@@ -245,7 +245,7 @@ function Header({ history, location }) {
         </Container>
       </Container>
 
-      {showFeedback && (
+      {false && (
         <Container className="flex-fill wrap full-center bg-grey-4 px32">
           <p className="flex-fill tac py16">
             <Link to="/feedback">

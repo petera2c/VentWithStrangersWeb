@@ -260,7 +260,16 @@ export const likeOrUnlikeVent = async (hasLiked, user, vent) => {
     .set({ liked: !hasLiked, ventID: vent.id });
 };
 
-export const reportVent = () => {};
+export const reportVent = async (option, userID, ventID) => {
+  await db
+    .collection("vent_reports")
+    .doc(ventID + "|||" + userID)
+    .set({ option, ventID });
+
+  alert(
+    "You have successfully reported this vent. We will review this quickly and will take action against this user if their post goes against our rules."
+  );
+};
 
 export const tagUser = (
   callback,

@@ -12,10 +12,12 @@ const { createProxy, createSitemap } = require("./helpers/sitemap");
 const {
   commentLikeListener,
   commentUpdateListener,
+  newCommentReportListener,
 } = require("./helpers/comment");
 const {
   newVentLikeListener,
   newVentListener,
+  newVentReportListener,
   ventDeleteListener,
 } = require("./helpers/vent");
 const { messagesListener } = require("./helpers/messages");
@@ -28,6 +30,9 @@ exports.commentUpdateListener = functions.firestore
 exports.commentLikeListener = functions.firestore
   .document("/comment_likes/{commentIDUserID}")
   .onWrite(commentLikeListener);
+exports.newCommentReportListener = functions.firestore
+  .document("/comments_reports/{commentIDUserID}")
+  .onCreate(newCommentReportListener);
 
 exports.newVentListener = functions.firestore
   .document("/vents/{ventID}")
@@ -38,6 +43,9 @@ exports.ventDeleteListener = functions.firestore
 exports.newVentLikeListener = functions.firestore
   .document("/vent_likes/{ventIDuserID}")
   .onWrite(newVentLikeListener);
+exports.newVentReportListener = functions.firestore
+  .document("/vent_reports/{ventIDuserID}")
+  .onCreate(newVentReportListener);
 
 exports.messagesListener = functions.firestore
   .document("/conversation_extra_data/{conversationID}/messages/{messageID}")
@@ -49,6 +57,7 @@ exports.conversationUpdateListener = functions.firestore
 exports.cronUpdateSitemap = functions.pubsub
   .schedule("0 0 * * *")
   .onRun(async () => createSitemap());
+createSitemap();
 
 const injectMetaData = (req, res) => {
   const filePath = path.resolve(__dirname, "./build/index.html");

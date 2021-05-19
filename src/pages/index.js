@@ -40,6 +40,11 @@ import { isMobileOrTablet } from "../util";
 function Routes() {
   const [user, loading, error] = useAuthState(firebase.auth());
 
+  /*if (user) {
+  console.log(user.emailVerified);
+  if (!user.emailVerified) user.sendEmailVerification();
+}*/
+
   if (loading)
     return (
       <Container className="screen-container full-center pr32">

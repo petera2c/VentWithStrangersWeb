@@ -31,16 +31,23 @@ service cloud.firestore {
     }
 
     match /vents/{ventID} {
-      allow read: if true;
-      allow write, delete: if request.auth.uid == request.resource.data.userID;
+      allow read, write: if true;
       allow update: if request.auth.uid == request.resource.data.userID
         && request.resource.data.userID == resource.data.userID;
       allow delete: if request.auth.uid == resource.data.userID;
     }
 
     match /users/{userID} {
-      allow read: if true;
-      allow write, update, delete: if request.auth.uid == userID;
+      allow read, write, update, delete: if request.auth.uid == userID;
+
+      match /bad_karma {
+        allow read: if request.auth.uid == userID;
+        allow write, update, delete: if false;
+      }
+      match /good_karma {
+        allow read: if request.auth.uid == userID;
+        allow write, update, delete: if false;
+      }
     }
 
     match /users_display_name/{userID} {
@@ -62,6 +69,18 @@ service cloud.firestore {
 
     match /comment_likes/{commentIDUserID} {
       allow read, write, update, delete: if request.auth.uid == commentIDUserID.split('\\|\\|\\|')[1];
+    }
+
+    match /vent_reports/{ventIDUserID} {
+      allow read, write, update, delete: if request.auth.uid == ventIDUserID.split('\\|\\|\\|')[1];
+    }
+
+    match /comment_reports/{commentIDUserID} {
+      allow read, write, update, delete: if request.auth.uid == commentIDUserID.split('\\|\\|\\|')[1];
+    }
+
+    match /admin_notifications/{adminNotificationID} {
+      allow read, write, update, delete: if true;
     }
   }
 }

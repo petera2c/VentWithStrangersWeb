@@ -44,6 +44,27 @@ const newVentLikeListener = async (change, context) => {
   );
 };
 
+const newVentReportListener = async (doc, context) => {
+  const ventID = doc.id.split("|||")[0];
+  const userID = doc.id.split("|||")[1];
+
+  await admin
+    .firestore()
+    .collection("vents")
+    .doc(ventID)
+    .update({
+      report_counter: admin.firestore.FieldValue.increment(1),
+    });
+
+  await admin
+    .firestore()
+    .collection("users")
+    .doc(userID)
+    .update({
+      bad_karma: admin.firestore.FieldValue.increment(10),
+    });
+};
+
 const ventDeleteListener = async (doc, context) => {
   const ventID = doc.id;
   const commentsOfVentSnapshot = await admin
@@ -78,4 +99,9 @@ const ventDeleteListener = async (doc, context) => {
     }
 };
 
-module.exports = { newVentLikeListener, newVentListener, ventDeleteListener };
+module.exports = {
+  newVentLikeListener,
+  newVentListener,
+  newVentReportListener,
+  ventDeleteListener,
+};

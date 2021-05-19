@@ -604,7 +604,7 @@ function Vent({
       {reportModal && (
         <ReportModal
           close={() => setReportModal(false)}
-          submit={option => reportVent(history, vent._id, option, pathname)}
+          submit={option => reportVent(option, user.uid, vent.id)}
         />
       )}
       {deleteVentConfirm && (

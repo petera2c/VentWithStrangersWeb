@@ -124,7 +124,13 @@ const commentUpdateListener = async (change, context) => {
   }
 };
 
+const newCommentReportListener = async (doc, context) => {
+  console.log("jere");
+  return;
+};
+
 module.exports = {
   commentLikeListener,
   commentUpdateListener,
+  newCommentReportListener,
 };

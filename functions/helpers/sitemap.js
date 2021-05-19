@@ -25,6 +25,8 @@ const createProxy = () =>
   });
 
 const createSitemap = async () => {
+  if (process.env.FUNCTIONS_EMULATOR === "true") return;
+  console.log("Starting sitemap construction");
   const vents = await admin
     .firestore()
     .collection("vents")
