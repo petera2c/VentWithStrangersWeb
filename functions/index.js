@@ -57,7 +57,6 @@ exports.conversationUpdateListener = functions.firestore
 exports.cronUpdateSitemap = functions.pubsub
   .schedule("0 0 * * *")
   .onRun(async () => createSitemap());
-createSitemap();
 
 const injectMetaData = (req, res) => {
   const filePath = path.resolve(__dirname, "./build/index.html");
