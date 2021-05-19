@@ -25,9 +25,6 @@
     "functions": {
       "port": 5001
     },
-    "database": {
-      "port": 9000
-    },
     "hosting": {
       "port": 5000
     },
@@ -37,9 +34,6 @@
     "firestore": {
       "port": 8080,
       "host": "0.0.0.0"
-    },
-    "pubsub": {
-      "port": 8085
     }
   },
   "firestore": {

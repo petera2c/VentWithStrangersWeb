@@ -1,4 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Nunito+Sans");
+.firebase-emulator-warning {
+  display: none;
+}
 .cool-colors {
   background-color: #53f4ff;
 }
