@@ -80,7 +80,8 @@ service cloud.firestore {
     }
 
     match /admin_notifications/{adminNotificationID} {
-      allow read, write, update, delete: if true;
+      allow read, delete: if true;
+      allow write, update: if false;
     }
   }
 }

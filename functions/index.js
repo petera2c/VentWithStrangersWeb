@@ -31,7 +31,7 @@ exports.commentLikeListener = functions.firestore
   .document("/comment_likes/{commentIDUserID}")
   .onWrite(commentLikeListener);
 exports.newCommentReportListener = functions.firestore
-  .document("/comments_reports/{commentIDUserID}")
+  .document("/comment_reports/{commentIDUserID}")
   .onCreate(newCommentReportListener);
 
 exports.newVentListener = functions.firestore

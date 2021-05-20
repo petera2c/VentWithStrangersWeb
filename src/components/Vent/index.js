@@ -573,7 +573,6 @@ function Vent({
                       comment2={comment}
                       setComments={setComments}
                       setPossibleUsersToTag={setPossibleUsersToTag}
-                      ventID={ventID}
                       ventUserID={vent.userID}
                       key={comment.id}
                     />

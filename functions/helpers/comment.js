@@ -125,8 +125,33 @@ const commentUpdateListener = async (change, context) => {
 };
 
 const newCommentReportListener = async (doc, context) => {
-  console.log("jere");
-  return;
+  const commentID = doc.id.split("|||")[0];
+  const userID = doc.id.split("|||")[1];
+
+  await admin
+    .firestore()
+    .collection("comments")
+    .doc(commentID)
+    .update({
+      report_counter: admin.firestore.FieldValue.increment(1),
+    });
+
+  await admin
+    .firestore()
+    .collection("users")
+    .doc(userID)
+    .update({
+      bad_karma: admin.firestore.FieldValue.increment(10),
+    });
+
+  await admin
+    .firestore()
+    .collection("admin_notifications")
+    .add({
+      ventID: doc.data().ventID,
+      commentID,
+      user_that_reported: userID,
+    });
 };
 
 module.exports = {

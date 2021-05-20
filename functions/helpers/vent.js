@@ -63,6 +63,14 @@ const newVentReportListener = async (doc, context) => {
     .update({
       bad_karma: admin.firestore.FieldValue.increment(10),
     });
+
+  await admin
+    .firestore()
+    .collection("admin_notifications")
+    .add({
+      ventID,
+      user_that_reported: userID,
+    });
 };
 
 const ventDeleteListener = async (doc, context) => {

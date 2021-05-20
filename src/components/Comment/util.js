@@ -63,7 +63,19 @@ export const editComment = async (commentID, commentString, setComments) => {
   });
 };
 
-export const likeOrUnlikeComment = async (comment, hasLiked, user, ventID) => {
+export const getCommentHasLiked = async (commentID, setHasLiked, userID) => {
+  const snapshot = await db
+    .collection("comment_likes")
+    .doc(commentID + "|||" + userID)
+    .get();
+
+  if (!snapshot || !snapshot.data()) return;
+  let value = snapshot.data();
+  value = value.liked;
+  setHasLiked(Boolean(value));
+};
+
+export const likeOrUnlikeComment = async (comment, hasLiked, user) => {
   if (!user)
     return alert(
       "You must sign in or register an account to support a comment!"
@@ -75,16 +87,15 @@ export const likeOrUnlikeComment = async (comment, hasLiked, user, ventID) => {
     .set({ liked: !hasLiked, commentID: comment.id });
 };
 
-export const getCommentHasLiked = async (commentID, setHasLiked, userID) => {
-  const snapshot = await db
-    .collection("comment_likes")
+export const reportComment = async (option, userID, commentID, ventID) => {
+  await db
+    .collection("comment_reports")
     .doc(commentID + "|||" + userID)
-    .get();
+    .set({ commentID, option, ventID });
 
-  if (!snapshot || !snapshot.data()) return;
-  let value = snapshot.data();
-  value = value.liked;
-  setHasLiked(Boolean(value));
+  alert(
+    "You have successfully reported this comment. We will review this quickly and will take action against this user if their comment goes against our rules."
+  );
 };
 
 export const swapTags = commentText => {

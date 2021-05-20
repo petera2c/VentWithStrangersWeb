@@ -146,7 +146,6 @@ function ActivitySection({ user }) {
                       commentID={comment.id}
                       commentIndex={index}
                       comment2={comment}
-                      ventID={comment.ventID}
                       key={index}
                     />
                   </Link>

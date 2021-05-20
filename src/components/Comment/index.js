@@ -18,17 +18,19 @@ import Text from "../views/Text";
 import Button from "../views/Button";
 import HandleOutsideClick from "../containers/HandleOutsideClick";
 import ConfirmAlertModal from "../modals/ConfirmAlert";
+import ReportModal from "../modals/Report";
 
 import { UserContext } from "../../context";
 
 import { capitolizeFirstChar } from "../../util";
 import {
-  getAuthor,
-  getCommentHasLiked,
-  getComment,
   deleteComment,
   editComment,
+  getAuthor,
+  getComment,
+  getCommentHasLiked,
   likeOrUnlikeComment,
+  reportComment,
   swapTags
 } from "./util";
 import { findPossibleUsersToTag } from "../Vent/util";
@@ -40,7 +42,6 @@ function Comment({
   commentIndex,
   setComments,
   setPossibleUsersToTag,
-  ventID,
   ventUserID
 }) {
   const history = useHistory();
@@ -244,7 +245,7 @@ function Comment({
               return alert(
                 "You must sign in or register an account to support a comment!"
               );
-            await likeOrUnlikeComment(comment, hasLiked, user, ventID);
+            await likeOrUnlikeComment(comment, hasLiked, user);
             await getCommentHasLiked(commentID, setHasLiked, user.uid);
             if (hasLiked) comment.like_counter--;
             else comment.like_counter++;
@@ -272,6 +273,14 @@ function Comment({
           />
         </Container>
       </Container>
+      {reportModal && (
+        <ReportModal
+          close={() => setReportModal(false)}
+          submit={option =>
+            reportComment(option, user.uid, comment.id, comment.ventID)
+          }
+        />
+      )}
       {deleteCommentConfirm && (
         <ConfirmAlertModal
           close={() => setDeleteCommentConfirm(false)}
