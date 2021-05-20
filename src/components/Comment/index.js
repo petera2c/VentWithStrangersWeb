@@ -149,26 +149,25 @@ function Comment({
                           <FontAwesomeIcon className="ml8" icon={faTrash} />
                         </Container>
                       )}
-                    {comment.userID !== user.uid &&
-                      !(ventUserID && ventUserID === user.uid) && (
-                        <Container
-                          className="button-8 clickable align-center"
-                          onClick={e => {
-                            e.preventDefault();
-                            setReportModal(!reportModal);
-                          }}
-                        >
-                          <Text
-                            className="flex-fill"
-                            text="Report Comment"
-                            type="p"
-                          />
-                          <FontAwesomeIcon
-                            className="ml8"
-                            icon={faExclamationTriangle}
-                          />
-                        </Container>
-                      )}
+                    {comment.userID !== user.uid && (
+                      <Container
+                        className="button-8 clickable align-center"
+                        onClick={e => {
+                          e.preventDefault();
+                          setReportModal(!reportModal);
+                        }}
+                      >
+                        <Text
+                          className="flex-fill"
+                          text="Report Comment"
+                          type="p"
+                        />
+                        <FontAwesomeIcon
+                          className="ml8"
+                          icon={faExclamationTriangle}
+                        />
+                      </Container>
+                    )}
                   </Container>
                 </div>
               )}
