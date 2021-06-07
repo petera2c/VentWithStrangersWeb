@@ -20,6 +20,7 @@ import { faEdit } from "@fortawesome/pro-light-svg-icons/faEdit";
 import { faExclamationTriangle } from "@fortawesome/pro-light-svg-icons/faExclamationTriangle";
 import { faTrash } from "@fortawesome/pro-duotone-svg-icons/faTrash";
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
+import { faUserLock } from "@fortawesome/pro-duotone-svg-icons/faUserLock";
 
 import {
   EmailShareButton,
@@ -57,9 +58,11 @@ import { UserContext } from "../../context";
 import {
   addTagsToPage,
   capitolizeFirstChar,
+  hasUserBlockedUser,
   isMobileOrTablet
 } from "../../util";
 import {
+  blockUser,
   commentVent,
   deleteVent,
   findPossibleUsersToTag,
@@ -112,6 +115,8 @@ function Vent({
   const [hasLiked, setHasLiked] = useState(false);
   const [comments, setComments] = useState();
 
+  const [blockModal, setBlockModal] = useState(false);
+  const [isContentBlocked, setIsContentBlocked] = useState(true);
   const [possibleUsersToTag, setPossibleUsersToTag] = useState();
   const [postOptions, setPostOptions] = useState(false);
   const [reportModal, setReportModal] = useState(false);
@@ -129,7 +134,10 @@ function Vent({
   let ventHasLikedListenerUnsubscribe;
 
   useEffect(() => {
-    const ventListenerUnsubscribe = ventListener(setVent, ventID);
+    const ventListenerUnsubscribe = ventListener(vent => {
+      setVent(vent);
+      hasUserBlockedUser(user.uid, vent.userID, setIsContentBlocked);
+    }, ventID);
 
     if (!searchPreviewMode && displayCommentField2)
       newCommentListenerUnsubscribe = newVentCommentListener(
@@ -164,6 +172,8 @@ function Vent({
         <LoadingHeart />
       </Container>
     );
+
+  if (isContentBlocked) return <div />;
 
   return (
     <Container className="x-fill column mb16">
@@ -272,7 +282,7 @@ function Vent({
                         )}
                         {vent.userID !== user.uid && (
                           <Container
-                            className="button-8 clickable align-center"
+                            className="button-8 clickable align-center mb8"
                             onClick={e => {
                               e.preventDefault();
                               setReportModal(!reportModal);
@@ -286,6 +296,25 @@ function Vent({
                             <FontAwesomeIcon
                               className="ml8"
                               icon={faExclamationTriangle}
+                            />
+                          </Container>
+                        )}
+                        {vent.userID !== user.uid && (
+                          <Container
+                            className="button-8 clickable align-center"
+                            onClick={e => {
+                              e.preventDefault();
+                              setBlockModal(!blockModal);
+                            }}
+                          >
+                            <Text
+                              className="fw-400 flex-fill"
+                              text="Block User"
+                              type="p"
+                            />
+                            <FontAwesomeIcon
+                              className="ml8"
+                              icon={faUserLock}
                             />
                           </Container>
                         )}
@@ -612,6 +641,14 @@ function Vent({
           message="Are you sure you would like to delete this vent?"
           submit={() => deleteVent(history, vent.id)}
           title="Delete Vent"
+        />
+      )}
+      {blockModal && (
+        <ConfirmAlertModal
+          close={() => setBlockModal(false)}
+          message="Blocking this user will remove you from all conversations with this user and you will no longer see any of their vents or comments. Are you sure you would like to block this user?"
+          submit={() => blockUser(user.uid, vent.userID)}
+          title="Block User"
         />
       )}
     </Container>

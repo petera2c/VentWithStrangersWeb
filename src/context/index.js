@@ -1,5 +1,6 @@
 import { createContext } from "react";
 
+const BlockedUserContext = createContext();
 const UserContext = createContext();
 
-export { UserContext };
+export { BlockedUserContext, UserContext };

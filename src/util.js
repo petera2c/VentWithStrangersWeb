@@ -1,5 +1,32 @@
 import firebase from "firebase/app";
 import "firebase/auth";
+import db from "./config/firebase";
+
+export const addTagsToPage = (props, selectedTags) => {
+  const { browser, history, location } = props;
+  let searchPathname = location.pathname;
+  if (
+    searchPathname !== "/popular" &&
+    searchPathname !== "/recent" &&
+    searchPathname !== "/trending"
+  )
+    searchPathname = "/trending";
+
+  for (let index in selectedTags) {
+    if (index == 0) searchPathname += "?tags=" + selectedTags[index].name;
+    else searchPathname += "+" + selectedTags[index].name;
+  }
+  history.push(searchPathname);
+};
+
+// Taken from stack overflow
+export const capitolizeWordsInString = str => {
+  return str.replace(/\b\w/g, l => l.toUpperCase());
+};
+export const capitolizeFirstChar = string => {
+  if (string) return string.charAt(0).toUpperCase() + string.slice(1);
+  else return;
+};
 
 export const combineInsideObjectWithID = object => {
   return Object.keys(object).map(objectID => {
@@ -20,30 +47,15 @@ export const getEndAtValueTimestamp = array => {
   return startAt;
 };
 
-// Taken from stack overflow
-export const capitolizeWordsInString = str => {
-  return str.replace(/\b\w/g, l => l.toUpperCase());
-};
-export const capitolizeFirstChar = string => {
-  if (string) return string.charAt(0).toUpperCase() + string.slice(1);
-  else return;
-};
+export const hasUserBlockedUser = async (userID, userID2, callback) => {
+  const sortedUserArray = [userID, userID2].sort();
+  const test = await db
+    .collection("block_check")
+    .doc(sortedUserArray[0] + "|||" + sortedUserArray[1])
+    .get();
 
-export const addTagsToPage = (props, selectedTags) => {
-  const { browser, history, location } = props;
-  let searchPathname = location.pathname;
-  if (
-    searchPathname !== "/popular" &&
-    searchPathname !== "/recent" &&
-    searchPathname !== "/trending"
-  )
-    searchPathname = "/trending";
-
-  for (let index in selectedTags) {
-    if (index == 0) searchPathname += "?tags=" + selectedTags[index].name;
-    else searchPathname += "+" + selectedTags[index].name;
-  }
-  history.push(searchPathname);
+  if (test.exists) return callback(true);
+  else return callback(false);
 };
 
 export const isMobileOrTablet = () => window.screen.width < 940;

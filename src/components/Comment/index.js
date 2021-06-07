@@ -22,7 +22,7 @@ import ReportModal from "../modals/Report";
 
 import { UserContext } from "../../context";
 
-import { capitolizeFirstChar } from "../../util";
+import { capitolizeFirstChar, hasUserBlockedUser } from "../../util";
 import {
   deleteComment,
   editComment,
@@ -50,15 +50,18 @@ function Comment({
   const [comment, setComment] = useState(comment2);
   const [commentOptions, setCommentOptions] = useState(false);
   const [commentString, setCommentString] = useState("");
-  const [reportModal, setReportModal] = useState(false);
   const [deleteCommentConfirm, setDeleteCommentConfirm] = useState(false);
   const [editingComment, setEditingComment] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
+  const [isContentBlocked, setIsContentBlocked] = useState(true);
+  const [reportModal, setReportModal] = useState(false);
 
   useEffect(() => {
+    hasUserBlockedUser(user.uid, comment.userID, setIsContentBlocked);
     getAuthor(setAuthor, comment2.userID);
     if (user) getCommentHasLiked(commentID, setHasLiked, user.uid);
   }, []);
+  if (isContentBlocked) return <div />;
 
   return (
     <Container

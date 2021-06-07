@@ -3,6 +3,17 @@ import db from "../../config/firebase";
 
 import { getEndAtValueTimestamp } from "../../util";
 
+export const blockUser = async (userID, userIDToBlock) => {
+  const sortedUserArray = [userID, userIDToBlock].sort();
+  await db
+    .collection("block_check")
+    .doc(sortedUserArray[0] + "|||" + sortedUserArray[1])
+    .set({
+      userID: true
+    });
+  alert("User has been blocked");
+};
+
 export const commentVent = async (commentString, user, ventID) => {
   if (!user) return alert("Only users can comment! Please login or register.");
   let commentObj = {

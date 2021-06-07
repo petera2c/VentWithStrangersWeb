@@ -5,7 +5,6 @@ import {
   Switch,
   useLocation
 } from "react-router-dom";
-import axios from "axios";
 import moment from "moment-timezone";
 
 import firebase from "firebase/app";
@@ -39,11 +38,6 @@ import { isMobileOrTablet } from "../util";
 
 function Routes() {
   const [user, loading, error] = useAuthState(firebase.auth());
-
-  /*if (user) {
-  console.log(user.emailVerified);
-  if (!user.emailVerified) user.sendEmailVerification();
-}*/
 
   if (loading)
     return (

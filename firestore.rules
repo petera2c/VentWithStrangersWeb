@@ -1,10 +1,13 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    //return exists(/databases/$(database)/documents/block_check/$(userID+"|||"+userID2));
+
     match /comments/{commentID} {
       allow read: if true;
-      allow write, delete: if request.auth.uid == request.resource.data.userID;
-      allow delete: if request.auth.uid == resource.data.userID || debug(get(/databases/$(database)/documents/vents/$(resource.data.ventID)).data.userID) == request.auth.uid;
+      allow write: if request.auth.uid == request.resource.data.userID;
+      allow update: if request.auth.uid == resource.data.userID;
+      allow delete: if request.auth.uid == resource.data.userID || get(/databases/$(database)/documents/vents/$(resource.data.ventID)).data.userID == request.auth.uid;
     }
 
     match /conversations/{conversationID} {
@@ -82,6 +85,12 @@ service cloud.firestore {
     match /admin_notifications/{adminNotificationID} {
       allow read, delete: if true;
       allow write, update: if false;
+    }
+
+    match /block_check/{userIDuserID2} {
+      allow read: if request.auth.uid == userIDuserID2.split('\\|\\|\\|')[0] || request.auth.uid == userIDuserID2.split('\\|\\|\\|')[1];
+      allow write, update: if !request.resource.data.keys().hasAny([request.auth.uid]);
+      allow delete: if false;
     }
   }
 }

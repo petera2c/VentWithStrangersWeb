@@ -66,7 +66,7 @@ function Message({ conversationID, message, setMessages, userID }) {
                       text={
                         message.userID === userID
                           ? "Delete Message"
-                          : "Report User"
+                          : "Report Message"
                       }
                       type="p"
                     />
