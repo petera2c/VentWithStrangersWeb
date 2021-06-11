@@ -50,13 +50,6 @@ function NewVentPage() {
     setSaving(false);
   };
 
-  const removeTag = (index, tags) => {
-    tags.splice(index, 1);
-
-    setSaving(false);
-    setTags(tags);
-  };
-
   return (
     <Page
       className="column align-center bg-grey-2"
@@ -108,7 +101,13 @@ function NewVentPage() {
                   <Container
                     key={index}
                     className="clickable mr8 mb8"
-                    onClick={() => removeTag(index, tags)}
+                    onClick={() => {
+                      let temp = [...tags];
+                      temp.splice(index, 1);
+
+                      setSaving(false);
+                      setTags(temp);
+                    }}
                   >
                     <Text
                       className="flex-fill tac fw-300 border-all blue active large px16 py8"
