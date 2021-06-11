@@ -59,14 +59,30 @@ export const getEndAtValueTimestamp = array => {
   return startAt;
 };
 
+export const getUserDisplayName = async (callback, userID) => {
+  let author = "Anonymous";
+
+  if (!userID) return author;
+
+  const authorDoc = await db
+    .collection("users_display_name")
+    .doc(userID)
+    .get();
+
+  if (authorDoc.exists && authorDoc.data().displayName) {
+    author = authorDoc.data().displayName;
+  }
+  callback(author);
+};
+
 export const hasUserBlockedUser = async (userID, userID2, callback) => {
   const sortedUserArray = [userID, userID2].sort();
-  const test = await db
+  const blockCheck = await db
     .collection("block_check")
     .doc(sortedUserArray[0] + "|||" + sortedUserArray[1])
     .get();
 
-  if (test.exists) return callback(true);
+  if (blockCheck.exists) return callback(true);
   else return callback(false);
 };
 

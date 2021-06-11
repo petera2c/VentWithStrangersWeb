@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import db from "../../config/firebase";
@@ -19,7 +19,7 @@ import Comment from "../../components/Comment";
 
 import LoadMore from "../../components/LoadMore";
 
-import { isMobileOrTablet } from "../../util";
+import { getUserDisplayName, isMobileOrTablet } from "../../util";
 import { getUsersPosts } from "./util";
 
 function ActivitySection({ user }) {
@@ -32,9 +32,10 @@ function ActivitySection({ user }) {
   }
   const [postsSection, setPostsSection] = useState(true);
   const [canLoadMore, setCanLoadMore] = useState();
+  const [userDisplayName, setUserDisplayName] = useState("");
 
   if (search) search = search.substring(1);
-  if (!search) search = user.uid;
+  if (!search && user) search = user.uid;
 
   const ventQuery = db
     .collection("/vents/")
@@ -55,6 +56,10 @@ function ActivitySection({ user }) {
     else return "";
   };
 
+  useEffect(() => {
+    if (search) getUserDisplayName(setUserDisplayName, search);
+  }, []);
+
   return (
     <Container
       className={
@@ -62,7 +67,14 @@ function ActivitySection({ user }) {
         (isMobileOrTablet() ? "mobile-full" : "large")
       }
     >
-      <Text className="mb16" text="Activity" type="h4" />
+      {false && search && (
+        <Container className="ov-hidden column bg-white pa16 mb16 br8">
+          <h6>{userDisplayName}</h6>
+          <h6>106 Karma</h6>
+        </Container>
+      )}
+
+      <h4 className="mb16">Activity</h4>
       <Container className="ov-hidden column bg-white mb16 br8">
         <Container>
           <Container
@@ -72,7 +84,7 @@ function ActivitySection({ user }) {
             }
             onClick={() => setPostsSection(true)}
           >
-            <Text className="tac" text="Posts" type="h5" />
+            <h5 className="tac">Posts</h5>
           </Container>
           <Container
             className={
@@ -83,7 +95,7 @@ function ActivitySection({ user }) {
               setPostsSection(false);
             }}
           >
-            <Text className="tac" text="Comments" type="h5" />
+            <h5 className="tac">Comments</h5>
           </Container>
         </Container>
       </Container>
@@ -99,7 +111,7 @@ function ActivitySection({ user }) {
               />
             ))}
           {vents && vents.length === 0 && (
-            <Text className="fw-400" text="No vents found." type="h4" />
+            <h4 className="fw-400">No vents found.</h4>
           )}
           {canLoadMore && (
             <LoadMore canLoadMore={canLoadMore} loadMore={() => {}}>
@@ -153,7 +165,7 @@ function ActivitySection({ user }) {
               })}
           </Container>
           {comments && comments.length === 0 && (
-            <Text className="fw-400" text="No comments found." type="h4" />
+            <h4 className="fw-400">No comments found.</h4>
           )}
         </Container>
       )}

@@ -58,7 +58,7 @@ function Comment({
   const [reportModal, setReportModal] = useState(false);
 
   useEffect(() => {
-    hasUserBlockedUser(user.uid, comment.userID, setIsContentBlocked);
+    if (user) hasUserBlockedUser(user.uid, comment.userID, setIsContentBlocked);
     getAuthor(setAuthor, comment2.userID);
     if (user) getCommentHasLiked(commentID, setHasLiked, user.uid);
   }, []);
