@@ -19,6 +19,18 @@ export const addTagsToPage = (props, selectedTags) => {
   history.push(searchPathname);
 };
 
+export const blockUser = async (userID, userIDToBlock) => {
+  const sortedUserArray = [userID, userIDToBlock].sort();
+  await db
+    .collection("block_check")
+    .doc(sortedUserArray[0] + "|||" + sortedUserArray[1])
+    .set({
+      [userID]: true
+    });
+  alert("User has been blocked");
+  window.location.reload();
+};
+
 // Taken from stack overflow
 export const capitolizeWordsInString = str => {
   return str.replace(/\b\w/g, l => l.toUpperCase());

@@ -57,12 +57,12 @@ import { UserContext } from "../../context";
 
 import {
   addTagsToPage,
+  blockUser,
   capitolizeFirstChar,
   hasUserBlockedUser,
   isMobileOrTablet
 } from "../../util";
 import {
-  blockUser,
   commentVent,
   deleteVent,
   findPossibleUsersToTag,
@@ -116,7 +116,7 @@ function Vent({
   const [comments, setComments] = useState();
 
   const [blockModal, setBlockModal] = useState(false);
-  const [isContentBlocked, setIsContentBlocked] = useState(true);
+  const [isContentBlocked, setIsContentBlocked] = useState(user ? true : false);
   const [possibleUsersToTag, setPossibleUsersToTag] = useState();
   const [postOptions, setPostOptions] = useState(false);
   const [reportModal, setReportModal] = useState(false);
@@ -136,7 +136,7 @@ function Vent({
   useEffect(() => {
     const ventListenerUnsubscribe = ventListener(vent => {
       setVent(vent);
-      hasUserBlockedUser(user.uid, vent.userID, setIsContentBlocked);
+      if (user) hasUserBlockedUser(user.uid, vent.userID, setIsContentBlocked);
     }, ventID);
 
     if (!searchPreviewMode && displayCommentField2)
@@ -353,30 +353,6 @@ function Vent({
             >
               <Container className="align-center wrap">
                 <Container className="align-center mb16">
-                  <FontAwesomeIcon
-                    className="clickable blue mr4"
-                    icon={faComment}
-                    onClick={e => {
-                      e.preventDefault();
-                      setDisplayCommentField(!displayCommentField2);
-
-                      if (displayCommentField2 && newCommentListenerUnsubscribe)
-                        newCommentListenerUnsubscribe();
-                      if (!displayCommentField2)
-                        newCommentListenerUnsubscribe = newVentCommentListener(
-                          setComments,
-                          vent.id
-                        );
-                    }}
-                    size="2x"
-                    title="Comment"
-                  />
-                  <Text
-                    className="blue mr8"
-                    text={vent.comment_counter ? vent.comment_counter : 0}
-                    type="p"
-                  />
-
                   <img
                     className={`clickable heart ${
                       hasLiked ? "red" : "grey-5"
@@ -395,25 +371,36 @@ function Vent({
                   />
 
                   <Text
-                    className="grey-5 mr16"
+                    className="grey-5 mr8"
                     text={vent.like_counter ? vent.like_counter : 0}
                     type="p"
                   />
+
+                  <Button
+                    className="button-2 px16 py8 mr16 br8"
+                    onClick={e => {
+                      e.preventDefault();
+                      setDisplayCommentField(!displayCommentField2);
+
+                      if (displayCommentField2 && newCommentListenerUnsubscribe)
+                        newCommentListenerUnsubscribe();
+                      if (!displayCommentField2)
+                        newCommentListenerUnsubscribe = newVentCommentListener(
+                          setComments,
+                          vent.id
+                        );
+                    }}
+                  >
+                    {vent.comment_counter ? vent.comment_counter : 0} Comments
+                  </Button>
                 </Container>
 
                 <Container className="mb16">
                   <HandleOutsideClick close={() => setShareClicked(false)}>
-                    <Button
-                      className="button-2 px16 py8 mr16 br8"
-                      onClick={() => setShareClicked(!shareClicked)}
-                    >
-                      <FontAwesomeIcon className="mr8" icon={faShare} />
-                      Share
-                    </Button>
                     {(!user ||
                       (user && user.uid !== vent.userID && vent.authorID)) && (
                       <Button
-                        className="button-2 px16 py8 br8"
+                        className="button-2 px16 py8 mr16 br8"
                         onClick={() => {
                           if (!user)
                             alert("You must make an account to message user!");
@@ -424,10 +411,16 @@ function Vent({
                         Message User
                       </Button>
                     )}
+                    <Button
+                      className="button-2 px16 py8 br8"
+                      onClick={() => setShareClicked(!shareClicked)}
+                    >
+                      <FontAwesomeIcon className="" icon={faShare} />
+                    </Button>
 
                     {shareClicked && (
                       <Container
-                        className="absolute left-0 flex column bg-white shadow-2 px16 py16 br8"
+                        className="absolute right-0 flex column bg-white shadow-2 px16 py16 br8"
                         style={{
                           top: "calc(100% - 8px)",
                           zIndex: 1

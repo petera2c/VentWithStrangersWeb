@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons/faEye";
 
 import Container from "../../containers/Container";
 import Text from "../../views/Text";
@@ -10,6 +13,7 @@ import { signUp } from "./util";
 
 function SignUpModal({ setActiveModal }) {
   const { register, handleSubmit } = useForm();
+  const [canSeePassword, setCanSeePassword] = useState(false);
 
   return (
     <Container className="modal-container full-center">
@@ -70,7 +74,7 @@ function SignUpModal({ setActiveModal }) {
                   <input
                     className="py8 px16 mb8 br4"
                     name="password"
-                    type="password"
+                    type={canSeePassword ? "" : "password"}
                     placeholder="********"
                     ref={register}
                     required
@@ -86,14 +90,23 @@ function SignUpModal({ setActiveModal }) {
                     text="Confirm Password"
                     type="h5"
                   />
-                  <input
-                    className="py8 px16 mb8 br4"
-                    name="passwordConfirm"
-                    type="password"
-                    placeholder="********"
-                    ref={register}
-                    required
-                  />
+                  <Container className="x-fill full-center">
+                    <input
+                      className="py8 px16 mb8 br4"
+                      name="passwordConfirm"
+                      type={canSeePassword ? "" : "password"}
+                      placeholder="********"
+                      ref={register}
+                      required
+                    />
+                    <FontAwesomeIcon
+                      className={
+                        "clickable ml8 " + (canSeePassword ? "blue" : "")
+                      }
+                      icon={faEye}
+                      onClick={() => setCanSeePassword(!canSeePassword)}
+                    />
+                  </Container>
                 </Container>
               </Container>
             </Container>

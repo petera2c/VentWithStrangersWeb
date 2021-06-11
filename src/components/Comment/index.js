@@ -22,7 +22,7 @@ import ReportModal from "../modals/Report";
 
 import { UserContext } from "../../context";
 
-import { capitolizeFirstChar, hasUserBlockedUser } from "../../util";
+import { blockUser, capitolizeFirstChar, hasUserBlockedUser } from "../../util";
 import {
   deleteComment,
   editComment,
@@ -47,13 +47,14 @@ function Comment({
   const history = useHistory();
   const user = useContext(UserContext);
   const [author, setAuthor] = useState();
+  const [blockModal, setBlockModal] = useState(false);
   const [comment, setComment] = useState(comment2);
   const [commentOptions, setCommentOptions] = useState(false);
   const [commentString, setCommentString] = useState("");
   const [deleteCommentConfirm, setDeleteCommentConfirm] = useState(false);
   const [editingComment, setEditingComment] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
-  const [isContentBlocked, setIsContentBlocked] = useState(true);
+  const [isContentBlocked, setIsContentBlocked] = useState(user ? true : false);
   const [reportModal, setReportModal] = useState(false);
 
   useEffect(() => {
@@ -163,6 +164,25 @@ function Comment({
                         <Text
                           className="flex-fill"
                           text="Report Comment"
+                          type="p"
+                        />
+                        <FontAwesomeIcon
+                          className="ml8"
+                          icon={faExclamationTriangle}
+                        />
+                      </Container>
+                    )}
+                    {comment.userID !== user.uid && (
+                      <Container
+                        className="button-8 clickable align-center"
+                        onClick={e => {
+                          e.preventDefault();
+                          setBlockModal(!blockModal);
+                        }}
+                      >
+                        <Text
+                          className="flex-fill"
+                          text="Block User"
                           type="p"
                         />
                         <FontAwesomeIcon
@@ -289,6 +309,14 @@ function Comment({
           message="Are you sure you would like to delete this comment?"
           submit={() => deleteComment(comment.id, setComments)}
           title="Delete Comment"
+        />
+      )}
+      {blockModal && (
+        <ConfirmAlertModal
+          close={() => setBlockModal(false)}
+          message="Blocking this user will remove you from all conversations with this user and you will no longer see any of their vents or comments. Are you sure you would like to block this user?"
+          submit={() => blockUser(user.uid, comment.userID)}
+          title="Block User"
         />
       )}
     </Container>

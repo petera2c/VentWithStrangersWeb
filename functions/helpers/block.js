@@ -1,59 +1,44 @@
 const admin = require("firebase-admin");
 
 const blockUserListener = async (change, context) => {
-  let blockedUserListAfter = change.after.data();
-  let blockedUserListBefore = change.before.data();
-  const { userID } = context.params;
+  console.log(context);
+  const blockBefore = change.before.data();
+  const blockAfter = change.after.data();
 
-  const getBlockedUserID = async (doc) => {
-    return doc.blocked_users[doc.blocked_users.length - 1];
-  };
-  const function2 = async (blockedUserID) => {
-    const sortedMemberIDs = [userID, blockedUserID].sort();
+  if (!blockAfter) {
+    // do nothing, because it was deleted
+  } else if (!blockBefore) {
+    // was just created
 
-    await admin
-      .firestore()
-      .collection("block_check")
-      .doc(userID + "|||" + blockedUserID)
-      .set({ blocked: true });
+    const userID1 = change.after.id.split("|||")[0];
+    const userID2 = change.after.id.split("|||")[1];
+    const sortedMemberIDs = [userID1, userID2].sort();
 
-    const conversationsSnapshot = await admin
+    const allConversations = await admin
       .firestore()
       .collection("conversations")
       .where("members", "==", sortedMemberIDs)
       .get();
 
-    if (conversationsSnapshot.docs) {
-      for (let index in conversationsSnapshot.docs) {
-        await admin
-          .firestore()
-          .collection("conversations")
-          .doc(conversationsSnapshot.docs[index].id)
-          .update({
-            members: admin.firestore.FieldValue.arrayRemove(userID),
-          });
+    for (let userID in blockAfter) {
+      if (!blockAfter[userID]) continue;
+      else {
+        for (let index in allConversations.docs) {
+          await admin
+            .firestore()
+            .collection("conversations")
+            .doc(allConversations.docs[index].id)
+            .update({
+              members: admin.firestore.FieldValue.arrayRemove(userID),
+            });
+        }
       }
     }
-  };
-
-  if (!blockedUserListBefore) {
-    function2(await getBlockedUserID(blockedUserListAfter));
-  } else if (!blockedUserListAfter) {
-    // user has been unblocked
-  } else if (
-    blockedUserListAfter.blocked_users.length >
-    blockedUserListBefore.blocked_users.length
-  ) {
-    function2(await getBlockedUserID(blockedUserListAfter));
-  } else if (
-    blockedUserListAfter.blocked_users.length <
-    blockedUserListBefore.blocked_users.length
-  ) {
-    // user has been unblocked
-  } else
-    console.log(
-      "It is hopefully impossible to be here. Or this was a double request so do nothing"
-    );
+  } else if (blockAfter && blockBefore) {
+    // was updated
+  } else {
+    // no idea what is going on
+  }
 };
 
 module.exports = {

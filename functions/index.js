@@ -9,6 +9,7 @@ const fs = require("fs");
 const path = require("path");
 
 const { createProxy, createSitemap } = require("./helpers/sitemap");
+const { blockUserListener } = require("./helpers/block");
 const {
   commentLikeListener,
   commentUpdateListener,
@@ -23,6 +24,10 @@ const {
 const { messagesListener } = require("./helpers/messages");
 const { conversationUpdateListener } = require("./helpers/conversation");
 const { getMetaInformation } = require("./helpers/util");
+
+exports.blockUserListener = functions.firestore
+  .document("/block_check/{userID1userID2}")
+  .onWrite(blockUserListener);
 
 exports.commentUpdateListener = functions.firestore
   .document("/comments/{commentID}")

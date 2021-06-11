@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons/faEye";
 
 import Container from "../../containers/Container";
 import Text from "../../views/Text";
@@ -11,6 +14,7 @@ import "./style.css";
 
 function LoginModal({ setActiveModal }) {
   const { register, handleSubmit } = useForm();
+  const [canSeePassword, setCanSeePassword] = useState(false);
 
   return (
     <Container className="modal-container full-center">
@@ -48,14 +52,21 @@ function LoginModal({ setActiveModal }) {
                 required
               />
               <Text className="fw-400 mb8" text="Password" type="h5" />
-              <input
-                className="py8 px16 mb8 br4"
-                name="password"
-                type="password"
-                placeholder="Password"
-                ref={register}
-                required
-              />
+              <Container className="x-fill full-center">
+                <input
+                  className="flex-fill py8 px16 mb8 br4"
+                  name="password"
+                  type={canSeePassword ? "" : "password"}
+                  placeholder="Password"
+                  ref={register}
+                  required
+                />
+                <FontAwesomeIcon
+                  className={"clickable ml8 " + (canSeePassword ? "blue" : "")}
+                  icon={faEye}
+                  onClick={() => setCanSeePassword(!canSeePassword)}
+                />
+              </Container>
             </Container>
 
             <Container className="column x-fill full-center border-top px32 py16">

@@ -124,11 +124,18 @@ function Chat({ conversation, conversationName, userID }) {
             Load More Messages
           </button>
         )}
+        {!messages ||
+          ((messages && messages.length) === 0 && (
+            <h4 className="tac">
+              The conversation has been started but no messages have been sent!
+            </h4>
+          ))}
+
         {messageDivs}
 
         <div ref={dummyRef} />
       </Container>
-      {isOtherUserTyping && (
+      {false && isOtherUserTyping && (
         <Container className="x-fill">
           <p className="pa16">{conversationName} is typing...</p>
         </Container>
