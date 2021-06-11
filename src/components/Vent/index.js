@@ -391,7 +391,8 @@ function Vent({
                         );
                     }}
                   >
-                    {vent.comment_counter ? vent.comment_counter : 0} Comments
+                    {vent.comment_counter ? vent.comment_counter : 0}{" "}
+                    {vent.comment_counter === 1 ? "Comment" : "Comments"}
                   </Button>
                 </Container>
 
