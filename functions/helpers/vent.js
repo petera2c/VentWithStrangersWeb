@@ -2,6 +2,29 @@ const admin = require("firebase-admin");
 const { createNotification } = require("./notification");
 const { createVentLink } = require("./util");
 
+const VENT_LIKE_TRENDING_SCORE_INCREMENT = 24;
+
+const decreaseTrendingScore = async () => {
+  const trendingSnapshot = await admin
+    .firestore()
+    .collection("/vents/")
+    .orderBy("trending_score")
+    .limit(20)
+    .get();
+
+  for (let index in trendingSnapshot.docs) {
+    const trendingVentDoc = trendingSnapshot.docs[index];
+
+    await admin
+      .firestore()
+      .collection("vents")
+      .doc(trendingVentDoc.id)
+      .update({
+        trending_score: admin.firestore.FieldValue.increment(-1),
+      });
+  }
+};
+
 const newVentListener = (doc, context) => {
   const vent = { id: doc.id, ...doc.data() };
 
@@ -36,6 +59,16 @@ const newVentLikeListener = async (change, context) => {
     .doc(ventIDuserIDArray[0])
     .get();
   const vent = { id: ventDoc.id, ...ventDoc.data() };
+
+  await admin
+    .firestore()
+    .collection("vents")
+    .doc(ventIDuserIDArray[0])
+    .update({
+      trending_score: admin.firestore.FieldValue.increment(
+        VENT_LIKE_TRENDING_SCORE_INCREMENT
+      ),
+    });
 
   createNotification(
     createVentLink(vent),
@@ -108,6 +141,7 @@ const ventDeleteListener = async (doc, context) => {
 };
 
 module.exports = {
+  decreaseTrendingScore,
   newVentLikeListener,
   newVentListener,
   newVentReportListener,

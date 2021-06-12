@@ -16,6 +16,7 @@ const {
   newCommentReportListener,
 } = require("./helpers/comment");
 const {
+  decreaseTrendingScore,
   newVentLikeListener,
   newVentListener,
   newVentReportListener,
@@ -62,6 +63,10 @@ exports.conversationUpdateListener = functions.firestore
 exports.cronUpdateSitemap = functions.pubsub
   .schedule("0 0 * * *")
   .onRun(async () => createSitemap());
+
+exports.cronDecreaseTrendingScore = functions.pubsub
+  .schedule("0 * * * *")
+  .onRun(async () => decreaseTrendingScore());
 
 const injectMetaData = (req, res) => {
   const filePath = path.resolve(__dirname, "./build/index.html");

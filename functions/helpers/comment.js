@@ -2,6 +2,8 @@ const admin = require("firebase-admin");
 const { createNotification } = require("./notification");
 const { createVentLink } = require("./util");
 
+const COMMENT_LIKE_TRENDING_SCORE_INCREMENT = 24;
+
 const deleteAllCommentLikesAndSubtractCommentCounter = async (doc, context) => {
   const commentID = doc.id;
 
@@ -119,7 +121,12 @@ const commentUpdateListener = async (change, context) => {
       .firestore()
       .collection("vents")
       .doc(change.after.data().ventID)
-      .update({ comment_counter: admin.firestore.FieldValue.increment(1) });
+      .update({
+        comment_counter: admin.firestore.FieldValue.increment(1),
+        trending_score: admin.firestore.FieldValue.increment(
+          COMMENT_LIKE_TRENDING_SCORE_INCREMENT
+        ),
+      });
   } else {
   }
 };

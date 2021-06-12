@@ -13,6 +13,7 @@ export const getVents = async (pathname, setCanLoadMore, setVents, vents) => {
     snapshot = await db
       .collection("/vents/")
       .where("server_timestamp", ">", startDate.valueOf())
+      .orderBy("like_counter")
       .limit(10)
       .get();
   } else
