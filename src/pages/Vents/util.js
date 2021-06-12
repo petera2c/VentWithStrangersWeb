@@ -7,21 +7,22 @@ export const getVents = async (pathname, setCanLoadMore, setVents, vents) => {
   let startAt = getEndAtValueTimestamp(vents);
 
   let snapshot;
-  if (pathname === "/trending") {
+  if (pathname === "/recent") {
+    snapshot = await db
+      .collection("/vents/")
+      .orderBy("server_timestamp", "desc")
+      .limit(10)
+      .get();
+  } else {
     let startDate = moment();
     startDate.subtract(3, "days");
     snapshot = await db
       .collection("/vents/")
-      .where("server_timestamp", ">", startDate.valueOf())
-      .limit(10)
-      .get();
-  } else
-    snapshot = await db
-      .collection("/vents/")
-      .orderBy("server_timestamp", "desc")
+      .orderBy("trending_score", "desc")
       .startAfter(startAt)
       .limit(10)
       .get();
+  }
 
   if (snapshot.docs && snapshot.docs.length > 0) {
     let newVents = snapshot.docs.map((doc, index) => ({

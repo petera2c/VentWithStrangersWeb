@@ -102,23 +102,23 @@ function Header({ history, location }) {
           <Link
             className={
               "button-3 py16 mr32 " +
-              isPageActive("/recent", pathname.substring(0, 7)) +
+              isPageActive("/trending", pathname.substring(0, 9)) +
               isPageActive("/", pathname)
-            }
-            to="/recent"
-          >
-            <FontAwesomeIcon className="mr8" icon={faConciergeBell} />
-            Recent
-          </Link>
-          <Link
-            className={
-              "button-3 py16 mr32 " +
-              isPageActive("/trending", pathname.substring(0, 9))
             }
             to="/trending"
           >
             <FontAwesomeIcon className="mr8" icon={faAnalytics} />
             Trending
+          </Link>
+          <Link
+            className={
+              "button-3 py16 mr32 " +
+              isPageActive("/recent", pathname.substring(0, 7))
+            }
+            to="/recent"
+          >
+            <FontAwesomeIcon className="mr8" icon={faConciergeBell} />
+            Recent
           </Link>
           <Link
             className={

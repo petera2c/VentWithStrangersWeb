@@ -136,23 +136,23 @@ function Header({ history, location }) {
         <Container className="x-fill full-center">
           <Link
             className={
-              "button-3 tac py16 mx16 " +
-              isPageActive("/recent", pathname) +
+              "button-3 tac py16 ml16 " +
+              isPageActive("/trending", pathname) +
               isPageActive("/", pathname)
-            }
-            to="/recent"
-          >
-            <FontAwesomeIcon className="mr8" icon={faConciergeBell} />
-            Recent
-          </Link>
-          <Link
-            className={
-              "button-3 tac py16 mx16 " + isPageActive("/trending", pathname)
             }
             to="/trending"
           >
             <FontAwesomeIcon className="mr8" icon={faAnalytics} />
             Trending
+          </Link>
+          <Link
+            className={
+              "button-3 tac py16 mx16 " + isPageActive("/recent", pathname)
+            }
+            to="/recent"
+          >
+            <FontAwesomeIcon className="mr8" icon={faConciergeBell} />
+            Recent
           </Link>
           <Link
             className={

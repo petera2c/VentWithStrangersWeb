@@ -84,7 +84,7 @@ function Vents() {
                 })}
             </Container>
           )}
-          {pathname !== "/trending" && canLoadMore && (
+          {canLoadMore && (
             <LoadMore
               canLoadMore={canLoadMore}
               loadMore={() =>
