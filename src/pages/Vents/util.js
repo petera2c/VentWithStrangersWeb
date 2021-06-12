@@ -30,14 +30,6 @@ export const getVents = async (pathname, setCanLoadMore, setVents, vents) => {
       id: doc.id,
       doc
     }));
-    if (pathname === "/trending")
-      newVents.sort(function(a, b) {
-        return a.like_counter > b.like_counter
-          ? -1
-          : b.like_counter > a.like_counter
-          ? 1
-          : 0;
-      });
 
     if (newVents.length < 10) setCanLoadMore(false);
     if (vents) {

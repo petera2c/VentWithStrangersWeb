@@ -95,11 +95,13 @@ const SmartLink = ({ children, className, disablePostOnClick, to }) => {
 };
 
 function Vent({
-  displayCommentField,
   disablePostOnClick,
+  displayCommentField,
   isOnSingleVentPage,
   previewMode,
   searchPreviewMode,
+  setDescription,
+  setTitle,
   ventFromMeta,
   ventID
 }) {
@@ -134,10 +136,16 @@ function Vent({
   let ventHasLikedListenerUnsubscribe;
 
   useEffect(() => {
-    const ventListenerUnsubscribe = ventListener(vent => {
-      setVent(vent);
-      if (user) hasUserBlockedUser(user.uid, vent.userID, setIsContentBlocked);
-    }, ventID);
+    const ventListenerUnsubscribe = ventListener(
+      setDescription,
+      setTitle,
+      vent => {
+        setVent(vent);
+        if (user)
+          hasUserBlockedUser(user.uid, vent.userID, setIsContentBlocked);
+      },
+      ventID
+    );
 
     if (!searchPreviewMode && displayCommentField2)
       newCommentListenerUnsubscribe = newVentCommentListener(

@@ -35,6 +35,9 @@ function VentPage() {
   const location = useLocation();
   const { pathname } = location;
 
+  const [description, setDescription] = useState("");
+  const [title, setTitle] = useState("");
+
   const objectFromMetaData = getMeta("vent-data");
   let ventFromMeta;
   if (objectFromMetaData && objectFromMetaData !== "vent-data-example")
@@ -47,7 +50,11 @@ function VentPage() {
   if (regexMatch) ventID = regexMatch;
 
   return (
-    <Page className="justify-start align-center bg-grey-2">
+    <Page
+      description={description}
+      className="justify-start align-center bg-grey-2"
+      title={title}
+    >
       <Container className={isMobileOrTablet() ? "py16" : "py32"}>
         {ventFound === false && <h4>Vent Not Found</h4>}
         {ventFound === undefined && ventID && (
@@ -63,6 +70,8 @@ function VentPage() {
               disablePostOnClick={true}
               displayCommentField
               isOnSingleVentPage={true}
+              setDescription={setDescription}
+              setTitle={setTitle}
               setVentFound={setVentFound}
               ventFromMeta={ventFromMeta}
               ventID={ventID}
