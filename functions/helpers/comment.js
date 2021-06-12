@@ -29,6 +29,9 @@ const deleteAllCommentLikesAndSubtractCommentCounter = async (doc, context) => {
       .doc(doc.data().ventID)
       .update({
         comment_counter: admin.firestore.FieldValue.increment(-1),
+        trending_score: admin.firestore.FieldValue.increment(
+          -COMMENT_LIKE_TRENDING_SCORE_INCREMENT
+        ),
       });
 };
 
