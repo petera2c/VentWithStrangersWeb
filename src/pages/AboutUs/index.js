@@ -61,9 +61,8 @@ class AboutUsPage extends Component {
               className="a-tag-common-link"
               href="https://www.ventwithstrangers.com/vent-to-strangers"
             >
-              Post on our board
+              Post on our board anonymously
             </a>
-            anonymously
           </p>
           <p className="mb8">- Comment on our board anonymously</p>
 

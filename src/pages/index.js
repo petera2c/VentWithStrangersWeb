@@ -20,6 +20,7 @@ import Header from "../components/Header";
 import MobileHeader from "../components/Header/MobileHeader";
 import LoadingHeart from "../components/loaders/Heart";
 
+import MentalHealthPage from "./Blogs/MentalHealth";
 import AboutUsPage from "./AboutUs";
 import AccountPage from "./Account";
 import AppDownloadPage from "./AppDownload";
@@ -65,6 +66,10 @@ function Routes() {
           {error && { error }}
           {!loading && !error && (
             <Switch>
+              <Route
+                path="/blogs/why-talking-about-mental-health-is-important/"
+                component={MentalHealthPage}
+              />
               <Route path="/about-us/" component={AboutUsPage} />
               <Route path="/account/" component={AccountPage} exact />
               <Route path="/app-downloads/" component={AppDownloadPage} />
