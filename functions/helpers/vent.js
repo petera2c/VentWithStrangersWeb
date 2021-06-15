@@ -10,7 +10,6 @@ const decreaseTrendingScore = async () => {
     .collection("/vents/")
     .where("trending_score", ">", 0)
     .orderBy("trending_score", "desc")
-    .limit(20)
     .get();
 
   for (let index in trendingSnapshot.docs) {
