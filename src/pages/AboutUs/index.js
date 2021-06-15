@@ -55,10 +55,10 @@ class AboutUsPage extends Component {
           <p className="mb8">
             - Sign up entirely anonymously or use the website without signing up
           </p>
-          <p>
-            -
+          <p className="mb8">
+            -{" "}
             <a
-              className="a-tag-common-link"
+              className="no-bold a-tag-common-link"
               href="https://www.ventwithstrangers.com/vent-to-strangers"
             >
               Post on our board anonymously
@@ -72,10 +72,33 @@ class AboutUsPage extends Component {
           </p>
           <h4 className="mb16">Where Can you Access VWS?</h4>
           <p className="mb8">
-            - <a className="a-tag-common-link">Desktop Website</a>
+            -{" "}
+            <a
+              className="no-bold a-tag-common-link"
+              href="https://www.ventwithstrangers.com"
+            >
+              On our website
+            </a>
           </p>
           <p className="mb8">
-            - <a className="a-tag-common-link">Mobile Website</a>
+            {" "}
+            -{" "}
+            <a
+              className="no-bold a-tag-common-link"
+              href="https://apps.apple.com/us/app/vent-with-strangers/id1509120090"
+            >
+              Apple Store
+            </a>
+          </p>
+          <p className="mb8">
+            {" "}
+            -{" "}
+            <a
+              className="no-bold a-tag-common-link"
+              href="https://play.google.com/store/apps/details?id=com.commontech.ventwithstrangers&hl=en"
+            >
+              Google Store
+            </a>
           </p>
         </Container>
       </Page>
