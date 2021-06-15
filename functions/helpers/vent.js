@@ -15,7 +15,7 @@ const decreaseTrendingScore = async () => {
   for (let index in trendingSnapshot.docs) {
     const trendingVentDoc = trendingSnapshot.docs[index];
     const trendingVentDocData = trendingVentDoc.data();
-    let increment = Math.round(trendingVentDocData.trendingScore * 0.05);
+    let increment = Math.round(trendingVentDocData.trending_score * 0.1);
     if (increment < 1) increment = 1;
 
     await admin
