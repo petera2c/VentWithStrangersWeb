@@ -23,7 +23,7 @@ const decreaseTrendingScore = async () => {
       .collection("vents")
       .doc(trendingVentDoc.id)
       .update({
-        trending_score: admin.firestore.FieldValue.increment(-1),
+        trending_score: admin.firestore.FieldValue.increment(-increment),
       });
   }
 };
