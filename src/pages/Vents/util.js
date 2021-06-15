@@ -59,11 +59,11 @@ export const getMetaInformation = pathname => {
   } else if (pathname === "/trending") {
     metaTitle = "Trending";
     metaDescription =
-      "People’s vents and issues with the most upvotes in the past 24 hours. Post, comment, and/or like anonymously.";
+      "View trending vents. Post, comment, and/or like anonymously.";
   } else {
-    metaTitle = "Recent";
+    metaTitle = "Trending";
     metaDescription =
-      "The latest vents and issues people have posted. Post, comment, and/or like anonymously.";
+      "View trending vents. Post, comment, and/or like anonymously.";
   }
   return { metaDescription, metaTitle };
 };
