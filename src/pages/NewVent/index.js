@@ -55,7 +55,7 @@ function NewVentPage() {
       className="column align-center bg-grey-2"
       description="You aren’t alone, and you should never feel alone. If you are feeling down, anonymously post your issue here. There is an entire community of people that want to help you."
       keywords=""
-      title="Post a Vent"
+      title="Vent To Strangers"
     >
       <Container
         className={
@@ -65,7 +65,11 @@ function NewVentPage() {
             : "container large")
         }
       >
-        <Text className="fw-600 mb16" text="Post Your Vent" type="h4" />
+        <Text
+          className="fw-600 mb16"
+          text="Post Your Vent | Vent To Strangers"
+          type="h4"
+        />
 
         <Container className="column bg-white br8">
           <Container className="column py32 px32 br4">

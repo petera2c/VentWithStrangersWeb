@@ -101,7 +101,7 @@ const getMetaInformation = async (url, callback) => {
     return callback(
       {
         metaDescription:
-          "You aren’t alone, and you should never feel alone. If you are feeling down, anonymously post your issue here. There is an entire community of people that want to help you.",
+          "Vent to strangers. You aren’t alone, and you should never feel alone. If you are feeling down, anonymously post your issue here. There is an entire community of people that want to help you.",
         metaImage: defaultMetaObject.metaImage,
         metaTitle: "Post a Vent | Vent With Strangers",
       },
@@ -111,7 +111,7 @@ const getMetaInformation = async (url, callback) => {
     return callback(
       {
         metaDescription:
-          "You aren’t alone, and you should never feel alone. If you are feeling down, anonymously post your issue here. There is an entire community of people that want to help you.",
+          "Vent to strangers. You aren’t alone, and you should never feel alone. If you are feeling down, anonymously post your issue here. There is an entire community of people that want to help you.",
         metaImage: defaultMetaObject.metaImage,
         metaTitle: "Post a Vent | Vent With Strangers",
       },
