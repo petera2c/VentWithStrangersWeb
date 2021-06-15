@@ -8,7 +8,7 @@ const decreaseTrendingScore = async () => {
   const trendingSnapshot = await admin
     .firestore()
     .collection("/vents/")
-    .where("trending_score", ">", "0")
+    .where("trending_score", ">", 0)
     .orderBy("trending_score", "desc")
     .limit(20)
     .get();
@@ -16,8 +16,8 @@ const decreaseTrendingScore = async () => {
   for (let index in trendingSnapshot.docs) {
     const trendingVentDoc = trendingSnapshot.docs[index];
     const trendingVentDocData = trendingVentDoc.data();
-    let increment = Math.round(trendingVentDocData.trending_score * 0.1);
-    if (increment < 1) increment = 1;
+    let increment = Math.round(trendingVentDocData.trending_score * 0.05);
+    increment = increment + 2;
 
     await admin
       .firestore()
