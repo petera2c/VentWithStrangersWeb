@@ -28,8 +28,14 @@ const decreaseTrendingScore = async () => {
   }
 };
 
-const newVentListener = (doc, context) => {
+const newVentListener = async (doc, context) => {
   const vent = { id: doc.id, ...doc.data() };
+
+  await admin
+    .firestore()
+    .collection("vent_likes")
+    .doc(vent.id + "|||" + vent.userID)
+    .set({ liked: true, ventID: vent.id });
 
   return createNotification(
     createVentLink(vent),
