@@ -8,7 +8,7 @@ const decreaseTrendingScore = async () => {
   const trendingSnapshot = await admin
     .firestore()
     .collection("/vents/")
-    .orderBy("trending_score")
+    .orderBy("trending_score", "desc")
     .limit(20)
     .get();
 
