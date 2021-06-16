@@ -15,8 +15,7 @@ const decreaseTrendingScore = async () => {
   for (let index in trendingSnapshot.docs) {
     const trendingVentDoc = trendingSnapshot.docs[index];
     const trendingVentDocData = trendingVentDoc.data();
-    let increment = Math.round(trendingVentDocData.trending_score * 0.05);
-    increment = increment + 2;
+    const increment = Math.round(trendingVentDocData.trending_score * 0.05) + 1;
 
     await admin
       .firestore()

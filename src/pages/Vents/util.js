@@ -11,6 +11,7 @@ export const getVents = async (pathname, setCanLoadMore, setVents, vents) => {
     snapshot = await db
       .collection("/vents/")
       .orderBy("server_timestamp", "desc")
+      .startAfter(startAt)
       .limit(10)
       .get();
   } else {
