@@ -26,6 +26,7 @@ import AccountPage from "./Account";
 import AppDownloadPage from "./AppDownload";
 import NotificationsPage from "./Notifications";
 import SearchPage from "./Search";
+import SignUpPage from "./SignUp";
 import VentsPage from "./Vents";
 import ConversationsPage from "./Conversations";
 import NewVentPage from "./NewVent";
@@ -84,7 +85,7 @@ function Routes() {
               <Route path="/popular/" component={VentsPage} />
               <Route path="/conversations/" component={ConversationsPage} />
               <Route path="/vent-to-strangers/" component={NewVentPage} />
-              <Route path="/vent-to-a-stranger/" component={NewVentPage} />
+              <Route path="/vent-to-a-stranger/" component={SignUpPage} />
               <Route path="/problem/" component={VentPage} />
               <Route path="/blog/" component={BlogPage} />
               <Route path="/feedback/" component={FeedbackPage} />

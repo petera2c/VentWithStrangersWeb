@@ -111,9 +111,9 @@ const getMetaInformation = async (url, callback) => {
     return callback(
       {
         metaDescription:
-          "Vent to strangers. You aren’t alone, and you should never feel alone. If you are feeling down, anonymously post your issue here. There is an entire community of people that want to help you.",
+          "Chat anonymously and post a vent anonymously. Find strangers just like you to vent with. We are here to listen, you are not alone.",
         metaImage: defaultMetaObject.metaImage,
-        metaTitle: "Post a Vent | Vent With Strangers",
+        metaTitle: "Chat and Post Anonymously | Vent With Strangers",
       },
       true
     );

@@ -52,6 +52,7 @@ class AboutUsPage extends Component {
             that focuses on connection, vulnerability, and courage.
           </p>
           <h4 className="mb16">What Can You Do on VWS?</h4>
+          <p className="mb8">- Chat anonymously with strangers</p>
           <p className="mb8">
             - Sign up entirely anonymously or use the website without signing up
           </p>

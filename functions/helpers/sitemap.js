@@ -49,9 +49,9 @@ const createSitemap = async () => {
   siteMapString +=
     "<url>\n<loc>https://www.ventwithstrangers.com/vent-to-strangers</loc>\n<lastmod>2021-03-13</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.8</priority>\n</url>\n\n";
   siteMapString +=
-    "<url>\n<loc>https://www.ventwithstrangers.com/vent-to-a-stranger</loc>\n<lastmod>2021-06-13</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.8</priority>\n</url>\n\n";
+    "<url>\n<loc>https://www.ventwithstrangers.com/vent-to-a-stranger</loc>\n<lastmod>2021-06-17</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.8</priority>\n</url>\n\n";
   siteMapString +=
-    "<url>\n<loc>https://www.ventwithstrangers.com/about-us</loc>\n<lastmod>2021-03-13</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.6</priority>\n</url>\n\n";
+    "<url>\n<loc>https://www.ventwithstrangers.com/about-us</loc>\n<lastmod>2021-06-17</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.6</priority>\n</url>\n\n";
   siteMapString +=
     "<url>\n<loc>https://www.ventwithstrangers.com/conversations</loc>\n<lastmod>2021-04-01</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.6</priority>\n</url>\n\n";
   siteMapString +=
