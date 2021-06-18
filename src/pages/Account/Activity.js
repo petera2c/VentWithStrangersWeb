@@ -67,10 +67,10 @@ function ActivitySection({ user }) {
         (isMobileOrTablet() ? "mobile-full" : "large")
       }
     >
-      {false && search && (
+      {search && (
         <Container className="ov-hidden column bg-white pa16 mb16 br8">
-          <h6>{userDisplayName}</h6>
-          <h6>106 Karma</h6>
+          <h6 className="primary">{userDisplayName}</h6>
+          <h6 className="primary">{106} Karma</h6>
         </Container>
       )}
 

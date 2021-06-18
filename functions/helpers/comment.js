@@ -43,6 +43,24 @@ const commentLikeListener = async (change, context) => {
   let increment = 1;
   if (!hasLiked) increment = -1;
 
+  if (!change.before.data()) {
+    const commentDoc = await admin
+      .firestore()
+      .collection("comments")
+      .doc(commentIDuserIDArray[0])
+      .get();
+    await admin
+      .firestore()
+      .collection("users_karma")
+      .doc(commentDoc.data().userID)
+      .set(
+        {
+          good_karma: admin.firestore.FieldValue.increment(10),
+        },
+        { merge: true }
+      );
+  }
+
   await admin
     .firestore()
     .collection("comments")
@@ -146,13 +164,22 @@ const newCommentReportListener = async (doc, context) => {
       report_counter: admin.firestore.FieldValue.increment(1),
     });
 
+  const commentDoc = await admin
+    .firestore()
+    .collection("comments")
+    .doc(commentID)
+    .get();
+
   await admin
     .firestore()
-    .collection("users")
-    .doc(userID)
-    .update({
-      bad_karma: admin.firestore.FieldValue.increment(10),
-    });
+    .collection("users_karma")
+    .doc(commentDoc.data().userID)
+    .set(
+      {
+        bad_karma: admin.firestore.FieldValue.increment(10),
+      },
+      { merge: true }
+    );
 
   await admin
     .firestore()

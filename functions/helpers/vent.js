@@ -51,6 +51,24 @@ const newVentLikeListener = async (change, context) => {
   let increment = 1;
   if (!hasLiked) increment = -1;
 
+  if (!change.before.data()) {
+    const ventDoc = await admin
+      .firestore()
+      .collection("vents")
+      .doc(ventIDuserIDArray[0])
+      .get();
+    await admin
+      .firestore()
+      .collection("users_karma")
+      .doc(ventDoc.data().userID)
+      .set(
+        {
+          good_karma: admin.firestore.FieldValue.increment(10),
+        },
+        { merge: true }
+      );
+  }
+
   await admin
     .firestore()
     .collection("vents")
@@ -92,13 +110,22 @@ const newVentReportListener = async (doc, context) => {
       report_counter: admin.firestore.FieldValue.increment(1),
     });
 
+  const ventDoc = await admin
+    .firestore()
+    .collection("vents")
+    .doc(ventID)
+    .get();
+
   await admin
     .firestore()
-    .collection("users")
-    .doc(userID)
-    .update({
-      bad_karma: admin.firestore.FieldValue.increment(10),
-    });
+    .collection("users_karma")
+    .doc(ventDoc.data().userID)
+    .set(
+      {
+        bad_karma: admin.firestore.FieldValue.increment(10),
+      },
+      { merge: true }
+    );
 
   await admin
     .firestore()
