@@ -49,6 +49,8 @@ const commentLikeListener = async (change, context) => {
       .collection("comments")
       .doc(commentIDuserIDArray[0])
       .get();
+
+    // Give +10 to the user that made the comment
     await admin
       .firestore()
       .collection("users_karma")
@@ -56,6 +58,18 @@ const commentLikeListener = async (change, context) => {
       .set(
         {
           good_karma: admin.firestore.FieldValue.increment(10),
+        },
+        { merge: true }
+      );
+
+    // Give +1 to the user that gave the upvote
+    await admin
+      .firestore()
+      .collection("users_karma")
+      .doc(commentIDuserIDArray[1])
+      .set(
+        {
+          good_karma: admin.firestore.FieldValue.increment(1),
         },
         { merge: true }
       );

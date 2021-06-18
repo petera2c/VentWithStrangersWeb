@@ -57,6 +57,8 @@ const newVentLikeListener = async (change, context) => {
       .collection("vents")
       .doc(ventIDuserIDArray[0])
       .get();
+
+    // Give +10 to the user that made the comment
     await admin
       .firestore()
       .collection("users_karma")
@@ -64,6 +66,18 @@ const newVentLikeListener = async (change, context) => {
       .set(
         {
           good_karma: admin.firestore.FieldValue.increment(10),
+        },
+        { merge: true }
+      );
+
+    // Give +1 to the user that gave the upvote
+    await admin
+      .firestore()
+      .collection("users_karma")
+      .doc(ventIDuserIDArray[1])
+      .set(
+        {
+          good_karma: admin.firestore.FieldValue.increment(1),
         },
         { merge: true }
       );
