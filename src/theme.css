@@ -506,6 +506,9 @@
 .br20 {
   border-radius: 20px;
 }
+.br-round {
+  border-radius: 50%;
+}
 
 .border-all {
   border: 1px solid var(--grey-color-7);
@@ -543,11 +546,6 @@
 
 .normal-cursor {
   cursor: default;
-}
-
-.round-icon {
-  width: 32px !important;
-  height: 32px;
 }
 
 body {

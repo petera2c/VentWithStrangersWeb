@@ -53,7 +53,7 @@ const commentLikeListener = async (change, context) => {
     // Give +10 to the user that made the comment
     await admin
       .firestore()
-      .collection("users_karma")
+      .collection("users_display_name")
       .doc(commentDoc.data().userID)
       .set(
         {
@@ -65,7 +65,7 @@ const commentLikeListener = async (change, context) => {
     // Give +1 to the user that gave the upvote
     await admin
       .firestore()
-      .collection("users_karma")
+      .collection("users_display_name")
       .doc(commentIDuserIDArray[1])
       .set(
         {
@@ -186,7 +186,7 @@ const newCommentReportListener = async (doc, context) => {
 
   await admin
     .firestore()
-    .collection("users_karma")
+    .collection("users_display_name")
     .doc(commentDoc.data().userID)
     .set(
       {

@@ -3,11 +3,6 @@ service cloud.firestore {
   match /databases/{database}/documents {
     //return exists(/databases/$(database)/documents/block_check/$(userID+"|||"+userID2));
 
-    match /users_karma/{userKarmaID} {
-      allow read: if true;
-      allow write, update, delete: if false;
-    }
-
     match /comments/{commentID} {
       allow read: if true;
       allow write: if request.auth.uid == request.resource.data.userID;
@@ -53,20 +48,21 @@ service cloud.firestore {
 
     match /users/{userID} {
       allow read, write, update, delete: if request.auth.uid == userID;
-
-      match /bad_karma {
-        allow read: if request.auth.uid == userID;
-        allow write, update, delete: if false;
-      }
-      match /good_karma {
-        allow read: if request.auth.uid == userID;
-        allow write, update, delete: if false;
-      }
     }
 
     match /users_display_name/{userID} {
       allow read: if true;
       allow write, update, delete: if request.auth.uid == userID;
+
+
+      match /bad_karma {
+        allow read: if true;
+        allow write, update, delete: if false;
+      }
+      match /good_karma {
+        allow read: if true;
+        allow write, update, delete: if false;
+      }
     }
 
     match /unread_conversations_count/{userID} {

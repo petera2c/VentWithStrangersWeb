@@ -19,7 +19,13 @@ import Comment from "../../components/Comment";
 
 import LoadMore from "../../components/LoadMore";
 
-import { getUserDisplayName, isMobileOrTablet } from "../../util";
+import {
+  calculateKarma,
+  capitolizeFirstChar,
+  getUserBasicInfo,
+  isMobileOrTablet,
+  karmaBadge
+} from "../../util";
 import { getUsersPosts } from "./util";
 
 function ActivitySection({ user }) {
@@ -32,7 +38,7 @@ function ActivitySection({ user }) {
   }
   const [postsSection, setPostsSection] = useState(true);
   const [canLoadMore, setCanLoadMore] = useState();
-  const [userDisplayName, setUserDisplayName] = useState("");
+  const [userBasicInfo, setUserBasicInfo] = useState({});
 
   if (search) search = search.substring(1);
   if (!search && user) search = user.uid;
@@ -51,13 +57,13 @@ function ActivitySection({ user }) {
     .orderBy("server_timestamp", "desc")
     .limit(20);
   const [comments] = useCollectionData(commentQuery, { idField: "id" });
-  const isActive = test => {
-    if (test) return " active";
+  const isActive = page => {
+    if (page) return " active";
     else return "";
   };
 
   useEffect(() => {
-    if (search) getUserDisplayName(setUserDisplayName, search);
+    if (search) getUserBasicInfo(setUserBasicInfo, search);
   }, []);
 
   return (
@@ -69,8 +75,30 @@ function ActivitySection({ user }) {
     >
       {search && (
         <Container className="ov-hidden column bg-white pa16 mb16 br8">
-          <h6 className="primary">{userDisplayName}</h6>
-          <h6 className="primary">{106} Karma</h6>
+          <Container className="x-fill full-center">
+            <Container
+              className="bg-blue full-center mb16 br-round"
+              style={{
+                height: "84px",
+                width: "84px"
+              }}
+            >
+              <h1 className="white fs-40">
+                {userBasicInfo.displayName ? userBasicInfo.displayName[0] : ""}
+              </h1>
+            </Container>
+          </Container>
+          <Container className="align-center">
+            <h1 className="primary mr8">
+              {userBasicInfo.displayName
+                ? capitolizeFirstChar(userBasicInfo.displayName)
+                : "Anonymous"}
+            </h1>
+            {karmaBadge(calculateKarma(userBasicInfo))}
+          </Container>
+          <h6 className="grey-1 fw-400">
+            {calculateKarma(userBasicInfo)} Karma Points
+          </h6>
         </Container>
       )}
 

@@ -1,7 +1,7 @@
 import firebase from "firebase/app";
 import db from "../../config/firebase";
 
-import { getEndAtValueTimestamp } from "../../util";
+import { calculateKarma, getEndAtValueTimestamp } from "../../util";
 
 export const commentVent = async (commentString, user, ventID) => {
   if (!user) return alert("Only users can comment! Please login or register.");
@@ -228,16 +228,16 @@ export const ventListener = (setDescription, setTitle, setVent, ventID) => {
       if (!doc.exists) return;
       const vent = doc.data();
 
-      const authorDoc = await db
+      const userBasicInfoDoc = await db
         .collection("users_display_name")
         .doc(vent.userID)
         .get();
 
       let author = "";
       let authorID;
-      if (authorDoc.exists && authorDoc.data().displayName) {
-        author = authorDoc.data().displayName;
-        authorID = authorDoc.id;
+      if (userBasicInfoDoc.exists && userBasicInfoDoc.data().displayName) {
+        author = userBasicInfoDoc.data().displayName;
+        authorID = userBasicInfoDoc.id;
       }
 
       if (!author) author = "Anonymous";
@@ -245,7 +245,15 @@ export const ventListener = (setDescription, setTitle, setVent, ventID) => {
       if (vent) {
         if (setDescription) setDescription(vent.description);
         if (setTitle) setTitle(vent.title);
-        setVent({ id: ventID, ...vent, author, authorID });
+        setVent({
+          id: ventID,
+          ...vent,
+          author,
+          authorID,
+          authorKarma: calculateKarma(
+            userBasicInfoDoc.exists ? userBasicInfoDoc.data() : {}
+          )
+        });
       } else setVent(false);
     });
 

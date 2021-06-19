@@ -58,6 +58,7 @@ import { UserContext } from "../../context";
 import {
   addTagsToPage,
   blockUser,
+  karmaBadge,
   capitolizeFirstChar,
   hasUserBlockedUser,
   isMobileOrTablet
@@ -211,10 +212,11 @@ function Vent({
                   />
                 )}
                 <Text
-                  className="button-1 fw-400"
+                  className="button-1 fw-400 mr8"
                   text={capitolizeFirstChar(vent.author)}
                   type="h5"
                 />
+                {karmaBadge(vent.authorKarma)}
               </Container>
             </Container>
             <Container className="relative flex-fill align-center justify-end">

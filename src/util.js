@@ -1,3 +1,8 @@
+import React from "react";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMedal } from "@fortawesome/pro-solid-svg-icons/faMedal";
+
 import firebase from "firebase/app";
 import "firebase/auth";
 import db from "./config/firebase";
@@ -31,6 +36,27 @@ export const blockUser = async (userID, userIDToBlock) => {
   window.location.reload();
 };
 
+export const karmaBadge = karma => {
+  let karmaColor = "";
+  if (karma > 5000)
+    return <h5 className="bg-light-blue fw-400 px8 py4 br8">Site Admin</h5>;
+  else if (karma > 500) karmaColor = "#E11218";
+  else if (karma > 250) karmaColor = "#FFD700";
+  else if (karma > 100) karmaColor = "#C0C0C0";
+  else if (karma > 50) karmaColor = "#b87333";
+
+  if (karmaColor)
+    return <FontAwesomeIcon icon={faMedal} color={karmaColor} size="2x" />;
+  else return;
+};
+
+export const calculateKarma = usereBasicInfo => {
+  const goodKarma = usereBasicInfo.good_karma ? usereBasicInfo.good_karma : 0;
+  const badKarma = usereBasicInfo.bad_karma ? usereBasicInfo.bad_karma : 0;
+
+  return goodKarma - badKarma;
+};
+
 // Taken from stack overflow
 export const capitolizeWordsInString = str => {
   return str.replace(/\b\w/g, l => l.toUpperCase());
@@ -59,20 +85,15 @@ export const getEndAtValueTimestamp = array => {
   return startAt;
 };
 
-export const getUserDisplayName = async (callback, userID) => {
-  let author = "Anonymous";
-
-  if (!userID) return author;
+export const getUserBasicInfo = async (callback, userID) => {
+  if (!userID) return {};
 
   const authorDoc = await db
     .collection("users_display_name")
     .doc(userID)
     .get();
 
-  if (authorDoc.exists && authorDoc.data().displayName) {
-    author = authorDoc.data().displayName;
-  }
-  callback(author);
+  callback(authorDoc.exists ? authorDoc.data() : {});
 };
 
 export const hasUserBlockedUser = async (userID, userID2, callback) => {

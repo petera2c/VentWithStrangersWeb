@@ -61,7 +61,7 @@ const newVentLikeListener = async (change, context) => {
     // Give +10 to the user that made the comment
     await admin
       .firestore()
-      .collection("users_karma")
+      .collection("users_display_name")
       .doc(ventDoc.data().userID)
       .set(
         {
@@ -73,7 +73,7 @@ const newVentLikeListener = async (change, context) => {
     // Give +1 to the user that gave the upvote
     await admin
       .firestore()
-      .collection("users_karma")
+      .collection("users_display_name")
       .doc(ventIDuserIDArray[1])
       .set(
         {
@@ -132,7 +132,7 @@ const newVentReportListener = async (doc, context) => {
 
   await admin
     .firestore()
-    .collection("users_karma")
+    .collection("users_display_name")
     .doc(ventDoc.data().userID)
     .set(
       {
