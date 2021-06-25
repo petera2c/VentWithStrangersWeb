@@ -117,7 +117,7 @@ const getMetaInformation = async (url, callback) => {
       },
       true
     );
-  else if (url === "/about-us")
+  else if (url === "/site-info")
     return callback(
       {
         metaDescription: "Learn about Vent With Strangers",

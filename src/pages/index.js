@@ -71,7 +71,7 @@ function Routes() {
                 path="/blogs/why-talking-about-mental-health-is-important/"
                 component={MentalHealthPage}
               />
-              <Route path="/about-us/" component={AboutUsPage} />
+              <Route path="/site-info/" component={AboutUsPage} />
               <Route path="/account/" component={AccountPage} exact />
               <Route path="/app-downloads/" component={AppDownloadPage} />
               <Route path="/activity/" component={AccountPage} />

@@ -139,9 +139,9 @@ function Header({ history, location }) {
           <Link
             className={
               "button-3 py16 mr32 " +
-              isPageActive("/about-us", pathname.substring(0, 9))
+              isPageActive("/site-info", pathname.substring(0, 9))
             }
-            to="/about-us"
+            to="/site-info"
           >
             Site Info
           </Link>
