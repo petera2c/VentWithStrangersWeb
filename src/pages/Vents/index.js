@@ -79,7 +79,7 @@ function Vents() {
               {vents &&
                 vents.map((vent, index) => {
                   return (
-                    <Vent key={index} previewMode={true} ventID={vent.id} />
+                    <Vent key={index} previewMode={true} ventInit={vent} />
                   );
                 })}
             </Container>

@@ -84,7 +84,9 @@ function ActivitySection({ user }) {
               }}
             >
               <h1 className="white fs-40">
-                {userBasicInfo.displayName ? userBasicInfo.displayName[0] : ""}
+                {userBasicInfo.displayName
+                  ? capitolizeFirstChar(userBasicInfo.displayName[0])
+                  : ""}
               </h1>
             </Container>
           </Container>
@@ -135,7 +137,7 @@ function ActivitySection({ user }) {
                 history={history}
                 key={index}
                 previewMode={true}
-                ventID={vent.id}
+                ventInit={vent}
               />
             ))}
           {vents && vents.length === 0 && (

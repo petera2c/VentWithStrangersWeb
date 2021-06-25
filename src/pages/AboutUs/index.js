@@ -13,51 +13,16 @@ class AboutUsPage extends Component {
         className="bg-grey-2 full-center"
         description=""
         keywords="Learn about Vent With Strangers"
-        title="About Us"
+        title="Site Info"
       >
         <Container className="column container large bg-white pa32 ma32 br8">
-          <h1 className="primary mb16">Why Does Vent With Strangers Exist?</h1>
-          <p className="mb8">
-            We know how it feels to believe that no one is listening. We know
-            what it’s like to need to share and not have anyone to talk with.
-            And we know what a difference it makes to realize that someone is
-            listening and that open hearts and minds are willing to hear our
-            stories.
-          </p>
-          <p className="mb8">
-            Vent With Strangers exists for any person of any age to share their
-            fears, feelings, and secrets anonymously with other humans - who
-            will show up for you, no matter what.
-          </p>
-          <p className="mb8">
-            Mental health is a crucially important - and often overlooked - part
-            of human existence, and we felt like other platforms designed to let
-            you vent lacked one necessary element: your privacy. We have
-            designed VWS to be completely anonymous, so your identity is
-            protected. We’ve also noticed that online bullying is an issue
-            plaguing many who go onto the Internet to seek advice, so we have
-            specifically designed VWS to be a platform that champions all people
-            and all problems, with a strict anti-hate policy. Our moderators
-            comb through conversations as they happen and immediately block any
-            negative sentiment or hatred. Your safety and comfort are essential
-            aspects of Vent With Strangers.
-          </p>
-          <p className="mb16">
-            We believe that health begins in the mind and that encouraging
-            companionship, helpful advice, unconditional support, and positive
-            affirmation from others who’ve been through it can do magic for the
-            soul. By anonymously connecting the many people in crisis with the
-            many who want to help, no matter where they may be in the world or
-            their lives, we strive for a better, healthier collective future
-            that focuses on connection, vulnerability, and courage.
-          </p>
           <h4 className="mb16">What Can You Do on VWS?</h4>
-          <p className="mb8">- Chat anonymously with strangers</p>
+          <p className="mb8">· Chat anonymously with strangers</p>
           <p className="mb8">
-            - Sign up entirely anonymously or use the website without signing up
+            · Sign up entirely anonymously or use the website without signing up
           </p>
           <p className="mb8">
-            -{" "}
+            ·{" "}
             <a
               className="no-bold a-tag-common-link"
               href="https://www.ventwithstrangers.com/vent-to-strangers"
@@ -65,40 +30,63 @@ class AboutUsPage extends Component {
               Post on our board anonymously
             </a>
           </p>
-          <p className="mb8">- Comment on our board anonymously</p>
-
-          <p className="mb16">
-            - Tag someone in a post or comment by placing @ before their
+          <p className="mb8">· Comment on our board anonymously</p>
+          <p className="mb8">
+            · Tag someone in a post or comment by placing @ before their
             username
           </p>
-          <h4 className="mb16">Where Can you Access VWS?</h4>
-          <p className="mb8">
-            -{" "}
-            <a
-              className="no-bold a-tag-common-link"
-              href="https://www.ventwithstrangers.com"
-            >
-              On our website
-            </a>
+          <p className="mb16">· Earn Karma Points</p>
+
+          <h4 className="mb16">What the Heck are Karma Points?</h4>
+          <p className="mb16">
+            Karma Points are awarded to you when your Vent or comment gets
+            upvoted or when you upvote a Vent or comment. Karma Points are taken
+            away when you get reported for a valid reason. Be nice and don’t get
+            reported!
           </p>
+          <h6 className="bold mb16">Karma Points are Awarded as Follows</h6>
+          <p className="pl8 mb8">· +10 for an upvote on your comment</p>
+          <p className="pl8 mb8">· +10 for an upvote on your vent</p>
+          <p className="pl8 mb8">· +1 when you upvote someone else’s comment</p>
+          <p className="pl8 mb8">· +1 when you upvote someone else’s vent</p>
+          <p className="pl8 mb16">
+            · -10 when you get reported for a valid reason
+          </p>
+          <h6 className="bold mb16">Karma Badges</h6>
+          <p className="mb8">· Bronze Badge @ 50 Karma Points</p>
+          <p className="mb8">· Silver Badge @ 100 Karma Points</p>
+          <p className="mb8">· Gold Badge @ 250 Karma Points</p>
+          <p className="mb8">· Elite Red Badge @ 500 Karma Points</p>
+          <p className="mb16">· Site Moderator Title @ 5000 Karma Points</p>
+          <h6 className="bold mb16">
+            With Great Power Comes Great Responsibility
+          </h6>
+          <p className="mb16">
+            Gold, Silver, Bronze, and Elite Red badges are milestones while you
+            work your way to the Site Moderator Title. As a Site Moderator, you
+            will be able to edit/delete up to 3 vents and comments a day and
+            also ban 2 users per day.
+          </p>
+
+          <h4 className="mb16">Where Else Can You Access VWS?</h4>
           <p className="mb8">
             {" "}
-            -{" "}
+            ·{" "}
             <a
-              className="no-bold a-tag-common-link"
+              className="underline no-bold a-tag-common-link"
               href="https://apps.apple.com/us/app/vent-with-strangers/id1509120090"
             >
-              Apple Store
+              Apple App Store
             </a>
           </p>
-          <p className="mb8">
+          <p className="mb16">
             {" "}
-            -{" "}
+            ·{" "}
             <a
-              className="no-bold a-tag-common-link"
+              className="underline no-bold a-tag-common-link"
               href="https://play.google.com/store/apps/details?id=com.commontech.ventwithstrangers&hl=en"
             >
-              Google Store
+              Google Play Store
             </a>
           </p>
         </Container>

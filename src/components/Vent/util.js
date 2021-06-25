@@ -3,7 +3,21 @@ import db from "../../config/firebase";
 
 import { calculateKarma, getEndAtValueTimestamp } from "../../util";
 
-export const commentVent = async (commentString, user, ventID) => {
+const incrementVentCounter = (attributeToIncrement, shouldIncrease, vent) => {
+  const newVent = { ...vent };
+  if (shouldIncrease)
+    newVent[attributeToIncrement] = newVent[attributeToIncrement] + 1;
+  else newVent[attributeToIncrement] = newVent[attributeToIncrement] - 1;
+  return newVent;
+};
+
+export const commentVent = async (
+  commentString,
+  setVent,
+  user,
+  vent,
+  ventID
+) => {
   if (!user) return alert("Only users can comment! Please login or register.");
   let commentObj = {
     like_counter: 0,
@@ -12,6 +26,9 @@ export const commentVent = async (commentString, user, ventID) => {
     userID: user.uid,
     ventID
   };
+
+  setVent(incrementVentCounter("comment_counter", true, vent));
+
   const res = await db.collection("comments").add(commentObj);
 };
 
@@ -114,6 +131,33 @@ const getCurrentTypingWord = (currentTypingIndex, fullString) => {
   return { currentTypingWord, distanceToLeft, distanceToRight };
 };
 
+export const getVent = async (
+  getAuthor,
+  setDescription,
+  setTitle,
+  setVent,
+  ventID
+) => {
+  const ventDoc = await db
+    .collection("vents")
+    .doc(ventID)
+    .get();
+
+  if (!ventDoc.exists) return;
+  const newVent = ventDoc.data();
+
+  if (setTitle && newVent && newVent.title) setTitle(newVent.title);
+  if (setDescription && newVent && newVent.description)
+    setDescription(newVent.description);
+
+  getAuthor(newVent.userID);
+
+  setVent({
+    id: ventDoc.id,
+    ...newVent
+  });
+};
+
 export const getVentDescription = (previewMode, vent) => {
   let description = vent.description;
   if (previewMode && description.length > 240)
@@ -205,64 +249,32 @@ export const getVentComments = async (comments, setComments, ventID) => {
   } else setComments([]);
 };
 
-export const ventHasLikedListener = (setHasLiked, userID, ventID) => {
-  const unsubscribe = db
+export const ventHasLiked = async (setHasLiked, userID, ventID) => {
+  const ventHasLikedDoc = await db
     .collection("vent_likes")
     .doc(ventID + "|||" + userID)
-    .onSnapshot("value", snapshot => {
-      if (!snapshot) return;
-      let value = snapshot.data();
-      if (value) value = value.liked;
+    .get();
 
-      setHasLiked(Boolean(value));
-    });
+  if (!ventHasLikedDoc.exists) return;
+  let value = ventHasLikedDoc.data();
+  if (value) value = value.liked;
 
-  return unsubscribe;
+  setHasLiked(Boolean(value));
 };
 
-export const ventListener = (setDescription, setTitle, setVent, ventID) => {
-  const unsubscribe = db
-    .collection("vents")
-    .doc(ventID)
-    .onSnapshot("value", async doc => {
-      if (!doc.exists) return;
-      const vent = doc.data();
-
-      const userBasicInfoDoc = await db
-        .collection("users_display_name")
-        .doc(vent.userID)
-        .get();
-
-      let author = "";
-      let authorID;
-      if (userBasicInfoDoc.exists && userBasicInfoDoc.data().displayName) {
-        author = userBasicInfoDoc.data().displayName;
-        authorID = userBasicInfoDoc.id;
-      }
-
-      if (!author) author = "Anonymous";
-
-      if (vent) {
-        if (setDescription) setDescription(vent.description);
-        if (setTitle) setTitle(vent.title);
-        setVent({
-          id: ventID,
-          ...vent,
-          author,
-          authorID,
-          authorKarma: calculateKarma(
-            userBasicInfoDoc.exists ? userBasicInfoDoc.data() : {}
-          )
-        });
-      } else setVent(false);
-    });
-
-  return unsubscribe;
-};
-
-export const likeOrUnlikeVent = async (hasLiked, user, vent) => {
+export const likeOrUnlikeVent = async (
+  hasLiked,
+  setHasLiked,
+  setVent,
+  user,
+  vent
+) => {
   if (!user)
     return alert("You must sign in or register an account to support a vent!");
+
+  setHasLiked(!hasLiked);
+
+  setVent(incrementVentCounter("like_counter", !hasLiked, vent));
 
   await db
     .collection("vent_likes")

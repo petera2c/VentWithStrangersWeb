@@ -58,9 +58,8 @@ function SearchPage() {
                 <Vent
                   key={index}
                   previewMode={true}
-                  vent={ventDoc.data()}
-                  ventID={ventDoc.id}
                   ventIndex={index}
+                  ventInit={{ ...ventDoc.data(), id: ventDoc.id }}
                   searchPreviewMode={true}
                 />
               ))}

@@ -22,11 +22,17 @@ import ReportModal from "../modals/Report";
 
 import { UserContext } from "../../context";
 
-import { blockUser, capitolizeFirstChar, hasUserBlockedUser } from "../../util";
+import {
+  blockUser,
+  calculateKarma,
+  capitolizeFirstChar,
+  getUserBasicInfo,
+  hasUserBlockedUser,
+  karmaBadge
+} from "../../util";
 import {
   deleteComment,
   editComment,
-  getAuthor,
   getComment,
   getCommentHasLiked,
   likeOrUnlikeComment,
@@ -46,7 +52,7 @@ function Comment({
 }) {
   const history = useHistory();
   const user = useContext(UserContext);
-  const [author, setAuthor] = useState();
+  const [userBasicInfo, setUserBasicInfo] = useState();
   const [blockModal, setBlockModal] = useState(false);
   const [comment, setComment] = useState(comment2);
   const [commentOptions, setCommentOptions] = useState(false);
@@ -59,7 +65,7 @@ function Comment({
 
   useEffect(() => {
     if (user) hasUserBlockedUser(user.uid, comment.userID, setIsContentBlocked);
-    getAuthor(setAuthor, comment2.userID);
+    getUserBasicInfo(setUserBasicInfo, comment2.userID);
     if (user) getCommentHasLiked(commentID, setHasLiked, user.uid);
   }, []);
   if (isContentBlocked) return <div />;
@@ -82,18 +88,21 @@ function Comment({
             history.push("/activity?" + comment.userID);
           }}
         >
-          {author && (
+          {userBasicInfo && (
             <Text
               className="round-icon bg-blue white mr8"
-              text={capitolizeFirstChar(author[0])}
+              text={capitolizeFirstChar(userBasicInfo.displayName[0])}
               type="h6"
             />
           )}
-          <Text
-            className="button-1 fw-400"
-            text={capitolizeFirstChar(author)}
-            type="h5"
-          />
+          {userBasicInfo && (
+            <Text
+              className="button-1 fw-400"
+              text={capitolizeFirstChar(userBasicInfo.displayName)}
+              type="h5"
+            />
+          )}
+          {userBasicInfo && karmaBadge(calculateKarma(userBasicInfo))}
         </Container>
         <Container className="relative column full-center">
           {user && (

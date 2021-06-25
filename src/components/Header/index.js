@@ -143,7 +143,7 @@ function Header({ history, location }) {
             }
             to="/about-us"
           >
-            About Us
+            Site Info
           </Link>
 
           <Container className="full-center bg-grey-4 py4 px8 my16 mr16 br4">

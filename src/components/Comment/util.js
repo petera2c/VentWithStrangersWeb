@@ -2,20 +2,6 @@ import React from "react";
 import firebase from "firebase/app";
 import db from "../../config/firebase";
 
-export const getAuthor = async (setAuthor, userID) => {
-  const authorDoc = await db
-    .collection("users_display_name")
-    .doc(userID)
-    .get();
-
-  let author = "Anonymous";
-
-  if (authorDoc.exists && authorDoc.data().displayName) {
-    author = authorDoc.data().displayName;
-  }
-  setAuthor(author);
-};
-
 export const getComment = async (commentID, setComment, ventID) => {
   const doc = await db
     .collection("comments")

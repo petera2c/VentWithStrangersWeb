@@ -122,7 +122,7 @@ const getMetaInformation = async (url, callback) => {
       {
         metaDescription: "Learn about Vent With Strangers",
         metaImage: defaultMetaObject.metaImage,
-        metaTitle: "About Us | Vent With Strangers",
+        metaTitle: "Site Info | Vent With Strangers",
       },
       true
     );

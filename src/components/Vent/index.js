@@ -58,6 +58,8 @@ import { UserContext } from "../../context";
 import {
   addTagsToPage,
   blockUser,
+  calculateKarma,
+  getUserBasicInfo,
   karmaBadge,
   capitolizeFirstChar,
   hasUserBlockedUser,
@@ -68,6 +70,7 @@ import {
   deleteVent,
   findPossibleUsersToTag,
   getCurrentTypingIndex,
+  getVent,
   getVentComments,
   getVentDescription,
   getVentFullLink,
@@ -77,14 +80,14 @@ import {
   reportVent,
   startConversation,
   tagUser,
-  ventHasLikedListener,
+  ventHasLiked,
   ventListener
 } from "./util";
 
 import classNames from "./style.css";
 
 const SmartLink = ({ children, className, disablePostOnClick, to }) => {
-  if (disablePostOnClick) {
+  if (disablePostOnClick || !to) {
     return <Container className={className}>{children}</Container>;
   } else {
     return (
@@ -103,12 +106,11 @@ function Vent({
   searchPreviewMode,
   setDescription,
   setTitle,
-  ventFromMeta,
-  ventID
+  ventInit
 }) {
   const user = useContext(UserContext);
 
-  const [vent, setVent] = useState(ventFromMeta);
+  const [author, setAuthor] = useState({});
   const [commentString, setCommentString] = useState("");
   const [currentTypingIndex, setCurrentTypingIndex] = useState(0);
   const [deleteVentConfirm, setDeleteVentConfirm] = useState(false);
@@ -125,6 +127,7 @@ function Vent({
   const [reportModal, setReportModal] = useState(false);
   const [shareClicked, setShareClicked] = useState(false);
   const [taggedUsers, setTaggedUsers] = useState([]);
+  const [vent, setVent] = useState(ventInit);
 
   const [copySuccess, setCopySuccess] = useState("Copy Link");
   const textAreaRef = useRef(null);
@@ -134,38 +137,36 @@ function Vent({
   const { pathname } = location;
 
   let newCommentListenerUnsubscribe;
-  let ventHasLikedListenerUnsubscribe;
 
   useEffect(() => {
-    const ventListenerUnsubscribe = ventListener(
-      setDescription,
-      setTitle,
-      vent => {
-        setVent(vent);
-        if (user)
-          hasUserBlockedUser(user.uid, vent.userID, setIsContentBlocked);
-      },
-      ventID
-    );
+    if (!vent.comment_counter) {
+      getVent(
+        ventUserID => getUserBasicInfo(setAuthor, ventUserID),
+        setDescription,
+        setTitle,
+        setVent,
+        vent.id
+      );
+    }
+    if (vent && vent.userID) getUserBasicInfo(setAuthor, vent.userID);
+    if (user) hasUserBlockedUser(user.uid, vent.userID, setIsContentBlocked);
+
+    if (setTitle && vent && vent.title) setTitle(vent.title);
+    if (setDescription && vent && vent.description)
+      setDescription(vent.description);
 
     if (!searchPreviewMode && displayCommentField2)
       newCommentListenerUnsubscribe = newVentCommentListener(
         setComments,
-        ventID
+        vent.id
       );
-    if (!searchPreviewMode) getVentComments(comments, setComments, ventID);
+    if (!searchPreviewMode) getVentComments(comments, setComments, vent.id);
 
     if (user && !searchPreviewMode)
-      ventHasLikedListenerUnsubscribe = ventHasLikedListener(
-        setHasLiked,
-        user.uid,
-        ventID
-      );
+      ventHasLiked(setHasLiked, user.uid, vent.id);
 
     return () => {
-      ventListenerUnsubscribe();
       if (newCommentListenerUnsubscribe) newCommentListenerUnsubscribe();
-      if (ventHasLikedListenerUnsubscribe) ventHasLikedListenerUnsubscribe();
     };
   }, []);
   const copyToClipboard = e => {
@@ -175,7 +176,7 @@ function Vent({
     setCopySuccess("Copied!");
   };
 
-  if (!vent && isOnSingleVentPage)
+  if ((!vent || (vent && !vent.server_timestamp)) && isOnSingleVentPage)
     return (
       <Container className="x-fill full-center">
         <LoadingHeart />
@@ -183,6 +184,8 @@ function Vent({
     );
 
   if (isContentBlocked) return <div />;
+
+  const displayName = author.displayName ? author.displayName : "Anonymous";
 
   return (
     <Container className="x-fill column mb16">
@@ -194,46 +197,46 @@ function Vent({
               (disablePostOnClick ? "" : "clickable")
             }
             disablePostOnClick={disablePostOnClick}
-            to={getVentPartialLink(vent)}
+            to={vent && vent.title && vent.id ? getVentPartialLink(vent) : ""}
           >
             <Container
               className="mr16"
               onClick={e => {
                 e.preventDefault();
-                if (vent.authorID) history.push("/activity?" + vent.authorID);
+                if (author.id) history.push("/activity?" + author.id);
               }}
             >
               <Container className="full-center">
-                {vent.author && (
-                  <Text
-                    className="round-icon bg-blue white mr8"
-                    text={capitolizeFirstChar(vent.author[0])}
-                    type="h6"
-                  />
-                )}
+                <Text
+                  className="round-icon bg-blue white mr8"
+                  text={capitolizeFirstChar(displayName[0])}
+                  type="h6"
+                />
                 <Text
                   className="button-1 fw-400 mr8"
-                  text={capitolizeFirstChar(vent.author)}
+                  text={capitolizeFirstChar(displayName)}
                   type="h5"
                 />
-                {karmaBadge(vent.authorKarma)}
+                {karmaBadge(calculateKarma(author))}
               </Container>
             </Container>
             <Container className="relative flex-fill align-center justify-end">
               <Container className="flex-fill wrap justify-end">
-                {vent.tags.map((tag, index) => (
-                  <Text
-                    className="button-1 clickable mr8"
-                    key={index}
-                    onClick={e => {
-                      e.preventDefault();
+                {vent &&
+                  vent.tags &&
+                  vent.tags.map((tag, index) => (
+                    <Text
+                      className="button-1 clickable mr8"
+                      key={index}
+                      onClick={e => {
+                        e.preventDefault();
 
-                      addTagsToPage(props, [tag]);
-                    }}
-                    text={tag.name}
-                    type="p"
-                  />
-                ))}
+                        addTagsToPage(props, [tag]);
+                      }}
+                      text={tag.name}
+                      type="p"
+                    />
+                  ))}
               </Container>
 
               {user && (
@@ -341,7 +344,7 @@ function Vent({
               (disablePostOnClick ? "" : "clickable")
             }
             disablePostOnClick={disablePostOnClick}
-            to={getVentPartialLink(vent)}
+            to={vent && vent.title && vent.id ? getVentPartialLink(vent) : ""}
           >
             <Text className="fs-20 primary mb8" text={vent.title} type="h1" />
 
@@ -369,7 +372,13 @@ function Vent({
                     } mr4`}
                     onClick={e => {
                       e.preventDefault();
-                      likeOrUnlikeVent(hasLiked, user, vent);
+                      likeOrUnlikeVent(
+                        hasLiked,
+                        setHasLiked,
+                        setVent,
+                        user,
+                        vent
+                      );
                     }}
                     src={
                       hasLiked
@@ -409,7 +418,7 @@ function Vent({
                 <Container className="mb16">
                   <HandleOutsideClick close={() => setShareClicked(false)}>
                     {(!user ||
-                      (user && user.uid !== vent.userID && vent.authorID)) && (
+                      (user && user.uid !== vent.userID && author.id)) && (
                       <Button
                         className="button-2 px16 py8 mr16 br8"
                         onClick={() => {
@@ -584,7 +593,13 @@ function Vent({
                       className="button-2 px32 py8 mt8 br4"
                       onClick={async () => {
                         if (!commentString) return;
-                        commentVent(commentString, user, vent.id);
+                        commentVent(
+                          commentString,
+                          setVent,
+                          user,
+                          vent,
+                          vent.id
+                        );
                         setCommentString("");
                       }}
                       text="Send"
@@ -615,7 +630,7 @@ function Vent({
                   <Button
                     className="blue underline"
                     onClick={() => {
-                      getVentComments(comments, setComments, ventID);
+                      getVentComments(comments, setComments, vent.id);
                     }}
                     key={comments.length}
                   >
