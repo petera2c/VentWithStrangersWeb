@@ -97,7 +97,7 @@ function Comment({
           )}
           {userBasicInfo && (
             <Text
-              className="button-1 fw-400"
+              className="button-1 fw-400 mr8"
               text={capitolizeFirstChar(userBasicInfo.displayName)}
               type="h5"
             />

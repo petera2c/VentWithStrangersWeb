@@ -26,6 +26,8 @@ const { messagesListener } = require("./helpers/messages");
 const { conversationUpdateListener } = require("./helpers/conversation");
 const { getMetaInformation } = require("./helpers/util");
 
+process.setMaxListeners(0);
+
 exports.blockUserListener = functions.firestore
   .document("/block_check/{userID1userID2}")
   .onWrite(blockUserListener);
