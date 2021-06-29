@@ -296,7 +296,7 @@ function Comment({
         <Container className="align-center wrap py16 px32">
           <FontAwesomeIcon className="clickable grey-5 mr8" icon={faClock} />
           <Text
-            className="grey-5"
+            className="grey-5 fs-16"
             text={moment(comment.server_timestamp)
               .subtract(1, "minute")
               .fromNow()}

@@ -532,7 +532,7 @@ function Vent({
               <Container className="align-center mb16">
                 <FontAwesomeIcon className="grey-5 mr8" icon={faClock} />
                 <Text
-                  className="grey-5"
+                  className="grey-5 fs-16"
                   text={moment(vent.server_timestamp)
                     .subtract(1, "minute")
                     .fromNow()}
