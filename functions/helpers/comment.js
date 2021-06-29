@@ -43,39 +43,6 @@ const commentLikeListener = async (change, context) => {
   let increment = 1;
   if (!hasLiked) increment = -1;
 
-  if (!change.before.data()) {
-    const commentDoc = await admin
-      .firestore()
-      .collection("comments")
-      .doc(commentIDuserIDArray[0])
-      .get();
-
-    // Give +10 to the user that made the comment
-    if (commentDoc.data().userID)
-      await admin
-        .firestore()
-        .collection("users_display_name")
-        .doc(commentDoc.data().userID)
-        .set(
-          {
-            good_karma: admin.firestore.FieldValue.increment(10),
-          },
-          { merge: true }
-        );
-
-    // Give +1 to the user that gave the upvote
-    await admin
-      .firestore()
-      .collection("users_display_name")
-      .doc(commentIDuserIDArray[1])
-      .set(
-        {
-          good_karma: admin.firestore.FieldValue.increment(1),
-        },
-        { merge: true }
-      );
-  }
-
   await admin
     .firestore()
     .collection("comments")
@@ -83,6 +50,54 @@ const commentLikeListener = async (change, context) => {
     .update({
       like_counter: admin.firestore.FieldValue.increment(increment),
     });
+
+  if (change.before.data()) return;
+
+  const commentDoc = await admin
+    .firestore()
+    .collection("comments")
+    .doc(commentIDuserIDArray[0])
+    .get();
+  const comment = commentDoc.data();
+
+  // Give +10 to the user that made the comment
+  if (comment.userID)
+    await admin
+      .firestore()
+      .collection("users_display_name")
+      .doc(comment.userID)
+      .set(
+        {
+          good_karma: admin.firestore.FieldValue.increment(10),
+        },
+        { merge: true }
+      );
+
+  // Give +1 to the user that gave the upvote
+  await admin
+    .firestore()
+    .collection("users_display_name")
+    .doc(commentIDuserIDArray[1])
+    .set(
+      {
+        good_karma: admin.firestore.FieldValue.increment(1),
+      },
+      { merge: true }
+    );
+
+  const ventDoc = await admin
+    .firestore()
+    .collection("vents")
+    .doc(comment.ventID)
+    .get();
+
+  if (ventDoc.exists)
+    // Create notification
+    createNotification(
+      createVentLink({ id: ventDoc.id, ...ventDoc.data() }),
+      "Someone has supported your comment! +10 Karma Points",
+      comment.userID
+    );
 };
 
 const createNewCommentNotification = async (doc, context) => {

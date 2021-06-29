@@ -109,7 +109,7 @@ const newVentLikeListener = async (change, context) => {
 
   createNotification(
     createVentLink(vent),
-    "Someone has supported your vent!",
+    "Someone has supported your vent! +10 Karma Points",
     vent.userID
   );
 };
