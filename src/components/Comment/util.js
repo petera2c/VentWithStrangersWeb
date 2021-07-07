@@ -86,10 +86,8 @@ export const reportComment = async (option, userID, commentID, ventID) => {
 
 export const swapTags = commentText => {
   if (!commentText) return;
-  const regexFull = /@\{\{\[\[\[[\x21-\x5A|\x61-\x7A]+\]\]\]\|\|\[\[\[[\x21-\x5A|\x61-\x7A|\x5f]+\]\]\]\}\}/gi;
-  //const regexID = /(?<=@\{\{\[\[\[)[\x21-\x5A|\x61-\x7A]+(?=\]\]\]\|\|)/gi;
-  //const regexDisplay = /(?<=\|\|\[\[\[)[\x21-\x5A|\x61-\x7A]+(?=\]\]\]\}\})/gi;
-  const regexDisplay = /\|\|\[\[\[[\x21-\x5A|\x61-\x7A|\x5f]+\]\]\]\}\}/gi;
+  const regexFull = /@\[[\x21-\x5A|\x61-\x7A|\x5f]+\]\([\x21-\x5A|\x61-\x7A]+\)/gi;
+  const regexDisplay = /\[[\x21-\x5A|\x61-\x7A|\x5f]+\]/gi;
   const tags = commentText.match(regexFull) || [];
 
   let listOfTaggedDisplayNames = [];
@@ -99,7 +97,8 @@ export const swapTags = commentText => {
 
     if (displayNameArray && displayNameArray[0]) {
       let displayTag = displayNameArray[0];
-      if (displayTag) displayTag = displayTag.slice(5, displayTag.length - 5);
+      if (displayTag)
+        displayTag = "@" + displayTag.slice(1, displayTag.length - 1);
 
       listOfTaggedDisplayNames.push({
         start: index,

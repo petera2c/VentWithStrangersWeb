@@ -122,8 +122,8 @@ const createNotificationsToAnyTaggedUsers = async (doc, context) => {
   const commentText = doc.data().text;
 
   if (!commentText) return;
-  const regexFull = /@\{\{\[\[\[[\x21-\x5A|\x61-\x7A]+\]\]\]\|\|\[\[\[[\x21-\x5A|\x61-\x7A|\x5f]+\]\]\]\}\}/gi;
-  const regexFindID = /@\{\{\[\[\[[\x21-\x5A|\x61-\x7A]+\]\]\]\|\|\[\[\[/gi;
+  const regexFull = /@\[[\x21-\x5A|\x61-\x7A|\x5f]+\]\([\x21-\x5A|\x61-\x7A]+\)/gi;
+  const regexFindID = /\([\x21-\x5A|\x61-\x7A]+\)/gi;
   const tags = commentText.match(regexFull) || [];
 
   let listOfTaggedIDs = [];
@@ -134,7 +134,7 @@ const createNotificationsToAnyTaggedUsers = async (doc, context) => {
     if (displayNameArray && displayNameArray[0]) {
       let displayTag = displayNameArray[0];
 
-      if (displayTag) displayTag = displayTag.slice(6, displayTag.length - 8);
+      if (displayTag) displayTag = displayTag.slice(1, displayTag.length - 1);
 
       listOfTaggedIDs.push(displayTag);
       return displayNameArray[0];

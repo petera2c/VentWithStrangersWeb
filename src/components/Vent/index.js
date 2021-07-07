@@ -567,7 +567,7 @@ function Vent({
                               callback
                             );
                           }}
-                          markup="@{{[[[__id__]]]||[[[__display__]]]}}"
+                          markup="@[__display__](__id__)"
                           renderSuggestion={(
                             entry,
                             search,
