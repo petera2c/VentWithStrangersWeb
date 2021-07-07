@@ -48,6 +48,7 @@ const conversationUpdateListener = async (change, context) => {
   }
 
   // Is user typing code
+  /*
   if (
     JSON.stringify(conversationBefore.isTyping) !==
     JSON.stringify(conversationAfter.isTyping)
@@ -73,7 +74,7 @@ const conversationUpdateListener = async (change, context) => {
           .set({ isTyping: isTypingChangeObject }, { merge: true });
       }, 4000);
     }
-  }
+  }*/
 };
 
 module.exports = { conversationUpdateListener };
