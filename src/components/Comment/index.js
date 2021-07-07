@@ -52,7 +52,7 @@ function Comment({
 }) {
   const history = useHistory();
   const user = useContext(UserContext);
-  const [userBasicInfo, setUserBasicInfo] = useState();
+  const [userBasicInfo, setUserBasicInfo] = useState({});
   const [blockModal, setBlockModal] = useState(false);
   const [comment, setComment] = useState(comment2);
   const [commentOptions, setCommentOptions] = useState(false);
@@ -69,6 +69,10 @@ function Comment({
     if (user) getCommentHasLiked(commentID, setHasLiked, user.uid);
   }, []);
   if (isContentBlocked) return <div />;
+
+  const displayName = userBasicInfo.displayName
+    ? userBasicInfo.displayName
+    : "Anonymous";
 
   return (
     <Container
@@ -91,14 +95,14 @@ function Comment({
           {userBasicInfo && (
             <Text
               className="round-icon bg-blue white mr8"
-              text={capitolizeFirstChar(userBasicInfo.displayName[0])}
+              text={capitolizeFirstChar(displayName[0])}
               type="h6"
             />
           )}
           {userBasicInfo && (
             <Text
               className="button-1 fw-400 mr8"
-              text={capitolizeFirstChar(userBasicInfo.displayName)}
+              text={capitolizeFirstChar(displayName)}
               type="h5"
             />
           )}
