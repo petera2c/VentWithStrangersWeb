@@ -63,6 +63,9 @@
   display: flex;
   flex-wrap: wrap;
 }
+.row {
+  flex-direction: row !important;
+}
 .column {
   flex-direction: column;
 }

@@ -35,6 +35,7 @@ import BlogPage from "./Blog";
 import FeedbackPage from "./Feedback";
 import NotFoundPage from "./NotFound";
 import PrivacyPolicyPage from "./PrivacyPolicy";
+import FriendsPage from "./Friends";
 
 import { isMobileOrTablet } from "../util";
 
@@ -90,6 +91,7 @@ function Routes() {
               <Route path="/blog/" component={BlogPage} />
               <Route path="/feedback/" component={FeedbackPage} />
               <Route path="/privacy-policy/" component={PrivacyPolicyPage} />
+              <Route path="/friends/" component={FriendsPage} />
               <Route component={NotFoundPage} />
             </Switch>
           )}

@@ -65,6 +65,11 @@ service cloud.firestore {
       }
     }
 
+    match /users_info/{userID} {
+      allow read: if true;
+      allow write, update, delete: if request.auth.uid == userID;
+    }
+
     match /unread_conversations_count/{userID} {
       allow read, write, update, delete: if request.auth.uid == userID;
     }
