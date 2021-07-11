@@ -1,5 +1,10 @@
 import React, { Component } from "react";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInstagram } from "@fortawesome/free-brands-svg-icons/faInstagram";
+import { faFacebook } from "@fortawesome/free-brands-svg-icons/faFacebook";
+import { faLinkedin } from "@fortawesome/free-brands-svg-icons/faLinkedin";
+
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
@@ -89,6 +94,51 @@ class AboutUsPage extends Component {
               Google Play Store
             </a>
           </p>
+          <h6 className="bold mb16">Follow Us on Social Media!</h6>
+          <Container>
+            <a
+              className="mr16 mb16"
+              href="https://www.instagram.com/ventwithstrangers/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <FontAwesomeIcon
+                className="clickable common-border white round-icon round pa8"
+                icon={faInstagram}
+                style={{
+                  backgroundColor: "#cd486b"
+                }}
+              />
+            </a>
+            <a
+              className="mr16 mb16"
+              href="https://www.facebook.com/ventwithstrangers"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <FontAwesomeIcon
+                className="clickable common-border white round-icon round pa8"
+                icon={faFacebook}
+                style={{
+                  backgroundColor: "#3b5998"
+                }}
+              />
+            </a>
+            <a
+              className="mr16 mb16"
+              href="https://www.linkedin.com/company/vent-with-strangers/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <FontAwesomeIcon
+                className="clickable common-border white round-icon round pa8"
+                icon={faLinkedin}
+                style={{
+                  backgroundColor: "#0e76a8"
+                }}
+              />
+            </a>
+          </Container>
         </Container>
       </Page>
     );

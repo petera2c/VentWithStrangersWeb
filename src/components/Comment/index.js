@@ -89,7 +89,7 @@ function Comment({
           className="clickable align-center mb8"
           onClick={e => {
             e.preventDefault();
-            history.push("/activity?" + comment.userID);
+            history.push("/profile?" + comment.userID);
           }}
         >
           {userBasicInfo && (

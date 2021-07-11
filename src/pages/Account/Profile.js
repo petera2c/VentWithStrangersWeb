@@ -4,31 +4,40 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import db from "../../config/firebase";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faChartNetwork } from "@fortawesome/pro-solid-svg-icons/faChartNetwork";
 import { faCog } from "@fortawesome/free-solid-svg-icons/faCog";
+import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
+import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
+import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
+import { faUserLock } from "@fortawesome/free-solid-svg-icons/faUserLock";
+import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons/faExclamationTriangle";
 
 import LoadingHeart from "../../components/loaders/Heart";
 
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
+import Button from "../../components/views/Button";
 import Text from "../../components/views/Text";
 
 import Vent from "../../components/Vent";
 import Comment from "../../components/Comment";
 
+import ConfirmAlertModal from "../../components/modals/ConfirmAlert";
+import HandleOutsideClick from "../../components/containers/HandleOutsideClick";
 import LoadMore from "../../components/LoadMore";
 
 import {
+  blockUser,
   calculateKarma,
   capitolizeFirstChar,
   getUserBasicInfo,
   isMobileOrTablet,
   karmaBadge
 } from "../../util";
+import { startConversation } from "../../components/Vent/util";
 import { getUsersPosts } from "./util";
 
-function ActivitySection({ user }) {
+function ProfileSection({ user }) {
   const history = useHistory();
   const location = useLocation();
   let { search } = location;
@@ -39,6 +48,8 @@ function ActivitySection({ user }) {
   const [postsSection, setPostsSection] = useState(true);
   const [canLoadMore, setCanLoadMore] = useState();
   const [userBasicInfo, setUserBasicInfo] = useState({});
+  const [blockModal, setBlockModal] = useState(false);
+  const [postOptions, setPostOptions] = useState(false);
 
   if (search) search = search.substring(1);
   if (!search && user) search = user.uid;
@@ -101,6 +112,69 @@ function ActivitySection({ user }) {
           <h6 className="grey-1 fw-400">
             {calculateKarma(userBasicInfo)} Karma Points
           </h6>
+          <Container className="align-center justify-between mt16">
+            {userBasicInfo.displayName && search && search != user.uid && (
+              <Button
+                className="button-2 px16 py8 mr16 br8"
+                onClick={() => {
+                  if (!user) alert("You must make an account to message user!");
+                  startConversation(history, user.uid, search);
+                }}
+              >
+                <FontAwesomeIcon className="mr8" icon={faComments} />
+                Message User
+              </Button>
+            )}
+            <div className="relative">
+              {userBasicInfo.displayName && search && search != user.uid && (
+                <HandleOutsideClick close={() => setPostOptions(false)}>
+                  <FontAwesomeIcon
+                    className="clickable grey-9 px16"
+                    icon={faEllipsisV}
+                    onClick={e => {
+                      e.preventDefault();
+
+                      setPostOptions(!postOptions);
+                    }}
+                  />
+                  {postOptions && (
+                    <div
+                      className="absolute flex right-0"
+                      style={{
+                        bottom: "calc(100% + 8px)",
+                        whiteSpace: "nowrap",
+                        zIndex: 1
+                      }}
+                    >
+                      <Container className="column x-fill bg-white border-all px16 py8 br8">
+                        {userBasicInfo.displayName &&
+                          search &&
+                          search != user.uid && (
+                            <Container
+                              className="button-8 clickable align-center"
+                              onClick={e => {
+                                e.preventDefault();
+                                setBlockModal(!blockModal);
+                              }}
+                            >
+                              <Text
+                                className="fw-400 flex-fill"
+                                text="Block User"
+                                type="p"
+                              />
+                              <FontAwesomeIcon
+                                className="ml8"
+                                icon={faUserLock}
+                              />
+                            </Container>
+                          )}
+                      </Container>
+                    </div>
+                  )}
+                </HandleOutsideClick>
+              )}
+            </div>
+          </Container>
         </Container>
       )}
 
@@ -204,8 +278,17 @@ function ActivitySection({ user }) {
           <LoadingHeart />
         </Container>
       )}
+
+      {blockModal && (
+        <ConfirmAlertModal
+          close={() => setBlockModal(false)}
+          message="Blocking this user will remove you from all conversations with this user and you will no longer see any of their vents or comments. Are you sure you would like to block this user?"
+          submit={() => blockUser(user.uid, search)}
+          title="Block User"
+        />
+      )}
     </Container>
   );
 }
 
-export default ActivitySection;
+export default ProfileSection;

@@ -75,7 +75,7 @@ function Routes() {
               <Route path="/site-info/" component={AboutUsPage} />
               <Route path="/account/" component={AccountPage} exact />
               <Route path="/app-downloads/" component={AppDownloadPage} />
-              <Route path="/activity/" component={AccountPage} />
+              <Route path="/profile/" component={AccountPage} />
               <Route path="/settings/" component={AccountPage} exact />
               <Route path="/notifications/" component={NotificationsPage} />
               <Route path="/search/" component={SearchPage} />

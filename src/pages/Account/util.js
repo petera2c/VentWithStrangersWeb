@@ -35,6 +35,11 @@ export const updateUser = async (
     userInfo.pronouns !== pronouns
   ) {
     changesFound = true;
+    if (userInfo.gender && userInfo.gender.length > 20)
+      alert("Gender can only be a maximum of 20 characters.");
+    if (userInfo.pronouns && userInfo.pronouns.length > 20)
+      alert("Pronouns can only be a maximum of 20 characters.");
+
     await db
       .collection("users_info")
       .doc(user.uid)

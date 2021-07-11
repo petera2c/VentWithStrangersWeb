@@ -31,7 +31,7 @@ const getMetaInformation = async (url, callback) => {
   };
 
   const checkIsVent = url.match(/(?<=\/problem\/\s*).*?(?=\s*\/)/gs);
-  const userObjectID = url.split("/activity?")[1];
+  const userObjectID = url.split("/profile?")[1];
   let ventID;
   if (checkIsVent) ventID = checkIsVent[0];
 

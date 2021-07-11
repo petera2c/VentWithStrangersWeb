@@ -7,7 +7,6 @@ import { faConciergeBell } from "@fortawesome/pro-duotone-svg-icons/faConciergeB
 import { faBell } from "@fortawesome/pro-duotone-svg-icons/faBell";
 import { faSearch } from "@fortawesome/pro-solid-svg-icons/faSearch";
 import { faChevronDown } from "@fortawesome/pro-solid-svg-icons/faChevronDown";
-import { faInstagram } from "@fortawesome/free-brands-svg-icons/faInstagram";
 import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
 import { faComments } from "@fortawesome/pro-solid-svg-icons/faComments";
 
@@ -77,19 +76,6 @@ function Header({ history, location }) {
             src={require("../../svgs/icon.svg")}
             style={{ height: "50px" }}
           />
-          <a
-            href="https://www.instagram.com/ventwithstrangers/"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <FontAwesomeIcon
-              className="clickable common-border white round-icon round pa8"
-              icon={faInstagram}
-              style={{
-                backgroundColor: "#cd486b"
-              }}
-            />
-          </a>
         </Container>
 
         <Container
@@ -180,7 +166,7 @@ function Header({ history, location }) {
           )}
           {user && (
             <Container className="align-center wrap">
-              <Link className="flex full-center mr16" to="/activity">
+              <Link className="flex full-center mr16" to="/profile">
                 {user.displayName && (
                   <Text
                     className="round-icon bg-blue white mr8"

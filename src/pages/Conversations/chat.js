@@ -93,7 +93,7 @@ function Chat({ conversation, conversationName, userID }) {
     <Container className="column x-fill full-center bg-white br4">
       <Container className="x-fill justify-between border-bottom pa16">
         {conversationPartnerID && (
-          <Link to={"/activity?" + conversationPartnerID}>
+          <Link to={"/profile?" + conversationPartnerID}>
             <h5 className={"button-1"}>
               {capitolizeFirstChar(conversationName)}
             </h5>

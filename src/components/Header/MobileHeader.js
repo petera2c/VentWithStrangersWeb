@@ -176,7 +176,7 @@ function Header({ history, location }) {
         <Container className="column x-fill bg-grey-4">
           {user && (
             <Container className="column">
-              <Link to="/activity">
+              <Link to="/profile">
                 <Container className="full-center py16 mx16">
                   <Text
                     className="round-icon bg-blue white mr8"
@@ -195,12 +195,12 @@ function Header({ history, location }) {
                 <Link
                   className={
                     "button-3 tac py16 mx16 " +
-                    isPageActive("/activity", pathname)
+                    isPageActive("/profile", pathname)
                   }
-                  to={"/activity"}
+                  to={"/profile"}
                 >
                   <FontAwesomeIcon className="mx8" icon={faChartNetwork} />
-                  Activity
+                  Profile
                 </Link>
 
                 <Link

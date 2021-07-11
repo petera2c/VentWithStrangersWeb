@@ -203,7 +203,7 @@ function Vent({
               className="mr16"
               onClick={e => {
                 e.preventDefault();
-                if (author.id) history.push("/activity?" + author.id);
+                if (author.id) history.push("/profile?" + author.id);
               }}
             >
               <Container className="full-center">
@@ -648,18 +648,19 @@ function Vent({
         </Container>
       )}
 
-      {reportModal && (
-        <ReportModal
-          close={() => setReportModal(false)}
-          submit={option => reportVent(option, user.uid, vent.id)}
-        />
-      )}
       {deleteVentConfirm && (
         <ConfirmAlertModal
           close={() => setDeleteVentConfirm(false)}
           message="Are you sure you would like to delete this vent?"
           submit={() => deleteVent(history, vent.id)}
           title="Delete Vent"
+        />
+      )}
+
+      {reportModal && (
+        <ReportModal
+          close={() => setReportModal(false)}
+          submit={option => reportVent(option, user.uid, vent.id)}
         />
       )}
       {blockModal && (

@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/pro-regular-svg-icons/faHeart";
+
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
@@ -20,7 +23,7 @@ class AboutUsPage extends Component {
           <Container className="column ml16">
             <h6>
               <a href="https://www.instagram.com/selfcareslothss/">
-                ♡︎ Self-care sloth
+                <FontAwesomeIcon icon={faHeart} /> Self-care sloth
               </a>
             </h6>
             <p className="ml16">
