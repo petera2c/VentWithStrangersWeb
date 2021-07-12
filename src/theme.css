@@ -548,6 +548,11 @@
   cursor: default;
 }
 
+.no-text-wrap {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 body {
   margin: 0;
   padding: 0;

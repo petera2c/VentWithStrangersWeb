@@ -36,7 +36,6 @@
     "moment-timezone": "^0.5.33",
     "react": "^16.14.0",
     "react-contenteditable": "^3.3.5",
-    "react-date-picker": "^8.2.0",
     "react-dom": "^16.14.0",
     "react-firebase-hooks": "^2.2.0",
     "react-ga": "^2.7.0",

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
+import moment from "moment-timezone";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faChartNetwork } from "@fortawesome/pro-solid-svg-icons/faChartNetwork";
@@ -13,15 +15,29 @@ import { faVenusMars } from "@fortawesome/free-solid-svg-icons/faVenusMars";
 import { faTransgenderAlt } from "@fortawesome/free-solid-svg-icons/faTransgenderAlt";
 import { faBirthdayCake } from "@fortawesome/pro-duotone-svg-icons/faBirthdayCake";
 
-import DatePicker from "react-date-picker";
-
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
+import Dropdown from "../../components/containers/Dropdown";
 import Text from "../../components/views/Text";
 import Button from "../../components/views/Button";
 
 import { isMobileOrTablet } from "../../util";
 import { getUser, updateUser } from "./util";
+
+function createMonthArray(days) {
+  let array = [];
+  for (let day = 1; day <= days; day++) {
+    array.push(day);
+  }
+  return array;
+}
+function createYearArray(year) {
+  let array = [];
+  for (let i = year - 110; i < year - 5; i++) {
+    array.push(i);
+  }
+  return array;
+}
 
 function AccountSection({ user }) {
   const history = useHistory();
@@ -30,7 +46,7 @@ function AccountSection({ user }) {
     return <div />;
   }
 
-  const [birthDate, setBirthDate] = useState(new Date());
+  const [birthDate, setBirthDate] = useState(new moment());
   const [canSeePassword, setCanSeePassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [displayName, setDisplayName] = useState(user.displayName);
@@ -44,7 +60,7 @@ function AccountSection({ user }) {
     getUser(userInfo => {
       if (userInfo.gender) setGender(userInfo.gender);
       if (userInfo.pronouns) setPronouns(userInfo.pronouns);
-      if (userInfo.birth_date) setBirthDate(new Date(userInfo.birth_date));
+      if (userInfo.birth_date) setBirthDate(new moment(userInfo.birth_date));
       if (userInfo) setUserInfo(userInfo);
     }, user.uid);
   }, []);
@@ -159,9 +175,41 @@ function AccountSection({ user }) {
               "column pr8 mb16 " + (isMobileOrTablet() ? "x-100" : "x-50")
             }
           >
-            <Text className="mb8" text="Birthday" type="p" />
-            <Container className="full-center bg-grey-4 py4 px8 br4">
-              <FontAwesomeIcon className="grey-5 mr8" icon={faBirthdayCake} />
+            <Container className="align-center justify-start py8">
+              <p className="mr8">Birthday</p>
+              <FontAwesomeIcon className="grey-5" icon={faBirthdayCake} />
+            </Container>
+            <Container className="align-center">
+              <Container className="relative full-center column">
+                <p className="mb4">Day</p>
+                <Dropdown
+                  dropdownOptionClicked={day =>
+                    setBirthDate(new moment(birthDate).set("date", day))
+                  }
+                  dropdownOptions={createMonthArray(birthDate.daysInMonth())}
+                  value={birthDate.date()}
+                />
+              </Container>
+              <Container className="relative full-center column ml8">
+                <p className="mb4">Month</p>
+                <Dropdown
+                  dropdownOptionClicked={month =>
+                    setBirthDate(new moment(birthDate).set("month", month - 1))
+                  }
+                  dropdownOptions={createMonthArray(12)}
+                  value={birthDate.month() + 1}
+                />
+              </Container>
+              <Container className="relative full-center column ml8">
+                <p className="mb4">Year</p>
+                <Dropdown
+                  dropdownOptionClicked={year =>
+                    setBirthDate(new moment(birthDate).set("year", year))
+                  }
+                  dropdownOptions={createYearArray(new moment().year())}
+                  value={birthDate.year()}
+                />
+              </Container>
             </Container>
           </Container>
         </Container>
@@ -248,9 +296,3 @@ function AccountSection({ user }) {
 }
 
 export default AccountSection;
-
-/*
-<DatePicker
-  onChange={date => setBirthDate(date)}
-  value={birthDate}
-/>*/

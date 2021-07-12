@@ -30,7 +30,7 @@ export const updateUser = async (
   let changesFound = false;
 
   if (
-    userInfo.birth_date !== birthDate ||
+    userInfo.birth_date != birthDate.valueOf() ||
     userInfo.gender !== gender ||
     userInfo.pronouns !== pronouns
   ) {
@@ -44,7 +44,7 @@ export const updateUser = async (
       .collection("users_info")
       .doc(user.uid)
       .set(
-        { birth_date: birthDate.getTime(), gender, pronouns },
+        { birth_date: birthDate.valueOf(), gender, pronouns },
         { merge: true }
       );
     alert("Your account information has been changed");

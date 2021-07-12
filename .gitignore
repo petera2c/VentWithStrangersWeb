@@ -22,6 +22,7 @@ yarn-error.log*
 
 
 functions/database-debug.log
+functions/ui-debug.log
 functions/firestore-debug.log
 functions/pubsub-debug.log
 functions/firebase-debug.log
