@@ -45,11 +45,11 @@ function ProfileSection({ user }) {
     history.push("/");
     return <div />;
   }
-  const [postsSection, setPostsSection] = useState(true);
-  const [canLoadMore, setCanLoadMore] = useState();
-  const [userBasicInfo, setUserBasicInfo] = useState({});
   const [blockModal, setBlockModal] = useState(false);
+  const [canLoadMore, setCanLoadMore] = useState();
   const [postOptions, setPostOptions] = useState(false);
+  const [postsSection, setPostsSection] = useState(true);
+  const [userBasicInfo, setUserBasicInfo] = useState({});
 
   if (search) search = search.substring(1);
   if (!search && user) search = user.uid;

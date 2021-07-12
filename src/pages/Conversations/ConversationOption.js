@@ -5,6 +5,7 @@ import { useLocation, useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 import { faTrash } from "@fortawesome/pro-solid-svg-icons/faTrash";
+import { faUserLock } from "@fortawesome/pro-solid-svg-icons/faUserLock";
 
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
@@ -18,7 +19,7 @@ import {
   readConversation
 } from "./util";
 
-import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
+import { blockUser, capitolizeFirstChar, isMobileOrTablet } from "../../util";
 
 function ConversationOption({
   conversation,
@@ -31,6 +32,7 @@ function ConversationOption({
   userID
 }) {
   const history = useHistory();
+  const [blockModal, setBlockModal] = useState(false);
   const [conversationOptions, setConversationOptions] = useState(false);
   const [deleteConversationConfirm, setDeleteConversationConfirm] = useState(
     false
@@ -110,6 +112,16 @@ function ConversationOption({
                 <p className="flex-fill">Delete Conversation</p>
                 <FontAwesomeIcon className="ml8" icon={faTrash} />
               </Container>
+              <Container
+                className="button-8 clickable align-center"
+                onClick={e => {
+                  e.preventDefault();
+                  setBlockModal(!blockModal);
+                }}
+              >
+                <p className="fw-400 flex-fill">Block User</p>
+                <FontAwesomeIcon className="ml8" icon={faUserLock} />
+              </Container>
             </Container>
           </HandleOutsideClick>
         </div>
@@ -122,6 +134,21 @@ function ConversationOption({
             deleteConversation(conversation.id, setConversations, userID)
           }
           title="Delete Conversation"
+        />
+      )}
+      {blockModal && (
+        <ConfirmAlertModal
+          close={() => setBlockModal(false)}
+          message="Blocking this user will remove you from all conversations with this user and you will no longer see any of their vents or comments. Are you sure you would like to block this user?"
+          submit={() => {
+            blockUser(
+              userID,
+              conversation.members.find(memberID => {
+                if (memberID != userID) return memberID;
+              })
+            );
+          }}
+          title="Block User"
         />
       )}
     </Container>
