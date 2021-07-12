@@ -60,7 +60,7 @@ const commentLikeListener = async (change, context) => {
     .get();
   const comment = commentDoc.data();
 
-  // Give +10 to the user that made the comment
+  // Give +4 to the user that made the comment
   if (comment.userID)
     await admin
       .firestore()
@@ -68,22 +68,10 @@ const commentLikeListener = async (change, context) => {
       .doc(comment.userID)
       .set(
         {
-          good_karma: admin.firestore.FieldValue.increment(10),
+          good_karma: admin.firestore.FieldValue.increment(4),
         },
         { merge: true }
       );
-
-  // Give +1 to the user that gave the upvote
-  await admin
-    .firestore()
-    .collection("users_display_name")
-    .doc(commentIDuserIDArray[1])
-    .set(
-      {
-        good_karma: admin.firestore.FieldValue.increment(1),
-      },
-      { merge: true }
-    );
 
   const ventDoc = await admin
     .firestore()
@@ -95,7 +83,7 @@ const commentLikeListener = async (change, context) => {
     // Create notification
     createNotification(
       createVentLink({ id: ventDoc.id, ...ventDoc.data() }),
-      "Someone has supported your comment! +10 Karma Points",
+      "Someone has supported your comment! +4 Karma Points",
       comment.userID
     );
 };

@@ -59,7 +59,7 @@ const newVentLikeListener = async (change, context) => {
       .doc(ventIDuserIDArray[0])
       .get();
 
-    // Give +10 to the user that made the comment
+    // Give +2 to the user that received the upvote
     if (ventDoc.data().userID)
       await admin
         .firestore()
@@ -67,22 +67,10 @@ const newVentLikeListener = async (change, context) => {
         .doc(ventDoc.data().userID)
         .set(
           {
-            good_karma: admin.firestore.FieldValue.increment(10),
+            good_karma: admin.firestore.FieldValue.increment(2),
           },
           { merge: true }
         );
-
-    // Give +1 to the user that gave the upvote
-    await admin
-      .firestore()
-      .collection("users_display_name")
-      .doc(ventIDuserIDArray[1])
-      .set(
-        {
-          good_karma: admin.firestore.FieldValue.increment(1),
-        },
-        { merge: true }
-      );
   }
 
   await admin
@@ -109,7 +97,7 @@ const newVentLikeListener = async (change, context) => {
 
   createNotification(
     createVentLink(vent),
-    "Someone has supported your vent! +10 Karma Points",
+    "Someone has supported your vent! +2 Karma Points",
     vent.userID
   );
 };
@@ -138,7 +126,7 @@ const newVentReportListener = async (doc, context) => {
     .doc(ventDoc.data().userID)
     .set(
       {
-        bad_karma: admin.firestore.FieldValue.increment(10),
+        bad_karma: admin.firestore.FieldValue.increment(2),
       },
       { merge: true }
     );
