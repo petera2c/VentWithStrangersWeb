@@ -82,7 +82,7 @@ class AboutUsPage extends Component {
             With Great Power Comes Great Responsibility
           </h6>
           <p className="mb16">
-            Orange, Reg, Green, and Blue badges are milestones while you work
+            Orange, Red, Green, and Blue badges are milestones while you work
             your way to the Moderator Title. As a Moderator, you will be able to
             edit/delete up to 3 vents and comments a day and also ban 2 users
             per day.
