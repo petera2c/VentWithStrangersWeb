@@ -35,7 +35,6 @@ import {
   karmaBadge
 } from "../../util";
 import { startConversation } from "../../components/Vent/util";
-import { getUsersPosts } from "./util";
 
 function ProfileSection({ user }) {
   const history = useHistory();

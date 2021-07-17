@@ -14,8 +14,6 @@ export const getUser = async (callback, userID) => {
   callback(authorDoc.exists ? { ...authorDoc.data(), id: authorDoc.id } : {});
 };
 
-export const getUsersPosts = () => {};
-
 export const updateUser = async (
   birthDate,
   confirmPassword,

@@ -42,15 +42,37 @@ export const karmaBadge = karma => {
   let karmaColor = "";
   if (karma >= 5000)
     return (
-      <h5 className="bg-light-blue fw-400 px8 py4 br8" title={title}>
-        Site Admin
+      <h5 className="bg-blue white fw-400 px8 py4 br8" title={title}>
+        Moderator
       </h5>
     );
-  else if (karma >= 500) karmaColor = "#E11218";
+  //  matte colors
+  else if (karma >= 500) karmaColor = "#9bf6ff";
+  else if (karma >= 250) karmaColor = "#caffbf";
+  else if (karma >= 100) karmaColor = "#ffadad";
+  else if (karma >= 50) karmaColor = "#ffd6a5";
+
+  /*
+//non matte colors
+else if (
+    karma >= 500
+  )
+    karmaColor = "#9b5de5";
+  else if (karma >= 250) karmaColor = "#00bbf9";
+  else if (karma >= 100) karmaColor = "#00f5d4";
+  else if (karma >= 50) karmaColor = "#fee440";
+*/
+  /*
+//bronze, silver, gold, red
+else if (
+    karma >= 500
+  )
+    karmaColor = "#E11218";
   else if (karma >= 250) karmaColor = "#FFD700";
   else if (karma >= 100) karmaColor = "#C0C0C0";
   else if (karma >= 50) karmaColor = "#b87333";
 
+  */
   if (karmaColor)
     return (
       <FontAwesomeIcon

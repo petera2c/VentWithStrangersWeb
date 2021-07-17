@@ -9,6 +9,8 @@ import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
 
+import { calculateKarma, karmaBadge } from "../../util";
+
 import { isMobileOrTablet } from "../../util";
 
 class AboutUsPage extends Component {
@@ -22,11 +24,11 @@ class AboutUsPage extends Component {
       >
         <Container className="column container large bg-white pa32 ma32 br8">
           <h4 className="mb16">What Can You Do on VWS?</h4>
-          <p className="mb8">· Chat anonymously with strangers</p>
-          <p className="mb8">
+          <p className="pl8 mb8">· Chat anonymously with strangers</p>
+          <p className="pl8 mb8">
             · Sign up entirely anonymously or use the website without signing up
           </p>
-          <p className="mb8">
+          <p className="pl8 mb8">
             ·{" "}
             <a
               className="no-bold a-tag-common-link"
@@ -35,12 +37,12 @@ class AboutUsPage extends Component {
               Post on our board anonymously
             </a>
           </p>
-          <p className="mb8">· Comment on our board anonymously</p>
-          <p className="mb8">
+          <p className="pl8 mb8">· Comment on our board anonymously</p>
+          <p className="pl8 mb8">
             · Tag someone in a post or comment by placing @ before their
             username
           </p>
-          <p className="mb16">· Earn Karma Points</p>
+          <p className="pl8 mb16">· Earn Karma Points</p>
 
           <h4 className="mb16">What the Heck are Karma Points?</h4>
           <p className="mb16">
@@ -50,27 +52,40 @@ class AboutUsPage extends Component {
             reported!
           </p>
           <h6 className="bold mb16">Karma Points are Awarded as Follows</h6>
-          <p className="pl8 mb8">· +10 for an upvote on your comment</p>
-          <p className="pl8 mb8">· +10 for an upvote on your vent</p>
-          <p className="pl8 mb8">· +1 when you upvote someone else’s comment</p>
-          <p className="pl8 mb8">· +1 when you upvote someone else’s vent</p>
+          <p className="pl8 mb8">· +4 for an upvote on your comment</p>
+          <p className="pl8 mb8">· +2 for an upvote on your vent</p>
           <p className="pl8 mb16">
-            · -10 when you get reported for a valid reason
+            · -4 when you get reported for a valid reason
           </p>
           <h6 className="bold mb16">Karma Badges</h6>
-          <p className="mb8">· Bronze Badge @ 50 Karma Points</p>
-          <p className="mb8">· Silver Badge @ 100 Karma Points</p>
-          <p className="mb8">· Gold Badge @ 250 Karma Points</p>
-          <p className="mb8">· Elite Red Badge @ 500 Karma Points</p>
-          <p className="mb16">· Site Moderator Title @ 5000 Karma Points</p>
+          <p className="flex align-center pl8 mb8">
+            <Container className="mr16">{karmaBadge(50)}</Container>Orange Badge
+            @ 50 Karma Points
+          </p>
+          <p className="flex align-center pl8 mb8">
+            <Container className="mr16">{karmaBadge(100)}</Container>Red Badge @
+            100 Karma Points
+          </p>
+          <p className="flex align-center pl8 mb8">
+            <Container className="mr16">{karmaBadge(250)}</Container>Green Badge
+            @ 250 Karma Points
+          </p>
+          <p className="flex align-center pl8 mb8">
+            <Container className="mr16">{karmaBadge(500)}</Container>Blue Badge
+            @ 500 Karma Points
+          </p>
+          <p className="flex align-center pl8 mb16">
+            <Container className="mr16">{karmaBadge(5000)}</Container>Moderator
+            Title @ 5000 Karma Points
+          </p>
           <h6 className="bold mb16">
             With Great Power Comes Great Responsibility
           </h6>
           <p className="mb16">
-            Gold, Silver, Bronze, and Elite Red badges are milestones while you
-            work your way to the Site Moderator Title. As a Site Moderator, you
-            will be able to edit/delete up to 3 vents and comments a day and
-            also ban 2 users per day.
+            Orange, Reg, Green, and Blue badges are milestones while you work
+            your way to the Moderator Title. As a Moderator, you will be able to
+            edit/delete up to 3 vents and comments a day and also ban 2 users
+            per day.
           </p>
 
           <h4 className="mb16">Where Else Can You Access VWS?</h4>
