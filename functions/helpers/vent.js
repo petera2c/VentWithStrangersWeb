@@ -52,27 +52,6 @@ const newVentLikeListener = async (change, context) => {
   let increment = 1;
   if (!hasLiked) increment = -1;
 
-  if (!change.before.data()) {
-    const ventDoc = await admin
-      .firestore()
-      .collection("vents")
-      .doc(ventIDuserIDArray[0])
-      .get();
-
-    // Give +2 to the user that received the upvote
-    if (ventDoc.data().userID)
-      await admin
-        .firestore()
-        .collection("users_display_name")
-        .doc(ventDoc.data().userID)
-        .set(
-          {
-            good_karma: admin.firestore.FieldValue.increment(2),
-          },
-          { merge: true }
-        );
-  }
-
   await admin
     .firestore()
     .collection("vents")
@@ -93,6 +72,23 @@ const newVentLikeListener = async (change, context) => {
     .collection("vents")
     .doc(ventIDuserIDArray[0])
     .get();
+
+  // If user liked their own vent do not notify or give karma
+  if (ventDoc.data().userID == ventIDuserID[1]) return;
+
+  // Give +2 to the user that received the upvote
+  if (ventDoc.data().userID)
+    await admin
+      .firestore()
+      .collection("users_display_name")
+      .doc(ventDoc.data().userID)
+      .set(
+        {
+          good_karma: admin.firestore.FieldValue.increment(2),
+        },
+        { merge: true }
+      );
+
   const vent = { id: ventDoc.id, ...ventDoc.data() };
 
   createNotification(

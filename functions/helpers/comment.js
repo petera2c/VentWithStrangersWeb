@@ -58,7 +58,11 @@ const commentLikeListener = async (change, context) => {
     .collection("comments")
     .doc(commentIDuserIDArray[0])
     .get();
+
   const comment = commentDoc.data();
+
+  // If user liked their own comment do not notify or give karma
+  if (comment.userID == commentIDuserIDArray[1]) return;
 
   // Give +4 to the user that made the comment
   if (comment.userID)
@@ -98,6 +102,8 @@ const createNewCommentNotification = async (doc, context) => {
   if (!ventDoc.exists) return "Cannot find post.";
 
   const vent = { id: ventDoc.id, ...ventDoc.data() };
+
+  if (vent.userID == doc.data().userID) return;
 
   return createNotification(
     createVentLink(vent),
