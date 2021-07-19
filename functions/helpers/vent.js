@@ -30,12 +30,24 @@ const decreaseTrendingScore = async () => {
 const newVentListener = async (doc, context) => {
   const vent = { id: doc.id, ...doc.data() };
 
-  if (vent.userID)
+  if (vent.userID) {
     await admin
       .firestore()
       .collection("vent_likes")
       .doc(vent.id + "|||" + vent.userID)
       .set({ liked: true, ventID: vent.id });
+
+    await admin
+      .firestore()
+      .collection("user_day_limit_vents")
+      .doc(vent.userID)
+      .set(
+        {
+          vent_counter: admin.firestore.FieldValue.increment(1),
+        },
+        { merge: true }
+      );
+  }
 
   return createNotification(
     createVentLink(vent),
@@ -74,7 +86,7 @@ const newVentLikeListener = async (change, context) => {
     .get();
 
   // If user liked their own vent do not notify or give karma
-  if (ventDoc.data().userID == ventIDuserID[1]) return;
+  if (ventDoc.data().userID == ventIDuserIDArray[1]) return;
 
   // Give +2 to the user that received the upvote
   if (ventDoc.data().userID)
