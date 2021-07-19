@@ -204,7 +204,11 @@ function NewVentPage() {
       {warningModalIsActive && !user && (
         <WarningModal
           close={() => setWarningModalIsActive(false)}
-          text="You can not create a vent if you are not signed in. Please sign in to create a vent. We have recently changed our policy to properly moderate content on the application by banning users who create offensive vents."
+          text="We are so sorry, but to moderate content we now require that all
+              users must create accounts. It only takes 30 seconds to create an
+              account and you can set the username to any random thing you think
+              of. We do require your email address but that information will
+              never be shared with anyone ever."
         />
       )}
     </Page>

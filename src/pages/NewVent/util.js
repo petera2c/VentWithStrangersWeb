@@ -18,7 +18,7 @@ export const getVent = async (setDescription, setTags, setTitle, ventID) => {
 
 export const saveVent = async (callback, ventObject, ventID, user) => {
   if (!user) {
-    return alert("You must be signed in to create a vent.");
+    return alert("You must be signed in to create a vent");
   }
   if (!ventID) {
     ventObject.server_timestamp =
