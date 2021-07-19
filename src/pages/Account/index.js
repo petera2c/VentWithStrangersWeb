@@ -44,7 +44,7 @@ function AccountPage() {
                 <Container className="flex x-fill full-center">
                   <FontAwesomeIcon icon={faChartNetwork} />
                 </Container>
-                <Text text="Profile" type="h5" />
+                <Text text="Public Profile" type="h5" />
               </Container>
             </Link>
 

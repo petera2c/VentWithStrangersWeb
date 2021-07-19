@@ -58,26 +58,26 @@ class AboutUsPage extends Component {
             · -4 when you get reported for a valid reason
           </p>
           <h6 className="bold mb16">Karma Badges</h6>
-          <p className="flex align-center pl8 mb8">
-            <Container className="mr16">{karmaBadge(50)}</Container>Orange Badge
-            @ 50 Karma Points
-          </p>
-          <p className="flex align-center pl8 mb8">
-            <Container className="mr16">{karmaBadge(100)}</Container>Red Badge @
-            100 Karma Points
-          </p>
-          <p className="flex align-center pl8 mb8">
-            <Container className="mr16">{karmaBadge(250)}</Container>Green Badge
-            @ 250 Karma Points
-          </p>
-          <p className="flex align-center pl8 mb8">
-            <Container className="mr16">{karmaBadge(500)}</Container>Blue Badge
-            @ 500 Karma Points
-          </p>
-          <p className="flex align-center pl8 mb16">
-            <Container className="mr16">{karmaBadge(5000)}</Container>Moderator
-            Title @ 5000 Karma Points
-          </p>
+          <Container className="flex align-center pl8 mb8">
+            <Container className="mr16">{karmaBadge(50)}</Container>
+            <p>Orange Badge @ 50 Karma Points</p>
+          </Container>
+          <Container className="flex align-center pl8 mb8">
+            <Container className="mr16">{karmaBadge(100)}</Container>
+            <p>Red Badge @ 100 Karma Points</p>
+          </Container>
+          <Container className="flex align-center pl8 mb8">
+            <Container className="mr16">{karmaBadge(250)}</Container>
+            <p>Green Badge @ 250 Karma Points</p>
+          </Container>
+          <Container className="flex align-center pl8 mb8">
+            <Container className="mr16">{karmaBadge(500)}</Container>
+            <p>Blue Badge @ 500 Karma Points</p>
+          </Container>
+          <Container className="flex align-center pl8 mb16">
+            <Container className="mr16">{karmaBadge(5000)}</Container>
+            <p>Moderator Title @ 5000 Karma Points</p>
+          </Container>
           <h6 className="bold mb16">
             With Great Power Comes Great Responsibility
           </h6>

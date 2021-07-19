@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import moment from "moment-timezone";
 import db from "../../config/firebase";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -35,6 +36,7 @@ import {
   karmaBadge
 } from "../../util";
 import { startConversation } from "../../components/Vent/util";
+import { getUser } from "./util";
 
 function ProfileSection({ user }) {
   const history = useHistory();
@@ -49,6 +51,7 @@ function ProfileSection({ user }) {
   const [postOptions, setPostOptions] = useState(false);
   const [postsSection, setPostsSection] = useState(true);
   const [userBasicInfo, setUserBasicInfo] = useState({});
+  const [userInfo, setUserInfo] = useState({});
 
   if (search) search = search.substring(1);
   if (!search && user) search = user.uid;
@@ -73,8 +76,17 @@ function ProfileSection({ user }) {
   };
 
   useEffect(() => {
-    if (search) getUserBasicInfo(setUserBasicInfo, search);
-  }, []);
+    if (search) {
+      getUserBasicInfo(setUserBasicInfo, search);
+      getUser(userInfo => {
+        setUserInfo(userInfo);
+      }, search);
+    }
+  }, [search]);
+
+  const displayName = userBasicInfo.displayName
+    ? capitolizeFirstChar(userBasicInfo.displayName)
+    : "Anonymous";
 
   return (
     <Container
@@ -93,24 +105,33 @@ function ProfileSection({ user }) {
                 width: "84px"
               }}
             >
-              <h1 className="white fs-40">
-                {userBasicInfo.displayName
-                  ? capitolizeFirstChar(userBasicInfo.displayName[0])
-                  : ""}
-              </h1>
+              <h1 className="white fs-40">{displayName[0]}</h1>
             </Container>
           </Container>
+
           <Container className="align-center">
-            <h1 className="primary mr8">
-              {userBasicInfo.displayName
-                ? capitolizeFirstChar(userBasicInfo.displayName)
-                : "Anonymous"}
-            </h1>
+            <h1 className="primary mr8">{displayName}</h1>
             {karmaBadge(calculateKarma(userBasicInfo))}
           </Container>
           <h6 className="grey-1 fw-400">
             {calculateKarma(userBasicInfo)} Karma Points
           </h6>
+          <Container className="mt8">
+            <Container className="column">
+              <h6 className="fw-400">Age</h6>
+              <h6 className="grey-1 fw-400">
+                {new moment().year() - new moment(userInfo.birth_date).year()}
+              </h6>
+            </Container>
+            <Container className="column ml8">
+              <h6 className="fw-400">Gender</h6>
+              <h6 className="grey-1 fw-400">{userInfo.gender}</h6>
+            </Container>
+            <Container className="column ml8">
+              <h6 className="fw-400">Pronouns</h6>
+              <h6 className="grey-1 fw-400">{userInfo.pronouns}</h6>
+            </Container>
+          </Container>
           <Container className="align-center justify-between mt16">
             {userBasicInfo.displayName && search && search != user.uid && (
               <Button
