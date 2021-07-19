@@ -1,5 +1,36 @@
 import firebase from "firebase/app";
+import moment from "moment-timezone";
 import db from "../../config/firebase";
+
+export const calculateTimeToVentCounterReset = () => {
+  const currentTime = new moment().tz("America/Los_Angeles");
+  const nextVentCounterReset = new moment().tz("America/Los_Angeles");
+  nextVentCounterReset.set("hour", 12);
+  nextVentCounterReset.set("minutes", 0);
+  nextVentCounterReset.set("seconds", 0);
+
+  if (nextVentCounterReset.diff(currentTime) < 0) {
+    nextVentCounterReset.add(1, "day");
+  }
+  nextVentCounterReset.tz(Intl.DateTimeFormat().resolvedOptions().timeZone);
+
+  /* moment("2015-01-01")
+  .startOf("day")
+  .add(nextVentCounterReset.diff(currentTime) / 1000, "seconds")
+  .format("H:mm:ss")*/
+
+  return nextVentCounterReset.fromNow();
+};
+
+export const getHasUserPostedMoreThanTwiceToday = async (callback, userID) => {
+  const userDailyVentCount = await db
+    .collection("user_day_limit_vents")
+    .doc(userID)
+    .get();
+
+  if (userDailyVentCount.data().vent_counter >= 2) callback(true);
+  else callback(false);
+};
 
 export const getVent = async (setDescription, setTags, setTitle, ventID) => {
   const ventDoc = await db

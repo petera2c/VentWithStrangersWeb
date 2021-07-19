@@ -74,7 +74,7 @@ exports.cronDecreaseTrendingScore = functions.pubsub
   .onRun(async () => decreaseTrendingScore());
 
 exports.cronDecreaseUserVentCounter = functions.pubsub
-  .schedule("0 0 * * *")
+  .schedule("0 12 * * *")
   .onRun(async () => decreaseUserVentCounter());
 
 const injectMetaData = (req, res) => {

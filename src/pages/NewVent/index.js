@@ -14,10 +14,16 @@ import Text from "../../components/views/Text";
 import Button from "../../components/views/Button";
 
 import WarningModal from "../../components/modals/Warning";
+import BlockModal from "../../components/modals/Block";
 
 import Emoji from "../../components/Emoji";
 
-import { getVent, saveVent } from "./util";
+import {
+  calculateTimeToVentCounterReset,
+  getHasUserPostedMoreThanTwiceToday,
+  getVent,
+  saveVent
+} from "./util";
 import { isMobileOrTablet } from "../../util";
 
 function NewVentPage() {
@@ -26,6 +32,10 @@ function NewVentPage() {
   const { search } = location;
   const [description, setDescription] = useState("");
   const [gender, setGender] = useState(0);
+  const [
+    hasUserPostedMoreThanTwiceToday,
+    setHasUserPostedMoreThanTwiceToday
+  ] = useState(false);
   const [saving, setSaving] = useState(false);
   const [tags, setTags] = useState([]);
   const [tagText, setTagText] = useState("");
@@ -36,6 +46,11 @@ function NewVentPage() {
 
   useEffect(() => {
     if (ventID) getVent(setDescription, setTags, setTitle, ventID);
+    if (user)
+      getHasUserPostedMoreThanTwiceToday(
+        setHasUserPostedMoreThanTwiceToday,
+        user.uid
+      );
   }, []);
   const updateTags = (inputText, tags) => {
     let word = "";
@@ -209,6 +224,15 @@ function NewVentPage() {
               account and you can set the username to any random thing you think
               of. We do require your email address but that information will
               never be shared with anyone ever."
+        />
+      )}
+      {hasUserPostedMoreThanTwiceToday && (
+        <BlockModal
+          text={
+            "To avoid spam, users can only post two vents per day. Please come back " +
+            calculateTimeToVentCounterReset()
+          }
+          title="Too Many Posts!"
         />
       )}
     </Page>
