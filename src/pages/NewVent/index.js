@@ -204,7 +204,7 @@ function NewVentPage() {
       {warningModalIsActive && !user && (
         <WarningModal
           close={() => setWarningModalIsActive(false)}
-          text="If you create a Vent without signing in, you will not be able to receive notifications, edit, or delete this post!"
+          text="You can not create a vent if you are not signed in. Please sign in to create a vent. We have recently changed our policy to properly moderate content on the application by banning users who create offensive vents."
         />
       )}
     </Page>

@@ -17,8 +17,8 @@ export const getVent = async (setDescription, setTags, setTitle, ventID) => {
 };
 
 export const saveVent = async (callback, ventObject, ventID, user) => {
-  if (user) {
-    ventObject.userID = user.uid;
+  if (!user) {
+    return alert("You must be signed in to create a vent.");
   }
   if (!ventID) {
     ventObject.server_timestamp =
@@ -26,6 +26,7 @@ export const saveVent = async (callback, ventObject, ventID, user) => {
     ventObject.comment_counter = 0;
     ventObject.like_counter = 0;
   }
+  ventObject.userID = user.uid;
   ventObject.last_updated = firebase.firestore.Timestamp.now().seconds * 1000;
 
   let newVent = ventObject;
