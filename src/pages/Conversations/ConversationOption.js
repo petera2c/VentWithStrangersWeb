@@ -19,16 +19,21 @@ import {
   readConversation
 } from "./util";
 
-import { blockUser, capitolizeFirstChar, isMobileOrTablet } from "../../util";
+import {
+  blockUser,
+  calculateKarma,
+  capitolizeFirstChar,
+  isMobileOrTablet,
+  karmaBadge
+} from "../../util";
 
 function ConversationOption({
   conversation,
-  conversationName,
+  conversationPartnerData,
   isActive,
   isLastItem,
   setActiveConversation,
-  setConversationNames,
-  setConversations,
+  setConversationsBasicDatas,
   userID
 }) {
   const history = useHistory();
@@ -42,7 +47,7 @@ function ConversationOption({
   );
 
   useEffect(() => {
-    getConversationName(conversation, setConversationNames, userID);
+    getConversationName(conversation, setConversationsBasicDatas, userID);
   }, []);
 
   if (!conversation) return <div>loading</div>;
@@ -64,11 +69,15 @@ function ConversationOption({
       }}
     >
       <Container className="flex-fill column ov-hidden">
-        <h6 className={hasSeen ? "grey-1" : "primary"}>
-          {conversationName
-            ? capitolizeFirstChar(conversationName)
-            : "Anonymous"}
-        </h6>
+        <Container>
+          <h6 className={"mr8 " + (hasSeen ? "grey-1" : "primary")}>
+            {conversationPartnerData
+              ? capitolizeFirstChar(conversationPartnerData.displayName)
+              : "Anonymous"}
+          </h6>
+          {conversationPartnerData &&
+            karmaBadge(calculateKarma(conversationPartnerData))}
+        </Container>
         {conversation.last_message && (
           <p>
             {conversation.last_message.length > 40
@@ -130,9 +139,7 @@ function ConversationOption({
         <ConfirmAlertModal
           close={() => setDeleteConversationConfirm(false)}
           message="Deleting this conversation will be permanent and there will be no way to recover these messages once you have taken this action. Are you sure you would like to delete this conversation and all of your messages associated with it?"
-          submit={() =>
-            deleteConversation(conversation.id, setConversations, userID)
-          }
+          submit={() => deleteConversation(conversation.id, userID)}
           title="Delete Conversation"
         />
       )}

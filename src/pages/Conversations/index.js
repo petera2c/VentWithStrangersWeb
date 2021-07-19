@@ -50,7 +50,7 @@ function Conversations() {
   const [activeConversation, setActiveConversation] = useState(
     search ? search.substring(1) : ""
   );
-  const [conversationNames, setConversationNames] = useState({});
+  const [conversationsBasicDatas, setConversationsBasicDatas] = useState({});
 
   if (conversations && conversations.length !== 0 && !activeConversation)
     setActiveConversation(conversations[0].id);
@@ -77,12 +77,14 @@ function Conversations() {
               return (
                 <ConversationOption
                   conversation={conversation}
-                  conversationName={conversationNames[conversation.id]}
+                  conversationPartnerData={
+                    conversationsBasicDatas[conversation.id]
+                  }
                   isActive={conversation.id === activeConversation}
                   isLastItem={index === conversations.length - 1}
                   key={conversation.id}
                   setActiveConversation={setActiveConversation}
-                  setConversationNames={setConversationNames}
+                  setConversationsBasicDatas={setConversationsBasicDatas}
                   userID={user.uid}
                 />
               );
@@ -102,7 +104,9 @@ function Conversations() {
                 conversation={conversations.find(
                   conversation => conversation.id === activeConversation
                 )}
-                conversationName={conversationNames[activeConversation]}
+                conversationPartnerData={
+                  conversationsBasicDatas[activeConversation]
+                }
                 userID={user.uid}
               />
             </Container>

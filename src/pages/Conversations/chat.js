@@ -17,7 +17,12 @@ import Button from "../../components/views/Button";
 import Text from "../../components/views/Text";
 import Message from "./message";
 
-import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
+import {
+  calculateKarma,
+  capitolizeFirstChar,
+  isMobileOrTablet,
+  karmaBadge
+} from "../../util";
 
 import {
   getMessages,
@@ -27,7 +32,7 @@ import {
 } from "./util";
 let typingTimer;
 
-function Chat({ conversation, conversationName, userID }) {
+function Chat({ conversation, conversationPartnerData = {}, userID }) {
   let messageListenerUnsubscribe;
 
   const dummyRef = useRef();
@@ -91,19 +96,20 @@ function Chat({ conversation, conversationName, userID }) {
 
   return (
     <Container className="column x-fill full-center bg-white br4">
-      <Container className="x-fill justify-between border-bottom pa16">
+      <Container className="x-fill border-bottom pa16">
         {conversationPartnerID && (
           <Link to={"/profile?" + conversationPartnerID}>
-            <h5 className={"button-1"}>
-              {capitolizeFirstChar(conversationName)}
+            <h5 className="button-1 mr8">
+              {capitolizeFirstChar(conversationPartnerData.displayName)}
             </h5>
           </Link>
         )}
         {!conversationPartnerID && (
-          <h5 className={"button-1"}>
-            {capitolizeFirstChar(conversationName)}
+          <h5 className="button-1 mr8">
+            {capitolizeFirstChar(conversationPartnerData.displayName)}
           </h5>
         )}
+        {karmaBadge(calculateKarma(conversationPartnerData))}
       </Container>
 
       <Container className="column x-fill flex-fill ov-auto pa16">
@@ -137,7 +143,9 @@ function Chat({ conversation, conversationName, userID }) {
       </Container>
       {false && isOtherUserTyping && (
         <Container className="x-fill">
-          <p className="pa16">{conversationName} is typing...</p>
+          <p className="pa16">
+            {conversationPartnerData.displayName} is typing...
+          </p>
         </Container>
       )}
 

@@ -3,11 +3,7 @@ import db from "../../config/firebase";
 
 import { getEndAtValueTimestamp } from "../../util";
 
-export const deleteConversation = async (
-  conversationID,
-  setConversations,
-  userID
-) => {
+export const deleteConversation = async (conversationID, userID) => {
   await db
     .collection("conversations")
     .doc(conversationID)
@@ -37,7 +33,7 @@ export const deleteMessage = async (conversationID, messageID, setMessages) => {
 
 export const getConversationName = async (
   conversation,
-  setConversationNames,
+  setConversationBasicDatas,
   userID
 ) => {
   let conversationFriendUserID;
@@ -46,15 +42,15 @@ export const getConversationName = async (
       conversationFriendUserID = conversation.members[index];
   }
   if (!conversationFriendUserID) return;
-  const userDisplayDoc = await db
+  const userBasicInfo = await db
     .collection("users_display_name")
     .doc(conversationFriendUserID)
     .get();
 
-  if (userDisplayDoc.data() && userDisplayDoc.data().displayName) {
-    setConversationNames(oldNames => {
-      oldNames[conversation.id] = userDisplayDoc.data().displayName;
-      return { ...oldNames };
+  if (userBasicInfo.data() && userBasicInfo.data().displayName) {
+    setConversationBasicDatas(currentUsersBasicInfo => {
+      currentUsersBasicInfo[conversation.id] = { ...userBasicInfo.data() };
+      return { ...currentUsersBasicInfo };
     });
   }
 };
