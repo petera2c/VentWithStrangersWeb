@@ -31,7 +31,7 @@ export const deleteMessage = async (conversationID, messageID, setMessages) => {
   alert("Message deleted!");
 };
 
-export const getConversationName = async (
+export const getConversationBasicData = async (
   conversation,
   setConversationBasicDatas,
   userID

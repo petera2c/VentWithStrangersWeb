@@ -16,7 +16,7 @@ import KarmaBadge from "../../components/KarmaBadge";
 
 import {
   deleteConversation,
-  getConversationName,
+  getConversationBasicData,
   readConversation
 } from "./util";
 
@@ -47,7 +47,7 @@ function ConversationOption({
   );
 
   useEffect(() => {
-    getConversationName(conversation, setConversationsBasicDatas, userID);
+    getConversationBasicData(conversation, setConversationsBasicDatas, userID);
   }, []);
 
   if (!conversation) return <div>loading</div>;

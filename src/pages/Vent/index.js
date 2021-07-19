@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import moment from "moment-timezone";
 import { useLocation } from "react-router-dom";
 import TextArea from "react-textarea-autosize";
