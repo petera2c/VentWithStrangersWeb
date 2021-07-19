@@ -4,6 +4,24 @@ const { createVentLink } = require("./util");
 
 const VENT_LIKE_TRENDING_SCORE_INCREMENT = 24;
 
+const decreaseUserVentCounter = async () => {
+  const usersSnapshot = await admin
+    .firestore()
+    .collection("user_day_limit_vents")
+    .where("vent_counter", ">", 0)
+    .get();
+
+  for (let index in usersSnapshot.docs) {
+    await admin
+      .firestore()
+      .collection("user_day_limit_vents")
+      .doc(usersSnapshot.docs[index].id)
+      .set({
+        vent_counter: 0,
+      });
+  }
+};
+
 const decreaseTrendingScore = async () => {
   const trendingSnapshot = await admin
     .firestore()
@@ -184,6 +202,7 @@ const ventDeleteListener = async (doc, context) => {
 
 module.exports = {
   decreaseTrendingScore,
+  decreaseUserVentCounter,
   newVentLikeListener,
   newVentListener,
   newVentReportListener,

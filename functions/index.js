@@ -17,6 +17,7 @@ const {
 } = require("./helpers/comment");
 const {
   decreaseTrendingScore,
+  decreaseUserVentCounter,
   newVentLikeListener,
   newVentListener,
   newVentReportListener,
@@ -27,6 +28,8 @@ const { conversationUpdateListener } = require("./helpers/conversation");
 const { getMetaInformation } = require("./helpers/util");
 
 process.setMaxListeners(0);
+
+decreaseUserVentCounter();
 
 exports.blockUserListener = functions.firestore
   .document("/block_check/{userID1userID2}")
@@ -69,6 +72,10 @@ exports.cronUpdateSitemap = functions.pubsub
 exports.cronDecreaseTrendingScore = functions.pubsub
   .schedule("0 * * * *")
   .onRun(async () => decreaseTrendingScore());
+
+exports.cronDecreaseUserVentCounter = functions.pubsub
+  .schedule("0 0 * * *")
+  .onRun(async () => decreaseUserVentCounter());
 
 const injectMetaData = (req, res) => {
   const filePath = path.resolve(__dirname, "./build/index.html");
