@@ -12,6 +12,7 @@ import Container from "../../components/containers/Container";
 import Button from "../../components/views/Button";
 import HandleOutsideClick from "../../components/containers/HandleOutsideClick";
 import ConfirmAlertModal from "../../components/modals/ConfirmAlert";
+import KarmaBadge from "../../components/KarmaBadge";
 
 import {
   deleteConversation,
@@ -23,8 +24,7 @@ import {
   blockUser,
   calculateKarma,
   capitolizeFirstChar,
-  isMobileOrTablet,
-  karmaBadge
+  isMobileOrTablet
 } from "../../util";
 
 function ConversationOption({
@@ -75,8 +75,9 @@ function ConversationOption({
               ? capitolizeFirstChar(conversationPartnerData.displayName)
               : "Anonymous"}
           </h6>
-          {conversationPartnerData &&
-            karmaBadge(calculateKarma(conversationPartnerData))}
+          {conversationPartnerData && (
+            <KarmaBadge karma={calculateKarma(conversationPartnerData)} />
+          )}
         </Container>
         {conversation.last_message && (
           <p>

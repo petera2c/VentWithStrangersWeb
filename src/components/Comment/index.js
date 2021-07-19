@@ -19,7 +19,7 @@ import Button from "../views/Button";
 import HandleOutsideClick from "../containers/HandleOutsideClick";
 import ConfirmAlertModal from "../modals/ConfirmAlert";
 import ReportModal from "../modals/Report";
-
+import KarmaBadge from "../KarmaBadge";
 import { UserContext } from "../../context";
 
 import {
@@ -27,8 +27,7 @@ import {
   calculateKarma,
   capitolizeFirstChar,
   getUserBasicInfo,
-  hasUserBlockedUser,
-  karmaBadge
+  hasUserBlockedUser
 } from "../../util";
 import {
   deleteComment,
@@ -106,7 +105,9 @@ function Comment({
               type="h5"
             />
           )}
-          {userBasicInfo && karmaBadge(calculateKarma(userBasicInfo))}
+          {userBasicInfo && (
+            <KarmaBadge karma={calculateKarma(userBasicInfo)} />
+          )}
         </Container>
         <Container className="relative column full-center">
           {user && (

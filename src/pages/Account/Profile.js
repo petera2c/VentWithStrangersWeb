@@ -26,14 +26,14 @@ import Comment from "../../components/Comment";
 import ConfirmAlertModal from "../../components/modals/ConfirmAlert";
 import HandleOutsideClick from "../../components/containers/HandleOutsideClick";
 import LoadMore from "../../components/LoadMore";
+import KarmaBadge from "../../components/KarmaBadge";
 
 import {
   blockUser,
   calculateKarma,
   capitolizeFirstChar,
   getUserBasicInfo,
-  isMobileOrTablet,
-  karmaBadge
+  isMobileOrTablet
 } from "../../util";
 import { startConversation } from "../../components/Vent/util";
 import { getUser } from "./util";
@@ -111,7 +111,7 @@ function ProfileSection({ user }) {
 
           <Container className="align-center">
             <h1 className="primary mr8">{displayName}</h1>
-            {karmaBadge(calculateKarma(userBasicInfo))}
+            <KarmaBadge karma={calculateKarma(userBasicInfo)} />
           </Container>
           <h6 className="grey-1 fw-400">
             {calculateKarma(userBasicInfo)} Karma Points

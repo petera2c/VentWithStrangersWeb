@@ -8,8 +8,9 @@ import { faLinkedin } from "@fortawesome/free-brands-svg-icons/faLinkedin";
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
+import KarmaBadge from "../../components/KarmaBadge";
 
-import { calculateKarma, karmaBadge } from "../../util";
+import { calculateKarma } from "../../util";
 
 import { isMobileOrTablet } from "../../util";
 
@@ -59,23 +60,33 @@ class AboutUsPage extends Component {
           </p>
           <h6 className="bold mb16">Karma Badges</h6>
           <Container className="flex align-center pl8 mb8">
-            <Container className="mr16">{karmaBadge(50)}</Container>
+            <Container className="mr16">
+              <KarmaBadge karma={50} />
+            </Container>
             <p>Orange Badge @ 50 Karma Points</p>
           </Container>
           <Container className="flex align-center pl8 mb8">
-            <Container className="mr16">{karmaBadge(100)}</Container>
+            <Container className="mr16">
+              <KarmaBadge karma={100} />
+            </Container>
             <p>Red Badge @ 100 Karma Points</p>
           </Container>
           <Container className="flex align-center pl8 mb8">
-            <Container className="mr16">{karmaBadge(250)}</Container>
+            <Container className="mr16">
+              <KarmaBadge karma={250} />
+            </Container>
             <p>Green Badge @ 250 Karma Points</p>
           </Container>
           <Container className="flex align-center pl8 mb8">
-            <Container className="mr16">{karmaBadge(500)}</Container>
+            <Container className="mr16">
+              <KarmaBadge karma={500} />
+            </Container>
             <p>Blue Badge @ 500 Karma Points</p>
           </Container>
           <Container className="flex align-center pl8 mb16">
-            <Container className="mr16">{karmaBadge(5000)}</Container>
+            <Container className="mr16">
+              <KarmaBadge karma={5000} />
+            </Container>
             <p>Moderator Title @ 5000 Karma Points</p>
           </Container>
           <h6 className="bold mb16">

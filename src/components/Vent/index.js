@@ -52,6 +52,7 @@ import Container from "../containers/Container";
 import HandleOutsideClick from "../containers/HandleOutsideClick";
 import Button from "../views/Button";
 import Text from "../views/Text";
+import KarmaBadge from "../KarmaBadge";
 
 import { UserContext } from "../../context";
 
@@ -60,7 +61,6 @@ import {
   blockUser,
   calculateKarma,
   getUserBasicInfo,
-  karmaBadge,
   capitolizeFirstChar,
   hasUserBlockedUser,
   isMobileOrTablet
@@ -217,7 +217,7 @@ function Vent({
                   text={capitolizeFirstChar(displayName)}
                   type="h5"
                 />
-                {karmaBadge(calculateKarma(author))}
+                <KarmaBadge karma={calculateKarma(author)} />
               </Container>
             </Container>
             <Container className="relative flex-fill align-center justify-end">

@@ -15,13 +15,13 @@ import Container from "../../components/containers/Container";
 
 import Button from "../../components/views/Button";
 import Text from "../../components/views/Text";
+import KarmaBadge from "../../components/KarmaBadge";
 import Message from "./message";
 
 import {
   calculateKarma,
   capitolizeFirstChar,
-  isMobileOrTablet,
-  karmaBadge
+  isMobileOrTablet
 } from "../../util";
 
 import {
@@ -109,7 +109,7 @@ function Chat({ conversation, conversationPartnerData = {}, userID }) {
             {capitolizeFirstChar(conversationPartnerData.displayName)}
           </h5>
         )}
-        {karmaBadge(calculateKarma(conversationPartnerData))}
+        <KarmaBadge karma={calculateKarma(conversationPartnerData)} />
       </Container>
 
       <Container className="column x-fill flex-fill ov-auto pa16">
