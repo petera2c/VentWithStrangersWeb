@@ -13,7 +13,7 @@ class AboutUsPage extends Component {
   render() {
     return (
       <Page
-        className="row bg-grey-2 justify-center"
+        className="row bg-grey-2 justify-center wrap"
         description=""
         keywords="Learn about Vent With Strangers"
         title="Site Info"
