@@ -83,7 +83,7 @@ class AppDownloadPage extends Component {
                     "https://play.google.com/store/apps/details?id=com.commontech.ventwithstrangers&hl=en"
                   )
                 }
-                src={require("../../static/googleplay.png")}
+                src={require("../../../static/googleplay.png")}
                 style={{ width: "200px" }}
                 title="Download on Google Play!"
               />
@@ -98,7 +98,7 @@ class AppDownloadPage extends Component {
                     "https://apps.apple.com/us/app/vent-with-strangers/id1509120090"
                   )
                 }
-                src={require("../../static/appstore.png")}
+                src={require("../../../static/appstore.png")}
                 style={{ width: "200px" }}
                 title="Download on iPhone"
               />

@@ -39,9 +39,7 @@ export const getUnreadConversations = (
     .onSnapshot("value", doc => {
       if (doc.data() && doc.data().count) {
         setUnreadConversations(doc.data().count);
-        if (!first) {
-          soundNotify();
-        }
+        if (!first) soundNotify();
       } else setUnreadConversations(0);
       first = false;
     });
