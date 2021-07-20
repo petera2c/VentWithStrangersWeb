@@ -28,7 +28,8 @@ export const getHasUserPostedMoreThanTwiceToday = async (callback, userID) => {
     .doc(userID)
     .get();
 
-  if (userDailyVentCount.data().vent_counter >= 2) callback(true);
+  if (userDailyVentCount.exists && userDailyVentCount.data().vent_counter >= 2)
+    callback(true);
   else callback(false);
 };
 
