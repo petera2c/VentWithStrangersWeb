@@ -35,7 +35,7 @@ service cloud.firestore {
 
     match /vents/{ventID} {
       allow read: if true;
-      allow write: if request.auth.uid == request.resource.data.userID && get(/databases/$(database)/documents/user_day_limit_vents/$(request.auth.uid)).data.vent_counter != 2;
+      allow write: if request.auth.uid == request.resource.data.userID && (!exists(/databases/$(database)/documents/user_day_limit_vents/$(request.auth.uid)) || get(/databases/$(database)/documents/user_day_limit_vents/$(request.auth.uid)).data.vent_counter < 2);
       allow update: if request.auth.uid == request.resource.data.userID
         && request.resource.data.userID == resource.data.userID;
       allow delete: if request.auth.uid == resource.data.userID;
