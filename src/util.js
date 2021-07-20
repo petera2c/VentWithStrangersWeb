@@ -112,6 +112,13 @@ export const signOut = () => {
 };
 
 export const soundNotify = (sound = "bing") => {
-  var audio = new Audio("/static/" + sound + ".mp3");
+  console.log(process.env.NODE_ENV);
+  alert(process.env.NODE_ENV);
+
+  if (process.env.NODE_ENV == "development")
+    var audio = new Audio("/src/static/" + sound + ".mp3");
+  else var audio = new Audio(sound + ".mp3");
+
+  var audio = new Audio(sound + ".mp3");
   audio.play();
 };
