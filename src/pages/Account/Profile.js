@@ -133,7 +133,7 @@ function ProfileSection({ user }) {
             </Container>
           </Container>
           <Container className="align-center justify-between mt16">
-            {userBasicInfo.displayName && search && search != user.uid && (
+            {userBasicInfo.displayName && search && user && search != user.uid && (
               <Button
                 className="button-2 px16 py8 mr16 br8"
                 onClick={() => {
@@ -146,53 +146,56 @@ function ProfileSection({ user }) {
               </Button>
             )}
             <div className="relative">
-              {userBasicInfo.displayName && search && search != user.uid && (
-                <HandleOutsideClick close={() => setPostOptions(false)}>
-                  <FontAwesomeIcon
-                    className="clickable grey-9 px16"
-                    icon={faEllipsisV}
-                    onClick={e => {
-                      e.preventDefault();
+              {userBasicInfo.displayName &&
+                search &&
+                user &&
+                search != user.uid && (
+                  <HandleOutsideClick close={() => setPostOptions(false)}>
+                    <FontAwesomeIcon
+                      className="clickable grey-9 px16"
+                      icon={faEllipsisV}
+                      onClick={e => {
+                        e.preventDefault();
 
-                      setPostOptions(!postOptions);
-                    }}
-                  />
-                  {postOptions && (
-                    <div
-                      className="absolute flex right-0"
-                      style={{
-                        bottom: "calc(100% + 8px)",
-                        whiteSpace: "nowrap",
-                        zIndex: 1
+                        setPostOptions(!postOptions);
                       }}
-                    >
-                      <Container className="column x-fill bg-white border-all px16 py8 br8">
-                        {userBasicInfo.displayName &&
-                          search &&
-                          search != user.uid && (
-                            <Container
-                              className="button-8 clickable align-center"
-                              onClick={e => {
-                                e.preventDefault();
-                                setBlockModal(!blockModal);
-                              }}
-                            >
-                              <Text
-                                className="fw-400 flex-fill"
-                                text="Block User"
-                                type="p"
-                              />
-                              <FontAwesomeIcon
-                                className="ml8"
-                                icon={faUserLock}
-                              />
-                            </Container>
-                          )}
-                      </Container>
-                    </div>
-                  )}
-                </HandleOutsideClick>
-              )}
+                    />
+                    {postOptions && (
+                      <div
+                        className="absolute flex right-0"
+                        style={{
+                          bottom: "calc(100% + 8px)",
+                          whiteSpace: "nowrap",
+                          zIndex: 1
+                        }}
+                      >
+                        <Container className="column x-fill bg-white border-all px16 py8 br8">
+                          {userBasicInfo.displayName &&
+                            search &&
+                            search != user.uid && (
+                              <Container
+                                className="button-8 clickable align-center"
+                                onClick={e => {
+                                  e.preventDefault();
+                                  setBlockModal(!blockModal);
+                                }}
+                              >
+                                <Text
+                                  className="fw-400 flex-fill"
+                                  text="Block User"
+                                  type="p"
+                                />
+                                <FontAwesomeIcon
+                                  className="ml8"
+                                  icon={faUserLock}
+                                />
+                              </Container>
+                            )}
+                        </Container>
+                      </div>
+                    )}
+                  </HandleOutsideClick>
+                )}
             </div>
           </Container>
         </Container>

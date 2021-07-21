@@ -1,5 +1,6 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
+
 admin.initializeApp(functions.config().firebase);
 
 const express = require("express");
@@ -28,8 +29,6 @@ const { conversationUpdateListener } = require("./helpers/conversation");
 const { getMetaInformation } = require("./helpers/util");
 
 process.setMaxListeners(0);
-
-decreaseUserVentCounter();
 
 exports.blockUserListener = functions.firestore
   .document("/block_check/{userID1userID2}")
