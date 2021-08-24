@@ -26,6 +26,7 @@ import {
   blockUser,
   calculateKarma,
   capitolizeFirstChar,
+  getIsUserOnline,
   getUserBasicInfo,
   hasUserBlockedUser
 } from "../../util";
@@ -60,13 +61,19 @@ function Comment({
   const [editingComment, setEditingComment] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
   const [isContentBlocked, setIsContentBlocked] = useState(user ? true : false);
+  const [isUserOnline, setIsUserOnline] = useState(false);
   const [reportModal, setReportModal] = useState(false);
 
   useEffect(() => {
-    if (user) hasUserBlockedUser(user.uid, comment.userID, setIsContentBlocked);
+    if (user) {
+      hasUserBlockedUser(user.uid, comment.userID, setIsContentBlocked);
+      getCommentHasLiked(commentID, setHasLiked, user.uid);
+    }
+
     getUserBasicInfo(setUserBasicInfo, comment2.userID);
-    if (user) getCommentHasLiked(commentID, setHasLiked, user.uid);
+    getIsUserOnline(setIsUserOnline, comment2.userID);
   }, []);
+
   if (isContentBlocked) return <div />;
 
   const displayName = userBasicInfo.displayName
@@ -99,11 +106,24 @@ function Comment({
             />
           )}
           {userBasicInfo && (
-            <Text
-              className="button-1 fw-400 mr8"
-              text={capitolizeFirstChar(displayName)}
-              type="h5"
-            />
+            <Container className="full-center">
+              <Text
+                className="button-1 fw-400 mr8"
+                text={capitolizeFirstChar(displayName)}
+                type="h5"
+              />
+              {isUserOnline && (
+                <div
+                  className="mr8"
+                  style={{
+                    width: "16px",
+                    height: "16px",
+                    backgroundColor: "#1FAB89",
+                    borderRadius: "100px"
+                  }}
+                />
+              )}
+            </Container>
           )}
           {userBasicInfo && (
             <KarmaBadge karma={calculateKarma(userBasicInfo)} />

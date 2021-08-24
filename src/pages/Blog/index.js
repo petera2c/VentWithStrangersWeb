@@ -12,10 +12,10 @@ import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
 
-import { getTextFromHtmlTag, isMobileOrTablet } from "../../util";
+import { isMobileOrTablet } from "../../util";
 import { createBlogDivs, createContentImagesArray } from "./util";
 
-const getVentIdFromURL = (pathname) => {
+const getVentIdFromURL = pathname => {
   // regular expression will not work due to catastrophic backtracing
   //pathname.match(/(?<=\/problem\/\s*).*?(?=\s*\/)/gs);
   if (pathname) {
@@ -34,7 +34,7 @@ class ViewWebsiteBlog extends Component {
   state = {
     contentArray: [],
     id: undefined,
-    images: [],
+    images: []
   };
   componentDidMount() {
     this._ismounted = true;
@@ -46,7 +46,7 @@ class ViewWebsiteBlog extends Component {
     if (regexMatch) id = regexMatch;
 
     if (id) {
-      axios.get("/api/blog/" + id).then((results) => {
+      axios.get("/api/blog/" + id).then(results => {
         const { blog, success } = results.data;
 
         if (blog && success)
@@ -54,7 +54,7 @@ class ViewWebsiteBlog extends Component {
             this.setState({
               contentArray: blog.contentArray,
               id: blog._id,
-              images: blog.images,
+              images: blog.images
             });
       });
     }
@@ -62,7 +62,7 @@ class ViewWebsiteBlog extends Component {
   componentWillUnmount() {
     this._ismounted = false;
   }
-  findFirstImage = (images) => {
+  findFirstImage = images => {
     let location = images[0].location;
     let indexOfSmallestLocation = 0;
     for (let index in images) {

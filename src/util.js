@@ -66,6 +66,16 @@ export const getEndAtValueTimestamp = array => {
   return startAt;
 };
 
+export const getIsUserOnline = (setIsUserOnline, userID) => {
+  const ref = firebase.database().ref("/status/" + userID);
+
+  ref.on("value", snapshot => {
+    if (snapshot.val() && snapshot.val().state === "online")
+      setIsUserOnline(true);
+    else setIsUserOnline(false);
+  });
+};
+
 export const getUserBasicInfo = async (callback, userID) => {
   if (!userID) return {};
 
@@ -93,13 +103,6 @@ export const isMobileOrTablet = () => window.screen.width < 940;
 export const isPageActive = (page, pathname) => {
   if (page === pathname) return " active ";
   else return "";
-};
-
-export const getTextFromHtmlTag = tagString => {
-  let div = document.createElement("div");
-  div.innerHTML = "<div   dangerouslySetInnerHTML={{__html: " + tagString;
-
-  return div.textContent || div.innerText || "";
 };
 
 export const signOut = () => {

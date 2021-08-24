@@ -70,11 +70,24 @@ function ConversationOption({
     >
       <Container className="flex-fill column ov-hidden">
         <Container>
-          <h6 className={"mr8 " + (hasSeen ? "grey-1" : "primary")}>
-            {conversationPartnerData
-              ? capitolizeFirstChar(conversationPartnerData.displayName)
-              : "Anonymous"}
-          </h6>
+          <Container className="full-center">
+            <h6 className={"mr8 " + (hasSeen ? "grey-1" : "primary")}>
+              {conversationPartnerData
+                ? capitolizeFirstChar(conversationPartnerData.displayName)
+                : "Anonymous"}
+            </h6>
+            {conversationPartnerData && conversationPartnerData.isUserOnline && (
+              <div
+                className="mr8"
+                style={{
+                  width: "16px",
+                  height: "16px",
+                  backgroundColor: "#1FAB89",
+                  borderRadius: "100px"
+                }}
+              />
+            )}
+          </Container>
           {conversationPartnerData && (
             <KarmaBadge karma={calculateKarma(conversationPartnerData)} />
           )}

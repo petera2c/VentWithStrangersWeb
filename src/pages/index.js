@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -38,9 +38,14 @@ import PrivacyPolicyPage from "./PrivacyPolicy";
 import FriendsPage from "./Friends";
 
 import { isMobileOrTablet } from "../util";
+import { test } from "./util";
 
 function Routes() {
   const [user, loading, error] = useAuthState(firebase.auth());
+
+  useEffect(() => {
+    test(user);
+  }, [user]);
 
   if (loading)
     return (

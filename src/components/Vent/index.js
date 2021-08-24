@@ -60,8 +60,9 @@ import {
   addTagsToPage,
   blockUser,
   calculateKarma,
-  getUserBasicInfo,
   capitolizeFirstChar,
+  getIsUserOnline,
+  getUserBasicInfo,
   hasUserBlockedUser,
   isMobileOrTablet
 } from "../../util";
@@ -119,6 +120,7 @@ function Vent({
   );
   const [hasLiked, setHasLiked] = useState(false);
   const [comments, setComments] = useState();
+  const [isUserOnline, setIsUserOnline] = useState(false);
 
   const [blockModal, setBlockModal] = useState(false);
   const [isContentBlocked, setIsContentBlocked] = useState(user ? true : false);
@@ -141,15 +143,25 @@ function Vent({
   useEffect(() => {
     if (!vent.comment_counter) {
       getVent(
-        ventUserID => getUserBasicInfo(setAuthor, ventUserID),
+        ventUserID => {
+          getUserBasicInfo(setAuthor, ventUserID);
+          getIsUserOnline(setIsUserOnline, ventUserID);
+        },
         setDescription,
         setTitle,
         setVent,
         vent.id
       );
     }
-    if (vent && vent.userID) getUserBasicInfo(setAuthor, vent.userID);
-    if (user) hasUserBlockedUser(user.uid, vent.userID, setIsContentBlocked);
+
+    if (vent && vent.userID) {
+      getUserBasicInfo(setAuthor, vent.userID);
+      getIsUserOnline(setIsUserOnline, vent.userID);
+    }
+
+    if (user) {
+      hasUserBlockedUser(user.uid, vent.userID, setIsContentBlocked);
+    }
 
     if (setTitle && vent && vent.title) setTitle(vent.title);
     if (setDescription && vent && vent.description)
@@ -212,11 +224,24 @@ function Vent({
                   text={capitolizeFirstChar(displayName[0])}
                   type="h6"
                 />
-                <Text
-                  className="button-1 fw-400 mr8"
-                  text={capitolizeFirstChar(displayName)}
-                  type="h5"
-                />
+                <Container className="full-center">
+                  <Text
+                    className="button-1 fw-400 mr8"
+                    text={capitolizeFirstChar(displayName)}
+                    type="h5"
+                  />
+                  {isUserOnline && (
+                    <div
+                      className="mr8"
+                      style={{
+                        width: "16px",
+                        height: "16px",
+                        backgroundColor: "#1FAB89",
+                        borderRadius: "100px"
+                      }}
+                    />
+                  )}
+                </Container>
                 <KarmaBadge karma={calculateKarma(author)} />
               </Container>
             </Container>

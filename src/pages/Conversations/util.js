@@ -1,7 +1,7 @@
 import firebase from "firebase/app";
 import db from "../../config/firebase";
 
-import { getEndAtValueTimestamp } from "../../util";
+import { getEndAtValueTimestamp, getIsUserOnline } from "../../util";
 
 export const deleteConversation = async (conversationID, userID) => {
   await db
@@ -48,10 +48,15 @@ export const getConversationBasicData = async (
     .get();
 
   if (userBasicInfo.data() && userBasicInfo.data().displayName) {
-    setConversationBasicDatas(currentUsersBasicInfo => {
-      currentUsersBasicInfo[conversation.id] = { ...userBasicInfo.data() };
-      return { ...currentUsersBasicInfo };
-    });
+    getIsUserOnline(isUserOnline => {
+      setConversationBasicDatas(currentUsersBasicInfo => {
+        currentUsersBasicInfo[conversation.id] = {
+          ...userBasicInfo.data(),
+          isUserOnline
+        };
+        return { ...currentUsersBasicInfo };
+      });
+    }, conversationFriendUserID);
   }
 };
 

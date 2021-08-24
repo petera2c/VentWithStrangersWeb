@@ -102,11 +102,24 @@ function Chat({ conversation, conversationPartnerData = {}, userID }) {
     <Container className="column x-fill full-center bg-white br4">
       <Container className="x-fill border-bottom pa16">
         {conversationPartnerID && (
-          <Link to={"/profile?" + conversationPartnerID}>
-            <h5 className="button-1 mr8">
-              {capitolizeFirstChar(conversationPartnerData.displayName)}
-            </h5>
-          </Link>
+          <Container className="full-center">
+            <Link to={"/profile?" + conversationPartnerID}>
+              <h5 className="button-1 mr8">
+                {capitolizeFirstChar(conversationPartnerData.displayName)}
+              </h5>
+            </Link>
+            {conversationPartnerData.isUserOnline && (
+              <div
+                className="mr8"
+                style={{
+                  width: "16px",
+                  height: "16px",
+                  backgroundColor: "#1FAB89",
+                  borderRadius: "100px"
+                }}
+              />
+            )}
+          </Container>
         )}
         {!conversationPartnerID && (
           <h5 className="button-1 mr8">
