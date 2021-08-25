@@ -1,7 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 
-export const test = user => {
+export const setIsUserOnlineToDatabase = user => {
   if (!user) return;
   // Fetch the current user's ID from Firebase Authentication.
   var uid = user.uid;

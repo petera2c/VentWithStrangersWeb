@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import moment from "moment-timezone";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import db from "../../config/firebase";
+import firebase from "firebase/app";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
@@ -31,8 +32,31 @@ import {
   setConversationIsTyping
 } from "./util";
 let typingTimer;
+let typingTimer2;
 
 function Chat({ conversation, conversationPartnerData = {}, userID }) {
+  const [value, setValue] = useState(0); // integer state
+
+  const checkIsUserTyping = isTyping => {
+    if (typingTimer2) clearTimeout(typingTimer2);
+    if (isTyping) {
+      for (let memberID in isTyping) {
+        if (memberID !== userID) {
+          if (
+            firebase.firestore.Timestamp.now().seconds * 1000 -
+              isTyping[memberID] <
+            4000
+          ) {
+            typingTimer2 = setTimeout(() => {
+              setValue(value => value + 1);
+            }, 4000);
+            return true;
+          } else return false;
+        }
+      }
+    }
+  };
+
   let messageListenerUnsubscribe;
 
   const dummyRef = useRef();
@@ -88,14 +112,6 @@ function Chat({ conversation, conversationPartnerData = {}, userID }) {
         userID={userID}
       />
     );
-  }
-
-  let isOtherUserTyping = false;
-  if (conversation.isTyping) {
-    for (let memberID in conversation.isTyping) {
-      if (memberID !== userID && conversation.isTyping[memberID])
-        isOtherUserTyping = true;
-    }
   }
 
   return (
@@ -158,7 +174,7 @@ function Chat({ conversation, conversationPartnerData = {}, userID }) {
 
         <div ref={dummyRef} />
       </Container>
-      {false && isOtherUserTyping && (
+      {checkIsUserTyping(conversation.isTyping) && (
         <Container className="x-fill">
           <p className="pa16">
             {conversationPartnerData.displayName} is typing...
@@ -184,6 +200,7 @@ function Chat({ conversation, conversationPartnerData = {}, userID }) {
             onChange={event => {
               if (event.target.value === "\n") return;
               setMessageString(event.target.value);
+
               if (isUserCurrentlyTyping) {
                 if (typingTimer) clearTimeout(typingTimer);
                 typingTimer = setTimeout(() => {

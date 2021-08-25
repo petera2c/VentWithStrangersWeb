@@ -196,5 +196,12 @@ export const setConversationIsTyping = async (conversationID, userID) => {
   await db
     .collection("conversations")
     .doc(conversationID)
-    .set({ isTyping: { [userID]: true } }, { merge: true });
+    .set(
+      {
+        isTyping: {
+          [userID]: firebase.firestore.Timestamp.now().seconds * 1000
+        }
+      },
+      { merge: true }
+    );
 };
