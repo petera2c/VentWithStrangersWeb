@@ -14,8 +14,8 @@
   color: var(--red-color);
 }
 .blue {
-  color: var(--main-color);
-  fill: var(--main-color);
+  color: var(--main-color) !important;
+  fill: var(--main-color) !important;
 }
 .primary {
   color: var(--primary-font-color);

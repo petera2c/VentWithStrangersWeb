@@ -23,14 +23,24 @@ export const updateUser = async (
   newPassword,
   pronouns,
   user,
-  userInfo
+  userInfo,
+  education,
+  kids,
+  partying,
+  politics,
+  religion
 ) => {
   let changesFound = false;
 
   if (
     userInfo.birth_date != birthDate.valueOf() ||
     userInfo.gender !== gender ||
-    userInfo.pronouns !== pronouns
+    userInfo.pronouns !== pronouns ||
+    userInfo.education !== education ||
+    userInfo.kids !== kids ||
+    userInfo.partying !== partying ||
+    userInfo.politics !== politics ||
+    userInfo.religion !== religion
   ) {
     changesFound = true;
     if (userInfo.gender && userInfo.gender.length > 20)
@@ -42,11 +52,25 @@ export const updateUser = async (
       .collection("users_info")
       .doc(user.uid)
       .set(
-        { birth_date: birthDate.valueOf(), gender, pronouns },
+        {
+          birth_date: birthDate.valueOf(),
+          gender,
+          pronouns,
+
+          ...whatInformationHasChanged(
+            education,
+            kids,
+            partying,
+            politics,
+            religion,
+            userInfo
+          )
+        },
         { merge: true }
       );
     alert("Your account information has been changed");
   }
+
   if (displayName && displayName !== user.displayName) {
     changesFound = true;
     user
@@ -98,4 +122,22 @@ export const updateUser = async (
     } else alert("Passwords are not the same!");
 
   if (!changesFound) alert("No changes!");
+};
+
+const whatInformationHasChanged = (
+  education,
+  kids,
+  partying,
+  politics,
+  religion,
+  userInfo
+) => {
+  let temp = {};
+
+  if (userInfo.education !== education) temp.education = education;
+  if (userInfo.kids !== kids) temp.kids = kids;
+  if (userInfo.partying !== partying) temp.partying = partying;
+  if (userInfo.politics !== politics) temp.politics = politics;
+  if (userInfo.religion !== religion) temp.religion = religion;
+  return temp;
 };
