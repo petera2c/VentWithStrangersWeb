@@ -152,7 +152,7 @@ function ProfileSection({ user }) {
             )}
           </Container>
 
-          <Container className="wrap gap8">
+          <Container className="wrap gap8 mt8">
             {userInfo.education && (
               <Container className="border-all align-center px8 py4 br4">
                 <FontAwesomeIcon className="mr8" icon={faSchool} />
