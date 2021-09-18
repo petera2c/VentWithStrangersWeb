@@ -1,3 +1,4 @@
+import firebase from "firebase/app";
 import db from "../../config/firebase";
 
 export const getUser = async (callback, userID) => {
@@ -47,6 +48,12 @@ export const updateUser = async (
       alert("Gender can only be a maximum of 20 characters.");
     if (userInfo.pronouns && userInfo.pronouns.length > 20)
       alert("Pronouns can only be a maximum of 20 characters.");
+
+    if (education === undefined) deleteField("education", user.uid);
+    if (kids === undefined) deleteField("kids", user.uid);
+    if (partying === undefined) deleteField("partying", user.uid);
+    if (politics === undefined) deleteField("politics", user.uid);
+    if (religion === undefined) deleteField("religion", user.uid);
 
     await db
       .collection("users_info")
@@ -124,6 +131,18 @@ export const updateUser = async (
   if (!changesFound) alert("No changes!");
 };
 
+const deleteField = async (field, userID) => {
+  await db
+    .collection("users_info")
+    .doc(userID)
+    .set(
+      {
+        [field]: firebase.firestore.FieldValue.delete()
+      },
+      { merge: true }
+    );
+};
+
 const whatInformationHasChanged = (
   education,
   kids,
@@ -134,10 +153,14 @@ const whatInformationHasChanged = (
 ) => {
   let temp = {};
 
-  if (userInfo.education !== education) temp.education = education;
-  if (userInfo.kids !== kids) temp.kids = kids;
-  if (userInfo.partying !== partying) temp.partying = partying;
-  if (userInfo.politics !== politics) temp.politics = politics;
-  if (userInfo.religion !== religion) temp.religion = religion;
+  if (userInfo.education !== education && education !== undefined)
+    temp.education = education;
+  if (userInfo.kids !== kids && kids !== undefined) temp.kids = kids;
+  if (userInfo.partying !== partying && partying !== undefined)
+    temp.partying = partying;
+  if (userInfo.politics !== politics && politics !== undefined)
+    temp.politics = politics;
+  if (userInfo.religion !== religion && religion !== undefined)
+    temp.religion = religion;
   return temp;
 };

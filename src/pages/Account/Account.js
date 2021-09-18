@@ -98,6 +98,7 @@ function AccountSection({ user }) {
           text="Personal Information"
           type="h6"
         />
+
         <Container className="wrap">
           <Container
             className={
@@ -228,6 +229,11 @@ function AccountSection({ user }) {
               </Container>
             </Container>
 
+            <p className="mt32">
+              This information will be used to connect you with other users with
+              common interests. This information will not be sold or shared with
+              any 3rd party.
+            </p>
             <Container className="x-fill column align-start justify-center py8 mt16">
               <p className="mr8 mb8">Partying</p>
               <Container className="gap8 wrap">
@@ -239,7 +245,10 @@ function AccountSection({ user }) {
                         (partying === index ? "blue active" : "")
                       }
                       key={index}
-                      onClick={() => setPartying(index)}
+                      onClick={() => {
+                        if (partying !== index) setPartying(index);
+                        else setPartying(undefined);
+                      }}
                     >
                       {str}
                     </Button>
@@ -259,7 +268,10 @@ function AccountSection({ user }) {
                         (politics === index ? "blue active" : "")
                       }
                       key={index}
-                      onClick={() => setPolitics(index)}
+                      onClick={() => {
+                        if (politics !== index) setPolitics(index);
+                        else setPolitics(undefined);
+                      }}
                     >
                       {str}
                     </Button>
@@ -279,7 +291,8 @@ function AccountSection({ user }) {
                       }
                       key={index}
                       onClick={() => {
-                        setReligion(str);
+                        if (religion !== str) setReligion(str);
+                        else setReligion(undefined);
                       }}
                     >
                       {str}
@@ -299,7 +312,10 @@ function AccountSection({ user }) {
                         (education === index ? "blue active" : "")
                       }
                       key={index}
-                      onClick={() => setEducation(index)}
+                      onClick={() => {
+                        if (education !== index) setEducation(index);
+                        else setEducation(undefined);
+                      }}
                     >
                       {str}
                     </Button>
@@ -318,7 +334,10 @@ function AccountSection({ user }) {
                         (kids === index ? "blue active" : "")
                       }
                       key={index}
-                      onClick={() => setKids(index)}
+                      onClick={() => {
+                        if (kids !== index) setKids(index);
+                        else setKids(undefined);
+                      }}
                     >
                       {str}
                     </Button>
