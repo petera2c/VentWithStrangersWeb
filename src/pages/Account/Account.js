@@ -82,7 +82,6 @@ function AccountSection({ user }) {
       if (userInfo.religion) setReligion(userInfo.religion);
     }, user.uid);
   }, []);
-  console.log(religion);
 
   return (
     <Container

@@ -11,7 +11,11 @@ import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faUserLock } from "@fortawesome/free-solid-svg-icons/faUserLock";
-import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons/faExclamationTriangle";
+import { faPray } from "@fortawesome/free-solid-svg-icons/faPray";
+import { faLandmark } from "@fortawesome/free-solid-svg-icons/faLandmark";
+import { faBaby } from "@fortawesome/free-solid-svg-icons/faBaby";
+import { faGlassCheers } from "@fortawesome/free-solid-svg-icons/faGlassCheers";
+import { faSchool } from "@fortawesome/free-solid-svg-icons/faSchool";
 
 import LoadingHeart from "../../components/loaders/Heart";
 
@@ -37,6 +41,13 @@ import {
 } from "../../util";
 import { startConversation } from "../../components/Vent/util";
 import { getUser } from "./util";
+import {
+  educationList,
+  kidsList,
+  partyingList,
+  politicalBeliefsList,
+  religiousBeliefsList
+} from "./PersonalOptions";
 
 function ProfileSection({ user }) {
   const history = useHistory();
@@ -117,20 +128,61 @@ function ProfileSection({ user }) {
             {calculateKarma(userBasicInfo)} Karma Points
           </h6>
           <Container className="mt8">
-            <Container className="column">
-              <h6 className="fw-400">Age</h6>
-              <h6 className="grey-1 fw-400">
-                {new moment().year() - new moment(userInfo.birth_date).year()}
-              </h6>
-            </Container>
-            <Container className="column ml8">
-              <h6 className="fw-400">Gender</h6>
-              <h6 className="grey-1 fw-400">{userInfo.gender}</h6>
-            </Container>
-            <Container className="column ml8">
-              <h6 className="fw-400">Pronouns</h6>
-              <h6 className="grey-1 fw-400">{userInfo.pronouns}</h6>
-            </Container>
+            {Boolean(
+              new moment().year() - new moment(userInfo.birth_date).year()
+            ) && (
+              <Container className="column">
+                <h6 className="fw-400">Age</h6>
+                <h6 className="grey-1 fw-400">
+                  {new moment().year() - new moment(userInfo.birth_date).year()}
+                </h6>
+              </Container>
+            )}
+            {userInfo.gender && (
+              <Container className="column ml8">
+                <h6 className="fw-400">Gender</h6>
+                <h6 className="grey-1 fw-400">{userInfo.gender}</h6>
+              </Container>
+            )}
+            {userInfo.pronouns && (
+              <Container className="column ml8">
+                <h6 className="fw-400">Pronouns</h6>
+                <h6 className="grey-1 fw-400">{userInfo.pronouns}</h6>
+              </Container>
+            )}
+          </Container>
+
+          <Container className="wrap gap8">
+            {userInfo.education && (
+              <Container className="border-all align-center px8 py4 br4">
+                <FontAwesomeIcon className="mr8" icon={faSchool} />
+                {educationList[userInfo.education]}
+              </Container>
+            )}
+            {userInfo.kids && (
+              <Container className="border-all align-center px8 py4 br4">
+                <FontAwesomeIcon className="mr8" icon={faBaby} />
+                {kidsList[userInfo.kids]}
+              </Container>
+            )}
+            {userInfo.partying && (
+              <Container className="border-all align-center px8 py4 br4">
+                <FontAwesomeIcon className="mr8" icon={faGlassCheers} />
+                {partyingList[userInfo.partying]}
+              </Container>
+            )}
+            {userInfo.politics && (
+              <Container className="border-all align-center px8 py4 br4">
+                <FontAwesomeIcon className="mr8" icon={faLandmark} />
+                {politicalBeliefsList[userInfo.politics]}
+              </Container>
+            )}
+            {userInfo.religion && (
+              <Container className="border-all align-center px8 py4 br4">
+                <FontAwesomeIcon className="mr8" icon={faPray} />
+                {userInfo.religion}
+              </Container>
+            )}
           </Container>
           <Container className="align-center justify-between mt16">
             {userBasicInfo.displayName && search && user && search != user.uid && (
