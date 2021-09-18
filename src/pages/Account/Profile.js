@@ -138,13 +138,13 @@ function ProfileSection({ user }) {
                 </h6>
               </Container>
             )}
-            {userInfo.gender && (
+            {userInfo.gender !== undefined && (
               <Container className="column ml8">
                 <h6 className="fw-400">Gender</h6>
                 <h6 className="grey-1 fw-400">{userInfo.gender}</h6>
               </Container>
             )}
-            {userInfo.pronouns && (
+            {userInfo.pronouns !== undefined && (
               <Container className="column ml8">
                 <h6 className="fw-400">Pronouns</h6>
                 <h6 className="grey-1 fw-400">{userInfo.pronouns}</h6>
@@ -153,31 +153,31 @@ function ProfileSection({ user }) {
           </Container>
 
           <Container className="wrap gap8 mt8">
-            {userInfo.education && (
+            {userInfo.education !== undefined && (
               <Container className="border-all align-center px8 py4 br4">
                 <FontAwesomeIcon className="mr8" icon={faSchool} />
                 {educationList[userInfo.education]}
               </Container>
             )}
-            {userInfo.kids && (
+            {userInfo.kids !== undefined && (
               <Container className="border-all align-center px8 py4 br4">
                 <FontAwesomeIcon className="mr8" icon={faBaby} />
                 {kidsList[userInfo.kids]}
               </Container>
             )}
-            {userInfo.partying && (
+            {userInfo.partying !== undefined && (
               <Container className="border-all align-center px8 py4 br4">
                 <FontAwesomeIcon className="mr8" icon={faGlassCheers} />
                 {partyingList[userInfo.partying]}
               </Container>
             )}
-            {userInfo.politics && (
+            {userInfo.politics !== undefined && (
               <Container className="border-all align-center px8 py4 br4">
                 <FontAwesomeIcon className="mr8" icon={faLandmark} />
                 {politicalBeliefsList[userInfo.politics]}
               </Container>
             )}
-            {userInfo.religion && (
+            {userInfo.religion !== undefined && (
               <Container className="border-all align-center px8 py4 br4">
                 <FontAwesomeIcon className="mr8" icon={faPray} />
                 {userInfo.religion}
