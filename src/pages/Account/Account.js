@@ -75,11 +75,11 @@ function AccountSection({ user }) {
       if (userInfo.pronouns) setPronouns(userInfo.pronouns);
       if (userInfo.birth_date) setBirthDate(new moment(userInfo.birth_date));
       if (userInfo) setUserInfo(userInfo);
-      if (userInfo.education) setEducation(userInfo.education);
-      if (userInfo.kids) setKids(userInfo.kids);
-      if (userInfo.partying) setPartying(userInfo.partying);
-      if (userInfo.politics) setPolitics(userInfo.politics);
-      if (userInfo.religion) setReligion(userInfo.religion);
+      if (userInfo.education !== undefined) setEducation(userInfo.education);
+      if (userInfo.kids !== undefined) setKids(userInfo.kids);
+      if (userInfo.partying !== undefined) setPartying(userInfo.partying);
+      if (userInfo.politics !== undefined) setPolitics(userInfo.politics);
+      if (userInfo.religion !== undefined) setReligion(userInfo.religion);
     }, user.uid);
   }, []);
 
