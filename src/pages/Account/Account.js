@@ -69,17 +69,21 @@ function AccountSection({ user }) {
   const [politics, setPolitics] = useState();
   const [religion, setReligion] = useState();
 
+  const setAccountInfo = userInfo => {
+    if (userInfo.gender) setGender(userInfo.gender);
+    if (userInfo.pronouns) setPronouns(userInfo.pronouns);
+    if (userInfo.birth_date) setBirthDate(new moment(userInfo.birth_date));
+    if (userInfo.education !== undefined) setEducation(userInfo.education);
+    if (userInfo.kids !== undefined) setKids(userInfo.kids);
+    if (userInfo.partying !== undefined) setPartying(userInfo.partying);
+    if (userInfo.politics !== undefined) setPolitics(userInfo.politics);
+    if (userInfo.religion !== undefined) setReligion(userInfo.religion);
+  };
+
   useEffect(() => {
     getUser(userInfo => {
-      if (userInfo.gender) setGender(userInfo.gender);
-      if (userInfo.pronouns) setPronouns(userInfo.pronouns);
-      if (userInfo.birth_date) setBirthDate(new moment(userInfo.birth_date));
+      setAccountInfo(userInfo);
       if (userInfo) setUserInfo(userInfo);
-      if (userInfo.education !== undefined) setEducation(userInfo.education);
-      if (userInfo.kids !== undefined) setKids(userInfo.kids);
-      if (userInfo.partying !== undefined) setPartying(userInfo.partying);
-      if (userInfo.politics !== undefined) setPolitics(userInfo.politics);
-      if (userInfo.religion !== undefined) setReligion(userInfo.religion);
     }, user.uid);
   }, []);
 
@@ -400,17 +404,17 @@ function AccountSection({ user }) {
       <Container className="full-center bg-white pa16 br8">
         <Button
           className="cancel py8 px32 mx4 br4"
-          text="Cancel"
           onClick={() => {
             setDisplayName(user.displayName);
             setEmail(user.email);
             setNewPassword("");
             setConfirmPassword("");
+            setAccountInfo(userInfo);
           }}
+          text="Cancel"
         />
         <Button
           className="button-2 py8 px32 mx4 br4"
-          text="Apply"
           onClick={() =>
             updateUser(
               birthDate,
@@ -429,6 +433,7 @@ function AccountSection({ user }) {
               religion
             )
           }
+          text="Apply"
         />
       </Container>
     </Container>

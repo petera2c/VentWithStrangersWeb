@@ -22,9 +22,9 @@ export const religiousBeliefsList = [
 ];
 
 export const politicalBeliefsList = [
+  "Liberal",
   "Apolitical",
   "Moderate",
-  "Liberal",
   "Conservative"
 ];
 
