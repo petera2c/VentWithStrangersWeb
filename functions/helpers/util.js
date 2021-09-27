@@ -135,7 +135,10 @@ const getMetaInformation = async (url, callback) => {
       },
       true
     );
-  else if (url === "/blogs/why-talking-about-mental-health-is-important")
+  else if (
+    url === "/blogs/why-talking-about-mental-health-is-important" ||
+    url === "/blogs/why-talking-about-mental-health-is-important?ref=quuu"
+  )
     return callback(
       {
         metaDescription:

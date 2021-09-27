@@ -138,13 +138,13 @@ function ProfileSection({ user }) {
                 </h6>
               </Container>
             )}
-            {userInfo.gender !== undefined && (
+            {userInfo.gender && (
               <Container className="column ml8">
                 <h6 className="fw-400">Gender</h6>
                 <h6 className="grey-1 fw-400">{userInfo.gender}</h6>
               </Container>
             )}
-            {userInfo.pronouns !== undefined && (
+            {userInfo.pronouns && (
               <Container className="column ml8">
                 <h6 className="fw-400">Pronouns</h6>
                 <h6 className="grey-1 fw-400">{userInfo.pronouns}</h6>
