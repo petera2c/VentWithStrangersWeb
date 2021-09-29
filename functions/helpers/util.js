@@ -135,7 +135,7 @@ const getMetaInformation = async (url, callback) => {
       },
       true
     );
-  else if (url.substring(0, 14) === "/privacy-policy")
+  else if (url === "/privacy-policy")
     return callback(
       {
         metaDescription: "",
