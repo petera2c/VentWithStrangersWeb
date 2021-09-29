@@ -135,6 +135,15 @@ const getMetaInformation = async (url, callback) => {
       },
       true
     );
+  else if (url.substring(0, 14) === "/privacy-policy")
+    return callback(
+      {
+        metaDescription: "",
+        metaImage: defaultMetaObject.metaImage,
+        metaTitle: "Privacy Policy | Vent With Strangers",
+      },
+      true
+    );
   else if (
     url === "/blogs/why-talking-about-mental-health-is-important" ||
     url === "/blogs/why-talking-about-mental-health-is-important?ref=quuu"
