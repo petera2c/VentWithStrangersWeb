@@ -15,7 +15,7 @@ function ForgotPasswordModal({ setActiveModal }) {
     <Container className="modal-container full-center">
       <Container className="modal container medium column align-center ov-auto bg-white br4">
         <Container className="x-fill justify-center bg-blue py16">
-          <Text className="tac white" text="Create an Account" type="h4" />
+          <Text className="tac white" text="Password Reset" type="h4" />
         </Container>
 
         <Container className="x-fill column">

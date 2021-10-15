@@ -59,6 +59,33 @@ function Routes() {
       </Container>
     );
 
+  const initialCapital = 1000000;
+  const yearlyGain = 1.1;
+  const yearlyCost = 0.02;
+  const endAmount = 10000000;
+
+  let currentCapital = initialCapital;
+  let bradMoney = 0;
+  let year = 0;
+  console.log("\n");
+  console.log("\n");
+
+  while (endAmount > currentCapital) {
+    year++;
+
+    currentCapital = currentCapital * yearlyGain;
+    const bradGain = Math.round(currentCapital * yearlyCost);
+    bradMoney += bradGain;
+
+    currentCapital = currentCapital - bradGain;
+    console.log("Brad made " + bradGain + " in year " + year);
+    console.log("Brad has made " + bradMoney + " to date.");
+    console.log("\n");
+  }
+  console.log("You have " + Math.round(currentCapital));
+  console.log("\n");
+  console.log("\n");
+
   return (
     <UserContext.Provider value={user}>
       <Router>

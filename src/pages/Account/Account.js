@@ -184,6 +184,7 @@ function AccountSection({ user }) {
 
                   setPronouns(e.target.value);
                 }}
+                name="pronouns"
                 placeholder="she/her he/him its/them"
                 type="text"
                 value={pronouns}
