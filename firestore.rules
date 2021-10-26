@@ -106,8 +106,8 @@ service cloud.firestore {
     }
 
     match /admin_notifications/{adminNotificationID} {
-      allow read, delete: if true;
-      allow write, update: if false;
+      allow read, write: if true;
+      allow update, delete: if false;
     }
 
     match /block_check/{userIDuserID2} {
