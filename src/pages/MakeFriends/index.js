@@ -80,9 +80,9 @@ function MakeFriendsPage() {
         <Container className="container large column full-center">
           <h1>Error</h1>
           <h6>
-            You must complete your{" "}
+            You must completely fill in your{" "}
             <Link className="blue" to="/account">
-              Account
+              Profile
             </Link>{" "}
             to view your matches!
           </h6>
