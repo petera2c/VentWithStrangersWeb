@@ -79,13 +79,7 @@ function Header({ history, location }) {
           />
         </Container>
 
-        <Container
-          className="align-center wrap"
-          style={{
-            maxWidth: "1500px",
-            width: "60vw"
-          }}
-        >
+        <Container className="flex-fill align-center wrap">
           <Link
             className={
               "button-3 py16 mr32 " +
@@ -152,7 +146,7 @@ function Header({ history, location }) {
             Post a Vent
           </Link>
         </Container>
-        <Container className="flex-fill full-center wrap mx32 my16">
+        <Container className="full-center wrap mx32 my16">
           {!user && (
             <Button
               className="blue fw-300 mx32"

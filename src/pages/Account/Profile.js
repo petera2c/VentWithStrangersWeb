@@ -5,11 +5,8 @@ import moment from "moment-timezone";
 import db from "../../config/firebase";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChartNetwork } from "@fortawesome/pro-solid-svg-icons/faChartNetwork";
-import { faCog } from "@fortawesome/free-solid-svg-icons/faCog";
 import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
-import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faUserLock } from "@fortawesome/free-solid-svg-icons/faUserLock";
 import { faPray } from "@fortawesome/free-solid-svg-icons/faPray";
 import { faLandmark } from "@fortawesome/free-solid-svg-icons/faLandmark";
@@ -47,7 +44,7 @@ import {
   partyingList,
   politicalBeliefsList,
   religiousBeliefsList
-} from "./PersonalOptions";
+} from "../PersonalOptions";
 
 function ProfileSection({ user }) {
   const history = useHistory();

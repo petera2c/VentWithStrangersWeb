@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
 import { faConciergeBell } from "@fortawesome/pro-duotone-svg-icons/faConciergeBell";
 import { faBell } from "@fortawesome/pro-duotone-svg-icons/faBell";
+import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
 import { faSearch } from "@fortawesome/pro-solid-svg-icons/faSearch";
 import { faChevronDown } from "@fortawesome/pro-solid-svg-icons/faChevronDown";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons/faInstagram";
@@ -156,7 +157,7 @@ function Header({ history, location }) {
           </Link>
           <Link
             className={
-              "full-center flex button-3 relative mr32 " +
+              "button-3 flex full-center relative mx16 " +
               isPageActive("/conversations", pathname)
             }
             to="/conversations"
@@ -169,6 +170,16 @@ function Header({ history, location }) {
                 {unreadConversations.length}
               </p>
             )}
+          </Link>
+          <Link
+            className={
+              "button-3 tac py16 mr32 " +
+              isPageActive("/make-friends", pathname)
+            }
+            to="/make-friends"
+          >
+            <FontAwesomeIcon className="mr8" icon={faUsers} />
+            Make Friends
           </Link>
         </Container>
       )}
