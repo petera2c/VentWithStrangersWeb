@@ -175,11 +175,12 @@ function AccountSection({ user }) {
               <FontAwesomeIcon className="grey-5 mr8" icon={faVenusMars} />
               <FontAwesomeIcon className="grey-5 mr8" icon={faTransgenderAlt} />
               <input
+                autocomplete="off"
                 className="x-fill no-border bg-grey-4 br4"
                 onChange={e => {
                   if (e.target.value.length > 50)
                     return alert(
-                      "You can not write more than 50 characters for your gender"
+                      "You can not write more than 50 characters for your pronoun"
                     );
 
                   setPronouns(e.target.value);
