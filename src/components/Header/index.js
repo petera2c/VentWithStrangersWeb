@@ -8,7 +8,8 @@ import { faBell } from "@fortawesome/pro-duotone-svg-icons/faBell";
 import { faSearch } from "@fortawesome/pro-solid-svg-icons/faSearch";
 import { faChevronDown } from "@fortawesome/pro-solid-svg-icons/faChevronDown";
 import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
-import { faComments } from "@fortawesome/pro-solid-svg-icons/faComments";
+import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
+import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
 
 import { UserContext } from "../../context";
 
@@ -98,7 +99,7 @@ function Header({ history, location }) {
           </Link>
           <Link
             className={
-              "button-3 py16 mr32 " +
+              "full-center flex button-3 relative mr32 " +
               isPageActive("/recent", pathname.substring(0, 7))
             }
             to="/recent"
@@ -124,12 +125,14 @@ function Header({ history, location }) {
           </Link>
           <Link
             className={
-              "button-3 py16 mr32 " +
-              isPageActive("/site-info", pathname.substring(0, 10))
+              "full-center flex button-3 relative mr32 " +
+              isPageActive("/make-friends", pathname.substring(0, 13))
             }
-            to="/site-info"
+            to="/make-friends"
           >
-            <p>Site Info</p>
+            <FontAwesomeIcon className="mr8" icon={faUsers} />
+
+            <p>Make Friends</p>
           </Link>
 
           <Container className="full-center bg-grey-4 py4 px8 my16 mr16 br4">

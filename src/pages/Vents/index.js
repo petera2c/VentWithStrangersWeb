@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen } from "@fortawesome/pro-solid-svg-icons/faPen";
-import { faComments } from "@fortawesome/pro-solid-svg-icons/faComments";
+import { faPen } from "@fortawesome/pro-duotone-svg-icons/faPen";
+import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
+import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
+import { faInfo } from "@fortawesome/pro-duotone-svg-icons/faInfo";
 
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
@@ -133,9 +135,17 @@ function Vents() {
                 <FontAwesomeIcon className="mr8" icon={faPen} />
                 Post a Vent
               </Link>
-              <Link className="button-3 fs-18" to="/conversations">
+              <Link className="button-3 fs-18 mb16" to="/conversations">
                 <FontAwesomeIcon className="mr8" icon={faComments} />
                 Inbox
+              </Link>
+              <Link className="button-3 fs-18 mb16" to="/conversations">
+                <FontAwesomeIcon className="mr8" icon={faUsers} />
+                Make Friends
+              </Link>
+              <Link className="button-3 fs-18" to="/site-info">
+                <FontAwesomeIcon className="mr8" icon={faInfo} />
+                Site Info
               </Link>
             </Container>
           </Container>
