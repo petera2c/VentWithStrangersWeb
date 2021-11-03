@@ -20,22 +20,23 @@ import Header from "../components/Header";
 import MobileHeader from "../components/Header/MobileHeader";
 import LoadingHeart from "../components/loaders/Heart";
 
-import MentalHealthPage from "./Blogs/MentalHealth";
 import AboutUsPage from "./AboutUs";
 import AccountPage from "./Account";
 import AppDownloadPage from "./AppDownload";
+import BlogPage from "./Blog";
+import ConversationsPage from "./Conversations";
+import FeedbackPage from "./Feedback";
+import FriendsPage from "./Friends";
+import MakeFriendsPage from "./MakeFriends";
+import MentalHealthPage from "./Blogs/MentalHealth";
+import NewVentPage from "./NewVent";
+import NotFoundPage from "./NotFound";
 import NotificationsPage from "./Notifications";
+import PrivacyPolicyPage from "./PrivacyPolicy";
 import SearchPage from "./Search";
 import SignUpPage from "./SignUp";
-import VentsPage from "./Vents";
-import ConversationsPage from "./Conversations";
-import NewVentPage from "./NewVent";
 import VentPage from "./Vent";
-import BlogPage from "./Blog";
-import FeedbackPage from "./Feedback";
-import NotFoundPage from "./NotFound";
-import PrivacyPolicyPage from "./PrivacyPolicy";
-import FriendsPage from "./Friends";
+import VentsPage from "./Vents";
 
 import { isMobileOrTablet } from "../util";
 import { setIsUserOnlineToDatabase } from "./util";
@@ -77,26 +78,27 @@ function Routes() {
                 path="/blogs/why-talking-about-mental-health-is-important/"
                 component={MentalHealthPage}
               />
-              <Route path="/site-info/" component={AboutUsPage} />
+              <Route path="/make-friends/" component={MakeFriendsPage} />
+              <Route path="/friends/" component={FriendsPage} />
+              <Route path="/" component={VentsPage} exact />
               <Route path="/account/" component={AccountPage} exact />
               <Route path="/app-downloads/" component={AppDownloadPage} />
-              <Route path="/profile/" component={AccountPage} />
-              <Route path="/settings/" component={AccountPage} exact />
-              <Route path="/notifications/" component={NotificationsPage} />
-              <Route path="/search/" component={SearchPage} />
-              <Route path="/" component={VentsPage} exact />
-              <Route path="/home/" component={VentsPage} />
-              <Route path="/trending/" component={VentsPage} />
-              <Route path="/recent/" component={VentsPage} />
-              <Route path="/popular/" component={VentsPage} />
-              <Route path="/conversations/" component={ConversationsPage} />
-              <Route path="/vent-to-strangers/" component={NewVentPage} />
-              <Route path="/vent-to-a-stranger/" component={SignUpPage} />
-              <Route path="/problem/" component={VentPage} />
               <Route path="/blog/" component={BlogPage} />
+              <Route path="/conversations/" component={ConversationsPage} />
               <Route path="/feedback/" component={FeedbackPage} />
+              <Route path="/home/" component={VentsPage} />
+              <Route path="/notifications/" component={NotificationsPage} />
+              <Route path="/popular/" component={VentsPage} />
               <Route path="/privacy-policy/" component={PrivacyPolicyPage} />
-              <Route path="/friends/" component={FriendsPage} />
+              <Route path="/problem/" component={VentPage} />
+              <Route path="/profile/" component={AccountPage} />
+              <Route path="/recent/" component={VentsPage} />
+              <Route path="/search/" component={SearchPage} />
+              <Route path="/settings/" component={AccountPage} exact />
+              <Route path="/site-info/" component={AboutUsPage} />
+              <Route path="/trending/" component={VentsPage} />
+              <Route path="/vent-to-a-stranger/" component={SignUpPage} />
+              <Route path="/vent-to-strangers/" component={NewVentPage} />
               <Route component={NotFoundPage} />
             </Switch>
           )}

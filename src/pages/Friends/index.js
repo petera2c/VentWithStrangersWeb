@@ -9,7 +9,7 @@ import Text from "../../components/views/Text";
 
 import { isMobileOrTablet } from "../../util";
 
-class AboutUsPage extends Component {
+class FriendsPage extends Component {
   render() {
     return (
       <Page
@@ -49,4 +49,4 @@ class AboutUsPage extends Component {
   }
 }
 
-export default AboutUsPage;
+export default FriendsPage;
