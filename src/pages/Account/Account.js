@@ -131,6 +131,7 @@ function AccountSection({ user }) {
               <input
                 className="x-fill no-border bg-grey-4 br4"
                 onChange={e => setEmail(e.target.value)}
+                name="email"
                 placeholder="artvandalay@gmail.com"
                 type="text"
                 value={email}

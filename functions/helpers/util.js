@@ -97,6 +97,15 @@ const getMetaInformation = async (url, callback) => {
       },
       true
     );
+  else if (url === "/make-friends")
+    return callback(
+      {
+        metaDescription: "Make friends online on vent with strangers!",
+        metaImage: defaultMetaObject.metaImage,
+        metaTitle: "Make Friends | Vent With Strangers",
+      },
+      true
+    );
   else if (url === "/vent-to-strangers")
     return callback(
       {

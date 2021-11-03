@@ -54,9 +54,9 @@ function MakeFriendsPage() {
   return (
     <Page
       className="bg-grey-2 align-center"
-      description=""
+      description="Make friends online on vent with strangers!"
       keywords="Learn about Vent With Strangers"
-      title="Site Info"
+      title="Make Friends"
     >
       <Container
         className={
