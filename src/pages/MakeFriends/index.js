@@ -76,7 +76,7 @@ function MakeFriendsPage() {
           <h6>You must Login to see your matches!</h6>
         </Container>
       )}
-      {user && !hasUserCompletedProfile(user) && (
+      {user && !hasUserCompletedProfile(userInfo) && (
         <Container className="container large column full-center">
           <h1>Error</h1>
           <h6>

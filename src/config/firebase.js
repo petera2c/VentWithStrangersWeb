@@ -14,7 +14,7 @@ var firebaseConfig = {
 };
 
 //location.hostname === "localhost"
-if (location.hostname === "localhost")
+if (false)
   firebaseConfig = {
     apiKey: "AIzaSyCk8EfNyqarIzBAQSCFgU8634o-e0iA_Os",
     appId: "1:440569980458:web:870c6bde68871e5fd78553",
@@ -30,7 +30,7 @@ const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 var db = firebase.firestore();
 
-if (location.hostname === "localhost") {
+if (false) {
   db.useEmulator("localhost", 8080);
 
   firebase.auth().useEmulator("http://localhost:9099");
