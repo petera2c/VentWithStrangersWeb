@@ -93,7 +93,7 @@ function Header({ history, location }) {
           </Link>
           <Link
             className={
-              "full-center flex button-3 relative mr32 " +
+              "button-3 py16 mr32 " +
               isPageActive("/recent", pathname.substring(0, 7))
             }
             to="/recent"
@@ -119,14 +119,13 @@ function Header({ history, location }) {
           </Link>
           <Link
             className={
-              "full-center flex button-3 relative mr32 " +
+              "button-3 py16 mr32 " +
               isPageActive("/make-friends", pathname.substring(0, 13))
             }
             to="/make-friends"
           >
             <FontAwesomeIcon className="mr8" icon={faUsers} />
-
-            <p>Make Friends</p>
+            Make Friends
           </Link>
 
           <Container className="full-center bg-grey-4 py4 px8 my16 mr16 br4">
