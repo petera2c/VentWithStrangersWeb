@@ -83,6 +83,7 @@ function Routes() {
               <Route path="/" component={VentsPage} exact />
               <Route path="/account/" component={AccountPage} exact />
               <Route path="/app-downloads/" component={AppDownloadPage} />
+              <Route path="/avatar/" component={AccountPage} exact />
               <Route path="/blog/" component={BlogPage} />
               <Route path="/conversations/" component={ConversationsPage} />
               <Route path="/feedback/" component={FeedbackPage} />

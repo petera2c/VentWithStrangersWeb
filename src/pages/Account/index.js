@@ -5,10 +5,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faChartNetwork } from "@fortawesome/pro-solid-svg-icons/faChartNetwork";
 import { faCog } from "@fortawesome/free-solid-svg-icons/faCog";
+import { faUserAstronaut } from "@fortawesome/pro-duotone-svg-icons/faUserAstronaut";
 
 import { UserContext } from "../../context";
 
 import Account from "./Account";
+import Avatar from "./Avatar";
 import Profile from "./profile";
 import Settings from "./Settings";
 
@@ -61,6 +63,19 @@ function AccountPage() {
                 <Text text="Account" type="h5" />
               </Container>
             </Link>
+            <Link className="x-fill" to="/avatar">
+              <Container
+                className={
+                  "grid-1 button-4 clickable x-fill align-center py16" +
+                  isPageActive("/avatar", pathname)
+                }
+              >
+                <Container className="flex x-fill full-center">
+                  <FontAwesomeIcon icon={faUserAstronaut} />
+                </Container>
+                <Text text="Avatar" type="h5" />
+              </Container>
+            </Link>
 
             <Link className="x-fill" to="/settings">
               <Container
@@ -89,6 +104,7 @@ function AccountPage() {
 
         <Container className={isMobileOrTablet() ? "x-fill pt16" : "pl32"}>
           {pathname === "/account" && <Account user={user} />}
+          {pathname === "/avatar" && <Avatar user={user} />}
           {pathname === "/profile" && <Profile user={user} />}
           {pathname === "/settings" && <Settings user={user} />}
         </Container>

@@ -1,0 +1,122 @@
+export const topArray = [
+  NoHair,
+  Eyepatch,
+  Hat,
+  Hijab,
+  Turban,
+  WinterHat1,
+  WinterHat2,
+  WinterHat3,
+  WinterHat4,
+  LongHairBigHair,
+  LongHairBob,
+  LongHairBun,
+  LongHairCurly,
+  LongHairCurvy,
+  LongHairDreads,
+  LongHairFrida,
+  LongHairFro,
+  LongHairFroBand,
+  LongHairNotTooLong,
+  LongHairShavedSides,
+  LongHairMiaWallace,
+  LongHairStraight,
+  LongHairStraight2,
+  LongHairStraightStrand,
+  ShortHairDreads01,
+  ShortHairDreads02,
+  ShortHairFrizzle,
+  ShortHairShaggyMullet,
+  ShortHairShortCurly,
+  ShortHairShortFlat,
+  ShortHairShortRound,
+  ShortHairShortWaved,
+  ShortHairSides,
+  ShortHairTheCaesar,
+  ShortHairTheCaesarSidePart
+];
+
+export const accessoriesArray = [
+  Blank,
+  Kurt,
+  Prescription01,
+  Prescription02,
+  Round,
+  Sunglasses,
+  Wayfarers
+];
+export const hairColorArray = [
+  Auburn,
+  Black,
+  Blonde,
+  BlondeGolden,
+  Brown,
+  BrownDark,
+  PastelPink,
+  Blue,
+  Platinum,
+  Red,
+  SilverGray
+];
+export const facialHairArray = [
+  Blank,
+  BeardMedium,
+  BeardLight,
+  BeardMajestic,
+  MoustacheFancy,
+  MoustacheMagnum
+];
+export const clothesArray = [
+  BlazerShirt,
+  BlazerSweater,
+  CollarSweater,
+  GraphicShirt,
+  Hoodie,
+  Overall,
+  ShirtCrewNeck,
+  ShirtScoopNeck,
+  ShirtVNeck
+];
+export const eyesArray = [
+  Close,
+  Cry,
+  Default,
+  Dizzy,
+  EyeRoll,
+  Happy,
+  Hearts,
+  Side,
+  Squint,
+  Surprised,
+  Wink,
+  WinkWacky
+];
+export const eyebrowArray = [
+  Angry,
+  AngryNatural,
+  Default,
+  DefaultNatural,
+  FlatNatural,
+  RaisedExcited,
+  RaisedExcitedNatural,
+  SadConcerned,
+  SadConcernedNatural,
+  UnibrowNatural,
+  UpDown,
+  UpDownNatural
+];
+export const mouthArray = [
+  Concerned,
+  Default,
+  Disbelief,
+  Eating,
+  Grimace,
+  Sad,
+  ScreamOpen,
+  Serious,
+  Smile,
+  Tongue,
+  Twinkle,
+  Vomit
+];
+export const skinArray = [Tanned, Yellow, Pale, Light, Brown, DarkBrown, Black];

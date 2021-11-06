@@ -176,7 +176,7 @@ function AccountSection({ user }) {
               <FontAwesomeIcon className="grey-5 mr8" icon={faVenusMars} />
               <FontAwesomeIcon className="grey-5 mr8" icon={faTransgenderAlt} />
               <input
-                autocomplete="off"
+                autoComplete="off"
                 className="x-fill no-border bg-grey-4 br4"
                 onChange={e => {
                   if (e.target.value.length > 50)
