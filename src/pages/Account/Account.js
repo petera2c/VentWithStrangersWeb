@@ -372,6 +372,23 @@ function AccountSection({ user }) {
               <input
                 autoComplete="off"
                 className="x-fill no-border bg-grey-4 br4"
+                onChange={e => {
+                  if (e.target.value.length > 50)
+                    return alert(
+                      "You can not write more than 50 characters for your pronoun"
+                    );
+
+                  setPronouns(e.target.value);
+                }}
+                name="pronouns"
+                placeholder="she/her he/him its/them"
+                style={{ display: "none" }}
+                type="text"
+                value={pronouns}
+              />
+              <input
+                autoComplete="off"
+                className="x-fill no-border bg-grey-4 br4"
                 name="password-change"
                 onChange={e => setNewPassword(e.target.value)}
                 placeholder="*******"

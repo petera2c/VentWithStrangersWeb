@@ -81,7 +81,18 @@ function Vents() {
               {vents &&
                 vents.map((vent, index) => {
                   return (
-                    <Vent key={index} previewMode={true} ventInit={vent} />
+                    <Container className="x-fill column" key={index}>
+                      {false && index % 3 === 0 && (
+                        <Container className="x-fill">
+                          <div id="amzn-assoc-ad-b3819342-032e-406f-914b-5e96dbea3d89"></div>
+                          <script
+                            async
+                            src="//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US&adInstanceId=b3819342-032e-406f-914b-5e96dbea3d89"
+                          ></script>
+                        </Container>
+                      )}
+                      <Vent previewMode={true} ventInit={vent} />
+                    </Container>
                   );
                 })}
             </Container>
@@ -148,6 +159,18 @@ function Vents() {
                 Site Info
               </Link>
             </Container>
+            {false && (
+              <iframe
+                src="//rcm-na.amazon-adsystem.com/e/cm?o=1&p=22&l=ur1&category=beauty&banner=04XCSE6T0AFM7MK75482&f=ifr&linkID=6336d89bbad41108208a4bd1fa53f359&t=ventwithstran-20&tracking_id=ventwithstran-20"
+                width="250"
+                height="250"
+                scrolling="no"
+                border="0"
+                marginWidth="0"
+                style={{ border: "none" }}
+                frameBorder="0"
+              ></iframe>
+            )}
           </Container>
         )}
       </Container>
