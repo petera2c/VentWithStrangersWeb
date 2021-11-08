@@ -370,6 +370,7 @@ function AccountSection({ user }) {
             <Container className="full-center bg-grey-4 py4 px8 br4">
               <FontAwesomeIcon className="grey-5 mr8" icon={faLockAlt} />
               <input
+                autoComplete="off"
                 className="x-fill no-border bg-grey-4 br4"
                 name="password-change"
                 onChange={e => setNewPassword(e.target.value)}
@@ -387,6 +388,7 @@ function AccountSection({ user }) {
               <Container className="flex-fill full-center bg-grey-4 py4 px8 br4">
                 <FontAwesomeIcon className="grey-5 mr8" icon={faLockAlt} />
                 <input
+                  autoComplete="off"
                   className="x-fill no-border bg-grey-4 br4"
                   name="confirm-password-change"
                   onChange={e => setConfirmPassword(e.target.value)}
