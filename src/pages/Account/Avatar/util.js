@@ -19,6 +19,7 @@ export const saveAvatar = async (avatar, userID) => {
     .set({ avatar }, { merge: true });
 
   alert("Avatar saved!");
+  window.location.reload();
 };
 
 export const topArray = [

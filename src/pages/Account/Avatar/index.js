@@ -47,7 +47,7 @@ function AvatarSection({ user }) {
   useEffect(() => {
     if (user)
       getUserBasicInfo(userInfo => {
-        if (userInfo) setAvatar(userInfo.avatar);
+        if (userInfo && userInfo.avatar) setAvatar(userInfo.avatar);
       }, user.uid);
   }, []);
 
