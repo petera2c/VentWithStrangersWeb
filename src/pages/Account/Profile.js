@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import moment from "moment-timezone";
+import Avatar from "avataaars";
 import db from "../../config/firebase";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -106,15 +107,33 @@ function ProfileSection({ user }) {
       {search && (
         <Container className="ov-hidden column bg-white pa16 mb16 br8">
           <Container className="x-fill full-center">
-            <Container
-              className="bg-blue full-center mb16 br-round"
-              style={{
-                height: "84px",
-                width: "84px"
-              }}
-            >
-              <h1 className="white fs-40">{displayName[0]}</h1>
-            </Container>
+            {userBasicInfo && !userBasicInfo.avatar && (
+              <Container
+                className="bg-blue full-center mb16 br-round"
+                style={{
+                  height: "84px",
+                  width: "84px"
+                }}
+              >
+                <h1 className="white fs-40">{displayName[0]}</h1>
+              </Container>
+            )}
+            {userBasicInfo && userBasicInfo.avatar && (
+              <Avatar
+                avatarStyle={"Circle"}
+                topType={userBasicInfo.avatar.topType}
+                accessoriesType={userBasicInfo.avatar.accessoriesType}
+                hairColor={userBasicInfo.avatar.hairColor}
+                facialHairType={userBasicInfo.avatar.facialHairType}
+                clotheType={userBasicInfo.avatar.clotheType}
+                eyeType={userBasicInfo.avatar.eyeType}
+                eyebrowType={userBasicInfo.avatar.eyebrowType}
+                mouthType={userBasicInfo.avatar.mouthType}
+                skinColor={userBasicInfo.avatar.skinColor}
+                style={{ width: "96px", height: "96px" }}
+                className="mr8"
+              />
+            )}
           </Container>
 
           <Container className="align-center">

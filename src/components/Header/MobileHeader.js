@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, withRouter } from "react-router-dom";
+import Avatar from "avataaars";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import db from "../../config/firebase";
 
@@ -31,7 +32,12 @@ import SignUpModal from "../modals/SignUp";
 import ForgotPasswordModal from "../modals/ForgotPassword";
 import NotificationList from "../NotificationList";
 
-import { capitolizeFirstChar, isPageActive, signOut } from "../../util";
+import {
+  capitolizeFirstChar,
+  getUserBasicInfo,
+  isPageActive,
+  signOut
+} from "../../util";
 import {
   getNotifications,
   newNotificationCounter,
@@ -43,11 +49,12 @@ function Header({ history, location }) {
 
   const [activeModal, setActiveModal] = useState("");
   const [mobileHeaderActive, setMobileHeaderActive] = useState(false);
-  const [showFeedback, setShowFeedback] = useState(false);
   const [notifications, setNotifications] = useState([]);
+  const [showFeedback, setShowFeedback] = useState(false);
   const [showNotificationDropdown, setShowNotificationDropdown] = useState(
     false
   );
+  const [userBasicInfo, setUserBasicInfo] = useState({});
   const [ventSearchString, setVentSearchString] = useState("");
 
   const { pathname } = location;
@@ -67,7 +74,10 @@ function Header({ history, location }) {
     });
   }
   useEffect(() => {
-    if (user) getNotifications(setNotifications, user);
+    if (user) {
+      getNotifications(setNotifications, user);
+      getUserBasicInfo(setUserBasicInfo, user.uid);
+    }
   }, [location]);
 
   return (
@@ -189,11 +199,31 @@ function Header({ history, location }) {
             <Container className="column">
               <Link to="/profile">
                 <Container className="full-center py16 mx16">
-                  <Text
-                    className="round-icon bg-blue white mr8"
-                    text={capitolizeFirstChar(user.displayName[0])}
-                    type="h6"
-                  />
+                  {user.displayName &&
+                    (!userBasicInfo ||
+                      (userBasicInfo && !userBasicInfo.avatar)) && (
+                      <Text
+                        className="round-icon bg-blue white mr8"
+                        text={capitolizeFirstChar(user.displayName[0])}
+                        type="h6"
+                      />
+                    )}
+                  {userBasicInfo && userBasicInfo.avatar && (
+                    <Avatar
+                      avatarStyle={"Circle"}
+                      topType={userBasicInfo.avatar.topType}
+                      accessoriesType={userBasicInfo.avatar.accessoriesType}
+                      hairColor={userBasicInfo.avatar.hairColor}
+                      facialHairType={userBasicInfo.avatar.facialHairType}
+                      clotheType={userBasicInfo.avatar.clotheType}
+                      eyeType={userBasicInfo.avatar.eyeType}
+                      eyebrowType={userBasicInfo.avatar.eyebrowType}
+                      mouthType={userBasicInfo.avatar.mouthType}
+                      skinColor={userBasicInfo.avatar.skinColor}
+                      style={{ width: "48px", height: "48px" }}
+                      className="mr8"
+                    />
+                  )}
                   <Text
                     className="mr8"
                     text={`Hello, ${capitolizeFirstChar(user.displayName)}`}

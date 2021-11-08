@@ -3,6 +3,7 @@ import moment from "moment-timezone";
 import TextArea from "react-textarea-autosize";
 import { MentionsInput, Mention } from "react-mentions";
 import { useHistory } from "react-router-dom";
+import Avatar from "avataaars";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock } from "@fortawesome/free-regular-svg-icons/faClock";
@@ -98,11 +99,27 @@ function Comment({
             history.push("/profile?" + comment.userID);
           }}
         >
-          {userBasicInfo && (
+          {userBasicInfo && !userBasicInfo.avatar && (
             <Text
               className="round-icon bg-blue white mr8"
               text={capitolizeFirstChar(displayName[0])}
               type="h6"
+            />
+          )}
+          {userBasicInfo && userBasicInfo.avatar && (
+            <Avatar
+              avatarStyle={"Circle"}
+              topType={userBasicInfo.avatar.topType}
+              accessoriesType={userBasicInfo.avatar.accessoriesType}
+              hairColor={userBasicInfo.avatar.hairColor}
+              facialHairType={userBasicInfo.avatar.facialHairType}
+              clotheType={userBasicInfo.avatar.clotheType}
+              eyeType={userBasicInfo.avatar.eyeType}
+              eyebrowType={userBasicInfo.avatar.eyebrowType}
+              mouthType={userBasicInfo.avatar.mouthType}
+              skinColor={userBasicInfo.avatar.skinColor}
+              style={{ width: "48px", height: "48px" }}
+              className="mr8"
             />
           )}
           {userBasicInfo && (

@@ -17,6 +17,7 @@
     "@fortawesome/pro-solid-svg-icons": "^5.15.3",
     "@fortawesome/react-fontawesome": "0.1.4",
     "@tinymce/tinymce-react": "^3.10.4",
+    "avataaars": "^2.0.0",
     "axios": "^0.18.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",

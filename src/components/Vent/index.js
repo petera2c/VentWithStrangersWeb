@@ -7,6 +7,7 @@ import ContentEditable from "react-contenteditable";
 import { Editor } from "@tinymce/tinymce-react";
 import { MentionsInput, Mention } from "react-mentions";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import Avatar from "avataaars";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy } from "@fortawesome/pro-regular-svg-icons/faCopy";
@@ -219,11 +220,29 @@ function Vent({
               }}
             >
               <Container className="full-center">
-                <Text
-                  className="round-icon bg-blue white mr8"
-                  text={capitolizeFirstChar(displayName[0])}
-                  type="h6"
-                />
+                {author && !author.avatar && (
+                  <Text
+                    className="round-icon bg-blue white mr8"
+                    text={capitolizeFirstChar(displayName[0])}
+                    type="h6"
+                  />
+                )}
+                {author && author.avatar && (
+                  <Avatar
+                    avatarStyle={"Circle"}
+                    topType={author.avatar.topType}
+                    accessoriesType={author.avatar.accessoriesType}
+                    hairColor={author.avatar.hairColor}
+                    facialHairType={author.avatar.facialHairType}
+                    clotheType={author.avatar.clotheType}
+                    eyeType={author.avatar.eyeType}
+                    eyebrowType={author.avatar.eyebrowType}
+                    mouthType={author.avatar.mouthType}
+                    skinColor={author.avatar.skinColor}
+                    style={{ width: "48px", height: "48px" }}
+                    className="mr8"
+                  />
+                )}
                 <Container className="full-center">
                   <Text
                     className="button-1 fw-400 mr8"

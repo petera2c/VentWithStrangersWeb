@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, withRouter } from "react-router-dom";
+import Avatar from "avataaars";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
@@ -24,7 +25,11 @@ import SignUpModal from "../modals/SignUp";
 import ForgotPasswordModal from "../modals/ForgotPassword";
 import NotificationList from "../NotificationList";
 
-import { capitolizeFirstChar, isPageActive } from "../../util";
+import {
+  capitolizeFirstChar,
+  getUserBasicInfo,
+  isPageActive
+} from "../../util";
 import {
   getNotifications,
   getUnreadConversations,
@@ -37,12 +42,13 @@ function Header({ history, location }) {
   const user = useContext(UserContext);
 
   const [activeModal, setActiveModal] = useState("");
-  const [showFeedback, setShowFeedback] = useState(true);
   const [notifications, setNotifications] = useState([]);
-  const [unreadConversationsCount, setUnreadConversationsCount] = useState();
+  const [showFeedback, setShowFeedback] = useState(true);
   const [showNotificationDropdown, setShowNotificationDropdown] = useState(
     false
   );
+  const [unreadConversationsCount, setUnreadConversationsCount] = useState();
+  const [userBasicInfo, setUserBasicInfo] = useState({});
   const [ventSearchString, setVentSearchString] = useState("");
 
   const { pathname } = location;
@@ -53,8 +59,11 @@ function Header({ history, location }) {
   };
 
   useEffect(() => {
-    if (user) getNotifications(setNotifications, user);
-    if (user) getUnreadConversations(setUnreadConversationsCount, user.uid);
+    if (user) {
+      getUnreadConversations(setUnreadConversationsCount, user.uid);
+      getUserBasicInfo(setUserBasicInfo, user.uid);
+      getNotifications(setNotifications, user);
+    }
   }, [location]);
 
   if (pathname === "/conversations" && user && unreadConversationsCount > 0)
@@ -163,11 +172,29 @@ function Header({ history, location }) {
           {user && (
             <Container className="align-center wrap">
               <Link className="flex full-center mr16" to="/profile">
-                {user.displayName && (
-                  <Text
-                    className="round-icon bg-blue white mr8"
-                    text={capitolizeFirstChar(user.displayName[0])}
-                    type="h6"
+                {user.displayName &&
+                  (!userBasicInfo ||
+                    (userBasicInfo && !userBasicInfo.avatar)) && (
+                    <Text
+                      className="round-icon bg-blue white mr8"
+                      text={capitolizeFirstChar(user.displayName[0])}
+                      type="h6"
+                    />
+                  )}
+                {userBasicInfo && userBasicInfo.avatar && (
+                  <Avatar
+                    avatarStyle={"Circle"}
+                    topType={userBasicInfo.avatar.topType}
+                    accessoriesType={userBasicInfo.avatar.accessoriesType}
+                    hairColor={userBasicInfo.avatar.hairColor}
+                    facialHairType={userBasicInfo.avatar.facialHairType}
+                    clotheType={userBasicInfo.avatar.clotheType}
+                    eyeType={userBasicInfo.avatar.eyeType}
+                    eyebrowType={userBasicInfo.avatar.eyebrowType}
+                    mouthType={userBasicInfo.avatar.mouthType}
+                    skinColor={userBasicInfo.avatar.skinColor}
+                    style={{ width: "48px", height: "48px" }}
+                    className="mr8"
                   />
                 )}
 
