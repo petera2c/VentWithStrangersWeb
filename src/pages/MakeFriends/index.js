@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import moment from "moment-timezone";
+import Avatar from "avataaars";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
@@ -110,15 +111,33 @@ function MakeFriendsPage() {
                 to={"/profile?" + matchedUserInfo.userID}
               >
                 <Container className="x-fill full-center">
-                  <Container
-                    className="bg-blue full-center mb16 br-round"
-                    style={{
-                      height: "84px",
-                      width: "84px"
-                    }}
-                  >
-                    <h1 className="white fs-40">{displayName[0]}</h1>
-                  </Container>
+                  {matchedUserInfo && !matchedUserInfo.avatar && (
+                    <Container
+                      className="bg-blue full-center mb16 br-round"
+                      style={{
+                        height: "84px",
+                        width: "84px"
+                      }}
+                    >
+                      <h1 className="white fs-40">{displayName[0]}</h1>
+                    </Container>
+                  )}
+                  {matchedUserInfo && matchedUserInfo.avatar && (
+                    <Avatar
+                      avatarStyle={"Circle"}
+                      topType={matchedUserInfo.avatar.topType}
+                      accessoriesType={matchedUserInfo.avatar.accessoriesType}
+                      hairColor={matchedUserInfo.avatar.hairColor}
+                      facialHairType={matchedUserInfo.avatar.facialHairType}
+                      clotheType={matchedUserInfo.avatar.clotheType}
+                      eyeType={matchedUserInfo.avatar.eyeType}
+                      eyebrowType={matchedUserInfo.avatar.eyebrowType}
+                      mouthType={matchedUserInfo.avatar.mouthType}
+                      skinColor={matchedUserInfo.avatar.skinColor}
+                      style={{ width: "96px", height: "96px" }}
+                      className="mr8"
+                    />
+                  )}
                 </Container>
 
                 <Container className="align-center">
