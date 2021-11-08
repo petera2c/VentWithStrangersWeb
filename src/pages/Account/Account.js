@@ -371,6 +371,7 @@ function AccountSection({ user }) {
               <FontAwesomeIcon className="grey-5 mr8" icon={faLockAlt} />
               <input
                 className="x-fill no-border bg-grey-4 br4"
+                name="password-change"
                 onChange={e => setNewPassword(e.target.value)}
                 placeholder="*******"
                 type={canSeePassword ? "" : "password"}
@@ -387,6 +388,7 @@ function AccountSection({ user }) {
                 <FontAwesomeIcon className="grey-5 mr8" icon={faLockAlt} />
                 <input
                   className="x-fill no-border bg-grey-4 br4"
+                  name="confirm-password-change"
                   onChange={e => setConfirmPassword(e.target.value)}
                   placeholder="*******"
                   type={canSeePassword ? "" : "password"}
