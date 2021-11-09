@@ -32,6 +32,14 @@ function Vents() {
 
   useEffect(() => {
     getVents(pathname, setCanLoadMore, setVents, null);
+
+    const script = document.createElement("script");
+
+    script.src =
+      "//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US&adInstanceId=b3819342-032e-406f-914b-5e96dbea3d89";
+    script.async = true;
+
+    document.body.appendChild(script);
   }, [location]);
 
   return (
@@ -49,7 +57,7 @@ function Vents() {
               ? "container mobile-full pa16"
               : "container extra-large pr32 pt32")
           }
-          text="test people that want to listen. Your emotional health is our priority."
+          text="People care and help is here. Vent and chat anonymously to be a part of a community committed to making the world a better place. This is a website for people that want to be heard and people that want to listen. Your emotional health is our priority."
           type="h2"
         />
       </Container>
@@ -80,6 +88,11 @@ function Vents() {
                 vents.map((vent, index) => {
                   return (
                     <Container className="x-fill column" key={index}>
+                      {false && index % 1 === 0 && (
+                        <Container className="x-fill">
+                          <div id="amzn-assoc-ad-b3819342-032e-406f-914b-5e96dbea3d89" />
+                        </Container>
+                      )}
                       <Vent previewMode={true} ventInit={vent} />
                     </Container>
                   );
@@ -148,16 +161,18 @@ function Vents() {
                 Site Info
               </Link>
             </Container>
-            <iframe
-              src="//rcm-na.amazon-adsystem.com/e/cm?o=1&p=22&l=ur1&category=beauty&banner=04XCSE6T0AFM7MK75482&f=ifr&linkID=6336d89bbad41108208a4bd1fa53f359&t=ventwithstran-20&tracking_id=ventwithstran-20"
-              width="250"
-              height="250"
-              scrolling="no"
-              border="0"
-              marginWidth="0"
-              style={{ border: "none" }}
-              frameBorder="0"
-            ></iframe>
+            {false && (
+              <iframe
+                src="//rcm-na.amazon-adsystem.com/e/cm?o=1&p=22&l=ur1&category=beauty&banner=04XCSE6T0AFM7MK75482&f=ifr&linkID=6336d89bbad41108208a4bd1fa53f359&t=ventwithstran-20&tracking_id=ventwithstran-20"
+                width="250"
+                height="250"
+                scrolling="no"
+                border="0"
+                marginWidth="0"
+                style={{ border: "none" }}
+                frameBorder="0"
+              ></iframe>
+            )}
           </Container>
         )}
       </Container>
