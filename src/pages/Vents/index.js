@@ -88,7 +88,7 @@ function Vents() {
                 vents.map((vent, index) => {
                   return (
                     <Container className="x-fill column" key={index}>
-                      {false && index % 1 === 0 && (
+                      {index % 1 === 0 && (
                         <Container className="x-fill">
                           <div id="amzn-assoc-ad-b3819342-032e-406f-914b-5e96dbea3d89" />
                         </Container>
@@ -161,18 +161,16 @@ function Vents() {
                 Site Info
               </Link>
             </Container>
-            {false && (
-              <iframe
-                src="//rcm-na.amazon-adsystem.com/e/cm?o=1&p=22&l=ur1&category=beauty&banner=04XCSE6T0AFM7MK75482&f=ifr&linkID=6336d89bbad41108208a4bd1fa53f359&t=ventwithstran-20&tracking_id=ventwithstran-20"
-                width="250"
-                height="250"
-                scrolling="no"
-                border="0"
-                marginWidth="0"
-                style={{ border: "none" }}
-                frameBorder="0"
-              ></iframe>
-            )}
+            <iframe
+              src="//rcm-na.amazon-adsystem.com/e/cm?o=1&p=22&l=ur1&category=beauty&banner=04XCSE6T0AFM7MK75482&f=ifr&linkID=6336d89bbad41108208a4bd1fa53f359&t=ventwithstran-20&tracking_id=ventwithstran-20"
+              width="250"
+              height="250"
+              scrolling="no"
+              border="0"
+              marginWidth="0"
+              style={{ border: "none" }}
+              frameBorder="0"
+            ></iframe>
           </Container>
         )}
       </Container>
