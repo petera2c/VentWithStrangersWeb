@@ -32,14 +32,6 @@ function Vents() {
 
   useEffect(() => {
     getVents(pathname, setCanLoadMore, setVents, null);
-
-    const script = document.createElement("script");
-
-    script.src =
-      "//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US&adInstanceId=b3819342-032e-406f-914b-5e96dbea3d89";
-    script.async = true;
-
-    document.body.appendChild(script);
   }, [location]);
 
   return (
@@ -88,11 +80,6 @@ function Vents() {
                 vents.map((vent, index) => {
                   return (
                     <Container className="x-fill column" key={index}>
-                      {index % 1 === 0 && (
-                        <Container className="x-fill">
-                          <div id="amzn-assoc-ad-b3819342-032e-406f-914b-5e96dbea3d89" />
-                        </Container>
-                      )}
                       <Vent previewMode={true} ventInit={vent} />
                     </Container>
                   );
