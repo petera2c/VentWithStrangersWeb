@@ -10,7 +10,6 @@ import { faInfo } from "@fortawesome/pro-duotone-svg-icons/faInfo";
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
-import Filters from "../../components/Filters";
 import Vent from "../../components/Vent";
 import LoadMore from "../../components/LoadMore";
 
@@ -33,6 +32,14 @@ function Vents() {
 
   useEffect(() => {
     getVents(pathname, setCanLoadMore, setVents, null);
+
+    const script = document.createElement("script");
+
+    script.src =
+      "//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US&adInstanceId=b3819342-032e-406f-914b-5e96dbea3d89";
+    script.async = true;
+
+    document.body.appendChild(script);
   }, [location]);
 
   return (
@@ -74,7 +81,6 @@ function Vents() {
               text={metaTitle + " Vents"}
               type="h1"
             />
-            {false && <Filters />}
           </Container>
           {vents && (
             <Container className="x-fill column">
@@ -82,13 +88,9 @@ function Vents() {
                 vents.map((vent, index) => {
                   return (
                     <Container className="x-fill column" key={index}>
-                      {false && index % 3 === 0 && (
+                      {false && index % 1 === 0 && (
                         <Container className="x-fill">
-                          <div id="amzn-assoc-ad-b3819342-032e-406f-914b-5e96dbea3d89"></div>
-                          <script
-                            async
-                            src="//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US&adInstanceId=b3819342-032e-406f-914b-5e96dbea3d89"
-                          ></script>
+                          <div id="amzn-assoc-ad-b3819342-032e-406f-914b-5e96dbea3d89" />
                         </Container>
                       )}
                       <Vent previewMode={true} ventInit={vent} />

@@ -371,7 +371,6 @@ function AccountSection({ user }) {
               <FontAwesomeIcon className="grey-5 mr8" icon={faLockAlt} />
               <input
                 autoComplete="off"
-                className="x-fill no-border bg-grey-4 br4"
                 onChange={e => {
                   if (e.target.value.length > 50)
                     return alert(
@@ -380,9 +379,8 @@ function AccountSection({ user }) {
 
                   setPronouns(e.target.value);
                 }}
-                name="pronouns"
                 placeholder="she/her he/him its/them"
-                style={{ display: "none" }}
+                style={{ width: 0, padding: 0, margin: 0, border: "none" }}
                 type="text"
                 value={pronouns}
               />
