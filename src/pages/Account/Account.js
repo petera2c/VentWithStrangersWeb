@@ -251,7 +251,8 @@ function AccountSection({ user }) {
                         (partying === index ? "blue active" : "")
                       }
                       key={index}
-                      onClick={() => {
+                      onClick={e => {
+                        e.preventDefault();
                         if (partying !== index) setPartying(index);
                         else setPartying(undefined);
                       }}
@@ -274,7 +275,9 @@ function AccountSection({ user }) {
                         (politics === index ? "blue active" : "")
                       }
                       key={index}
-                      onClick={() => {
+                      onClick={e => {
+                        e.preventDefault();
+
                         if (politics !== index) setPolitics(index);
                         else setPolitics(undefined);
                       }}
@@ -296,7 +299,9 @@ function AccountSection({ user }) {
                         (religion === str ? "blue active" : "")
                       }
                       key={index}
-                      onClick={() => {
+                      onClick={e => {
+                        e.preventDefault();
+
                         if (religion !== str) setReligion(str);
                         else setReligion(undefined);
                       }}
@@ -318,7 +323,9 @@ function AccountSection({ user }) {
                         (education === index ? "blue active" : "")
                       }
                       key={index}
-                      onClick={() => {
+                      onClick={e => {
+                        e.preventDefault();
+
                         if (education !== index) setEducation(index);
                         else setEducation(undefined);
                       }}
@@ -340,7 +347,9 @@ function AccountSection({ user }) {
                         (kids === index ? "blue active" : "")
                       }
                       key={index}
-                      onClick={() => {
+                      onClick={e => {
+                        e.preventDefault();
+
                         if (kids !== index) setKids(index);
                         else setKids(undefined);
                       }}
@@ -412,7 +421,7 @@ function AccountSection({ user }) {
       <Container className="full-center bg-white pa16 br8">
         <Button
           className="cancel py8 px32 mx4 br4"
-          onClick={() => {
+          onClick={e => {
             setDisplayName(user.displayName);
             setEmail(user.email);
             setNewPassword("");
