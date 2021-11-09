@@ -95,7 +95,7 @@ function AccountSection({ user }) {
       }
     >
       <Text className="mb16" text="Account" type="h4" />
-      <Container className="column bg-white pa16 mb2 br8">
+      <form className="column bg-white pa16 mb2 br8" onSubmit={() => {}}>
         <Text
           className="blue bold mb16"
           text="Personal Information"
@@ -369,21 +369,7 @@ function AccountSection({ user }) {
             <Text className="mb8 " text="New Password" type="p" />
             <Container className="full-center bg-grey-4 py4 px8 br4">
               <FontAwesomeIcon className="grey-5 mr8" icon={faLockAlt} />
-              <input
-                autoComplete="off"
-                onChange={e => {
-                  if (e.target.value.length > 50)
-                    return alert(
-                      "You can not write more than 50 characters for your pronoun"
-                    );
 
-                  setPronouns(e.target.value);
-                }}
-                placeholder="she/her he/him its/them"
-                style={{ width: 0, padding: 0, margin: 0, border: "none" }}
-                type="text"
-                value={pronouns}
-              />
               <input
                 autoComplete="off"
                 className="x-fill no-border bg-grey-4 br4"
@@ -422,7 +408,7 @@ function AccountSection({ user }) {
             </Container>
           </Container>
         </Container>
-      </Container>
+      </form>
       <Container className="full-center bg-white pa16 br8">
         <Button
           className="cancel py8 px32 mx4 br4"
