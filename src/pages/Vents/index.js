@@ -36,7 +36,6 @@ function Vents() {
 
     script.src =
       "//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US&adInstanceId=b3819342-032e-406f-914b-5e96dbea3d89";
-    script.async = true;
 
     document.body.appendChild(script);
   }, [location]);
