@@ -59,16 +59,6 @@ function MakeFriendsPage() {
       keywords="Learn about Vent With Strangers"
       title="Make Friends"
     >
-      <iframe
-        src="//rcm-na.amazon-adsystem.com/e/cm?o=1&p=48&l=ur1&category=beauty&banner=0Q2M96KTPZ1JX0G12SR2&f=ifr&linkID=b2ccbd1e22ab84387f9a3b1f491a651f&t=ventwithstran-20&tracking_id=ventwithstran-20"
-        width="728"
-        height="90"
-        scrolling="no"
-        border="0"
-        marginWidth="0"
-        style={{ border: "none" }}
-        frameBorder="0"
-      ></iframe>
       <Container
         className={
           "column container bg-white pa32 mt64 mb32 br8 " +
