@@ -86,6 +86,9 @@ function Vents() {
               type="h1"
             />
           </Container>
+          <Container className="x-fill">
+            <div id="amzn-assoc-ad-b3819342-032e-406f-914b-5e96dbea3d89" />
+          </Container>
           {vents && (
             <Container className="x-fill column">
               {vents &&
@@ -93,11 +96,7 @@ function Vents() {
                   return (
                     <Container className="x-fill column" key={index}>
                       <Vent previewMode={true} ventInit={vent} />
-                      {(index === 0 || index % 3 === 0) && (
-                        <Container className="x-fill">
-                          <div id="amzn-assoc-ad-b3819342-032e-406f-914b-5e96dbea3d89" />
-                        </Container>
-                      )}
+                      {index === 0 && <div></div>}
                     </Container>
                   );
                 })}
