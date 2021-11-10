@@ -32,13 +32,6 @@ function Vents() {
 
   useEffect(() => {
     getVents(pathname, setCanLoadMore, setVents, null);
-    const script = document.createElement("script");
-
-    script.src =
-      "//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US&adInstanceId=b3819342-032e-406f-914b-5e96dbea3d89";
-    script.async = true;
-
-    document.head.appendChild(script);
   }, [location]);
 
   return (
