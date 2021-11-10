@@ -35,83 +35,83 @@ function AccountPage() {
         }
       >
         {!isMobileOrTablet() && !search && (
-          <Container className="container small column align-center bg-white px16 br8">
-            <Link className="x-fill" to={"/profile" + search}>
-              <Container
-                className={
-                  "grid-1 button-4 clickable x-fill align-center py16" +
-                  isPageActive("/profile", pathname)
-                }
-              >
-                <Container className="flex x-fill full-center">
-                  <FontAwesomeIcon icon={faChartNetwork} />
+          <Container className="column">
+            <Container className="container small column align-center bg-white px16 br8">
+              <Link className="x-fill" to={"/profile" + search}>
+                <Container
+                  className={
+                    "grid-1 button-4 clickable x-fill align-center py16" +
+                    isPageActive("/profile", pathname)
+                  }
+                >
+                  <Container className="flex x-fill full-center">
+                    <FontAwesomeIcon icon={faChartNetwork} />
+                  </Container>
+                  <Text text="Public Profile" type="h5" />
                 </Container>
-                <Text text="Public Profile" type="h5" />
-              </Container>
-            </Link>
+              </Link>
 
-            <Link className="x-fill" to="/account">
-              <Container
-                className={
-                  "grid-1 button-4 clickable x-fill align-center py16" +
-                  isPageActive("/account", pathname)
-                }
-              >
-                <Container className="flex x-fill full-center">
-                  <FontAwesomeIcon icon={faUser} />
+              <Link className="x-fill" to="/account">
+                <Container
+                  className={
+                    "grid-1 button-4 clickable x-fill align-center py16" +
+                    isPageActive("/account", pathname)
+                  }
+                >
+                  <Container className="flex x-fill full-center">
+                    <FontAwesomeIcon icon={faUser} />
+                  </Container>
+                  <Text text="Account" type="h5" />
                 </Container>
-                <Text text="Account" type="h5" />
-              </Container>
-            </Link>
-            <Link className="x-fill" to="/avatar">
-              <Container
-                className={
-                  "grid-1 button-4 clickable x-fill align-center py16" +
-                  isPageActive("/avatar", pathname)
-                }
-              >
-                <Container className="flex x-fill full-center">
-                  <FontAwesomeIcon icon={faUserAstronaut} />
+              </Link>
+              <Link className="x-fill" to="/avatar">
+                <Container
+                  className={
+                    "grid-1 button-4 clickable x-fill align-center py16" +
+                    isPageActive("/avatar", pathname)
+                  }
+                >
+                  <Container className="flex x-fill full-center">
+                    <FontAwesomeIcon icon={faUserAstronaut} />
+                  </Container>
+                  <Text text="Avatar" type="h5" />
                 </Container>
-                <Text text="Avatar" type="h5" />
-              </Container>
-            </Link>
+              </Link>
 
-            <Link className="x-fill" to="/settings">
-              <Container
-                className={
-                  "grid-1 button-4 clickable x-fill align-center py16" +
-                  isPageActive("/settings", pathname)
-                }
-              >
-                <Container className="flex x-fill full-center">
-                  <FontAwesomeIcon icon={faCog} />
+              <Link className="x-fill" to="/settings">
+                <Container
+                  className={
+                    "grid-1 button-4 clickable x-fill align-center py16" +
+                    isPageActive("/settings", pathname)
+                  }
+                >
+                  <Container className="flex x-fill full-center">
+                    <FontAwesomeIcon icon={faCog} />
+                  </Container>
+                  <Text text="Settings" type="h5" />
                 </Container>
-                <Text text="Settings" type="h5" />
-              </Container>
-            </Link>
+              </Link>
 
-            <Container className="clickable x-fill align-center pa16">
-              <Text
-                className="button-1"
-                onClick={signOut}
-                text="Sign Out"
-                type="h5"
-              />
+              <Container className="clickable x-fill align-center pa16">
+                <Text
+                  className="button-1"
+                  onClick={signOut}
+                  text="Sign Out"
+                  type="h5"
+                />
+              </Container>
             </Container>
+            <iframe
+              src="//rcm-na.amazon-adsystem.com/e/cm?o=1&p=22&l=ur1&category=beauty&banner=04XCSE6T0AFM7MK75482&f=ifr&linkID=b3305887fd38d3fea1aa723ec4177bcf&t=ventwithstran-20&tracking_id=ventwithstran-20"
+              width="250"
+              height="250"
+              scrolling="no"
+              border="0"
+              marginWidth="0"
+              style={{ border: "none" }}
+              frameBorder="0"
+            />
           </Container>
-        )}
-        {!isMobileOrTablet() && !search && (
-          <iframe
-            src="//rcm-na.amazon-adsystem.com/e/cm?o=1&p=22&l=ur1&category=beauty&banner=04XCSE6T0AFM7MK75482&f=ifr&linkID=b3305887fd38d3fea1aa723ec4177bcf&t=ventwithstran-20&tracking_id=ventwithstran-20"
-            width="250"
-            height="250"
-            scrolling="no"
-            border="0"
-            marginWidth="0"
-            style={{ border: "none" }}
-            frameBorder="0"
-          />
         )}
 
         <Container className={isMobileOrTablet() ? "x-fill pt16" : "pl32"}>
