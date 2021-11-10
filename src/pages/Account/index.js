@@ -101,6 +101,18 @@ function AccountPage() {
             </Container>
           </Container>
         )}
+        {!isMobileOrTablet() && !search && (
+          <iframe
+            src="//rcm-na.amazon-adsystem.com/e/cm?o=1&p=22&l=ur1&category=beauty&banner=04XCSE6T0AFM7MK75482&f=ifr&linkID=b3305887fd38d3fea1aa723ec4177bcf&t=ventwithstran-20&tracking_id=ventwithstran-20"
+            width="250"
+            height="250"
+            scrolling="no"
+            border="0"
+            marginWidth="0"
+            style={{ border: "none" }}
+            frameBorder="0"
+          />
+        )}
 
         <Container className={isMobileOrTablet() ? "x-fill pt16" : "pl32"}>
           {pathname === "/account" && <Account user={user} />}

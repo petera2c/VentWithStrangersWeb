@@ -32,7 +32,7 @@ import {
 function AvatarSection({ user }) {
   const [activeSection, setActiveSection] = useState(0);
   const [avatar, setAvatar] = useState({});
-  const arraysArray = [
+  const sectionsArray = [
     topArray,
     accessoriesArray,
     hairColorArray,
@@ -156,24 +156,24 @@ function AvatarSection({ user }) {
           className="flex-fill column ov-auto bg-white br8"
           style={{ height: "394px" }}
         >
-          {arraysArray[activeSection].map((str, index) => (
+          {sectionsArray[activeSection].map((obj, index) => (
             <Container key={index}>
               <button
                 className={
                   "flex-fill grey-1 py16 " +
-                  (index !== arraysArray[activeSection].length - 1
+                  (index !== sectionsArray[activeSection].length - 1
                     ? "border-bottom "
                     : " ") +
-                  (str === avatar[getActiveSection(activeSection)]
+                  (obj.value === avatar[getActiveSection(activeSection)]
                     ? "blue"
                     : "")
                 }
                 onClick={() => {
-                  avatar[getActiveSection(activeSection)] = str;
+                  avatar[getActiveSection(activeSection)] = obj.value;
                   setAvatar({ ...avatar });
                 }}
               >
-                {str}
+                {obj.name}
               </button>
             </Container>
           ))}
