@@ -32,6 +32,30 @@ function Vents() {
 
   useEffect(() => {
     getVents(pathname, setCanLoadMore, setVents, null);
+
+    const script = document.createElement("script");
+    script.text = `amzn_assoc_placement = "adunit0";
+    amzn_assoc_search_bar = "true";
+    amzn_assoc_tracking_id = "ventwithstran-20";
+    amzn_assoc_ad_mode = "manual";
+    amzn_assoc_ad_type = "smart";
+    amzn_assoc_marketplace = "amazon";
+    amzn_assoc_region = "US";
+    amzn_assoc_title = "My Amazon Picks";
+    amzn_assoc_linkid = "58c4e58d58f0ea8e3404ffb6c831d47f";
+    amzn_assoc_asins = "B08YDSSD7P,B00CWXPEPE,B01MQJO2CT,B099VMT8VZ";`;
+
+    const script2 = document.createElement("script");
+    script2.src = "//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US";
+    script2.async = false;
+
+    const amazonAdd = document.querySelector(
+      "#amzn_assoc_ad_div_assoc_banner_placement_default_0"
+    );
+    if (amazonAdd) {
+      amazonAdd.appendChild(script);
+      amazonAdd.appendChild(script2);
+    }
   }, [location]);
 
   return (
@@ -74,6 +98,8 @@ function Vents() {
               type="h1"
             />
           </Container>
+          <div id="amzn_assoc_ad_div_assoc_banner_placement_default_0" />
+
           {vents && (
             <Container className="x-fill column">
               {vents &&
