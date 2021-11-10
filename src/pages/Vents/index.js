@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import AdSense from "react-adsense";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/pro-duotone-svg-icons/faPen";
@@ -152,14 +151,6 @@ function Vents() {
                 </Link>
               </Container>
             </Container>
-            <ins
-              className="adsbygoogle"
-              style={{ display: "block" }}
-              data-ad-client="ca-pub-5185907024931065"
-              data-ad-slot="1425588771"
-              data-ad-format="auto"
-              data-full-width-responsive="true"
-            ></ins>
           </Container>
         )}
       </Container>
