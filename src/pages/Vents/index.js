@@ -84,14 +84,16 @@ function Vents() {
                     <Container className="x-fill column" key={index}>
                       <Vent previewMode={true} ventInit={vent} />
                       {(index === 0 || index % 3 === 0) && (
-                        <AdSense.Google
-                          className="adsbygoogle"
-                          client="ca-pub-5185907024931065"
-                          format="fluid"
-                          layoutKey="-em+1v+cz-83-96"
-                          slot="1835301248"
-                          style={{ display: "block" }}
-                        />
+                        <Container className="mb16">
+                          <AdSense.Google
+                            className="adsbygoogle"
+                            client="ca-pub-5185907024931065"
+                            format="fluid"
+                            layoutKey="-em+1v+cz-83-96"
+                            slot="1835301248"
+                            style={{ display: "block" }}
+                          />
+                        </Container>
                       )}
                     </Container>
                   );
