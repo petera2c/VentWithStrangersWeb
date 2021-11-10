@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import postscribe from "postscribe";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/pro-duotone-svg-icons/faPen";
@@ -76,10 +77,16 @@ function Vents() {
           </Container>
           <Container className="x-fill">
             <div id="amzn-assoc-ad-b3819342-032e-406f-914b-5e96dbea3d89"></div>
-            <script
-              async
-              src="//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US&adInstanceId=b3819342-032e-406f-914b-5e96dbea3d89"
-            ></script>
+
+            <script type="text/javascript">
+              postscribe('#amzn-assoc-ad-b3819342-032e-406f-914b-5e96dbea3d89',
+              '
+              <script
+                async
+                src="//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US&adInstanceId=b3819342-032e-406f-914b-5e96dbea3d89"
+              ></script>
+              ');
+            </script>
           </Container>
           {vents && (
             <Container className="x-fill column">
