@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import AdSense from "react-adsense";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/pro-duotone-svg-icons/faPen";
@@ -31,8 +32,6 @@ function Vents() {
   }
 
   useEffect(() => {
-    (window.adsbygoogle = window.adsbygoogle || []).push({});
-
     getVents(pathname, setCanLoadMore, setVents, null);
   }, [location]);
 
@@ -82,7 +81,19 @@ function Vents() {
               {vents &&
                 vents.map((vent, index) => {
                   return (
-                    <Vent key={index} previewMode={true} ventInit={vent} />
+                    <Container className="x-fill column" key={index}>
+                      <Vent previewMode={true} ventInit={vent} />
+                      {(index === 0 || index % 3 === 0) && (
+                        <AdSense.Google
+                          className="adsbygoogle"
+                          client="ca-pub-5185907024931065"
+                          format="fluid"
+                          layoutKey="-em+1v+cz-83-96"
+                          slot="1835301248"
+                          style={{ display: "block" }}
+                        />
+                      )}
+                    </Container>
                   );
                 })}
             </Container>
@@ -151,6 +162,14 @@ function Vents() {
                 </Link>
               </Container>
             </Container>
+            <AdSense.Google
+              className="adsbygoogle"
+              client="ca-pub-5185907024931065"
+              format="auto"
+              responsive="true"
+              slot="1425588771"
+              style={{ display: "block" }}
+            />
           </Container>
         )}
       </Container>
