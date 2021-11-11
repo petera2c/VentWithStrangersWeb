@@ -89,12 +89,16 @@ function Vents() {
                             className="adsbygoogle"
                             client="ca-pub-5185907024931065"
                             format=""
-                            layoutKey="-em+1v+cz-83-96"
+                            responsive="true"
                             slot="1835301248"
                             style={{
                               display: "block",
+                              minWidth: "100px",
                               width: "100%",
-                              height: "280px"
+                              maxWidth: "1000px",
+                              minHeight: "100px",
+                              height: "188px",
+                              maxHeight: "300px"
                             }}
                           />
                         </Container>
@@ -172,7 +176,15 @@ function Vents() {
               format=""
               responsive="true"
               slot="1425588771"
-              style={{ display: "block", width: "100%", height: "300px" }}
+              style={{
+                display: "block",
+                minWidth: "100px",
+                width: "100%",
+                maxWidth: "1000px",
+                minHeight: "100px",
+                height: "300px",
+                maxHeight: "800px"
+              }}
             />
           </Container>
         )}
