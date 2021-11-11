@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
+import AdSense from "react-adsense";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
@@ -35,8 +36,8 @@ function AccountPage() {
         }
       >
         {!isMobileOrTablet() && !search && (
-          <Container className="column">
-            <Container className="container small column align-center bg-white px16 mb16 br8">
+          <Container className="container small column">
+            <Container className="column align-center bg-white px16 mb16 br8">
               <Link className="x-fill" to={"/profile" + search}>
                 <Container
                   className={
@@ -101,6 +102,22 @@ function AccountPage() {
                 />
               </Container>
             </Container>
+            <AdSense.Google
+              className="adsbygoogle"
+              client="ca-pub-5185907024931065"
+              format=""
+              responsive="true"
+              slot="1425588771"
+              style={{
+                display: "block",
+                minWidth: "100px",
+                width: "100%",
+                maxWidth: "1000px",
+                minHeight: "100px",
+                height: "300px",
+                maxHeight: "800px"
+              }}
+            />
           </Container>
         )}
 

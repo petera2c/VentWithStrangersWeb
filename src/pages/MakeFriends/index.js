@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import moment from "moment-timezone";
 import Avatar from "avataaars";
+import AdSense from "react-adsense";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
@@ -59,6 +60,24 @@ function MakeFriendsPage() {
       keywords="Learn about Vent With Strangers"
       title="Make Friends"
     >
+      <Container className="container full">
+        <AdSense.Google
+          className="adsbygoogle"
+          client="ca-pub-5185907024931065"
+          format=""
+          responsive="true"
+          slot="3444073995"
+          style={{
+            display: "block",
+            minWidth: "100px",
+            width: "100%",
+            maxWidth: "2000px",
+            minHeight: "100px",
+            height: "150px",
+            maxHeight: "200px"
+          }}
+        />
+      </Container>
       <Container
         className={
           "column container bg-white pa32 mt64 mb32 br8 " +
