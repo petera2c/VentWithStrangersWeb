@@ -88,17 +88,12 @@ function Vents() {
                           <AdSense.Google
                             className="adsbygoogle"
                             client="ca-pub-5185907024931065"
-                            format=""
+                            format="fluid"
+                            layoutKey="-em+1v+cz-83-96"
                             responsive="true"
                             slot="1835301248"
                             style={{
-                              display: "block",
-                              minWidth: "100px",
-                              width: "100%",
-                              maxWidth: "1000px",
-                              minHeight: "100px",
-                              height: "188px",
-                              maxHeight: "300px"
+                              display: "block"
                             }}
                           />
                         </Container>
