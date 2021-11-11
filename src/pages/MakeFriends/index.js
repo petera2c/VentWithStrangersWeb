@@ -60,24 +60,26 @@ function MakeFriendsPage() {
       keywords="Learn about Vent With Strangers"
       title="Make Friends"
     >
-      <Container className="container extra-large full-center mt16">
-        <AdSense.Google
-          className="adsbygoogle"
-          client="ca-pub-5185907024931065"
-          format=""
-          responsive="true"
-          slot="3444073995"
-          style={{
-            display: "block",
-            minWidth: "100px",
-            width: "100%",
-            maxWidth: "2000px",
-            minHeight: "100px",
-            height: "150px",
-            maxHeight: "200px"
-          }}
-        />
-      </Container>
+      {process.env.NODE_ENV === "production" && (
+        <Container className="container extra-large full-center mt16">
+          <AdSense.Google
+            className="adsbygoogle"
+            client="ca-pub-5185907024931065"
+            format=""
+            responsive="true"
+            slot="3444073995"
+            style={{
+              display: "block",
+              minWidth: "100px",
+              width: "100%",
+              maxWidth: "2000px",
+              minHeight: "100px",
+              height: "150px",
+              maxHeight: "200px"
+            }}
+          />
+        </Container>
+      )}
       <Container
         className={
           "column container bg-white pa32 mt32 mb32 br8 " +
