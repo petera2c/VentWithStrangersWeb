@@ -105,11 +105,17 @@ function AccountPage() {
             <AdSense.Google
               className="adsbygoogle"
               client="ca-pub-5185907024931065"
-              format="auto"
+              format=""
               responsive="true"
               slot="1591936277"
               style={{
-                display: "block"
+                display: "block",
+                minWidth: "100px",
+                width: "100%",
+                maxWidth: "600px",
+                minHeight: "100px",
+                height: "600px",
+                maxHeight: "1200px"
               }}
             />
           </Container>
