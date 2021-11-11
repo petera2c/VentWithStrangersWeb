@@ -37,7 +37,7 @@ function AccountPage() {
       >
         {!isMobileOrTablet() && !search && (
           <Container className="container small column">
-            <Container className="column align-center bg-white px16 mb16 br8">
+            <Container className="x-fill column align-center bg-white px16 mb16 br8">
               <Link className="x-fill" to={"/profile" + search}>
                 <Container
                   className={

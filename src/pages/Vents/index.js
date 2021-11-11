@@ -16,6 +16,7 @@ import LoadMore from "../../components/LoadMore";
 
 import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
 import { getMetaInformation, getVents } from "./util";
+import { amazonAdListContainer } from "./amazonLinkAds";
 
 function Vents() {
   const [vents, setVents] = useState(null);
@@ -83,7 +84,8 @@ function Vents() {
                   return (
                     <Container className="x-fill column" key={index}>
                       <Vent previewMode={true} ventInit={vent} />
-                      {(index === 0 || index % 3 === 0) && (
+                      {index === 0 && amazonAdListContainer()}
+                      {index !== 0 && index % 3 === 0 && (
                         <Container className="x-fill column mb16">
                           <AdSense.Google
                             className="adsbygoogle"
