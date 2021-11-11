@@ -88,10 +88,14 @@ function Vents() {
                           <AdSense.Google
                             className="adsbygoogle"
                             client="ca-pub-5185907024931065"
-                            format="false"
+                            format=""
                             layoutKey="-em+1v+cz-83-96"
                             slot="1835301248"
-                            style={{ display: "block" }}
+                            style={{
+                              display: "block",
+                              width: "100%",
+                              height: "280px"
+                            }}
                           />
                         </Container>
                       )}
@@ -143,34 +147,32 @@ function Vents() {
         </Container>
 
         {!isMobileOrTablet() && (
-          <Container className="column">
-            <Container className="container small column">
-              <Container className="x-fill column align-start bg-white pa16 mb16 br8">
-                <Link className="button-3 fs-18 mb16" to="/vent-to-strangers">
-                  <FontAwesomeIcon className="mr8" icon={faPen} />
-                  Post a Vent
-                </Link>
-                <Link className="button-3 fs-18 mb16" to="/conversations">
-                  <FontAwesomeIcon className="mr8" icon={faComments} />
-                  Inbox
-                </Link>
-                <Link className="button-3 fs-18 mb16" to="/conversations">
-                  <FontAwesomeIcon className="mr8" icon={faUsers} />
-                  Make Friends
-                </Link>
-                <Link className="button-3 fs-18" to="/site-info">
-                  <FontAwesomeIcon className="mr8" icon={faInfo} />
-                  Site Info
-                </Link>
-              </Container>
+          <Container className="container small column">
+            <Container className="x-fill column align-start bg-white pa16 mb16 br8">
+              <Link className="button-3 fs-18 mb16" to="/vent-to-strangers">
+                <FontAwesomeIcon className="mr8" icon={faPen} />
+                Post a Vent
+              </Link>
+              <Link className="button-3 fs-18 mb16" to="/conversations">
+                <FontAwesomeIcon className="mr8" icon={faComments} />
+                Inbox
+              </Link>
+              <Link className="button-3 fs-18 mb16" to="/conversations">
+                <FontAwesomeIcon className="mr8" icon={faUsers} />
+                Make Friends
+              </Link>
+              <Link className="button-3 fs-18" to="/site-info">
+                <FontAwesomeIcon className="mr8" icon={faInfo} />
+                Site Info
+              </Link>
             </Container>
             <AdSense.Google
               className="adsbygoogle"
               client="ca-pub-5185907024931065"
-              format="false"
+              format=""
               responsive="true"
               slot="1425588771"
-              style={{ display: "block" }}
+              style={{ display: "block", width: "100%", height: "300px" }}
             />
           </Container>
         )}
