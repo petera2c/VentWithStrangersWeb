@@ -112,9 +112,9 @@ function AccountPage() {
                 display: "block",
                 minWidth: "100px",
                 width: "100%",
-                maxWidth: "500px",
+                maxWidth: "600px",
                 minHeight: "100px",
-                height: "400px",
+                height: "600px",
                 maxHeight: "1200px"
               }}
             />

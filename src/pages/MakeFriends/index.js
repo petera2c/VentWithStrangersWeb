@@ -60,7 +60,7 @@ function MakeFriendsPage() {
       keywords="Learn about Vent With Strangers"
       title="Make Friends"
     >
-      <Container className="container full full-center mt16">
+      <Container className="container extra-large full-center mt16">
         <AdSense.Google
           className="adsbygoogle"
           client="ca-pub-5185907024931065"
