@@ -2,6 +2,67 @@ import React from "react";
 import Container from "../../components/containers/Container";
 
 export const amazonAdListContainer = () => {
+  const wearableBlanket = (
+    <iframe
+      style={{ width: "120px", height: "240px" }}
+      marginWidth="0"
+      marginHeight="0"
+      scrolling="no"
+      frameBorder="0"
+      src="//ws-na.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=US&source=ac&ref=tf_til&ad_type=product_link&tracking_id=ventwithstran-20&marketplace=amazon&amp;region=US&placement=B07S651GSW&asins=B07S651GSW&linkId=4b87188b015d3bcbfbc04a8d56831245&show_border=false&link_opens_in_new_window=false&price_color=333333&title_color=0066c0&bg_color=ffffff"
+    />
+  );
+
+  const uggSlippers = (
+    <iframe
+      style={{ width: "120px", height: "240px" }}
+      marginWidth="0"
+      marginHeight="0"
+      scrolling="no"
+      frameBorder="0"
+      src="//ws-na.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=US&source=ac&ref=tf_til&ad_type=product_link&tracking_id=ventwithstran-20&marketplace=amazon&amp;region=US&placement=B0009F2HDE&asins=B0009F2HDE&linkId=9472b7b90d51604344968e3a5b94d16a&show_border=false&link_opens_in_new_window=false&price_color=333333&title_color=0066c0&bg_color=ffffff"
+    />
+  );
+  const bhudaBoard = (
+    <iframe
+      style={{ width: "120px", height: "240px" }}
+      marginWidth="0"
+      marginHeight="0"
+      scrolling="no"
+      frameBorder="0"
+      src="//ws-na.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=US&source=ac&ref=tf_til&ad_type=product_link&tracking_id=ventwithstran-20&marketplace=amazon&amp;region=US&placement=B0010TEFFQ&asins=B0010TEFFQ&linkId=fc3cd10a79cb56d16831060c70f1993a&show_border=false&link_opens_in_new_window=false&price_color=333333&title_color=0066c0&bg_color=ffffff"
+    />
+  );
+  const jewelryOrganizer = (
+    <iframe
+      style={{ width: "120px", height: "240px" }}
+      marginWidth="0"
+      marginHeight="0"
+      scrolling="no"
+      frameBorder="0"
+      src="//ws-na.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=US&source=ac&ref=tf_til&ad_type=product_link&tracking_id=ventwithstran-20&marketplace=amazon&amp;region=US&placement=B086QWHDMV&asins=B086QWHDMV&linkId=f0fddcc3e844065feb2e36ddb0f77629&show_border=false&link_opens_in_new_window=false&price_color=333333&title_color=0066c0&bg_color=ffffff"
+    />
+  );
+  const backpackPurse = (
+    <iframe
+      style={{ width: "120px", height: "240px" }}
+      marginWidth="0"
+      marginHeight="0"
+      scrolling="no"
+      frameBorder="0"
+      src="//ws-na.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=US&source=ac&ref=tf_til&ad_type=product_link&tracking_id=ventwithstran-20&marketplace=amazon&amp;region=US&placement=B086PHC81T&asins=B086PHC81T&linkId=cd3515974f50689f7675e4d2a78a5083&show_border=false&link_opens_in_new_window=false&price_color=333333&title_color=0066c0&bg_color=ffffff"
+    />
+  );
+  const mirror = (
+    <iframe
+      style={{ width: "120px", height: "240px" }}
+      marginWidth="0"
+      marginHeight="0"
+      scrolling="no"
+      frameBorder="0"
+      src="//ws-na.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=US&source=ac&ref=tf_til&ad_type=product_link&tracking_id=ventwithstran-20&marketplace=amazon&amp;region=US&placement=B07VK6CR3N&asins=B07VK6CR3N&linkId=11764b87dc858f311d98aa39818d2d56&show_border=false&link_opens_in_new_window=false&price_color=333333&title_color=0066c0&bg_color=ffffff"
+    />
+  );
   const echoDot = (
     <iframe
       style={{ width: "120px", height: "240px" }}
@@ -70,9 +131,9 @@ export const amazonAdListContainer = () => {
   return (
     <Container className="x-fill justify-between mb32 gap16">
       {masks}
+      {bhudaBoard}
       {iphoneCase}
-      {glassScreen}
-      {virtualReality}
+      {wearableBlanket}
     </Container>
   );
 };
