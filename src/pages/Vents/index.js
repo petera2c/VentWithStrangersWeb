@@ -163,7 +163,7 @@ function Vents() {
                 Make Friends
               </Link>
               <Link className="button-3 fs-18" to="/site-info">
-                <FontAwesomeIcon className="mr8" icon={faInfo} />
+                <FontAwesomeIcon className="px8 mr8" icon={faInfo} />
                 Site Info
               </Link>
             </Container>

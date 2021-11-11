@@ -130,7 +130,7 @@ export const amazonAdListContainer = () => {
   );
   return (
     <Container className="x-fill justify-between mb32 gap16">
-      {masks}
+      {virtualReality}
       {bhudaBoard}
       {iphoneCase}
       {wearableBlanket}
