@@ -60,7 +60,7 @@ function MakeFriendsPage() {
       keywords="Learn about Vent With Strangers"
       title="Make Friends"
     >
-      <Container className="container full">
+      <Container className="container full full-center mt16">
         <AdSense.Google
           className="adsbygoogle"
           client="ca-pub-5185907024931065"
@@ -80,7 +80,7 @@ function MakeFriendsPage() {
       </Container>
       <Container
         className={
-          "column container bg-white pa32 mt64 mb32 br8 " +
+          "column container bg-white pa32 mt32 mb32 br8 " +
           (isMobileOrTablet() ? "mobile-full mx16" : "large")
         }
       >

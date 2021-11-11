@@ -107,15 +107,15 @@ function AccountPage() {
               client="ca-pub-5185907024931065"
               format=""
               responsive="true"
-              slot="1425588771"
+              slot="1591936277"
               style={{
                 display: "block",
                 minWidth: "100px",
                 width: "100%",
-                maxWidth: "1000px",
+                maxWidth: "500px",
                 minHeight: "100px",
-                height: "300px",
-                maxHeight: "800px"
+                height: "400px",
+                maxHeight: "1200px"
               }}
             />
           </Container>
