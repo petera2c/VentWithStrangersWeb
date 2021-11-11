@@ -88,7 +88,7 @@ function Vents() {
                           <AdSense.Google
                             className="adsbygoogle"
                             client="ca-pub-5185907024931065"
-                            format="fluid"
+                            format="false"
                             layoutKey="-em+1v+cz-83-96"
                             slot="1835301248"
                             style={{ display: "block" }}
@@ -167,7 +167,7 @@ function Vents() {
             <AdSense.Google
               className="adsbygoogle"
               client="ca-pub-5185907024931065"
-              format="auto"
+              format="false"
               responsive="true"
               slot="1425588771"
               style={{ display: "block" }}
