@@ -45,6 +45,24 @@ export const getUnreadConversations = (
     });
 };
 
+export const howCompleteIsUserProfile = (
+  setMissingAccountPercentage,
+  userBasicInfo
+) => {
+  let percentage = 0;
+
+  if (userBasicInfo.gender) percentage += 0.125;
+  if (userBasicInfo.pronouns) percentage += 0.125;
+  if (userBasicInfo.birth_date) percentage += 0.125;
+  if (userBasicInfo.partying) percentage += 0.125;
+  if (userBasicInfo.politicalBeliefs) percentage += 0.125;
+  if (userBasicInfo.education) percentage += 0.125;
+  if (userBasicInfo.kids) percentage += 0.125;
+  if (userBasicInfo.avatar) percentage += 0.125;
+
+  setMissingAccountPercentage(percentage);
+};
+
 export const newNotificationCounter = notifications => {
   let counter = 0;
 
