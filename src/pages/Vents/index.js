@@ -84,11 +84,11 @@ function Vents() {
                   return (
                     <Container className="x-fill column" key={index}>
                       <Vent previewMode={true} ventInit={vent} />
-                      {process.env.NODE_ENV === "production" &&
+                      {false &&
+                        process.env.NODE_ENV === "production" &&
                         index === 0 &&
                         amazonAdListContainer()}
                       {process.env.NODE_ENV === "production" &&
-                        index !== 0 &&
                         index % 3 === 0 && (
                           <Container className="x-fill column mb16">
                             <AdSense.Google
