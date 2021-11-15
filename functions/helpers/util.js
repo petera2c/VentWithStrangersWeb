@@ -144,6 +144,42 @@ const getMetaInformation = async (url, callback) => {
       },
       true
     );
+  else if (url.substring(0, 14) === "/profile")
+    return callback(
+      {
+        metaDescription: "",
+        metaImage: defaultMetaObject.metaImage,
+        metaTitle: "Profile | Vent With Strangers",
+      },
+      true
+    );
+  else if (url.substring(0, 14) === "/account")
+    return callback(
+      {
+        metaDescription: "",
+        metaImage: defaultMetaObject.metaImage,
+        metaTitle: "Account | Vent With Strangers",
+      },
+      true
+    );
+  else if (url.substring(0, 14) === "/avatar")
+    return callback(
+      {
+        metaDescription: "",
+        metaImage: defaultMetaObject.metaImage,
+        metaTitle: "Avatar | Vent With Strangers",
+      },
+      true
+    );
+  else if (url.substring(0, 14) === "/settings")
+    return callback(
+      {
+        metaDescription: "",
+        metaImage: defaultMetaObject.metaImage,
+        metaTitle: "Settings | Vent With Strangers",
+      },
+      true
+    );
   else if (url === "/privacy-policy")
     return callback(
       {
