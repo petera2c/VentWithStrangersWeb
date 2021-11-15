@@ -31,8 +31,7 @@ function AccountPage() {
     <Page className="bg-grey-2" description="" keywords="" title="Account">
       <Container
         className={
-          "x-fill align-start justify-center " +
-          (isMobileOrTablet() ? "py16" : "py32")
+          "x-fill justify-center " + (isMobileOrTablet() ? "py16" : "py32")
         }
       >
         {!isMobileOrTablet() && !search && (
@@ -103,22 +102,27 @@ function AccountPage() {
               </Container>
             </Container>
             {process.env.NODE_ENV === "production" && (
-              <AdSense.Google
-                className="adsbygoogle"
-                client="ca-pub-5185907024931065"
-                format=""
-                responsive="true"
-                slot="1591936277"
-                style={{
-                  display: "block",
-                  minWidth: "100px",
-                  width: "100%",
-                  maxWidth: "600px",
-                  minHeight: "100px",
-                  height: "600px",
-                  maxHeight: "1200px"
-                }}
-              />
+              <Container
+                className="sticky top-0 pa16 test"
+                style={{ top: "135px" }}
+              >
+                <AdSense.Google
+                  className="adsbygoogle"
+                  client="ca-pub-5185907024931065"
+                  format=""
+                  responsive="true"
+                  slot="1591936277"
+                  style={{
+                    display: "block",
+                    minWidth: "100px",
+                    width: "100%",
+                    maxWidth: "600px",
+                    minHeight: "100px",
+                    height: "600px",
+                    maxHeight: "1200px"
+                  }}
+                />
+              </Container>
             )}
           </Container>
         )}

@@ -57,8 +57,7 @@ function Vents() {
       </Container>
       <Container
         className={
-          "x-fill justify-center align-start " +
-          (isMobileOrTablet() ? "py16" : "py32")
+          "x-fill justify-center " + (isMobileOrTablet() ? "py16" : "py32")
         }
       >
         <Container
@@ -172,22 +171,24 @@ function Vents() {
               </Link>
             </Container>
             {process.env.NODE_ENV === "production" && (
-              <AdSense.Google
-                className="adsbygoogle"
-                client="ca-pub-5185907024931065"
-                format=""
-                responsive="true"
-                slot="1425588771"
-                style={{
-                  display: "block",
-                  minWidth: "100px",
-                  width: "100%",
-                  maxWidth: "1000px",
-                  minHeight: "100px",
-                  height: "300px",
-                  maxHeight: "800px"
-                }}
-              />
+              <Container className="sticky top-0 pa16" style={{ top: "135px" }}>
+                <AdSense.Google
+                  className="adsbygoogle"
+                  client="ca-pub-5185907024931065"
+                  format=""
+                  responsive="true"
+                  slot="1425588771"
+                  style={{
+                    display: "block",
+                    minWidth: "100px",
+                    width: "100%",
+                    maxWidth: "1000px",
+                    minHeight: "100px",
+                    height: "300px",
+                    maxHeight: "800px"
+                  }}
+                />
+              </Container>
             )}
           </Container>
         )}
