@@ -102,7 +102,7 @@ function AccountPage() {
               </Container>
             </Container>
             {process.env.NODE_ENV === "production" && (
-              <Container className="sticky top-0 pa16" style={{ top: "135px" }}>
+              <Container className="sticky top-0 pa16" style={{ top: "75px" }}>
                 <AdSense.Google
                   className="adsbygoogle"
                   client="ca-pub-5185907024931065"
