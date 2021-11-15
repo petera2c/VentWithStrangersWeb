@@ -561,6 +561,9 @@ body {
   color: var(--grey-color-1);
 }
 
+html {
+}
+
 .no-border {
   border: none !important;
   outline: 0px solid transparent;
