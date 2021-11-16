@@ -21,7 +21,7 @@ export const commentVent = async (
   if (!user) return alert("Only users can comment! Please login or register.");
   let commentObj = {
     like_counter: 0,
-    server_timestamp: firebase.firestore.Timestamp.now().seconds * 1000,
+    server_timestamp: firebase.firestore.Timestamp.now().seconds * 10000,
     text: commentString,
     userID: user.uid,
     ventID

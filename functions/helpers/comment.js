@@ -162,6 +162,20 @@ const commentUpdateListener = async (change, context) => {
     createNotificationsToAnyTaggedUsers(change.after, context);
     createNewCommentNotification(change.after, context);
 
+    let comment = { ...change.after.data() };
+
+    if (
+      comment.server_timestamp >
+      admin.firestore.Timestamp.now().seconds * 1000
+    ) {
+      comment.server_timestamp = admin.firestore.Timestamp.now().seconds * 1000;
+      await admin
+        .firestore()
+        .collection("comments")
+        .doc(change.after.id)
+        .set(comment, { merge: true });
+    }
+
     await admin
       .firestore()
       .collection("vents")
