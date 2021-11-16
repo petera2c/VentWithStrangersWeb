@@ -115,10 +115,10 @@ export const signOut = () => {
 };
 
 export const soundNotify = (sound = "bing") => {
+  let audio;
   if (process.env.NODE_ENV == "development")
-    var audio = new Audio("/static/" + sound + ".mp3");
-  else var audio = new Audio("/" + sound + ".mp3");
+    audio = new Audio("/static/" + sound + ".mp3");
+  else audio = new Audio(sound + ".mp3");
 
-  var audio = new Audio(sound + ".mp3");
   audio.play();
 };

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { Link, withRouter } from "react-router-dom";
 import Avatar from "avataaars";
 
@@ -40,6 +40,8 @@ import {
 } from "./util";
 
 function Header({ history, location }) {
+  const componentIsMounted = useRef(true);
+
   const user = useContext(UserContext);
 
   const [activeModal, setActiveModal] = useState("");
@@ -61,13 +63,21 @@ function Header({ history, location }) {
 
   useEffect(() => {
     if (user) {
-      getUnreadConversations(setUnreadConversationsCount, user.uid);
+      getUnreadConversations(
+        componentIsMounted,
+        setUnreadConversationsCount,
+        user.uid
+      );
       getUserBasicInfo(newBasicUserInfo => {
         setUserBasicInfo(newBasicUserInfo);
         howCompleteIsUserProfile(setMissingAccountPercentage, newBasicUserInfo);
       }, user.uid);
-      getNotifications(setNotifications, user);
+      getNotifications(componentIsMounted, setNotifications, user);
     }
+
+    return () => {
+      componentIsMounted.current = false;
+    };
   }, [location]);
 
   if (pathname === "/conversations" && user && unreadConversationsCount > 0)
