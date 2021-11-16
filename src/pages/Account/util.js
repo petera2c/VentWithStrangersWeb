@@ -1,6 +1,8 @@
 import firebase from "firebase/app";
 import db from "../../config/firebase";
 
+import { getInvalidCharacters } from "../../components/modals/SignUp/util";
+
 export const getUser = async (callback, userID) => {
   if (!userID) {
     alert("Reload the page please. An unexpected error has occurred.");
@@ -80,20 +82,26 @@ export const updateUser = async (
 
   if (displayName && displayName !== user.displayName) {
     changesFound = true;
-    user
-      .updateProfile({
-        displayName
-      })
-      .then(async () => {
-        await db
-          .collection("users_display_name")
-          .doc(user.uid)
-          .update({ displayName });
-        alert("Display name updated!");
-      })
-      .catch(error => {
-        alert(error.message);
-      });
+    if (getInvalidCharacters(displayName))
+      alert(
+        "These characters are not allowed in your display name. " +
+          getInvalidCharacters(displayName)
+      );
+    else
+      user
+        .updateProfile({
+          displayName
+        })
+        .then(async () => {
+          await db
+            .collection("users_display_name")
+            .doc(user.uid)
+            .update({ displayName });
+          alert("Display name updated!");
+        })
+        .catch(error => {
+          alert(error.message);
+        });
   }
 
   if (email && email !== user.email) {
