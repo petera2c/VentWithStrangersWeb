@@ -5,6 +5,9 @@ import { Helmet } from "react-helmet";
 
 import Container from "../Container";
 
+import Header from "../../Header";
+import MobileHeader from "../../Header/MobileHeader";
+
 import { isMobileOrTablet } from "../../../util";
 
 import "./style.css";
@@ -45,7 +48,7 @@ class Page extends Component {
 
     return (
       <Container
-        className={"column flex-fill " + className}
+        className={"screen-container column " + className}
         style={style}
         testMode={testMode}
       >
@@ -59,6 +62,10 @@ class Page extends Component {
           <meta property="image" content={image} />
           <meta property="og:image" content={image} />
         </Helmet>
+
+        {!isMobileOrTablet() && <Header />}
+        {isMobileOrTablet() && <MobileHeader />}
+
         {children}
       </Container>
     );

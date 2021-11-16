@@ -57,15 +57,16 @@ function Conversations() {
 
   return (
     <Page
-      className={"bg-grey-2 pa4 " + (isMobileOrTablet() ? "" : "ov-hidden")}
+      className={"bg-grey-2 " + (isMobileOrTablet() ? "" : "ov-hidden")}
       description="Sometimes, all we need is an available ear. This is where you can anonymously talk to someone that wants to listen, or anonymously listen to someone that wants to be heard."
       keywords="vent, strangers, help"
+      style={{ height: "100vh" }}
       title="Chats"
     >
       {conversations && conversations.length !== 0 && (
         <Container
           className={
-            "flex-fill x-fill gap4 " +
+            "flex-fill x-fill gap4 pa4 " +
             (isMobileOrTablet() ? "column align-center py32" : "ov-hidden")
           }
         >
@@ -119,7 +120,7 @@ function Conversations() {
 
       {!conversations ||
         (conversations.length === 0 && (
-          <Container className="x-fill full-center">
+          <Container className="x-fill full-center mt16">
             <h4>
               No conversations found! Message someone from a post on our recent
               or trending page :)
