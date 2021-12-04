@@ -128,8 +128,9 @@ export const amazonAdListContainer = () => {
       src="//ws-na.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=US&source=ac&ref=tf_til&ad_type=product_link&tracking_id=ventwithstran-20&marketplace=amazon&amp;region=US&placement=B099VMT8VZ&asins=B099VMT8VZ&linkId=acee9ba10f27a6095d3d307d24f600e6&show_border=false&link_opens_in_new_window=false&price_color=333333&title_color=0066c0&bg_color=ffffff"
     />
   );
+
   return (
-    <Container className="x-fill justify-between wrap mb32 gap16">
+    <Container className="column justify-between wrap gap16 pa16">
       {virtualReality}
       {bhudaBoard}
       {iphoneCase}

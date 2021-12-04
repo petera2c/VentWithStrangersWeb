@@ -115,7 +115,7 @@ function Chat({ conversation, conversationPartnerData = {}, userID }) {
   }
 
   return (
-    <Container className="column x-fill full-center bg-white br4">
+    <Container className="column flex-fill x-fill full-center bg-white br4">
       <Container className="x-fill border-bottom pa16">
         {conversationPartnerID && (
           <Container className="full-center">

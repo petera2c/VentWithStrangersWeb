@@ -3,6 +3,19 @@ import firebase from "firebase/app";
 import db from "../../config/firebase";
 import { combineInsideObjectWithID, getEndAtValueTimestamp } from "../../util";
 
+export const getCurrentOnlineUsers = (startingPoint, userID) => {
+  const ref = firebase.database().ref("status");
+
+  ref
+    .orderByChild("state")
+    .limitToLast(1)
+    .once("value", snapshot => {
+      snapshot.forEach(data => {
+        console.log(data.val());
+      });
+    });
+};
+
 export const getVents = async (pathname, setCanLoadMore, setVents, vents) => {
   let startAt = getEndAtValueTimestamp(vents);
 

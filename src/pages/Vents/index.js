@@ -15,8 +15,7 @@ import Vent from "../../components/Vent";
 import LoadMore from "../../components/LoadMore";
 
 import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
-import { getMetaInformation, getVents } from "./util";
-import { amazonAdListContainer } from "./amazonLinkAds";
+import { getCurrentOnlineUsers, getMetaInformation, getVents } from "./util";
 
 function Vents() {
   const [vents, setVents] = useState(null);
@@ -33,6 +32,7 @@ function Vents() {
   }
 
   useEffect(() => {
+    getCurrentOnlineUsers();
     getVents(pathname, setCanLoadMore, setVents, null);
   }, [location]);
 
@@ -83,10 +83,6 @@ function Vents() {
                   return (
                     <Container className="x-fill column" key={index}>
                       <Vent previewMode={true} ventInit={vent} />
-                      {false &&
-                        process.env.NODE_ENV === "production" &&
-                        index === 0 &&
-                        amazonAdListContainer()}
                       {process.env.NODE_ENV === "production" &&
                         index % 3 === 0 && (
                           <Container className="x-fill column mb16">

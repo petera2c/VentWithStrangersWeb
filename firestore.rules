@@ -120,5 +120,10 @@ service cloud.firestore {
       allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly([request.auth.uid]);
       allow delete: if false;
     }
+
+    match /total_users_online/{randomID} {
+      allow read: if true;
+      allow write, update, delete: if false;
+    }
   }
 }

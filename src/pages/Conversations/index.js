@@ -15,6 +15,7 @@ import Chat from "./chat";
 import { isMobileOrTablet } from "../../util";
 
 import { getConversations } from "./util";
+import { amazonAdListContainer } from "./amazonLinkAds";
 
 import "./style.css";
 
@@ -96,7 +97,7 @@ function Conversations() {
           ) && (
             <Container
               className={
-                "ov-hidden " +
+                "column ov-hidden " +
                 (isMobileOrTablet() ? "container mobile-full" : "flex-fill")
               }
               style={{ height: isMobileOrTablet() ? "500px" : "default" }}
