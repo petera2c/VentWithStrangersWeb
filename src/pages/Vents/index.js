@@ -60,12 +60,99 @@ function Vents() {
           "x-fill justify-center " + (isMobileOrTablet() ? "py16" : "py32")
         }
       >
+        {!isMobileOrTablet() && (
+          <Container className="container tiny column">
+            {process.env.NODE_ENV === "production" && (
+              <Container className="mb8">
+                <AdSense.Google
+                  className="adsbygoogle"
+                  client="ca-pub-5185907024931065"
+                  format=""
+                  responsive="true"
+                  slot="1420086439"
+                  style={{
+                    display: "block",
+                    minWidth: "100px",
+                    width: "100%",
+                    maxWidth: "300px",
+                    minHeight: "100px",
+                    height: "300px",
+                    maxHeight: "800px"
+                  }}
+                />
+              </Container>
+            )}
+            {process.env.NODE_ENV === "production" && (
+              <Container className="mb8">
+                <AdSense.Google
+                  className="adsbygoogle"
+                  client="ca-pub-5185907024931065"
+                  format=""
+                  responsive="true"
+                  slot="3336443960"
+                  style={{
+                    display: "block",
+                    minWidth: "100px",
+                    width: "100%",
+                    maxWidth: "300px",
+                    minHeight: "100px",
+                    height: "300px",
+                    maxHeight: "800px"
+                  }}
+                />
+              </Container>
+            )}
+            {process.env.NODE_ENV === "production" && (
+              <Container
+                className="sticky top-0 column x-fill"
+                style={{ top: "80px" }}
+              >
+                <Container className="x-fill mb8">
+                  <AdSense.Google
+                    className="adsbygoogle"
+                    client="ca-pub-5185907024931065"
+                    format=""
+                    responsive="true"
+                    slot="2023362297"
+                    style={{
+                      display: "block",
+                      minWidth: "100px",
+                      width: "100%",
+                      maxWidth: "1000px",
+                      minHeight: "100px",
+                      height: "300px",
+                      maxHeight: "800px"
+                    }}
+                  />
+                </Container>
+                <Container className="x-fill">
+                  <AdSense.Google
+                    className="adsbygoogle"
+                    client="ca-pub-5185907024931065"
+                    format=""
+                    responsive="true"
+                    slot="4732645487"
+                    style={{
+                      display: "block",
+                      minWidth: "100px",
+                      width: "100%",
+                      maxWidth: "1000px",
+                      minHeight: "100px",
+                      height: "300px",
+                      maxHeight: "800px"
+                    }}
+                  />
+                </Container>
+              </Container>
+            )}
+          </Container>
+        )}
         <Container
           className={
             "column align-center " +
             (isMobileOrTablet()
               ? "container mobile-full pa16"
-              : "container large mr32")
+              : "container large mx16")
           }
         >
           <Container className="x-fill justify-between mb16">
@@ -83,22 +170,21 @@ function Vents() {
                   return (
                     <Container className="x-fill column" key={index}>
                       <Vent previewMode={true} ventInit={vent} />
-                      {process.env.NODE_ENV === "production" &&
-                        index % 3 === 0 && (
-                          <Container className="x-fill column mb16">
-                            <AdSense.Google
-                              className="adsbygoogle"
-                              client="ca-pub-5185907024931065"
-                              format="fluid"
-                              layoutKey="-em+1v+cz-83-96"
-                              responsive="true"
-                              slot="1835301248"
-                              style={{
-                                display: "block"
-                              }}
-                            />
-                          </Container>
-                        )}
+                      {true && index % 3 === 0 && (
+                        <Container className="x-fill column mb16">
+                          <AdSense.Google
+                            className="adsbygoogle"
+                            client="ca-pub-5185907024931065"
+                            format="fluid"
+                            layoutKey="-em+1v+cz-83-96"
+                            responsive="true"
+                            slot="1835301248"
+                            style={{
+                              display: "block"
+                            }}
+                          />
+                        </Container>
+                      )}
                     </Container>
                   );
                 })}
@@ -147,7 +233,7 @@ function Vents() {
         </Container>
 
         {!isMobileOrTablet() && (
-          <Container className="container small column">
+          <Container className="container tiny column">
             <Container className="x-fill column align-start bg-white pa16 mb16 br8">
               <Link className="button-3 fs-18 mb16" to="/vent-to-strangers">
                 <FontAwesomeIcon className="mr8" icon={faPen} />
@@ -167,7 +253,7 @@ function Vents() {
               </Link>
             </Container>
             {process.env.NODE_ENV === "production" && (
-              <Container className="sticky top-0 pa16" style={{ top: "135px" }}>
+              <Container className="mb8">
                 <AdSense.Google
                   className="adsbygoogle"
                   client="ca-pub-5185907024931065"
@@ -184,6 +270,49 @@ function Vents() {
                     maxHeight: "800px"
                   }}
                 />
+              </Container>
+            )}
+            {process.env.NODE_ENV === "production" && (
+              <Container
+                className="sticky top-0 column x-fill"
+                style={{ top: "80px" }}
+              >
+                <Container className="x-fill mb8">
+                  <AdSense.Google
+                    className="adsbygoogle"
+                    client="ca-pub-5185907024931065"
+                    format=""
+                    responsive="true"
+                    slot="3226323822"
+                    style={{
+                      display: "block",
+                      minWidth: "100px",
+                      width: "100%",
+                      maxWidth: "1000px",
+                      minHeight: "100px",
+                      height: "300px",
+                      maxHeight: "800px"
+                    }}
+                  />
+                </Container>
+                <Container className="x-fill">
+                  <AdSense.Google
+                    className="adsbygoogle"
+                    client="ca-pub-5185907024931065"
+                    format=""
+                    responsive="true"
+                    slot="5139839598"
+                    style={{
+                      display: "block",
+                      minWidth: "100px",
+                      width: "100%",
+                      maxWidth: "1000px",
+                      minHeight: "100px",
+                      height: "300px",
+                      maxHeight: "800px"
+                    }}
+                  />
+                </Container>
               </Container>
             )}
           </Container>

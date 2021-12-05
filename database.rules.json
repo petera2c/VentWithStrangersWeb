@@ -1,8 +1,19 @@
 {
   "rules": {
+    ".read": true,
+    ".write": true,
+    "comments": {
+      ".indexOn": ["server_timestamp", "userID", "ventID"]
+    },
+    "vents": {
+      ".indexOn": ["like_counter", "server_timestamp"]
+    },
+
     "status": {
       ".read": true,
-      ".write": "$uid === auth.uid",
+      "$uid": {
+        ".write": "$uid === auth.uid"
+      },
       ".indexOn": ["state"]
     }
   }
