@@ -63,46 +63,6 @@ function Vents() {
         {!isMobileOrTablet() && (
           <Container className="container ad column">
             {process.env.NODE_ENV === "production" && (
-              <Container className="mb8">
-                <AdSense.Google
-                  className="adsbygoogle"
-                  client="ca-pub-5185907024931065"
-                  format=""
-                  responsive="true"
-                  slot="1420086439"
-                  style={{
-                    display: "block",
-                    minWidth: "100px",
-                    width: "100%",
-                    maxWidth: "300px",
-                    minHeight: "100px",
-                    height: "240px",
-                    maxHeight: "800px"
-                  }}
-                />
-              </Container>
-            )}
-            {process.env.NODE_ENV === "production" && (
-              <Container className="mb8">
-                <AdSense.Google
-                  className="adsbygoogle"
-                  client="ca-pub-5185907024931065"
-                  format=""
-                  responsive="true"
-                  slot="3336443960"
-                  style={{
-                    display: "block",
-                    minWidth: "100px",
-                    width: "100%",
-                    maxWidth: "300px",
-                    minHeight: "100px",
-                    height: "240px",
-                    maxHeight: "800px"
-                  }}
-                />
-              </Container>
-            )}
-            {process.env.NODE_ENV === "production" && (
               <Container
                 className="sticky top-0 column x-fill"
                 style={{ top: "80px" }}
@@ -170,21 +130,22 @@ function Vents() {
                   return (
                     <Container className="x-fill column" key={index}>
                       <Vent previewMode={true} ventInit={vent} />
-                      {true && index % 3 === 0 && (
-                        <Container className="x-fill column mb16">
-                          <AdSense.Google
-                            className="adsbygoogle"
-                            client="ca-pub-5185907024931065"
-                            format="fluid"
-                            layoutKey="-em+1v+cz-83-96"
-                            responsive="true"
-                            slot="1835301248"
-                            style={{
-                              display: "block"
-                            }}
-                          />
-                        </Container>
-                      )}
+                      {process.env.NODE_ENV === "production" &&
+                        index % 3 === 0 && (
+                          <Container className="x-fill column mb16">
+                            <AdSense.Google
+                              className="adsbygoogle"
+                              client="ca-pub-5185907024931065"
+                              format="fluid"
+                              layoutKey="-em+1v+cz-83-96"
+                              responsive="true"
+                              slot="1835301248"
+                              style={{
+                                display: "block"
+                              }}
+                            />
+                          </Container>
+                        )}
                     </Container>
                   );
                 })}
@@ -252,26 +213,7 @@ function Vents() {
                 Site Info
               </Link>
             </Container>
-            {process.env.NODE_ENV === "production" && (
-              <Container className="mb8">
-                <AdSense.Google
-                  className="adsbygoogle"
-                  client="ca-pub-5185907024931065"
-                  format=""
-                  responsive="true"
-                  slot="1425588771"
-                  style={{
-                    display: "block",
-                    minWidth: "100px",
-                    width: "100%",
-                    maxWidth: "1000px",
-                    minHeight: "100px",
-                    height: "240px",
-                    maxHeight: "800px"
-                  }}
-                />
-              </Container>
-            )}
+
             {process.env.NODE_ENV === "production" && (
               <Container
                 className="sticky top-0 column x-fill"
