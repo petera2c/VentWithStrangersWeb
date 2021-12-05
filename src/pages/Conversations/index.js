@@ -130,6 +130,7 @@ function Conversations() {
                       width: "100%",
                       maxWidth: "300px",
                       minHeight: "100px",
+                      height: "240px",
                       maxHeight: "800px"
                     }}
                   />
@@ -149,6 +150,7 @@ function Conversations() {
                       width: "100%",
                       maxWidth: "300px",
                       minHeight: "100px",
+                      height: "240px",
                       maxHeight: "800px"
                     }}
                   />

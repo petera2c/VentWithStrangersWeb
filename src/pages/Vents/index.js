@@ -76,6 +76,7 @@ function Vents() {
                     width: "100%",
                     maxWidth: "300px",
                     minHeight: "100px",
+                    height: "240px",
                     maxHeight: "800px"
                   }}
                 />
@@ -95,6 +96,7 @@ function Vents() {
                     width: "100%",
                     maxWidth: "300px",
                     minHeight: "100px",
+                    height: "240px",
                     maxHeight: "800px"
                   }}
                 />
@@ -118,6 +120,7 @@ function Vents() {
                       width: "100%",
                       maxWidth: "1000px",
                       minHeight: "100px",
+                      height: "240px",
                       maxHeight: "800px"
                     }}
                   />
@@ -135,6 +138,7 @@ function Vents() {
                       width: "100%",
                       maxWidth: "1000px",
                       minHeight: "100px",
+                      height: "240px",
                       maxHeight: "800px"
                     }}
                   />
@@ -262,6 +266,7 @@ function Vents() {
                     width: "100%",
                     maxWidth: "1000px",
                     minHeight: "100px",
+                    height: "240px",
                     maxHeight: "800px"
                   }}
                 />
@@ -285,6 +290,7 @@ function Vents() {
                       width: "100%",
                       maxWidth: "1000px",
                       minHeight: "100px",
+                      height: "240px",
                       maxHeight: "800px"
                     }}
                   />
@@ -302,6 +308,7 @@ function Vents() {
                       width: "100%",
                       maxWidth: "1000px",
                       minHeight: "100px",
+                      height: "240px",
                       maxHeight: "800px"
                     }}
                   />

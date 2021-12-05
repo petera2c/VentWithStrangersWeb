@@ -113,10 +113,10 @@ function AccountPage() {
                     display: "block",
                     minWidth: "100px",
                     width: "100%",
-                    maxWidth: "600px",
+                    maxWidth: "300px",
                     minHeight: "100px",
-                    height: "600px",
-                    maxHeight: "1200px"
+                    height: "240px",
+                    maxHeight: "800px"
                   }}
                 />
               </Container>
