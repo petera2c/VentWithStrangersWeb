@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useLocation } from "react-router-dom";
+import AdSense from "react-adsense";
 import db from "../../config/firebase";
 
 import { UserContext } from "../../context";
@@ -111,6 +112,48 @@ function Conversations() {
                 }
                 userID={user.uid}
               />
+            </Container>
+          )}
+          {!isMobileOrTablet() && (
+            <Container className="container small column ov-auto bg-white pa8 br4">
+              {process.env.NODE_ENV === "production" && (
+                <Container className="mb8">
+                  <AdSense.Google
+                    className="adsbygoogle"
+                    client="ca-pub-5185907024931065"
+                    format=""
+                    responsive="true"
+                    slot="7871419499"
+                    style={{
+                      display: "block",
+                      minWidth: "100px",
+                      width: "100%",
+                      maxWidth: "300px",
+                      minHeight: "100px",
+                      maxHeight: "800px"
+                    }}
+                  />
+                </Container>
+              )}
+              {process.env.NODE_ENV === "production" && (
+                <Container className="">
+                  <AdSense.Google
+                    className="adsbygoogle"
+                    client="ca-pub-5185907024931065"
+                    format=""
+                    responsive="true"
+                    slot="1120703532"
+                    style={{
+                      display: "block",
+                      minWidth: "100px",
+                      width: "100%",
+                      maxWidth: "300px",
+                      minHeight: "100px",
+                      maxHeight: "800px"
+                    }}
+                  />
+                </Container>
+              )}
             </Container>
           )}
           {!conversations.find(

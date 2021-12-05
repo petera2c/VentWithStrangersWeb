@@ -11,7 +11,7 @@ export const getCurrentOnlineUsers = (startingPoint, userID) => {
     .limitToLast(1)
     .once("value", snapshot => {
       snapshot.forEach(data => {
-        console.log(data.val());
+        //console.log(data.val());
       });
     });
 };
