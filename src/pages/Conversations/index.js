@@ -115,7 +115,7 @@ function Conversations() {
             </Container>
           )}
           {!isMobileOrTablet() && (
-            <Container className="container small column ov-auto bg-white pa8 br4">
+            <Container className="container small column full-center ov-auto bg-white pa8 br4">
               {process.env.NODE_ENV === "production" && (
                 <Container className="mb8">
                   <AdSense.Google
