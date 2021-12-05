@@ -10,10 +10,7 @@ import { isMobileOrTablet } from "../../util";
 function NotFoundPage() {
   return (
     <Page
-      className={
-        "column align-center bg-grey-2 " +
-        (isMobileOrTablet() ? "py16" : "py32")
-      }
+      className="column align-center bg-grey-2"
       description="Page not found."
       keywords=""
       title="Not Found"
