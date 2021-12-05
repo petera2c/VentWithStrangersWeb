@@ -150,6 +150,11 @@
   min-width: 280px;
   width: 20vw;
 }
+.container.ad {
+  min-width: 316px;
+  width: 316px;
+  max-width: 316px;
+}
 .container.small {
   min-width: 280px;
   width: 25vw;

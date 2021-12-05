@@ -124,7 +124,7 @@ function AccountPage() {
           </Container>
         )}
 
-        <Container className={isMobileOrTablet() ? "x-fill pt16" : "pl32"}>
+        <Container className={isMobileOrTablet() ? "x-fill pt16" : ""}>
           {pathname === "/account" && <Account user={user} />}
           {pathname === "/avatar" && <Avatar user={user} />}
           {pathname === "/profile" && <Profile user={user} />}

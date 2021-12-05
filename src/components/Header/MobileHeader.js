@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, withRouter } from "react-router-dom";
 import Avatar from "avataaars";
 import { useCollectionData } from "react-firebase-hooks/firestore";
@@ -45,6 +45,7 @@ import {
 } from "./util";
 
 function Header({ history, location }) {
+  const componentIsMounted = useRef(true);
   const user = useContext(UserContext);
 
   const [activeModal, setActiveModal] = useState("");
@@ -75,9 +76,12 @@ function Header({ history, location }) {
   }
   useEffect(() => {
     if (user) {
-      getNotifications(setNotifications, user);
+      getNotifications(componentIsMounted, setNotifications, user);
       getUserBasicInfo(setUserBasicInfo, user.uid);
     }
+    return () => {
+      componentIsMounted.current = false;
+    };
   }, [location]);
 
   return (

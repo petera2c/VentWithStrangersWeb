@@ -61,7 +61,7 @@ function Vents() {
         }
       >
         {!isMobileOrTablet() && (
-          <Container className="container tiny column">
+          <Container className="container ad column">
             {process.env.NODE_ENV === "production" && (
               <Container className="mb8">
                 <AdSense.Google
@@ -229,7 +229,7 @@ function Vents() {
         </Container>
 
         {!isMobileOrTablet() && (
-          <Container className="container tiny column">
+          <Container className="container ad column">
             <Container className="x-fill column align-start bg-white pa16 mb16 br8">
               <Link className="button-3 fs-18 mb16" to="/vent-to-strangers">
                 <FontAwesomeIcon className="mr8" icon={faPen} />
