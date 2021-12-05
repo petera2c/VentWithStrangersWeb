@@ -115,9 +115,9 @@ function Conversations() {
             </Container>
           )}
           {!isMobileOrTablet() && (
-            <Container className="container small column full-center ov-auto bg-white pa8 br4">
+            <Container className="container small column ov-auto bg-white pa8 br4">
               {process.env.NODE_ENV === "production" && (
-                <Container className="mb8">
+                <Container className="full-center mb8">
                   <AdSense.Google
                     className="adsbygoogle"
                     client="ca-pub-5185907024931065"
@@ -137,7 +137,7 @@ function Conversations() {
                 </Container>
               )}
               {process.env.NODE_ENV === "production" && (
-                <Container className="">
+                <Container className="full-center">
                   <AdSense.Google
                     className="adsbygoogle"
                     client="ca-pub-5185907024931065"
