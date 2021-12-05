@@ -32,10 +32,7 @@ function SignUpPage() {
   const [canSeePassword, setCanSeePassword] = useState(false);
 
   return (
-    <Page
-      className="bg-grey-2 full-center pa32"
-      title="Chat and Post Anonymously"
-    >
+    <Page className="bg-grey-2 full-center" title="Chat and Post Anonymously">
       <Container className="container extra-large">
         <h1 className="tac mb32">
           Chat Anonymously and Post Anonymously. Find strangers to vent with.
