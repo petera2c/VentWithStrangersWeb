@@ -86,8 +86,6 @@ export const messageListener = (
             querySnapshot.docChanges()[0].type === "added" ||
             querySnapshot.docChanges()[0].type === "removed"
           ) {
-            scrollToBottom();
-
             setMessages(oldMessages => [
               {
                 ...querySnapshot.docs[0].data(),
@@ -96,6 +94,9 @@ export const messageListener = (
               },
               ...oldMessages
             ]);
+            setTimeout(() => {
+              scrollToBottom();
+            }, 200);
           }
         }
       },
@@ -161,7 +162,9 @@ export const getMessages = async (
     if (newMessages.length < 10) setCanLoadMore(false);
     if (first) {
       setMessages(newMessages);
-      scrollToBottom();
+      setTimeout(() => {
+        scrollToBottom();
+      }, 200);
     } else {
       setMessages(oldMessages => {
         if (oldMessages) return [...oldMessages, ...newMessages];

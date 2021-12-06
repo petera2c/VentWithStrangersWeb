@@ -197,6 +197,9 @@
 .ov-auto {
   overflow: auto;
 }
+.ov-scroll {
+  overflow: scroll;
+}
 .ov-visible {
   overflow: visible;
 }

@@ -61,7 +61,13 @@ function Chat({ conversation, conversationPartnerData = {}, userID }) {
 
   const dummyRef = useRef();
   const scrollToBottom = () => {
-    if (dummyRef.current) dummyRef.current.scrollIntoView();
+    if (dummyRef.current)
+      dummyRef.current.scrollIntoView({
+        block: "nearest",
+        inline: "center",
+        behavior: "smooth",
+        alignToTop: false
+      });
   };
 
   const [canLoadMore, setCanLoadMore] = useState(true);
@@ -115,7 +121,7 @@ function Chat({ conversation, conversationPartnerData = {}, userID }) {
   }
 
   return (
-    <Container className="column flex-fill x-fill full-center bg-white br4">
+    <Container className="column flex-fill x-fill full-center ov-hidden bg-white br4">
       <Container className="x-fill border-bottom pa16">
         {conversationPartnerID && (
           <Container className="full-center">
@@ -145,7 +151,7 @@ function Chat({ conversation, conversationPartnerData = {}, userID }) {
         <KarmaBadge karma={calculateKarma(conversationPartnerData)} />
       </Container>
 
-      <Container className="column x-fill flex-fill ov-auto pa16">
+      <Container className="column x-fill flex-fill ov-hidden pt16 pl16">
         {canLoadMore && (
           <button
             className="button-2 pa8 mb8 br4"
@@ -170,17 +176,21 @@ function Chat({ conversation, conversationPartnerData = {}, userID }) {
             </h4>
           ))}
 
-        {messageDivs}
-
-        <div ref={dummyRef} />
-      </Container>
-      {checkIsUserTyping(conversation.isTyping) && (
-        <Container className="x-fill">
-          <p className="pa16">
-            {conversationPartnerData.displayName} is typing...
-          </p>
+        <Container className="column flex-fill ov-auto">
+          {messageDivs}
+          <div ref={dummyRef} />
         </Container>
-      )}
+      </Container>
+      <Container
+        className="ease-in-out x-fill"
+        style={{
+          maxHeight: checkIsUserTyping(conversation.isTyping) ? "56px" : "0"
+        }}
+      >
+        <p className="pa16">
+          {conversationPartnerData.displayName} is typing...
+        </p>
+      </Container>
 
       <Container className="column x-fill">
         <Container
