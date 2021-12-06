@@ -85,24 +85,6 @@ function Vents() {
                     }}
                   />
                 </Container>
-                <Container className="x-fill">
-                  <AdSense.Google
-                    className="adsbygoogle"
-                    client="ca-pub-5185907024931065"
-                    format=""
-                    responsive="true"
-                    slot="4732645487"
-                    style={{
-                      display: "block",
-                      minWidth: "100px",
-                      width: "100%",
-                      maxWidth: "1000px",
-                      minHeight: "100px",
-                      height: "240px",
-                      maxHeight: "800px"
-                    }}
-                  />
-                </Container>
               </Container>
             )}
           </Container>
@@ -226,24 +208,6 @@ function Vents() {
                     format=""
                     responsive="true"
                     slot="3226323822"
-                    style={{
-                      display: "block",
-                      minWidth: "100px",
-                      width: "100%",
-                      maxWidth: "1000px",
-                      minHeight: "100px",
-                      height: "240px",
-                      maxHeight: "800px"
-                    }}
-                  />
-                </Container>
-                <Container className="x-fill">
-                  <AdSense.Google
-                    className="adsbygoogle"
-                    client="ca-pub-5185907024931065"
-                    format=""
-                    responsive="true"
-                    slot="5139839598"
                     style={{
                       display: "block",
                       minWidth: "100px",

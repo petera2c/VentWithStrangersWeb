@@ -58,7 +58,7 @@ function MakeFriendsPage() {
       className="bg-grey-2 align-center"
       description="Make friends online on vent with strangers!"
       keywords="Learn about Vent With Strangers"
-      title="Make Friends"
+      title="Find Friends Online and Connect With Likeminded People"
     >
       {process.env.NODE_ENV === "production" && (
         <Container className="container large full-center mt16">
