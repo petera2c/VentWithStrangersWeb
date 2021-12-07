@@ -109,26 +109,6 @@ function ProfileSection({ user }) {
                 client="ca-pub-5185907024931065"
                 format=""
                 responsive="true"
-                slot="8314288538"
-                style={{
-                  display: "block",
-                  minWidth: "100px",
-                  width: "100%",
-                  maxWidth: "300px",
-                  minHeight: "100px",
-                  height: "240px",
-                  maxHeight: "800px"
-                }}
-              />
-            </Container>
-          )}
-          {process.env.NODE_ENV === "production" && (
-            <Container className="mb8">
-              <AdSense.Google
-                className="adsbygoogle"
-                client="ca-pub-5185907024931065"
-                format=""
-                responsive="true"
                 slot="9793400477"
                 style={{
                   display: "block",
@@ -423,26 +403,6 @@ function ProfileSection({ user }) {
       </Container>
       {!isMobileOrTablet() && location.search && (
         <Container className="container ad column">
-          {process.env.NODE_ENV === "production" && (
-            <Container className="mb8">
-              <AdSense.Google
-                className="adsbygoogle"
-                client="ca-pub-5185907024931065"
-                format=""
-                responsive="true"
-                slot="1200594581"
-                style={{
-                  display: "block",
-                  minWidth: "100px",
-                  width: "100%",
-                  maxWidth: "300px",
-                  minHeight: "100px",
-                  height: "240px",
-                  maxHeight: "800px"
-                }}
-              />
-            </Container>
-          )}
           {process.env.NODE_ENV === "production" && (
             <Container className="mb8">
               <AdSense.Google
