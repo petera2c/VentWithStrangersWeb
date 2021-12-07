@@ -4,13 +4,13 @@ import Container from "../components/containers/Container";
 export const amazonAdListContainer = () => {
   const wearableBlanket = (
     <iframe
-      style={{ width: "120px", height: "240px" }}
-      marginWidth="0"
-      marginHeight="0"
+      style="width:120px;height:240px;"
+      marginwidth="0"
+      marginheight="0"
       scrolling="no"
-      frameBorder="0"
-      src="//ws-na.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=US&source=ac&ref=tf_til&ad_type=product_link&tracking_id=ventwithstran-20&marketplace=amazon&amp;region=US&placement=B07S651GSW&asins=B07S651GSW&linkId=4b87188b015d3bcbfbc04a8d56831245&show_border=false&link_opens_in_new_window=false&price_color=333333&title_color=0066c0&bg_color=ffffff"
-    />
+      frameborder="0"
+      src="//ws-na.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=US&source=ac&ref=tf_til&ad_type=product_link&tracking_id=ventwithstran-20&marketplace=amazon&amp;region=US&placement=B07DKTDBWC&asins=B07DKTDBWC&linkId=9eecb46bc191d5cbc2821558e191c83a&show_border=false&link_opens_in_new_window=false&price_color=333333&title_color=0066c0&bg_color=ffffff"
+    ></iframe>
   );
 
   const uggSlippers = (
@@ -135,14 +135,13 @@ export const amazonAdListContainer = () => {
   mirror,
   backpackPurse,
   jewelryOrganizer,
-  uggSlippers*/
+  uggSlippers,
+  virtualReality, bhudaBoard, iphoneCase,*/
   return (
     <Container className="column gap16 pa16">
-      {shuffle([virtualReality, bhudaBoard, iphoneCase, wearableBlanket]).map(
-        (item, index) => (
-          <div key={index}>{item}</div>
-        )
-      )}
+      {shuffle([wearableBlanket]).map((item, index) => (
+        <div key={index}>{item}</div>
+      ))}
     </Container>
   );
 };
