@@ -1,7 +1,3 @@
-.message-container {
-  max-width: 80%;
-  box-sizing: border-box;
-}
 .authors-message {
   background-color: var(--main-color);
   color: var(--white-color);
@@ -20,26 +16,6 @@
   border-radius: 0 0 8px 8px;
 
   font-size: var(--large-font-size);
-}
-
-.message-date {
-  display: none;
-  position: absolute;
-  top: 0;
-
-  white-space: nowrap;
-}
-.message-date:hover {
-  display: flex;
-}
-.message-date.right {
-  right: calc(100%);
-}
-.message-date.left {
-  left: calc(100%);
-}
-.message-container:hover > .message-date {
-  display: flex;
 }
 
 .ease-in-out {

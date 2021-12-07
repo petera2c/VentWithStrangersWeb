@@ -13,6 +13,7 @@ import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
 import Vent from "../../components/Vent";
 import LoadMore from "../../components/LoadMore";
+import { amazonAdListContainer } from "../amazonLinkAds";
 
 import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
 import { getCurrentOnlineUsers, getMetaInformation, getVents } from "./util";
@@ -62,31 +63,7 @@ function Vents() {
       >
         {!isMobileOrTablet() && (
           <Container className="container ad column">
-            {process.env.NODE_ENV === "production" && (
-              <Container
-                className="sticky top-0 column x-fill"
-                style={{ top: "80px" }}
-              >
-                <Container className="x-fill mb8">
-                  <AdSense.Google
-                    className="adsbygoogle"
-                    client="ca-pub-5185907024931065"
-                    format=""
-                    responsive="true"
-                    slot="2023362297"
-                    style={{
-                      display: "block",
-                      minWidth: "100px",
-                      width: "100%",
-                      maxWidth: "1000px",
-                      minHeight: "100px",
-                      height: "240px",
-                      maxHeight: "800px"
-                    }}
-                  />
-                </Container>
-              </Container>
-            )}
+            {amazonAdListContainer()}
           </Container>
         )}
         <Container

@@ -76,6 +76,9 @@
 .underline {
   text-decoration: underline;
 }
+.fs-10 {
+  font-size: var(--ten-font-size);
+}
 .fs-12 {
   font-size: var(--twelve-font-size);
 }

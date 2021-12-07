@@ -21,70 +21,61 @@ function Message({ conversationID, message, setMessages, userID }) {
   const [reportModal, setReportModal] = useState(false);
 
   return (
-    <Container className={"x-fill " + (message.userID !== userID ? "" : "")}>
-      <div
+    <Container className="x-fill">
+      <Container
         className={
-          "message-container relative px16 py8 mb8 br4 " +
+          "clickable mb8 br4 " +
           (message.userID === userID ? "bg-blue white" : "grey-1 bg-grey-10")
         }
+        onClick={() => {
+          setMessageOptions(!messageOptions);
+        }}
+        onMouseLeave={() => setMessageOptions(false)}
+        style={{ maxWidth: "80%" }}
       >
-        {message.body}
-        <div
-          className={"message-date align-center ov-visible left"}
-          onMouseLeave={() => setMessageOptions(false)}
-        >
-          <FontAwesomeIcon
-            className="clickable grey-9 px8"
-            icon={faEllipsisV}
-            onClick={() => {
-              setMessageOptions(!messageOptions);
-            }}
-          />
-          <div
-            className="relative bg-grey-8 white pa4 br4"
-            style={{ zIndex: 1 }}
-          >
-            {moment(message.server_timestamp).format("YYYY MMM DD h:mm A")}
-
-            {messageOptions && (
-              <div className="absolute top-100 left-0 pt4">
-                <Container className="column x-fill bg-white border-all px16 py8 br8">
-                  <Container
-                    className="button-8 clickable align-center"
-                    onClick={e => {
-                      e.preventDefault();
-                      if (message.userID === userID) {
-                        setDeleteMessageConfirm(true);
-                        setMessageOptions(false);
-                      } else {
-                        setReportModal(!reportModal);
-                      }
-                    }}
-                  >
-                    <Text
-                      className="flex-fill"
-                      text={
-                        message.userID === userID
-                          ? "Delete Message"
-                          : "Report Message"
-                      }
-                      type="p"
-                    />
-                    <FontAwesomeIcon
-                      className="ml8"
-                      icon={
-                        message.userID === userID
-                          ? faTrash
-                          : faExclamationTriangle
-                      }
-                    />
-                  </Container>
+        <Container className="px16 py8">{message.body}</Container>
+        <Container className="relative white br4">
+          <Container className="fs-12 align-end pr2">
+            {moment(message.server_timestamp).format("h:mm A")}
+          </Container>
+          {messageOptions && (
+            <div className="absolute top-100 left-0 pt4" style={{ zIndex: 1 }}>
+              <Container className="column x-fill bg-white border-all px16 py8 br8">
+                <Container
+                  className="button-8 clickable align-center"
+                  onClick={e => {
+                    e.preventDefault();
+                    if (message.userID === userID) {
+                      setDeleteMessageConfirm(true);
+                      setMessageOptions(false);
+                    } else {
+                      setReportModal(!reportModal);
+                    }
+                  }}
+                >
+                  <Text
+                    className="flex-fill"
+                    text={
+                      message.userID === userID
+                        ? "Delete Message"
+                        : "Report Message"
+                    }
+                    type="p"
+                  />
+                  <FontAwesomeIcon
+                    className="ml8"
+                    icon={
+                      message.userID === userID
+                        ? faTrash
+                        : faExclamationTriangle
+                    }
+                  />
                 </Container>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
+              </Container>
+            </div>
+          )}
+        </Container>
+      </Container>
       {deleteMessageConfirm && (
         <ConfirmAlertModal
           close={() => setDeleteMessageConfirm(false)}

@@ -1,5 +1,5 @@
 import React from "react";
-import Container from "../../components/containers/Container";
+import Container from "../components/containers/Container";
 
 export const amazonAdListContainer = () => {
   const wearableBlanket = (
@@ -131,10 +131,40 @@ export const amazonAdListContainer = () => {
 
   return (
     <Container className="column justify-between wrap gap16 pa16">
-      {virtualReality}
-      {bhudaBoard}
-      {iphoneCase}
-      {wearableBlanket}
+      {shuffle([
+        virtualReality,
+        bhudaBoard,
+        iphoneCase,
+        wearableBlanket,
+        glassScreen,
+        masks,
+        toque,
+        echoDot,
+        mirror,
+        backpackPurse,
+        jewelryOrganizer,
+        uggSlippers
+      ])}
     </Container>
   );
 };
+
+function shuffle(array) {
+  let currentIndex = array.length,
+    randomIndex;
+
+  // While there remain elements to shuffle...
+  while (currentIndex != 0) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex]
+    ];
+  }
+
+  return array;
+}

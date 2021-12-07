@@ -16,7 +16,6 @@ import Chat from "./chat";
 import { isMobileOrTablet } from "../../util";
 
 import { getConversations } from "./util";
-import { amazonAdListContainer } from "./amazonLinkAds";
 
 import "./style.css";
 
