@@ -62,7 +62,7 @@ function Vents() {
         }
       >
         {!isMobileOrTablet() && (
-          <Container className="container ad column">
+          <Container className="container ad column align-center">
             {amazonAdListContainer()}
           </Container>
         )}
