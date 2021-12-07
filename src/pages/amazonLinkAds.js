@@ -138,7 +138,11 @@ export const amazonAdListContainer = () => {
   uggSlippers*/
   return (
     <Container className="column gap16 pa16">
-      {shuffle([virtualReality, bhudaBoard, iphoneCase, wearableBlanket])}
+      {shuffle([virtualReality, bhudaBoard, iphoneCase, wearableBlanket]).map(
+        (item, index) => (
+          <div key={index}>{item}</div>
+        )
+      )}
     </Container>
   );
 };
