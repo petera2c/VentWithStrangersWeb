@@ -61,7 +61,7 @@ function Vents() {
           "x-fill justify-center " + (isMobileOrTablet() ? "py16" : "py32")
         }
       >
-        {!isMobileOrTablet() && (
+        {process.env.NODE_ENV === "production" && !isMobileOrTablet() && (
           <Container className="container ad column align-center">
             {amazonAdListContainer()}
           </Container>
