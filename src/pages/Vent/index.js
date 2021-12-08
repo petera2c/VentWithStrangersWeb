@@ -13,6 +13,8 @@ import Vent from "../../components/Vent";
 import Text from "../../components/views/Text";
 import Button from "../../components/views/Button";
 
+import { amazonAdListContainer } from "../amazonLinkAds";
+
 import { isMobileOrTablet } from "../../util";
 import { getMeta } from "./util";
 
@@ -57,6 +59,11 @@ function VentPage() {
     >
       <Container className={isMobileOrTablet() ? "py16" : "py32"}>
         {ventFound === false && <h4>Vent Not Found</h4>}
+        {process.env.NODE_ENV === "production" && !isMobileOrTablet() && (
+          <Container className="container ad column align-center">
+            {amazonAdListContainer(2)}
+          </Container>
+        )}
         {ventFound === undefined && ventID && (
           <Container
             className={
@@ -76,6 +83,9 @@ function VentPage() {
               ventInit={{ ...ventFromMeta, id: ventID }}
             />
           </Container>
+        )}
+        {process.env.NODE_ENV === "production" && !isMobileOrTablet() && (
+          <Container className="container ad column align-center"></Container>
         )}
       </Container>
     </Page>

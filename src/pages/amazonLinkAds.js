@@ -1,7 +1,7 @@
 import React from "react";
 import Container from "../components/containers/Container";
 
-export const amazonAdListContainer = () => {
+export const amazonAdListContainer = numberOfAds => {
   const items = [
     <iframe
       style={{ width: "120px", height: "240px" }}
@@ -69,11 +69,17 @@ export const amazonAdListContainer = () => {
     ></iframe>
   ];
 
+  if (!numberOfAds) numberOfAds = items.length;
+
   return (
     <Container className="column gap16 pa16">
-      {shuffle(items).map((item, index) => (
-        <div key={index}>{item}</div>
-      ))}
+      {shuffle(items)
+        .slice(0, numberOfAds)
+        .map((item, index) => (
+          <div className="" key={index}>
+            {item}
+          </div>
+        ))}
     </Container>
   );
 };
