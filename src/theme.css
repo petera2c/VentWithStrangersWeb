@@ -511,6 +511,11 @@
   border-radius: 50%;
 }
 
+.break-word {
+  word-wrap: break-all;
+  overflow: hidden;
+}
+
 .border-all {
   border: 1px solid var(--grey-color-7);
 }

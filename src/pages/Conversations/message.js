@@ -33,8 +33,8 @@ function Message({ conversationID, message, setMessages, userID }) {
         onMouseLeave={() => setMessageOptions(false)}
         style={{ maxWidth: "80%" }}
       >
-        <Container className="flex-fill px16 py8">{message.body}</Container>
-        <Container className="relative white br4">
+        <p className="flex-fill break-word px16 py8">{message.body}</p>
+        <Container className="relative br4">
           <Container className="fs-12 align-end pr2">
             {moment(message.server_timestamp).format("h:mm A")}
           </Container>
