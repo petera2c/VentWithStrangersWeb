@@ -41,6 +41,7 @@ import {
 
 function Header({ history, location }) {
   const componentIsMounted = useRef(true);
+  const { pathname, search } = location;
 
   const user = useContext(UserContext);
 
@@ -53,8 +54,9 @@ function Header({ history, location }) {
   );
   const [unreadConversationsCount, setUnreadConversationsCount] = useState();
   const [userBasicInfo, setUserBasicInfo] = useState({});
-  const [ventSearchString, setVentSearchString] = useState("");
-  const { pathname } = location;
+  const [ventSearchString, setVentSearchString] = useState(
+    search.substring(1, search.length)
+  );
 
   const searchPosts = ventSearchString => {
     setVentSearchString(ventSearchString);
@@ -152,6 +154,7 @@ function Header({ history, location }) {
             <Container className="full-center bg-grey-4 py4 px8 my16 mr16 br4">
               <FontAwesomeIcon className="grey-5 mr8" icon={faSearch} />
               <input
+                autoFocus
                 className="no-border bg-grey-4 br4"
                 onChange={e => searchPosts(e.target.value)}
                 placeholder="Search"
