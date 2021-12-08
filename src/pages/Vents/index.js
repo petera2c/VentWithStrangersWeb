@@ -176,7 +176,7 @@ function Vents() {
             {process.env.NODE_ENV === "production" && (
               <Container
                 className="sticky top-0 column x-fill"
-                style={{ top: "80px" }}
+                style={{ top: "120px" }}
               >
                 <Container className="x-fill mb8">
                   <AdSense.Google
