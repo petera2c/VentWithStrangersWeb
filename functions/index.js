@@ -9,13 +9,14 @@ const app = express();
 const fs = require("fs");
 const path = require("path");
 
-const { createProxy, createSitemap } = require("./helpers/sitemap");
 const { blockUserListener } = require("./helpers/block");
 const {
   commentLikeListener,
   commentUpdateListener,
   newCommentReportListener,
 } = require("./helpers/comment");
+const { conversationUpdateListener } = require("./helpers/conversation");
+const { messagesListener } = require("./helpers/messages");
 const {
   decreaseTrendingScore,
   decreaseUserVentCounter,
@@ -24,8 +25,7 @@ const {
   newVentReportListener,
   ventDeleteListener,
 } = require("./helpers/vent");
-const { messagesListener } = require("./helpers/messages");
-const { conversationUpdateListener } = require("./helpers/conversation");
+const { createProxy, createSitemap } = require("./helpers/sitemap");
 const { getMetaInformation } = require("./helpers/util");
 
 process.setMaxListeners(0);

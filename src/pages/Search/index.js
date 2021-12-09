@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useLocation, withRouter } from "react-router-dom";
 import { useCollectionOnce } from "react-firebase-hooks/firestore";
+
 import db from "../../config/firebase";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -37,20 +38,20 @@ function SearchPage() {
       keywords=""
       title={search ? search : "Search"}
     >
+      <Container className="gap16">
+        <button className="button-2 active no-bold py8 px16 my16 br8">
+          Users
+        </button>
+        <button className="button-2 no-bold py8 px16 my16 br8">Vents</button>
+      </Container>
       <Container
         className={
           "column align-center py32 " +
           (isMobileOrTablet()
             ? "container mobile-full px16"
-            : "container large px16 mr32")
+            : "container large px16")
         }
       >
-        {false && (
-          <Container className="x-fill justify-end mb16">
-            <Filters />
-          </Container>
-        )}
-
         {ventsSnapshot && (
           <Container className="x-fill column">
             {ventsSnapshot.docs &&
@@ -67,7 +68,7 @@ function SearchPage() {
         )}
         {!ventsSnapshot && <LoadingHeart />}
         {ventsSnapshot && ventsSnapshot.docs.length === 0 && (
-          <Text className="fw-400" text="No vents found." type="h4" />
+          <h4 className="fw-400">No vents found.</h4>
         )}
       </Container>
     </Page>

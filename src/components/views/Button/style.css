@@ -22,7 +22,8 @@
   border: 1px solid var(--main-color);
   background-color: var(--white-color);
 }
-.button-2:hover {
+.button-2:hover,
+.button-2.active {
   color: var(--white-color);
   background-color: var(--main-color);
 }
