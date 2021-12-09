@@ -38,12 +38,14 @@ function SearchPage() {
       keywords=""
       title={search ? search : "Search"}
     >
-      <Container className="gap16">
-        <button className="button-2 active no-bold py8 px16 my16 br8">
-          Users
-        </button>
-        <button className="button-2 no-bold py8 px16 my16 br8">Vents</button>
-      </Container>
+      {false && (
+        <Container className="gap16">
+          <button className="button-2 active no-bold py8 px16 my16 br8">
+            Users
+          </button>
+          <button className="button-2 no-bold py8 px16 my16 br8">Vents</button>
+        </Container>
+      )}
       <Container
         className={
           "column align-center py32 " +
