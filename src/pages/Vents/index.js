@@ -62,10 +62,8 @@ function Vents() {
       >
         <Container
           className={
-            "column align-center " +
-            (isMobileOrTablet()
-              ? "container mobile-full pa16"
-              : "container large mx16")
+            "column align-center pa16 " +
+            (isMobileOrTablet() ? "container mobile-full" : "container large")
           }
         >
           <Container className="x-fill justify-between mb16">
