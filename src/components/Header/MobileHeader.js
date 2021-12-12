@@ -1,18 +1,16 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { Link, withRouter } from "react-router-dom";
 import Avatar from "avataaars";
-import { useCollectionData } from "react-firebase-hooks/firestore";
-import db from "../../config/firebase";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
 import { faConciergeBell } from "@fortawesome/pro-duotone-svg-icons/faConciergeBell";
 import { faBell } from "@fortawesome/pro-duotone-svg-icons/faBell";
-import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
+import { faSearch } from "@fortawesome/pro-solid-svg-icons/faSearch";
 import { faChevronDown } from "@fortawesome/pro-solid-svg-icons/faChevronDown";
-import { faInstagram } from "@fortawesome/free-brands-svg-icons/faInstagram";
 import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
-import { faComments } from "@fortawesome/pro-solid-svg-icons/faComments";
+import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
+import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
 import { faCog } from "@fortawesome/pro-solid-svg-icons/faCog";
 import { faBars } from "@fortawesome/pro-solid-svg-icons/faBars";
 import { faChartNetwork } from "@fortawesome/pro-solid-svg-icons/faChartNetwork";
@@ -39,43 +37,59 @@ import {
 } from "../../util";
 import {
   getNotifications,
+  getUnreadConversations,
+  howCompleteIsUserProfile,
   newNotificationCounter,
-  readNotifications
+  readNotifications,
+  resetUnreadConversationCount
 } from "./util";
 
 function Header({ history, location }) {
   const componentIsMounted = useRef(true);
+  const { pathname, search } = location;
+
   const user = useContext(UserContext);
 
   const [activeModal, setActiveModal] = useState("");
-  const [mobileHeaderActive, setMobileHeaderActive] = useState(false);
+  const [mobileHeaderActive, setMobileHeaderActive] = useState(
+    pathname.substring(0, 7) === "/search" ? true : false
+  );
   const [notifications, setNotifications] = useState([]);
-  const [showFeedback, setShowFeedback] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(true);
+  const [missingAccountPercentage, setMissingAccountPercentage] = useState();
   const [showNotificationDropdown, setShowNotificationDropdown] = useState(
     false
   );
+  const [unreadConversationsCount, setUnreadConversationsCount] = useState();
   const [userBasicInfo, setUserBasicInfo] = useState({});
 
-  const { pathname } = location;
+  const [ventSearchString, setVentSearchString] = useState(
+    pathname.substring(0, 7) === "/search"
+      ? search.substring(1, search.length)
+      : ""
+  );
 
-  if (user) {
-    var conversationsQuery = db
-      .collection("conversations")
-      .where(user.uid, "==", false);
-
-    var [unreadConversations] = useCollectionData(conversationsQuery, {
-      idField: "id"
-    });
-  }
   useEffect(() => {
     if (user) {
+      getUnreadConversations(
+        componentIsMounted,
+        setUnreadConversationsCount,
+        user.uid
+      );
+      getUserBasicInfo(newBasicUserInfo => {
+        setUserBasicInfo(newBasicUserInfo);
+        howCompleteIsUserProfile(setMissingAccountPercentage, newBasicUserInfo);
+      }, user.uid);
       getNotifications(componentIsMounted, setNotifications, user);
-      getUserBasicInfo(setUserBasicInfo, user.uid);
     }
+
     return () => {
       componentIsMounted.current = false;
     };
   }, [location]);
+
+  if (pathname === "/conversations" && user && unreadConversationsCount > 0)
+    resetUnreadConversationCount(user.uid);
 
   return (
     <Container
@@ -172,9 +186,9 @@ function Header({ history, location }) {
             <FontAwesomeIcon className="py16 mr8" icon={faComments} />
             <p className="bold py16">Inbox</p>
 
-            {unreadConversations && unreadConversations.length !== 0 && (
+            {Boolean(unreadConversationsCount) && (
               <p className="fs-14 bg-red white round ml4 pa4 br4">
-                {unreadConversations.length}
+                {unreadConversationsCount}
               </p>
             )}
           </Link>
@@ -271,8 +285,19 @@ function Header({ history, location }) {
               </Container>
             </Container>
           )}
-          <Container className="bg-white align-center py4 px8 ma16 br4">
-            test
+          <Container className="full-center bg-grey-4 py4 px8 my16 mr16 br4">
+            <FontAwesomeIcon className="grey-5 mr8" icon={faSearch} />
+            <input
+              autoFocus={pathname.substring(0, 7) === "/search" ? true : false}
+              className="no-border bg-grey-4 br4"
+              onChange={e => {
+                setVentSearchString(e.target.value);
+                history.push("/search?" + e.target.value);
+              }}
+              placeholder="Search"
+              type="text"
+              value={ventSearchString}
+            />
           </Container>
           {!user && (
             <Container className="x-fill">

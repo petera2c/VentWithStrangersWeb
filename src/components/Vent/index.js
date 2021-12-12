@@ -143,7 +143,6 @@ function Vent({
   let newCommentListenerUnsubscribe;
 
   useEffect(() => {
-    console.log(vent.comment_counter);
     getVent(
       componentIsMounted,
       ventUserID => {
