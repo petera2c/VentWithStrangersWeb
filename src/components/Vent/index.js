@@ -441,7 +441,7 @@ function Vent({
                   />
 
                   <Button
-                    className="button-2 px16 py8 mr16 br8"
+                    className="button-2 no-text-wrap px16 py8 mr16 br8"
                     onClick={e => {
                       e.preventDefault();
                       setDisplayCommentField(!displayCommentField2);
