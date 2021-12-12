@@ -12,7 +12,7 @@ import { UserContext } from "../../context";
 
 import Account from "./Account";
 import Avatar from "./Avatar";
-import Profile from "./profile";
+import Profile from "./Profile";
 import Settings from "./Settings";
 
 import Page from "../../components/containers/Page";
