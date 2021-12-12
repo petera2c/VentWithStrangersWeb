@@ -46,7 +46,7 @@ import {
   partyingList,
   politicalBeliefsList,
   religiousBeliefsList
-} from "../PersonalOptions";
+} from "../../PersonalOptions";
 
 function ProfileSection({ user }) {
   const history = useHistory();

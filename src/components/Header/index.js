@@ -54,14 +54,12 @@ function Header({ history, location }) {
   );
   const [unreadConversationsCount, setUnreadConversationsCount] = useState();
   const [userBasicInfo, setUserBasicInfo] = useState({});
-  const [ventSearchString, setVentSearchString] = useState(
-    search.substring(1, search.length)
-  );
 
-  const searchPosts = ventSearchString => {
-    setVentSearchString(ventSearchString);
-    history.push("/search?" + ventSearchString);
-  };
+  const [ventSearchString, setVentSearchString] = useState(
+    pathname.substring(0, 7) === "/search"
+      ? search.substring(1, search.length)
+      : ""
+  );
 
   useEffect(() => {
     if (user) {
@@ -150,13 +148,17 @@ function Header({ history, location }) {
               <FontAwesomeIcon className="mr8" icon={faUsers} />
               Make Friends
             </Link>
-
             <Container className="full-center bg-grey-4 py4 px8 my16 mr16 br4">
               <FontAwesomeIcon className="grey-5 mr8" icon={faSearch} />
               <input
-                autoFocus
+                autoFocus={
+                  pathname.substring(0, 7) === "/search" ? true : false
+                }
                 className="no-border bg-grey-4 br4"
-                onChange={e => searchPosts(e.target.value)}
+                onChange={e => {
+                  setVentSearchString(e.target.value);
+                  history.push("/search?" + e.target.value);
+                }}
                 placeholder="Search"
                 type="text"
                 value={ventSearchString}
@@ -302,6 +304,16 @@ function Header({ history, location }) {
             <div>hello there</div>
           </Container>
         )}
+    </Container>
+  );
+}
+
+function Hit(props) {
+  const { hit } = props;
+  return (
+    <Container className="column">
+      <h4>{hit.title.substring(0, 40)}</h4>
+      <p>{hit.description.substring(0, 40)}</p>
     </Container>
   );
 }

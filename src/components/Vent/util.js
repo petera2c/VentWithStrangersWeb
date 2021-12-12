@@ -132,6 +132,7 @@ const getCurrentTypingWord = (currentTypingIndex, fullString) => {
 };
 
 export const getVent = async (
+  componentIsMounted,
   getAuthor,
   setDescription,
   setTitle,
@@ -143,12 +144,17 @@ export const getVent = async (
     .doc(ventID)
     .get();
 
+  if (!componentIsMounted.current) return;
+
   if (!ventDoc.exists) return;
   const newVent = ventDoc.data();
 
-  if (setTitle && newVent && newVent.title) setTitle(newVent.title);
-  if (setDescription && newVent && newVent.description)
+  if (setTitle && newVent && newVent.title) {
+    setTitle(newVent.title);
+  }
+  if (setDescription && newVent && newVent.description) {
     setDescription(newVent.description);
+  }
 
   getAuthor(newVent.userID);
 

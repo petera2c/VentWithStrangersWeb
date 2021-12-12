@@ -34,7 +34,7 @@ import {
   partyingList,
   politicalBeliefsList,
   religiousBeliefsList
-} from "../PersonalOptions";
+} from "../../PersonalOptions";
 
 import { getUserInfo, getUserMatches, hasUserCompletedProfile } from "./util";
 

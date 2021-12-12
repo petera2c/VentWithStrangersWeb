@@ -167,6 +167,15 @@ function Vents() {
                 <FontAwesomeIcon className="mr8" icon={faUsers} />
                 Make Friends
               </Link>
+              {false && (
+                <Link
+                  className="button-3 fs-18 mb16"
+                  to="/current-online-users"
+                >
+                  <FontAwesomeIcon className="mr8" icon={faUsers} />
+                  Current Online Users
+                </Link>
+              )}
               <Link className="button-3 fs-18" to="/site-info">
                 <FontAwesomeIcon className="px8 mr8" icon={faInfo} />
                 Site Info

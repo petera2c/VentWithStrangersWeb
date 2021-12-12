@@ -9,7 +9,6 @@ import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
 import { faConciergeBell } from "@fortawesome/pro-duotone-svg-icons/faConciergeBell";
 import { faBell } from "@fortawesome/pro-duotone-svg-icons/faBell";
 import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
-import { faSearch } from "@fortawesome/pro-solid-svg-icons/faSearch";
 import { faChevronDown } from "@fortawesome/pro-solid-svg-icons/faChevronDown";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons/faInstagram";
 import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
@@ -56,14 +55,8 @@ function Header({ history, location }) {
     false
   );
   const [userBasicInfo, setUserBasicInfo] = useState({});
-  const [ventSearchString, setVentSearchString] = useState("");
 
   const { pathname } = location;
-
-  const searchPosts = ventSearchString => {
-    setVentSearchString(ventSearchString);
-    history.push("/search?" + ventSearchString);
-  };
 
   if (user) {
     var conversationsQuery = db
@@ -279,14 +272,7 @@ function Header({ history, location }) {
             </Container>
           )}
           <Container className="bg-white align-center py4 px8 ma16 br4">
-            <FontAwesomeIcon className="grey-5 mr8" icon={faSearch} />
-            <input
-              className="no-border br4"
-              onChange={e => searchPosts(e.target.value)}
-              placeholder="Search"
-              type="text"
-              value={ventSearchString}
-            />
+            test
           </Container>
           {!user && (
             <Container className="x-fill">

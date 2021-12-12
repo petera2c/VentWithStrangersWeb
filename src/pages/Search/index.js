@@ -1,11 +1,13 @@
-import React, { useState } from "react";
-import { useLocation, withRouter } from "react-router-dom";
-import { useCollectionOnce } from "react-firebase-hooks/firestore";
-
-import db from "../../config/firebase";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import moment from "moment-timezone";
+import Avatar from "avataaars";
+import algoliasearch from "algoliasearch";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
+
+import db from "../../config/firebase";
 
 import LoadingHeart from "../../components/loaders/Heart";
 
@@ -15,21 +17,52 @@ import Text from "../../components/views/Text";
 import Filters from "../../components/Filters";
 import Vent from "../../components/Vent";
 import LoadMore from "../../components/LoadMore";
+import KarmaBadge from "../../components/KarmaBadge";
+import User from "../../components/User";
 
-import { searchVents } from "./util";
-import { isMobileOrTablet } from "../../util";
+import {
+  calculateKarma,
+  capitolizeFirstChar,
+  isMobileOrTablet
+} from "../../util";
 
-function SearchPage() {
-  const location = useLocation();
-  let { search = "" } = location;
-  search = search.slice(1, search.length);
-  const ventQuery = db
-    .collection("/vents/")
-    .where("title", ">=", search)
-    .where("title", "<=", search + "\uf8ff")
-    .limit(20);
+const searchClient = algoliasearch(
+  "N7KIA5G22X",
+  "a2fa8c0a85b2020696d2da1780d7dfdb"
+);
+const usersIndex = searchClient.initIndex("users");
+const ventsIndex = searchClient.initIndex("vents");
 
-  const [ventsSnapshot] = useCollectionOnce(ventQuery, { idField: "id" });
+function SearchPage({ location }) {
+  let search = location.search
+    ? location.search.substring(1, location.search.length)
+    : "";
+
+  const [users, setUsers] = useState([]);
+  const [vents, setVents] = useState([]);
+  const [isUsers, setIsUsers] = useState(true);
+
+  useEffect(() => {
+    if (isUsers) {
+      usersIndex
+        .search(search, {
+          hitsPerPage: 5
+        })
+        .then(({ hits }) => {
+          setUsers(hits);
+        })
+        .catch(err => {});
+    } else {
+      ventsIndex
+        .search(search, {
+          hitsPerPage: 5
+        })
+        .then(({ hits }) => {
+          setVents(hits);
+        })
+        .catch(err => {});
+    }
+  }, [search, isUsers]);
 
   return (
     <Page
@@ -38,43 +71,87 @@ function SearchPage() {
       keywords=""
       title={search ? search : "Search"}
     >
-      {false && (
-        <Container className="gap16">
-          <button className="button-2 active no-bold py8 px16 my16 br8">
-            Users
-          </button>
-          <button className="button-2 no-bold py8 px16 my16 br8">Vents</button>
+      <Container className="gap16">
+        <button
+          className={
+            "button-2 no-bold py8 px16 my16 br8 " + (isUsers ? "active" : "")
+          }
+          onClick={() => setIsUsers(true)}
+        >
+          Users
+        </button>
+        <button
+          className={
+            "button-2 no-bold py8 px16 my16 br8 " + (isUsers ? "" : "active")
+          }
+          onClick={() => setIsUsers(false)}
+        >
+          Vents
+        </button>
+      </Container>
+      {isUsers && (
+        <Container
+          className={
+            "wrap full-center gap32 " +
+            (isMobileOrTablet()
+              ? "container mobile-full px16"
+              : "container large px16")
+          }
+        >
+          {users &&
+            users.map((user, index) => {
+              const displayName = user.displayName
+                ? capitolizeFirstChar(user.displayName)
+                : "Anonymous";
+
+              return (
+                <User
+                  displayName={displayName}
+                  key={user.objectID}
+                  showAdditionaluserInformation={false}
+                  showMessageUser={false}
+                  userID={user.objectID}
+                />
+              );
+            })}
+          {!users && <LoadingHeart />}
+          {users && users.length === 0 && (
+            <h4 className="fw-400">No users found.</h4>
+          )}
         </Container>
       )}
-      <Container
-        className={
-          "column align-center py32 " +
-          (isMobileOrTablet()
-            ? "container mobile-full px16"
-            : "container large px16")
-        }
-      >
-        {ventsSnapshot && (
-          <Container className="x-fill column">
-            {ventsSnapshot.docs &&
-              ventsSnapshot.docs.map((ventDoc, index) => (
-                <Vent
-                  key={index}
-                  previewMode={true}
-                  ventIndex={index}
-                  ventInit={{ ...ventDoc.data(), id: ventDoc.id }}
-                  searchPreviewMode={true}
-                />
-              ))}
-          </Container>
-        )}
-        {!ventsSnapshot && <LoadingHeart />}
-        {ventsSnapshot && ventsSnapshot.docs.length === 0 && (
-          <h4 className="fw-400">No vents found.</h4>
-        )}
-      </Container>
+      {!isUsers && (
+        <Container
+          className={
+            "column align-center py32 " +
+            (isMobileOrTablet()
+              ? "container mobile-full px16"
+              : "container large px16")
+          }
+        >
+          {vents && (
+            <Container className="x-fill column">
+              {vents &&
+                vents.map((vent, index) => (
+                  <Vent
+                    key={vent.objectID}
+                    previewMode={true}
+                    showVentHeader={false}
+                    ventIndex={index}
+                    ventInit={{ ...vent, id: vent.objectID }}
+                    searchPreviewMode={true}
+                  />
+                ))}
+            </Container>
+          )}
+          {!vents && <LoadingHeart />}
+          {vents && vents.length === 0 && (
+            <h4 className="fw-400">No vents found.</h4>
+          )}
+        </Container>
+      )}
     </Page>
   );
 }
 
-export default withRouter(SearchPage);
+export default SearchPage;

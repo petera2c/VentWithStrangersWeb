@@ -82,7 +82,6 @@ function Routes() {
             <Route path="/settings/" component={AccountPage} exact />
             <Route path="/site-info/" component={AboutUsPage} />
             <Route path="/trending/" component={VentsPage} />
-            <Route path="/vent-to-a-stranger/" component={SignUpPage} />
             <Route path="/vent-to-strangers/" component={NewVentPage} />
             <Route component={NotFoundPage} />
           </Switch>

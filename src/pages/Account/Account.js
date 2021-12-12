@@ -29,7 +29,7 @@ import {
   partyingList,
   politicalBeliefsList,
   religiousBeliefsList
-} from "../PersonalOptions";
+} from "../../PersonalOptions";
 
 function createMonthArray(days) {
   let array = [];

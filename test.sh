@@ -1,0 +1,1 @@
+LOCATION=us-central1\ PROJECT_ID=vent-with-strangers-2acc6  ALGOLIA_APP_ID=N7KIA5G22X  ALGOLIA_API_KEY=d5bff4c6ae484c8c8fbc16708c00b818  ALGOLIA_INDEX_NAME=users  COLLECTION_PATH=users_display_name  FIELDS=displayName  GOOGLE_APPLICATION_CREDENTIALS=./sa.json  npx firestore-algolia-search

@@ -110,6 +110,7 @@ function Vent({
   setTitle,
   ventInit
 }) {
+  const componentIsMounted = useRef(true);
   const user = useContext(UserContext);
 
   const [author, setAuthor] = useState({});
@@ -142,18 +143,18 @@ function Vent({
   let newCommentListenerUnsubscribe;
 
   useEffect(() => {
-    if (!vent.comment_counter) {
-      getVent(
-        ventUserID => {
-          getUserBasicInfo(setAuthor, ventUserID);
-          getIsUserOnline(setIsUserOnline, ventUserID);
-        },
-        setDescription,
-        setTitle,
-        setVent,
-        vent.id
-      );
-    }
+    console.log(vent.comment_counter);
+    getVent(
+      componentIsMounted,
+      ventUserID => {
+        getUserBasicInfo(setAuthor, ventUserID);
+        getIsUserOnline(setIsUserOnline, ventUserID);
+      },
+      setDescription,
+      setTitle,
+      setVent,
+      vent.id
+    );
 
     if (vent && vent.userID) {
       getUserBasicInfo(setAuthor, vent.userID);
@@ -179,6 +180,7 @@ function Vent({
       ventHasLiked(setHasLiked, user.uid, vent.id);
 
     return () => {
+      componentIsMounted.current = false;
       if (newCommentListenerUnsubscribe) newCommentListenerUnsubscribe();
     };
   }, []);
