@@ -35,7 +35,7 @@ const ventsIndex = searchClient.initIndex("vents");
 
 function SearchPage({ location }) {
   let search = location.search
-    ? location.search.substring(1, location.search.length)
+    ? decodeURI(location.search.substring(1, location.search.length))
     : "";
 
   const [users, setUsers] = useState([]);
