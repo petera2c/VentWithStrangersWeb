@@ -113,6 +113,11 @@ function Conversations() {
               />
             </Container>
           )}
+          {!conversations.find(
+            conversation => conversation.id === activeConversation
+          ) && (
+            <h1 className="x-fill tac py32">Can not find this conversation!</h1>
+          )}
           {!isMobileOrTablet() && (
             <Container className="container small column ov-auto bg-white pa8 br4">
               {process.env.NODE_ENV === "production" && (
@@ -157,9 +162,6 @@ function Conversations() {
               )}
             </Container>
           )}
-          {!conversations.find(
-            conversation => conversation.id === activeConversation
-          ) && <div>Can not find this conversation!</div>}
         </Container>
       )}
 
