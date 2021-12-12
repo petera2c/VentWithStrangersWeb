@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment-timezone";
 import { useLocation, useHistory } from "react-router-dom";
+import Avatar from "avataaars";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
@@ -54,6 +55,11 @@ function ConversationOption({
   const hasSeen = conversation[userID];
   if (isActive && !hasSeen) readConversation(conversation, userID);
 
+  const displayName =
+    conversationPartnerData && conversationPartnerData.displayName
+      ? conversationPartnerData.displayName
+      : "Anonymous";
+
   return (
     <Container
       className={
@@ -61,15 +67,33 @@ function ConversationOption({
         (isActive ? "bg-grey-2" : "")
       }
       onClick={() => {
-        setActiveConversation(oldActiveConversationID => {
-          if (oldActiveConversationID !== conversation.id)
-            return conversation.id;
-        });
+        setActiveConversation(conversation.id);
         history.push("/conversations?" + conversation.id);
       }}
     >
       <Container className="flex-fill column ov-hidden">
         <Container>
+          {conversationPartnerData && !conversationPartnerData.avatar && (
+            <h6 className="round-icon bg-blue white mr8">
+              {capitolizeFirstChar(displayName[0])}
+            </h6>
+          )}
+          {conversationPartnerData && conversationPartnerData.avatar && (
+            <Avatar
+              avatarStyle={"Circle"}
+              topType={conversationPartnerData.avatar.topType}
+              accessoriesType={conversationPartnerData.avatar.accessoriesType}
+              hairColor={conversationPartnerData.avatar.hairColor}
+              facialHairType={conversationPartnerData.avatar.facialHairType}
+              clotheType={conversationPartnerData.avatar.clotheType}
+              eyeType={conversationPartnerData.avatar.eyeType}
+              eyebrowType={conversationPartnerData.avatar.eyebrowType}
+              mouthType={conversationPartnerData.avatar.mouthType}
+              skinColor={conversationPartnerData.avatar.skinColor}
+              style={{ width: "48px", height: "48px" }}
+              className="mr8"
+            />
+          )}
           <Container className="full-center">
             <h6 className={"mr8 " + (hasSeen ? "grey-1" : "primary")}>
               {conversationPartnerData
@@ -108,6 +132,7 @@ function ConversationOption({
         className="clickable grey-9 px8"
         icon={faEllipsisV}
         onClick={e => {
+          e.stopPropagation();
           if (!handleOutsideClickCalled)
             setConversationOptions(!conversationOptions);
         }}
@@ -138,7 +163,7 @@ function ConversationOption({
               <Container
                 className="button-8 clickable align-center"
                 onClick={e => {
-                  e.preventDefault();
+                  e.stopPropagation();
                   setBlockModal(!blockModal);
                 }}
               >
