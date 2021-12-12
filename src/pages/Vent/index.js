@@ -88,7 +88,7 @@ function VentPage() {
         {ventFound === undefined && ventID && (
           <Container
             className={
-              "column " +
+              "column px8 " +
               (isMobileOrTablet()
                 ? "container mobile-full px16"
                 : "container large ")
