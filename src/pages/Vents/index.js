@@ -13,7 +13,6 @@ import Container from "../../components/containers/Container";
 import Text from "../../components/views/Text";
 import Vent from "../../components/Vent";
 import LoadMore from "../../components/LoadMore";
-import { amazonAdListContainer } from "../amazonLinkAds";
 
 import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
 import { getCurrentOnlineUsers, getMetaInformation, getVents } from "./util";
@@ -61,11 +60,6 @@ function Vents() {
           "x-fill justify-center " + (isMobileOrTablet() ? "py16" : "py32")
         }
       >
-        {process.env.NODE_ENV === "production" && !isMobileOrTablet() && (
-          <Container className="container ad column align-center">
-            {amazonAdListContainer()}
-          </Container>
-        )}
         <Container
           className={
             "column align-center " +
@@ -187,19 +181,6 @@ function Vents() {
                 className="sticky top-0 column x-fill"
                 style={{ top: "120px" }}
               >
-                <Container className="x-fill mb8">
-                  <a
-                    href="https://nordvpn.com/special/?utm_medium=affiliate&utm_term&utm_content&utm_campaign=off15&utm_source=aff64892"
-                    target="_blank"
-                  >
-                    <img
-                      alt=""
-                      className="x-fill"
-                      src={require("./nordvpn.png")}
-                      title="Nord VPN"
-                    />
-                  </a>
-                </Container>
                 <Container className="x-fill mb8">
                   <AdSense.Google
                     className="adsbygoogle"
