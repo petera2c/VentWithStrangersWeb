@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import moment from "moment-timezone";
 import { useLocation } from "react-router-dom";
 import TextArea from "react-textarea-autosize";
+import AdSense from "react-adsense";
 
 import firebase from "firebase/app";
 import "firebase/database";
@@ -57,7 +58,33 @@ function VentPage() {
     >
       <Container className={isMobileOrTablet() ? "py16" : "py32"}>
         {ventFound === false && <h4>Vent Not Found</h4>}
-
+        {process.env.NODE_ENV === "production" && !isMobileOrTablet() && (
+          <Container className="container ad column align-center">
+            <Container
+              className="sticky top-0 column x-fill"
+              style={{ top: "120px" }}
+            >
+              <Container className="x-fill mb8">
+                <AdSense.Google
+                  className="adsbygoogle"
+                  client="ca-pub-5185907024931065"
+                  format=""
+                  responsive="true"
+                  slot="3226323822"
+                  style={{
+                    display: "block",
+                    minWidth: "100px",
+                    width: "100%",
+                    maxWidth: "1000px",
+                    minHeight: "100px",
+                    height: "240px",
+                    maxHeight: "800px"
+                  }}
+                />
+              </Container>
+            </Container>
+          </Container>
+        )}
         {ventFound === undefined && ventID && (
           <Container
             className={
