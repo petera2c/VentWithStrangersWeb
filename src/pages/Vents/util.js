@@ -3,21 +3,29 @@ import firebase from "firebase/app";
 import db from "../../config/firebase";
 import { combineInsideObjectWithID, getEndAtValueTimestamp } from "../../util";
 
-export const getCurrentOnlineUsers = (startingPoint, userID) => {
-  console.log("here");
-  if (userID !== "5e33869b7c945900156e75e2") return;
-  console.log("here2");
+export const getMetaInformation = pathname => {
+  let metaTitle = "";
+  let metaDescription =
+    "People care. Vent and chat anonymously to be apart of a community committed to making the world a better place.";
 
-  const ref = firebase.database().ref("status");
-  //.limitToLast(1)
-  console.log("starting");
-  ref.orderByChild("state").once("value", snapshot => {
-    let totalOnlineUsers = 0;
-    snapshot.forEach(data => {
-      if (data.val().state === "online") totalOnlineUsers++;
-    });
-    console.log(totalOnlineUsers);
-  });
+  if (pathname === "/popular") {
+    metaTitle = "Popular";
+    metaDescription =
+      "Vents and issues that have the most upvotes and comments of all time. Post, comment, and/or like anonymously.";
+  } else if (pathname === "/recent") {
+    metaTitle = "Recent";
+    metaDescription =
+      "The latest vents and issues people have posted. Post, comment, and/or like anonymously.";
+  } else if (pathname === "/trending") {
+    metaTitle = "Trending";
+    metaDescription =
+      "View trending vents. Post, comment, and/or like anonymously.";
+  } else {
+    metaTitle = "Trending";
+    metaDescription =
+      "View trending vents. Post, comment, and/or like anonymously.";
+  }
+  return { metaDescription, metaTitle };
 };
 
 export const getVents = async (pathname, setCanLoadMore, setVents, vents) => {
@@ -59,29 +67,4 @@ export const getVents = async (pathname, setCanLoadMore, setVents, vents) => {
       return setVents(newVents);
     }
   } else return setCanLoadMore(false);
-};
-
-export const getMetaInformation = pathname => {
-  let metaTitle = "";
-  let metaDescription =
-    "People care. Vent and chat anonymously to be apart of a community committed to making the world a better place.";
-
-  if (pathname === "/popular") {
-    metaTitle = "Popular";
-    metaDescription =
-      "Vents and issues that have the most upvotes and comments of all time. Post, comment, and/or like anonymously.";
-  } else if (pathname === "/recent") {
-    metaTitle = "Recent";
-    metaDescription =
-      "The latest vents and issues people have posted. Post, comment, and/or like anonymously.";
-  } else if (pathname === "/trending") {
-    metaTitle = "Trending";
-    metaDescription =
-      "View trending vents. Post, comment, and/or like anonymously.";
-  } else {
-    metaTitle = "Trending";
-    metaDescription =
-      "View trending vents. Post, comment, and/or like anonymously.";
-  }
-  return { metaDescription, metaTitle };
 };

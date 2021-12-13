@@ -248,8 +248,6 @@ const updateTotalUsersOnline = (change, context) => {
     const doc = change.after;
     setToDatabase(doc.val());
   }
-  console.log("\n");
-  console.log("\n");
   return 10;
 };
 

@@ -76,6 +76,15 @@ export const getIsUserOnline = (setIsUserOnline, userID) => {
   });
 };
 
+export const getTotalOnlineUsers = callback => {
+  firebase
+    .database()
+    .ref("total_online_users")
+    .on("value", doc => {
+      callback(doc.val());
+    });
+};
+
 export const getUserBasicInfo = async (callback, userID) => {
   if (!userID) return {};
 

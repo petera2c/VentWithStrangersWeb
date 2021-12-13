@@ -17,6 +17,7 @@ import AccountPage from "./Account";
 import AppDownloadPage from "./AppDownload";
 import BlogPage from "./Blog";
 import ConversationsPage from "./Conversations";
+import OnlineUsersPage from "./OnlineUsers";
 import FeedbackPage from "./Feedback";
 import FriendsPage from "./Friends";
 import MakeFriendsPage from "./MakeFriends";
@@ -70,6 +71,7 @@ function Routes() {
             <Route path="/avatar/" component={AccountPage} exact />
             <Route path="/blog/" component={BlogPage} />
             <Route path="/conversations/" component={ConversationsPage} />
+            <Route path="/online-users/" component={OnlineUsersPage} />
             <Route path="/feedback/" component={FeedbackPage} />
             <Route path="/home/" component={VentsPage} />
             <Route path="/notifications/" component={NotificationsPage} />

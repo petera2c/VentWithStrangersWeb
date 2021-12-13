@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import AdSense from "react-adsense";
 
@@ -7,6 +7,7 @@ import { faPen } from "@fortawesome/pro-duotone-svg-icons/faPen";
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
 import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
 import { faInfo } from "@fortawesome/pro-duotone-svg-icons/faInfo";
+import { faUserFriends } from "@fortawesome/pro-duotone-svg-icons/faUserFriends";
 
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
@@ -14,11 +15,16 @@ import Text from "../../components/views/Text";
 import Vent from "../../components/Vent";
 import LoadMore from "../../components/LoadMore";
 
-import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
+import {
+  capitolizeFirstChar,
+  getTotalOnlineUsers,
+  isMobileOrTablet
+} from "../../util";
 import { getCurrentOnlineUsers, getMetaInformation, getVents } from "./util";
 import { UserContext } from "../../context";
 
-function Vents() {
+function VentsPage() {
+  const componentIsMounted = useRef(true);
   const user = useContext(UserContext);
 
   const [vents, setVents] = useState(null);
@@ -27,6 +33,7 @@ function Vents() {
   const { metaDescription, metaTitle } = getMetaInformation(pathname);
   const [canLoadMore, setCanLoadMore] = useState(true);
   const [pathname2, setPathname2] = useState(pathname);
+  const [totalOnlineUsers, setTotalOnlineUsers] = useState(0);
 
   if (pathname !== pathname2) {
     setVents(null);
@@ -35,8 +42,14 @@ function Vents() {
   }
 
   useEffect(() => {
-    if (user) getCurrentOnlineUsers(undefined, user.uid);
+    getTotalOnlineUsers(totalOnlineUsers => {
+      if (componentIsMounted.current) setTotalOnlineUsers(totalOnlineUsers);
+    });
     getVents(pathname, setCanLoadMore, setVents, null);
+
+    return () => {
+      componentIsMounted.current = false;
+    };
   }, [location]);
 
   return (
@@ -158,19 +171,15 @@ function Vents() {
                 <FontAwesomeIcon className="mr8" icon={faComments} />
                 Inbox
               </Link>
+              <Link className="button-3 fs-18 mb16" to="/online-users">
+                <FontAwesomeIcon className="mr8" icon={faUserFriends} />
+                {totalOnlineUsers} Online{" "}
+                {totalOnlineUsers === 1 ? "User" : "Users"}
+              </Link>
               <Link className="button-3 fs-18 mb16" to="/conversations">
                 <FontAwesomeIcon className="mr8" icon={faUsers} />
                 Make Friends
               </Link>
-              {false && (
-                <Link
-                  className="button-3 fs-18 mb16"
-                  to="/current-online-users"
-                >
-                  <FontAwesomeIcon className="mr8" icon={faUsers} />
-                  Current Online Users
-                </Link>
-              )}
               <Link className="button-3 fs-18" to="/site-info">
                 <FontAwesomeIcon className="px8 mr8" icon={faInfo} />
                 Site Info
@@ -209,4 +218,4 @@ function Vents() {
   );
 }
 
-export default Vents;
+export default VentsPage;
