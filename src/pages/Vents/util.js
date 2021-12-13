@@ -4,10 +4,13 @@ import db from "../../config/firebase";
 import { combineInsideObjectWithID, getEndAtValueTimestamp } from "../../util";
 
 export const getCurrentOnlineUsers = (startingPoint, userID) => {
+  console.log("here");
   if (userID !== "5e33869b7c945900156e75e2") return;
+  console.log("here2");
 
   const ref = firebase.database().ref("status");
   //.limitToLast(1)
+  console.log("starting");
   ref.orderByChild("state").once("value", snapshot => {
     let totalOnlineUsers = 0;
     snapshot.forEach(data => {

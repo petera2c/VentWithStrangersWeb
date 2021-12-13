@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import AdSense from "react-adsense";
 
@@ -16,8 +16,11 @@ import LoadMore from "../../components/LoadMore";
 
 import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
 import { getCurrentOnlineUsers, getMetaInformation, getVents } from "./util";
+import { UserContext } from "../../context";
 
 function Vents() {
+  const user = useContext(UserContext);
+
   const [vents, setVents] = useState(null);
   const location = useLocation();
   const { pathname, search } = location;
@@ -32,7 +35,7 @@ function Vents() {
   }
 
   useEffect(() => {
-    getCurrentOnlineUsers();
+    if (user) getCurrentOnlineUsers(undefined, user.uid);
     getVents(pathname, setCanLoadMore, setVents, null);
   }, [location]);
 
