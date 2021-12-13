@@ -23,6 +23,19 @@ class AboutUsPage extends Component {
         keywords="Learn about Vent With Strangers"
         title="Site Info"
       >
+        <h4
+          className={
+            "box-sizing fw-400 fs-20 " +
+            (isMobileOrTablet()
+              ? "container mobile-full pa16"
+              : "container large px32 pt32")
+          }
+        >
+          People care and help is here. Vent and chat anonymously to be a part
+          of a community committed to making the world a better place. This is a
+          website for people that want to be heard and people that want to
+          listen. Your emotional health is our priority.
+        </h4>
         <Container className="column container large bg-white pa32 ma32 br8">
           <h4 className="mb16">What Can You Do on VWS?</h4>
           <p className="pl8 mb8">· Chat anonymously with strangers</p>

@@ -584,6 +584,9 @@ body {
 .no-resize {
   resize: none;
 }
+.box-sizing {
+  box-sizing: border-box;
+}
 
 textarea,
 input {

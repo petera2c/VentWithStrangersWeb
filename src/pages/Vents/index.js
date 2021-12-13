@@ -62,18 +62,6 @@ function VentsPage() {
       keywords=""
       title={metaTitle}
     >
-      <Container className="x-fill justify-center align-start">
-        <Text
-          className={
-            "fw-400 fs-20 " +
-            (isMobileOrTablet()
-              ? "container mobile-full pa16"
-              : "container extra-large pr32 pt32")
-          }
-          text="People care and help is here. Vent and chat anonymously to be a part of a community committed to making the world a better place. This is a website for people that want to be heard and people that want to listen. Your emotional health is our priority."
-          type="h2"
-        />
-      </Container>
       <Container
         className={
           "x-fill justify-center " + (isMobileOrTablet() ? "py16" : "py32")
