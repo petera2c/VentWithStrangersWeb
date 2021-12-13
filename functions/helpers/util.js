@@ -218,8 +218,44 @@ const getInvalidDisplayNameCharacters = (displayName) => {
   return invalidCharacters;
 };
 
+const updateTotalUsersOnline = (change, context) => {
+  const setToDatabase = (state) => {
+    if (state === "online") {
+      admin
+        .database()
+        .ref("total_online_users")
+        .set(admin.database.ServerValue.increment(1));
+    } else if (state === "offline") {
+      admin
+        .database()
+        .ref("total_online_users")
+        .set(admin.database.ServerValue.increment(-1));
+    }
+  };
+
+  if (!change.before && !change.after) {
+    // Do nothing, should never happen
+  } else if (!change.before) {
+    // New doc
+    const doc = change.after;
+    setToDatabase(doc.val());
+  } else if (!change.after) {
+    // Doc deleted
+    const doc = change.before;
+    setToDatabase(doc.val() === "online" ? "offline" : "");
+  } else {
+    // Doc updated
+    const doc = change.after;
+    setToDatabase(doc.val());
+  }
+  console.log("\n");
+  console.log("\n");
+  return 10;
+};
+
 module.exports = {
   combineObjectWithID,
   createVentLink,
   getMetaInformation,
+  updateTotalUsersOnline,
 };

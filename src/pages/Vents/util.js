@@ -4,16 +4,17 @@ import db from "../../config/firebase";
 import { combineInsideObjectWithID, getEndAtValueTimestamp } from "../../util";
 
 export const getCurrentOnlineUsers = (startingPoint, userID) => {
-  const ref = firebase.database().ref("status");
+  if (userID !== "5e33869b7c945900156e75e2") return;
 
-  ref
-    .orderByChild("state")
-    .limitToLast(1)
-    .once("value", snapshot => {
-      snapshot.forEach(data => {
-        //console.log(data.val());
-      });
+  const ref = firebase.database().ref("status");
+  //.limitToLast(1)
+  ref.orderByChild("state").once("value", snapshot => {
+    let totalOnlineUsers = 0;
+    snapshot.forEach(data => {
+      if (data.val().state === "online") totalOnlineUsers++;
     });
+    console.log(totalOnlineUsers);
+  });
 };
 
 export const getVents = async (pathname, setCanLoadMore, setVents, vents) => {

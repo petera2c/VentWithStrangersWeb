@@ -26,7 +26,10 @@ const {
   ventDeleteListener,
 } = require("./helpers/vent");
 const { createProxy, createSitemap } = require("./helpers/sitemap");
-const { getMetaInformation } = require("./helpers/util");
+const {
+  getMetaInformation,
+  updateTotalUsersOnline,
+} = require("./helpers/util");
 
 process.setMaxListeners(0);
 
@@ -63,6 +66,10 @@ exports.messagesListener = functions.firestore
 exports.conversationUpdateListener = functions.firestore
   .document("/conversations/{conversationID}")
   .onWrite(conversationUpdateListener);
+
+exports.onlineStatusListener = functions.database
+  .ref("/status/{conversationID}/{userID}")
+  .onWrite(updateTotalUsersOnline);
 
 exports.cronUpdateSitemap = functions.pubsub
   .schedule("0 0 * * *")
