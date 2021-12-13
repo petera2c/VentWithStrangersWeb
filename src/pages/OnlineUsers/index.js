@@ -4,28 +4,51 @@ import AdSense from "react-adsense";
 
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
+import UserComp from "../../components/User";
 
-import { isMobileOrTablet } from "../../util";
+import { getTotalOnlineUsers, isMobileOrTablet } from "../../util";
 import { getOnlineUsers } from "./util";
 import { UserContext } from "../../context";
 
 function OnlineUsers() {
   const componentIsMounted = useRef(true);
   const user = useContext(UserContext);
+  const [onlineUsers, setOnlineUsers] = useState([]);
+
+  let onlineUsersUnsubscribe;
 
   useEffect(() => {
+    onlineUsersUnsubscribe = getTotalOnlineUsers(totalOnlineUsers =>
+      getOnlineUsers(setOnlineUsers, totalOnlineUsers)
+    );
+
     return () => {
       componentIsMounted.current = false;
+      if (onlineUsersUnsubscribe) onlineUsersUnsubscribe.off("value");
     };
   }, [location]);
 
   return (
     <Page
-      className="column bg-grey-2"
-      description=""
+      className="column align-center bg-grey-2"
+      description="Current online users."
       keywords=""
-      title=""
-    ></Page>
+      title="Online Users"
+    >
+      <h4 className="tac fw-600 mt32 mb16">Online Users</h4>
+      <Container
+        className={
+          "wrap justify-center pa16 gap16 " +
+          (isMobileOrTablet()
+            ? "container mobile-full px16"
+            : "container extra-large")
+        }
+      >
+        {onlineUsers.map((userID, index) => {
+          return <UserComp key={index} userID={userID} />;
+        })}
+      </Container>
+    </Page>
   );
 }
 

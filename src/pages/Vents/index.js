@@ -20,7 +20,7 @@ import {
   getTotalOnlineUsers,
   isMobileOrTablet
 } from "../../util";
-import { getCurrentOnlineUsers, getMetaInformation, getVents } from "./util";
+import { getMetaInformation, getVents } from "./util";
 import { UserContext } from "../../context";
 
 function VentsPage() {
@@ -41,14 +41,17 @@ function VentsPage() {
     setPathname2(pathname);
   }
 
+  let onlineUsersUnsubscribe;
+
   useEffect(() => {
-    getTotalOnlineUsers(totalOnlineUsers => {
+    onlineUsersUnsubscribe = getTotalOnlineUsers(totalOnlineUsers => {
       if (componentIsMounted.current) setTotalOnlineUsers(totalOnlineUsers);
     });
     getVents(pathname, setCanLoadMore, setVents, null);
 
     return () => {
       componentIsMounted.current = false;
+      if (onlineUsersUnsubscribe) onlineUsersUnsubscribe.off("value");
     };
   }, [location]);
 

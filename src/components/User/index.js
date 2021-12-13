@@ -66,7 +66,7 @@ function UserComponent({
       to={"/profile?" + userInfo.id}
     >
       <Container className="x-fill full-center">
-        {userInfo && !userInfo.avatar && (
+        {userInfo && !userInfo.avatar && userInfo.displayName && (
           <Container
             className="bg-blue full-center mb16 br-round"
             style={{
@@ -74,7 +74,7 @@ function UserComponent({
               width: "84px"
             }}
           >
-            <h1 className="white fs-40">{displayName[0]}</h1>
+            <h1 className="white fs-40">{userInfo.displayName[0]}</h1>
           </Container>
         )}
         {userInfo && userInfo.avatar && (
@@ -96,7 +96,16 @@ function UserComponent({
       </Container>
 
       <Container className="align-center">
-        <h1 className="primary mr8">{displayName}</h1>
+        <div
+          className="mr8"
+          style={{
+            width: "16px",
+            height: "16px",
+            backgroundColor: "#1FAB89",
+            borderRadius: "100px"
+          }}
+        />
+        <h1 className="primary mr8">{userInfo.displayName}</h1>
         <KarmaBadge karma={calculateKarma(userInfo)} />
       </Container>
       <h6 className="grey-1 fw-400">{calculateKarma(userInfo)} Karma Points</h6>

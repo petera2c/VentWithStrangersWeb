@@ -1,3 +1,5 @@
+import firebase from "firebase/app";
+
 export const getOnlineUsers = (callback, totalOnlineUsers) => {
   firebase
     .database()
@@ -5,16 +7,17 @@ export const getOnlineUsers = (callback, totalOnlineUsers) => {
     .orderByChild("state")
     .limitToLast(totalOnlineUsers)
     .once("value", snapshot => {
+      let usersArray = [];
       let totalOnlineUsers2 = 0;
-      let some = [];
+
       snapshot.forEach(data => {
         if (data.val().state === "online") {
-          console.log(data.val());
-          some.push(data.key);
+          usersArray.push(data.key);
           totalOnlineUsers2++;
         }
       });
-      console.log(some);
+
       console.log(totalOnlineUsers2);
+      callback(usersArray);
     });
 };
