@@ -559,6 +559,16 @@
   white-space: nowrap;
 }
 
+.online-dot {
+  flex-shrink: 0;
+
+  width: 16px;
+  height: 16px;
+
+  border-radius: 50%;
+  background-color: #1fab89;
+}
+
 body {
   margin: 0;
   padding: 0;

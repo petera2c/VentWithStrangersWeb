@@ -131,15 +131,7 @@ function Chat({ conversation, conversationPartnerData = {}, userID }) {
               </h5>
             </Link>
             {conversationPartnerData.isUserOnline && (
-              <div
-                className="mr8"
-                style={{
-                  width: "16px",
-                  height: "16px",
-                  backgroundColor: "#1FAB89",
-                  borderRadius: "100px"
-                }}
-              />
+              <div className="online-dot mr8" />
             )}
           </Container>
         )}

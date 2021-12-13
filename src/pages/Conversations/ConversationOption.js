@@ -100,17 +100,10 @@ function ConversationOption({
                 ? capitolizeFirstChar(conversationPartnerData.displayName)
                 : "Anonymous"}
             </h6>
-            {conversationPartnerData && conversationPartnerData.isUserOnline && (
-              <div
-                className="mr8"
-                style={{
-                  width: "16px",
-                  height: "16px",
-                  backgroundColor: "#1FAB89",
-                  borderRadius: "100px"
-                }}
-              />
-            )}
+            {conversationPartnerData &&
+              conversationPartnerData.isUserOnline && (
+                <div className="online-dot mr8" />
+              )}
           </Container>
           {conversationPartnerData && (
             <KarmaBadge karma={calculateKarma(conversationPartnerData)} />

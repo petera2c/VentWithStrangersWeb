@@ -96,16 +96,8 @@ function UserComponent({
       </Container>
 
       <Container className="align-center">
-        <div
-          className="mr8"
-          style={{
-            width: "16px",
-            height: "16px",
-            backgroundColor: "#1FAB89",
-            borderRadius: "100px"
-          }}
-        />
-        <h1 className="primary mr8">{userInfo.displayName}</h1>
+        <div className="online-dot mr8" />
+        <h1 className="primary break-word mr8">{userInfo.displayName}</h1>
         <KarmaBadge karma={calculateKarma(userInfo)} />
       </Container>
       <h6 className="grey-1 fw-400">{calculateKarma(userInfo)} Karma Points</h6>
