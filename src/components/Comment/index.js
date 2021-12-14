@@ -26,6 +26,7 @@ import { UserContext } from "../../context";
 import {
   blockUser,
   calculateKarma,
+  canUserInteract,
   capitolizeFirstChar,
   getIsUserOnline,
   getUserBasicInfo,
@@ -304,10 +305,8 @@ function Comment({
           className="clickable align-center py16 px32"
           onClick={async e => {
             e.preventDefault();
-            if (!user)
-              return alert(
-                "You must sign in or register an account to support a comment!"
-              );
+            if (!canUserInteract(user)) return false;
+
             await likeOrUnlikeComment(comment, hasLiked, user);
             await getCommentHasLiked(commentID, setHasLiked, user.uid);
             if (hasLiked) comment.like_counter--;

@@ -282,8 +282,7 @@ export const likeOrUnlikeVent = async (
   user,
   vent
 ) => {
-  if (!user)
-    return alert("You must sign in or register an account to support a vent!");
+  if (!canUserInteract(user)) return false;
 
   setHasLiked(!hasLiked);
 
