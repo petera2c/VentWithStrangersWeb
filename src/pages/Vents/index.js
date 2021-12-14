@@ -152,7 +152,10 @@ function VentsPage() {
         </Container>
 
         {!isMobileOrTablet() && (
-          <Container className="container ad column">
+          <Container className="container ad column pt16">
+            <Container className="x-fill justify-between mb16">
+              <h1 className="primary fs-20" style={{ minHeight: "27px" }}></h1>
+            </Container>
             <Container className="x-fill column align-start bg-white pa16 mb16 br8">
               <Link className="button-3 fs-18 mb16" to="/vent-to-strangers">
                 <FontAwesomeIcon className="mr8" icon={faPen} />
