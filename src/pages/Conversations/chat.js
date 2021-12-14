@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment-timezone";
-import { useCollectionData } from "react-firebase-hooks/firestore";
-import db from "../../config/firebase";
+import Avatar from "avataaars";
 import firebase from "firebase/app";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -179,9 +178,30 @@ function Chat({ conversation, conversationPartnerData = {}, userID }) {
           maxHeight: checkIsUserTyping(conversation.isTyping) ? "56px" : "0"
         }}
       >
-        <p className="pa16">
-          {conversationPartnerData.displayName} is typing...
-        </p>
+        <Container className="ov-hidden full-center pa16">
+          {conversationPartnerData && conversationPartnerData.avatar && (
+            <Avatar
+              avatarStyle={"Circle"}
+              topType={conversationPartnerData.avatar.topType}
+              accessoriesType={conversationPartnerData.avatar.accessoriesType}
+              hairColor={conversationPartnerData.avatar.hairColor}
+              facialHairType={conversationPartnerData.avatar.facialHairType}
+              clotheType={conversationPartnerData.avatar.clotheType}
+              eyeType={conversationPartnerData.avatar.eyeType}
+              eyebrowType={conversationPartnerData.avatar.eyebrowType}
+              mouthType={conversationPartnerData.avatar.mouthType}
+              skinColor={conversationPartnerData.avatar.skinColor}
+              style={{ width: "48px", height: "48px" }}
+              className="mr8"
+            />
+          )}
+          <p>
+            {conversationPartnerData &&
+              !conversationPartnerData.avatar &&
+              conversationPartnerData.displayName}{" "}
+            is typing...
+          </p>
+        </Container>
       </Container>
 
       <Container className="column x-fill">

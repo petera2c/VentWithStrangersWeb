@@ -106,7 +106,10 @@ function ConversationOption({
               )}
           </Container>
           {conversationPartnerData && (
-            <KarmaBadge karma={calculateKarma(conversationPartnerData)} />
+            <KarmaBadge
+              karma={calculateKarma(conversationPartnerData)}
+              noOnClick
+            />
           )}
         </Container>
         {conversation.last_message && (

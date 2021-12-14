@@ -6,7 +6,7 @@ import { faMedal } from "@fortawesome/pro-solid-svg-icons/faMedal";
 
 import Container from "../containers/Container";
 
-function KarmaBadge({ karma }) {
+function KarmaBadge({ karma, noOnClick }) {
   const history = useHistory();
 
   const title =
@@ -19,6 +19,7 @@ function KarmaBadge({ karma }) {
         onClick={e => {
           e.stopPropagation();
           e.preventDefault();
+          if (noOnClick) return;
           history.push("/site-info");
         }}
       >
@@ -39,6 +40,7 @@ function KarmaBadge({ karma }) {
         onClick={e => {
           e.stopPropagation();
           e.preventDefault();
+          if (noOnClick) return;
           history.push("/site-info");
         }}
       >
