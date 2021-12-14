@@ -246,6 +246,13 @@ const updateTotalUsersOnline = (change, context) => {
     const changeAfter = change.after;
     const changeBefore = change.before;
 
+    console.log("\n");
+    console.log("\n");
+    console.log(changeAfter.val());
+    console.log(changeBefore.val());
+    console.log("\n");
+    console.log("\n");
+
     if (changeAfter.val().state !== changeBefore.val().state)
       setToDatabase(changeAfter.val().state);
   }

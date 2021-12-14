@@ -45,7 +45,7 @@ function OnlineUsers() {
         }
       >
         {onlineUsers.map((userID, index) => {
-          return <UserComp key={index} userID={userID} />;
+          return <UserComp isOnline key={index} userID={userID} />;
         })}
       </Container>
     </Page>

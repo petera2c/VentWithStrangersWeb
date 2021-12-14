@@ -24,7 +24,7 @@ import {
   getVent,
   saveVent
 } from "./util";
-import { isMobileOrTablet } from "../../util";
+import { canUserInteract, isMobileOrTablet } from "../../util";
 
 function NewVentPage() {
   const history = useHistory();
@@ -216,14 +216,14 @@ function NewVentPage() {
           </Container>
         </Container>
       </Container>
-      {warningModalIsActive && !user && (
+      {warningModalIsActive && !canUserInteract(user, true) && (
         <WarningModal
-          close={() => setWarningModalIsActive(false)}
-          text="We are so sorry, but to moderate content we now require that all
-              users must create accounts. It only takes 30 seconds to create an
-              account and you can set the username to any random thing you think
-              of. We do require your email address but that information will
-              never be shared with anyone ever."
+          close={() => {}}
+          text={
+            user
+              ? "Please verify your email address to create a vent"
+              : "Please create an account to start venting!"
+          }
         />
       )}
       {hasUserPostedMoreThanTwiceToday && (

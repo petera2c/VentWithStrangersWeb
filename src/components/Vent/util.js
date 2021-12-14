@@ -1,7 +1,11 @@
 import firebase from "firebase/app";
 import db from "../../config/firebase";
 
-import { calculateKarma, getEndAtValueTimestamp } from "../../util";
+import {
+  calculateKarma,
+  canUserInteract,
+  getEndAtValueTimestamp
+} from "../../util";
 
 const incrementVentCounter = (attributeToIncrement, shouldIncrease, vent) => {
   const newVent = { ...vent };
@@ -18,7 +22,8 @@ export const commentVent = async (
   vent,
   ventID
 ) => {
-  if (!user) return alert("Only users can comment! Please login or register.");
+  if (!canUserInteract(user)) return false;
+
   let commentObj = {
     like_counter: 0,
     server_timestamp: firebase.firestore.Timestamp.now().seconds * 1000,
@@ -30,6 +35,8 @@ export const commentVent = async (
   setVent(incrementVentCounter("comment_counter", true, vent));
 
   const res = await db.collection("comments").add(commentObj);
+
+  return true;
 };
 
 export const deleteVent = async (history, ventID) => {
@@ -336,8 +343,10 @@ export const tagUser = (
   });
 };
 
-export const startConversation = async (history, userID, ventUserID) => {
-  const sortedMemberIDs = [userID, ventUserID].sort();
+export const startConversation = async (history, user, ventUserID) => {
+  if (!canUserInteract(user)) return false;
+
+  const sortedMemberIDs = [user.uid, ventUserID].sort();
   const conversationQuerySnapshot = await db
     .collection("conversations")
     .where("members", "==", sortedMemberIDs)

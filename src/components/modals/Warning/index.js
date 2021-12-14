@@ -13,7 +13,7 @@ function WarningModal({ close, text }) {
         </Container>
         <Container className="x-fill column">
           <Container className="x-fill full-center px32">
-            <p className="x-fill tac py16">{text}</p>
+            <h1 className="x-fill tac py16">{text}</h1>
           </Container>
         </Container>
       </Container>

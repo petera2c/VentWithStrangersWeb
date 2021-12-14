@@ -36,6 +36,7 @@ import {
 
 function UserComponent({
   displayName,
+  isOnline,
   showAdditionaluserInformation,
   showMessageUser,
   userID
@@ -96,7 +97,7 @@ function UserComponent({
       </Container>
 
       <Container className="align-center">
-        <div className="online-dot mr8" />
+        {isOnline && <div className="online-dot mr8" />}
         <h1 className="primary break-word mr8">{userInfo.displayName}</h1>
         <KarmaBadge karma={calculateKarma(userInfo)} />
       </Container>
@@ -168,8 +169,7 @@ function UserComponent({
               onClick={e => {
                 e.preventDefault();
 
-                if (!user) alert("You must make an account to message user!");
-                startConversation(history, user.uid, userInfo.userID);
+                startConversation(history, user, userInfo.userID);
               }}
             >
               <FontAwesomeIcon className="mr8" icon={faComments} />

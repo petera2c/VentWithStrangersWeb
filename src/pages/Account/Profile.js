@@ -235,9 +235,7 @@ function ProfileSection({ user }) {
                   <Button
                     className="button-2 px16 py8 mr16 br8"
                     onClick={() => {
-                      if (!user)
-                        alert("You must make an account to message user!");
-                      startConversation(history, user.uid, search);
+                      startConversation(history, user, search);
                     }}
                   >
                     <FontAwesomeIcon className="mr8" icon={faComments} />

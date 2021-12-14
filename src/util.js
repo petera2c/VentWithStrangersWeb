@@ -38,6 +38,16 @@ export const calculateKarma = usereBasicInfo => {
   return goodKarma - badKarma;
 };
 
+export const canUserInteract = (user, noAlert) => {
+  if (!user) {
+    if (!noAlert) alert("You must be signed in to interact with this!");
+    return false;
+  } else if (!user.emailVerified) {
+    if (!noAlert) alert("You must verify your email to interact with this!");
+    return false;
+  } else return true;
+};
+
 // Taken from stack overflow
 export const capitolizeWordsInString = str => {
   return str.replace(/\b\w/g, l => l.toUpperCase());

@@ -238,11 +238,9 @@ function MakeFriendsPage() {
                       onClick={e => {
                         e.preventDefault();
 
-                        if (!user)
-                          alert("You must make an account to message user!");
                         startConversation(
                           history,
-                          user.uid,
+                          user,
                           matchedUserInfo.userID
                         );
                       }}
