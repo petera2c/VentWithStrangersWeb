@@ -68,7 +68,7 @@ exports.conversationUpdateListener = functions.firestore
   .onWrite(conversationUpdateListener);
 
 exports.onlineStatusListener = functions.database
-  .ref("/status/{conversationID}/{userID}")
+  .ref("/status/{userID}")
   .onWrite(updateTotalUsersOnline);
 
 exports.cronUpdateSitemap = functions.pubsub

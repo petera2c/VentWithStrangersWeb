@@ -14,7 +14,14 @@ const createNotification = async (link, message, userID) => {
       server_timestamp: admin.firestore.Timestamp.now().seconds * 1000,
       userID,
     });
-  sendMobilePushNotifications(message, userID);
+
+  admin
+    .database()
+    .ref("status/" + userID)
+    .once("value", (doc) => {
+      if (doc.val().state !== "online")
+        sendMobilePushNotifications(message, userID);
+    });
 };
 
 const sendMobilePushNotifications = async (message, userID) => {

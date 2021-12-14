@@ -67,7 +67,7 @@ export const getEndAtValueTimestamp = array => {
 };
 
 export const getIsUserOnline = (setIsUserOnline, userID) => {
-  const ref = firebase.database().ref("/status/" + userID);
+  const ref = firebase.database().ref("status/" + userID);
 
   ref.on("value", snapshot => {
     if (snapshot.val() && snapshot.val().state === "online")

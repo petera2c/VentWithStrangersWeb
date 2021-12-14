@@ -238,15 +238,15 @@ const updateTotalUsersOnline = (change, context) => {
   } else if (!change.before) {
     // New doc
     const doc = change.after;
-    setToDatabase(doc.val());
+    setToDatabase(doc.val().state);
   } else if (!change.after) {
     // Doc deleted
     const doc = change.before;
-    setToDatabase(doc.val() === "online" ? "offline" : "");
+    setToDatabase(doc.val().state === "online" ? "offline" : "");
   } else {
     // Doc updated
     const doc = change.after;
-    setToDatabase(doc.val());
+    setToDatabase(doc.val().state);
   }
   return 10;
 };
