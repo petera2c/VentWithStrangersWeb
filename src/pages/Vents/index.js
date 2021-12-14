@@ -74,11 +74,7 @@ function VentsPage() {
           }
         >
           <Container className="x-fill justify-between mb16">
-            <Text
-              className="primary fs-20"
-              text={metaTitle + " Vents"}
-              type="h1"
-            />
+            <h1>{metaTitle + " Vents"}</h1>
           </Container>
 
           {vents && (
