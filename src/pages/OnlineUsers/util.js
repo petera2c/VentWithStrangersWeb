@@ -5,7 +5,7 @@ export const getOnlineUsers = (callback, totalOnlineUsers) => {
     .database()
     .ref("status")
     .orderByChild("state")
-    .limitToLast(totalOnlineUsers)
+    .limitToLast(100)
     .once("value", snapshot => {
       let usersArray = [];
       let totalOnlineUsers2 = 0;

@@ -86,7 +86,7 @@ function VentsPage() {
                       <Vent previewMode={true} ventInit={vent} />
                       {process.env.NODE_ENV === "production" &&
                         index % 3 === 0 && (
-                          <Container className="x-fill column">
+                          <Container className="x-fill column mb16">
                             <AdSense.Google
                               className="adsbygoogle"
                               client="ca-pub-5185907024931065"
@@ -163,8 +163,8 @@ function VentsPage() {
               </Link>
               <Link className="button-3 fs-18 mb16" to="/online-users">
                 <FontAwesomeIcon className="mr8" icon={faUserFriends} />
-                {totalOnlineUsers} Online{" "}
-                {totalOnlineUsers === 1 ? "User" : "Users"}
+                {totalOnlineUsers} {totalOnlineUsers === 1 ? "User" : "Users"}{" "}
+                Online
               </Link>
               <Link className="button-3 fs-18 mb16" to="/conversations">
                 <FontAwesomeIcon className="mr8" icon={faUsers} />
