@@ -39,6 +39,7 @@ export const getNotifications = (
 
 export const getUnreadConversations = (
   componentIsMounted,
+  isOnSearchPage,
   setUnreadConversations,
   userID,
   first = true
@@ -49,7 +50,7 @@ export const getUnreadConversations = (
       if (doc.data() && doc.data().count) {
         if (componentIsMounted.current)
           setUnreadConversations(doc.data().count);
-        if (!first) soundNotify();
+        if (!first && !isOnSearchPage) soundNotify();
       } else {
         if (componentIsMounted.current) setUnreadConversations(0);
       }

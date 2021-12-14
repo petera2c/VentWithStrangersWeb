@@ -73,6 +73,7 @@ function Header({ history, location }) {
     if (user) {
       getUnreadConversations(
         componentIsMounted,
+        pathname.substring(0, 7) === "/search",
         setUnreadConversationsCount,
         user.uid
       );
