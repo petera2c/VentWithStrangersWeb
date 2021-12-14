@@ -297,6 +297,19 @@ function Header({ history, location }) {
           <ForgotPasswordModal setActiveModal={setActiveModal} />
         )}
       </Container>
+      {user && !user.emailVerified && (
+        <Container className="x-fill full-center">
+          <h4 className="word-break tac mr16">
+            Please verify your email address!
+          </h4>
+          <button
+            className="button-2 no-bold py8 px16 my16 br8"
+            onClick={() => user.sendEmailVerification()}
+          >
+            Re-send verification link
+          </button>
+        </Container>
+      )}
       {false &&
         missingAccountPercentage !== undefined &&
         missingAccountPercentage !== 1 && (
