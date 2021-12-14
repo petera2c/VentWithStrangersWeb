@@ -17,9 +17,9 @@ function KarmaBadge({ karma, noOnClick }) {
       <Container
         className="clickable"
         onClick={e => {
+          if (noOnClick) return;
           e.stopPropagation();
           e.preventDefault();
-          if (noOnClick) return;
           history.push("/site-info");
         }}
       >
