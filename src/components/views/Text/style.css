@@ -94,6 +94,15 @@
 .fs-20 {
   font-size: var(--twenty-font-size);
 }
+.fs-22 {
+  font-size: var(--twenty-two-font-size);
+}
+.fs-24 {
+  font-size: var(--twenty-four-font-size);
+}
+.fs-26 {
+  font-size: var(--twenty-six-font-size);
+}
 .fs-30 {
   font-size: var(--thirty-font-size);
 }

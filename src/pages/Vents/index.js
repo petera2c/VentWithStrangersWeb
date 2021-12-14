@@ -74,7 +74,7 @@ function VentsPage() {
           }
         >
           <Container className="x-fill justify-between mb16">
-            <h1>{metaTitle + " Vents"}</h1>
+            <h1 className="primary fs-26">{metaTitle + " Vents"}</h1>
           </Container>
 
           {vents && (
@@ -86,7 +86,7 @@ function VentsPage() {
                       <Vent previewMode={true} ventInit={vent} />
                       {process.env.NODE_ENV === "production" &&
                         index % 3 === 0 && (
-                          <Container className="x-fill column mb16">
+                          <Container className="x-fill column">
                             <AdSense.Google
                               className="adsbygoogle"
                               client="ca-pub-5185907024931065"
