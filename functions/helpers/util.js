@@ -241,35 +241,13 @@ const updateTotalUsersOnline = (change, context) => {
   } else if (!changeBefore.val()) {
     // New doc
 
-    console.log("\n");
-    console.log("\n");
-    console.log("here1");
-    console.log(changeBefore.val());
-    console.log("\n");
-    console.log("\n");
-
-    setToDatabase(changeBefore.val().state);
+    setToDatabase(changeAfter.val().state);
   } else if (!changeAfter.val()) {
     // Doc deleted
 
-    console.log("\n");
-    console.log("\n");
-    console.log("here2");
-    console.log(changeAfter.val());
-    console.log("\n");
-    console.log("\n");
-
-    setToDatabase(changeAfter.val().state === "online" ? "offline" : "");
+    setToDatabase(changeBefore.val().state === "online" ? "offline" : "");
   } else {
     // Doc updated
-
-    console.log("\n");
-    console.log("\n");
-    console.log("here3");
-    console.log(changeBefore.val());
-    console.log(changeAfter.val());
-    console.log("\n");
-    console.log("\n");
 
     if (changeBefore.val().state !== changeAfter.val().state)
       setToDatabase(changeAfter.val().state);
