@@ -77,19 +77,26 @@ const commentLikeListener = async (change, context) => {
         { merge: true }
       );
 
-  const ventDoc = await admin
+  const userSettingsDoc = await admin
     .firestore()
-    .collection("vents")
-    .doc(comment.ventID)
+    .collection("users_settings")
+    .doc(comment.userID)
     .get();
 
-  if (ventDoc.exists)
-    // Create notification
-    createNotification(
-      createVentLink({ id: ventDoc.id, ...ventDoc.data() }),
-      "Someone has supported your comment! +4 Karma Points",
-      comment.userID
-    );
+  if (userSettingsDoc.data() && userSettingsDoc.data().master_comment_like) {
+    const ventDoc = await admin
+      .firestore()
+      .collection("vents")
+      .doc(comment.ventID)
+      .get();
+
+    if (ventDoc.exists)
+      createNotification(
+        createVentLink({ id: ventDoc.id, ...ventDoc.data() }),
+        "Someone has supported your comment! +4 Karma Points",
+        comment.userID
+      );
+  }
 };
 
 const createNewCommentNotification = async (doc, context) => {
@@ -105,11 +112,19 @@ const createNewCommentNotification = async (doc, context) => {
 
   if (vent.userID == doc.data().userID) return;
 
-  return createNotification(
-    createVentLink(vent),
-    "Your vent has a new comment!",
-    vent.userID
-  );
+  const userSettingsDoc = await admin
+    .firestore()
+    .collection("users_settings")
+    .doc(vent.userID)
+    .get();
+
+  if (userSettingsDoc.data() && userSettingsDoc.data().master_vent_commented) {
+    return createNotification(
+      createVentLink(vent),
+      "Your vent has a new comment!",
+      vent.userID
+    );
+  }
 };
 
 const createNotificationsToAnyTaggedUsers = async (doc, context) => {
@@ -146,12 +161,24 @@ const createNotificationsToAnyTaggedUsers = async (doc, context) => {
 
     const vent = { id: ventDoc.id, ...ventDoc.data() };
 
-    for (let index in listOfTaggedIDs)
-      createNotification(
-        createVentLink(vent),
-        "You have been tagged in a comment!",
-        listOfTaggedIDs[index]
-      );
+    for (let index in listOfTaggedIDs) {
+      const userSettingsDoc = await admin
+        .firestore()
+        .collection("users_settings")
+        .doc(listOfTaggedIDs[index])
+        .get();
+
+      if (
+        userSettingsDoc.data() &&
+        userSettingsDoc.data().master_comment_tagged
+      ) {
+        createNotification(
+          createVentLink(vent),
+          "You have been tagged in a comment!",
+          listOfTaggedIDs[index]
+        );
+      }
+    }
   }
 };
 

@@ -47,7 +47,7 @@ function AccountPage() {
                   <Container className="flex x-fill full-center">
                     <FontAwesomeIcon icon={faChartNetwork} />
                   </Container>
-                  <Text text="Public Profile" type="h5" />
+                  <h5>Public Profile</h5>
                 </Container>
               </Link>
 
@@ -61,7 +61,7 @@ function AccountPage() {
                   <Container className="flex x-fill full-center">
                     <FontAwesomeIcon icon={faUser} />
                   </Container>
-                  <Text text="Account" type="h5" />
+                  <h5>Account</h5>
                 </Container>
               </Link>
               <Link className="x-fill" to="/avatar">
@@ -74,7 +74,7 @@ function AccountPage() {
                   <Container className="flex x-fill full-center">
                     <FontAwesomeIcon icon={faUserAstronaut} />
                   </Container>
-                  <Text text="Avatar" type="h5" />
+                  <h5>Avatar</h5>
                 </Container>
               </Link>
 
@@ -88,7 +88,7 @@ function AccountPage() {
                   <Container className="flex x-fill full-center">
                     <FontAwesomeIcon icon={faCog} />
                   </Container>
-                  <Text text="Settings" type="h5" />
+                  <h5>Notifications / Settings</h5>
                 </Container>
               </Link>
 

@@ -49,6 +49,9 @@ service cloud.firestore {
     match /users/{userID} {
       allow read, write, update, delete: if request.auth.uid == userID;
     }
+    match /users_settings/{userID} {
+      allow read, write, update, delete: if request.auth.uid == userID;
+    }
 
     match /user_matches/{userID} {
       allow read, write, update, delete: if true;
