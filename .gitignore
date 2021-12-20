@@ -21,6 +21,7 @@ yarn-debug.log*
 yarn-error.log*
 
 
+functions/google_key.json
 functions/database-debug.log
 functions/ui-debug.log
 functions/firestore-debug.log
