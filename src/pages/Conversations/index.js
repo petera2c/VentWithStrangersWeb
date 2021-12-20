@@ -40,7 +40,7 @@ function Conversations() {
     .collection("conversations")
     .where("members", "array-contains", user.uid)
     .orderBy("last_updated", "desc")
-    .limitToLast(20);
+    .limitToLast(50);
 
   const [conversations] = useCollectionData(conversationsQuery, {
     idField: "id"
