@@ -76,11 +76,20 @@ const newVentListener = async (doc, context) => {
       );
   }
 
-  return createNotification(
-    createVentLink(vent),
-    "Your new vent is live!",
-    vent.userID
-  );
+  const userSettingsDoc = await admin
+    .firestore()
+    .collection("users_settings")
+    .doc(comment.userID)
+    .get();
+
+  if (userSettingsDoc.data() && userSettingsDoc.data().master_vent_new)
+    return createNotification(
+      userSettingsDoc.data().mobile_vent_new === true,
+      userSettingsDoc.data().email_vent_new === true,
+      createVentLink(vent),
+      "Your new vent is live!",
+      vent.userID
+    );
 };
 
 const newVentLikeListener = async (change, context) => {
@@ -130,11 +139,20 @@ const newVentLikeListener = async (change, context) => {
 
   const vent = { id: ventDoc.id, ...ventDoc.data() };
 
-  createNotification(
-    createVentLink(vent),
-    "Someone has supported your vent! +2 Karma Points",
-    vent.userID
-  );
+  const userSettingsDoc = await admin
+    .firestore()
+    .collection("users_settings")
+    .doc(comment.userID)
+    .get();
+
+  if (userSettingsDoc.data() && userSettingsDoc.data().master_vent_like)
+    createNotification(
+      userSettingsDoc.data().mobile_vent_like === true,
+      userSettingsDoc.data().email_vent_like === true,
+      createVentLink(vent),
+      "Someone has supported your vent! +2 Karma Points",
+      vent.userID
+    );
 };
 
 const newVentReportListener = async (doc, context) => {

@@ -1,7 +1,13 @@
 const admin = require("firebase-admin");
 const fetch = require("node-fetch");
 
-const createNotification = async (link, message, userID) => {
+const createNotification = async (
+  canPushMobileNotification,
+  canSendEmailNotification,
+  link,
+  message,
+  userID
+) => {
   if (!userID) return;
 
   await admin
@@ -19,7 +25,7 @@ const createNotification = async (link, message, userID) => {
     .database()
     .ref("status/" + userID)
     .once("value", (doc) => {
-      if (doc.val().state !== "online")
+      if (doc.val().state !== "online" && canPushMobileNotification)
         sendMobilePushNotifications(message, userID);
     });
 };

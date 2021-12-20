@@ -352,7 +352,7 @@ function SettingsSection({ user }) {
         </Container>
         <Text
           className="mb16"
-          text="Your information will never be shared with anyone. Ever."
+          text="Your private information will never be shared with anyone. Ever."
           type="p"
         />
       </Container>

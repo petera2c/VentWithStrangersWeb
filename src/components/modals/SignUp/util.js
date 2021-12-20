@@ -42,15 +42,18 @@ export const signUp = ({ email, displayName, password, passwordConfirm }) => {
             master_comment_like: true,
             master_vent_like: true,
             master_comment_tagged: true,
+            master_vent_new: true,
             email_vent_commented: true,
             email_comment_like: true,
             email_vent_like: true,
-            email_promotions: true,
             email_comment_tagged: true,
+            email_vent_new: true,
+            email_promotions: true,
             mobile_vent_commented: true,
             mobile_comment_like: true,
             mobile_vent_like: true,
             mobile_comment_tagged: true,
+            mobile_vent_new: true,
             offensive_content: true
           });
         await db

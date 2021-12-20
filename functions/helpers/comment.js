@@ -92,6 +92,8 @@ const commentLikeListener = async (change, context) => {
 
     if (ventDoc.exists)
       createNotification(
+        userSettingsDoc.data().mobile_comment_like === true,
+        userSettingsDoc.data().email_comment_like === true,
         createVentLink({ id: ventDoc.id, ...ventDoc.data() }),
         "Someone has supported your comment! +4 Karma Points",
         comment.userID
@@ -120,6 +122,8 @@ const createNewCommentNotification = async (doc, context) => {
 
   if (userSettingsDoc.data() && userSettingsDoc.data().master_vent_commented) {
     return createNotification(
+      userSettingsDoc.data().mobile_vent_commented === true,
+      userSettingsDoc.data().email_vent_commented === true,
       createVentLink(vent),
       "Your vent has a new comment!",
       vent.userID
@@ -173,6 +177,8 @@ const createNotificationsToAnyTaggedUsers = async (doc, context) => {
         userSettingsDoc.data().master_comment_tagged
       ) {
         createNotification(
+          userSettingsDoc.data().mobile_comment_tagged === true,
+          userSettingsDoc.data().email_comment_tagged === true,
           createVentLink(vent),
           "You have been tagged in a comment!",
           listOfTaggedIDs[index]
