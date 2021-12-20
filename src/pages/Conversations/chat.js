@@ -42,7 +42,7 @@ function Chat({ conversation, conversationPartnerData = {}, userID }) {
       for (let memberID in isTyping) {
         if (memberID !== userID) {
           if (
-            firebase.firestore.Timestamp.now().seconds * 1000 -
+            firebase.firestore.Timestamp.now().toMillis() -
               isTyping[memberID] <
             4000
           ) {

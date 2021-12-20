@@ -54,12 +54,12 @@ export const saveVent = async (callback, ventObject, ventID, user) => {
   }
   if (!ventID) {
     ventObject.server_timestamp =
-      firebase.firestore.Timestamp.now().seconds * 1000;
+      firebase.firestore.Timestamp.now().toMillis();
     ventObject.comment_counter = 0;
     ventObject.like_counter = 0;
   }
   ventObject.userID = user.uid;
-  ventObject.last_updated = firebase.firestore.Timestamp.now().seconds * 1000;
+  ventObject.last_updated = firebase.firestore.Timestamp.now().toMillis();
 
   let newVent = ventObject;
   if (ventID) {

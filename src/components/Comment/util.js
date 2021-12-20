@@ -35,7 +35,7 @@ export const editComment = async (commentID, commentString, setComments) => {
     .set(
       {
         text: commentString,
-        last_updated: firebase.firestore.Timestamp.now().seconds * 1000
+        last_updated: firebase.firestore.Timestamp.now().toMillis()
       },
       { merge: true }
     );

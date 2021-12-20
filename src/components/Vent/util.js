@@ -26,7 +26,7 @@ export const commentVent = async (
 
   let commentObj = {
     like_counter: 0,
-    server_timestamp: firebase.firestore.Timestamp.now().seconds * 1000,
+    server_timestamp: firebase.firestore.Timestamp.now().toMillis(),
     text: commentString,
     userID: user.uid,
     ventID
@@ -209,7 +209,7 @@ export const newVentCommentListener = (setComments, ventID, first = true) => {
     .where(
       "server_timestamp",
       ">=",
-      firebase.firestore.Timestamp.now().seconds * 1000
+      firebase.firestore.Timestamp.now().toMillis()
     )
     .orderBy("server_timestamp", "desc")
     .limit(1)
@@ -366,9 +366,9 @@ export const startConversation = async (history, user, ventUserID) => {
     }
 
     const conversationDocNew = await db.collection("conversations").add({
-      last_updated: firebase.firestore.Timestamp.now().seconds * 1000,
+      last_updated: firebase.firestore.Timestamp.now().toMillis(),
       members: sortedMemberIDs,
-      server_timestamp: firebase.firestore.Timestamp.now().seconds * 1000,
+      server_timestamp: firebase.firestore.Timestamp.now().toMillis(),
       ...tempHasSeenObject
     });
     goToPage(conversationDocNew.id);

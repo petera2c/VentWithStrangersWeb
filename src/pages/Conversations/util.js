@@ -73,7 +73,7 @@ export const messageListener = (
     .where(
       "server_timestamp",
       ">=",
-      firebase.firestore.Timestamp.now().seconds * 1000
+      firebase.firestore.Timestamp.now().toMillis()
     )
     .orderBy("server_timestamp", "desc")
     .limit(1)
@@ -144,6 +144,7 @@ export const getMessages = async (
 ) => {
   let startAt = getEndAtValueTimestamp(messages);
   if (first) startAt = getEndAtValueTimestamp([]);
+
   const snapshot = await db
     .collection("conversation_extra_data")
     .doc(conversationID)
@@ -190,7 +191,7 @@ export const sendMessage = async (conversationID, message, userID) => {
     .collection("messages")
     .add({
       body: message,
-      server_timestamp: firebase.firestore.Timestamp.now().seconds * 1000,
+      server_timestamp: firebase.firestore.Timestamp.now().toMillis(),
       userID
     });
 };
@@ -202,7 +203,7 @@ export const setConversationIsTyping = async (conversationID, userID) => {
     .set(
       {
         isTyping: {
-          [userID]: firebase.firestore.Timestamp.now().seconds * 1000
+          [userID]: firebase.firestore.Timestamp.now().toMillis()
         }
       },
       { merge: true }
