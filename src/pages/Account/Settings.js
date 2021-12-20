@@ -156,6 +156,70 @@ function SettingsSection({ user }) {
               type="p"
             />
           </Container>
+          <Container
+            className="clickable align-center mb16"
+            onClick={() => {
+              handleChange(
+                "master_comment_tagged",
+                !settingsSnapshot.data().master_comment_tagged
+              );
+              handleChange(
+                "email_comment_tagged",
+                !settingsSnapshot.data().master_comment_tagged,
+                false
+              );
+              handleChange(
+                "mobile_comment_tagged",
+                !settingsSnapshot.data().master_comment_tagged,
+                false
+              );
+            }}
+          >
+            <input
+              className="mr8"
+              checked={settingsSnapshot.data().master_comment_tagged}
+              onChange={() => {}}
+              style={{ minWidth: "13px" }}
+              type="checkbox"
+            />
+            <Text
+              className=""
+              text="Recieve a notification when someone tags me in a vent or comment"
+              type="p"
+            />
+          </Container>
+          <Container
+            className="clickable align-center mb16"
+            onClick={() => {
+              handleChange(
+                "master_vent_new",
+                !settingsSnapshot.data().master_vent_new
+              );
+              handleChange(
+                "email_vent_new",
+                !settingsSnapshot.data().master_vent_new,
+                false
+              );
+              handleChange(
+                "mobile_vent_new",
+                !settingsSnapshot.data().master_vent_new,
+                false
+              );
+            }}
+          >
+            <input
+              className="mr8"
+              checked={settingsSnapshot.data().master_vent_new}
+              onChange={() => {}}
+              style={{ minWidth: "13px" }}
+              type="checkbox"
+            />
+            <Text
+              className=""
+              text="Recieve a notification I post a new vent"
+              type="p"
+            />
+          </Container>
         </Container>
 
         <Container className="column pl32">
@@ -227,6 +291,51 @@ function SettingsSection({ user }) {
             <Text
               className=""
               text="Email me when my vent recieves a new like"
+              type="p"
+            />
+          </Container>
+
+          <Container
+            className="clickable align-center mb16"
+            onClick={() =>
+              handleChange(
+                "email_comment_tagged",
+                !settingsSnapshot.data().email_comment_tagged
+              )
+            }
+          >
+            <input
+              className="mr8"
+              checked={settingsSnapshot.data().email_comment_tagged}
+              onChange={() => {}}
+              style={{ minWidth: "13px" }}
+              type="checkbox"
+            />
+            <Text
+              className=""
+              text="Email me when someone tags me in a vent or comment"
+              type="p"
+            />
+          </Container>
+          <Container
+            className="clickable align-center mb16"
+            onClick={() =>
+              handleChange(
+                "email_vent_new",
+                !settingsSnapshot.data().email_vent_new
+              )
+            }
+          >
+            <input
+              className="mr8"
+              checked={settingsSnapshot.data().email_vent_new}
+              onChange={() => {}}
+              style={{ minWidth: "13px" }}
+              type="checkbox"
+            />
+            <Text
+              className=""
+              text="Email me when I post a new vent"
               type="p"
             />
           </Container>
@@ -323,6 +432,50 @@ function SettingsSection({ user }) {
             <Text
               className=""
               text="Send a notification to my phone when my vent recieves a new like"
+              type="p"
+            />
+          </Container>
+          <Container
+            className="clickable align-center mb16"
+            onClick={() =>
+              handleChange(
+                "mobile_comment_tagged",
+                !settingsSnapshot.data().mobile_comment_tagged
+              )
+            }
+          >
+            <input
+              className="mr8"
+              checked={settingsSnapshot.data().mobile_comment_tagged}
+              onChange={() => {}}
+              style={{ minWidth: "13px" }}
+              type="checkbox"
+            />
+            <Text
+              className=""
+              text="Send a notification to my phone when someone tags me in a vent or comment"
+              type="p"
+            />
+          </Container>
+          <Container
+            className="clickable align-center mb16"
+            onClick={() =>
+              handleChange(
+                "mobile_vent_new",
+                !settingsSnapshot.data().mobile_vent_new
+              )
+            }
+          >
+            <input
+              className="mr8"
+              checked={settingsSnapshot.data().mobile_vent_new}
+              onChange={() => {}}
+              style={{ minWidth: "13px" }}
+              type="checkbox"
+            />
+            <Text
+              className=""
+              text="Send a notification to my phone when I post a new vent"
               type="p"
             />
           </Container>

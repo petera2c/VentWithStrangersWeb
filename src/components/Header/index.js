@@ -299,7 +299,7 @@ function Header({ history, location }) {
         )}
       </Container>
       {user && !user.emailVerified && (
-        <Container className="x-fill full-center">
+        <Container className="x-fill full-center bg-grey-2">
           <h4 className="word-break tac mr16">
             Please verify your email address!
           </h4>
