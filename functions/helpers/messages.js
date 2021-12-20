@@ -23,11 +23,18 @@ const messagesListener = async (doc, context) => {
           .collection("unread_conversations_count")
           .doc(index)
           .set({ count: admin.firestore.FieldValue.increment(1) });
-        sendMobilePushNotifications("You have a new message!", index);
+        admin
+          .database()
+          .ref("status/" + index)
+          .once("value", (doc) => {
+            if (doc.val().state !== "online")
+              sendMobilePushNotifications("You have a new message!", index);
+          });
       }
     }
   }
-  conversation.last_updated = admin.firestore.Timestamp.now().seconds * 1000;
+
+  conversation.last_updated = admin.firestore.Timestamp.now().toMillis();
   conversation.last_message = doc.data().body;
 
   await admin

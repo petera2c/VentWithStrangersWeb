@@ -48,8 +48,8 @@ const decreaseTrendingScore = async () => {
 const newVentListener = async (doc, context) => {
   const vent = { id: doc.id, ...doc.data() };
 
-  if (vent.server_timestamp > admin.firestore.Timestamp.now().seconds * 1000) {
-    vent.server_timestamp = admin.firestore.Timestamp.now().seconds * 1000;
+  if (vent.server_timestamp > admin.firestore.Timestamp.now().toMillis()) {
+    vent.server_timestamp = admin.firestore.Timestamp.now().toMillis();
     await admin
       .firestore()
       .collection("vents")

@@ -199,9 +199,9 @@ const commentUpdateListener = async (change, context) => {
 
     if (
       comment.server_timestamp >
-      admin.firestore.Timestamp.now().seconds * 1000
+      admin.firestore.Timestamp.now().toMillis()
     ) {
-      comment.server_timestamp = admin.firestore.Timestamp.now().seconds * 1000;
+      comment.server_timestamp = admin.firestore.Timestamp.now().toMillis();
       await admin
         .firestore()
         .collection("comments")
