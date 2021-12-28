@@ -20,21 +20,9 @@ function LoginModal({ setActiveModal }) {
     <Container className="modal-container full-center">
       <Container className="modal container medium column align-center ov-auto bg-white br4">
         <Container className="x-fill justify-center bg-blue py16">
-          <Text className="tac white" text="Log in to your Account" type="h4" />
+          <h4 className="tac white">Sign In</h4>
         </Container>
         <Container className="x-fill column">
-          <Container className="x-fill full-center px32">
-            <Text className="x-fill tac border-bottom py16" type="p">
-              Don't have an account?&nbsp;
-              <Text
-                className="clickable blue"
-                onClick={() => setActiveModal("signUp")}
-                type="span"
-              >
-                Create One
-              </Text>
-            </Text>
-          </Container>
           <form
             className="x-fill column"
             onSubmit={handleSubmit(formData =>
@@ -67,9 +55,6 @@ function LoginModal({ setActiveModal }) {
                   onClick={() => setCanSeePassword(!canSeePassword)}
                 />
               </Container>
-            </Container>
-
-            <Container className="column x-fill full-center border-top px32 py16">
               <p
                 className="tac clickable mb8"
                 onClick={e => {
@@ -80,11 +65,27 @@ function LoginModal({ setActiveModal }) {
                 Have you forgotten your password?{" "}
                 <span className="underline blue">Password reset</span>
               </p>
+            </Container>
+
+            <Container className="column x-fill full-center border-top px32 py16">
               <Button
                 className="x-fill bg-blue white py8 br4"
-                text="Log in"
+                text="Sign In"
                 type="submit"
               />
+
+              <p className="x-fill tac mt8">
+                Don't have an account?&nbsp;{" "}
+                <span
+                  className="clickable blue"
+                  onClick={e => {
+                    e.preventDefault();
+                    setActiveModal("signUp");
+                  }}
+                >
+                  Create Account
+                </span>
+              </p>
             </Container>
           </form>
         </Container>

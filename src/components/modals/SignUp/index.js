@@ -23,19 +23,6 @@ function SignUpModal({ setActiveModal }) {
         </Container>
 
         <Container className="x-fill column">
-          <Container className="x-fill full-center px32">
-            <Text className="x-fill tac border-bottom py16" type="p">
-              Already have an account?&nbsp;
-              <Text
-                className="clickable blue"
-                onClick={() => setActiveModal("login")}
-                type="span"
-              >
-                Login
-              </Text>
-            </Text>
-          </Container>
-
           <form
             className="x-fill column"
             onSubmit={handleSubmit(data => signUp(data))}
@@ -110,12 +97,25 @@ function SignUpModal({ setActiveModal }) {
                 </Container>
               </Container>
             </Container>
-            <Container className="x-fill full-center border-top px32 py16">
+            <Container className="column x-fill full-center border-top px32 py16">
               <Button
                 className="x-fill bg-blue white py8 br4"
                 text="Create Account"
                 type="submit"
               />
+
+              <p className="x-fill tac mt8">
+                Already have an account?&nbsp;
+                <span
+                  className="clickable blue"
+                  onClick={e => {
+                    e.preventDefault();
+                    setActiveModal("login");
+                  }}
+                >
+                  Login
+                </span>
+              </p>
             </Container>
           </form>
         </Container>

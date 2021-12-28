@@ -14,15 +14,14 @@ import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
 
 import { UserContext } from "../../context";
 
+import StarterModal from "../modals/Starter";
+
 import Container from "../containers/Container";
 import HandleOutsideClick from "../containers/HandleOutsideClick";
 import Text from "../views/Text";
 
 import Button from "../views/Button";
 
-import LoginModal from "../modals/Login";
-import SignUpModal from "../modals/SignUp";
-import ForgotPasswordModal from "../modals/ForgotPassword";
 import NotificationList from "../NotificationList";
 
 import {
@@ -288,15 +287,10 @@ function Header({ history, location }) {
             </Container>
           </Container>
         )}
-        {activeModal === "login" && (
-          <LoginModal setActiveModal={setActiveModal} />
-        )}
-        {activeModal === "signUp" && (
-          <SignUpModal setActiveModal={setActiveModal} />
-        )}
-        {activeModal === "forgotPassword" && (
-          <ForgotPasswordModal setActiveModal={setActiveModal} />
-        )}
+        <StarterModal
+          activeModal={activeModal}
+          setActiveModal={setActiveModal}
+        />
       </Container>
       {user && !user.emailVerified && (
         <Container className="x-fill full-center bg-grey-2">
