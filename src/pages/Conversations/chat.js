@@ -17,6 +17,7 @@ import Button from "../../components/views/Button";
 import Text from "../../components/views/Text";
 import KarmaBadge from "../../components/KarmaBadge";
 import Message from "./message";
+import Emoji from "../../components/Emoji";
 
 import {
   calculateKarma,
@@ -242,6 +243,11 @@ function Chat({ conversation, conversationPartnerData = {}, userID }) {
             }}
             placeholder="Type a helpful message here..."
             value={messageString}
+          />
+          <Emoji
+            handleChange={emoji => {
+              setMessageString(messageString + emoji);
+            }}
           />
           <Button
             className={
