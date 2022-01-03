@@ -52,8 +52,19 @@ function ConversationOption({
   const [currentConversation, setCurrentConversation] = useState(conversation);
 
   useEffect(() => {
+    let conversationUpdatedListenerUnsubscribe;
+
     getConversationBasicData(conversation, setConversationsBasicDatas, userID);
-    myFunction(currentConversation, setConversations, setCurrentConversation);
+    conversationUpdatedListenerUnsubscribe = myFunction(
+      currentConversation,
+      setConversations,
+      setCurrentConversation
+    );
+
+    return () => {
+      if (conversationUpdatedListenerUnsubscribe)
+        conversationUpdatedListenerUnsubscribe();
+    };
   }, []);
 
   if (!conversation) return <div>loading</div>;
@@ -179,7 +190,9 @@ function ConversationOption({
         <ConfirmAlertModal
           close={() => setDeleteConversationConfirm(false)}
           message="Deleting this conversation will be permanent and there will be no way to recover these messages once you have taken this action. Are you sure you would like to delete this conversation and all of your messages associated with it?"
-          submit={() => deleteConversation(currentConversation.id, userID)}
+          submit={() =>
+            deleteConversation(currentConversation.id, setConversations, userID)
+          }
           title="Delete Conversation"
         />
       )}

@@ -3,7 +3,19 @@ import db from "../../config/firebase";
 
 import { getEndAtValueTimestamp, getIsUserOnline } from "../../util";
 
-export const deleteConversation = async (conversationID, userID) => {
+export const deleteConversation = async (
+  conversationID,
+  setConversations,
+  userID
+) => {
+  setConversations(oldConversations => {
+    const deleteIndex = oldConversations.findIndex(
+      conversation => conversation.id === conversationID
+    );
+    oldConversations.splice(deleteIndex, 1);
+    return [...oldConversations];
+  });
+
   await db
     .collection("conversations")
     .doc(conversationID)
@@ -266,11 +278,11 @@ export const myFunction = (
         currentConversation.last_updated !== updatedConversation.last_updated
       ) {
         setConversations(oldConversations => {
-          const someIndex = oldConversations.findIndex(
+          const indexOfUpdatedConversation = oldConversations.findIndex(
             conversation => conversation.id === updatedConversation.id
           );
 
-          oldConversations[someIndex] = updatedConversation;
+          oldConversations[indexOfUpdatedConversation] = updatedConversation;
           oldConversations.sort((a, b) =>
             a.last_updated < b.last_updated ? 1 : -1
           );
@@ -279,4 +291,6 @@ export const myFunction = (
         });
       }
     });
+
+  return unsubscribe;
 };

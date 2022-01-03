@@ -101,7 +101,7 @@ function Chat({ conversation, conversationPartnerData = {}, userID }) {
   }, [conversation.id]);
 
   let conversationPartnerID;
-  if (conversation.members.length === 2)
+  if (conversation.members && conversation.members.length === 2)
     conversationPartnerID = conversation.members.find(memberID => {
       return memberID !== userID;
     });

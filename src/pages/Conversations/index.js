@@ -98,7 +98,7 @@ function Conversations() {
           })}
           {canLoadMore && (
             <button
-              className="button-2 pa8 mb8 br4"
+              className="button-2 pa8 my8 br4"
               onClick={() => {
                 getConversations(
                   conversations,
