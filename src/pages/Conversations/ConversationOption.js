@@ -18,6 +18,7 @@ import KarmaBadge from "../../components/KarmaBadge";
 import {
   deleteConversation,
   getConversationBasicData,
+  myFunction,
   readConversation
 } from "./util";
 
@@ -35,6 +36,7 @@ function ConversationOption({
   isLastItem,
   setActiveConversation,
   setConversationsBasicDatas,
+  setConversations,
   userID
 }) {
   const history = useHistory();
@@ -47,8 +49,11 @@ function ConversationOption({
     false
   );
 
+  const [currentConversation, setCurrentConversation] = useState(conversation);
+
   useEffect(() => {
     getConversationBasicData(conversation, setConversationsBasicDatas, userID);
+    myFunction(currentConversation, setConversations, setCurrentConversation);
   }, []);
 
   if (!conversation) return <div>loading</div>;
@@ -67,8 +72,8 @@ function ConversationOption({
         (isActive ? "bg-grey-2" : "")
       }
       onClick={() => {
-        setActiveConversation(conversation.id);
-        history.push("/conversations?" + conversation.id);
+        setActiveConversation(currentConversation.id);
+        history.push("/conversations?" + currentConversation.id);
       }}
     >
       <Container className="flex-fill column ov-hidden">
@@ -112,13 +117,13 @@ function ConversationOption({
             />
           )}
         </Container>
-        {conversation.last_message && (
+        {currentConversation.last_message && (
           <p>
-            {conversation.last_message.length > 40
-              ? conversation.last_message.substring(0, 40) + "..."
-              : conversation.last_message}{" "}
+            {currentConversation.last_message.length > 40
+              ? currentConversation.last_message.substring(0, 40) + "..."
+              : currentConversation.last_message}{" "}
             ·{" "}
-            {moment(conversation.last_updated)
+            {moment(currentConversation.last_updated)
               .subtract(1, "minute")
               .fromNow()}
           </p>
@@ -174,7 +179,7 @@ function ConversationOption({
         <ConfirmAlertModal
           close={() => setDeleteConversationConfirm(false)}
           message="Deleting this conversation will be permanent and there will be no way to recover these messages once you have taken this action. Are you sure you would like to delete this conversation and all of your messages associated with it?"
-          submit={() => deleteConversation(conversation.id, userID)}
+          submit={() => deleteConversation(currentConversation.id, userID)}
           title="Delete Conversation"
         />
       )}
@@ -185,7 +190,7 @@ function ConversationOption({
           submit={() => {
             blockUser(
               userID,
-              conversation.members.find(memberID => {
+              currentConversation.members.find(memberID => {
                 if (memberID != userID) return memberID;
               })
             );

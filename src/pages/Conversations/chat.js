@@ -42,8 +42,7 @@ function Chat({ conversation, conversationPartnerData = {}, userID }) {
       for (let memberID in isTyping) {
         if (memberID !== userID) {
           if (
-            firebase.firestore.Timestamp.now().toMillis() -
-              isTyping[memberID] <
+            firebase.firestore.Timestamp.now().toMillis() - isTyping[memberID] <
             4000
           ) {
             typingTimer2 = setTimeout(() => {
@@ -215,6 +214,7 @@ function Chat({ conversation, conversationPartnerData = {}, userID }) {
           }}
         >
           <textarea
+            autoFocus
             className={
               "send-message-textarea light-scrollbar " +
               (isMobileOrTablet() ? "" : "pa16")
