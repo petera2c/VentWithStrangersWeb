@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import moment from "moment-timezone";
+import { useIdleTimer } from "react-idle-timer";
 
 import firebase from "firebase/app";
 import "firebase/auth";
@@ -32,10 +33,25 @@ import VentPage from "./Vent";
 import VentsPage from "./Vents";
 
 import { isMobileOrTablet } from "../util";
-import { setIsUserOnlineToDatabase } from "./util";
+import { setIsUserOnlineToDatabase, setUserOnlineStatus } from "./util";
 
 function Routes() {
   const [user, loading, error] = useAuthState(firebase.auth());
+
+  const handleOnIdle = event => {
+    if (user && user.uid) setUserOnlineStatus("offline", user.uid);
+  };
+
+  const handleOnActive = event => {
+    if (user && user.uid) setUserOnlineStatus("online", user.uid);
+  };
+
+  const { getRemainingTime, getLastActiveTime } = useIdleTimer({
+    timeout: 1000 * 60 * 15,
+    onIdle: handleOnIdle,
+    onActive: handleOnActive,
+    debounce: 500
+  });
 
   useEffect(() => {
     setIsUserOnlineToDatabase(user);
