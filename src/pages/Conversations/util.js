@@ -121,17 +121,15 @@ export const getConversations = async (
     .limit(5)
     .get();
 
-  if (!conversationsQuerySnapshot.empty) {
-    let conversations = [];
-    conversationsQuerySnapshot.docs.forEach((item, i) => {
-      conversations.push({
-        id: item.id,
-        ...item.data(),
-        doc: conversationsQuerySnapshot.docs[i]
-      });
+  let newConversations = [];
+  conversationsQuerySnapshot.docs.forEach((item, i) => {
+    newConversations.push({
+      id: item.id,
+      ...item.data(),
+      doc: conversationsQuerySnapshot.docs[i]
     });
-    setConversations(conversations);
-  }
+  });
+  setConversations(newConversations);
 };
 
 export const getMessages = async (

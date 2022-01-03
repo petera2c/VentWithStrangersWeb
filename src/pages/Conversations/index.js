@@ -30,12 +30,14 @@ function Conversations() {
     search ? search.substring(1) : ""
   );
   const [conversationsBasicDatas, setConversationsBasicDatas] = useState({});
+  const [canLoadMore, setCanLoadMore] = useState(true);
 
   if (conversations && conversations.length !== 0 && !activeConversation)
     setActiveConversation(conversations[0].id);
 
   useEffect(() => {
     let newMessageListenerUnsubscribe;
+
     if (user) {
       getConversations(
         conversations,
@@ -47,6 +49,7 @@ function Conversations() {
             user.uid
           );
 
+          if (newConversations.length % 2 === 0) setCanLoadMore(true);
           setConversations(newConversations);
         },
         user.uid
@@ -93,6 +96,32 @@ function Conversations() {
               />
             );
           })}
+          {canLoadMore && (
+            <button
+              className="button-2 pa8 mb8 br4"
+              onClick={() => {
+                getConversations(
+                  conversations,
+                  setActiveConversation,
+                  newConversations => {
+                    if (
+                      newConversations.length % 5 !== 0 ||
+                      newConversations.length === 0
+                    )
+                      setCanLoadMore(false);
+
+                    setConversations(oldConversations => [
+                      ...oldConversations,
+                      ...newConversations
+                    ]);
+                  },
+                  user.uid
+                );
+              }}
+            >
+              Load More Conversations
+            </button>
+          )}
         </Container>
         {conversations.find(
           conversation => conversation.id === activeConversation
