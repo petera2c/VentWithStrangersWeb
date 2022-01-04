@@ -279,7 +279,7 @@ function Header({ history, location }) {
                 </Link>
                 <Text
                   className="button-1 full-center fw-400 tac fs-16 py16 mx16"
-                  onClick={signOut}
+                  onClick={() => signOut(user.uid)}
                   text="Sign Out"
                   type="h5"
                 />

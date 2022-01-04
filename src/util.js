@@ -4,6 +4,8 @@ import "firebase/auth";
 import db from "./config/firebase";
 import { Modal, Button, Space } from "antd";
 
+import { setUserOnlineStatus } from "./pages/util";
+
 export const addTagsToPage = (props, selectedTags) => {
   const { browser, history, location } = props;
   let searchPathname = location.pathname;
@@ -132,11 +134,12 @@ export const isPageActive = (page, pathname) => {
   else return "";
 };
 
-export const signOut = () => {
+export const signOut = userID => {
   firebase
     .auth()
     .signOut()
     .then(() => {
+      setUserOnlineStatus("offline", userID);
       window.location.reload();
     });
 };

@@ -79,7 +79,7 @@ const newVentListener = async (doc, context) => {
   const userSettingsDoc = await admin
     .firestore()
     .collection("users_settings")
-    .doc(comment.userID)
+    .doc(vent.userID)
     .get();
 
   if (userSettingsDoc.data() && userSettingsDoc.data().master_vent_new)
