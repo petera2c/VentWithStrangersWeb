@@ -45,7 +45,7 @@ function MakeFriendsPage() {
   const user = useContext(UserContext);
   const [userInfo, setUserInfo] = useState({});
   const [matches, setMatches] = useState([]);
-  const [starterModal, setStarterModal] = useState(false);
+  const [starterModal, setStarterModal] = useState(!user);
 
   useEffect(() => {
     if (user)
@@ -81,6 +81,15 @@ function MakeFriendsPage() {
               maxHeight: "200px"
             }}
           />
+        </Container>
+      )}
+
+      {!user && (
+        <Container className="container large column full-center bg-white pa16 mt16 br8">
+          <h6 className="clickable tac" onClick={() => setStarterModal(true)}>
+            Get matches with other awesome people on Vent With strangers!
+            <span className="blue"> Get started now :) </span>
+          </h6>
         </Container>
       )}
 
@@ -390,7 +399,9 @@ function MakeFriendsPage() {
           </div>
         </Container>
       </Container>
-      {(!user || starterModal) && <StarterModal activeModal="login" />}
+      {starterModal && (
+        <StarterModal activeModal="login" setActiveModal={setStarterModal} />
+      )}
     </Page>
   );
 }

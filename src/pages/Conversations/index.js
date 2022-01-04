@@ -34,6 +34,7 @@ function Conversations() {
   );
   const [conversationsBasicDatas, setConversationsBasicDatas] = useState({});
   const [canLoadMore, setCanLoadMore] = useState(true);
+  const [starterModal, setStarterModal] = useState(!user);
 
   if (conversations && conversations.length !== 0 && !activeConversation)
     setActiveConversation(conversations[0].id);
@@ -158,11 +159,13 @@ function Conversations() {
             conversation => conversation.id === activeConversation
           ) &&
             !activeConversation && (
-              <Link className="x-fill my16" to="/online-users">
-                <h1 className="button-1 grey-1 tac">
-                  See current people online :)
-                </h1>
-              </Link>
+              <h4
+                className="button-1 grey-1 tac pa32"
+                onClick={() => setStarterModal(true)}
+              >
+                Check your messages from friends on Vent With Strangers,
+                <span className="blue"> get started here!</span>
+              </h4>
             )}
           {conversations.find(
             conversation => conversation.id === activeConversation
@@ -224,7 +227,9 @@ function Conversations() {
           </Container>
         )}
       </Container>
-      {!user && <StarterModal activeModal="login" />}
+      {starterModal && (
+        <StarterModal activeModal="login" setActiveModal={setStarterModal} />
+      )}
     </Page>
   );
 }

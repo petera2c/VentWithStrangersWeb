@@ -70,7 +70,7 @@ function SignUpPage() {
               />
               <Text
                 className="fw-400 mb8"
-                text="(Your Email Address will never be shown to anyone.)"
+                text="(Your email address will never be shown to anyone.)"
                 type="p"
               />
               <Container className="x-fill wrap">
