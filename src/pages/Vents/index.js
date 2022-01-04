@@ -155,8 +155,8 @@ function VentsPage() {
             <Container className="x-fill column align-start bg-white pa16 mb16 br8">
               <Link className="button-3 fs-18 mb16" to="/online-users">
                 <FontAwesomeIcon className="mr8" icon={faUserFriends} />
-                {totalOnlineUsers} {totalOnlineUsers === 1 ? "User" : "Users"}{" "}
-                Online
+                {totalOnlineUsers}{" "}
+                {totalOnlineUsers === 1 ? "Person" : "People"} Online
               </Link>
               <Link className="button-3 fs-18 mb16" to="/vent-to-strangers">
                 <FontAwesomeIcon className="mr8" icon={faPen} />

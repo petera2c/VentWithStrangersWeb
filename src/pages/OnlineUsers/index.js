@@ -31,11 +31,11 @@ function OnlineUsers() {
   return (
     <Page
       className="column align-center bg-grey-2"
-      description="Current online users."
+      description="Current people online."
       keywords=""
-      title="Online Users"
+      title="People online"
     >
-      <h1 className="grey-1 tac fw-600 mt32 mb16">Online Users</h1>
+      <h1 className="grey-1 tac fw-600 mt32 mb16">People Online</h1>
       <Container
         className={
           "wrap justify-center pa16 gap16 " +

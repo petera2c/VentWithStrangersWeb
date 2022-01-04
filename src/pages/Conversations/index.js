@@ -160,7 +160,7 @@ function Conversations() {
             !activeConversation && (
               <Link className="x-fill my16" to="/online-users">
                 <h1 className="button-1 grey-1 tac">
-                  See current online users :)
+                  See current people online :)
                 </h1>
               </Link>
             )}
