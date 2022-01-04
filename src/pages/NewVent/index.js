@@ -227,16 +227,7 @@ function NewVentPage() {
           </Container>
         </Container>
       </Container>
-      {warningModalIsActive && !userSignUpProgress(user, true) && (
-        <WarningModal
-          close={() => {}}
-          text={
-            user
-              ? "Please verify your email address to create a vent"
-              : "Please create an account to start venting!"
-          }
-        />
-      )}
+
       {hasUserPostedMoreThanTwiceToday && (
         <BlockModal
           text={
