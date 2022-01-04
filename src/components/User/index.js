@@ -183,7 +183,7 @@ function UserComponent({
             }}
           >
             <FontAwesomeIcon className="mr8" icon={faComments} />
-            Message User
+            Message {capitolizeFirstChar(userInfo.displayName)}
           </Button>
         </Container>
       )}

@@ -252,7 +252,7 @@ function MakeFriendsPage() {
                       }}
                     >
                       <FontAwesomeIcon className="mr8" icon={faComments} />
-                      Message User
+                      Message {capitolizeFirstChar(displayName)}
                     </Button>
                   )}
                 </Container>

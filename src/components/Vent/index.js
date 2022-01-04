@@ -392,7 +392,18 @@ function Vent({
               text={getVentDescription(previewMode, vent)}
               type="p"
             />
+            <Container className="x-fill align-center justify-end">
+              <FontAwesomeIcon className="grey-5 mr8" icon={faClock} />
+              <Text
+                className="grey-5 fs-16"
+                text={moment(vent.server_timestamp)
+                  .subtract(1, "minute")
+                  .fromNow()}
+                type="p"
+              />
+            </Container>
           </SmartLink>
+
           {!searchPreviewMode && (
             <Container
               className={
@@ -480,20 +491,10 @@ function Vent({
                       }}
                     >
                       <FontAwesomeIcon className="mr8" icon={faComments} />
-                      Message User
+                      Message {capitolizeFirstChar(displayName)}
                     </Button>
                   )}
                 </Container>
-              </Container>
-              <Container className="align-center mb16">
-                <FontAwesomeIcon className="grey-5 mr8" icon={faClock} />
-                <Text
-                  className="grey-5 fs-16"
-                  text={moment(vent.server_timestamp)
-                    .subtract(1, "minute")
-                    .fromNow()}
-                  type="p"
-                />
               </Container>
             </Container>
           )}
@@ -509,8 +510,10 @@ function Vent({
                   <Container className="column x-fill align-end br8">
                     <Container className="relative x-fill">
                       <MentionsInput
+                        autoFocus
                         className="mentions"
                         onChange={e => setCommentString(e.target.value)}
+                        placeholder="Say something nice :)"
                         value={commentString}
                       >
                         <Mention

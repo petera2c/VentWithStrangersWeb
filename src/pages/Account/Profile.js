@@ -249,7 +249,7 @@ function ProfileSection({ user }) {
                     }}
                   >
                     <FontAwesomeIcon className="mr8" icon={faComments} />
-                    Message User
+                    Message {capitolizeFirstChar(displayName)}
                   </Button>
                 )}
               <div className="relative">

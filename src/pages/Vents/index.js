@@ -153,6 +153,11 @@ function VentsPage() {
               <h1 className="primary fs-20" style={{ minHeight: "35px" }}></h1>
             </Container>
             <Container className="x-fill column align-start bg-white pa16 mb16 br8">
+              <Link className="button-3 fs-18 mb16" to="/online-users">
+                <FontAwesomeIcon className="mr8" icon={faUserFriends} />
+                {totalOnlineUsers} {totalOnlineUsers === 1 ? "User" : "Users"}{" "}
+                Online
+              </Link>
               <Link className="button-3 fs-18 mb16" to="/vent-to-strangers">
                 <FontAwesomeIcon className="mr8" icon={faPen} />
                 Post a Vent
@@ -160,11 +165,6 @@ function VentsPage() {
               <Link className="button-3 fs-18 mb16" to="/conversations">
                 <FontAwesomeIcon className="mr8" icon={faComments} />
                 Inbox
-              </Link>
-              <Link className="button-3 fs-18 mb16" to="/online-users">
-                <FontAwesomeIcon className="mr8" icon={faUserFriends} />
-                {totalOnlineUsers} {totalOnlineUsers === 1 ? "User" : "Users"}{" "}
-                Online
               </Link>
               <Link className="button-3 fs-18 mb16" to="/conversations">
                 <FontAwesomeIcon className="mr8" icon={faUsers} />
