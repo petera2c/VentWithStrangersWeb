@@ -21,12 +21,14 @@ import HandleOutsideClick from "../containers/HandleOutsideClick";
 import ConfirmAlertModal from "../modals/ConfirmAlert";
 import ReportModal from "../modals/Report";
 import KarmaBadge from "../KarmaBadge";
+import StarterModal from "../modals/Starter";
+
 import { UserContext } from "../../context";
 
 import {
   blockUser,
   calculateKarma,
-  canUserInteract,
+  userSignUpProgress,
   capitolizeFirstChar,
   getIsUserOnline,
   getUserBasicInfo,
@@ -54,7 +56,6 @@ function Comment({
 }) {
   const history = useHistory();
   const user = useContext(UserContext);
-  const [userBasicInfo, setUserBasicInfo] = useState({});
   const [blockModal, setBlockModal] = useState(false);
   const [comment, setComment] = useState(comment2);
   const [commentOptions, setCommentOptions] = useState(false);
@@ -65,6 +66,8 @@ function Comment({
   const [isContentBlocked, setIsContentBlocked] = useState(user ? true : false);
   const [isUserOnline, setIsUserOnline] = useState(false);
   const [reportModal, setReportModal] = useState(false);
+  const [starterModal, setStarterModal] = useState(false);
+  const [userBasicInfo, setUserBasicInfo] = useState({});
 
   useEffect(() => {
     if (user) {
@@ -305,7 +308,12 @@ function Comment({
           className="clickable align-center py16 px32"
           onClick={async e => {
             e.preventDefault();
-            if (!canUserInteract(user)) return false;
+            const userInteractionIssues = userSignUpProgress(user);
+
+            if (userInteractionIssues) {
+              if (userInteractionIssues === "NSI") setStarterModal(true);
+              return;
+            }
 
             await likeOrUnlikeComment(comment, hasLiked, user);
             await getCommentHasLiked(commentID, setHasLiked, user.uid);
@@ -358,6 +366,9 @@ function Comment({
           submit={() => blockUser(user.uid, comment.userID)}
           title="Block User"
         />
+      )}
+      {starterModal && (
+        <StarterModal activeModal="login" setActiveModal={setStarterModal} />
       )}
     </Container>
   );

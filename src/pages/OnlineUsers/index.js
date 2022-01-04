@@ -35,7 +35,7 @@ function OnlineUsers() {
       keywords=""
       title="Online Users"
     >
-      <h4 className="tac fw-600 mt32 mb16">Online Users</h4>
+      <h1 className="grey-1 tac fw-600 mt32 mb16">Online Users</h1>
       <Container
         className={
           "wrap justify-center pa16 gap16 " +

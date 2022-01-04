@@ -24,7 +24,7 @@ import {
   getVent,
   saveVent
 } from "./util";
-import { canUserInteract, isMobileOrTablet } from "../../util";
+import { userSignUpProgress, isMobileOrTablet } from "../../util";
 
 function NewVentPage() {
   const history = useHistory();
@@ -216,7 +216,7 @@ function NewVentPage() {
           </Container>
         </Container>
       </Container>
-      {warningModalIsActive && !canUserInteract(user, true) && (
+      {warningModalIsActive && !userSignUpProgress(user, true) && (
         <WarningModal
           close={() => {}}
           text={

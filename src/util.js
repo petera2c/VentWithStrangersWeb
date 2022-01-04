@@ -38,14 +38,13 @@ export const calculateKarma = usereBasicInfo => {
   return goodKarma - badKarma;
 };
 
-export const canUserInteract = (user, noAlert) => {
+export const userSignUpProgress = (user, noAlert) => {
   if (!user) {
-    if (!noAlert) alert("You must be signed in to interact with this!");
-    return false;
+    return "NSI";
   } else if (!user.emailVerified) {
     if (!noAlert) alert("You must verify your email to interact with this!");
-    return false;
-  } else return true;
+    return "NVE";
+  } else return false;
 };
 
 // Taken from stack overflow

@@ -48,6 +48,7 @@ import Comment from "../Comment";
 import ReportModal from "../modals/Report";
 import ConfirmAlertModal from "../modals/ConfirmAlert";
 import SuccessMessage from "../SuccessMessage";
+import StarterModal from "../modals/Starter";
 
 import Container from "../containers/Container";
 import HandleOutsideClick from "../containers/HandleOutsideClick";
@@ -65,7 +66,8 @@ import {
   getIsUserOnline,
   getUserBasicInfo,
   hasUserBlockedUser,
-  isMobileOrTablet
+  isMobileOrTablet,
+  userSignUpProgress
 } from "../../util";
 import {
   commentVent,
@@ -129,7 +131,7 @@ function Vent({
   const [possibleUsersToTag, setPossibleUsersToTag] = useState();
   const [postOptions, setPostOptions] = useState(false);
   const [reportModal, setReportModal] = useState(false);
-  const [shareClicked, setShareClicked] = useState(false);
+  const [starterModal, setStarterModal] = useState(false);
   const [taggedUsers, setTaggedUsers] = useState([]);
   const [vent, setVent] = useState(ventInit);
 
@@ -407,6 +409,15 @@ function Vent({
                     } mr4`}
                     onClick={e => {
                       e.preventDefault();
+
+                      const userInteractionIssues = userSignUpProgress(user);
+
+                      if (userInteractionIssues) {
+                        if (userInteractionIssues === "NSI")
+                          setStarterModal(true);
+                        return;
+                      }
+
                       likeOrUnlikeVent(
                         hasLiked,
                         setHasLiked,
@@ -451,115 +462,26 @@ function Vent({
                 </Container>
 
                 <Container className="mb16">
-                  <HandleOutsideClick close={() => setShareClicked(false)}>
-                    {(!user ||
-                      (user && user.uid !== vent.userID && author.id)) && (
-                      <Button
-                        className="button-2 px16 py8 mr16 br8"
-                        onClick={() => {
-                          startConversation(history, user, vent.userID);
-                        }}
-                      >
-                        <FontAwesomeIcon className="mr8" icon={faComments} />
-                        Message User
-                      </Button>
-                    )}
+                  {(!user ||
+                    (user && user.uid !== vent.userID && author.id)) && (
                     <Button
-                      className="button-2 px16 py8 br8"
-                      onClick={() => setShareClicked(!shareClicked)}
-                    >
-                      <FontAwesomeIcon className="" icon={faShare} />
-                    </Button>
+                      className="button-2 px16 py8 mr16 br8"
+                      onClick={() => {
+                        const userInteractionIssues = userSignUpProgress(user);
 
-                    {shareClicked && (
-                      <Container
-                        className="absolute right-0 flex column bg-white shadow-2 px16 py16 br8"
-                        style={{
-                          top: "calc(100% - 8px)",
-                          zIndex: 1
-                        }}
-                      >
-                        <Container className="wrap mb8">
-                          <FacebookShareButton
-                            className="mr8"
-                            url={getVentFullLink(vent)}
-                            quote=""
-                          >
-                            <FacebookIcon round={true} size={32} />
-                          </FacebookShareButton>
-                          <TwitterShareButton
-                            className="mr8"
-                            title=""
-                            url={getVentFullLink(vent)}
-                          >
-                            <TwitterIcon round={true} size={32} />
-                          </TwitterShareButton>
-                          <RedditShareButton
-                            className="mr8"
-                            title=""
-                            url={getVentFullLink(vent)}
-                          >
-                            <RedditIcon round={true} size={32} />
-                          </RedditShareButton>
-                          <PinterestShareButton
-                            className="mr8"
-                            description=""
-                            url={getVentFullLink(vent)}
-                          >
-                            <PinterestIcon round={true} size={32} />
-                          </PinterestShareButton>
-                          <TumblrShareButton
-                            caption=""
-                            className="mr8"
-                            title=""
-                            url={getVentFullLink(vent)}
-                          >
-                            <TumblrIcon round={true} size={32} />
-                          </TumblrShareButton>
-                          <WhatsappShareButton
-                            className="mr8"
-                            title=""
-                            url={getVentFullLink(vent)}
-                          >
-                            <WhatsappIcon round={true} size={32} />
-                          </WhatsappShareButton>
-                          <TelegramShareButton
-                            className="mr8"
-                            title=""
-                            url={getVentFullLink(vent)}
-                          >
-                            <TelegramIcon round={true} size={32} />
-                          </TelegramShareButton>
-                          <EmailShareButton
-                            body=""
-                            className="mr8"
-                            subject=""
-                            url={getVentFullLink(vent)}
-                          >
-                            <EmailIcon round={true} size={32} />
-                          </EmailShareButton>
-                        </Container>
-                        <Container className="relative">
-                          <Container
-                            className="success-message-button button-2 round-icon mr8"
-                            onClick={copyToClipboard}
-                          >
-                            <FontAwesomeIcon className="" icon={faCopy} />
-                            <SuccessMessage
-                              id="copy-message"
-                              text={copySuccess}
-                            />
-                          </Container>
-                          <input
-                            className="br4"
-                            onChange={() => {}}
-                            ref={textAreaRef}
-                            value={getVentFullLink(vent)}
-                          />
-                        </Container>
-                      </Container>
-                    )}
-                  </HandleOutsideClick>
+                        if (userInteractionIssues) {
+                          if (userInteractionIssues === "NSI")
+                            setStarterModal(true);
+                          return;
+                        }
+
+                        startConversation(history, user, vent.userID);
+                      }}
+                    >
+                      <FontAwesomeIcon className="mr8" icon={faComments} />
+                      Message User
+                    </Button>
+                  )}
                 </Container>
               </Container>
               <Container className="align-center mb16">
@@ -625,6 +547,14 @@ function Vent({
                     <Button
                       className="button-2 px32 py8 mt8 br4"
                       onClick={async () => {
+                        const userInteractionIssues = userSignUpProgress(user);
+
+                        if (userInteractionIssues) {
+                          if (userInteractionIssues === "NSI")
+                            setStarterModal(true);
+                          return;
+                        }
+
                         if (!commentString) return;
                         commentVent(
                           commentString,
@@ -704,6 +634,9 @@ function Vent({
           submit={() => blockUser(user.uid, vent.userID)}
           title="Block User"
         />
+      )}
+      {starterModal && (
+        <StarterModal activeModal="login" setActiveModal={setStarterModal} />
       )}
     </Container>
   );

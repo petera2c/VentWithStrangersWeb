@@ -3,7 +3,7 @@ import db from "../../config/firebase";
 
 import {
   calculateKarma,
-  canUserInteract,
+  userSignUpProgress,
   getEndAtValueTimestamp
 } from "../../util";
 
@@ -22,7 +22,7 @@ export const commentVent = async (
   vent,
   ventID
 ) => {
-  if (!canUserInteract(user)) return false;
+  if (!userSignUpProgress(user)) return false;
 
   let commentObj = {
     like_counter: 0,
@@ -282,7 +282,7 @@ export const likeOrUnlikeVent = async (
   user,
   vent
 ) => {
-  if (!canUserInteract(user)) return false;
+  if (!userSignUpProgress(user)) return false;
 
   setHasLiked(!hasLiked);
 
@@ -343,7 +343,8 @@ export const tagUser = (
 };
 
 export const startConversation = async (history, user, ventUserID) => {
-  if (!canUserInteract(user)) return false;
+  const userInteractionIssues = userSignUpProgress(user);
+  if (userInteractionIssues) return false;
 
   const sortedMemberIDs = [user.uid, ventUserID].sort();
   const conversationQuerySnapshot = await db

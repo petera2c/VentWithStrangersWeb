@@ -1,10 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import AdSense from "react-adsense";
+
 import db from "../../config/firebase";
 
 import { UserContext } from "../../context";
+
+import StarterModal from "../../components/modals/Starter";
 
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
@@ -13,7 +16,7 @@ import Button from "../../components/views/Button";
 import ConversationOption from "./ConversationOption";
 import Chat from "./chat";
 
-import { isMobileOrTablet } from "../../util";
+import { isMobileOrTablet, userSignUpProgress } from "../../util";
 
 import { getConversations, mostRecentConversationListener } from "./util";
 
@@ -49,7 +52,12 @@ function Conversations() {
             user.uid
           );
 
-          if (newConversations.length % 2 === 0) setCanLoadMore(true);
+          if (
+            newConversations.length % 5 !== 0 ||
+            newConversations.length === 0
+          )
+            setCanLoadMore(false);
+
           setConversations(newConversations);
         },
         user.uid
@@ -79,6 +87,13 @@ function Conversations() {
           className="container small column ov-auto bg-white pa8 br4"
           style={{ height: isMobileOrTablet() ? "200px" : "default" }}
         >
+          {conversations.length === 0 && (
+            <Link className="" to="/online-users">
+              <h6 className="button-1 grey-1 tac">
+                Start a conversation with someone!
+              </h6>
+            </Link>
+          )}
           {conversations.map((conversation, index) => {
             return (
               <ConversationOption
@@ -96,7 +111,7 @@ function Conversations() {
               />
             );
           })}
-          {canLoadMore && (
+          {!userSignUpProgress() && canLoadMore && (
             <button
               className="button-2 pa8 my8 br4"
               onClick={() => {
@@ -123,16 +138,35 @@ function Conversations() {
             </button>
           )}
         </Container>
-        {conversations.find(
-          conversation => conversation.id === activeConversation
-        ) && (
-          <Container
-            className={
-              "column ov-hidden " +
-              (isMobileOrTablet() ? "container mobile-full" : "flex-fill")
-            }
-            style={{ height: isMobileOrTablet() ? "500px" : "default" }}
-          >
+
+        <Container
+          className={
+            "column ov-hidden bg-white " +
+            (isMobileOrTablet() ? "container mobile-full" : "flex-fill")
+          }
+          style={{ height: isMobileOrTablet() ? "500px" : "default" }}
+        >
+          {!conversations.find(
+            conversation => conversation.id === activeConversation
+          ) &&
+            activeConversation && (
+              <h1 className="x-fill tac py32">
+                Can not find this conversation!
+              </h1>
+            )}
+          {!conversations.find(
+            conversation => conversation.id === activeConversation
+          ) &&
+            !activeConversation && (
+              <Link className="x-fill my16" to="/online-users">
+                <h1 className="button-1 grey-1 tac">
+                  See current online users :)
+                </h1>
+              </Link>
+            )}
+          {conversations.find(
+            conversation => conversation.id === activeConversation
+          ) && (
             <Chat
               conversation={conversations.find(
                 conversation => conversation.id === activeConversation
@@ -142,13 +176,9 @@ function Conversations() {
               }
               userID={user.uid}
             />
-          </Container>
-        )}
-        {!conversations.find(
-          conversation => conversation.id === activeConversation
-        ) && (
-          <h1 className="x-fill tac py32">Can not find this conversation!</h1>
-        )}
+          )}
+        </Container>
+
         {!isMobileOrTablet() && (
           <Container className="container small column ov-auto bg-white pa8 br4">
             {process.env.NODE_ENV === "production" && (
@@ -194,13 +224,9 @@ function Conversations() {
           </Container>
         )}
       </Container>
+      {!user && <StarterModal activeModal="login" />}
     </Page>
   );
 }
-
-/*
-
-
-*/
 
 export default Conversations;
