@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import moment from "moment-timezone";
 import Avatar from "avataaars";
 
@@ -12,17 +12,19 @@ import { faBaby } from "@fortawesome/free-solid-svg-icons/faBaby";
 import { faGlassCheers } from "@fortawesome/free-solid-svg-icons/faGlassCheers";
 import { faSchool } from "@fortawesome/free-solid-svg-icons/faSchool";
 
-import Button from "../../components/views/Button";
-import Container from "../../components/containers/Container";
+import Button from "../views/Button";
+import Container from "../containers/Container";
+import StarterModal from "../modals/Starter";
 
-import KarmaBadge from "../../components/KarmaBadge";
+import KarmaBadge from "../KarmaBadge";
 import { UserContext } from "../../context";
 
 import {
   calculateKarma,
   capitolizeFirstChar,
   getUserBasicInfo,
-  isMobileOrTablet
+  isMobileOrTablet,
+  userSignUpProgress
 } from "../../util";
 import { startConversation } from "../../components/Vent/util";
 
@@ -43,8 +45,10 @@ function UserComponent({
 }) {
   const componentIsMounted = useRef(true);
   const user = useContext(UserContext);
+  const history = useHistory();
 
   const [userInfo, setUserInfo] = useState({ displayName, id: userID });
+  const [starterModal, setStarterModal] = useState(false);
 
   useEffect(() => {
     getUserBasicInfo(newUserInfo => {
@@ -163,20 +167,28 @@ function UserComponent({
       )}
       {showMessageUser && (
         <Container className="align-center justify-between mt16">
-          {userInfo.displayName && user && (
-            <Button
-              className="button-2 px16 py8 mr16 br8"
-              onClick={e => {
-                e.preventDefault();
+          <Button
+            className="button-2 px16 py8 mr16 br8"
+            onClick={e => {
+              e.preventDefault();
 
-                startConversation(history, user, userInfo.userID);
-              }}
-            >
-              <FontAwesomeIcon className="mr8" icon={faComments} />
-              Message User
-            </Button>
-          )}
+              const userInteractionIssues = userSignUpProgress(user);
+
+              if (userInteractionIssues) {
+                if (userInteractionIssues === "NSI") setStarterModal(true);
+                return;
+              }
+
+              startConversation(history, user, userInfo.id);
+            }}
+          >
+            <FontAwesomeIcon className="mr8" icon={faComments} />
+            Message User
+          </Button>
         </Container>
+      )}
+      {starterModal && (
+        <StarterModal activeModal="login" setActiveModal={setStarterModal} />
       )}
     </Link>
   );

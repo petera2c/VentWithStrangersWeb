@@ -122,7 +122,10 @@ function SignUpModal({ setActiveModal }) {
       </Container>
       <Container
         className="modal-background"
-        onClick={() => setActiveModal("")}
+        onClick={e => {
+          e.preventDefault();
+          setActiveModal("");
+        }}
       />
     </Container>
   );

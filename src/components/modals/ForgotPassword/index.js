@@ -57,7 +57,13 @@ function ForgotPasswordModal({ setActiveModal }) {
           </form>
         </Container>
       </Container>
-      <Container className="modal-background" onClick={close} />
+      <Container
+        className="modal-background"
+        onClick={e => {
+          e.preventDefault();
+          setActiveModal("");
+        }}
+      />
     </Container>
   );
 }

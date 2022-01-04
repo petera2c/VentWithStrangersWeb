@@ -15,18 +15,18 @@ import { faSchool } from "@fortawesome/free-solid-svg-icons/faSchool";
 
 import { UserContext } from "../../context";
 
-import StarterModal from "../../components/modals/Starter";
-
 import Page from "../../components/containers/Page";
 import Button from "../../components/views/Button";
 import Container from "../../components/containers/Container";
+import StarterModal from "../../components/modals/Starter";
 
 import KarmaBadge from "../../components/KarmaBadge";
 
 import {
   calculateKarma,
   capitolizeFirstChar,
-  isMobileOrTablet
+  isMobileOrTablet,
+  userSignUpProgress
 } from "../../util";
 import { startConversation } from "../../components/Vent/util";
 
@@ -45,6 +45,7 @@ function MakeFriendsPage() {
   const user = useContext(UserContext);
   const [userInfo, setUserInfo] = useState({});
   const [matches, setMatches] = useState([]);
+  const [starterModal, setStarterModal] = useState(false);
 
   useEffect(() => {
     if (user)
@@ -235,6 +236,13 @@ function MakeFriendsPage() {
                       className="button-2 px16 py8 mr16 br8"
                       onClick={e => {
                         e.preventDefault();
+                        const userInteractionIssues = userSignUpProgress(user);
+
+                        if (userInteractionIssues) {
+                          if (userInteractionIssues === "NSI")
+                            setStarterModal(true);
+                          return;
+                        }
 
                         startConversation(
                           history,
@@ -382,7 +390,7 @@ function MakeFriendsPage() {
           </div>
         </Container>
       </Container>
-      {!user && <StarterModal activeModal="login" />}
+      {(!user || starterModal) && <StarterModal activeModal="login" />}
     </Page>
   );
 }
