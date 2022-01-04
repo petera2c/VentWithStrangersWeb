@@ -22,8 +22,6 @@ export const commentVent = async (
   vent,
   ventID
 ) => {
-  if (!userSignUpProgress(user)) return false;
-
   let commentObj = {
     like_counter: 0,
     server_timestamp: firebase.firestore.Timestamp.now().toMillis(),
@@ -282,8 +280,6 @@ export const likeOrUnlikeVent = async (
   user,
   vent
 ) => {
-  if (!userSignUpProgress(user)) return false;
-
   setHasLiked(!hasLiked);
 
   setVent(incrementVentCounter("like_counter", !hasLiked, vent));
