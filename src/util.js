@@ -45,7 +45,11 @@ export const userSignUpProgress = (user, noAlert) => {
     return "NSI";
   } else if (!user.emailVerified) {
     if (!noAlert) {
-      Modal.confirm();
+      user.sendEmailVerification();
+      Modal.info({
+        title: "Verify Email",
+        content: "We have re-sent you a verification email :)"
+      });
     }
     return "NVE";
   } else return false;

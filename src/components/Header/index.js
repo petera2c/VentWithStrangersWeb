@@ -12,6 +12,8 @@ import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
 import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
 
+import { Button } from "antd";
+
 import { UserContext } from "../../context";
 
 import StarterModal from "../modals/Starter";
@@ -19,8 +21,6 @@ import StarterModal from "../modals/Starter";
 import Container from "../containers/Container";
 import HandleOutsideClick from "../containers/HandleOutsideClick";
 import Text from "../views/Text";
-
-import Button from "../views/Button";
 
 import NotificationList from "../NotificationList";
 
@@ -103,24 +103,24 @@ function Header({ history, location }) {
           <Container className="flex-fill align-center wrap">
             <Link
               className={
-                "button-3 py16 mr32 " +
+                "full-center flex button-3 mr32 " +
                 isPageActive("/trending", pathname.substring(0, 9)) +
                 isPageActive("/", pathname)
               }
               to="/trending"
             >
               <FontAwesomeIcon className="mr8" icon={faAnalytics} />
-              Trending
+              <p className="py16">Trending</p>
             </Link>
             <Link
               className={
-                "button-3 py16 mr32 " +
+                "full-center flex button-3 mr32 " +
                 isPageActive("/recent", pathname.substring(0, 7))
               }
               to="/recent"
             >
               <FontAwesomeIcon className="mr8" icon={faConciergeBell} />
-              Recent
+              <p className="py16">Recent</p>
             </Link>
             <Link
               className={
@@ -140,13 +140,13 @@ function Header({ history, location }) {
             </Link>
             <Link
               className={
-                "button-3 py16 mr32 " +
+                "full-center flex button-3 mr32  " +
                 isPageActive("/make-friends", pathname.substring(0, 13))
               }
               to="/make-friends"
             >
               <FontAwesomeIcon className="mr8" icon={faUsers} />
-              Make Friends
+              <p className="py16">Make Friends</p>
             </Link>
             <Container className="full-center bg-grey-4 py4 px8 my16 mr16 br4">
               <FontAwesomeIcon className="grey-5 mr8" icon={faSearch} />
@@ -164,27 +164,28 @@ function Header({ history, location }) {
                 value={ventSearchString}
               />
             </Container>
-            <Link
-              className="button-2 no-bold py8 px16 my16 br8"
-              to="/vent-to-strangers"
-            >
-              Post a Vent
+            <Link to="/vent-to-strangers">
+              <Button size="large" type="primary">
+                Post a Vent
+              </Button>
             </Link>
           </Container>
           <Container className="full-center wrap mx32 my16">
             {!user && (
-              <Button
+              <button
                 className="blue fw-300 mx32"
-                text="Login"
                 onClick={() => setActiveModal("login")}
-              />
+              >
+                Login
+              </button>
             )}
             {!user && (
-              <Button
+              <button
                 className="white blue-fade px32 py8 br4"
-                text="Sign Up"
                 onClick={() => setActiveModal("signUp")}
-              />
+              >
+                Sign Up
+              </button>
             )}
             {user && (
               <Container className="align-center wrap">

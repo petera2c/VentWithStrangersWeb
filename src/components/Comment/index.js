@@ -144,7 +144,7 @@ function Comment({
           {user && (
             <HandleOutsideClick close={() => setCommentOptions(false)}>
               <FontAwesomeIcon
-                className="clickable grey-9 pl16"
+                className="clickable grey-9"
                 icon={faEllipsisV}
                 onClick={e => {
                   e.preventDefault();

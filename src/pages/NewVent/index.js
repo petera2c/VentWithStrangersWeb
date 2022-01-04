@@ -15,6 +15,7 @@ import Button from "../../components/views/Button";
 
 import WarningModal from "../../components/modals/Warning";
 import BlockModal from "../../components/modals/Block";
+import StarterModal from "../../components/modals/Starter";
 
 import Emoji from "../../components/Emoji";
 
@@ -24,7 +25,7 @@ import {
   getVent,
   saveVent
 } from "./util";
-import { userSignUpProgress, isMobileOrTablet } from "../../util";
+import { isMobileOrTablet, userSignUpProgress } from "../../util";
 
 function NewVentPage() {
   const history = useHistory();
@@ -42,6 +43,8 @@ function NewVentPage() {
   const [title, setTitle] = useState("");
   const [ventID, setVentID] = useState(search ? search.substring(1) : null);
   const [warningModalIsActive, setWarningModalIsActive] = useState(true);
+  const [starterModal, setStarterModal] = useState(false);
+
   const user = useContext(UserContext);
 
   useEffect(() => {
@@ -171,6 +174,14 @@ function NewVentPage() {
                 <Button
                   className="bg-blue white px64 py8 mb8 br4"
                   onClick={() => {
+                    const userInteractionIssues = userSignUpProgress(user);
+
+                    if (userInteractionIssues) {
+                      if (userInteractionIssues === "NSI")
+                        setStarterModal(true);
+                      return;
+                    }
+
                     if (tagText) tags.push(tagText);
                     if (description && title) {
                       setTagText("");
@@ -234,6 +245,9 @@ function NewVentPage() {
           }
           title="Too Many Posts!"
         />
+      )}
+      {starterModal && (
+        <StarterModal activeModal="login" setActiveModal={setStarterModal} />
       )}
     </Page>
   );

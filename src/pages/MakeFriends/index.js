@@ -83,6 +83,18 @@ function MakeFriendsPage() {
         </Container>
       )}
 
+      {user && !hasUserCompletedProfile(userInfo) && (
+        <Container className="container large column full-center bg-white pa16 mt16 br8">
+          <Link to="/account">
+            <h6 className="tac">
+              Complete your
+              <span className="blue"> Profile Interests </span>
+              so we can start making you recommendations :)
+            </h6>
+          </Link>
+        </Container>
+      )}
+
       <Container
         className={
           "column container bg-white pa32 mt32 mb32 br8 " +
@@ -96,18 +108,6 @@ function MakeFriendsPage() {
         </h4>
       </Container>
 
-      {user && !hasUserCompletedProfile(userInfo) && (
-        <Container className="container large column full-center">
-          <h1>Error</h1>
-          <h6>
-            Fill in your
-            <Link className="blue" to="/account">
-              Profile
-            </Link>
-            so we can better make you proper recommendations :)
-          </h6>
-        </Container>
-      )}
       {user && hasUserCompletedProfile(userInfo) && (
         <Container
           className={
@@ -256,7 +256,7 @@ function MakeFriendsPage() {
       <Container
         className={
           "container column wrap justify-center bg-white gap16 mb32 br8 " +
-          (isMobileOrTablet() ? "mobile-full pa16" : "extra-large pa64")
+          (isMobileOrTablet() ? "mobile-full pa16" : "extra-large pa32")
         }
       >
         <Container className="x-fill wrap gap16">
@@ -382,7 +382,7 @@ function MakeFriendsPage() {
           </div>
         </Container>
       </Container>
-      <StarterModal activeModal="login" />
+      {!user && <StarterModal activeModal="login" />}
     </Page>
   );
 }

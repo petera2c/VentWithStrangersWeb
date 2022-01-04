@@ -47,7 +47,7 @@ function AccountPage() {
                   <Container className="flex x-fill full-center">
                     <FontAwesomeIcon icon={faChartNetwork} />
                   </Container>
-                  <h5>Public Profile</h5>
+                  <h5 className="grey-1 inherit-color">Public Profile</h5>
                 </Container>
               </Link>
 
@@ -61,7 +61,7 @@ function AccountPage() {
                   <Container className="flex x-fill full-center">
                     <FontAwesomeIcon icon={faUser} />
                   </Container>
-                  <h5>Account</h5>
+                  <h5 className="grey-1 inherit-color">Account</h5>
                 </Container>
               </Link>
               <Link className="x-fill" to="/avatar">
@@ -74,7 +74,7 @@ function AccountPage() {
                   <Container className="flex x-fill full-center">
                     <FontAwesomeIcon icon={faUserAstronaut} />
                   </Container>
-                  <h5>Avatar</h5>
+                  <h5 className="grey-1 inherit-color">Avatar</h5>
                 </Container>
               </Link>
 
@@ -88,17 +88,16 @@ function AccountPage() {
                   <Container className="flex x-fill full-center">
                     <FontAwesomeIcon icon={faCog} />
                   </Container>
-                  <h5>Notifications / Settings</h5>
+                  <h5 className="grey-1 inherit-color">
+                    Notifications / Settings
+                  </h5>
                 </Container>
               </Link>
 
               <Container className="clickable x-fill align-center pa16">
-                <Text
-                  className="button-1"
-                  onClick={signOut}
-                  text="Sign Out"
-                  type="h5"
-                />
+                <h5 className="button-1 grey-1" onClick={signOut}>
+                  Sign Out
+                </h5>
               </Container>
             </Container>
             {process.env.NODE_ENV === "production" && (

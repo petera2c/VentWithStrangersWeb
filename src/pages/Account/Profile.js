@@ -233,7 +233,7 @@ function ProfileSection({ user }) {
             <Container className="align-center justify-between mt16">
               {userBasicInfo.displayName &&
                 search &&
-                (user ? !(search != user.uid) : true) && (
+                (user ? search !== user.uid : true) && (
                   <Button
                     className="button-2 px16 py8 mr16 br8"
                     onClick={() => {
@@ -259,13 +259,14 @@ function ProfileSection({ user }) {
                   search != user.uid && (
                     <HandleOutsideClick close={() => setPostOptions(false)}>
                       <FontAwesomeIcon
-                        className="clickable grey-9 px16"
+                        className="clickable grey-9"
                         icon={faEllipsisV}
                         onClick={e => {
                           e.preventDefault();
 
                           setPostOptions(!postOptions);
                         }}
+                        style={{ width: 20 }}
                       />
                       {postOptions && (
                         <div
@@ -318,7 +319,7 @@ function ProfileSection({ user }) {
               }
               onClick={() => setPostsSection(true)}
             >
-              <h5 className="tac">Posts</h5>
+              <h5 className="tac inherit-color">Posts</h5>
             </Container>
             <Container
               className={
@@ -329,7 +330,7 @@ function ProfileSection({ user }) {
                 setPostsSection(false);
               }}
             >
-              <h5 className="tac">Comments</h5>
+              <h5 className="tac inherit-color">Comments</h5>
             </Container>
           </Container>
         </Container>

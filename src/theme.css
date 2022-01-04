@@ -82,6 +82,10 @@
   color: var(--main-color);
   text-decoration: underline;
 }
+
+.inherit-color {
+  color: inherit !important;
+}
 .blog img {
   margin-bottom: 16px;
 }
