@@ -30,13 +30,15 @@ import ConfirmAlertModal from "../../components/modals/ConfirmAlert";
 import HandleOutsideClick from "../../components/containers/HandleOutsideClick";
 import LoadMore from "../../components/LoadMore";
 import KarmaBadge from "../../components/KarmaBadge";
+import StarterModal from "../../components/modals/Starter";
 
 import {
   blockUser,
   calculateKarma,
   capitolizeFirstChar,
   getUserBasicInfo,
-  isMobileOrTablet
+  isMobileOrTablet,
+  userSignUpProgress
 } from "../../util";
 import { startConversation } from "../../components/Vent/util";
 import { getUser } from "./util";
@@ -62,6 +64,7 @@ function ProfileSection({ user }) {
   const [postsSection, setPostsSection] = useState(true);
   const [userBasicInfo, setUserBasicInfo] = useState({});
   const [userInfo, setUserInfo] = useState({});
+  const [starterModal, setStarterModal] = useState(false);
 
   if (search) search = search.substring(1);
   if (!search && user) search = user.uid;
@@ -230,11 +233,18 @@ function ProfileSection({ user }) {
             <Container className="align-center justify-between mt16">
               {userBasicInfo.displayName &&
                 search &&
-                user &&
-                search != user.uid && (
+                (user ? !(search != user.uid) : true) && (
                   <Button
                     className="button-2 px16 py8 mr16 br8"
                     onClick={() => {
+                      const userInteractionIssues = userSignUpProgress(user);
+
+                      if (userInteractionIssues) {
+                        if (userInteractionIssues === "NSI")
+                          setStarterModal(true);
+                        return;
+                      }
+
                       startConversation(history, user, search);
                     }}
                   >
@@ -430,6 +440,9 @@ function ProfileSection({ user }) {
           submit={() => blockUser(user.uid, search)}
           title="Block User"
         />
+      )}
+      {starterModal && (
+        <StarterModal activeModal="login" setActiveModal={setStarterModal} />
       )}
     </Container>
   );

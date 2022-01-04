@@ -279,13 +279,14 @@ function Vent({
               {user && (
                 <HandleOutsideClick close={() => setPostOptions(false)}>
                   <FontAwesomeIcon
-                    className="clickable grey-9 px16"
+                    className="clickable grey-9"
                     icon={faEllipsisV}
                     onClick={e => {
                       e.preventDefault();
 
                       setPostOptions(!postOptions);
                     }}
+                    style={{ width: 20 }}
                   />
                   {postOptions && (
                     <div

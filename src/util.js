@@ -1,6 +1,8 @@
+import React from "react";
 import firebase from "firebase/app";
 import "firebase/auth";
 import db from "./config/firebase";
+import { Modal, Button, Space } from "antd";
 
 export const addTagsToPage = (props, selectedTags) => {
   const { browser, history, location } = props;
@@ -42,7 +44,9 @@ export const userSignUpProgress = (user, noAlert) => {
   if (!user) {
     return "NSI";
   } else if (!user.emailVerified) {
-    if (!noAlert) alert("You must verify your email to interact with this!");
+    if (!noAlert) {
+      Modal.confirm();
+    }
     return "NVE";
   } else return false;
 };

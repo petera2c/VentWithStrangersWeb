@@ -124,12 +124,12 @@ function Header({ history, location }) {
             </Link>
             <Link
               className={
-                "full-center flex button-3 relative mr32 " +
+                "full-center flex button-3 mr32 " +
                 isPageActive("/conversations", pathname.substring(0, 14))
               }
               to="/conversations"
             >
-              <FontAwesomeIcon className="py16 mr8" icon={faComments} />
+              <FontAwesomeIcon className="mr8" icon={faComments} />
               <p className="py16">Inbox</p>
 
               {Boolean(unreadConversationsCount) && (
