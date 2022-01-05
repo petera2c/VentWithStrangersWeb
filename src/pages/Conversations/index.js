@@ -114,7 +114,7 @@ function Conversations() {
               />
             );
           })}
-          {!userSignUpProgress() && canLoadMore && (
+          {!userSignUpProgress(user, true) && canLoadMore && (
             <button
               className="button-2 pa8 my8 br4"
               onClick={() => {
