@@ -87,25 +87,13 @@ function ProfileSection({ user }) {
       }, search);
     } else history.push("/");
 
-    getUsersVents(
-      componentIsMounted,
-      search,
-      setCanLoadMoreVents,
-      setVents,
-      vents
-    );
-    getUsersComments(
-      componentIsMounted,
-      search,
-      setCanLoadMoreComments,
-      setComments,
-      comments
-    );
+    getUsersVents(search, setCanLoadMoreVents, setVents, vents);
+    getUsersComments(search, setCanLoadMoreComments, setComments, comments);
 
     return () => {
       componentIsMounted.current = false;
     };
-  }, [search]);
+  }, []);
 
   const displayName = userBasicInfo.displayName
     ? capitolizeFirstChar(userBasicInfo.displayName)
@@ -362,13 +350,7 @@ function ProfileSection({ user }) {
               <LoadMore
                 canLoadMore={canLoadMoreVents}
                 loadMore={() =>
-                  getUsersVents(
-                    componentIsMounted,
-                    search,
-                    setCanLoadMoreVents,
-                    setVents,
-                    vents
-                  )
+                  getUsersVents(search, setCanLoadMoreVents, setVents, vents)
                 }
               >
                 <Container className="clickable x-fill column bg-white mb16 br8">
@@ -429,7 +411,6 @@ function ProfileSection({ user }) {
                 className="mt16"
                 onClick={() => {
                   getUsersComments(
-                    componentIsMounted,
                     search,
                     setCanLoadMoreComments,
                     setComments,

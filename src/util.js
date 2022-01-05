@@ -135,7 +135,7 @@ export const signOut = async userID => {
     .auth()
     .signOut()
     .then(() => {
-      //window.location.reload();
+      window.location.reload();
     });
 };
 
