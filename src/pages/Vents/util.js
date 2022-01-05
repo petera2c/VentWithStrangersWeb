@@ -28,7 +28,13 @@ export const getMetaInformation = pathname => {
   return { metaDescription, metaTitle };
 };
 
-export const getVents = async (pathname, setCanLoadMore, setVents, vents) => {
+export const getVents = async (
+  componentIsMounted,
+  pathname,
+  setCanLoadMore,
+  setVents,
+  vents
+) => {
   let startAt = getEndAtValueTimestamp(vents);
 
   let snapshot;
@@ -49,6 +55,8 @@ export const getVents = async (pathname, setCanLoadMore, setVents, vents) => {
       .limit(10)
       .get();
   }
+
+  if (!componentIsMounted.current) return;
 
   if (snapshot.docs && snapshot.docs.length > 0) {
     let newVents = snapshot.docs.map((doc, index) => ({

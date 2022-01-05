@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useHistory } from "react-router-dom";
 
 import moment from "moment-timezone";
 
@@ -48,12 +47,6 @@ function createYearArray(year) {
 
 function AccountSection({ user }) {
   const componentIsMounted = useRef(true);
-
-  const history = useHistory();
-  if (!user) {
-    history.push("/");
-    return <div />;
-  }
 
   const [birthDate, setBirthDate] = useState(new moment());
   const [canSeePassword, setCanSeePassword] = useState(false);

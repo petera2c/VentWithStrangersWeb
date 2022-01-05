@@ -78,8 +78,6 @@ function ProfileSection({ user }) {
   };
 
   useEffect(() => {
-    if (!search) history.push("/");
-
     if (search) {
       getUserBasicInfo(userBasicInfo => {
         if (componentIsMounted.current) setUserBasicInfo(userBasicInfo);
@@ -87,7 +85,8 @@ function ProfileSection({ user }) {
       getUser(userInfo => {
         if (componentIsMounted.current) setUserInfo(userInfo);
       }, search);
-    }
+    } else history.push("/");
+
     getUsersVents(
       componentIsMounted,
       search,

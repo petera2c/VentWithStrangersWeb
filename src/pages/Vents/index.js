@@ -47,7 +47,7 @@ function VentsPage() {
     onlineUsersUnsubscribe = getTotalOnlineUsers(totalOnlineUsers => {
       if (componentIsMounted.current) setTotalOnlineUsers(totalOnlineUsers);
     });
-    getVents(pathname, setCanLoadMore, setVents, null);
+    getVents(componentIsMounted, pathname, setCanLoadMore, setVents, null);
 
     return () => {
       componentIsMounted.current = false;

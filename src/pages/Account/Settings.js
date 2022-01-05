@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useDocument } from "react-firebase-hooks/firestore";
-import { useHistory } from "react-router-dom";
 import firebase from "firebase/app";
 import db from "../../config/firebase";
 
@@ -17,12 +16,6 @@ import Text from "../../components/views/Text";
 import { isMobileOrTablet } from "../../util";
 
 function SettingsSection({ user }) {
-  const history = useHistory();
-  if (!user) {
-    history.push("/");
-    return <div />;
-  }
-
   const settingsRef = db.collection("users_settings").doc(user.uid);
   const [settingsSnapshot] = useDocument(settingsRef, {
     idField: "id"

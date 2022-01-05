@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import AdSense from "react-adsense";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -23,9 +23,20 @@ import { isMobileOrTablet, isPageActive, signOut } from "../../util";
 
 function AccountPage() {
   const user = useContext(UserContext);
+  const history = useHistory();
 
   const location = useLocation();
   let { pathname, search } = location;
+
+  useEffect(() => {
+    if (
+      (pathname === "/account" ||
+        pathname === "/settings" ||
+        pathname === "/avatar") &&
+      !user
+    )
+      history.push("/");
+  }, [user]);
 
   return (
     <Page className="bg-grey-2" description="" keywords="" title="Account">
@@ -129,10 +140,10 @@ function AccountPage() {
         )}
 
         <Container className={isMobileOrTablet() ? "x-fill pt16" : ""}>
-          {pathname === "/account" && <Account user={user} />}
-          {pathname === "/avatar" && <Avatar user={user} />}
+          {user && pathname === "/account" && <Account user={user} />}
+          {user && pathname === "/avatar" && <Avatar user={user} />}
           {pathname === "/profile" && <Profile user={user} />}
-          {pathname === "/settings" && <Settings user={user} />}
+          {user && pathname === "/settings" && <Settings user={user} />}
         </Container>
       </Container>
     </Page>
