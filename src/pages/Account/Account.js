@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 
 import moment from "moment-timezone";
@@ -47,6 +47,8 @@ function createYearArray(year) {
 }
 
 function AccountSection({ user }) {
+  const componentIsMounted = useRef(true);
+
   const history = useHistory();
   if (!user) {
     history.push("/");
@@ -82,9 +84,13 @@ function AccountSection({ user }) {
 
   useEffect(() => {
     getUser(userInfo => {
-      setAccountInfo(userInfo);
-      if (userInfo) setUserInfo(userInfo);
+      if (componentIsMounted.current) setAccountInfo(userInfo);
+      if (userInfo && componentIsMounted.current) setUserInfo(userInfo);
     }, user.uid);
+
+    return () => {
+      componentIsMounted.current = false;
+    };
   }, []);
 
   return (

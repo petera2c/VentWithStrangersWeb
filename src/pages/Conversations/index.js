@@ -39,8 +39,10 @@ function Conversations() {
   if (conversations && conversations.length !== 0 && !activeConversation)
     setActiveConversation(conversations[0].id);
 
+  let newMessageListenerUnsubscribe;
+
   useEffect(() => {
-    let newMessageListenerUnsubscribe;
+    if (newMessageListenerUnsubscribe) newMessageListenerUnsubscribe();
 
     if (user) {
       getConversations(
@@ -68,7 +70,7 @@ function Conversations() {
     return () => {
       if (newMessageListenerUnsubscribe) newMessageListenerUnsubscribe();
     };
-  }, []);
+  }, [user]);
 
   return (
     <Page

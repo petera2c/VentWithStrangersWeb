@@ -32,7 +32,7 @@ import SignUpPage from "./SignUp";
 import VentPage from "./Vent";
 import VentsPage from "./Vents";
 
-import { isMobileOrTablet } from "../util";
+import { isMobileOrTablet, signOut } from "../util";
 import { setIsUserOnlineToDatabase, setUserOnlineStatus } from "./util";
 
 function Routes() {
@@ -71,6 +71,13 @@ function Routes() {
 
   return (
     <UserContext.Provider value={user}>
+      <button
+        onClick={() => {
+          signOut(user.uid);
+        }}
+      >
+        click me
+      </button>
       <Router>
         {error && { error }}
         {!loading && !error && (

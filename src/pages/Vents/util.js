@@ -1,7 +1,7 @@
 import moment from "moment-timezone";
 import firebase from "firebase/app";
 import db from "../../config/firebase";
-import { combineInsideObjectWithID, getEndAtValueTimestamp } from "../../util";
+import { getEndAtValueTimestamp } from "../../util";
 
 export const getMetaInformation = pathname => {
   let metaTitle = "";

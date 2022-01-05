@@ -7,7 +7,8 @@ export const getNotifications = (
   user,
   firstLoad = true
 ) => {
-  db.collection("notifications")
+  const unsubscribe = db
+    .collection("notifications")
     .orderBy("server_timestamp")
     .where("userID", "==", user.uid)
     .limitToLast(10)
@@ -35,6 +36,8 @@ export const getNotifications = (
       }
       firstLoad = false;
     });
+
+  return unsubscribe;
 };
 
 export const getUnreadConversations = (
@@ -44,7 +47,8 @@ export const getUnreadConversations = (
   userID,
   first = true
 ) => {
-  db.collection("unread_conversations_count")
+  const unsubscribe = db
+    .collection("unread_conversations_count")
     .doc(userID)
     .onSnapshot("value", doc => {
       if (doc.data() && doc.data().count) {
@@ -56,6 +60,8 @@ export const getUnreadConversations = (
       }
       first = false;
     });
+
+  return unsubscribe;
 };
 
 export const howCompleteIsUserProfile = (

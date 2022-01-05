@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import moment from "moment-timezone";
 import Avatar from "avataaars";
 import AdSense from "react-adsense";
+import { Button } from "antd";
 import db from "../../config/firebase";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -20,7 +21,6 @@ import LoadingHeart from "../../components/loaders/Heart";
 
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
-import Button from "../../components/views/Button";
 import Text from "../../components/views/Text";
 
 import Vent from "../../components/Vent";
@@ -41,7 +41,7 @@ import {
   userSignUpProgress
 } from "../../util";
 import { startConversation } from "../../components/Vent/util";
-import { getUser } from "./util";
+import { getUser, getUsersComments, getUsersVents } from "./util";
 import {
   educationList,
   kidsList,
@@ -51,50 +51,61 @@ import {
 } from "../../PersonalOptions";
 
 function ProfileSection({ user }) {
+  const componentIsMounted = useRef(true);
+
   const history = useHistory();
   const location = useLocation();
   let { search } = location;
-  if (!user && !search) {
-    history.push("/");
-    return <div />;
-  }
+
   const [blockModal, setBlockModal] = useState(false);
-  const [canLoadMore, setCanLoadMore] = useState();
+  const [canLoadMoreComments, setCanLoadMoreComments] = useState(true);
+  const [canLoadMoreVents, setCanLoadMoreVents] = useState(true);
   const [postOptions, setPostOptions] = useState(false);
   const [postsSection, setPostsSection] = useState(true);
   const [userBasicInfo, setUserBasicInfo] = useState({});
   const [userInfo, setUserInfo] = useState({});
   const [starterModal, setStarterModal] = useState(false);
 
+  const [vents, setVents] = useState([]);
+  const [comments, setComments] = useState([]);
+
   if (search) search = search.substring(1);
   if (!search && user) search = user.uid;
 
-  const ventQuery = db
-    .collection("/vents/")
-    .where("userID", "==", search)
-    .orderBy("server_timestamp", "desc")
-    .limit(20);
-
-  const [vents] = useCollectionData(ventQuery, { idField: "id" });
-
-  const commentQuery = db
-    .collection("/comments/")
-    .where("userID", "==", search)
-    .orderBy("server_timestamp", "desc")
-    .limit(20);
-  const [comments] = useCollectionData(commentQuery, { idField: "id" });
   const isActive = page => {
     if (page) return " active";
     else return "";
   };
 
   useEffect(() => {
+    if (!search) history.push("/");
+
     if (search) {
-      getUserBasicInfo(setUserBasicInfo, search);
+      getUserBasicInfo(userBasicInfo => {
+        if (componentIsMounted.current) setUserBasicInfo(userBasicInfo);
+      }, search);
       getUser(userInfo => {
-        setUserInfo(userInfo);
+        if (componentIsMounted.current) setUserInfo(userInfo);
       }, search);
     }
+    getUsersVents(
+      componentIsMounted,
+      search,
+      setCanLoadMoreVents,
+      setVents,
+      vents
+    );
+    getUsersComments(
+      componentIsMounted,
+      search,
+      setCanLoadMoreComments,
+      setComments,
+      comments
+    );
+
+    return () => {
+      componentIsMounted.current = false;
+    };
   }, [search]);
 
   const displayName = userBasicInfo.displayName
@@ -234,7 +245,7 @@ function ProfileSection({ user }) {
               {userBasicInfo.displayName &&
                 search &&
                 (user ? search !== user.uid : true) && (
-                  <Button
+                  <button
                     className="button-2 px16 py8 mr16 br8"
                     onClick={() => {
                       const userInteractionIssues = userSignUpProgress(user);
@@ -250,7 +261,7 @@ function ProfileSection({ user }) {
                   >
                     <FontAwesomeIcon className="mr8" icon={faComments} />
                     Message {capitolizeFirstChar(displayName)}
-                  </Button>
+                  </button>
                 )}
               <div className="relative">
                 {userBasicInfo.displayName &&
@@ -348,8 +359,19 @@ function ProfileSection({ user }) {
             {vents && vents.length === 0 && (
               <h4 className="fw-400">No vents found.</h4>
             )}
-            {canLoadMore && (
-              <LoadMore canLoadMore={canLoadMore} loadMore={() => {}}>
+            {canLoadMoreVents && (
+              <LoadMore
+                canLoadMore={canLoadMoreVents}
+                loadMore={() =>
+                  getUsersVents(
+                    componentIsMounted,
+                    search,
+                    setCanLoadMoreVents,
+                    setVents,
+                    vents
+                  )
+                }
+              >
                 <Container className="clickable x-fill column bg-white mb16 br8">
                   <Container className="justify-between pt16 px32">
                     <Container>
@@ -401,6 +423,25 @@ function ProfileSection({ user }) {
             </Container>
             {comments && comments.length === 0 && (
               <h4 className="fw-400">No comments found.</h4>
+            )}
+            {canLoadMoreComments && (
+              <Button
+                block
+                className="mt16"
+                onClick={() => {
+                  getUsersComments(
+                    componentIsMounted,
+                    search,
+                    setCanLoadMoreComments,
+                    setComments,
+                    comments
+                  );
+                }}
+                size="large"
+                type="primary"
+              >
+                Load More Comments
+              </Button>
             )}
           </Container>
         )}

@@ -386,12 +386,12 @@ function Vent({
           >
             <Text className="fs-20 primary mb8" text={vent.title} type="h1" />
 
-            <Text
+            <p
               className="fs-18 fw-400 grey-1"
               style={{ whiteSpace: "pre-line" }}
-              text={getVentDescription(previewMode, vent)}
-              type="p"
-            />
+            >
+              {getVentDescription(previewMode, vent)}
+            </p>
             <Container className="x-fill align-center justify-end">
               <FontAwesomeIcon className="grey-5 mr8" icon={faClock} />
               <Text
@@ -413,7 +413,7 @@ function Vent({
                   : "")
               }
             >
-              <Container className="align-center wrap">
+              <Container className="x-fill align-center justify-between wrap">
                 <Container className="align-center mb16">
                   <img
                     className={`clickable heart ${
@@ -477,7 +477,7 @@ function Vent({
                   {(!user ||
                     (user && user.uid !== vent.userID && author.id)) && (
                     <Button
-                      className="button-2 px16 py8 mr16 br8"
+                      className="button-2 px16 py8 br8"
                       onClick={() => {
                         const userInteractionIssues = userSignUpProgress(user);
 

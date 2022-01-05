@@ -1,14 +1,15 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 
-export const setUserOnlineStatus = (status, uid) => {
-  firebase
+export const setUserOnlineStatus = async (status, uid) => {
+  await firebase
     .database()
     .ref("status/" + uid)
     .set({
       state: status,
       last_changed: firebase.database.ServerValue.TIMESTAMP
     });
+  return;
 };
 
 export const setIsUserOnlineToDatabase = user => {

@@ -2,6 +2,83 @@ import firebase from "firebase/app";
 import db from "../../config/firebase";
 
 import { getInvalidCharacters } from "../../components/modals/SignUp/util";
+import { getEndAtValueTimestamp } from "../../util";
+
+export const getUsersVents = async (
+  componentIsMounted,
+  search,
+  setCanLoadMoreVents,
+  setVents,
+  vents
+) => {
+  let startAt = getEndAtValueTimestamp(vents);
+
+  const snapshot = await db
+    .collection("/vents/")
+    .where("userID", "==", search)
+    .orderBy("server_timestamp", "desc")
+    .startAfter(startAt)
+    .limit(10)
+    .get();
+
+  if (!componentIsMounted.current) return;
+
+  if (snapshot.docs && snapshot.docs.length > 0) {
+    let newVents = snapshot.docs.map((doc, index) => ({
+      ...doc.data(),
+      id: doc.id,
+      doc
+    }));
+
+    if (newVents.length < 10) setCanLoadMoreVents(false);
+    if (vents) {
+      return setVents(oldVents => {
+        if (oldVents) return [...oldVents, ...newVents];
+        else return newVents;
+      });
+    } else {
+      return setVents(newVents);
+    }
+  } else return setCanLoadMoreVents(false);
+};
+
+export const getUsersComments = async (
+  componentIsMounted,
+  search,
+  setCanLoadMoreComments,
+  setComments,
+  comments
+) => {
+  let startAt = getEndAtValueTimestamp(comments);
+
+  const snapshot = await db
+    .collection("/comments/")
+    .where("userID", "==", search)
+    .orderBy("server_timestamp", "desc")
+    .startAfter(startAt)
+    .limit(10)
+    .get();
+
+  if (!componentIsMounted.current) return;
+
+  if (snapshot.docs && snapshot.docs.length > 0) {
+    let newComments = snapshot.docs.map((doc, index) => ({
+      ...doc.data(),
+      id: doc.id,
+      doc
+    }));
+
+    if (newComments.length < 10) setCanLoadMoreComments(false);
+    if (comments) {
+      return setComments(oldComments => {
+        if (oldComments) return [...oldComments, ...newComments];
+        else return newComments;
+      });
+    } else {
+      return setComments(newComments);
+    }
+  } else return setCanLoadMoreComments(false);
+};
 
 export const getUser = async (callback, userID) => {
   if (!userID) {

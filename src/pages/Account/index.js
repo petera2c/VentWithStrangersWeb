@@ -97,7 +97,9 @@ function AccountPage() {
               <Container className="clickable x-fill align-center pa16">
                 <h5
                   className="button-1 grey-1"
-                  onClick={() => signOut(user.uid)}
+                  onClick={() => {
+                    signOut(user.uid);
+                  }}
                 >
                   Sign Out
                 </h5>

@@ -261,7 +261,7 @@ export const setConversationIsTyping = async (conversationID, userID) => {
     );
 };
 
-export const myFunction = (
+export const conversationListener = (
   currentConversation,
   setConversations,
   setCurrentConversation

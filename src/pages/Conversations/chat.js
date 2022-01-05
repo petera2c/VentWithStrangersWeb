@@ -56,8 +56,6 @@ function Chat({ conversation, conversationPartnerData = {}, userID }) {
     }
   };
 
-  let messageListenerUnsubscribe;
-
   const dummyRef = useRef();
   const scrollToBottom = () => {
     if (dummyRef.current)
@@ -75,6 +73,8 @@ function Chat({ conversation, conversationPartnerData = {}, userID }) {
   const [messageString, setMessageString] = useState("");
   const [isUserCurrentlyTyping, setIsUserCurrentlyTyping] = useState(false);
   let messageDivs = [];
+
+  let messageListenerUnsubscribe;
 
   useEffect(() => {
     setCanLoadMore(true);

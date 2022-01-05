@@ -66,12 +66,6 @@ export const capitolizeFirstChar = string => {
   else return;
 };
 
-export const combineInsideObjectWithID = object => {
-  return Object.keys(object).map(objectID => {
-    return { id: objectID, ...object[objectID] };
-  });
-};
-
 export const combineObjectWithID = (id, object) => {
   object.id = id;
   return object;
@@ -134,13 +128,14 @@ export const isPageActive = (page, pathname) => {
   else return "";
 };
 
-export const signOut = userID => {
+export const signOut = async userID => {
+  await setUserOnlineStatus("offline", userID);
+
   firebase
     .auth()
     .signOut()
     .then(() => {
-      setUserOnlineStatus("offline", userID);
-      window.location.reload();
+      //window.location.reload();
     });
 };
 

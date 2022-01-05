@@ -18,7 +18,7 @@ import KarmaBadge from "../../components/KarmaBadge";
 import {
   deleteConversation,
   getConversationBasicData,
-  myFunction,
+  conversationListener,
   readConversation
 } from "./util";
 
@@ -55,7 +55,7 @@ function ConversationOption({
     let conversationUpdatedListenerUnsubscribe;
 
     getConversationBasicData(conversation, setConversationsBasicDatas, userID);
-    conversationUpdatedListenerUnsubscribe = myFunction(
+    conversationUpdatedListenerUnsubscribe = conversationListener(
       currentConversation,
       setConversations,
       setCurrentConversation

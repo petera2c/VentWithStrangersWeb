@@ -60,9 +60,17 @@ function Header({ history, location }) {
       : ""
   );
 
+  let newNotificationsListenerUnsubscribe;
+  let newConversationsListenerUnsubscribe;
+
   useEffect(() => {
+    if (newNotificationsListenerUnsubscribe)
+      newNotificationsListenerUnsubscribe();
+    if (newConversationsListenerUnsubscribe)
+      newConversationsListenerUnsubscribe();
+
     if (user) {
-      getUnreadConversations(
+      newConversationsListenerUnsubscribe = getUnreadConversations(
         componentIsMounted,
         pathname.substring(0, 7) === "/search",
         setUnreadConversationsCount,
@@ -72,13 +80,21 @@ function Header({ history, location }) {
         setUserBasicInfo(newBasicUserInfo);
         howCompleteIsUserProfile(setMissingAccountPercentage, newBasicUserInfo);
       }, user.uid);
-      getNotifications(componentIsMounted, setNotifications, user);
+      newNotificationsListenerUnsubscribe = getNotifications(
+        componentIsMounted,
+        setNotifications,
+        user
+      );
     }
 
     return () => {
+      if (newNotificationsListenerUnsubscribe)
+        newNotificationsListenerUnsubscribe();
+      if (newConversationsListenerUnsubscribe)
+        newConversationsListenerUnsubscribe();
       componentIsMounted.current = false;
     };
-  }, [location]);
+  }, [location, user]);
 
   if (pathname === "/conversations" && user && unreadConversationsCount > 0)
     resetUnreadConversationCount(user.uid);
