@@ -30,16 +30,14 @@ function LoginModal({ setActiveModal }) {
             )}
           >
             <Container className="x-fill column px32 py16">
-              <Text className="fw-400 mb8" text="Email Address" type="h5" />
               <input
                 className="py8 px16 mb8 br4"
                 type="text"
                 name="email"
-                placeholder="Email"
+                placeholder="Email Address"
                 ref={register}
                 required
               />
-              <Text className="fw-400 mb8" text="Password" type="h5" />
               <Container className="x-fill full-center">
                 <input
                   className="flex-fill py8 px16 mb8 br4"

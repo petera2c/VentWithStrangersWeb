@@ -1,5 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import { Tooltip } from "antd";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMedal } from "@fortawesome/pro-solid-svg-icons/faMedal";
@@ -14,19 +15,20 @@ function KarmaBadge({ karma, noOnClick }) {
   let karmaColor = "";
   if (karma >= 5000)
     return (
-      <Container
-        className="clickable"
-        onClick={e => {
-          if (noOnClick) return;
-          e.stopPropagation();
-          e.preventDefault();
-          history.push("/site-info");
-        }}
-      >
-        <h5 className="bg-blue white fw-400 px8 py4 br8" title={title}>
-          Moderator
-        </h5>
-      </Container>
+      <Tooltip title={karma + " Karma Points"}>
+        <Container
+          className="clickable"
+          onClick={e => {
+            if (noOnClick) return;
+
+            e.stopPropagation();
+            e.preventDefault();
+            history.push("/site-info");
+          }}
+        >
+          <h5 className="bg-blue white fw-400 px8 py4 br8">Moderator</h5>
+        </Container>
+      </Tooltip>
     );
   else if (karma >= 500) karmaColor = "#9bf6ff";
   else if (karma >= 250) karmaColor = "#caffbf";
@@ -35,22 +37,22 @@ function KarmaBadge({ karma, noOnClick }) {
 
   if (karmaColor)
     return (
-      <Container
-        className="clickable"
-        onClick={e => {
-          e.stopPropagation();
-          e.preventDefault();
-          if (noOnClick) return;
-          history.push("/site-info");
-        }}
-      >
-        <FontAwesomeIcon
-          icon={faMedal}
-          color={karmaColor}
-          size="2x"
-          title={title}
-        />
-      </Container>
+      <Tooltip title={karma + " Karma Points"}>
+        <span>
+          <Container
+            className="clickable"
+            onClick={e => {
+              if (noOnClick) return;
+
+              e.stopPropagation();
+              e.preventDefault();
+              history.push("/site-info");
+            }}
+          >
+            <FontAwesomeIcon icon={faMedal} color={karmaColor} size="2x" />
+          </Container>
+        </span>
+      </Tooltip>
     );
   else return <div></div>;
 }

@@ -37,12 +37,11 @@ function ForgotPasswordModal({ setActiveModal }) {
             onSubmit={handleSubmit(data => sendPasswordReset(data))}
           >
             <Container className="x-fill column px32 py16">
-              <Text className="fw-400 mb8" text="Email" type="h5" />
               <input
                 className="py8 px16 mb8 br4"
                 type="text"
                 name="email"
-                placeholder="abc@gmail.com"
+                placeholder="Email Address"
                 ref={register}
                 required
               />

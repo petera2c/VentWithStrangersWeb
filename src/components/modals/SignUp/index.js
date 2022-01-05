@@ -28,21 +28,19 @@ function SignUpModal({ setActiveModal }) {
             onSubmit={handleSubmit(data => signUp(data))}
           >
             <Container className="x-fill column px32 py16">
-              <Text className="fw-400 mb8" text="Display Name" type="h5" />
               <input
                 className="py8 px16 mb8 br4"
                 type="text"
                 name="displayName"
-                placeholder="Art Vandalay"
+                placeholder="Display Name"
                 ref={register}
                 required
               />
-              <Text className="fw-400 mb8" text="Email Address" type="h5" />
               <input
                 className="py8 px16 br4"
                 name="email"
                 type="text"
-                placeholder="artvandalay@gmail.com"
+                placeholder="Email Address"
                 ref={register}
                 required
               />
@@ -57,12 +55,11 @@ function SignUpModal({ setActiveModal }) {
                     "column " + (isMobileOrTablet() ? "x-100" : "x-50 pr8")
                   }
                 >
-                  <Text className="fw-400 mb8" text="Password" type="h5" />
                   <input
                     className="py8 px16 mb8 br4"
                     name="password"
                     type={canSeePassword ? "" : "password"}
-                    placeholder="********"
+                    placeholder="Password"
                     ref={register}
                     required
                   />
@@ -72,17 +69,12 @@ function SignUpModal({ setActiveModal }) {
                     "column " + (isMobileOrTablet() ? "x-100" : "x-50 pl8")
                   }
                 >
-                  <Text
-                    className="fw-400 mb8"
-                    text="Confirm Password"
-                    type="h5"
-                  />
                   <Container className="x-fill full-center">
                     <input
                       className="py8 px16 mb8 br4"
                       name="passwordConfirm"
                       type={canSeePassword ? "" : "password"}
-                      placeholder="********"
+                      placeholder="Confirm Password"
                       ref={register}
                       required
                     />
