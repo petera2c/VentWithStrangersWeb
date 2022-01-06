@@ -10,13 +10,14 @@ import Container from "../../../components/containers/Container";
 import { handleVerifyEmail } from "./util";
 
 function VerifiedEmail() {
-  const [verifiedSuccessly, setVerifiedSuccessly] = useState(false);
+  const [verifiedSuccessfully, setVerifiedSuccessly] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
 
   const location = useLocation();
   let { search } = location;
 
   useEffect(() => {
+    if (!search) return;
     const oobCode = /oobCode=([^&]+)/.exec(search)[1];
 
     handleVerifyEmail(
@@ -39,7 +40,7 @@ function VerifiedEmail() {
           <Space direction="vertical">
             <h1 className="tac">
               {!errorMessage
-                ? verifiedSuccessly
+                ? verifiedSuccessfully
                   ? "Email Verified successfully :)"
                   : "Loading"
                 : "Please try again :'("}
@@ -47,18 +48,16 @@ function VerifiedEmail() {
 
             <p className="tac mb16">
               {!errorMessage
-                ? verifiedSuccessly
+                ? verifiedSuccessfully
                   ? "Click continue' to go home!"
                   : "Loading"
                 : errorMessage}
             </p>
           </Space>
-          {verifiedSuccessly && (
-            <Link to="/">
-              <Button size="large" type="primary">
-                Continue
-              </Button>
-            </Link>
+          {verifiedSuccessfully && (
+            <Button href="/" size="large" type="primary">
+              Continue
+            </Button>
           )}
         </Space>
       </Space>
