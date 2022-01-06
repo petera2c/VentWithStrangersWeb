@@ -241,7 +241,8 @@ const updateTotalUsersOnline = (change, context) => {
   } else if (!changeBefore.val()) {
     // New doc
 
-    setToDatabase(changeAfter.val().state);
+    if (changeAfter.val().state === "online")
+      setToDatabase(changeAfter.val().state);
   } else if (!changeAfter.val()) {
     // Doc deleted
 
