@@ -26,9 +26,9 @@ if (location.hostname === "localhost")
     storageBucket: "vent-with-strangers-2acc6.appspot.com"
   };
 
-const firebaseApp = firebase.initializeApp(firebaseConfig);
+export const firebaseApp = firebase.initializeApp(firebaseConfig);
 
-var db = firebase.firestore();
+let db = firebase.firestore();
 
 if (location.hostname === "localhost") {
   db.useEmulator("localhost", 8080);

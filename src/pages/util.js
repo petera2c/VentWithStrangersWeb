@@ -1,6 +1,8 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 
+const getParameterByName = () => {};
+
 export const setUserOnlineStatus = async (status, uid) => {
   await firebase
     .database()
