@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { Link, useLocation } from "react-router-dom";
 import AdSense from "react-adsense";
@@ -18,11 +18,16 @@ import Chat from "./chat";
 
 import { isMobileOrTablet, userSignUpProgress } from "../../util";
 
-import { getConversations, mostRecentConversationListener } from "./util";
+import {
+  getConversation,
+  getConversations,
+  mostRecentConversationListener
+} from "./util";
 
 import "./style.css";
 
 function Conversations() {
+  const componentIsMounted = useRef(true);
   const user = useContext(UserContext);
 
   const [conversations, setConversations] = useState([]);
@@ -56,6 +61,19 @@ function Conversations() {
           );
 
           if (
+            !newConversations.find(
+              conversation => conversation.id === activeConversation
+            )
+          ) {
+            getConversation(
+              componentIsMounted,
+              activeConversation,
+              setConversations,
+              user.uid
+            );
+          }
+
+          if (
             newConversations.length % 5 !== 0 ||
             newConversations.length === 0
           )
@@ -69,6 +87,7 @@ function Conversations() {
 
     return () => {
       if (newMessageListenerUnsubscribe) newMessageListenerUnsubscribe();
+      componentIsMounted.current = false;
     };
   }, [user]);
 

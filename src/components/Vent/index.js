@@ -158,12 +158,18 @@ function Vent({
     );
 
     if (vent && vent.userID) {
-      getUserBasicInfo(setAuthor, vent.userID);
-      getIsUserOnline(setIsUserOnline, vent.userID);
+      getUserBasicInfo(author => {
+        if (componentIsMounted.current) setAuthor(author);
+      }, vent.userID);
+      getIsUserOnline(status => {
+        if (componentIsMounted.current) setIsUserOnline(status);
+      }, vent.userID);
     }
 
     if (user) {
-      hasUserBlockedUser(user.uid, vent.userID, setIsContentBlocked);
+      hasUserBlockedUser(user.uid, vent.userID, isBlocked => {
+        if (componentIsMounted.current) setIsContentBlocked(isBlocked);
+      });
     }
 
     if (setTitle && vent && vent.title) setTitle(vent.title);
@@ -172,13 +178,21 @@ function Vent({
 
     if (!searchPreviewMode && displayCommentField2)
       newCommentListenerUnsubscribe = newVentCommentListener(
+        componentIsMounted,
         setComments,
         vent.id
       );
-    if (!searchPreviewMode) getVentComments(comments, setComments, vent.id);
+    if (!searchPreviewMode)
+      getVentComments(comments, componentIsMounted, setComments, vent.id);
 
     if (user && !searchPreviewMode)
-      ventHasLiked(setHasLiked, user.uid, vent.id);
+      ventHasLiked(
+        newHasLiked => {
+          if (componentIsMounted.current) setHasLiked(newHasLiked);
+        },
+        user.uid,
+        vent.id
+      );
 
     return () => {
       componentIsMounted.current = false;
@@ -598,7 +612,12 @@ function Vent({
                   <Button
                     className="blue underline"
                     onClick={() => {
-                      getVentComments(comments, setComments, vent.id);
+                      getVentComments(
+                        comments,
+                        componentIsMounted,
+                        setComments,
+                        vent.id
+                      );
                     }}
                     key={comments.length}
                   >

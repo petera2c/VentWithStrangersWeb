@@ -117,6 +117,29 @@ export const messageListener = (
   return unsubscribe;
 };
 
+export const getConversation = async (
+  componentIsMounted,
+  conversationID,
+  setConversations,
+  userID
+) => {
+  const conversationDoc = await db
+    .collection("conversations")
+    .doc(conversationID)
+    .get();
+  if (!conversationDoc.exists) return;
+
+  if (componentIsMounted.current)
+    setConversations(oldConversations => {
+      oldConversations.push({
+        id: conversationDoc.id,
+        ...conversationDoc.data(),
+        doc: conversationDoc
+      });
+      return oldConversations;
+    });
+};
+
 export const getConversations = async (
   conversations,
   setActiveConversation,

@@ -200,7 +200,12 @@ export const getVentPartialLink = vent => {
   );
 };
 
-export const newVentCommentListener = (setComments, ventID, first = true) => {
+export const newVentCommentListener = (
+  icomponentIsMounted,
+  setComments,
+  ventID,
+  first = true
+) => {
   const unsubscribe = db
     .collection("comments")
     .where("ventID", "==", ventID)
@@ -220,14 +225,15 @@ export const newVentCommentListener = (setComments, ventID, first = true) => {
             querySnapshot.docChanges()[0].type === "added" ||
             querySnapshot.docChanges()[0].type === "removed"
           ) {
-            setComments(oldComments => [
-              {
-                ...querySnapshot.docs[0].data(),
-                id: querySnapshot.docs[0].id,
-                doc: querySnapshot.docs[0]
-              },
-              ...oldComments
-            ]);
+            if (icomponentIsMounted.current)
+              setComments(oldComments => [
+                {
+                  ...querySnapshot.docs[0].data(),
+                  id: querySnapshot.docs[0].id,
+                  doc: querySnapshot.docs[0]
+                },
+                ...oldComments
+              ]);
           }
         }
       },
@@ -236,7 +242,12 @@ export const newVentCommentListener = (setComments, ventID, first = true) => {
   return unsubscribe;
 };
 
-export const getVentComments = async (comments, setComments, ventID) => {
+export const getVentComments = async (
+  comments,
+  componentIsMounted,
+  setComments,
+  ventID
+) => {
   const startAt = getEndAtValueTimestamp(comments);
 
   const snapshot = await db
@@ -253,11 +264,14 @@ export const getVentComments = async (comments, setComments, ventID) => {
       newComments.push({ ...doc.data(), id: doc.id, doc });
     });
 
-    setComments(oldComments => {
-      if (oldComments) return [...oldComments, ...newComments];
-      else return newComments;
-    });
-  } else setComments([]);
+    if (componentIsMounted.current)
+      setComments(oldComments => {
+        if (oldComments) return [...oldComments, ...newComments];
+        else return newComments;
+      });
+  } else {
+    if (componentIsMounted.current) setComments([]);
+  }
 };
 
 export const ventHasLiked = async (setHasLiked, userID, ventID) => {
