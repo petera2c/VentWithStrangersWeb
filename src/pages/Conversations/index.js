@@ -61,6 +61,7 @@ function Conversations() {
           );
 
           if (
+            search &&
             !newConversations.find(
               conversation => conversation.id === activeConversation
             )

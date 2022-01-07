@@ -158,6 +158,7 @@ export const getConversations = async (
 
   let newConversations = [];
   conversationsQuerySnapshot.docs.forEach((item, i) => {
+    if (conversations.find(conversation => conversation.id === item.id)) return;
     newConversations.push({
       id: item.id,
       ...item.data(),
