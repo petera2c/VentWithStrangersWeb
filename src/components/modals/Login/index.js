@@ -8,6 +8,8 @@ import Container from "../../containers/Container";
 import Text from "../../views/Text";
 import Button from "../../views/Button";
 
+import { isMobileOrTablet } from "../../../util";
+
 import { login } from "./util";
 
 import "./style.css";
@@ -18,7 +20,12 @@ function LoginModal({ setActiveModal }) {
 
   return (
     <Container className="modal-container full-center">
-      <Container className="modal container medium column align-center ov-auto bg-white br4">
+      <Container
+        className={
+          "modal column align-center ov-auto bg-white br4 " +
+          (isMobileOrTablet() ? "mx8" : "container medium")
+        }
+      >
         <Container className="x-fill justify-center bg-blue py16">
           <h4 className="tac white">Sign In</h4>
         </Container>

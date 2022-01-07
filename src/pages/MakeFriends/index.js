@@ -85,7 +85,12 @@ function MakeFriendsPage() {
       )}
 
       {!user && (
-        <Container className="container large column full-center bg-white pa16 mt16 br8">
+        <Container
+          className={
+            "column full-center bg-white pa16 mt16 br8 " +
+            (isMobileOrTablet() ? "mx8" : "container large ")
+          }
+        >
           <h6 className="clickable tac" onClick={() => setStarterModal(true)}>
             Get matches with other awesome people on Vent With strangers!
             <span className="blue"> Get started now :) </span>
@@ -94,7 +99,12 @@ function MakeFriendsPage() {
       )}
 
       {user && !hasUserCompletedProfile(userInfo) && (
-        <Container className="container large column full-center bg-white pa16 mt16 br8">
+        <Container
+          className={
+            "column full-center bg-white pa16 mt16 br8 " +
+            (isMobileOrTablet() ? "mx8" : "container large ")
+          }
+        >
           <Link to="/account">
             <h6 className="tac">
               Complete your
@@ -107,8 +117,8 @@ function MakeFriendsPage() {
 
       <Container
         className={
-          "column container bg-white pa32 mt32 mb32 br8 " +
-          (isMobileOrTablet() ? "mobile-full mx16" : "large")
+          "column full-center bg-white pa16 mt16 br8 " +
+          (isMobileOrTablet() ? "mx8" : "container large ")
         }
       >
         <h1 className="primary tac mb16">Make Friends Online</h1>
@@ -272,8 +282,8 @@ function MakeFriendsPage() {
       )}
       <Container
         className={
-          "container column wrap justify-center bg-white gap16 mb32 br8 " +
-          (isMobileOrTablet() ? "mobile-full pa16" : "extra-large pa32")
+          "column full-center bg-white pa16 mt16 br8 " +
+          (isMobileOrTablet() ? "mx8" : "container extra-large")
         }
       >
         <Container className="x-fill wrap gap16">
@@ -400,7 +410,10 @@ function MakeFriendsPage() {
         </Container>
       </Container>
       {starterModal && (
-        <StarterModal activeModal="login" setActiveModal={setStarterModal} />
+        <StarterModal
+          activeModal={starterModal}
+          setActiveModal={setStarterModal}
+        />
       )}
     </Page>
   );

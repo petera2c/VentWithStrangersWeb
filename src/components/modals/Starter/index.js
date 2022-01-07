@@ -13,7 +13,7 @@ function Header({ activeModal = "", setActiveModal }) {
 
   return (
     <div style={{ zIndex: 10 }}>
-      {localActiveModal === "login" && (
+      {(localActiveModal === "login" || localActiveModal === true) && (
         <LoginModal
           setActiveModal={setActiveModal ? setActiveModal : setLocalActiveModal}
         />

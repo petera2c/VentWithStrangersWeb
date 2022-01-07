@@ -53,7 +53,7 @@ function Header({ history, location }) {
   const user = useContext(UserContext);
 
   const [starterModal, setStarterModal] = useState(false);
-  const [mobileHeaderActive, setMobileHeaderActive] = useState(true);
+  const [mobileHeaderActive, setMobileHeaderActive] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [showFeedback, setShowFeedback] = useState(true);
   const [missingAccountPercentage, setMissingAccountPercentage] = useState();

@@ -17,7 +17,12 @@ function SignUpModal({ setActiveModal }) {
 
   return (
     <Container className="modal-container full-center">
-      <Container className="modal container medium column align-center ov-auto bg-white br4">
+      <Container
+        className={
+          "modal column align-center ov-auto bg-white br4 " +
+          (isMobileOrTablet() ? "mx8" : "container medium")
+        }
+      >
         <Container className="x-fill justify-center bg-blue py16">
           <Text className="tac white" text="Create an Account" type="h4" />
         </Container>

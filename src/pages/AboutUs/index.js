@@ -36,7 +36,12 @@ class AboutUsPage extends Component {
           website for people that want to be heard and people that want to
           listen. Your emotional health is our priority.
         </h4>
-        <Container className="column container large bg-white pa32 ma32 br8">
+        <Container
+          className={
+            "column bg-white mt16 br8 " +
+            (isMobileOrTablet() ? "pa16 mx8" : "container large pa32 ")
+          }
+        >
           <h4 className="mb16">What Can You Do on VWS?</h4>
           <p className="pl8 mb8">· Chat anonymously with strangers</p>
           <p className="pl8 mb8">
