@@ -1,6 +1,10 @@
 const admin = require("firebase-admin");
+const Webflow = require("webflow-api");
+const moment = require("moment-timezone");
 const { createNotification } = require("./notification");
-const { createVentLink } = require("./util");
+const { calculateKarma, createVentLink } = require("./util");
+
+const { webflowApiKey } = require("../config/localKeys");
 
 const VENT_LIKE_TRENDING_SCORE_INCREMENT = 24;
 
@@ -46,6 +50,19 @@ const decreaseTrendingScore = async () => {
 };
 
 const newVentListener = async (doc, context) => {
+  // Initialize the API
+  /*
+  const api = new Webflow({ token: webflowApiKey });
+
+  const items = api.items(
+    { collectionId: "61c15b996c97cffafd29cc5d" },
+    { limit: 1 }
+  );
+  console.log(items);
+
+  items.then((i) => console.log(i));
+*/
+
   const vent = { id: doc.id, ...doc.data() };
 
   if (vent.server_timestamp > admin.firestore.Timestamp.now().toMillis()) {
@@ -64,16 +81,26 @@ const newVentListener = async (doc, context) => {
       .doc(vent.id + "|||" + vent.userID)
       .set({ liked: true, ventID: vent.id });
 
+    const usersBasicInfoDoc = await admin
+      .firestore()
+      .collection("users_display_name")
+      .doc(vent.userID)
+      .get();
+
+    let hoursTillNextVent = 5;
+    const usersKarma = calculateKarma(usersBasicInfoDoc.data());
+
+    if (usersKarma > 5000) hoursTillNextVent = 0;
+    else if (usersKarma > 500) hoursTillNextVent = 1;
+    else if (usersKarma > 250) hoursTillNextVent = 2;
+    else if (usersKarma > 100) hoursTillNextVent = 3;
+    else if (usersKarma > 50) hoursTillNextVent = 4;
+
     await admin
       .firestore()
-      .collection("user_day_limit_vents")
+      .collection("user_vent_timeout")
       .doc(vent.userID)
-      .set(
-        {
-          vent_counter: admin.firestore.FieldValue.increment(1),
-        },
-        { merge: true }
-      );
+      .set({ value: new moment().add(hoursTillNextVent, "hours").format() });
   }
 
   const userSettingsDoc = await admin

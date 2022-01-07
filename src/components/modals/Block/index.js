@@ -11,9 +11,7 @@ function BlockModal({ text, title }) {
           <h4 className="tac white">{title}</h4>
         </Container>
         <Container className="x-fill column">
-          <Container className="x-fill full-center px32">
-            <p className="x-fill tac py16">{text}</p>
-          </Container>
+          <Container className="x-fill full-center py16 px32">{text}</Container>
         </Container>
       </Container>
       <Container className="modal-background" />

@@ -20,7 +20,8 @@
     "firebase-functions": "^3.11.0",
     "moment-timezone": "^0.5.33",
     "node-fetch": "^2.6.1",
-    "s3-proxy": "^1.2.1"
+    "s3-proxy": "^1.2.1",
+    "webflow-api": "^0.5.4"
   },
   "devDependencies": {
     "eslint": "^7.6.0",

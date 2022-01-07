@@ -1,6 +1,9 @@
 import React, { Component, useContext, useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { UserContext } from "../../context";
+import { Statistic } from "antd";
+
+const { Countdown } = Statistic;
 
 import TextArea from "react-textarea-autosize";
 
@@ -21,7 +24,7 @@ import Emoji from "../../components/Emoji";
 
 import {
   calculateTimeToVentCounterReset,
-  getHasUserPostedMoreThanTwiceToday,
+  getUserVentTimeOut,
   getVent,
   saveVent
 } from "./util";
@@ -33,10 +36,7 @@ function NewVentPage() {
   const { search } = location;
   const [description, setDescription] = useState("");
   const [gender, setGender] = useState(0);
-  const [
-    hasUserPostedMoreThanTwiceToday,
-    setHasUserPostedMoreThanTwiceToday
-  ] = useState(false);
+  const [userVentTimeOut, setUserVentTimeOut] = useState(false);
   const [saving, setSaving] = useState(false);
   const [tags, setTags] = useState([]);
   const [tagText, setTagText] = useState("");
@@ -49,11 +49,7 @@ function NewVentPage() {
 
   useEffect(() => {
     if (ventID) getVent(setDescription, setTags, setTitle, ventID);
-    if (user)
-      getHasUserPostedMoreThanTwiceToday(
-        setHasUserPostedMoreThanTwiceToday,
-        user.uid
-      );
+    if (user) getUserVentTimeOut(setUserVentTimeOut, user.uid);
   }, []);
   const updateTags = (inputText, tags) => {
     let word = "";
@@ -228,13 +224,22 @@ function NewVentPage() {
         </Container>
       </Container>
 
-      {hasUserPostedMoreThanTwiceToday && (
+      {userVentTimeOut && (
         <BlockModal
           text={
-            "To avoid spam, users can only post two vents per day. Please come back " +
-            calculateTimeToVentCounterReset()
+            <Container className="column full-center">
+              <p>
+                To avoid spam, people can only post once every few hours. With
+                more Karma Points you can post more often. Please come back in
+              </p>
+              <Countdown
+                title=""
+                value={userVentTimeOut}
+                onFinish={() => setUserVentTimeOut(false)}
+              />
+            </Container>
           }
-          title="Too Many Posts!"
+          title="Try again soon :)"
         />
       )}
       {starterModal && (

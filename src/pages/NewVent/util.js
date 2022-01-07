@@ -2,34 +2,20 @@ import firebase from "firebase/app";
 import moment from "moment-timezone";
 import db from "../../config/firebase";
 
-export const calculateTimeToVentCounterReset = () => {
-  const currentTime = new moment().tz("America/Los_Angeles");
-  const nextVentCounterReset = new moment().tz("America/Los_Angeles");
-  nextVentCounterReset.set("hour", 12);
-  nextVentCounterReset.set("minutes", 0);
-  nextVentCounterReset.set("seconds", 0);
-
-  if (nextVentCounterReset.diff(currentTime) < 0) {
-    nextVentCounterReset.add(1, "day");
-  }
-  nextVentCounterReset.tz(Intl.DateTimeFormat().resolvedOptions().timeZone);
-
-  /* moment("2015-01-01")
-  .startOf("day")
-  .add(nextVentCounterReset.diff(currentTime) / 1000, "seconds")
-  .format("H:mm:ss")*/
-
-  return nextVentCounterReset.fromNow();
-};
-
-export const getHasUserPostedMoreThanTwiceToday = async (callback, userID) => {
-  const userDailyVentCount = await db
-    .collection("user_day_limit_vents")
+export const getUserVentTimeOut = async (callback, userID) => {
+  const userVentTimeOutDoc = await db
+    .collection("user_vent_timeout")
     .doc(userID)
     .get();
 
-  if (userDailyVentCount.exists && userDailyVentCount.data().vent_counter >= 2)
-    callback(true);
+  let timeOutDate;
+  const currentDate = new moment();
+
+  if (userVentTimeOutDoc.exists) {
+    timeOutDate = new moment(userVentTimeOutDoc.data().value);
+  }
+
+  if (timeOutDate && currentDate.diff(timeOutDate) < 0) callback(timeOutDate);
   else callback(false);
 };
 
@@ -53,8 +39,7 @@ export const saveVent = async (callback, ventObject, ventID, user) => {
     return alert("You must be signed in to create a vent");
   }
   if (!ventID) {
-    ventObject.server_timestamp =
-      firebase.firestore.Timestamp.now().toMillis();
+    ventObject.server_timestamp = firebase.firestore.Timestamp.now().toMillis();
     ventObject.comment_counter = 0;
     ventObject.like_counter = 0;
   }

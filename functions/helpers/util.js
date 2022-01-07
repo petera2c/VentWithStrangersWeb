@@ -1,5 +1,12 @@
 const admin = require("firebase-admin");
 
+const calculateKarma = (usereBasicInfo) => {
+  const goodKarma = usereBasicInfo.good_karma ? usereBasicInfo.good_karma : 0;
+  const badKarma = usereBasicInfo.bad_karma ? usereBasicInfo.bad_karma : 0;
+
+  return goodKarma - badKarma;
+};
+
 const combineObjectWithID = (id, object) => {
   object.id = id;
   return object;
@@ -257,6 +264,7 @@ const updateTotalUsersOnline = (change, context) => {
 };
 
 module.exports = {
+  calculateKarma,
   combineObjectWithID,
   createVentLink,
   getMetaInformation,
