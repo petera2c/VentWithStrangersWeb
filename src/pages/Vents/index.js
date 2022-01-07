@@ -170,7 +170,7 @@ function VentsPage() {
                   <FontAwesomeIcon className="mr8" icon={faComments} />
                   Inbox
                 </Link>
-                <Link className="button-3 fs-18 mb16" to="/conversations">
+                <Link className="button-3 fs-18 mb16" to="/make-friends">
                   <FontAwesomeIcon className="mr8" icon={faUsers} />
                   Make Friends
                 </Link>

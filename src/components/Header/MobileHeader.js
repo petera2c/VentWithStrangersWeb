@@ -1,20 +1,23 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { Link, withRouter } from "react-router-dom";
 import Avatar from "avataaars";
+import { Button, Space } from "antd";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
-import { faConciergeBell } from "@fortawesome/pro-duotone-svg-icons/faConciergeBell";
-import { faBell } from "@fortawesome/pro-duotone-svg-icons/faBell";
-import { faSearch } from "@fortawesome/pro-solid-svg-icons/faSearch";
-import { faChevronDown } from "@fortawesome/pro-solid-svg-icons/faChevronDown";
-import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
-import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
-import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
-import { faCog } from "@fortawesome/pro-solid-svg-icons/faCog";
 import { faBars } from "@fortawesome/pro-solid-svg-icons/faBars";
+import { faBell } from "@fortawesome/pro-duotone-svg-icons/faBell";
 import { faChartNetwork } from "@fortawesome/pro-solid-svg-icons/faChartNetwork";
+import { faChevronDown } from "@fortawesome/pro-solid-svg-icons/faChevronDown";
+import { faCog } from "@fortawesome/pro-solid-svg-icons/faCog";
+import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
+import { faConciergeBell } from "@fortawesome/pro-duotone-svg-icons/faConciergeBell";
+import { faInfo } from "@fortawesome/pro-duotone-svg-icons/faInfo";
+import { faSearch } from "@fortawesome/pro-solid-svg-icons/faSearch";
+import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
 import { faUser } from "@fortawesome/pro-solid-svg-icons/faUser";
+import { faUserFriends } from "@fortawesome/pro-duotone-svg-icons/faUserFriends";
+import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { UserContext } from "../../context";
 
@@ -22,18 +25,15 @@ import Container from "../containers/Container";
 import HandleOutsideClick from "../containers/HandleOutsideClick";
 import Text from "../views/Text";
 
-import Button from "../views/Button";
-
-import LoginModal from "../modals/Login";
-import SignUpModal from "../modals/SignUp";
-import ForgotPasswordModal from "../modals/ForgotPassword";
+import StarterModal from "../modals/Starter";
 import NotificationList from "../NotificationList";
 
 import {
   capitolizeFirstChar,
   getUserBasicInfo,
   isPageActive,
-  signOut
+  signOut,
+  getTotalOnlineUsers
 } from "../../util";
 import {
   getNotifications,
@@ -44,16 +44,16 @@ import {
   resetUnreadConversationCount
 } from "./util";
 
+import "./style.css";
+
 function Header({ history, location }) {
   const componentIsMounted = useRef(true);
   const { pathname, search } = location;
 
   const user = useContext(UserContext);
 
-  const [activeModal, setActiveModal] = useState("");
-  const [mobileHeaderActive, setMobileHeaderActive] = useState(
-    pathname.substring(0, 7) === "/search" ? true : false
-  );
+  const [starterModal, setStarterModal] = useState(false);
+  const [mobileHeaderActive, setMobileHeaderActive] = useState(true);
   const [notifications, setNotifications] = useState([]);
   const [showFeedback, setShowFeedback] = useState(true);
   const [missingAccountPercentage, setMissingAccountPercentage] = useState();
@@ -62,6 +62,7 @@ function Header({ history, location }) {
   );
   const [unreadConversationsCount, setUnreadConversationsCount] = useState();
   const [userBasicInfo, setUserBasicInfo] = useState({});
+  const [totalOnlineUsers, setTotalOnlineUsers] = useState(0);
 
   const [ventSearchString, setVentSearchString] = useState(
     pathname.substring(0, 7) === "/search"
@@ -71,13 +72,18 @@ function Header({ history, location }) {
 
   let newNotificationsListenerUnsubscribe;
   let newConversationsListenerUnsubscribe;
+  let onlineUsersUnsubscribe;
 
   useEffect(() => {
     if (newNotificationsListenerUnsubscribe)
       newNotificationsListenerUnsubscribe();
     if (newConversationsListenerUnsubscribe)
       newConversationsListenerUnsubscribe();
+    if (onlineUsersUnsubscribe) onlineUsersUnsubscribe();
 
+    onlineUsersUnsubscribe = getTotalOnlineUsers(totalOnlineUsers => {
+      if (componentIsMounted.current) setTotalOnlineUsers(totalOnlineUsers);
+    });
     if (user) {
       newConversationsListenerUnsubscribe = getUnreadConversations(
         componentIsMounted,
@@ -111,18 +117,18 @@ function Header({ history, location }) {
 
   return (
     <Container
-      className="sticky top-0 column x-fill full-center bg-white border-top large active shadow-2"
+      className="sticky top-0 relative column x-fill full-center bg-white border-top large active shadow-2"
       style={{ zIndex: 10 }}
     >
       <Container className="x-fill align-center justify-between border-bottom py8 px16">
-        <img
-          alt=""
-          className="clickable"
-          onClick={() => history.push("/")}
-          src={require("../../svgs/icon.svg")}
-          style={{ height: "50px" }}
-        />
-
+        <Link to="/">
+          <img
+            alt=""
+            className="clickable"
+            src={require("../../svgs/icon.svg")}
+            style={{ height: "50px" }}
+          />
+        </Link>
         <Container className="align-center">
           {user && (
             <Container className="align-center mr8">
@@ -157,12 +163,7 @@ function Header({ history, location }) {
                 )}
             </Container>
           )}
-          <Link
-            className="button-2 no-bold py8 px16 my16 mr8 br8"
-            to="/vent-to-strangers"
-          >
-            Post a Vent
-          </Link>
+
           <Container className="full-center border-all active pa8 br4">
             <FontAwesomeIcon
               className="blue"
@@ -173,61 +174,31 @@ function Header({ history, location }) {
         </Container>
       </Container>
       {mobileHeaderActive && (
-        <Container className="x-fill full-center">
-          <Link
-            className={
-              "button-3 tac py16 ml16 " +
-              isPageActive("/trending", pathname) +
-              isPageActive("/", pathname)
-            }
-            to="/trending"
-          >
-            <FontAwesomeIcon className="mr8" icon={faAnalytics} />
-            Trending
-          </Link>
-          <Link
-            className={
-              "button-3 tac py16 mx16 " + isPageActive("/recent", pathname)
-            }
-            to="/recent"
-          >
-            <FontAwesomeIcon className="mr8" icon={faConciergeBell} />
-            Recent
-          </Link>
-          <Link
-            className={
-              "button-3 flex full-center relative mx16 " +
-              isPageActive("/conversations", pathname)
-            }
-            to="/conversations"
-          >
-            <FontAwesomeIcon className="py16 mr8" icon={faComments} />
-            <p className="bold py16">Inbox</p>
-
-            {Boolean(unreadConversationsCount) && (
-              <p className="fs-14 bg-red white round ml4 pa4 br4">
-                {unreadConversationsCount}
-              </p>
-            )}
-          </Link>
-          <Link
-            className={
-              "button-3 tac py16 mr32 " +
-              isPageActive("/make-friends", pathname)
-            }
-            to="/make-friends"
-          >
-            <FontAwesomeIcon className="mr8" icon={faUsers} />
-            Make Friends
-          </Link>
-        </Container>
-      )}
-      {mobileHeaderActive && (
-        <Container className="column x-fill bg-grey-4">
+        <Space
+          align="center"
+          className="sidebar shadow-2 pa16"
+          direction="vertical"
+          onClick={() => setMobileHeaderActive(false)}
+          size="large"
+        >
+          <Space align="center" className="bg-grey-4 py4 px8 br4">
+            <FontAwesomeIcon className="grey-5 mr8" icon={faSearch} />
+            <input
+              autoFocus={pathname.substring(0, 7) === "/search" ? true : false}
+              className="no-border bg-grey-4 br4"
+              onChange={e => {
+                setVentSearchString(e.target.value);
+                history.push("/search?" + e.target.value);
+              }}
+              placeholder="Search"
+              type="text"
+              value={ventSearchString}
+            />
+          </Space>
           {user && (
-            <Container className="column">
-              <Link to="/profile">
-                <Container className="full-center py16 mx16">
+            <Space align="center" direction="vertical">
+              <Space align="center" direction="vertical">
+                <Space align="center">
                   {user.displayName &&
                     (!userBasicInfo ||
                       (userBasicInfo && !userBasicInfo.avatar)) && (
@@ -259,80 +230,144 @@ function Header({ history, location }) {
                     type="p"
                   />
                   <FontAwesomeIcon icon={faChevronDown} />
-                </Container>
-              </Link>
-              <Container className="bg-white x-fill">
+                </Space>
+                <p
+                  className="tac fs-14"
+                  onClick={() => signOut(user.uid)}
+                  type="link"
+                >
+                  Sign Out
+                </p>
+              </Space>
+              <Space align="center" direction="vertical" size="middle">
                 <Link
                   className={
-                    "button-3 tac py16 mx16 " +
+                    "flex full-center button-3 " +
                     isPageActive("/profile", pathname)
                   }
-                  to={"/profile"}
+                  to="/profile"
                 >
                   <FontAwesomeIcon className="mx8" icon={faChartNetwork} />
-                  Profile
+                  <p className="bold">Profile</p>
                 </Link>
 
                 <Link
                   className={
-                    "button-3 tac py16 mx16 " +
+                    "flex full-center button-3 " +
                     isPageActive("/account", pathname)
                   }
                   to="/account"
                 >
                   <FontAwesomeIcon className="mx8" icon={faUser} />
-                  Account
+                  <p className="bold">Account</p>
                 </Link>
 
                 <Link
                   className={
-                    "button-3 tac py16 mx16 " +
+                    "flex full-center button-3 " +
                     isPageActive("/settings", pathname)
                   }
                   to="/settings"
                 >
                   <FontAwesomeIcon className="mx8" icon={faCog} />
-                  Settings
+                  <p className="bold">Settings</p>
                 </Link>
-                <Text
-                  className="button-1 full-center fw-400 tac fs-16 py16 mx16"
-                  onClick={() => signOut(user.uid)}
-                  text="Sign Out"
-                  type="h5"
-                />
-              </Container>
-            </Container>
+              </Space>
+            </Space>
           )}
-          <Container className="full-center bg-grey-4 py4 px8 my16 mr16 br4">
-            <FontAwesomeIcon className="grey-5 mr8" icon={faSearch} />
-            <input
-              autoFocus={pathname.substring(0, 7) === "/search" ? true : false}
-              className="no-border bg-grey-4 br4"
-              onChange={e => {
-                setVentSearchString(e.target.value);
-                history.push("/search?" + e.target.value);
-              }}
-              placeholder="Search"
-              type="text"
-              value={ventSearchString}
-            />
-          </Container>
-          {!user && (
-            <Container className="x-fill">
-              <Button
-                className="x-50 blue fw-300 bg-white border-all active px32 mr8 br4"
-                text="Login"
-                onClick={() => setActiveModal("login")}
-              />
 
-              <Button
-                className="x-50 white blue-fade px32 py8 ml8 br4"
-                text="Sign Up"
-                onClick={() => setActiveModal("signUp")}
-              />
-            </Container>
+          <Space align="center" direction="vertical" size="middle">
+            <Link
+              className={
+                "flex full-center button-3 " +
+                isPageActive("/online-users", pathname)
+              }
+              to="/online-users"
+            >
+              <FontAwesomeIcon className="mr8" icon={faUserFriends} />
+              <p className="bold">
+                {totalOnlineUsers}{" "}
+                {totalOnlineUsers === 1 ? "Person" : "People"} Online
+              </p>
+            </Link>
+            <Link
+              className={
+                "flex full-center button-3 " +
+                isPageActive("/trending", pathname) +
+                isPageActive("/", pathname)
+              }
+              to="/trending"
+            >
+              <FontAwesomeIcon className="mr8" icon={faAnalytics} />
+              <p className="bold">Trending</p>
+            </Link>
+            <Link
+              className={
+                "flex full-center button-3" + isPageActive("/recent", pathname)
+              }
+              to="/recent"
+            >
+              <FontAwesomeIcon className="mr8" icon={faConciergeBell} />
+              <p className="bold">Recent</p>
+            </Link>
+            <Link
+              className={
+                "button-3 flex full-center relative " +
+                isPageActive("/conversations", pathname)
+              }
+              to="/conversations"
+            >
+              <FontAwesomeIcon className="mr8" icon={faComments} />
+              <p className="bold">Inbox</p>
+
+              {Boolean(unreadConversationsCount) && (
+                <p className="fs-14 bg-red white round ml4 pa4 br4">
+                  {unreadConversationsCount}
+                </p>
+              )}
+            </Link>
+            <Link
+              className={
+                "flex full-center button-3 " +
+                isPageActive("/site-info", pathname)
+              }
+              to="/site-info"
+            >
+              <FontAwesomeIcon className="mr8" icon={faInfo} />
+              <p className="bold">Site Info</p>
+            </Link>
+            <Link
+              className={
+                "flex full-center button-3 " +
+                isPageActive("/make-friends", pathname)
+              }
+              to="/make-friends"
+            >
+              <FontAwesomeIcon className="mr8" icon={faUsers} />
+              <p className="bold">Make Friends</p>
+            </Link>
+
+            <Link
+              className={
+                "flex full-center button-3" +
+                isPageActive("/vent-to-strangers", pathname)
+              }
+              to="/vent-to-strangers"
+            >
+              <FontAwesomeIcon className="mr8" icon={faConciergeBell} />
+              <p className="bold">Post a Vent</p>
+            </Link>
+          </Space>
+          {!user && (
+            <Space>
+              <Button onClick={() => setStarterModal("login")}>Login</Button>
+
+              <Button onClick={() => setStarterModal("signUp")} type="primary">
+                Sign Up
+              </Button>
+            </Space>
           )}
-        </Container>
+        </Space>
       )}
       {user && !user.emailVerified && (
         <Container className="x-fill full-center bg-grey-2">
@@ -347,15 +382,11 @@ function Header({ history, location }) {
           </button>
         </Container>
       )}
-
-      {activeModal === "login" && (
-        <LoginModal setActiveModal={setActiveModal} />
-      )}
-      {activeModal === "signUp" && (
-        <SignUpModal setActiveModal={setActiveModal} />
-      )}
-      {activeModal === "forgotPassword" && (
-        <ForgotPasswordModal setActiveModal={setActiveModal} />
+      {starterModal && (
+        <StarterModal
+          activeModal={starterModal}
+          setActiveModal={setStarterModal}
+        />
       )}
     </Container>
   );

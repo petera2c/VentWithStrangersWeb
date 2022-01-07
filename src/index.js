@@ -4,6 +4,7 @@ import { hydrate, render } from "react-dom";
 import firebase from "firebase/app";
 import "firebase/analytics";
 import "antd/dist/antd.css";
+import "antd-mobile/dist/antd-mobile.css";
 
 import Routes from "./pages/";
 
