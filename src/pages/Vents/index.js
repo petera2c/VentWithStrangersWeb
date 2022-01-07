@@ -152,35 +152,35 @@ function VentsPage() {
             <Container className="x-fill justify-between mb16">
               <h1 className="primary fs-20" style={{ minHeight: "35px" }}></h1>
             </Container>
-            <Container className="x-fill column align-start bg-white pa16 mb16 br8">
-              <Link className="button-3 fs-18 mb16" to="/online-users">
-                <FontAwesomeIcon className="mr8" icon={faUserFriends} />
-                {totalOnlineUsers}{" "}
-                {totalOnlineUsers === 1 ? "Person" : "People"} Online
-              </Link>
-              <Link className="button-3 fs-18 mb16" to="/vent-to-strangers">
-                <FontAwesomeIcon className="mr8" icon={faPen} />
-                Post a Vent
-              </Link>
-              <Link className="button-3 fs-18 mb16" to="/conversations">
-                <FontAwesomeIcon className="mr8" icon={faComments} />
-                Inbox
-              </Link>
-              <Link className="button-3 fs-18 mb16" to="/conversations">
-                <FontAwesomeIcon className="mr8" icon={faUsers} />
-                Make Friends
-              </Link>
-              <Link className="button-3 fs-18" to="/site-info">
-                <FontAwesomeIcon className="ml8 mr16" icon={faInfo} />
-                Site Info
-              </Link>
-            </Container>
+            <Container
+              className="sticky top-0 column x-fill"
+              style={{ top: "120px" }}
+            >
+              <Container className="x-fill column align-start bg-white pa16 mb16 br8">
+                <Link className="button-3 fs-18 mb16" to="/online-users">
+                  <FontAwesomeIcon className="mr8" icon={faUserFriends} />
+                  {totalOnlineUsers}{" "}
+                  {totalOnlineUsers === 1 ? "Person" : "People"} Online
+                </Link>
+                <Link className="button-3 fs-18 mb16" to="/vent-to-strangers">
+                  <FontAwesomeIcon className="mr8" icon={faPen} />
+                  Post a Vent
+                </Link>
+                <Link className="button-3 fs-18 mb16" to="/conversations">
+                  <FontAwesomeIcon className="mr8" icon={faComments} />
+                  Inbox
+                </Link>
+                <Link className="button-3 fs-18 mb16" to="/conversations">
+                  <FontAwesomeIcon className="mr8" icon={faUsers} />
+                  Make Friends
+                </Link>
+                <Link className="button-3 fs-18" to="/site-info">
+                  <FontAwesomeIcon className="ml8 mr16" icon={faInfo} />
+                  Site Info
+                </Link>
+              </Container>
 
-            {process.env.NODE_ENV === "production" && (
-              <Container
-                className="sticky top-0 column x-fill"
-                style={{ top: "120px" }}
-              >
+              {process.env.NODE_ENV === "production" && (
                 <Container className="x-fill mb8">
                   <AdSense.Google
                     className="adsbygoogle"
@@ -199,8 +199,8 @@ function VentsPage() {
                     }}
                   />
                 </Container>
-              </Container>
-            )}
+              )}
+            </Container>
           </Container>
         )}
       </Container>
