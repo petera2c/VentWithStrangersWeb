@@ -17,6 +17,7 @@ import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
 import { faUser } from "@fortawesome/pro-solid-svg-icons/faUser";
 import { faUserFriends } from "@fortawesome/pro-duotone-svg-icons/faUserFriends";
 import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
+import { faUserAstronaut } from "@fortawesome/pro-duotone-svg-icons/faUserAstronaut";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { UserContext } from "../../context";
@@ -267,6 +268,16 @@ function Header({ history, location }) {
                   >
                     <FontAwesomeIcon className="mx8" icon={faUser} />
                     <p className="bold">Account</p>
+                  </Link>
+                  <Link
+                    className={
+                      "flex full-center button-3 " +
+                      isPageActive("/avatar", pathname)
+                    }
+                    to="/avatar"
+                  >
+                    <FontAwesomeIcon className="mx8" icon={faUserAstronaut} />
+                    <p className="bold">Avatar</p>
                   </Link>
 
                   <Link
