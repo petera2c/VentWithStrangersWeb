@@ -152,7 +152,7 @@ function Chat({
           <Button onClick={() => setActiveConversation(false)}>Go Back</Button>
         )}
       </Container>
-      <Container className="column x-fill flex-fill ov-hidden pt16 pl16">
+      <Container className="column x-fill flex-fill ov-hidden pt16 px16">
         {canLoadMore && (
           <button
             className="button-2 pa8 mb8 br4"

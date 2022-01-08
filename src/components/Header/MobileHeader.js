@@ -130,22 +130,19 @@ function Header({ history, location }) {
             style={{ height: "50px" }}
           />
         </Link>
-        <Container className="align-center">
+        <Container>
           {user && (
-            <Container className="align-center mr8">
-              <Link to="/notifications">
-                <FontAwesomeIcon
-                  className="clickable blue"
-                  icon={faBell}
-                  onClick={() => {
-                    setShowNotificationDropdown(!showNotificationDropdown);
+            <Link className="relative mr16" to="/notifications">
+              <FontAwesomeIcon
+                className="clickable blue"
+                icon={faBell}
+                onClick={() => {
+                  setShowNotificationDropdown(!showNotificationDropdown);
 
-                    readNotifications(notifications);
-                  }}
-                  size="2x"
-                />
-              </Link>
-
+                  readNotifications(notifications);
+                }}
+                size="2x"
+              />
               {newNotificationCounter(notifications) &&
                 !showNotificationDropdown && (
                   <Text
@@ -162,7 +159,7 @@ function Header({ history, location }) {
                     {newNotificationCounter(notifications)}
                   </Text>
                 )}
-            </Container>
+            </Link>
           )}
 
           <Container className="full-center border-all active pa8 br4">
@@ -174,6 +171,22 @@ function Header({ history, location }) {
           </Container>
         </Container>
       </Container>
+      {(mobileHeaderActive || pathname.substring(0, 7) === "/search") && (
+        <Space align="center" className="bg-grey-4 py4 px8 my8 br4">
+          <FontAwesomeIcon className="grey-5 mr8" icon={faSearch} />
+          <input
+            autoFocus={pathname.substring(0, 7) === "/search" ? true : false}
+            className="no-border bg-grey-4 br4"
+            onChange={e => {
+              setVentSearchString(e.target.value);
+              history.push("/search?" + e.target.value);
+            }}
+            placeholder="Search"
+            type="text"
+            value={ventSearchString}
+          />
+        </Space>
+      )}
       {mobileHeaderActive && (
         <Space
           align="center"
@@ -182,20 +195,6 @@ function Header({ history, location }) {
           onClick={() => setMobileHeaderActive(false)}
           size="large"
         >
-          <Space align="center" className="bg-grey-4 py4 px8 br4">
-            <FontAwesomeIcon className="grey-5 mr8" icon={faSearch} />
-            <input
-              autoFocus={pathname.substring(0, 7) === "/search" ? true : false}
-              className="no-border bg-grey-4 br4"
-              onChange={e => {
-                setVentSearchString(e.target.value);
-                history.push("/search?" + e.target.value);
-              }}
-              placeholder="Search"
-              type="text"
-              value={ventSearchString}
-            />
-          </Space>
           {user && (
             <Space align="center" direction="vertical">
               <Space align="center" direction="vertical">
