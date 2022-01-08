@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import moment from "moment-timezone";
 import Avatar from "avataaars";
 import firebase from "firebase/app";
+import { Button, Space } from "antd";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
@@ -13,7 +14,6 @@ import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 import ConfirmAlertModal from "../../components/modals/ConfirmAlert";
 import Container from "../../components/containers/Container";
 
-import Button from "../../components/views/Button";
 import Text from "../../components/views/Text";
 import KarmaBadge from "../../components/KarmaBadge";
 import Message from "./message";
@@ -34,7 +34,12 @@ import {
 let typingTimer;
 let typingTimer2;
 
-function Chat({ conversation, conversationPartnerData = {}, userID }) {
+function Chat({
+  conversation,
+  conversationPartnerData = {},
+  setActiveConversation,
+  userID
+}) {
   const [value, setValue] = useState(0); // integer state
 
   const checkIsUserTyping = isTyping => {
@@ -121,27 +126,32 @@ function Chat({ conversation, conversationPartnerData = {}, userID }) {
 
   return (
     <Container className="column flex-fill x-fill full-center ov-hidden bg-white br4">
-      <Container className="x-fill border-bottom pa16">
+      <Container className="justify-between x-fill border-bottom pa16">
         {conversationPartnerID && (
-          <Container className="full-center">
-            <Link to={"/profile?" + conversationPartnerID}>
+          <Link className="flex" to={"/profile?" + conversationPartnerID}>
+            <Container className="full-center">
               <h5 className="button-1 mr8">
                 {capitolizeFirstChar(conversationPartnerData.displayName)}
               </h5>
-            </Link>
-            {conversationPartnerData.isUserOnline && (
-              <div className="online-dot mr8" />
+              {conversationPartnerData.isUserOnline && (
+                <div className="online-dot mr8" />
+              )}
+            </Container>
+            {!conversationPartnerID && (
+              <h5 className="button-1 mr8">
+                {capitolizeFirstChar(conversationPartnerData.displayName)}
+              </h5>
             )}
-          </Container>
+            <KarmaBadge
+              karma={calculateKarma(conversationPartnerData)}
+              noOnClick
+            />
+          </Link>
         )}
-        {!conversationPartnerID && (
-          <h5 className="button-1 mr8">
-            {capitolizeFirstChar(conversationPartnerData.displayName)}
-          </h5>
+        {isMobileOrTablet() && (
+          <Button onClick={() => setActiveConversation(false)}>Go Back</Button>
         )}
-        <KarmaBadge karma={calculateKarma(conversationPartnerData)} />
       </Container>
-
       <Container className="column x-fill flex-fill ov-hidden pt16 pl16">
         {canLoadMore && (
           <button
@@ -249,7 +259,7 @@ function Chat({ conversation, conversationPartnerData = {}, userID }) {
               setMessageString(messageString + emoji);
             }}
           />
-          <Button
+          <button
             className={
               "button-2 " + (isMobileOrTablet() ? "px8 py4" : "px32 py8 br4")
             }
@@ -258,8 +268,9 @@ function Chat({ conversation, conversationPartnerData = {}, userID }) {
               sendMessage(conversation.id, messageString, userID);
               setMessageString("");
             }}
-            text="Send"
-          />
+          >
+            Send
+          </button>
         </Container>
       </Container>
     </Container>

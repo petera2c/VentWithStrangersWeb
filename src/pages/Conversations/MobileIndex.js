@@ -97,65 +97,61 @@ function MobileConversations() {
       style={{ height: "100vh" }}
       title="Chats"
     >
-      {!activeConversation && (
-        <Container className="flex-fill column ov-auto bg-white pa8 mt16 mx8 br4">
-          {conversations.length === 0 && (
-            <Link className="" to="/online-users">
-              <h1 className="button-1 grey-1 tac">
-                <span className="blue">Start</span> a conversation with someone!
-              </h1>
-            </Link>
-          )}
-          {conversations.map((conversation, index) => {
-            return (
-              <ConversationOption
-                conversation={conversation}
-                conversationPartnerData={
-                  conversationsBasicDatas[conversation.id]
-                }
-                isActive={conversation.id === activeConversation}
-                isLastItem={index === conversations.length - 1}
-                key={conversation.id}
-                setActiveConversation={setActiveConversation}
-                setConversationsBasicDatas={setConversationsBasicDatas}
-                setConversations={setConversations}
-                userID={user.uid}
-              />
-            );
-          })}
-          {!userSignUpProgress(user, true) && canLoadMore && (
-            <button
-              className="button-2 pa8 my8 br4"
-              onClick={() => {
-                getConversations(
-                  conversations,
-                  setActiveConversation,
-                  newConversations => {
-                    if (
-                      newConversations.length % 5 !== 0 ||
-                      newConversations.length === 0
-                    )
-                      setCanLoadMore(false);
+      <Container
+        className="flex-fill column ov-auto bg-white pa8 mt16 mx8 br4"
+        style={{ display: activeConversation ? "none" : "flex" }}
+      >
+        {conversations.length === 0 && (
+          <Link className="" to="/online-users">
+            <h1 className="button-1 grey-1 tac">
+              <span className="blue">Start</span> a conversation with someone!
+            </h1>
+          </Link>
+        )}
+        {conversations.map((conversation, index) => {
+          return (
+            <ConversationOption
+              conversation={conversation}
+              conversationPartnerData={conversationsBasicDatas[conversation.id]}
+              isActive={conversation.id === activeConversation}
+              isLastItem={index === conversations.length - 1}
+              key={conversation.id}
+              setActiveConversation={setActiveConversation}
+              setConversationsBasicDatas={setConversationsBasicDatas}
+              setConversations={setConversations}
+              userID={user.uid}
+            />
+          );
+        })}
+        {!userSignUpProgress(user, true) && canLoadMore && (
+          <button
+            className="button-2 pa8 my8 br4"
+            onClick={() => {
+              getConversations(
+                conversations,
+                setActiveConversation,
+                newConversations => {
+                  if (
+                    newConversations.length % 5 !== 0 ||
+                    newConversations.length === 0
+                  )
+                    setCanLoadMore(false);
 
-                    setConversations(oldConversations => [
-                      ...oldConversations,
-                      ...newConversations
-                    ]);
-                  },
-                  user.uid
-                );
-              }}
-            >
-              Load More Conversations
-            </button>
-          )}
-        </Container>
-      )}
+                  setConversations(oldConversations => [
+                    ...oldConversations,
+                    ...newConversations
+                  ]);
+                },
+                user.uid
+              );
+            }}
+          >
+            Load More Conversations
+          </button>
+        )}
+      </Container>
       {activeConversation && (
-        <Container
-          className="column ov-hidden bg-white container mobile-full"
-          style={{ height: "500px" }}
-        >
+        <Container className="container mobile-full column ov-hidden flex-fill bg-white">
           {!conversations.find(
             conversation => conversation.id === activeConversation
           ) &&
@@ -186,6 +182,7 @@ function MobileConversations() {
               conversationPartnerData={
                 conversationsBasicDatas[activeConversation]
               }
+              setActiveConversation={setActiveConversation}
               userID={user.uid}
             />
           )}

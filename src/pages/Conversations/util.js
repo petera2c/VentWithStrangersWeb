@@ -45,7 +45,7 @@ export const deleteMessage = async (conversationID, messageID, setMessages) => {
 
 export const getConversationBasicData = async (
   conversation,
-  setConversationBasicDatas,
+  setConversationsBasicDatas,
   userID
 ) => {
   let conversationFriendUserID;
@@ -61,7 +61,7 @@ export const getConversationBasicData = async (
 
   if (userBasicInfo.data() && userBasicInfo.data().displayName) {
     getIsUserOnline(isUserOnline => {
-      setConversationBasicDatas(currentUsersBasicInfo => {
+      setConversationsBasicDatas(currentUsersBasicInfo => {
         currentUsersBasicInfo[conversation.id] = {
           ...userBasicInfo.data(),
           isUserOnline
@@ -159,12 +159,16 @@ export const getConversations = async (
   let newConversations = [];
   conversationsQuerySnapshot.docs.forEach((item, i) => {
     if (conversations.find(conversation => conversation.id === item.id)) return;
-    newConversations.push({
+
+    const temp = {
       id: item.id,
       ...item.data(),
       doc: conversationsQuerySnapshot.docs[i]
-    });
+    };
+
+    newConversations.push(temp);
   });
+
   setConversations(newConversations);
 };
 

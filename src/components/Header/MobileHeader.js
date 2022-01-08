@@ -54,6 +54,7 @@ function Header({ history, location }) {
 
   const [starterModal, setStarterModal] = useState(false);
   const [mobileHeaderActive, setMobileHeaderActive] = useState(false);
+  const [accountSectionActive, setAccountSectionActive] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [showFeedback, setShowFeedback] = useState(true);
   const [missingAccountPercentage, setMissingAccountPercentage] = useState();
@@ -198,7 +199,13 @@ function Header({ history, location }) {
           {user && (
             <Space align="center" direction="vertical">
               <Space align="center" direction="vertical">
-                <Space align="center">
+                <Space
+                  align="center"
+                  onClick={e => {
+                    e.stopPropagation();
+                    setAccountSectionActive(!accountSectionActive);
+                  }}
+                >
                   {user.displayName &&
                     (!userBasicInfo ||
                       (userBasicInfo && !userBasicInfo.avatar)) && (
@@ -231,65 +238,54 @@ function Header({ history, location }) {
                   />
                   <FontAwesomeIcon icon={faChevronDown} />
                 </Space>
-                <p
-                  className="tac fs-14"
-                  onClick={() => signOut(user.uid)}
-                  type="link"
-                >
-                  Sign Out
-                </p>
               </Space>
-              <Space align="center" direction="vertical" size="middle">
-                <Link
-                  className={
-                    "flex full-center button-3 " +
-                    isPageActive("/profile", pathname)
-                  }
-                  to="/profile"
-                >
-                  <FontAwesomeIcon className="mx8" icon={faChartNetwork} />
-                  <p className="bold">Profile</p>
-                </Link>
+              {accountSectionActive && (
+                <Space align="center" direction="vertical" size="middle">
+                  <p
+                    className="tac fs-14"
+                    onClick={() => signOut(user.uid)}
+                    type="link"
+                  >
+                    Sign Out
+                  </p>
+                  <Link
+                    className={
+                      "flex full-center button-3 " +
+                      isPageActive("/profile", pathname)
+                    }
+                    to="/profile"
+                  >
+                    <FontAwesomeIcon className="mx8" icon={faChartNetwork} />
+                    <p className="bold">Profile</p>
+                  </Link>
 
-                <Link
-                  className={
-                    "flex full-center button-3 " +
-                    isPageActive("/account", pathname)
-                  }
-                  to="/account"
-                >
-                  <FontAwesomeIcon className="mx8" icon={faUser} />
-                  <p className="bold">Account</p>
-                </Link>
+                  <Link
+                    className={
+                      "flex full-center button-3 " +
+                      isPageActive("/account", pathname)
+                    }
+                    to="/account"
+                  >
+                    <FontAwesomeIcon className="mx8" icon={faUser} />
+                    <p className="bold">Account</p>
+                  </Link>
 
-                <Link
-                  className={
-                    "flex full-center button-3 " +
-                    isPageActive("/settings", pathname)
-                  }
-                  to="/settings"
-                >
-                  <FontAwesomeIcon className="mx8" icon={faCog} />
-                  <p className="bold">Settings</p>
-                </Link>
-              </Space>
+                  <Link
+                    className={
+                      "flex full-center button-3 " +
+                      isPageActive("/settings", pathname)
+                    }
+                    to="/settings"
+                  >
+                    <FontAwesomeIcon className="mx8" icon={faCog} />
+                    <p className="bold">Settings</p>
+                  </Link>
+                </Space>
+              )}
             </Space>
           )}
 
           <Space align="center" direction="vertical" size="middle">
-            <Link
-              className={
-                "flex full-center button-3 " +
-                isPageActive("/online-users", pathname)
-              }
-              to="/online-users"
-            >
-              <FontAwesomeIcon className="mr8" icon={faUserFriends} />
-              <p className="bold">
-                {totalOnlineUsers}{" "}
-                {totalOnlineUsers === 1 ? "Person" : "People"} Online
-              </p>
-            </Link>
             <Link
               className={
                 "flex full-center button-3 " +
@@ -356,6 +352,19 @@ function Header({ history, location }) {
             >
               <FontAwesomeIcon className="mr8" icon={faConciergeBell} />
               <p className="bold">Post a Vent</p>
+            </Link>
+            <Link
+              className={
+                "flex full-center button-3 " +
+                isPageActive("/online-users", pathname)
+              }
+              to="/online-users"
+            >
+              <FontAwesomeIcon className="mr8" icon={faUserFriends} />
+              <p className="bold">
+                {totalOnlineUsers}{" "}
+                {totalOnlineUsers === 1 ? "Person" : "People"} Online
+              </p>
             </Link>
           </Space>
           {!user && (

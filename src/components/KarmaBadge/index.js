@@ -20,9 +20,9 @@ function KarmaBadge({ karma, noOnClick }) {
           className="clickable"
           onClick={e => {
             if (noOnClick) return;
-
             e.stopPropagation();
             e.preventDefault();
+
             history.push("/site-info");
           }}
         >
