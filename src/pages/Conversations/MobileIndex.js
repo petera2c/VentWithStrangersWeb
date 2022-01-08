@@ -13,11 +13,10 @@ import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import Button from "../../components/views/Button";
 
-import MobileIndex from "./MobileIndex";
 import ConversationOption from "./ConversationOption";
 import Chat from "./chat";
 
-import { isMobileOrTablet, userSignUpProgress } from "../../util";
+import { userSignUpProgress } from "../../util";
 
 import {
   getConversation,
@@ -27,7 +26,7 @@ import {
 
 import "./style.css";
 
-function Conversations() {
+function MobileConversations() {
   const componentIsMounted = useRef(true);
   const user = useContext(UserContext);
 
@@ -41,9 +40,6 @@ function Conversations() {
   const [conversationsBasicDatas, setConversationsBasicDatas] = useState({});
   const [canLoadMore, setCanLoadMore] = useState(true);
   const [starterModal, setStarterModal] = useState(!user);
-
-  if (conversations && conversations.length !== 0 && !activeConversation)
-    setActiveConversation(conversations[0].id);
 
   let newMessageListenerUnsubscribe;
 
@@ -95,19 +91,19 @@ function Conversations() {
 
   return (
     <Page
-      className="bg-grey-2 ov-hidden"
+      className="bg-grey-2"
       description="Sometimes, all we need is an available ear. This is where you can anonymously talk to someone that wants to listen, or anonymously listen to someone that wants to be heard."
       keywords="vent, strangers, help"
       style={{ height: "100vh" }}
       title="Chats"
     >
-      <Container className="flex-fill x-fill gap4 ov-hidden pa4">
-        <Container className="container small column ov-auto bg-white pa8 br4">
+      {!activeConversation && (
+        <Container className="flex-fill column ov-auto bg-white pa8 mt16 mx8 br4">
           {conversations.length === 0 && (
             <Link className="" to="/online-users">
-              <h6 className="button-1 grey-1 tac">
-                Start a conversation with someone!
-              </h6>
+              <h1 className="button-1 grey-1 tac">
+                <span className="blue">Start</span> a conversation with someone!
+              </h1>
             </Link>
           )}
           {conversations.map((conversation, index) => {
@@ -154,8 +150,12 @@ function Conversations() {
             </button>
           )}
         </Container>
-
-        <Container className="column flex-fill ov-hidden bg-white">
+      )}
+      {activeConversation && (
+        <Container
+          className="column ov-hidden bg-white container mobile-full"
+          style={{ height: "500px" }}
+        >
           {!conversations.find(
             conversation => conversation.id === activeConversation
           ) &&
@@ -170,17 +170,10 @@ function Conversations() {
             !activeConversation && (
               <h4
                 className="button-1 grey-1 tac pa32"
-                onClick={() => {
-                  if (!user) setStarterModal(true);
-                  else {
-                    userSignUpProgress(user);
-                  }
-                }}
+                onClick={() => setStarterModal(true)}
               >
                 Check your messages from friends on Vent With Strangers,
-                <span className="blue">
-                  {user ? " verify your email!" : " get started here!"}
-                </span>
+                <span className="blue"> get started here!</span>
               </h4>
             )}
           {conversations.find(
@@ -197,50 +190,7 @@ function Conversations() {
             />
           )}
         </Container>
-
-        <Container className="container small column ov-auto bg-white pa8 br4">
-          {process.env.NODE_ENV === "production" && (
-            <Container className="full-center mb8">
-              <AdSense.Google
-                className="adsbygoogle"
-                client="ca-pub-5185907024931065"
-                format=""
-                responsive="true"
-                slot="7871419499"
-                style={{
-                  display: "block",
-                  minWidth: "100px",
-                  width: "100%",
-                  maxWidth: "300px",
-                  minHeight: "100px",
-                  height: "240px",
-                  maxHeight: "800px"
-                }}
-              />
-            </Container>
-          )}
-          {process.env.NODE_ENV === "production" && (
-            <Container className="full-center">
-              <AdSense.Google
-                className="adsbygoogle"
-                client="ca-pub-5185907024931065"
-                format=""
-                responsive="true"
-                slot="1120703532"
-                style={{
-                  display: "block",
-                  minWidth: "100px",
-                  width: "100%",
-                  maxWidth: "300px",
-                  minHeight: "100px",
-                  height: "240px",
-                  maxHeight: "800px"
-                }}
-              />
-            </Container>
-          )}
-        </Container>
-      </Container>
+      )}
       {starterModal && (
         <StarterModal activeModal="login" setActiveModal={setStarterModal} />
       )}
@@ -248,9 +198,4 @@ function Conversations() {
   );
 }
 
-let temp;
-
-if (!isMobileOrTablet()) temp = Conversations;
-else temp = MobileIndex;
-
-export default temp;
+export default MobileConversations;
