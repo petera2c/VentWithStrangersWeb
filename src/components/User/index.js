@@ -188,7 +188,10 @@ function UserComponent({
         </Container>
       )}
       {starterModal && (
-        <StarterModal activeModal="login" setActiveModal={setStarterModal} />
+        <StarterModal
+          activeModal={starterModal}
+          setActiveModal={setStarterModal}
+        />
       )}
     </Link>
   );

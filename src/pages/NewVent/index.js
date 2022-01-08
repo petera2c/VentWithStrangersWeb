@@ -33,6 +33,8 @@ import { isMobileOrTablet, userSignUpProgress } from "../../util";
 function NewVentPage() {
   const history = useHistory();
   const location = useLocation();
+  const user = useContext(UserContext);
+
   const { search } = location;
   const [description, setDescription] = useState("");
   const [gender, setGender] = useState(0);
@@ -43,9 +45,7 @@ function NewVentPage() {
   const [title, setTitle] = useState("");
   const [ventID, setVentID] = useState(search ? search.substring(1) : null);
   const [warningModalIsActive, setWarningModalIsActive] = useState(true);
-  const [starterModal, setStarterModal] = useState(false);
-
-  const user = useContext(UserContext);
+  const [starterModal, setStarterModal] = useState(!user);
 
   useEffect(() => {
     if (ventID) getVent(setDescription, setTags, setTitle, ventID);
@@ -243,7 +243,10 @@ function NewVentPage() {
         />
       )}
       {starterModal && (
-        <StarterModal activeModal="login" setActiveModal={setStarterModal} />
+        <StarterModal
+          activeModal={starterModal}
+          setActiveModal={setStarterModal}
+        />
       )}
     </Page>
   );
