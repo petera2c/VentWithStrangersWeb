@@ -17,6 +17,13 @@ const {
 } = require("./helpers/comment");
 const { conversationUpdateListener } = require("./helpers/conversation");
 const { messagesListener } = require("./helpers/messages");
+
+const { createProxy, createSitemap } = require("./helpers/sitemap");
+const { newUserSetup } = require("./helpers/user");
+const {
+  getMetaInformation,
+  updateTotalUsersOnline,
+} = require("./helpers/util");
 const {
   decreaseTrendingScore,
   decreaseUserVentCounter,
@@ -25,13 +32,10 @@ const {
   newVentReportListener,
   ventDeleteListener,
 } = require("./helpers/vent");
-const { createProxy, createSitemap } = require("./helpers/sitemap");
-const {
-  getMetaInformation,
-  updateTotalUsersOnline,
-} = require("./helpers/util");
 
 process.setMaxListeners(0);
+
+exports.newUserSetup = functions.auth.user().onCreate(newUserSetup);
 
 exports.blockUserListener = functions.firestore
   .document("/block_check/{userID1userID2}")
