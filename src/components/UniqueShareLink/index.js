@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Button, Space } from "antd";
+import { Button, message, Space } from "antd";
 
 import { createShareLink, getSecondUID } from "./util";
 
@@ -28,6 +28,7 @@ function UniqueShareLink({ user }) {
         <Button
           onClick={() => {
             navigator.clipboard.writeText(createShareLink(secondUID));
+            message.success("Copied Text Successfully :)");
           }}
           size="large"
           type="primary"
