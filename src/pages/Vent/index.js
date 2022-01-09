@@ -59,35 +59,39 @@ function VentPage() {
       className="justify-start align-center bg-grey-2"
       title={title}
     >
-      <Container className={isMobileOrTablet() ? "py16" : "py32"}>
+      <Container
+        className={isMobileOrTablet() ? "column align-center py16" : "py32"}
+      >
         {ventFound === false && <h4>Vent Not Found</h4>}
-        <Container className="container ad column align-center">
-          {process.env.NODE_ENV === "production" && !isMobileOrTablet() && (
-            <Container
-              className="sticky top-0 column x-fill"
-              style={{ top: "120px" }}
-            >
-              <Container className="x-fill mb8">
-                <AdSense.Google
-                  className="adsbygoogle"
-                  client="ca-pub-5185907024931065"
-                  format=""
-                  responsive="true"
-                  slot="3872937497"
-                  style={{
-                    display: "block",
-                    minWidth: "100px",
-                    width: "100%",
-                    maxWidth: "1000px",
-                    minHeight: "100px",
-                    height: "240px",
-                    maxHeight: "800px"
-                  }}
-                />
+        {!isMobileOrTablet() && (
+          <Container className="container ad column align-center">
+            {process.env.NODE_ENV === "production" && (
+              <Container
+                className="sticky top-0 column x-fill"
+                style={{ top: "120px" }}
+              >
+                <Container className="x-fill mb8">
+                  <AdSense.Google
+                    className="adsbygoogle"
+                    client="ca-pub-5185907024931065"
+                    format=""
+                    responsive="true"
+                    slot="3872937497"
+                    style={{
+                      display: "block",
+                      minWidth: "100px",
+                      width: "100%",
+                      maxWidth: "1000px",
+                      minHeight: "100px",
+                      height: "240px",
+                      maxHeight: "800px"
+                    }}
+                  />
+                </Container>
               </Container>
-            </Container>
-          )}
-        </Container>
+            )}
+          </Container>
+        )}
         {ventFound === undefined && ventID && (
           <Container
             className={
