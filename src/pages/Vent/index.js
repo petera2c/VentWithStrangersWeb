@@ -61,8 +61,8 @@ function VentPage() {
     >
       <Container className={isMobileOrTablet() ? "py16" : "py32"}>
         {ventFound === false && <h4>Vent Not Found</h4>}
-        {true && !isMobileOrTablet() && (
-          <Container className="container ad column align-center">
+        <Container className="container ad column align-center">
+          {process.env.NODE_ENV === "production" && !isMobileOrTablet() && (
             <Container
               className="sticky top-0 column x-fill"
               style={{ top: "120px" }}
@@ -86,8 +86,8 @@ function VentPage() {
                 />
               </Container>
             </Container>
-          </Container>
-        )}
+          )}
+        </Container>
         {ventFound === undefined && ventID && (
           <Container
             className={
