@@ -61,7 +61,7 @@ function VentPage() {
     >
       <Container className={isMobileOrTablet() ? "py16" : "py32"}>
         {ventFound === false && <h4>Vent Not Found</h4>}
-        {process.env.NODE_ENV === "production" && !isMobileOrTablet() && (
+        {true && !isMobileOrTablet() && (
           <Container className="container ad column align-center">
             <Container
               className="sticky top-0 column x-fill"
@@ -106,7 +106,9 @@ function VentPage() {
             />
           </Container>
         )}
-        {user && <UniqueShareLink user={user} />}
+        <Container className="container ad column align-center">
+          {user && <UniqueShareLink user={user} />}
+        </Container>
       </Container>
     </Page>
   );

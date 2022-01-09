@@ -13,10 +13,10 @@ function UniqueShareLink({ user }) {
   }, []);
 
   return (
-    <Space align="start">
+    <Space align="start" className="x-fill">
       <Space
         align="center"
-        className="container small column bg-white pa16 br8"
+        className="column bg-white pa16 br8"
         direction="vertical"
       >
         <h4 className="tac">Gain 50 karma points!</h4>
