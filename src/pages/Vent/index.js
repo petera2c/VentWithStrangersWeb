@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import moment from "moment-timezone";
 import { useLocation } from "react-router-dom";
 import TextArea from "react-textarea-autosize";
@@ -7,12 +7,14 @@ import AdSense from "react-adsense";
 import firebase from "firebase/app";
 import "firebase/database";
 
-import Page from "../../components/containers/Page";
+import { UserContext } from "../../context";
+
 import Container from "../../components/containers/Container";
+import Page from "../../components/containers/Page";
+import UniqueShareLink from "../../components/UniqueShareLink";
 import Vent from "../../components/Vent";
 
 import Text from "../../components/views/Text";
-import Button from "../../components/views/Button";
 
 import { isMobileOrTablet } from "../../util";
 import { getMeta } from "./util";
@@ -33,6 +35,7 @@ const getVentIdFromURL = pathname => {
 };
 
 function VentPage() {
+  const user = useContext(UserContext);
   const location = useLocation();
   const { pathname } = location;
 
@@ -103,9 +106,7 @@ function VentPage() {
             />
           </Container>
         )}
-        {process.env.NODE_ENV === "production" && !isMobileOrTablet() && (
-          <Container className="container ad column align-center"></Container>
-        )}
+        {user && <UniqueShareLink user={user} />}
       </Container>
     </Page>
   );

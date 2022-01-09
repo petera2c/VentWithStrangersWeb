@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import AdSense from "react-adsense";
+import Cookies from "universal-cookie";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/pro-duotone-svg-icons/faPen";
@@ -23,6 +24,10 @@ import {
 import { getMetaInformation, getVents } from "./util";
 import { UserContext } from "../../context";
 
+import db from "../../config/firebase";
+
+const cookies = new Cookies();
+
 function VentsPage() {
   const componentIsMounted = useRef(true);
   const user = useContext(UserContext);
@@ -44,6 +49,10 @@ function VentsPage() {
   let onlineUsersUnsubscribe;
 
   useEffect(() => {
+    if (search) {
+      const referral = /referral=([^&]+)/.exec(search)[1];
+      if (referral) cookies.set("referral", referral);
+    }
     onlineUsersUnsubscribe = getTotalOnlineUsers(totalOnlineUsers => {
       if (componentIsMounted.current) setTotalOnlineUsers(totalOnlineUsers);
     });

@@ -1,6 +1,9 @@
 import firebase from "firebase/app";
 import "firebase/auth";
+import Cookies from "universal-cookie";
 import db from "../../../config/firebase";
+
+const cookies = new Cookies();
 
 export const getInvalidCharacters = displayName => {
   const invalidCharactersArray = displayName.split(
@@ -28,12 +31,23 @@ export const signUp = ({ email, displayName, password, passwordConfirm }) => {
     return;
   }
 
+  const referral = cookies.get("referral");
+
   firebase
     .auth()
     .createUserWithEmailAndPassword(email, password)
     .then(async res => {
       if (res.user) {
         res.user.sendEmailVerification();
+
+        if (referral)
+          db.collection("invited_users")
+            .doc(res.user.uid)
+            .set({
+              invited_uid: [res.user.uid],
+              referral_secondary_uid: referral
+            });
+
         await db
           .collection("users_settings")
           .doc(res.user.uid)

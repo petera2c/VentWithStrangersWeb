@@ -12,6 +12,14 @@ const combineObjectWithID = (id, object) => {
   return object;
 };
 
+const createProfileLink = (userID) => {
+  let link = "https://www.ventwithstrangers.com/profile?" + userID;
+  if (process.env.FUNCTIONS_EMULATOR)
+    link = "http://localhost:3000/profile?" + userID;
+
+  return link;
+};
+
 const createVentLink = (vent) => {
   let link =
     "https://www.ventwithstrangers.com/problem/" +
@@ -266,6 +274,7 @@ const updateTotalUsersOnline = (change, context) => {
 module.exports = {
   calculateKarma,
   combineObjectWithID,
+  createProfileLink,
   createVentLink,
   getMetaInformation,
   updateTotalUsersOnline,

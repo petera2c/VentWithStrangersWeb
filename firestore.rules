@@ -77,11 +77,15 @@ service cloud.firestore {
       allow write, update, delete: if request.auth.uid == userID;
     }
 
-    match /invite_uid/{userID} {
-      allow read: if request.auth.uid == userID;
+    match /invite_uid/{secondUID} {
+      allow read: if resource.data.primary_uid == request.auth.uid;
       allow write, update, delete: if false;
     }
 
+    match /invited_users/{uid} {
+      allow write: if request.auth.uid == uid;
+      allow read, delete: if false;
+    }
 
     match /user_mobile_app_rating/{userID} {
       allow read, write, update, delete: if request.auth.uid == userID;

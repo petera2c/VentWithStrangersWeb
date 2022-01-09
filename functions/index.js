@@ -19,7 +19,7 @@ const { conversationUpdateListener } = require("./helpers/conversation");
 const { messagesListener } = require("./helpers/messages");
 
 const { createProxy, createSitemap } = require("./helpers/sitemap");
-const { newUserSetup } = require("./helpers/user");
+const { newUserSetup, userWasInvited } = require("./helpers/user");
 const {
   getMetaInformation,
   updateTotalUsersOnline,
@@ -36,6 +36,9 @@ const {
 process.setMaxListeners(0);
 
 exports.newUserSetup = functions.auth.user().onCreate(newUserSetup);
+exports.userWasInvited = functions.firestore
+  .document("/invited_users/{secondUID}")
+  .onCreate(userWasInvited);
 
 exports.blockUserListener = functions.firestore
   .document("/block_check/{userID1userID2}")
