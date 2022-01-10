@@ -1,35 +1,26 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import moment from "moment-timezone";
-import Avatar from "avataaars";
 import AdSense from "react-adsense";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
-import { faUserLock } from "@fortawesome/free-solid-svg-icons/faUserLock";
-import { faPray } from "@fortawesome/free-solid-svg-icons/faPray";
-import { faLandmark } from "@fortawesome/free-solid-svg-icons/faLandmark";
 import { faBaby } from "@fortawesome/free-solid-svg-icons/faBaby";
+import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
 import { faGlassCheers } from "@fortawesome/free-solid-svg-icons/faGlassCheers";
+import { faLandmark } from "@fortawesome/free-solid-svg-icons/faLandmark";
+import { faPray } from "@fortawesome/free-solid-svg-icons/faPray";
 import { faSchool } from "@fortawesome/free-solid-svg-icons/faSchool";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { UserContext } from "../../context";
 
-import Page from "../../components/containers/Page";
 import Button from "../../components/views/Button";
 import Container from "../../components/containers/Container";
+import KarmaBadge from "../../components/KarmaBadge";
+import MakeAvatar from "../../components/MakeAvatar";
+import Page from "../../components/containers/Page";
 import StarterModal from "../../components/modals/Starter";
 
-import KarmaBadge from "../../components/KarmaBadge";
-
-import {
-  calculateKarma,
-  capitolizeFirstChar,
-  isMobileOrTablet,
-  userSignUpProgress
-} from "../../util";
 import { startConversation } from "../../components/Vent/util";
-
 import {
   educationList,
   kidsList,
@@ -37,7 +28,12 @@ import {
   politicalBeliefsList,
   religiousBeliefsList
 } from "../../PersonalOptions";
-
+import {
+  calculateKarma,
+  capitolizeFirstChar,
+  isMobileOrTablet,
+  userSignUpProgress
+} from "../../util";
 import { getUserInfo, getUserMatches, hasUserCompletedProfile } from "./util";
 
 function MakeFriendsPage() {
@@ -136,10 +132,6 @@ function MakeFriendsPage() {
           }
         >
           {matches.map((matchedUserInfo, index) => {
-            const displayName = matchedUserInfo.displayName
-              ? capitolizeFirstChar(matchedUserInfo.displayName)
-              : "Anonymous";
-
             return (
               <Link
                 className={
@@ -150,37 +142,17 @@ function MakeFriendsPage() {
                 to={"/profile?" + matchedUserInfo.userID}
               >
                 <Container className="x-fill full-center">
-                  {matchedUserInfo && !matchedUserInfo.avatar && (
-                    <Container
-                      className="bg-blue full-center mb16 br-round"
-                      style={{
-                        height: "84px",
-                        width: "84px"
-                      }}
-                    >
-                      <h1 className="white fs-40">{displayName[0]}</h1>
-                    </Container>
-                  )}
-                  {matchedUserInfo && matchedUserInfo.avatar && (
-                    <Avatar
-                      avatarStyle={"Circle"}
-                      topType={matchedUserInfo.avatar.topType}
-                      accessoriesType={matchedUserInfo.avatar.accessoriesType}
-                      hairColor={matchedUserInfo.avatar.hairColor}
-                      facialHairType={matchedUserInfo.avatar.facialHairType}
-                      clotheType={matchedUserInfo.avatar.clotheType}
-                      eyeType={matchedUserInfo.avatar.eyeType}
-                      eyebrowType={matchedUserInfo.avatar.eyebrowType}
-                      mouthType={matchedUserInfo.avatar.mouthType}
-                      skinColor={matchedUserInfo.avatar.skinColor}
-                      style={{ width: "96px", height: "96px" }}
-                      className="mr8"
-                    />
-                  )}
+                  <MakeAvatar
+                    displayName={matchedUserInfo.displayName}
+                    size="large"
+                    userBasicInfo={matchedUserInfo}
+                  />
                 </Container>
 
                 <Container className="align-center">
-                  <h1 className="primary mr8">{displayName}</h1>
+                  <h1 className="primary mr8">
+                    {capitolizeFirstChar(matchedUserInfo.displayName)}
+                  </h1>
                   <KarmaBadge karma={calculateKarma(matchedUserInfo)} />
                 </Container>
                 <h6 className="grey-1 fw-400">
@@ -271,7 +243,7 @@ function MakeFriendsPage() {
                       }}
                     >
                       <FontAwesomeIcon className="mr8" icon={faComments} />
-                      Message {capitolizeFirstChar(displayName)}
+                      Message {capitolizeFirstChar(matchedUserInfo.displayName)}
                     </Button>
                   )}
                 </Container>

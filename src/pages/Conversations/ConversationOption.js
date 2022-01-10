@@ -1,26 +1,19 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment-timezone";
 import { useLocation, useHistory } from "react-router-dom";
-import Avatar from "avataaars";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 import { faTrash } from "@fortawesome/pro-solid-svg-icons/faTrash";
 import { faUserLock } from "@fortawesome/pro-solid-svg-icons/faUserLock";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Page from "../../components/containers/Page";
-import Container from "../../components/containers/Container";
 import Button from "../../components/views/Button";
-import HandleOutsideClick from "../../components/containers/HandleOutsideClick";
 import ConfirmAlertModal from "../../components/modals/ConfirmAlert";
+import Container from "../../components/containers/Container";
+import HandleOutsideClick from "../../components/containers/HandleOutsideClick";
 import KarmaBadge from "../../components/KarmaBadge";
-
-import {
-  deleteConversation,
-  getConversationBasicData,
-  conversationListener,
-  readConversation
-} from "./util";
+import MakeAvatar from "../../components/MakeAvatar";
+import Page from "../../components/containers/Page";
 
 import {
   blockUser,
@@ -28,6 +21,12 @@ import {
   capitolizeFirstChar,
   isMobileOrTablet
 } from "../../util";
+import {
+  deleteConversation,
+  getConversationBasicData,
+  conversationListener,
+  readConversation
+} from "./util";
 
 function ConversationOption({
   conversation,
@@ -71,11 +70,6 @@ function ConversationOption({
   const hasSeen = conversation[userID];
   if (isActive && !hasSeen) readConversation(conversation, userID);
 
-  const displayName =
-    conversationPartnerData && conversationPartnerData.displayName
-      ? conversationPartnerData.displayName
-      : "Anonymous";
-
   return (
     <Container
       className={
@@ -89,27 +83,13 @@ function ConversationOption({
     >
       <Container className="flex-fill column ov-hidden">
         <Container>
-          {conversationPartnerData && !conversationPartnerData.avatar && (
-            <h6 className="round-icon bg-blue white mr8">
-              {capitolizeFirstChar(displayName[0])}
-            </h6>
-          )}
-          {conversationPartnerData && conversationPartnerData.avatar && (
-            <Avatar
-              avatarStyle={"Circle"}
-              topType={conversationPartnerData.avatar.topType}
-              accessoriesType={conversationPartnerData.avatar.accessoriesType}
-              hairColor={conversationPartnerData.avatar.hairColor}
-              facialHairType={conversationPartnerData.avatar.facialHairType}
-              clotheType={conversationPartnerData.avatar.clotheType}
-              eyeType={conversationPartnerData.avatar.eyeType}
-              eyebrowType={conversationPartnerData.avatar.eyebrowType}
-              mouthType={conversationPartnerData.avatar.mouthType}
-              skinColor={conversationPartnerData.avatar.skinColor}
-              style={{ width: "48px", height: "48px" }}
-              className="mr8"
+          {conversationPartnerData && (
+            <MakeAvatar
+              displayName={conversationPartnerData.displayName}
+              userBasicInfo={conversationPartnerData}
             />
           )}
+
           <Container className="full-center">
             <h6 className={"mr8 " + (hasSeen ? "grey-1" : "primary")}>
               {conversationPartnerData

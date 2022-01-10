@@ -1,36 +1,34 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment-timezone";
-import Avatar from "avataaars";
 import firebase from "firebase/app";
 import { Button, Space } from "antd";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
-import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons/faExclamationTriangle";
-import { faTrash } from "@fortawesome/pro-solid-svg-icons/faTrash";
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
+import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons/faExclamationTriangle";
+import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
+import { faTrash } from "@fortawesome/pro-solid-svg-icons/faTrash";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import ConfirmAlertModal from "../../components/modals/ConfirmAlert";
 import Container from "../../components/containers/Container";
-
-import Text from "../../components/views/Text";
-import KarmaBadge from "../../components/KarmaBadge";
-import Message from "./message";
 import Emoji from "../../components/Emoji";
+import KarmaBadge from "../../components/KarmaBadge";
+import MakeAvatar from "../../components/MakeAvatar";
+import Message from "./message";
 
 import {
   calculateKarma,
   capitolizeFirstChar,
   isMobileOrTablet
 } from "../../util";
-
 import {
   getMessages,
   messageListener,
   sendMessage,
   setConversationIsTyping
 } from "./util";
+
 let typingTimer;
 let typingTimer2;
 
@@ -189,28 +187,10 @@ function Chat({
         }}
       >
         <Container className="ov-hidden full-center pa16">
-          {conversationPartnerData && conversationPartnerData.avatar && (
-            <Avatar
-              avatarStyle={"Circle"}
-              topType={conversationPartnerData.avatar.topType}
-              accessoriesType={conversationPartnerData.avatar.accessoriesType}
-              hairColor={conversationPartnerData.avatar.hairColor}
-              facialHairType={conversationPartnerData.avatar.facialHairType}
-              clotheType={conversationPartnerData.avatar.clotheType}
-              eyeType={conversationPartnerData.avatar.eyeType}
-              eyebrowType={conversationPartnerData.avatar.eyebrowType}
-              mouthType={conversationPartnerData.avatar.mouthType}
-              skinColor={conversationPartnerData.avatar.skinColor}
-              style={{ width: "48px", height: "48px" }}
-              className="mr8"
-            />
-          )}
-          <p>
-            {conversationPartnerData &&
-              !conversationPartnerData.avatar &&
-              conversationPartnerData.displayName}{" "}
-            is typing...
-          </p>
+          <MakeAvatar
+            displayName={conversationPartnerData.displayName}
+            userBasicInfo={conversationPartnerData}
+          />
         </Container>
       </Container>
 

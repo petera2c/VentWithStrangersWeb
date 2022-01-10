@@ -1,60 +1,33 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import moment from "moment-timezone";
-import { withRouter } from "react-router-dom";
-import TextArea from "react-textarea-autosize";
-import ContentEditable from "react-contenteditable";
-import { Editor } from "@tinymce/tinymce-react";
 import { MentionsInput, Mention } from "react-mentions";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import Avatar from "avataaars";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCopy } from "@fortawesome/pro-regular-svg-icons/faCopy";
 import { faClock } from "@fortawesome/pro-regular-svg-icons/faClock";
-import { faShare } from "@fortawesome/pro-regular-svg-icons/faShare";
-import { faHeart } from "@fortawesome/pro-light-svg-icons/faHeart";
-import { faHeart as faHeart2 } from "@fortawesome/pro-solid-svg-icons/faHeart";
 import { faComment } from "@fortawesome/pro-light-svg-icons/faComment";
-import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
+import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
 import { faEdit } from "@fortawesome/pro-light-svg-icons/faEdit";
+import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 import { faExclamationTriangle } from "@fortawesome/pro-light-svg-icons/faExclamationTriangle";
 import { faTrash } from "@fortawesome/pro-duotone-svg-icons/faTrash";
-import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
 import { faUserLock } from "@fortawesome/pro-duotone-svg-icons/faUserLock";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import {
-  EmailShareButton,
-  FacebookShareButton,
-  PinterestShareButton,
-  RedditShareButton,
-  TelegramShareButton,
-  TumblrShareButton,
-  TwitterShareButton,
-  WhatsappShareButton,
-  EmailIcon,
-  FacebookIcon,
-  PinterestIcon,
-  RedditIcon,
-  TelegramIcon,
-  TumblrIcon,
-  TwitterIcon,
-  WhatsappIcon
-} from "react-share";
 import db from "../../config/firebase";
 
-import LoadingHeart from "../loaders/Heart";
+import Button from "../views/Button";
 import Comment from "../Comment";
-import ReportModal from "../modals/Report";
 import ConfirmAlertModal from "../modals/ConfirmAlert";
-import SuccessMessage from "../SuccessMessage";
-import StarterModal from "../modals/Starter";
-
 import Container from "../containers/Container";
 import HandleOutsideClick from "../containers/HandleOutsideClick";
-import Button from "../views/Button";
-import Text from "../views/Text";
 import KarmaBadge from "../KarmaBadge";
+import LoadingHeart from "../loaders/Heart";
+import MakeAvatar from "../MakeAvatar";
+import ReportModal from "../modals/Report";
+import StarterModal from "../modals/Starter";
+import SuccessMessage from "../SuccessMessage";
+import Text from "../views/Text";
 
 import { UserContext } from "../../context";
 
@@ -88,7 +61,7 @@ import {
   ventListener
 } from "./util";
 
-import classNames from "./style.css";
+import "./style.css";
 
 const SmartLink = ({ children, className, disablePostOnClick, to }) => {
   if (disablePostOnClick || !to) {
@@ -215,8 +188,6 @@ function Vent({
 
   if (isContentBlocked) return <div />;
 
-  const displayName = author.displayName ? author.displayName : "Anonymous";
-
   return (
     <Container className="x-fill column mb16">
       {vent && (
@@ -237,33 +208,14 @@ function Vent({
               }}
             >
               <Container className="full-center">
-                {author && !author.avatar && (
-                  <Text
-                    className="round-icon bg-blue white mr8"
-                    text={capitolizeFirstChar(displayName[0])}
-                    type="h6"
-                  />
-                )}
-                {author && author.avatar && (
-                  <Avatar
-                    avatarStyle={"Circle"}
-                    topType={author.avatar.topType}
-                    accessoriesType={author.avatar.accessoriesType}
-                    hairColor={author.avatar.hairColor}
-                    facialHairType={author.avatar.facialHairType}
-                    clotheType={author.avatar.clotheType}
-                    eyeType={author.avatar.eyeType}
-                    eyebrowType={author.avatar.eyebrowType}
-                    mouthType={author.avatar.mouthType}
-                    skinColor={author.avatar.skinColor}
-                    style={{ width: "48px", height: "48px" }}
-                    className="mr8"
-                  />
-                )}
+                <MakeAvatar
+                  displayName={author.displayName}
+                  userBasicInfo={author}
+                />
                 <Container className="full-center">
                   <Text
                     className="button-1 fw-400 mr8"
-                    text={capitolizeFirstChar(displayName)}
+                    text={capitolizeFirstChar(author.displayName)}
                     type="h5"
                   />
                   {isUserOnline && <div className="online-dot mr8" />}
@@ -505,7 +457,7 @@ function Vent({
                       }}
                     >
                       <FontAwesomeIcon className="mr8" icon={faComments} />
-                      Message {capitolizeFirstChar(displayName)}
+                      Message {capitolizeFirstChar(author.displayName)}
                     </Button>
                   )}
                 </Container>

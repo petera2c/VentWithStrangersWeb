@@ -3,18 +3,21 @@ import { Link, useLocation } from "react-router-dom";
 import AdSense from "react-adsense";
 import Cookies from "universal-cookie";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen } from "@fortawesome/pro-duotone-svg-icons/faPen";
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
-import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
 import { faInfo } from "@fortawesome/pro-duotone-svg-icons/faInfo";
+import { faPen } from "@fortawesome/pro-duotone-svg-icons/faPen";
 import { faUserFriends } from "@fortawesome/pro-duotone-svg-icons/faUserFriends";
+import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
-import Text from "../../components/views/Text";
-import Vent from "../../components/Vent";
 import LoadMore from "../../components/LoadMore";
+import NewVentComponent from "../../components/NewVent";
+import Page from "../../components/containers/Page";
+import Vent from "../../components/Vent";
+
+import db from "../../config/firebase";
+import { UserContext } from "../../context";
 
 import {
   capitolizeFirstChar,
@@ -22,9 +25,6 @@ import {
   isMobileOrTablet
 } from "../../util";
 import { getMetaInformation, getVents } from "./util";
-import { UserContext } from "../../context";
-
-import db from "../../config/firebase";
 
 const cookies = new Cookies();
 
@@ -82,9 +82,7 @@ function VentsPage() {
             (isMobileOrTablet() ? "container mobile-full" : "container large")
           }
         >
-          <Container className="x-fill bg-white pa16 mb16 br8">
-            hello world
-          </Container>
+          <NewVentComponent miniVersion />
           <Container className="x-fill justify-between mb16">
             <h1 className="primary fs-26">{metaTitle + " Vents"}</h1>
           </Container>
@@ -155,7 +153,7 @@ function VentsPage() {
           )}
 
           {vents && vents.length === 0 && (
-            <Text className="fw-400" text="No vents found." type="h4" />
+            <h4 className="fw-400">No vents found.</h4>
           )}
         </Container>
 

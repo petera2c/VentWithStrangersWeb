@@ -1,37 +1,40 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
-import { useCollectionData } from "react-firebase-hooks/firestore";
 import moment from "moment-timezone";
-import Avatar from "avataaars";
 import AdSense from "react-adsense";
 import { Button } from "antd";
 import db from "../../config/firebase";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBaby } from "@fortawesome/free-solid-svg-icons/faBaby";
 import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
-import { faUserLock } from "@fortawesome/free-solid-svg-icons/faUserLock";
-import { faPray } from "@fortawesome/free-solid-svg-icons/faPray";
-import { faLandmark } from "@fortawesome/free-solid-svg-icons/faLandmark";
-import { faBaby } from "@fortawesome/free-solid-svg-icons/faBaby";
 import { faGlassCheers } from "@fortawesome/free-solid-svg-icons/faGlassCheers";
+import { faLandmark } from "@fortawesome/free-solid-svg-icons/faLandmark";
+import { faPray } from "@fortawesome/free-solid-svg-icons/faPray";
 import { faSchool } from "@fortawesome/free-solid-svg-icons/faSchool";
+import { faUserLock } from "@fortawesome/free-solid-svg-icons/faUserLock";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import LoadingHeart from "../../components/loaders/Heart";
-
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
-import Text from "../../components/views/Text";
-
+import MakeAvatar from "../../components/MakeAvatar";
 import Vent from "../../components/Vent";
 import Comment from "../../components/Comment";
-
 import ConfirmAlertModal from "../../components/modals/ConfirmAlert";
 import HandleOutsideClick from "../../components/containers/HandleOutsideClick";
 import LoadMore from "../../components/LoadMore";
 import KarmaBadge from "../../components/KarmaBadge";
 import StarterModal from "../../components/modals/Starter";
 
+import { startConversation } from "../../components/Vent/util";
+import {
+  educationList,
+  kidsList,
+  partyingList,
+  politicalBeliefsList,
+  religiousBeliefsList
+} from "../../PersonalOptions";
 import {
   blockUser,
   calculateKarma,
@@ -40,15 +43,7 @@ import {
   isMobileOrTablet,
   userSignUpProgress
 } from "../../util";
-import { startConversation } from "../../components/Vent/util";
 import { getUser, getUsersComments, getUsersVents } from "./util";
-import {
-  educationList,
-  kidsList,
-  partyingList,
-  politicalBeliefsList,
-  religiousBeliefsList
-} from "../../PersonalOptions";
 
 function ProfileSection({ user }) {
   const componentIsMounted = useRef(true);
@@ -95,10 +90,6 @@ function ProfileSection({ user }) {
     };
   }, []);
 
-  const displayName = userBasicInfo.displayName
-    ? capitolizeFirstChar(userBasicInfo.displayName)
-    : "Anonymous";
-
   return (
     <Container className="x-fill">
       {!isMobileOrTablet() && location.search && (
@@ -134,37 +125,17 @@ function ProfileSection({ user }) {
         {search && (
           <Container className="ov-hidden column bg-white pa16 mb16 br8">
             <Container className="x-fill full-center">
-              {userBasicInfo && !userBasicInfo.avatar && (
-                <Container
-                  className="bg-blue full-center mb16 br-round"
-                  style={{
-                    height: "84px",
-                    width: "84px"
-                  }}
-                >
-                  <h1 className="white fs-40">{displayName[0]}</h1>
-                </Container>
-              )}
-              {userBasicInfo && userBasicInfo.avatar && (
-                <Avatar
-                  avatarStyle={"Circle"}
-                  topType={userBasicInfo.avatar.topType}
-                  accessoriesType={userBasicInfo.avatar.accessoriesType}
-                  hairColor={userBasicInfo.avatar.hairColor}
-                  facialHairType={userBasicInfo.avatar.facialHairType}
-                  clotheType={userBasicInfo.avatar.clotheType}
-                  eyeType={userBasicInfo.avatar.eyeType}
-                  eyebrowType={userBasicInfo.avatar.eyebrowType}
-                  mouthType={userBasicInfo.avatar.mouthType}
-                  skinColor={userBasicInfo.avatar.skinColor}
-                  style={{ width: "96px", height: "96px" }}
-                  className="mr8"
-                />
-              )}
+              <MakeAvatar
+                displayName={userBasicInfo.displayName}
+                size="large"
+                userBasicInfo={userBasicInfo}
+              />
             </Container>
 
             <Container className="align-center">
-              <h1 className="primary mr8">{displayName}</h1>
+              <h1 className="primary mr8">
+                {capitolizeFirstChar(userBasicInfo.displayName)}
+              </h1>
               <KarmaBadge karma={calculateKarma(userBasicInfo)} />
             </Container>
             <h6 className="grey-1 fw-400">
@@ -249,7 +220,7 @@ function ProfileSection({ user }) {
                     }}
                   >
                     <FontAwesomeIcon className="mr8" icon={faComments} />
-                    Message {capitolizeFirstChar(displayName)}
+                    Message {capitolizeFirstChar(userBasicInfo.displayName)}
                   </button>
                 )}
               <div className="relative">
@@ -288,11 +259,7 @@ function ProfileSection({ user }) {
                                     setBlockModal(!blockModal);
                                   }}
                                 >
-                                  <Text
-                                    className="fw-400 flex-fill"
-                                    text="Block User"
-                                    type="p"
-                                  />
+                                  <p className="fw-400 flex-fill">Block User</p>
                                   <FontAwesomeIcon
                                     className="ml8"
                                     icon={faUserLock}

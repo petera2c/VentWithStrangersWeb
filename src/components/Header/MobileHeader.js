@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { Link, withRouter } from "react-router-dom";
-import Avatar from "avataaars";
 import { Button, Space } from "antd";
 
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
@@ -13,21 +12,20 @@ import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
 import { faConciergeBell } from "@fortawesome/pro-duotone-svg-icons/faConciergeBell";
 import { faInfo } from "@fortawesome/pro-duotone-svg-icons/faInfo";
 import { faSearch } from "@fortawesome/pro-solid-svg-icons/faSearch";
-import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
 import { faUser } from "@fortawesome/pro-solid-svg-icons/faUser";
+import { faUserAstronaut } from "@fortawesome/pro-duotone-svg-icons/faUserAstronaut";
 import { faUserFriends } from "@fortawesome/pro-duotone-svg-icons/faUserFriends";
 import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
-import { faUserAstronaut } from "@fortawesome/pro-duotone-svg-icons/faUserAstronaut";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { UserContext } from "../../context";
 
 import Container from "../containers/Container";
 import HandleOutsideClick from "../containers/HandleOutsideClick";
-import Text from "../views/Text";
-
-import StarterModal from "../modals/Starter";
+import MakeAvatar from "../MakeAvatar";
 import NotificationList from "../NotificationList";
+import StarterModal from "../modals/Starter";
+import Text from "../views/Text";
 
 import {
   capitolizeFirstChar,
@@ -206,31 +204,11 @@ function Header({ history, location }) {
                     setAccountSectionActive(!accountSectionActive);
                   }}
                 >
-                  {user.displayName &&
-                    (!userBasicInfo ||
-                      (userBasicInfo && !userBasicInfo.avatar)) && (
-                      <Text
-                        className="round-icon bg-blue white mr8"
-                        text={capitolizeFirstChar(user.displayName[0])}
-                        type="h6"
-                      />
-                    )}
-                  {userBasicInfo && userBasicInfo.avatar && (
-                    <Avatar
-                      avatarStyle={"Circle"}
-                      topType={userBasicInfo.avatar.topType}
-                      accessoriesType={userBasicInfo.avatar.accessoriesType}
-                      hairColor={userBasicInfo.avatar.hairColor}
-                      facialHairType={userBasicInfo.avatar.facialHairType}
-                      clotheType={userBasicInfo.avatar.clotheType}
-                      eyeType={userBasicInfo.avatar.eyeType}
-                      eyebrowType={userBasicInfo.avatar.eyebrowType}
-                      mouthType={userBasicInfo.avatar.mouthType}
-                      skinColor={userBasicInfo.avatar.skinColor}
-                      style={{ width: "48px", height: "48px" }}
-                      className="mr8"
-                    />
-                  )}
+                  <MakeAvatar
+                    displayName={user.displayName}
+                    userBasicInfo={userBasicInfo}
+                  />
+
                   <Text
                     className="mr8"
                     text={`Hello, ${capitolizeFirstChar(user.displayName)}`}

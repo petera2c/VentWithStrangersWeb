@@ -1,28 +1,24 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { Link, withRouter } from "react-router-dom";
-import Avatar from "avataaars";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
-import { faConciergeBell } from "@fortawesome/pro-duotone-svg-icons/faConciergeBell";
-import { faBell } from "@fortawesome/pro-duotone-svg-icons/faBell";
-import { faSearch } from "@fortawesome/pro-solid-svg-icons/faSearch";
-import { faChevronDown } from "@fortawesome/pro-solid-svg-icons/faChevronDown";
-import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
-import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
-import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
-
 import { Button } from "antd";
 
-import { UserContext } from "../../context";
-
-import StarterModal from "../modals/Starter";
+import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
+import { faBell } from "@fortawesome/pro-duotone-svg-icons/faBell";
+import { faChevronDown } from "@fortawesome/pro-solid-svg-icons/faChevronDown";
+import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
+import { faConciergeBell } from "@fortawesome/pro-duotone-svg-icons/faConciergeBell";
+import { faSearch } from "@fortawesome/pro-solid-svg-icons/faSearch";
+import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
+import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Container from "../containers/Container";
 import HandleOutsideClick from "../containers/HandleOutsideClick";
-import Text from "../views/Text";
-
+import MakeAvatar from "../MakeAvatar";
 import NotificationList from "../NotificationList";
+import StarterModal from "../modals/Starter";
+
+import { UserContext } from "../../context";
 
 import { capitolizeFirstChar, isPageActive } from "../../util";
 import {
@@ -197,37 +193,13 @@ function Header({ history, location }) {
             {user && (
               <Container className="align-center wrap">
                 <Link className="flex full-center mr16" to="/profile">
-                  {user.displayName &&
-                    (!userBasicInfo ||
-                      (userBasicInfo && !userBasicInfo.avatar)) && (
-                      <Text
-                        className="round-icon bg-blue white mr8"
-                        text={capitolizeFirstChar(user.displayName[0])}
-                        type="h6"
-                      />
-                    )}
-                  {userBasicInfo && userBasicInfo.avatar && (
-                    <Avatar
-                      avatarStyle={"Circle"}
-                      topType={userBasicInfo.avatar.topType}
-                      accessoriesType={userBasicInfo.avatar.accessoriesType}
-                      hairColor={userBasicInfo.avatar.hairColor}
-                      facialHairType={userBasicInfo.avatar.facialHairType}
-                      clotheType={userBasicInfo.avatar.clotheType}
-                      eyeType={userBasicInfo.avatar.eyeType}
-                      eyebrowType={userBasicInfo.avatar.eyebrowType}
-                      mouthType={userBasicInfo.avatar.mouthType}
-                      skinColor={userBasicInfo.avatar.skinColor}
-                      style={{ width: "48px", height: "48px" }}
-                      className="mr8"
-                    />
-                  )}
-
-                  <Text
-                    className="mr8"
-                    text={`Hello, ${capitolizeFirstChar(user.displayName)}`}
-                    type="p"
+                  <MakeAvatar
+                    displayName={user.displayName}
+                    userBasicInfo={userBasicInfo}
                   />
+                  <p className="mr8">{`Hello, ${capitolizeFirstChar(
+                    user.displayName
+                  )}`}</p>
                   <FontAwesomeIcon icon={faChevronDown} />
                 </Link>
 
@@ -260,7 +232,7 @@ function Header({ history, location }) {
                   )}
                   {newNotificationCounter(notifications) &&
                     !showNotificationDropdown && (
-                      <Text
+                      <p
                         className="fs-14 bg-red white pa4 br8"
                         style={{
                           position: "absolute",
@@ -268,10 +240,9 @@ function Header({ history, location }) {
                           right: "-12px",
                           pointerEvents: "none"
                         }}
-                        type="p"
                       >
                         {newNotificationCounter(notifications)}
-                      </Text>
+                      </p>
                     )}
                 </HandleOutsideClick>
               </Container>

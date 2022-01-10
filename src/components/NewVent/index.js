@@ -1,25 +1,25 @@
 import React, { useContext, useEffect, useState } from "react";
-
 import { Statistic } from "antd";
-
 const { Countdown } = Statistic;
-
 import TextArea from "react-textarea-autosize";
+import { useHistory } from "react-router-dom";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { UserContext } from "../../context";
 
 import Container from "../containers/Container";
 import Emoji from "../Emoji";
+import MakeAvatar from "../../components/MakeAvatar";
 import StarterModal from "../modals/Starter";
 
 import { userSignUpProgress } from "../../util";
 import { getUserVentTimeOut, getVent, saveVent, updateTags } from "./util";
 
-function NewVentComponent({ ventID }) {
-  const { user } = useContext(UserContext);
+function NewVentComponent({ miniVersion, ventID }) {
+  const history = useHistory();
+  const { user, userBasicInfo } = useContext(UserContext);
 
   const [description, setDescription] = useState("");
   const [gender, setGender] = useState(0);
@@ -35,8 +35,39 @@ function NewVentComponent({ ventID }) {
     if (user) getUserVentTimeOut(setUserVentTimeOut, user.uid);
   }, []);
 
+  if (miniVersion)
+    return (
+      <Container className="x-fill column bg-white pa16 br8">
+        <Container>
+          <MakeAvatar userBasicInfo={userBasicInfo} />
+          <input
+            className="py8 px16 br4"
+            onChange={e => {
+              const userInteractionIssues = userSignUpProgress(user);
+
+              if (userInteractionIssues) {
+                if (userInteractionIssues === "NSI") setStarterModal(true);
+                return;
+              }
+              setTitle(e.target.value);
+              setSaving(false);
+            }}
+            placeholder="We are here for you."
+            type="text"
+            value={title}
+          />
+          {starterModal && (
+            <StarterModal
+              activeModal={starterModal}
+              setActiveModal={setStarterModal}
+            />
+          )}
+        </Container>
+      </Container>
+    );
+
   return (
-    <Container className="column bg-white br8">
+    <Container className="x-fill column bg-white br8">
       <Container className="column py32 px32 br4">
         <h5 className="fw-400 mb8">Title</h5>
 

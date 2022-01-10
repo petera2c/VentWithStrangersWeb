@@ -3,25 +3,25 @@ import moment from "moment-timezone";
 import TextArea from "react-textarea-autosize";
 import { MentionsInput, Mention } from "react-mentions";
 import { useHistory } from "react-router-dom";
-import Avatar from "avataaars";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock } from "@fortawesome/free-regular-svg-icons/faClock";
+import { faEdit } from "@fortawesome/pro-light-svg-icons/faEdit";
+import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
+import { faExclamationTriangle } from "@fortawesome/pro-light-svg-icons/faExclamationTriangle";
 import { faHeart } from "@fortawesome/free-regular-svg-icons/faHeart";
 import { faHeart as faHeart2 } from "@fortawesome/free-solid-svg-icons/faHeart";
-import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
-import { faEdit } from "@fortawesome/pro-light-svg-icons/faEdit";
 import { faTrash } from "@fortawesome/pro-duotone-svg-icons/faTrash";
-import { faExclamationTriangle } from "@fortawesome/pro-light-svg-icons/faExclamationTriangle";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Container from "../containers/Container";
-import Text from "../views/Text";
 import Button from "../views/Button";
-import HandleOutsideClick from "../containers/HandleOutsideClick";
 import ConfirmAlertModal from "../modals/ConfirmAlert";
-import ReportModal from "../modals/Report";
+import Container from "../containers/Container";
+import HandleOutsideClick from "../containers/HandleOutsideClick";
 import KarmaBadge from "../KarmaBadge";
+import ReportModal from "../modals/Report";
 import StarterModal from "../modals/Starter";
+import Text from "../views/Text";
+import MakeAvatar from "../MakeAvatar";
 
 import { UserContext } from "../../context";
 
@@ -81,10 +81,6 @@ function Comment({
 
   if (isContentBlocked) return <div />;
 
-  const displayName = userBasicInfo.displayName
-    ? userBasicInfo.displayName
-    : "Anonymous";
-
   return (
     <Container
       className="x-fill column bg-white mt1"
@@ -103,34 +99,15 @@ function Comment({
             history.push("/profile?" + comment.userID);
           }}
         >
-          {userBasicInfo && !userBasicInfo.avatar && (
-            <Text
-              className="round-icon bg-blue white mr8"
-              text={capitolizeFirstChar(displayName[0])}
-              type="h6"
-            />
-          )}
-          {userBasicInfo && userBasicInfo.avatar && (
-            <Avatar
-              avatarStyle={"Circle"}
-              topType={userBasicInfo.avatar.topType}
-              accessoriesType={userBasicInfo.avatar.accessoriesType}
-              hairColor={userBasicInfo.avatar.hairColor}
-              facialHairType={userBasicInfo.avatar.facialHairType}
-              clotheType={userBasicInfo.avatar.clotheType}
-              eyeType={userBasicInfo.avatar.eyeType}
-              eyebrowType={userBasicInfo.avatar.eyebrowType}
-              mouthType={userBasicInfo.avatar.mouthType}
-              skinColor={userBasicInfo.avatar.skinColor}
-              style={{ width: "48px", height: "48px" }}
-              className="mr8"
-            />
-          )}
+          <MakeAvatar
+            displayName={userBasicInfo.displayName}
+            userBasicInfo={userBasicInfo}
+          />
           {userBasicInfo && (
             <Container className="full-center">
               <Text
                 className="button-1 fw-400 mr8"
-                text={capitolizeFirstChar(displayName)}
+                text={capitolizeFirstChar(userBasicInfo.displayName)}
                 type="h5"
               />
               {isUserOnline && <div className="online-dot mr8" />}

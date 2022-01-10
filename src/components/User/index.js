@@ -1,33 +1,25 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import moment from "moment-timezone";
-import Avatar from "avataaars";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
-import { faUserLock } from "@fortawesome/free-solid-svg-icons/faUserLock";
-import { faPray } from "@fortawesome/free-solid-svg-icons/faPray";
-import { faLandmark } from "@fortawesome/free-solid-svg-icons/faLandmark";
 import { faBaby } from "@fortawesome/free-solid-svg-icons/faBaby";
+import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
 import { faGlassCheers } from "@fortawesome/free-solid-svg-icons/faGlassCheers";
+import { faLandmark } from "@fortawesome/free-solid-svg-icons/faLandmark";
+import { faPray } from "@fortawesome/free-solid-svg-icons/faPray";
 import { faSchool } from "@fortawesome/free-solid-svg-icons/faSchool";
+import { faUserLock } from "@fortawesome/free-solid-svg-icons/faUserLock";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Button from "../views/Button";
 import Container from "../containers/Container";
-import StarterModal from "../modals/Starter";
-
 import KarmaBadge from "../KarmaBadge";
+import StarterModal from "../modals/Starter";
+import MakeAvatar from "../MakeAvatar";
+
 import { UserContext } from "../../context";
 
-import {
-  calculateKarma,
-  capitolizeFirstChar,
-  getUserBasicInfo,
-  isMobileOrTablet,
-  userSignUpProgress
-} from "../../util";
 import { startConversation } from "../../components/Vent/util";
-
 import {
   educationList,
   kidsList,
@@ -35,6 +27,12 @@ import {
   politicalBeliefsList,
   religiousBeliefsList
 } from "../../PersonalOptions";
+import {
+  calculateKarma,
+  capitolizeFirstChar,
+  getUserBasicInfo,
+  userSignUpProgress
+} from "../../util";
 
 function UserComponent({
   displayName,
@@ -64,40 +62,15 @@ function UserComponent({
 
   return (
     <Link
-      className={
-        "flex container twentyvw ov-hidden column bg-white pa16 mb16 br8 " +
-        (isMobileOrTablet() ? "" : "")
-      }
+      className="flex container twentyvw ov-hidden column bg-white pa16 mb16 br8"
       to={"/profile?" + userInfo.id}
     >
       <Container className="x-fill full-center">
-        {userInfo && !userInfo.avatar && userInfo.displayName && (
-          <Container
-            className="bg-blue full-center mb16 br-round"
-            style={{
-              height: "84px",
-              width: "84px"
-            }}
-          >
-            <h1 className="white fs-40">{userInfo.displayName[0]}</h1>
-          </Container>
-        )}
-        {userInfo && userInfo.avatar && (
-          <Avatar
-            avatarStyle={"Circle"}
-            topType={userInfo.avatar.topType}
-            accessoriesType={userInfo.avatar.accessoriesType}
-            hairColor={userInfo.avatar.hairColor}
-            facialHairType={userInfo.avatar.facialHairType}
-            clotheType={userInfo.avatar.clotheType}
-            eyeType={userInfo.avatar.eyeType}
-            eyebrowType={userInfo.avatar.eyebrowType}
-            mouthType={userInfo.avatar.mouthType}
-            skinColor={userInfo.avatar.skinColor}
-            style={{ width: "96px", height: "96px" }}
-            className="mr8"
-          />
-        )}
+        <MakeAvatar
+          displayName={userInfo.displayName}
+          size="large"
+          userBasicInfo={userInfo}
+        />
       </Container>
 
       <Container className="align-center">
