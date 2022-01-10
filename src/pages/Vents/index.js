@@ -67,24 +67,25 @@ function VentsPage() {
 
   return (
     <Page
-      className="column bg-grey-2"
+      className="column align-center bg-grey-2"
       description={metaDescription}
       keywords=""
       title={metaTitle}
     >
-      <Container
-        className={
-          "x-fill justify-center " + (isMobileOrTablet() ? "py16" : "py32")
-        }
+      <Space
+        align="start"
+        className={isMobileOrTablet() ? "py16" : "py32"}
+        size="large"
       >
-        <Container
+        <Space
           className={
-            "column align-center px16 pb16 " +
-            (isMobileOrTablet() ? "container mobile-full" : "container large")
+            isMobileOrTablet() ? "container mobile-full" : "container large"
           }
+          direction="vertical"
+          size="middle"
         >
           <NewVentComponent miniVersion />
-          <Container className="x-fill justify-between mb16">
+          <Container className="x-fill">
             <h1 className="primary fs-26">{metaTitle + " Vents"}</h1>
           </Container>
 
@@ -161,7 +162,7 @@ function VentsPage() {
           {vents && vents.length === 0 && (
             <h4 className="fw-400">No vents found.</h4>
           )}
-        </Container>
+        </Space>
 
         {!isMobileOrTablet() && (
           <Container className="container ad column">
@@ -216,7 +217,7 @@ function VentsPage() {
             </Container>
           </Container>
         )}
-      </Container>
+      </Space>
     </Page>
   );
 }

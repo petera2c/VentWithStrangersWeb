@@ -3,6 +3,20 @@ import moment from "moment-timezone";
 import db from "../../config/firebase";
 import { userSignUpProgress } from "../../util";
 
+export const doSomething = (
+  componentIsMounted,
+  setUserVentTimeOut,
+  ventTimeout
+) => {
+  if (componentIsMounted.current) {
+    setUserVentTimeOut(oldUserVentTimeOut => {
+      if (oldUserVentTimeOut)
+        return new moment(oldUserVentTimeOut).subtract(1, "seconds");
+      else return new moment(ventTimeout);
+    });
+  }
+};
+
 export const getUserVentTimeOut = async (callback, userID) => {
   const userVentTimeOutDoc = await db
     .collection("user_vent_timeout")
@@ -35,14 +49,7 @@ export const getVent = async (setDescription, setTags, setTitle, ventID) => {
   }
 };
 
-export const saveVent = async (callback, ventObject, ventID, user) => {
-  const userInteractionIssues = userSignUpProgress(user);
-
-  if (userInteractionIssues) {
-    if (userInteractionIssues === "NSI") setStarterModal(true);
-    return;
-  }
-
+export const saveVent = async (callback, checks, ventObject, ventID, user) => {
   if (!ventID) {
     ventObject.server_timestamp = firebase.firestore.Timestamp.now().toMillis();
     ventObject.comment_counter = 0;
@@ -61,6 +68,22 @@ export const saveVent = async (callback, ventObject, ventID, user) => {
   callback({ id: newVent.id ? newVent.id : ventID, title: ventObject.title });
 };
 
+export const selectEncouragingMessage = userVentTimeOutFormatted => {
+  if (userVentTimeOutFormatted)
+    return "You can vent again in " + userVentTimeOutFormatted + " :)";
+
+  const nicePlaceholdersArray = [
+    "Let it all out. You are not alone.",
+    "What is going on in your life?",
+    "What are you working through?",
+    "We are here for you."
+  ];
+
+  return nicePlaceholdersArray[
+    Math.floor(Math.random() * nicePlaceholdersArray.length)
+  ];
+};
+
 export const updateTags = (
   checks,
   inputText,
@@ -72,11 +95,6 @@ export const updateTags = (
   user
 ) => {
   if (!checks) return;
-
-  if (userInteractionIssues) {
-    if (userInteractionIssues === "NSI") setStarterModal(true);
-    return;
-  }
 
   let word = "";
   for (let index in inputText) {

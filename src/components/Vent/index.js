@@ -194,7 +194,7 @@ function Vent({
         <Container className="x-fill column bg-white br8">
           <SmartLink
             className={
-              "main-container x-fill wrap justify-between border-bottom py16 pl32 pr16 " +
+              "main-container x-fill wrap justify-between border-bottom pa16 " +
               (disablePostOnClick ? "" : "clickable")
             }
             disablePostOnClick={disablePostOnClick}
