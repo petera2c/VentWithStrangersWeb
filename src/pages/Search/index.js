@@ -1,20 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment-timezone";
-import Avatar from "avataaars";
 import algoliasearch from "algoliasearch";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
+import { Space } from "antd";
 
 import db from "../../config/firebase";
 
 import LoadingHeart from "../../components/loaders/Heart";
-
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
-import Text from "../../components/views/Text";
-import Filters from "../../components/Filters";
 import Vent from "../../components/Vent";
 import LoadMore from "../../components/LoadMore";
 import KarmaBadge from "../../components/KarmaBadge";
@@ -130,7 +124,7 @@ function SearchPage({ location }) {
           }
         >
           {vents && (
-            <Container className="x-fill column">
+            <Space className="x-fill" direction="vertical" size="middle">
               {vents &&
                 vents.map((vent, index) => (
                   <Vent
@@ -142,7 +136,7 @@ function SearchPage({ location }) {
                     searchPreviewMode={true}
                   />
                 ))}
-            </Container>
+            </Space>
           )}
           {!vents && <LoadingHeart />}
           {vents && vents.length === 0 && (

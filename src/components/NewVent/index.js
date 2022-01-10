@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Statistic } from "antd";
+import { Space, Statistic } from "antd";
 const { Countdown } = Statistic;
 import TextArea from "react-textarea-autosize";
 import { useHistory } from "react-router-dom";
@@ -38,10 +38,10 @@ function NewVentComponent({ miniVersion, ventID }) {
   if (miniVersion)
     return (
       <Container className="x-fill column bg-white pa16 br8">
-        <Container>
+        <Space align="center">
           <MakeAvatar userBasicInfo={userBasicInfo} />
           <input
-            className="py8 px16 br4"
+            className="flex-fill py8 px16 br4"
             onChange={e => {
               const userInteractionIssues = userSignUpProgress(user);
 
@@ -62,7 +62,7 @@ function NewVentComponent({ miniVersion, ventID }) {
               setActiveModal={setStarterModal}
             />
           )}
-        </Container>
+        </Space>
       </Container>
     );
 

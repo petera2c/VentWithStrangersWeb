@@ -189,9 +189,9 @@ function Vent({
   if (isContentBlocked) return <div />;
 
   return (
-    <Container className="x-fill column mb16">
+    <Container className="x-fill">
       {vent && (
-        <Container className="x-fill column bg-white mb8 br8">
+        <Container className="x-fill column bg-white br8">
           <SmartLink
             className={
               "main-container x-fill wrap justify-between border-bottom py16 pl32 pr16 " +

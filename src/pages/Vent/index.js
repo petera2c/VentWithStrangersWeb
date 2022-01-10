@@ -3,6 +3,7 @@ import moment from "moment-timezone";
 import { useLocation } from "react-router-dom";
 import TextArea from "react-textarea-autosize";
 import AdSense from "react-adsense";
+import { Space } from "antd";
 
 import firebase from "firebase/app";
 import "firebase/database";
@@ -93,11 +94,13 @@ function VentPage() {
           </Container>
         )}
         {ventFound === undefined && ventID && (
-          <Container
+          <Space
             className={
-              "column px16 " +
+              "px16 " +
               (isMobileOrTablet() ? "container mobile-full" : "container large")
             }
+            direction="vertical"
+            size="middle"
           >
             <Vent
               disablePostOnClick={true}
@@ -108,7 +111,7 @@ function VentPage() {
               setVentFound={setVentFound}
               ventInit={{ ...ventFromMeta, id: ventID }}
             />
-          </Container>
+          </Space>
         )}
         <Container className="container ad column align-center">
           {user && <UniqueShareLink user={user} />}

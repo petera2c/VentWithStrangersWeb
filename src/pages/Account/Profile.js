@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import moment from "moment-timezone";
 import AdSense from "react-adsense";
-import { Button } from "antd";
+import { Button, Space } from "antd";
 import db from "../../config/firebase";
 
 import { faBaby } from "@fortawesome/free-solid-svg-icons/faBaby";
@@ -302,7 +302,7 @@ function ProfileSection({ user }) {
           </Container>
         </Container>
         {postsSection && (
-          <Container className="x-fill column">
+          <Space className="x-fill" direction="vertical" size="middle">
             {vents &&
               vents.map((vent, index) => (
                 <Vent
@@ -351,7 +351,7 @@ function ProfileSection({ user }) {
                 </Container>
               </LoadMore>
             )}
-          </Container>
+          </Space>
         )}
         {!postsSection && (
           <Container className="x-fill column">

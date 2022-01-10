@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import AdSense from "react-adsense";
 import Cookies from "universal-cookie";
+import { Space } from "antd";
 
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
 import { faInfo } from "@fortawesome/pro-duotone-svg-icons/faInfo";
@@ -88,15 +89,20 @@ function VentsPage() {
           </Container>
 
           {vents && (
-            <Container className="x-fill column">
+            <Space className="x-fill" direction="vertical" size="middle">
               {vents &&
                 vents.map((vent, index) => {
                   return (
-                    <Container className="x-fill column" key={index}>
+                    <Space
+                      className="x-fill"
+                      direction="vertical"
+                      size="middle"
+                      key={index}
+                    >
                       <Vent previewMode={true} ventInit={vent} />
                       {process.env.NODE_ENV === "production" &&
                         index % 3 === 0 && (
-                          <Container className="x-fill column mb16">
+                          <Container className="x-fill column">
                             <AdSense.Google
                               className="adsbygoogle"
                               client="ca-pub-5185907024931065"
@@ -110,10 +116,10 @@ function VentsPage() {
                             />
                           </Container>
                         )}
-                    </Container>
+                    </Space>
                   );
                 })}
-            </Container>
+            </Space>
           )}
           {canLoadMore && (
             <LoadMore
