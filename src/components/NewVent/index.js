@@ -3,6 +3,7 @@ import { Space, Statistic } from "antd";
 const { Countdown } = Statistic;
 import TextArea from "react-textarea-autosize";
 import { useHistory } from "react-router-dom";
+import moment from "moment-timezone";
 
 import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -32,8 +33,34 @@ function NewVentComponent({ miniVersion, ventID }) {
 
   useEffect(() => {
     if (ventID) getVent(setDescription, setTags, setTitle, ventID);
-    if (user) getUserVentTimeOut(setUserVentTimeOut, user.uid);
+    if (user)
+      getUserVentTimeOut(res => {
+        if (res) {
+          const doSomething = () => {
+            setUserVentTimeOut(oldUserVentTimeOut => {
+              if (oldUserVentTimeOut)
+                return new moment(oldUserVentTimeOut).subtract(1, "seconds");
+              else return new moment(res);
+            });
+          };
+
+          doSomething();
+          setInterval(doSomething, 1000);
+        }
+      }, user.uid);
   }, []);
+
+  const checks = () => {
+    if (userVentTimeOut) return false;
+    const userInteractionIssues = userSignUpProgress(user);
+
+    if (userInteractionIssues) {
+      if (userInteractionIssues === "NSI") setStarterModal(true);
+      return false;
+    }
+
+    return true;
+  };
 
   if (miniVersion)
     return (
@@ -43,12 +70,8 @@ function NewVentComponent({ miniVersion, ventID }) {
           <input
             className="flex-fill py8 px16 br4"
             onChange={e => {
-              const userInteractionIssues = userSignUpProgress(user);
+              if (!checks()) return;
 
-              if (userInteractionIssues) {
-                if (userInteractionIssues === "NSI") setStarterModal(true);
-                return;
-              }
               setTitle(e.target.value);
               setSaving(false);
             }}
@@ -68,32 +91,38 @@ function NewVentComponent({ miniVersion, ventID }) {
 
   return (
     <Container className="x-fill column bg-white br8">
-      <Container className="column py32 px32 br4">
-        <h5 className="fw-400 mb8">Title</h5>
-
-        <input
-          className="py8 px16 mb8 br4"
-          onChange={e => {
-            const userInteractionIssues = userSignUpProgress(user);
-
-            if (userInteractionIssues) {
-              if (userInteractionIssues === "NSI") setStarterModal(true);
-              return;
-            }
-            setTitle(e.target.value);
-            setSaving(false);
-          }}
-          placeholder="We are here for you."
-          type="text"
-          value={title}
-        />
-        <Container className="column relative mb8">
-          <h5 className="fw-400 mb8">Tag this vent</h5>
+      <Space className="pa32 br4" direction="vertical" size="large">
+        {userVentTimeOut && (
+          <Space direction="vertical">
+            <p className="tac">
+              To avoid spam, people can only post once every few hours. With
+              more Karma Points you can post more often. Please come back in
+            </p>
+            <h1 className="tac">{userVentTimeOut.format("hh:mm:ss")}</h1>
+          </Space>
+        )}
+        <Space className="x-fill" direction="vertical">
+          <h5 className="fw-400">Title</h5>
+          <input
+            className="x-fill py8 px16 br4"
+            onChange={e => {
+              if (!checks()) return;
+              setTitle(e.target.value);
+              setSaving(false);
+            }}
+            placeholder="We are here for you."
+            type="text"
+            value={title}
+          />
+        </Space>
+        <Space className="x-fill" direction="vertical">
+          <h5 className="fw-400">Tag this vent</h5>
 
           <input
-            className="py8 px16 br4"
+            className="x-fill py8 px16 br4"
             onChange={e =>
               updateTags(
+                checks,
                 e.target.value,
                 setSaving,
                 setStarterModal,
@@ -107,8 +136,8 @@ function NewVentComponent({ miniVersion, ventID }) {
             type="text"
             value={tagText}
           />
-        </Container>
-        <Container className="wrap">
+        </Space>
+        <Space className="x-fill">
           {tags.map((tag, index) => {
             let text = tag;
             if (tag.name) text = tag.name;
@@ -116,7 +145,7 @@ function NewVentComponent({ miniVersion, ventID }) {
             return (
               <Container
                 key={index}
-                className="clickable mr8 mb8"
+                className="clickable"
                 onClick={() => {
                   let temp = [...tags];
                   temp.splice(index, 1);
@@ -147,24 +176,22 @@ function NewVentComponent({ miniVersion, ventID }) {
               </Container>
             );
           })}
-        </Container>
+        </Space>
 
-        <h5 className="fw-400 mb8">Description</h5>
-        <TextArea
-          className="py8 px16 mb8 br4"
-          onChange={event => {
-            const userInteractionIssues = userSignUpProgress(user);
+        <Space className="x-fill" direction="vertical">
+          <h5 className="fw-400">Description</h5>
+          <TextArea
+            className="x-fill py8 px16 br4"
+            onChange={event => {
+              if (!checks()) return;
 
-            if (userInteractionIssues) {
-              if (userInteractionIssues === "NSI") setStarterModal(true);
-              return;
-            }
-            setDescription(event.target.value);
-          }}
-          placeholder="Let it all out. You are not alone."
-          style={{ minHeight: "100px" }}
-          value={description}
-        />
+              setDescription(event.target.value);
+            }}
+            placeholder="Let it all out. You are not alone."
+            style={{ minHeight: "100px" }}
+            value={description}
+          />
+        </Space>
         <Container className="justify-end">
           <Emoji
             handleChange={emoji => {
@@ -181,7 +208,7 @@ function NewVentComponent({ miniVersion, ventID }) {
 
           {!saving && (
             <button
-              className="bg-blue white px64 py8 mb8 br4"
+              className="bg-blue white px64 py8 br4"
               onClick={() => {
                 const userInteractionIssues = userSignUpProgress(user);
 
@@ -224,7 +251,7 @@ function NewVentComponent({ miniVersion, ventID }) {
             </button>
           )}
         </Container>
-      </Container>
+      </Space>
       <Container
         className="column pa32"
         style={{ borderTop: "2px solid var(--grey-color-2)" }}

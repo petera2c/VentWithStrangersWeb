@@ -37,24 +37,6 @@ function NewVentPage() {
         <NewVentComponent ventID={ventID} />
       </Container>
 
-      {false && (
-        <BlockModal
-          text={
-            <Container className="column full-center">
-              <p>
-                To avoid spam, people can only post once every few hours. With
-                more Karma Points you can post more often. Please come back in
-              </p>
-              <Countdown
-                title=""
-                value={userVentTimeOut}
-                onFinish={() => setUserVentTimeOut(false)}
-              />
-            </Container>
-          }
-          title="Try again soon :)"
-        />
-      )}
       {starterModal && (
         <StarterModal
           activeModal={starterModal}

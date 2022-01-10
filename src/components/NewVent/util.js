@@ -62,6 +62,7 @@ export const saveVent = async (callback, ventObject, ventID, user) => {
 };
 
 export const updateTags = (
+  checks,
   inputText,
   setSaving,
   setStarterModal,
@@ -70,7 +71,7 @@ export const updateTags = (
   tags,
   user
 ) => {
-  const userInteractionIssues = userSignUpProgress(user);
+  if (!checks) return;
 
   if (userInteractionIssues) {
     if (userInteractionIssues === "NSI") setStarterModal(true);
