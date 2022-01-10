@@ -29,7 +29,7 @@ import "./style.css";
 
 function Conversations() {
   const componentIsMounted = useRef(true);
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const [conversations, setConversations] = useState([]);
 

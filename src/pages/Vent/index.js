@@ -35,7 +35,7 @@ const getVentIdFromURL = pathname => {
 };
 
 function VentPage() {
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const location = useLocation();
   const { pathname } = location;
 

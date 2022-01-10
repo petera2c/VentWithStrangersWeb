@@ -51,7 +51,7 @@ function Header({ history, location }) {
   const componentIsMounted = useRef(true);
   const { pathname, search } = location;
 
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const [starterModal, setStarterModal] = useState(false);
   const [mobileHeaderActive, setMobileHeaderActive] = useState(false);

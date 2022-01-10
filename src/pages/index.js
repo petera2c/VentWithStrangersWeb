@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import moment from "moment-timezone";
 import { useIdleTimer } from "react-idle-timer";
@@ -33,11 +33,12 @@ import VentPage from "./Vent";
 import VentsPage from "./Vents";
 import VerifiedEmailPage from "./EmailAuth/VerifiedEmail";
 
-import { isMobileOrTablet } from "../util";
+import { getUserBasicInfo, isMobileOrTablet } from "../util";
 import { setIsUserOnlineToDatabase, setUserOnlineStatus } from "./util";
 
 function Routes() {
   const [user, loading, error] = useAuthState(firebase.auth());
+  const [userBasicInfo, setUserBasicInfo] = useState({});
 
   const handleOnIdle = event => {
     if (user && user.uid) setUserOnlineStatus("offline", user.uid);
@@ -56,6 +57,11 @@ function Routes() {
 
   useEffect(() => {
     setIsUserOnlineToDatabase(user);
+
+    if (user)
+      getUserBasicInfo(newBasicUserInfo => {
+        setUserBasicInfo(newBasicUserInfo);
+      }, user.uid);
   }, [user]);
 
   if (loading)
@@ -71,7 +77,7 @@ function Routes() {
     );
 
   return (
-    <UserContext.Provider value={user}>
+    <UserContext.Provider value={{ user, userBasicInfo }}>
       <Router>
         {error && { error }}
         {!loading && !error && (

@@ -23,7 +23,7 @@ import {
 
 function NotificationsPage() {
   const componentIsMounted = useRef(true);
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const [notifications, setNotifications] = useState([]);
 

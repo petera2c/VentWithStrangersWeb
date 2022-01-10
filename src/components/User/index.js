@@ -44,7 +44,7 @@ function UserComponent({
   userID
 }) {
   const componentIsMounted = useRef(true);
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const history = useHistory();
 
   const [userInfo, setUserInfo] = useState({ displayName, id: userID });

@@ -44,7 +44,6 @@ export const signUp = ({ email, displayName, password, passwordConfirm }) => {
           db.collection("invited_users")
             .doc(res.user.uid)
             .set({
-              invited_uid: [res.user.uid],
               referral_secondary_uid: referral
             });
 

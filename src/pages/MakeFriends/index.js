@@ -42,7 +42,7 @@ import { getUserInfo, getUserMatches, hasUserCompletedProfile } from "./util";
 
 function MakeFriendsPage() {
   const history = useHistory();
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [userInfo, setUserInfo] = useState({});
   const [matches, setMatches] = useState([]);
   const [starterModal, setStarterModal] = useState(!user);

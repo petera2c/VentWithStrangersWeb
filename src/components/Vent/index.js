@@ -113,7 +113,7 @@ function Vent({
   ventInit
 }) {
   const componentIsMounted = useRef(true);
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const [author, setAuthor] = useState({});
   const [commentString, setCommentString] = useState("");

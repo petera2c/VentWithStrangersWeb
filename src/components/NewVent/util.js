@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import moment from "moment-timezone";
 import db from "../../config/firebase";
+import { userSignUpProgress } from "../../util";
 
 export const getUserVentTimeOut = async (callback, userID) => {
   const userVentTimeOutDoc = await db
@@ -35,9 +36,13 @@ export const getVent = async (setDescription, setTags, setTitle, ventID) => {
 };
 
 export const saveVent = async (callback, ventObject, ventID, user) => {
-  if (!user) {
-    return alert("You must be signed in to create a vent");
+  const userInteractionIssues = userSignUpProgress(user);
+
+  if (userInteractionIssues) {
+    if (userInteractionIssues === "NSI") setStarterModal(true);
+    return;
   }
+
   if (!ventID) {
     ventObject.server_timestamp = firebase.firestore.Timestamp.now().toMillis();
     ventObject.comment_counter = 0;
@@ -54,4 +59,32 @@ export const saveVent = async (callback, ventObject, ventID, user) => {
       .update(ventObject);
   } else newVent = await db.collection("vents").add(ventObject);
   callback({ id: newVent.id ? newVent.id : ventID, title: ventObject.title });
+};
+
+export const updateTags = (
+  inputText,
+  setSaving,
+  setStarterModal,
+  setTags,
+  setTagText,
+  tags,
+  user
+) => {
+  const userInteractionIssues = userSignUpProgress(user);
+
+  if (userInteractionIssues) {
+    if (userInteractionIssues === "NSI") setStarterModal(true);
+    return;
+  }
+
+  let word = "";
+  for (let index in inputText) {
+    if (inputText[index] === " " || inputText[index] === ",") {
+      if (word) tags.push(word);
+      word = "";
+    } else word += inputText[index];
+  }
+  setTags(tags);
+  setTagText(word);
+  setSaving(false);
 };

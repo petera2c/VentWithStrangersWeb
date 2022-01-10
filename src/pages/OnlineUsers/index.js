@@ -12,7 +12,7 @@ import { UserContext } from "../../context";
 
 function OnlineUsers() {
   const componentIsMounted = useRef(true);
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [onlineUsers, setOnlineUsers] = useState([]);
 
   let onlineUsersUnsubscribe;

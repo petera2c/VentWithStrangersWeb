@@ -22,7 +22,7 @@ import Text from "../../components/views/Text";
 import { isMobileOrTablet, isPageActive, signOut } from "../../util";
 
 function AccountPage() {
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const history = useHistory();
 
   const location = useLocation();

@@ -24,11 +24,7 @@ import Text from "../views/Text";
 
 import NotificationList from "../NotificationList";
 
-import {
-  capitolizeFirstChar,
-  getUserBasicInfo,
-  isPageActive
-} from "../../util";
+import { capitolizeFirstChar, isPageActive } from "../../util";
 import {
   getNotifications,
   getUnreadConversations,
@@ -42,17 +38,15 @@ function Header({ history, location }) {
   const componentIsMounted = useRef(true);
   const { pathname, search } = location;
 
-  const user = useContext(UserContext);
+  const { user, userBasicInfo } = useContext(UserContext);
 
   const [activeModal, setActiveModal] = useState("");
   const [notifications, setNotifications] = useState([]);
   const [showFeedback, setShowFeedback] = useState(true);
-  const [missingAccountPercentage, setMissingAccountPercentage] = useState();
   const [showNotificationDropdown, setShowNotificationDropdown] = useState(
     false
   );
   const [unreadConversationsCount, setUnreadConversationsCount] = useState();
-  const [userBasicInfo, setUserBasicInfo] = useState({});
 
   const [ventSearchString, setVentSearchString] = useState(
     pathname.substring(0, 7) === "/search"
@@ -76,10 +70,7 @@ function Header({ history, location }) {
         setUnreadConversationsCount,
         user.uid
       );
-      getUserBasicInfo(newBasicUserInfo => {
-        setUserBasicInfo(newBasicUserInfo);
-        howCompleteIsUserProfile(setMissingAccountPercentage, newBasicUserInfo);
-      }, user.uid);
+
       newNotificationsListenerUnsubscribe = getNotifications(
         componentIsMounted,
         setNotifications,
@@ -322,23 +313,6 @@ function Header({ history, location }) {
           </button>
         </Container>
       )}
-      {false &&
-        missingAccountPercentage !== undefined &&
-        missingAccountPercentage !== 1 && (
-          <Container className="column full-center bg-grey-2">
-            <div>hello there</div>
-          </Container>
-        )}
-    </Container>
-  );
-}
-
-function Hit(props) {
-  const { hit } = props;
-  return (
-    <Container className="column">
-      <h4>{hit.title.substring(0, 40)}</h4>
-      <p>{hit.description.substring(0, 40)}</p>
     </Container>
   );
 }

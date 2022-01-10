@@ -30,7 +30,7 @@ const cookies = new Cookies();
 
 function VentsPage() {
   const componentIsMounted = useRef(true);
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const [vents, setVents] = useState(null);
   const location = useLocation();
@@ -78,10 +78,13 @@ function VentsPage() {
       >
         <Container
           className={
-            "column align-center pa16 " +
+            "column align-center px16 pb16 " +
             (isMobileOrTablet() ? "container mobile-full" : "container large")
           }
         >
+          <Container className="x-fill bg-white pa16 mb16 br8">
+            hello world
+          </Container>
           <Container className="x-fill justify-between mb16">
             <h1 className="primary fs-26">{metaTitle + " Vents"}</h1>
           </Container>
@@ -157,13 +160,10 @@ function VentsPage() {
         </Container>
 
         {!isMobileOrTablet() && (
-          <Container className="container ad column pt16">
-            <Container className="x-fill justify-between mb16">
-              <h1 className="primary fs-20" style={{ minHeight: "35px" }}></h1>
-            </Container>
+          <Container className="container ad column">
             <Container
               className="sticky top-0 column x-fill"
-              style={{ top: "120px" }}
+              style={{ top: "80px" }}
             >
               <Container className="x-fill column align-start bg-white pa16 mb16 br8">
                 <Link className="button-3 fs-18 mb16" to="/online-users">

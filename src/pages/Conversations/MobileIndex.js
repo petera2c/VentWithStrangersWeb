@@ -28,7 +28,7 @@ import "./style.css";
 
 function MobileConversations() {
   const componentIsMounted = useRef(true);
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const [conversations, setConversations] = useState([]);
 

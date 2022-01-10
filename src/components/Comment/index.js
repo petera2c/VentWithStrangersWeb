@@ -55,7 +55,7 @@ function Comment({
   ventUserID
 }) {
   const history = useHistory();
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [blockModal, setBlockModal] = useState(false);
   const [comment, setComment] = useState(comment2);
   const [commentOptions, setCommentOptions] = useState(false);

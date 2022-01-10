@@ -16,7 +16,7 @@ import { UserContext } from "../../context";
 
 function SignUpPage() {
   const history = useHistory();
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   if (user) {
     alert("You can only access this page if you are not logged in!");
