@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Space, Statistic } from "antd";
+import { message, Space, Statistic } from "antd";
 const { Countdown } = Statistic;
 import TextArea from "react-textarea-autosize";
 import { useHistory } from "react-router-dom";
@@ -138,7 +138,7 @@ function NewVentComponent({ miniVersion, ventID }) {
                 setTitle(e.target.value);
                 setSaving(false);
               }}
-              placeholder="We are here for you."
+              placeholder="Our community is listening :)"
               type="text"
               value={title}
             />
@@ -252,7 +252,7 @@ function NewVentComponent({ miniVersion, ventID }) {
                       ventID,
                       user
                     );
-                  } else alert("One or more fields is missing.");
+                  } else message.error("One or more fields is missing :'(");
                 }}
               >
                 Submit

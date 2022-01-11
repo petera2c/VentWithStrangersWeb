@@ -345,7 +345,10 @@ function Comment({
         />
       )}
       {starterModal && (
-        <StarterModal activeModal="login" setActiveModal={setStarterModal} />
+        <StarterModal
+          activeModal={starterModal}
+          setActiveModal={setStarterModal}
+        />
       )}
     </Container>
   );

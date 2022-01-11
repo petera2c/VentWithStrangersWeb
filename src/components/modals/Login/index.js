@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons/faEye";
 
 import Container from "../../containers/Container";
-import Text from "../../views/Text";
 import Button from "../../views/Button";
 
 import { isMobileOrTablet } from "../../../util";
