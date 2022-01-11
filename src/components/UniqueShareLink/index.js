@@ -28,7 +28,7 @@ function UniqueShareLink({ user }) {
         <Button
           onClick={() => {
             navigator.clipboard.writeText(createShareLink(secondUID));
-            message.success("Copied Text Successfully :)");
+            message.success("Copied Successfully :)");
           }}
           size="large"
           type="primary"

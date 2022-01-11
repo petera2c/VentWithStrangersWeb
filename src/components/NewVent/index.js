@@ -12,6 +12,7 @@ import { UserContext } from "../../context";
 
 import Container from "../containers/Container";
 import Emoji from "../Emoji";
+import HandleOutsideClick from "../containers/HandleOutsideClick";
 import MakeAvatar from "../../components/MakeAvatar";
 import StarterModal from "../modals/Starter";
 
@@ -30,7 +31,7 @@ function NewVentComponent({ miniVersion, ventID }) {
   const history = useHistory();
   const { user, userBasicInfo } = useContext(UserContext);
 
-  const [abcd, setabcd] = useState(miniVersion);
+  const [isMinified, setIsMinified] = useState(miniVersion);
   const [description, setDescription] = useState("");
   const [encouragingText, setEncouragingText] = useState(
     selectEncouragingMessage()
@@ -78,9 +79,14 @@ function NewVentComponent({ miniVersion, ventID }) {
   };
 
   return (
-    <Container className="x-fill column bg-white br8">
+    <HandleOutsideClick
+      className="x-fill column bg-white br8"
+      close={() => {
+        if (miniVersion) setIsMinified(true);
+      }}
+    >
       <Space className="pa32 br4" direction="vertical" size="large">
-        {userVentTimeOut && (
+        {!miniVersion && userVentTimeOut && (
           <Space direction="vertical">
             <p className="tac">
               To avoid spam, people can only post once every few hours. With
@@ -99,13 +105,13 @@ function NewVentComponent({ miniVersion, ventID }) {
 
                 setDescription(event.target.value);
               }}
-              onClick={() => setabcd(false)}
+              onClick={() => setIsMinified(false)}
               placeholder={
                 userVentTimeOut
                   ? selectEncouragingMessage(userVentTimeOutFormatted)
                   : encouragingText
               }
-              style={{ minHeight: abcd ? "" : "100px" }}
+              style={{ minHeight: isMinified ? "" : "100px" }}
               value={description}
             />
             <Emoji
@@ -122,7 +128,7 @@ function NewVentComponent({ miniVersion, ventID }) {
             />
           </Container>
         </Space>
-        {!abcd && (
+        {!isMinified && (
           <Space className="x-fill" direction="vertical">
             <h5 className="fw-400">Title</h5>
             <input
@@ -138,7 +144,7 @@ function NewVentComponent({ miniVersion, ventID }) {
             />
           </Space>
         )}
-        {!abcd && (
+        {!isMinified && (
           <Space className="x-fill" direction="vertical">
             <h5 className="fw-400">Tag this vent</h5>
 
@@ -156,13 +162,13 @@ function NewVentComponent({ miniVersion, ventID }) {
                   user
                 )
               }
-              placeholder="depression, relationships, covid-19"
+              placeholder="depression, relationships, bullying, school, parents"
               type="text"
               value={tagText}
             />
           </Space>
         )}
-        {!abcd && (
+        {!isMinified && (
           <Space className="x-fill" wrap>
             {tags.map((tag, index) => {
               let text = tag;
@@ -205,7 +211,7 @@ function NewVentComponent({ miniVersion, ventID }) {
           </Space>
         )}
 
-        {!abcd && (
+        {!isMinified && (
           <Container className="justify-end">
             {!saving && (
               <button
@@ -272,7 +278,7 @@ function NewVentComponent({ miniVersion, ventID }) {
           setActiveModal={setStarterModal}
         />
       )}
-    </Container>
+    </HandleOutsideClick>
   );
 }
 
