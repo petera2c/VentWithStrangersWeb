@@ -19,7 +19,7 @@ function Emoji({ handleChange }) {
       <div
         style={{
           position: "absolute",
-          bottom: "100%",
+          top: "100%",
           right: 0,
           display: displayEmojiDropdown ? "" : "none"
         }}

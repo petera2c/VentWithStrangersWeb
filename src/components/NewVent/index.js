@@ -67,7 +67,7 @@ function NewVentComponent({ miniVersion, ventID }) {
   }, []);
 
   const checks = () => {
-    if (userVentTimeOut) return false;
+    if (userVentTimeOut && !ventID) return false;
     const userInteractionIssues = userSignUpProgress(user);
 
     if (userInteractionIssues) {
@@ -86,7 +86,7 @@ function NewVentComponent({ miniVersion, ventID }) {
       }}
     >
       <Space className="pa32 br4" direction="vertical" size="large">
-        {!miniVersion && userVentTimeOut && (
+        {!miniVersion && userVentTimeOut && !ventID && (
           <Space direction="vertical">
             <p className="tac">
               To avoid spam, people can only post once every few hours. With
@@ -150,7 +150,9 @@ function NewVentComponent({ miniVersion, ventID }) {
 
             <input
               className="x-fill py8 px16 br4"
-              onChange={e =>
+              onChange={e => {
+                if (!checks()) return;
+
                 updateTags(
                   checks,
                   e.target.value,
@@ -160,8 +162,8 @@ function NewVentComponent({ miniVersion, ventID }) {
                   setTagText,
                   tags,
                   user
-                )
-              }
+                );
+              }}
               placeholder="depression, relationships, bullying, school, parents"
               type="text"
               value={tagText}
