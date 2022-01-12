@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import firebase from "firebase/app";
 import "firebase/auth";
 import db from "./config/firebase";
@@ -147,3 +147,14 @@ export const soundNotify = (sound = "bing") => {
 
   audio.play();
 };
+
+export function useIsMounted() {
+  const isMountedRef = useRef(true);
+  const isMounted = useCallback(() => isMountedRef.current, []);
+
+  useEffect(() => {
+    return () => void (isMountedRef.current = false);
+  }, []);
+
+  return isMounted;
+}

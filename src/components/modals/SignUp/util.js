@@ -1,6 +1,8 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import Cookies from "universal-cookie";
+import { message } from "antd";
+import moment from "moment-timezone";
 import db from "../../../config/firebase";
 
 const cookies = new Cookies();
@@ -19,16 +21,14 @@ export const getInvalidCharacters = displayName => {
 
 export const signUp = ({ email, displayName, password, passwordConfirm }) => {
   if (getInvalidCharacters(displayName)) {
-    alert(
+    return message.error(
       "These characters are not allowed in your display name. " +
         getInvalidCharacters(displayName)
     );
-    return;
   }
 
   if (password !== passwordConfirm) {
-    alert("Passwords do not match.");
-    return;
+    return message.error("Passwords do not match.");
   }
 
   const referral = cookies.get("referral");
@@ -73,6 +73,9 @@ export const signUp = ({ email, displayName, password, passwordConfirm }) => {
           .collection("users_display_name")
           .doc(res.user.uid)
           .set({
+            server_timestamp: new moment(
+              res.user.metadata.creationTime
+            ).valueOf(),
             displayName
           });
         await res.user.updateProfile({

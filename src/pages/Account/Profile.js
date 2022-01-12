@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import moment from "moment-timezone";
 import AdSense from "react-adsense";
@@ -41,13 +41,13 @@ import {
   capitolizeFirstChar,
   getUserBasicInfo,
   isMobileOrTablet,
+  useIsMounted,
   userSignUpProgress
 } from "../../util";
 import { getUser, getUsersComments, getUsersVents } from "./util";
 
 function ProfileSection({ user }) {
-  const componentIsMounted = useRef(true);
-
+  const isMounted = useIsMounted();
   const history = useHistory();
   const location = useLocation();
   let { search } = location;
@@ -75,20 +75,16 @@ function ProfileSection({ user }) {
   useEffect(() => {
     if (search) {
       getUserBasicInfo(userBasicInfo => {
-        if (componentIsMounted.current) setUserBasicInfo(userBasicInfo);
+        if (isMounted()) setUserBasicInfo(userBasicInfo);
       }, search);
       getUser(userInfo => {
-        if (componentIsMounted.current) setUserInfo(userInfo);
+        if (isMounted()) setUserInfo(userInfo);
       }, search);
     } else history.push("/");
 
     getUsersVents(search, setCanLoadMoreVents, setVents, vents);
     getUsersComments(search, setCanLoadMoreComments, setComments, comments);
-
-    return () => {
-      componentIsMounted.current = false;
-    };
-  }, []);
+  }, [search]);
 
   return (
     <Container className="x-fill">
@@ -116,14 +112,17 @@ function ProfileSection({ user }) {
           )}
         </Container>
       )}
-      <Container
+      <Space
         className={
-          "container column px16 " +
-          (isMobileOrTablet() ? "mobile-full" : "large")
+          "container px16 " + (isMobileOrTablet() ? "mobile-full" : "large")
         }
+        direction="vertical"
       >
         {search && (
-          <Container className="ov-hidden column bg-white pa16 mb16 br8">
+          <Space
+            className="x-fill ov-hidden bg-white pa16 br8"
+            direction="vertical"
+          >
             <Container className="x-fill full-center">
               <MakeAvatar
                 displayName={userBasicInfo.displayName}
@@ -132,16 +131,12 @@ function ProfileSection({ user }) {
               />
             </Container>
 
-            <Container className="align-center">
-              <h1 className="primary mr8">
-                {capitolizeFirstChar(userBasicInfo.displayName)}
-              </h1>
+            <Space className="align-center">
+              <h1>{capitolizeFirstChar(userBasicInfo.displayName)}</h1>
               <KarmaBadge karma={calculateKarma(userBasicInfo)} />
-            </Container>
-            <h6 className="grey-1 fw-400">
-              {calculateKarma(userBasicInfo)} Karma Points
-            </h6>
-            <Container className="mt8">
+            </Space>
+
+            <Container>
               {Boolean(
                 new moment().year() - new moment(userInfo.birth_date).year()
               ) && (
@@ -169,7 +164,7 @@ function ProfileSection({ user }) {
               )}
             </Container>
 
-            <Container className="wrap gap8 mt8">
+            <Space className="wrap">
               {userInfo.education !== undefined && (
                 <Container className="border-all align-center px8 py4 br4">
                   <FontAwesomeIcon className="mr8" icon={faSchool} />
@@ -200,80 +195,88 @@ function ProfileSection({ user }) {
                   {userInfo.religion}
                 </Container>
               )}
-            </Container>
-            <Container className="align-center justify-between mt16">
-              {userBasicInfo.displayName &&
-                search &&
-                (user ? search !== user.uid : true) && (
-                  <button
-                    className="button-2 px16 py8 mr16 br8"
-                    onClick={() => {
-                      const userInteractionIssues = userSignUpProgress(user);
+            </Space>
+            {userBasicInfo.displayName &&
+              search &&
+              (user ? search !== user.uid : true) && (
+                <Container className="align-center justify-between">
+                  {userBasicInfo.displayName &&
+                    search &&
+                    (user ? search !== user.uid : true) && (
+                      <button
+                        className="button-2 px16 py8 mr16 br8"
+                        onClick={() => {
+                          const userInteractionIssues = userSignUpProgress(
+                            user
+                          );
 
-                      if (userInteractionIssues) {
-                        if (userInteractionIssues === "NSI")
-                          setStarterModal(true);
-                        return;
-                      }
+                          if (userInteractionIssues) {
+                            if (userInteractionIssues === "NSI")
+                              setStarterModal(true);
+                            return;
+                          }
 
-                      startConversation(history, user, search);
-                    }}
-                  >
-                    <FontAwesomeIcon className="mr8" icon={faComments} />
-                    Message {capitolizeFirstChar(userBasicInfo.displayName)}
-                  </button>
-                )}
-              <div className="relative">
-                {userBasicInfo.displayName &&
-                  search &&
-                  user &&
-                  search != user.uid && (
-                    <HandleOutsideClick close={() => setPostOptions(false)}>
-                      <FontAwesomeIcon
-                        className="clickable grey-9"
-                        icon={faEllipsisV}
-                        onClick={e => {
-                          e.preventDefault();
-
-                          setPostOptions(!postOptions);
+                          startConversation(history, user, search);
                         }}
-                        style={{ width: 20 }}
-                      />
-                      {postOptions && (
-                        <div
-                          className="absolute flex right-0"
-                          style={{
-                            bottom: "calc(100% + 8px)",
-                            whiteSpace: "nowrap",
-                            zIndex: 1
-                          }}
-                        >
-                          <Container className="column x-fill bg-white border-all px16 py8 br8">
-                            {userBasicInfo.displayName &&
-                              search &&
-                              search != user.uid && (
-                                <Container
-                                  className="button-8 clickable align-center"
-                                  onClick={e => {
-                                    e.preventDefault();
-                                    setBlockModal(!blockModal);
-                                  }}
-                                >
-                                  <p className="fw-400 flex-fill">Block User</p>
-                                  <FontAwesomeIcon
-                                    className="ml8"
-                                    icon={faUserLock}
-                                  />
-                                </Container>
-                              )}
-                          </Container>
-                        </div>
-                      )}
-                    </HandleOutsideClick>
-                  )}
-              </div>
-            </Container>
-          </Container>
+                      >
+                        <FontAwesomeIcon className="mr8" icon={faComments} />
+                        Message {capitolizeFirstChar(userBasicInfo.displayName)}
+                      </button>
+                    )}
+                  {userBasicInfo.displayName &&
+                    search &&
+                    user &&
+                    search != user.uid && (
+                      <div className="relative">
+                        <HandleOutsideClick close={() => setPostOptions(false)}>
+                          <FontAwesomeIcon
+                            className="clickable grey-9"
+                            icon={faEllipsisV}
+                            onClick={e => {
+                              e.preventDefault();
+
+                              setPostOptions(!postOptions);
+                            }}
+                            style={{ width: 20 }}
+                          />
+                          {postOptions && (
+                            <div
+                              className="absolute flex right-0"
+                              style={{
+                                bottom: "calc(100% + 8px)",
+                                whiteSpace: "nowrap",
+                                zIndex: 1
+                              }}
+                            >
+                              <Container className="column x-fill bg-white border-all px16 py8 br8">
+                                {userBasicInfo.displayName &&
+                                  search &&
+                                  search != user.uid && (
+                                    <Container
+                                      className="button-8 clickable align-center"
+                                      onClick={e => {
+                                        e.preventDefault();
+                                        setBlockModal(!blockModal);
+                                      }}
+                                    >
+                                      <p className="fw-400 flex-fill">
+                                        Block User
+                                      </p>
+                                      <FontAwesomeIcon
+                                        className="ml8"
+                                        icon={faUserLock}
+                                      />
+                                    </Container>
+                                  )}
+                              </Container>
+                            </div>
+                          )}
+                        </HandleOutsideClick>
+                      </div>
+                    )}
+                </Container>
+              )}
+          </Space>
         )}
 
         <h4 className="mb16">Activity</h4>
@@ -399,7 +402,7 @@ function ProfileSection({ user }) {
             <LoadingHeart />
           </Container>
         )}
-      </Container>
+      </Space>
       {!isMobileOrTablet() && location.search && (
         <Container className="container ad column">
           {process.env.NODE_ENV === "production" && (
