@@ -11,7 +11,6 @@ export const getUsersVents = async (
   setVents,
   vents
 ) => {
-  console.log(vents);
   let startAt = getEndAtValueTimestamp(vents);
 
   const snapshot = await db
@@ -22,9 +21,6 @@ export const getUsersVents = async (
     .limit(10)
     .get();
   if (!isMounted()) return;
-
-  console.log("here");
-  console.log(search);
 
   if (snapshot.docs && snapshot.docs.length > 0) {
     let newVents = snapshot.docs.map((doc, index) => ({
