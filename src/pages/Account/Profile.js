@@ -73,6 +73,8 @@ function ProfileSection({ user }) {
   };
 
   useEffect(() => {
+    setVents([]);
+    setComments([]);
     if (search) {
       getUserBasicInfo(userBasicInfo => {
         if (isMounted()) setUserBasicInfo(userBasicInfo);
@@ -82,8 +84,14 @@ function ProfileSection({ user }) {
       }, search);
     } else history.push("/");
 
-    getUsersVents(search, setCanLoadMoreVents, setVents, vents);
-    getUsersComments(search, setCanLoadMoreComments, setComments, comments);
+    getUsersVents(isMounted, search, setCanLoadMoreVents, setVents, []);
+    getUsersComments(
+      isMounted,
+      search,
+      setCanLoadMoreComments,
+      setComments,
+      []
+    );
   }, [search]);
 
   return (

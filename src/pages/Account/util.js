@@ -5,11 +5,13 @@ import { getInvalidCharacters } from "../../components/modals/SignUp/util";
 import { getEndAtValueTimestamp } from "../../util";
 
 export const getUsersVents = async (
+  isMounted,
   search,
   setCanLoadMoreVents,
   setVents,
   vents
 ) => {
+  console.log(vents);
   let startAt = getEndAtValueTimestamp(vents);
 
   const snapshot = await db
@@ -19,6 +21,10 @@ export const getUsersVents = async (
     .startAfter(startAt)
     .limit(10)
     .get();
+  if (!isMounted()) return;
+
+  console.log("here");
+  console.log(search);
 
   if (snapshot.docs && snapshot.docs.length > 0) {
     let newVents = snapshot.docs.map((doc, index) => ({
@@ -40,6 +46,7 @@ export const getUsersVents = async (
 };
 
 export const getUsersComments = async (
+  isMounted,
   search,
   setCanLoadMoreComments,
   setComments,
@@ -54,6 +61,8 @@ export const getUsersComments = async (
     .startAfter(startAt)
     .limit(10)
     .get();
+
+  if (!isMounted()) return;
 
   if (snapshot.docs && snapshot.docs.length > 0) {
     let newComments = snapshot.docs.map((doc, index) => ({
