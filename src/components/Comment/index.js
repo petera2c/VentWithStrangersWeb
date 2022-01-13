@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import moment from "moment-timezone";
 import TextArea from "react-textarea-autosize";
 import { MentionsInput, Mention } from "react-mentions";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { faClock } from "@fortawesome/free-regular-svg-icons/faClock";
 import { faEdit } from "@fortawesome/pro-light-svg-icons/faEdit";
@@ -54,7 +54,7 @@ function Comment({
   setPossibleUsersToTag,
   ventUserID
 }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const [blockModal, setBlockModal] = useState(false);
   const [comment, setComment] = useState(comment2);
@@ -96,7 +96,7 @@ function Comment({
           className="clickable align-center mb8"
           onClick={e => {
             e.preventDefault();
-            history.push("/profile?" + comment.userID);
+            navigate.push("/profile?" + comment.userID);
           }}
         >
           <MakeAvatar

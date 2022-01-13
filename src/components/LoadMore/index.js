@@ -1,30 +1,15 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFire } from "@fortawesome/pro-solid-svg-icons/faFire";
-
-import LoadingHeart from "../loaders/Heart";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Container from "../../components/containers/Container";
-import Text from "../../components/views/Text";
+import LoadingHeart from "../loaders/Heart";
 
 let hasScrolled = false;
 
-class LoadMore extends Component {
-  componentDidMount() {
-    this._ismounted = true;
-    window.addEventListener("scroll", this.scrollListener);
-  }
-  componentWillUnmount() {
-    this._ismounted = false;
-    window.removeEventListener("scroll", this.scrollListener);
-  }
-  handleChange = stateObj => {
-    if (this._ismounted) this.setState(stateObj);
-  };
-  scrollListener = () => {
-    const { loadMore = () => {} } = this.props;
-
+function LoadMore({ children, loadMore = () => {} }) {
+  const scrollListener = () => {
     if (
       window.innerHeight + window.scrollY + 5 >= document.body.scrollHeight &&
       !hasScrolled
@@ -37,17 +22,22 @@ class LoadMore extends Component {
       hasScrolled = false;
     }, 1000);
   };
-  render() {
-    const { children, loadMore = () => {} } = this.props;
 
-    return (
-      <Container className="column x-fill full-center" onClick={loadMore}>
-        {children}
+  useEffect(() => {
+    window.addEventListener("scroll", scrollListener);
 
-        <LoadingHeart />
-      </Container>
-    );
-  }
+    return () => {
+      window.removeEventListener("scroll", scrollListener);
+    };
+  }, []);
+
+  return (
+    <Container className="column x-fill full-center" onClick={loadMore}>
+      {children}
+
+      <LoadingHeart />
+    </Container>
+  );
 }
 
 export default LoadMore;

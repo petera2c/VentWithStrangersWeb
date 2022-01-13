@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDocument } from "react-firebase-hooks/firestore";
-import firebase from "firebase/app";
+import firebase from 'firebase/compat/app';
 import db from "../../config/firebase";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

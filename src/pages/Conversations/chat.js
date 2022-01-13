@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment-timezone";
-import firebase from "firebase/app";
+import firebase from 'firebase/compat/app';
 import { Button, Space } from "antd";
 
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";

@@ -1,5 +1,5 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Tooltip } from "antd";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,7 +8,7 @@ import { faMedal } from "@fortawesome/pro-solid-svg-icons/faMedal";
 import Container from "../containers/Container";
 
 function KarmaBadge({ karma, noOnClick }) {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const title =
     "Karma Badges are awarded based on Karma Points. Get Karma Points when your Vent or comment gets upvoted or when you upvote a Vent or comment. Lose Karma points if you get reported for a valid reason.";
@@ -23,7 +23,7 @@ function KarmaBadge({ karma, noOnClick }) {
             e.stopPropagation();
             e.preventDefault();
 
-            history.push("/site-info");
+            navigate.push("/site-info");
           }}
         >
           <h5 className="bg-blue white fw-400 px8 py4 br8">Moderator</h5>
@@ -46,7 +46,7 @@ function KarmaBadge({ karma, noOnClick }) {
 
               e.stopPropagation();
               e.preventDefault();
-              history.push("/site-info");
+              navigate.push("/site-info");
             }}
           >
             <FontAwesomeIcon icon={faMedal} color={karmaColor} size="2x" />

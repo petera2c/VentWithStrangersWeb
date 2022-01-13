@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import moment from "moment-timezone";
 import AdSense from "react-adsense";
 
@@ -37,7 +37,7 @@ import {
 import { getUserInfo, getUserMatches, hasUserCompletedProfile } from "./util";
 
 function MakeFriendsPage() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const [userInfo, setUserInfo] = useState({});
   const [matches, setMatches] = useState([]);
@@ -236,7 +236,7 @@ function MakeFriendsPage() {
                         }
 
                         startConversation(
-                          history,
+                          navigate,
                           user,
                           matchedUserInfo.userID
                         );

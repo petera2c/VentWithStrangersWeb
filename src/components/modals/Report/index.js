@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import Container from "../../containers/Container";
 import Text from "../../views/Text";
@@ -13,7 +13,7 @@ class ReportModal extends Component {
     option: undefined,
     privateInformation: false,
     violence: false,
-    somethingChanged: false
+    somethingChanged: false,
   };
   componentDidMount() {
     this._ismounted = true;
@@ -21,14 +21,14 @@ class ReportModal extends Component {
   componentWillUnmount() {
     this._ismounted = false;
   }
-  handleChange = stateObj => {
+  handleChange = (stateObj) => {
     const stateObj2 = {
       abuse: false,
       illegal: false,
       malicious: false,
       privateInformation: false,
       somethingChanged: true,
-      violence: false
+      violence: false,
     };
     for (let index in stateObj) {
       stateObj2[index] = stateObj[index];
@@ -44,7 +44,7 @@ class ReportModal extends Component {
       option,
       privateInformation,
       violence,
-      somethingChanged
+      somethingChanged,
     } = this.state;
 
     return (
@@ -64,7 +64,7 @@ class ReportModal extends Component {
               onClick={() =>
                 this.handleChange({
                   option: 1,
-                  violence: !violence
+                  violence: !violence,
                 })
               }
             >
@@ -86,7 +86,7 @@ class ReportModal extends Component {
               onClick={() =>
                 this.handleChange({
                   abuse: !abuse,
-                  option: 2
+                  option: 2,
                 })
               }
             >
@@ -104,7 +104,7 @@ class ReportModal extends Component {
               onClick={() =>
                 this.handleChange({
                   option: 3,
-                  privateInformation: !privateInformation
+                  privateInformation: !privateInformation,
                 })
               }
             >
@@ -126,7 +126,7 @@ class ReportModal extends Component {
               onClick={() =>
                 this.handleChange({
                   illegal: !illegal,
-                  option: 4
+                  option: 4,
                 })
               }
             >
@@ -144,7 +144,7 @@ class ReportModal extends Component {
               onClick={() =>
                 this.handleChange({
                   malicious: !malicious,
-                  option: 5
+                  option: 5,
                 })
               }
             >
@@ -181,4 +181,4 @@ class ReportModal extends Component {
   }
 }
 
-export default withRouter(ReportModal);
+export default ReportModal;

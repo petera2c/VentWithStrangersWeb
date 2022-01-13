@@ -5,8 +5,8 @@ import TextArea from "react-textarea-autosize";
 import AdSense from "react-adsense";
 import { Space } from "antd";
 
-import firebase from "firebase/app";
-import "firebase/database";
+import firebase from 'firebase/compat/app';
+import "firebase/compat/database";
 
 import { UserContext } from "../../context";
 

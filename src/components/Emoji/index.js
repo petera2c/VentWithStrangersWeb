@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Picker from "emoji-picker-react";
+import { Picker } from "emoji-mart";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSmileBeam } from "@fortawesome/free-regular-svg-icons/faSmileBeam";
@@ -21,11 +21,11 @@ function Emoji({ handleChange }) {
           position: "absolute",
           top: "100%",
           right: 0,
-          display: displayEmojiDropdown ? "" : "none"
+          display: displayEmojiDropdown ? "" : "none",
         }}
       >
         <Picker
-          onEmojiClick={(event, emojiObject) => {
+          onSelect={(emojiObject) => {
             setDisplayEmojiDropdown(false);
             handleChange(emojiObject.emoji);
           }}

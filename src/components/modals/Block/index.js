@@ -1,7 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 
 import Container from "../../containers/Container";
-import Button from "../../views/Button";
 
 import { isMobileOrTablet } from "../../../util";
 

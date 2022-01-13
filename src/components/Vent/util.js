@@ -1,4 +1,4 @@
-import firebase from "firebase/app";
+import firebase from 'firebase/compat/app';
 import db from "../../config/firebase";
 
 import {
@@ -37,13 +37,13 @@ export const commentVent = async (
   return true;
 };
 
-export const deleteVent = async (history, ventID) => {
+export const deleteVent = async (navigate, ventID) => {
   await db
     .collection("vents")
     .doc(ventID)
     .delete();
   alert("Vent deleted!");
-  history.push("/");
+  navigate.push("/");
 };
 
 export const findPossibleUsersToTag = async (
@@ -352,7 +352,7 @@ export const tagUser = (
   });
 };
 
-export const startConversation = async (history, user, ventUserID) => {
+export const startConversation = async (navigate, user, ventUserID) => {
   const userInteractionIssues = userSignUpProgress(user);
   if (userInteractionIssues) return false;
 
@@ -363,7 +363,7 @@ export const startConversation = async (history, user, ventUserID) => {
     .get();
 
   const goToPage = conversationID => {
-    history.push("/conversations?" + conversationID);
+    navigate.push("/conversations?" + conversationID);
   };
 
   if (!conversationQuerySnapshot.empty) {

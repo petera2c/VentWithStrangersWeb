@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { hydrate, render } from "react-dom";
-import firebase from "firebase/app";
+import firebase from "firebase/compat/app";
 import "firebase/analytics";
 import "antd/dist/antd.css";
-import "antd-mobile/dist/antd-mobile.css";
+import "emoji-mart/css/emoji-mart.css";
 
 import Routes from "./pages/";
 

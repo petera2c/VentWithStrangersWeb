@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import AdSense from "react-adsense";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -23,7 +23,7 @@ import { isMobileOrTablet, isPageActive, signOut } from "../../util";
 
 function AccountPage() {
   const { user } = useContext(UserContext);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const location = useLocation();
   let { pathname, search } = location;
@@ -35,7 +35,7 @@ function AccountPage() {
         pathname === "/avatar") &&
       !user
     )
-      history.push("/");
+      navigate.push("/");
   }, [user]);
 
   return (

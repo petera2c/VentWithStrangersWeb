@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import ReactGA from "react-ga";
-import { withRouter } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
 import Container from "../Container";
@@ -12,64 +12,49 @@ import { isMobileOrTablet } from "../../../util";
 
 import "./style.css";
 
-class Page extends Component {
-  constructor(props) {
-    super(props);
-    const activePage = props.location.pathname;
+function Page(props) {
+  const { children, className, homePage, testMode, user } = props;
+  const { pathname } = useLocation();
 
+  useEffect(() => {
     if (process.env.NODE_ENV !== "development") {
       ReactGA.initialize("UA-140815372-2");
-      ReactGA.pageview(activePage);
+      ReactGA.pageview(pathname);
     }
-  }
-  componentDidMount() {
     window.scrollTo(0, 0);
-  }
-  checkPropsVariables = activePage => {
-    let { title, description, image, style } = this.props; // Variables
+  }, []);
+
+  const checkPropsVariables = (activePage) => {
+    let { title, description, image, style } = props; // Variables
     title += " | Vent With Strangers";
     return { style, title, description, image };
   };
 
-  render() {
-    const {
-      children,
-      className,
-      homePage,
-      location,
-      testMode,
-      user
-    } = this.props; // Variables
-    const activePage = location.pathname;
+  const { description, image, style, title } = checkPropsVariables(pathname);
 
-    const { description, image, style, title } = this.checkPropsVariables(
-      activePage
-    );
+  return (
+    <Container
+      className={"screen-container column " + className}
+      style={style}
+      testMode={testMode}
+    >
+      <Helmet defer={false}>
+        <meta charSet="utf-8" />
+        <title>{title}</title>
+        <meta name="title" content={title} />
+        <meta name="og:title" content={title} />
+        <meta name="description" content={description} />
+        <meta name="og:description" content={description} />
+        <meta property="image" content={image} />
+        <meta property="og:image" content={image} />
+      </Helmet>
 
-    return (
-      <Container
-        className={"screen-container column " + className}
-        style={style}
-        testMode={testMode}
-      >
-        <Helmet defer={false}>
-          <meta charSet="utf-8" />
-          <title>{title}</title>
-          <meta name="title" content={title} />
-          <meta name="og:title" content={title} />
-          <meta name="description" content={description} />
-          <meta name="og:description" content={description} />
-          <meta property="image" content={image} />
-          <meta property="og:image" content={image} />
-        </Helmet>
+      {!isMobileOrTablet() && <Header />}
+      {isMobileOrTablet() && <MobileHeader />}
 
-        {!isMobileOrTablet() && <Header />}
-        {isMobileOrTablet() && <MobileHeader />}
-
-        {children}
-      </Container>
-    );
-  }
+      {children}
+    </Container>
+  );
 }
 
-export default withRouter(Page);
+export default Page;

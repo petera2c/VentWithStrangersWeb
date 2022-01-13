@@ -48,7 +48,7 @@ const userWasInvited = async (doc, context) => {
   createNotification(
     true,
     true,
-    createProfileLink(userIDThatGotInvited),
+    undefined,
     "Someone signed up from your link! +50 Karma",
     userIDThatInvited
   );

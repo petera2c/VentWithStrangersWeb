@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment-timezone";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 import { faTrash } from "@fortawesome/pro-solid-svg-icons/faTrash";
@@ -38,7 +38,7 @@ function ConversationOption({
   setConversations,
   userID
 }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [blockModal, setBlockModal] = useState(false);
   const [conversationOptions, setConversationOptions] = useState(false);
   const [deleteConversationConfirm, setDeleteConversationConfirm] = useState(
@@ -78,7 +78,7 @@ function ConversationOption({
       }
       onClick={() => {
         setActiveConversation(currentConversation.id);
-        history.push("/conversations?" + currentConversation.id);
+        navigate.push("/conversations?" + currentConversation.id);
       }}
     >
       <Container className="flex-fill column ov-hidden">

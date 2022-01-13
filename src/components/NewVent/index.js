@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { message, Space, Statistic } from "antd";
 const { Countdown } = Statistic;
 import TextArea from "react-textarea-autosize";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import moment from "moment-timezone";
 
 import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
@@ -23,12 +23,12 @@ import {
   getVent,
   saveVent,
   selectEncouragingMessage,
-  updateTags
+  updateTags,
 } from "./util";
 
 function NewVentComponent({ miniVersion, ventID }) {
   const componentIsMounted = useRef(true);
-  const history = useHistory();
+  const navigate = useNavigate();
   const { user, userBasicInfo } = useContext(UserContext);
 
   const [isMinified, setIsMinified] = useState(miniVersion);
@@ -51,7 +51,7 @@ function NewVentComponent({ miniVersion, ventID }) {
   useEffect(() => {
     if (ventID) getVent(setDescription, setTags, setTitle, ventID);
     if (user)
-      getUserVentTimeOut(res => {
+      getUserVentTimeOut((res) => {
         if (res) {
           doSomething(componentIsMounted, setUserVentTimeOut, res);
           setInterval(
@@ -100,7 +100,7 @@ function NewVentComponent({ miniVersion, ventID }) {
             <MakeAvatar userBasicInfo={userBasicInfo} />
             <TextArea
               className="x-fill py8 px16 br4"
-              onChange={event => {
+              onChange={(event) => {
                 if (!checks()) return;
 
                 setDescription(event.target.value);
@@ -111,11 +111,11 @@ function NewVentComponent({ miniVersion, ventID }) {
                   ? selectEncouragingMessage(userVentTimeOutFormatted)
                   : encouragingText
               }
-              style={{ minHeight: isMinified ? "" : "100px" }}
+              minRows={isMinified ? 1 : 3}
               value={description}
             />
             <Emoji
-              handleChange={emoji => {
+              handleChange={(emoji) => {
                 const userInteractionIssues = userSignUpProgress(user);
 
                 if (userInteractionIssues) {
@@ -133,7 +133,7 @@ function NewVentComponent({ miniVersion, ventID }) {
             <h5 className="fw-400">Title</h5>
             <input
               className="x-fill py8 px16 br4"
-              onChange={e => {
+              onChange={(e) => {
                 if (!checks()) return;
                 setTitle(e.target.value);
                 setSaving(false);
@@ -150,7 +150,7 @@ function NewVentComponent({ miniVersion, ventID }) {
 
             <input
               className="x-fill py8 px16 br4"
-              onChange={e => {
+              onChange={(e) => {
                 if (!checks()) return;
 
                 updateTags(
@@ -193,7 +193,7 @@ function NewVentComponent({ miniVersion, ventID }) {
                     style={{
                       marginRight: "1px",
                       borderTopLeftRadius: "4px",
-                      borderBottomLeftRadius: "4px"
+                      borderBottomLeftRadius: "4px",
                     }}
                   >
                     {text}
@@ -202,7 +202,7 @@ function NewVentComponent({ miniVersion, ventID }) {
                     className="full-center border-all px16"
                     style={{
                       borderTopRightRadius: "4px",
-                      borderBottomRightRadius: "4px"
+                      borderBottomRightRadius: "4px",
                     }}
                   >
                     <FontAwesomeIcon className="" icon={faTimes} />
@@ -232,9 +232,9 @@ function NewVentComponent({ miniVersion, ventID }) {
                     setSaving(true);
 
                     saveVent(
-                      vent => {
+                      (vent) => {
                         setSaving(false);
-                        history.push(
+                        navigate.push(
                           "/problem/" +
                             vent.id +
                             "/" +
@@ -249,7 +249,7 @@ function NewVentComponent({ miniVersion, ventID }) {
                         description,
                         gender,
                         tags,
-                        title
+                        title,
                       },
                       ventID,
                       user

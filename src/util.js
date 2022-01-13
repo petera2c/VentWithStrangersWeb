@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useRef } from "react";
-import firebase from "firebase/app";
-import "firebase/auth";
+import firebase from 'firebase/compat/app';
+import "firebase/compat/auth";
 import db from "./config/firebase";
 import { Modal, Button, Space } from "antd";
 
 import { setUserOnlineStatus } from "./pages/util";
 
 export const addTagsToPage = (props, selectedTags) => {
-  const { browser, history, location } = props;
+  const { browser, navigate, location } = props;
   let searchPathname = location.pathname;
   if (
     searchPathname !== "/popular" &&
@@ -20,7 +20,7 @@ export const addTagsToPage = (props, selectedTags) => {
     if (index == 0) searchPathname += "?tags=" + selectedTags[index].name;
     else searchPathname += "+" + selectedTags[index].name;
   }
-  history.push(searchPathname);
+  navigate.push(searchPathname);
 };
 
 export const blockUser = async (userID, userIDToBlock) => {

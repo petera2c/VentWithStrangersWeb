@@ -6,7 +6,7 @@ import moment from "moment-timezone";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons/faAngleRight";
 
-import { Link, withRouter } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
@@ -38,7 +38,7 @@ class ViewWebsiteBlog extends Component {
   };
   componentDidMount() {
     this._ismounted = true;
-    const { location } = this.props;
+    const location = useLocation();
     const { pathname } = location;
 
     const regexMatch = getVentIdFromURL(pathname);
@@ -115,4 +115,4 @@ class ViewWebsiteBlog extends Component {
   }
 }
 
-export default withRouter(ViewWebsiteBlog);
+export default ViewWebsiteBlog;

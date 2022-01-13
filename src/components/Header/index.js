@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "antd";
 
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
@@ -30,8 +30,9 @@ import {
   resetUnreadConversationCount
 } from "./util";
 
-function Header({ history, location }) {
+function Header() {
   const componentIsMounted = useRef(true);
+  const location = useLocation();
   const { pathname, search } = location;
 
   const { user, userBasicInfo } = useContext(UserContext);
@@ -97,7 +98,7 @@ function Header({ history, location }) {
             <img
               alt=""
               className="clickable"
-              onClick={() => history.push("/")}
+              onClick={() => navigate.push("/")}
               src={require("../../svgs/icon.svg")}
               style={{ height: "50px" }}
             />
@@ -160,7 +161,7 @@ function Header({ history, location }) {
                 className="no-border bg-grey-4 br4"
                 onChange={e => {
                   setVentSearchString(e.target.value);
-                  history.push("/search?" + e.target.value);
+                  navigate.push("/search?" + e.target.value);
                 }}
                 placeholder="Search"
                 type="text"
@@ -288,4 +289,4 @@ function Header({ history, location }) {
   );
 }
 
-export default withRouter(Header);
+export default Header;

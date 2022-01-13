@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import moment from "moment-timezone";
 import AdSense from "react-adsense";
 import { Button, Space } from "antd";
@@ -48,7 +48,7 @@ import { getUser, getUsersComments, getUsersVents } from "./util";
 
 function ProfileSection({ user }) {
   const isMounted = useIsMounted();
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   let { search } = location;
 
@@ -82,7 +82,7 @@ function ProfileSection({ user }) {
       getUser(userInfo => {
         if (isMounted()) setUserInfo(userInfo);
       }, search);
-    } else history.push("/");
+    } else navigate.push("/");
 
     getUsersVents(isMounted, search, setCanLoadMoreVents, setVents, []);
     getUsersComments(
@@ -177,7 +177,7 @@ function ProfileSection({ user }) {
                 <h6 className="fw-400">Created Account</h6>
                 <h6 className="grey-1 fw-400">
                   {new moment(userBasicInfo.server_timestamp).format(
-                    "dddd, MMMM Do YYYY"
+                    "MMMM Do YYYY"
                   )}
                 </h6>
               </Container>
@@ -187,31 +187,31 @@ function ProfileSection({ user }) {
               {userInfo.education !== undefined && (
                 <Container className="border-all align-center px8 py4 br4">
                   <FontAwesomeIcon className="mr8" icon={faSchool} />
-                  {educationList[userInfo.education]}
+                  <p>{educationList[userInfo.education]}</p>
                 </Container>
               )}
               {userInfo.kids !== undefined && (
                 <Container className="border-all align-center px8 py4 br4">
                   <FontAwesomeIcon className="mr8" icon={faBaby} />
-                  {kidsList[userInfo.kids]}
+                  <p>{kidsList[userInfo.kids]}</p>
                 </Container>
               )}
               {userInfo.partying !== undefined && (
                 <Container className="border-all align-center px8 py4 br4">
                   <FontAwesomeIcon className="mr8" icon={faGlassCheers} />
-                  {partyingList[userInfo.partying]}
+                  <p>{partyingList[userInfo.partying]}</p>
                 </Container>
               )}
               {userInfo.politics !== undefined && (
                 <Container className="border-all align-center px8 py4 br4">
                   <FontAwesomeIcon className="mr8" icon={faLandmark} />
-                  {politicalBeliefsList[userInfo.politics]}
+                  <p>{politicalBeliefsList[userInfo.politics]}</p>
                 </Container>
               )}
               {userInfo.religion !== undefined && (
                 <Container className="border-all align-center px8 py4 br4">
                   <FontAwesomeIcon className="mr8" icon={faPray} />
-                  {userInfo.religion}
+                  <p>{userInfo.religion}</p>
                 </Container>
               )}
             </Space>
@@ -235,7 +235,7 @@ function ProfileSection({ user }) {
                             return;
                           }
 
-                          startConversation(history, user, search);
+                          startConversation(navigate, user, search);
                         }}
                       >
                         <FontAwesomeIcon className="mr8" icon={faComments} />
@@ -328,8 +328,8 @@ function ProfileSection({ user }) {
             {vents &&
               vents.map((vent, index) => (
                 <Vent
-                  history={history}
                   key={index}
+                  navigate={navigate}
                   previewMode={true}
                   ventInit={vent}
                 />

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import moment from "moment-timezone";
 
 import { faBaby } from "@fortawesome/free-solid-svg-icons/faBaby";
@@ -43,7 +43,7 @@ function UserComponent({
 }) {
   const componentIsMounted = useRef(true);
   const { user } = useContext(UserContext);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [userInfo, setUserInfo] = useState({ displayName, id: userID });
   const [starterModal, setStarterModal] = useState(false);
@@ -152,7 +152,7 @@ function UserComponent({
                 return;
               }
 
-              startConversation(history, user, userInfo.id);
+              startConversation(navigate, user, userInfo.id);
             }}
           >
             <FontAwesomeIcon className="mr8" icon={faComments} />

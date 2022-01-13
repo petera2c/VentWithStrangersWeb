@@ -1,5 +1,5 @@
 import moment from "moment-timezone";
-import firebase from "firebase/app";
+import firebase from 'firebase/compat/app';
 import db from "../../config/firebase";
 import { getEndAtValueTimestamp } from "../../util";
 

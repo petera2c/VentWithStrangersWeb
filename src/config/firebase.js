@@ -1,6 +1,6 @@
-import firebase from "firebase/app";
-import "firebase/analytics";
-import "firebase/firestore";
+import firebase from 'firebase/compat/app';
+import "firebase/compat/analytics";
+import "firebase/compat/firestore";
 
 var firebaseConfig = {
   apiKey: "AIzaSyCk8EfNyqarIzBAQSCFgU8634o-e0iA_Os",

@@ -1,5 +1,5 @@
-import firebase from "firebase/app";
-import "firebase/auth";
+import firebase from 'firebase/compat/app';
+import "firebase/compat/auth";
 import Cookies from "universal-cookie";
 import { message } from "antd";
 import moment from "moment-timezone";

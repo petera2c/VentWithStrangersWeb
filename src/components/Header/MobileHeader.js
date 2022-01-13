@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button, Space } from "antd";
 
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
@@ -45,8 +45,10 @@ import {
 
 import "./style.css";
 
-function Header({ history, location }) {
+function Header() {
   const componentIsMounted = useRef(true);
+  const location = useLocation();
+  const navigate = useNavigate()
   const { pathname, search } = location;
 
   const { user } = useContext(UserContext);
@@ -178,7 +180,7 @@ function Header({ history, location }) {
             className="no-border bg-grey-4 br4"
             onChange={e => {
               setVentSearchString(e.target.value);
-              history.push("/search?" + e.target.value);
+              navigate.push("/search?" + e.target.value);
             }}
             placeholder="Search"
             type="text"
@@ -389,4 +391,4 @@ function Header({ history, location }) {
   );
 }
 
-export default withRouter(Header);
+export default Header;

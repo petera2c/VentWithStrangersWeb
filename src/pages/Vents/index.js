@@ -15,6 +15,7 @@ import Container from "../../components/containers/Container";
 import LoadMore from "../../components/LoadMore";
 import NewVentComponent from "../../components/NewVent";
 import Page from "../../components/containers/Page";
+import SubscribeComp from "../../components/Subscribe";
 import Vent from "../../components/Vent";
 
 import db from "../../config/firebase";
@@ -72,6 +73,10 @@ function VentsPage() {
       keywords=""
       title={metaTitle}
     >
+      <Container className="container large">
+        <SubscribeComp />
+      </Container>
+
       <Space
         align="start"
         className={isMobileOrTablet() ? "py16" : "py32"}

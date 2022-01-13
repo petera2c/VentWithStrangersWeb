@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons/faEye";
@@ -15,12 +15,12 @@ import { signUp } from "../../components/modals/SignUp/util";
 import { UserContext } from "../../context";
 
 function SignUpPage() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { user } = useContext(UserContext);
 
   if (user) {
     alert("You can only access this page if you are not logged in!");
-    history.push("/");
+    navigate.push("/");
     return (
       <Page
         className="bg-grey-2 full-center pa32"

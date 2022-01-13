@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import moment from "moment-timezone";
 import { MentionsInput, Mention } from "react-mentions";
 import { useCollectionData } from "react-firebase-hooks/firestore";
@@ -111,7 +111,7 @@ function Vent({
   const [copySuccess, setCopySuccess] = useState("Copy Link");
   const textAreaRef = useRef(null);
 
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const { pathname } = location;
 
@@ -204,7 +204,7 @@ function Vent({
               className="mr16"
               onClick={e => {
                 e.preventDefault();
-                if (author.id) history.push("/profile?" + author.id);
+                if (author.id) navigate.push("/profile?" + author.id);
               }}
             >
               <Container className="full-center">
@@ -269,7 +269,7 @@ function Vent({
                             className="button-8 clickable align-center mb8"
                             onClick={e => {
                               e.preventDefault();
-                              history.push("/vent-to-strangers?" + vent.id);
+                              navigate.push("/vent-to-strangers?" + vent.id);
                             }}
                           >
                             <Text
@@ -453,7 +453,7 @@ function Vent({
                           return;
                         }
 
-                        startConversation(history, user, vent.userID);
+                        startConversation(navigate, user, vent.userID);
                       }}
                     >
                       <FontAwesomeIcon className="mr8" icon={faComments} />
@@ -591,7 +591,7 @@ function Vent({
         <ConfirmAlertModal
           close={() => setDeleteVentConfirm(false)}
           message="Are you sure you would like to delete this vent?"
-          submit={() => deleteVent(history, vent.id)}
+          submit={() => deleteVent(navigate, vent.id)}
           title="Delete Vent"
         />
       )}

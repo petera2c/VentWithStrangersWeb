@@ -2,23 +2,23 @@ import React, { useEffect, useRef, useState } from "react";
 
 import moment from "moment-timezone";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
+import { faBirthdayCake } from "@fortawesome/pro-duotone-svg-icons/faBirthdayCake";
 import { faChartNetwork } from "@fortawesome/pro-solid-svg-icons/faChartNetwork";
 import { faCog } from "@fortawesome/free-solid-svg-icons/faCog";
-import { faLockAlt } from "@fortawesome/pro-solid-svg-icons/faLockAlt";
-import { faPaperPlane } from "@fortawesome/pro-light-svg-icons/faPaperPlane";
-import { faMonument } from "@fortawesome/pro-light-svg-icons/faMonument";
 import { faEye } from "@fortawesome/free-solid-svg-icons/faEye";
-import { faVenusMars } from "@fortawesome/free-solid-svg-icons/faVenusMars";
+import { faLockAlt } from "@fortawesome/pro-solid-svg-icons/faLockAlt";
+import { faMonument } from "@fortawesome/pro-light-svg-icons/faMonument";
+import { faPaperPlane } from "@fortawesome/pro-light-svg-icons/faPaperPlane";
 import { faTransgenderAlt } from "@fortawesome/free-solid-svg-icons/faTransgenderAlt";
-import { faBirthdayCake } from "@fortawesome/pro-duotone-svg-icons/faBirthdayCake";
+import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
+import { faVenusMars } from "@fortawesome/free-solid-svg-icons/faVenusMars";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Page from "../../components/containers/Page";
+import Button from "../../components/views/Button";
 import Container from "../../components/containers/Container";
 import Dropdown from "../../components/containers/Dropdown";
+import Page from "../../components/containers/Page";
 import Text from "../../components/views/Text";
-import Button from "../../components/views/Button";
 
 import { isMobileOrTablet } from "../../util";
 import { getUser, updateUser } from "./util";
