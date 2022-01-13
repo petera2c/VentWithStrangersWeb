@@ -1,5 +1,6 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
+import "firebase/compat/database";
 
 export const setUserOnlineStatus = async (status, uid) => {
   await firebase

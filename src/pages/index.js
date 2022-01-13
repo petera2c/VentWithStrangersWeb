@@ -31,7 +31,7 @@ import VerifiedEmailPage from "./EmailAuth/VerifiedEmail";
 import { getUserBasicInfo } from "../util";
 import { setIsUserOnlineToDatabase, setUserOnlineStatus } from "./util";
 
-function RoutesTest() {
+function RoutesComp() {
   const [user, loading, error] = useAuthState(firebase.auth());
   const [userBasicInfo, setUserBasicInfo] = useState({});
 
@@ -113,4 +113,4 @@ function RoutesTest() {
   );
 }
 
-export default RoutesTest;
+export default RoutesComp;

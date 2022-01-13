@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "react-dom";
 import firebase from "firebase/compat/app";
-import "firebase/analytics";
+import "firebase/compat/analytics";
 import "antd/dist/antd.min.css";
 import "emoji-mart/css/emoji-mart.css";
 

@@ -162,7 +162,7 @@ function Vent({
         <Container className="x-fill column bg-white br8">
           <SmartLink
             className={
-              "main-container x-fill wrap justify-between border-bottom pa16 " +
+              "main-container x-fill wrap justify-between border-bottom py16 px32 " +
               (disablePostOnClick ? "" : "clickable")
             }
             disablePostOnClick={disablePostOnClick}
@@ -294,7 +294,7 @@ function Vent({
           </SmartLink>
           <SmartLink
             className={
-              "main-container column border-bottom pa16 " +
+              "main-container column border-bottom py16 px32 " +
               (disablePostOnClick ? "" : "clickable")
             }
             disablePostOnClick={disablePostOnClick}
@@ -323,7 +323,7 @@ function Vent({
           {!searchPreviewMode && (
             <Container
               className={
-                "relative wrap justify-between pa16 " +
+                "relative wrap justify-between py16 px32 " +
                 (!searchPreviewMode && displayCommentField2
                   ? "border-bottom"
                   : "")

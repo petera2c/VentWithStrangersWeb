@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import firebase from "firebase/compat/app";
+import "firebase/compat/database";
 import { sendEmailVerification } from "firebase/auth";
 import db from "./config/firebase";
 import { Modal } from "antd";

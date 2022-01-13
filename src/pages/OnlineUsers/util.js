@@ -1,4 +1,5 @@
-import firebase from 'firebase/compat/app';
+import firebase from "firebase/compat/app";
+import "firebase/compat/database";
 
 export const getOnlineUsers = (callback, totalOnlineUsers) => {
   if (totalOnlineUsers > 0)
@@ -7,11 +8,11 @@ export const getOnlineUsers = (callback, totalOnlineUsers) => {
       .ref("status")
       .orderByChild("state")
       .limitToLast(totalOnlineUsers)
-      .once("value", snapshot => {
+      .once("value", (snapshot) => {
         let usersArray = [];
         let totalOnlineUsers2 = 0;
 
-        snapshot.forEach(data => {
+        snapshot.forEach((data) => {
           if (data.val().state === "online") {
             usersArray.push(data.key);
             totalOnlineUsers2++;
