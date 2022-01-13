@@ -45,7 +45,7 @@ function createYearArray(year) {
 
 function AccountSection() {
   const isMounted = useIsMounted();
-  const { user } = useContext(UserContext);
+  const { user, setUserBasicInfo } = useContext(UserContext);
 
   const [birthDate, setBirthDate] = useState(new moment());
   const [canSeePassword, setCanSeePassword] = useState(false);
@@ -431,17 +431,18 @@ function AccountSection() {
               birthDate,
               confirmPassword,
               displayName,
+              education,
               email,
               gender,
-              newPassword,
-              pronouns,
-              user,
-              userInfo,
-              education,
               kids,
+              newPassword,
               partying,
               politics,
-              religion
+              pronouns,
+              religion,
+              setUserBasicInfo,
+              user,
+              userInfo
             )
           }
           text="Apply"

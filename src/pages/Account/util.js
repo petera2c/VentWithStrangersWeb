@@ -102,17 +102,18 @@ export const updateUser = async (
   birthDate,
   confirmPassword,
   displayName,
+  education,
   email,
   gender,
-  newPassword,
-  pronouns,
-  user,
-  userInfo,
-  education,
   kids,
+  newPassword,
   partying,
   politics,
-  religion
+  pronouns,
+  religion,
+  setUserBasicInfo,
+  user,
+  userInfo
 ) => {
   let changesFound = false;
 
@@ -178,6 +179,13 @@ export const updateUser = async (
           .collection("users_display_name")
           .doc(user.uid)
           .update({ displayName });
+
+        setUserBasicInfo((oldInfo) => {
+          let temp = { ...oldInfo };
+          temp.displayName = displayName;
+          return temp;
+        });
+
         message.success("Display name updated!");
       })
       .catch((error) => {

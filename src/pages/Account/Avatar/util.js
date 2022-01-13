@@ -1,6 +1,7 @@
+import { message } from "antd";
 import db from "../../../config/firebase";
 
-export const getActiveSection = activeSection => {
+export const getActiveSection = (activeSection) => {
   if (activeSection === 0) return "topType";
   else if (activeSection === 1) return "accessoriesType";
   else if (activeSection === 2) return "hairColor";
@@ -12,14 +13,19 @@ export const getActiveSection = activeSection => {
   else if (activeSection === 8) return "skinColor";
 };
 
-export const saveAvatar = async (avatar, userID) => {
+export const saveAvatar = async (avatar, setUserBasicInfo, userID) => {
   await db
     .collection("users_display_name")
     .doc(userID)
     .set({ avatar }, { merge: true });
 
-  alert("Avatar saved!");
-  window.location.reload();
+  setUserBasicInfo((oldInfo) => {
+    let temp = { ...oldInfo };
+    temp.avatar = avatar;
+    return temp;
+  });
+
+  message.success("Avatar saved!");
 };
 
 export const topArray = [
@@ -56,7 +62,7 @@ export const topArray = [
   { value: "ShortHairShortWaved", name: "Short Hair 4" },
   { value: "ShortHairTheCaesar", name: "Short Hair 5" },
   { value: "ShortHairTheCaesarSidePart", name: "Short Hair 6" },
-  { value: "ShortHairSides", name: "Bald with Hair on the Sides" }
+  { value: "ShortHairSides", name: "Bald with Hair on the Sides" },
 ];
 
 export const accessoriesArray = [
@@ -66,7 +72,7 @@ export const accessoriesArray = [
   { value: "Prescription02", name: "Prescription 2" },
   { value: "Round", name: "Prescription 3" },
   { value: "Sunglasses", name: "Black Sunglasses 1" },
-  { value: "Wayfarers", name: "Black Sunglasses 2" }
+  { value: "Wayfarers", name: "Black Sunglasses 2" },
 ];
 export const hairColorArray = [
   { value: "Auburn", name: "Auburn" },
@@ -79,7 +85,7 @@ export const hairColorArray = [
   { value: "Blue", name: "Blue" },
   { value: "Platinum", name: "Platinum" },
   { value: "Red", name: "Red" },
-  { value: "SilverGray", name: "Silver/Gray" }
+  { value: "SilverGray", name: "Silver/Gray" },
 ];
 export const facialHairArray = [
   { value: "Blank", name: "None" },
@@ -87,7 +93,7 @@ export const facialHairArray = [
   { value: "BeardLight", name: "Light Beard" },
   { value: "BeardMajestic", name: "Majestic Beard" },
   { value: "MoustacheFancy", name: "Fancy Moustache" },
-  { value: "MoustacheMagnum", name: "Short Moustache" }
+  { value: "MoustacheMagnum", name: "Short Moustache" },
 ];
 export const clothesArray = [
   { value: "BlazerShirt", name: "Blazer and Shirt" },
@@ -98,7 +104,7 @@ export const clothesArray = [
   { value: "Overall", name: "Overalls" },
   { value: "ShirtCrewNeck", name: "Crew Neck Shirt" },
   { value: "ShirtScoopNeck", name: "Scoop Neck Shirt" },
-  { value: "ShirtVNeck", name: "V Neck Shirt" }
+  { value: "ShirtVNeck", name: "V Neck Shirt" },
 ];
 export const eyesArray = [
   { value: "Close", name: "Closed" },
@@ -112,7 +118,7 @@ export const eyesArray = [
   { value: "Squint", name: "Squint" },
   { value: "Surprised", name: "Surprised" },
   { value: "Wink", name: "Wink 1" },
-  { value: "WinkWacky", name: "Wink 2" }
+  { value: "WinkWacky", name: "Wink 2" },
 ];
 export const eyebrowArray = [
   { value: "Angry", name: " Angry 1" },
@@ -126,7 +132,7 @@ export const eyebrowArray = [
   { value: "SadConcernedNatural", name: "Sad 2" },
   { value: "UnibrowNatural", name: "Unibrow" },
   { value: "UpDown", name: "Up & Down 1" },
-  { value: "UpDownNatural", name: "Up & Down 2" }
+  { value: "UpDownNatural", name: "Up & Down 2" },
 ];
 export const mouthArray = [
   { value: "Concerned", name: "Concerned" },
@@ -140,7 +146,7 @@ export const mouthArray = [
   { value: "Smile", name: "Smile" },
   { value: "Tongue", name: "Tongue Out" },
   { value: "Twinkle", name: "Twinkle" },
-  { value: "Vomit", name: "Vomit" }
+  { value: "Vomit", name: "Vomit" },
 ];
 export const skinArray = [
   { value: "Tanned", name: "Tanned" },
@@ -149,5 +155,5 @@ export const skinArray = [
   { value: "Light", name: "Light" },
   { value: "Brown", name: "Brown" },
   { value: "DarkBrown", name: "Dark Brown" },
-  { value: "Black", name: "Black" }
+  { value: "Black", name: "Black" },
 ];

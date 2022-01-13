@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Avatar from "avataaars";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,8 +13,9 @@ import { faLips } from "@fortawesome/pro-duotone-svg-icons/faLips";
 
 import Container from "../../../components/containers/Container";
 
-import { getUserBasicInfo, isMobileOrTablet } from "../../../util";
+import { UserContext } from "../../../context";
 
+import { getUserBasicInfo, isMobileOrTablet } from "../../../util";
 import {
   accessoriesArray,
   clothesArray,
@@ -26,10 +27,12 @@ import {
   mouthArray,
   saveAvatar,
   skinArray,
-  topArray
+  topArray,
 } from "./util";
 
 function AvatarSection({ user }) {
+  const { setUserBasicInfo } = useContext(UserContext);
+
   const [activeSection, setActiveSection] = useState(0);
   const [avatar, setAvatar] = useState({});
   const sectionsArray = [
@@ -41,12 +44,12 @@ function AvatarSection({ user }) {
     eyesArray,
     eyebrowArray,
     mouthArray,
-    skinArray
+    skinArray,
   ];
 
   useEffect(() => {
     if (user)
-      getUserBasicInfo(userInfo => {
+      getUserBasicInfo((userInfo) => {
         if (userInfo && userInfo.avatar) setAvatar(userInfo.avatar);
       }, user.uid);
   }, []);
@@ -59,8 +62,8 @@ function AvatarSection({ user }) {
       }
     >
       <h4 className="mb16">Create Your Avatar</h4>
-      <Container className="gap16">
-        <Container className="column bg-white pa16 br8">
+      <Container className="ov-hidden gap16" style={{ maxHeight: "300px" }}>
+        <Container className="column bg-white ov-auto pa16 br8">
           <button
             className={
               "flex align-center grey-1 gap8 mb16 " +
@@ -152,10 +155,7 @@ function AvatarSection({ user }) {
             Skin
           </button>
         </Container>
-        <Container
-          className="flex-fill column ov-auto bg-white br8"
-          style={{ height: "394px" }}
-        >
+        <Container className="flex-fill column ov-auto bg-white br8">
           {sectionsArray[activeSection].map((obj, index) => (
             <Container key={index}>
               <button
@@ -195,7 +195,7 @@ function AvatarSection({ user }) {
         />
         <button
           className="button-2 px16 py8 br4"
-          onClick={() => saveAvatar(avatar, user.uid)}
+          onClick={() => saveAvatar(avatar, setUserBasicInfo, user.uid)}
         >
           Save Avatar
         </button>
