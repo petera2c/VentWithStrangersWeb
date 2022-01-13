@@ -5,7 +5,9 @@ import Container from "../containers/Container";
 
 import { capitolizeFirstChar } from "../../util";
 
-function MakeAvatar({ displayName = "Anonymous", size, userBasicInfo }) {
+function MakeAvatar({ displayName, size, userBasicInfo }) {
+  if (!displayName) displayName = "Anonymous";
+
   let width = "48px";
   let height = "48px";
   if (size === "large") {
@@ -36,7 +38,7 @@ function MakeAvatar({ displayName = "Anonymous", size, userBasicInfo }) {
         className="bg-blue full-center br-round"
         style={{
           width: "84px",
-          height: "84px"
+          height: "84px",
         }}
       >
         <h1 className="white fs-40">{capitolizeFirstChar(displayName[0])}</h1>

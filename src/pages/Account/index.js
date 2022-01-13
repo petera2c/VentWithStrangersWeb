@@ -35,7 +35,7 @@ function AccountPage() {
         pathname === "/avatar") &&
       !user
     )
-      navigate.push("/");
+      navigate("/");
   }, [user]);
 
   return (

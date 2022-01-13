@@ -204,7 +204,7 @@ function Vent({
               className="mr16"
               onClick={e => {
                 e.preventDefault();
-                if (author.id) navigate.push("/profile?" + author.id);
+                if (author.id) navigate("/profile?" + author.id);
               }}
             >
               <Container className="full-center">
@@ -269,7 +269,7 @@ function Vent({
                             className="button-8 clickable align-center mb8"
                             onClick={e => {
                               e.preventDefault();
-                              navigate.push("/vent-to-strangers?" + vent.id);
+                              navigate("/vent-to-strangers?" + vent.id);
                             }}
                           >
                             <Text

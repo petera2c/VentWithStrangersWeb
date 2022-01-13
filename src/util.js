@@ -20,7 +20,7 @@ export const addTagsToPage = (props, selectedTags) => {
     if (index == 0) searchPathname += "?tags=" + selectedTags[index].name;
     else searchPathname += "+" + selectedTags[index].name;
   }
-  navigate.push(searchPathname);
+  navigate(searchPathname);
 };
 
 export const blockUser = async (userID, userIDToBlock) => {

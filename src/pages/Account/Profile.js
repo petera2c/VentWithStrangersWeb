@@ -33,7 +33,7 @@ import {
   kidsList,
   partyingList,
   politicalBeliefsList,
-  religiousBeliefsList
+  religiousBeliefsList,
 } from "../../PersonalOptions";
 import {
   blockUser,
@@ -42,7 +42,7 @@ import {
   getUserBasicInfo,
   isMobileOrTablet,
   useIsMounted,
-  userSignUpProgress
+  userSignUpProgress,
 } from "../../util";
 import { getUser, getUsersComments, getUsersVents } from "./util";
 
@@ -67,7 +67,7 @@ function ProfileSection({ user }) {
   if (search) search = search.substring(1);
   if (!search && user) search = user.uid;
 
-  const isActive = page => {
+  const isActive = (page) => {
     if (page) return " active";
     else return "";
   };
@@ -76,13 +76,13 @@ function ProfileSection({ user }) {
     setVents([]);
     setComments([]);
     if (search) {
-      getUserBasicInfo(userBasicInfo => {
+      getUserBasicInfo((userBasicInfo) => {
         if (isMounted()) setUserBasicInfo(userBasicInfo);
       }, search);
-      getUser(userInfo => {
+      getUser((userInfo) => {
         if (isMounted()) setUserInfo(userInfo);
       }, search);
-    } else navigate.push("/");
+    } else navigate("/");
 
     getUsersVents(isMounted, search, setCanLoadMoreVents, setVents, []);
     getUsersComments(
@@ -113,7 +113,7 @@ function ProfileSection({ user }) {
                   maxWidth: "300px",
                   minHeight: "100px",
                   height: "240px",
-                  maxHeight: "800px"
+                  maxHeight: "800px",
                 }}
               />
             </Container>
@@ -251,7 +251,7 @@ function ProfileSection({ user }) {
                           <FontAwesomeIcon
                             className="clickable grey-9"
                             icon={faEllipsisV}
-                            onClick={e => {
+                            onClick={(e) => {
                               e.preventDefault();
 
                               setPostOptions(!postOptions);
@@ -264,7 +264,7 @@ function ProfileSection({ user }) {
                               style={{
                                 bottom: "calc(100% + 8px)",
                                 whiteSpace: "nowrap",
-                                zIndex: 1
+                                zIndex: 1,
                               }}
                             >
                               <Container className="column x-fill bg-white border-all px16 py8 br8">
@@ -273,7 +273,7 @@ function ProfileSection({ user }) {
                                   search != user.uid && (
                                     <Container
                                       className="button-8 clickable align-center"
-                                      onClick={e => {
+                                      onClick={(e) => {
                                         e.preventDefault();
                                         setBlockModal(!blockModal);
                                       }}
@@ -439,7 +439,7 @@ function ProfileSection({ user }) {
                   maxWidth: "300px",
                   minHeight: "100px",
                   height: "240px",
-                  maxHeight: "800px"
+                  maxHeight: "800px",
                 }}
               />
             </Container>

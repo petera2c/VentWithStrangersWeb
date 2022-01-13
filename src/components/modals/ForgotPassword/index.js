@@ -39,7 +39,7 @@ function ForgotPasswordModal({ setActiveModal }) {
 
           <form
             className="x-fill column"
-            onSubmit={handleSubmit(data => sendPasswordReset(data))}
+            onSubmit={handleSubmit((data) => sendPasswordReset(data))}
           >
             <Container className="x-fill column px32 py16">
               <input
@@ -47,8 +47,9 @@ function ForgotPasswordModal({ setActiveModal }) {
                 type="text"
                 name="email"
                 placeholder="Email Address"
-                ref={register}
-                required
+                {...register("email", {
+                  required: "Required",
+                })}
               />
             </Container>
             <Container className="x-fill full-center border-top px32 py16">
@@ -63,7 +64,7 @@ function ForgotPasswordModal({ setActiveModal }) {
       </Container>
       <Container
         className="modal-background"
-        onClick={e => {
+        onClick={(e) => {
           e.preventDefault();
           setActiveModal("");
         }}

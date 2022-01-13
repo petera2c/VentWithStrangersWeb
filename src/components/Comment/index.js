@@ -96,7 +96,7 @@ function Comment({
           className="clickable align-center mb8"
           onClick={e => {
             e.preventDefault();
-            navigate.push("/profile?" + comment.userID);
+            navigate("/profile?" + comment.userID);
           }}
         >
           <MakeAvatar

@@ -43,7 +43,7 @@ export const deleteVent = async (navigate, ventID) => {
     .doc(ventID)
     .delete();
   alert("Vent deleted!");
-  navigate.push("/");
+  navigate("/");
 };
 
 export const findPossibleUsersToTag = async (
@@ -363,7 +363,7 @@ export const startConversation = async (navigate, user, ventUserID) => {
     .get();
 
   const goToPage = conversationID => {
-    navigate.push("/conversations?" + conversationID);
+    navigate("/conversations?" + conversationID);
   };
 
   if (!conversationQuerySnapshot.empty) {

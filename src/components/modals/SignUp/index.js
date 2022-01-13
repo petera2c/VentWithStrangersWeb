@@ -30,7 +30,7 @@ function SignUpModal({ setActiveModal }) {
         <Container className="x-fill column">
           <form
             className="x-fill column"
-            onSubmit={handleSubmit(data => signUp(data))}
+            onSubmit={handleSubmit((data) => signUp(data))}
           >
             <Container className="x-fill column px32 py16">
               <input
@@ -38,16 +38,18 @@ function SignUpModal({ setActiveModal }) {
                 type="text"
                 name="displayName"
                 placeholder="Display Name"
-                ref={register}
-                required
+                {...register("displayName", {
+                  required: "Required",
+                })}
               />
               <input
                 className="py8 px16 br4"
                 name="email"
                 type="text"
                 placeholder="Email Address"
-                ref={register}
-                required
+                {...register("email", {
+                  required: "Required",
+                })}
               />
               <Text
                 className="fw-400 mb8"
@@ -65,8 +67,9 @@ function SignUpModal({ setActiveModal }) {
                     name="password"
                     type={canSeePassword ? "" : "password"}
                     placeholder="Password"
-                    ref={register}
-                    required
+                    {...register("password", {
+                      required: "Required",
+                    })}
                   />
                 </Container>
                 <Container
@@ -80,8 +83,9 @@ function SignUpModal({ setActiveModal }) {
                       name="passwordConfirm"
                       type={canSeePassword ? "" : "password"}
                       placeholder="Confirm Password"
-                      ref={register}
-                      required
+                      {...register("passwordConfirm", {
+                        required: "Required",
+                      })}
                     />
                     <FontAwesomeIcon
                       className={
@@ -105,7 +109,7 @@ function SignUpModal({ setActiveModal }) {
                 Already have an account?&nbsp;
                 <span
                   className="clickable blue"
-                  onClick={e => {
+                  onClick={(e) => {
                     e.preventDefault();
                     setActiveModal("login");
                   }}
@@ -119,7 +123,7 @@ function SignUpModal({ setActiveModal }) {
       </Container>
       <Container
         className="modal-background"
-        onClick={e => {
+        onClick={(e) => {
           e.preventDefault();
           setActiveModal("");
         }}

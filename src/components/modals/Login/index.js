@@ -14,7 +14,11 @@ import { login } from "./util";
 import "./style.css";
 
 function LoginModal({ setActiveModal }) {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [canSeePassword, setCanSeePassword] = useState(false);
 
   return (
@@ -31,7 +35,7 @@ function LoginModal({ setActiveModal }) {
         <Container className="x-fill column">
           <form
             className="x-fill column"
-            onSubmit={handleSubmit(formData =>
+            onSubmit={handleSubmit((formData) =>
               login(formData, () => setActiveModal(""))
             )}
           >
@@ -41,8 +45,9 @@ function LoginModal({ setActiveModal }) {
                 type="text"
                 name="email"
                 placeholder="Email Address"
-                ref={register}
-                required
+                {...register("email", {
+                  required: "Required",
+                })}
               />
               <Container className="x-fill full-center">
                 <input
@@ -50,8 +55,9 @@ function LoginModal({ setActiveModal }) {
                   name="password"
                   type={canSeePassword ? "" : "password"}
                   placeholder="Password"
-                  ref={register}
-                  required
+                  {...register("password", {
+                    required: "Required",
+                  })}
                 />
                 <FontAwesomeIcon
                   className={"clickable ml8 " + (canSeePassword ? "blue" : "")}
@@ -61,7 +67,7 @@ function LoginModal({ setActiveModal }) {
               </Container>
               <p
                 className="tac clickable mb8"
-                onClick={e => {
+                onClick={(e) => {
                   e.preventDefault();
                   setActiveModal("forgotPassword");
                 }}
@@ -82,7 +88,7 @@ function LoginModal({ setActiveModal }) {
                 Don't have an account?&nbsp;{" "}
                 <span
                   className="clickable blue"
-                  onClick={e => {
+                  onClick={(e) => {
                     e.preventDefault();
                     setActiveModal("signUp");
                   }}
@@ -96,7 +102,7 @@ function LoginModal({ setActiveModal }) {
       </Container>
       <Container
         className="modal-background"
-        onClick={e => {
+        onClick={(e) => {
           e.preventDefault();
           setActiveModal("");
         }}

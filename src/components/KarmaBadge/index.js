@@ -23,7 +23,7 @@ function KarmaBadge({ karma, noOnClick }) {
             e.stopPropagation();
             e.preventDefault();
 
-            navigate.push("/site-info");
+            navigate("/site-info");
           }}
         >
           <h5 className="bg-blue white fw-400 px8 py4 br8">Moderator</h5>
@@ -46,7 +46,7 @@ function KarmaBadge({ karma, noOnClick }) {
 
               e.stopPropagation();
               e.preventDefault();
-              navigate.push("/site-info");
+              navigate("/site-info");
             }}
           >
             <FontAwesomeIcon icon={faMedal} color={karmaColor} size="2x" />

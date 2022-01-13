@@ -98,7 +98,7 @@ function Header() {
             <img
               alt=""
               className="clickable"
-              onClick={() => navigate.push("/")}
+              onClick={() => navigate("/")}
               src={require("../../svgs/icon.svg")}
               style={{ height: "50px" }}
             />
@@ -161,7 +161,7 @@ function Header() {
                 className="no-border bg-grey-4 br4"
                 onChange={e => {
                   setVentSearchString(e.target.value);
-                  navigate.push("/search?" + e.target.value);
+                  navigate("/search?" + e.target.value);
                 }}
                 placeholder="Search"
                 type="text"

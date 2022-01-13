@@ -20,7 +20,7 @@ function SignUpPage() {
 
   if (user) {
     alert("You can only access this page if you are not logged in!");
-    navigate.push("/");
+    navigate("/");
     return (
       <Page
         className="bg-grey-2 full-center pa32"

@@ -234,7 +234,7 @@ function NewVentComponent({ miniVersion, ventID }) {
                     saveVent(
                       (vent) => {
                         setSaving(false);
-                        navigate.push(
+                        navigate(
                           "/problem/" +
                             vent.id +
                             "/" +
