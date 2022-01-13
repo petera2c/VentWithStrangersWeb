@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { UserContext } from "../../context";
 
@@ -6,20 +6,8 @@ import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import NotificationList from "../../components/NotificationList";
 
-import LoadingHeart from "../../components/loaders/Heart";
-
-import Text from "../../components/views/Text";
-
+import { getNotifications } from "../../components/Header/util";
 import { isMobileOrTablet, useIsMounted } from "../../util";
-
-import {
-  getNotifications,
-  getUnreadConversations,
-  howCompleteIsUserProfile,
-  newNotificationCounter,
-  readNotifications,
-  resetUnreadConversationCount,
-} from "../../components/Header/util";
 
 function NotificationsPage() {
   const isMounted = useIsMounted();
@@ -27,8 +15,9 @@ function NotificationsPage() {
 
   const [notifications, setNotifications] = useState([]);
 
-  let newNotificationsListenerUnsubscribe;
   useEffect(() => {
+    let newNotificationsListenerUnsubscribe;
+
     newNotificationsListenerUnsubscribe = getNotifications(
       isMounted,
       setNotifications,
@@ -41,7 +30,7 @@ function NotificationsPage() {
       if (newNotificationsListenerUnsubscribe)
         newNotificationsListenerUnsubscribe();
     };
-  }, []);
+  }, [isMounted, user]);
 
   return (
     <Page

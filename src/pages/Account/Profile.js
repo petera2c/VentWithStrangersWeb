@@ -3,7 +3,6 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import moment from "moment-timezone";
 import AdSense from "react-adsense";
 import { Button, Space } from "antd";
-import db from "../../config/firebase";
 
 import { faBaby } from "@fortawesome/free-solid-svg-icons/faBaby";
 import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
@@ -16,7 +15,6 @@ import { faUserLock } from "@fortawesome/free-solid-svg-icons/faUserLock";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import LoadingHeart from "../../components/loaders/Heart";
-import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import MakeAvatar from "../../components/MakeAvatar";
 import Vent from "../../components/Vent";
@@ -33,7 +31,6 @@ import {
   kidsList,
   partyingList,
   politicalBeliefsList,
-  religiousBeliefsList,
 } from "../../PersonalOptions";
 import {
   blockUser,
@@ -92,7 +89,7 @@ function ProfileSection({ user }) {
       setComments,
       []
     );
-  }, [search]);
+  }, [isMounted, navigate, search]);
 
   return (
     <Container className="x-fill">
@@ -245,7 +242,7 @@ function ProfileSection({ user }) {
                   {userBasicInfo.displayName &&
                     search &&
                     user &&
-                    search != user.uid && (
+                    search !== user.uid && (
                       <div className="relative">
                         <HandleOutsideClick close={() => setPostOptions(false)}>
                           <FontAwesomeIcon
@@ -270,7 +267,7 @@ function ProfileSection({ user }) {
                               <Container className="column x-fill bg-white border-all px16 py8 br8">
                                 {userBasicInfo.displayName &&
                                   search &&
-                                  search != user.uid && (
+                                  search !== user.uid && (
                                     <Container
                                       className="button-8 clickable align-center"
                                       onClick={(e) => {

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import AdSense from "react-adsense";
 import Cookies from "universal-cookie";
@@ -18,11 +18,7 @@ import Page from "../../components/containers/Page";
 import SubscribeComp from "../../components/Subscribe";
 import Vent from "../../components/Vent";
 
-import db from "../../config/firebase";
-import { UserContext } from "../../context";
-
 import {
-  capitolizeFirstChar,
   getTotalOnlineUsers,
   isMobileOrTablet,
   useIsMounted,
@@ -33,7 +29,6 @@ const cookies = new Cookies();
 
 function VentsPage() {
   const isMounted = useIsMounted();
-  const { user } = useContext(UserContext);
 
   const [vents, setVents] = useState(null);
   const location = useLocation();
@@ -49,9 +44,9 @@ function VentsPage() {
     setPathname2(pathname);
   }
 
-  let onlineUsersUnsubscribe;
-
   useEffect(() => {
+    let onlineUsersUnsubscribe;
+
     if (search) {
       const referral = /referral=([^&]+)/.exec(search)[1];
       if (referral) cookies.set("referral", referral);
@@ -64,7 +59,7 @@ function VentsPage() {
     return () => {
       if (onlineUsersUnsubscribe) onlineUsersUnsubscribe.off("value");
     };
-  }, [location]);
+  }, [isMounted, pathname, search]);
 
   return (
     <Page

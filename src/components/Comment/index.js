@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import moment from "moment-timezone";
-import TextArea from "react-textarea-autosize";
 import { MentionsInput, Mention } from "react-mentions";
 import { useNavigate } from "react-router-dom";
 
@@ -32,16 +31,15 @@ import {
   capitolizeFirstChar,
   getIsUserOnline,
   getUserBasicInfo,
-  hasUserBlockedUser
+  hasUserBlockedUser,
 } from "../../util";
 import {
   deleteComment,
   editComment,
-  getComment,
   getCommentHasLiked,
   likeOrUnlikeComment,
   reportComment,
-  swapTags
+  swapTags,
 } from "./util";
 import { findPossibleUsersToTag } from "../Vent/util";
 
@@ -51,8 +49,7 @@ function Comment({
   commentID,
   commentIndex,
   setComments,
-  setPossibleUsersToTag,
-  ventUserID
+  ventUserID,
 }) {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
@@ -77,7 +74,7 @@ function Comment({
 
     getUserBasicInfo(setUserBasicInfo, comment2.userID);
     getIsUserOnline(setIsUserOnline, comment2.userID);
-  }, []);
+  }, [commentID, comment2.userID, comment.userID, user]);
 
   if (isContentBlocked) return <div />;
 
@@ -88,13 +85,13 @@ function Comment({
         borderTopLeftRadius: commentIndex === 0 ? "8px" : "",
         borderTopRightRadius: commentIndex === 0 ? "8px" : "",
         borderBottomLeftRadius: arrayLength - 1 === commentIndex ? "8px" : "",
-        borderBottomRightRadius: arrayLength - 1 === commentIndex ? "8px" : ""
+        borderBottomRightRadius: arrayLength - 1 === commentIndex ? "8px" : "",
       }}
     >
       <Container className="justify-between wrap py16 px32">
         <Container
           className="clickable align-center mb8"
-          onClick={e => {
+          onClick={(e) => {
             e.preventDefault();
             navigate("/profile?" + comment.userID);
           }}
@@ -123,7 +120,7 @@ function Comment({
               <FontAwesomeIcon
                 className="clickable grey-9"
                 icon={faEllipsisV}
-                onClick={e => {
+                onClick={(e) => {
                   e.preventDefault();
                   setCommentOptions(!commentOptions);
                 }}
@@ -134,14 +131,14 @@ function Comment({
                   style={{
                     top: "calc(100% - 8px)",
                     whiteSpace: "nowrap",
-                    zIndex: 1
+                    zIndex: 1,
                   }}
                 >
                   <Container className="column x-fill bg-white border-all px16 py8 br8">
                     {user && comment.userID === user.uid && (
                       <Container
                         className="button-8 clickable align-center mb8"
-                        onClick={e => {
+                        onClick={(e) => {
                           e.preventDefault();
                           setCommentOptions(false);
                           setCommentString(comment.text);
@@ -161,7 +158,7 @@ function Comment({
                         (ventUserID && ventUserID === user.uid)) && (
                         <Container
                           className="button-8 clickable align-center"
-                          onClick={e => {
+                          onClick={(e) => {
                             e.preventDefault();
                             setDeleteCommentConfirm(true);
                             setCommentOptions(false);
@@ -178,7 +175,7 @@ function Comment({
                     {comment.userID !== user.uid && (
                       <Container
                         className="button-8 clickable align-center"
-                        onClick={e => {
+                        onClick={(e) => {
                           e.preventDefault();
                           setReportModal(!reportModal);
                         }}
@@ -197,7 +194,7 @@ function Comment({
                     {comment.userID !== user.uid && (
                       <Container
                         className="button-8 clickable align-center"
-                        onClick={e => {
+                        onClick={(e) => {
                           e.preventDefault();
                           setBlockModal(!blockModal);
                         }}
@@ -230,7 +227,7 @@ function Comment({
           <Container className="relative x-fill">
             <MentionsInput
               className="mentions"
-              onChange={e => {
+              onChange={(e) => {
                 setCommentString(e.target.value);
               }}
               value={commentString}
@@ -240,7 +237,6 @@ function Comment({
                 data={(currentTypingTag, callback) => {
                   findPossibleUsersToTag(
                     currentTypingTag,
-                    setPossibleUsersToTag,
                     comment.ventID,
                     callback
                   );
@@ -283,7 +279,7 @@ function Comment({
       <Container className="align-center justify-between">
         <Container
           className="clickable align-center py16 px32"
-          onClick={async e => {
+          onClick={async (e) => {
             e.preventDefault();
             const userInteractionIssues = userSignUpProgress(user);
 
@@ -323,7 +319,7 @@ function Comment({
       {reportModal && (
         <ReportModal
           close={() => setReportModal(false)}
-          submit={option =>
+          submit={(option) =>
             reportComment(option, user.uid, comment.id, comment.ventID)
           }
         />

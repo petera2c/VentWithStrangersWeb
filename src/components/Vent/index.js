@@ -1,11 +1,9 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import moment from "moment-timezone";
 import { MentionsInput, Mention } from "react-mentions";
-import { useCollectionData } from "react-firebase-hooks/firestore";
 
 import { faClock } from "@fortawesome/pro-regular-svg-icons/faClock";
-import { faComment } from "@fortawesome/pro-light-svg-icons/faComment";
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
 import { faEdit } from "@fortawesome/pro-light-svg-icons/faEdit";
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
@@ -13,8 +11,6 @@ import { faExclamationTriangle } from "@fortawesome/pro-light-svg-icons/faExclam
 import { faTrash } from "@fortawesome/pro-duotone-svg-icons/faTrash";
 import { faUserLock } from "@fortawesome/pro-duotone-svg-icons/faUserLock";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-import db from "../../config/firebase";
 
 import Button from "../views/Button";
 import Comment from "../Comment";
@@ -26,7 +22,6 @@ import LoadingHeart from "../loaders/Heart";
 import MakeAvatar from "../MakeAvatar";
 import ReportModal from "../modals/Report";
 import StarterModal from "../modals/Starter";
-import SuccessMessage from "../SuccessMessage";
 import Text from "../views/Text";
 
 import { UserContext } from "../../context";
@@ -38,7 +33,6 @@ import {
   getIsUserOnline,
   getUserBasicInfo,
   hasUserBlockedUser,
-  isMobileOrTablet,
   useIsMounted,
   userSignUpProgress,
 } from "../../util";
@@ -46,19 +40,15 @@ import {
   commentVent,
   deleteVent,
   findPossibleUsersToTag,
-  getCurrentTypingIndex,
   getVent,
   getVentComments,
   getVentDescription,
-  getVentFullLink,
   getVentPartialLink,
   likeOrUnlikeVent,
   newVentCommentListener,
   reportVent,
   startConversation,
-  tagUser,
   ventHasLiked,
-  ventListener,
 } from "./util";
 
 import "./style.css";
@@ -90,7 +80,6 @@ function Vent({
 
   const [author, setAuthor] = useState({});
   const [commentString, setCommentString] = useState("");
-  const [currentTypingIndex, setCurrentTypingIndex] = useState(0);
   const [deleteVentConfirm, setDeleteVentConfirm] = useState(false);
   const [displayCommentField2, setDisplayCommentField] = useState(
     displayCommentField
@@ -101,23 +90,16 @@ function Vent({
 
   const [blockModal, setBlockModal] = useState(false);
   const [isContentBlocked, setIsContentBlocked] = useState(user ? true : false);
-  const [possibleUsersToTag, setPossibleUsersToTag] = useState();
   const [postOptions, setPostOptions] = useState(false);
   const [reportModal, setReportModal] = useState(false);
   const [starterModal, setStarterModal] = useState(false);
-  const [taggedUsers, setTaggedUsers] = useState([]);
   const [vent, setVent] = useState(ventInit);
 
-  const [copySuccess, setCopySuccess] = useState("Copy Link");
-  const textAreaRef = useRef(null);
-
   const navigate = useNavigate();
-  const location = useLocation();
-  const { pathname } = location;
-
-  let newCommentListenerUnsubscribe;
 
   useEffect(() => {
+    let newCommentListenerUnsubscribe;
+
     getVent(
       isMounted,
       (ventUserID) => {
@@ -170,13 +152,16 @@ function Vent({
     return () => {
       if (newCommentListenerUnsubscribe) newCommentListenerUnsubscribe();
     };
-  }, []);
-  const copyToClipboard = (e) => {
-    textAreaRef.current.select();
-    document.execCommand("copy");
-    e.target.focus();
-    setCopySuccess("Copied!");
-  };
+  }, [
+    comments,
+    displayCommentField2,
+    isMounted,
+    searchPreviewMode,
+    setDescription,
+    setTitle,
+    user,
+    vent,
+  ]);
 
   if ((!vent || (vent && !vent.server_timestamp)) && isOnSingleVentPage)
     return (
@@ -363,6 +348,7 @@ function Vent({
               <Container className="x-fill align-center justify-between wrap">
                 <Container className="align-center mb16">
                   <img
+                    alt="Support"
                     className={`clickable heart ${
                       hasLiked ? "red" : "grey-5"
                     } mr4`}
@@ -405,14 +391,6 @@ function Vent({
                     onClick={(e) => {
                       e.preventDefault();
                       setDisplayCommentField(!displayCommentField2);
-
-                      if (displayCommentField2 && newCommentListenerUnsubscribe)
-                        newCommentListenerUnsubscribe();
-                      if (!displayCommentField2)
-                        newCommentListenerUnsubscribe = newVentCommentListener(
-                          setComments,
-                          vent.id
-                        );
                     }}
                   >
                     {vent.comment_counter ? vent.comment_counter : 0}{" "}
@@ -468,7 +446,7 @@ function Vent({
                           data={(currentTypingTag, callback) => {
                             findPossibleUsersToTag(
                               currentTypingTag,
-                              setPossibleUsersToTag,
+                              () => {},
                               vent.id,
                               callback
                             );
@@ -535,7 +513,6 @@ function Vent({
                       commentIndex={index}
                       comment2={comment}
                       setComments={setComments}
-                      setPossibleUsersToTag={setPossibleUsersToTag}
                       ventUserID={vent.userID}
                       key={comment.id}
                     />

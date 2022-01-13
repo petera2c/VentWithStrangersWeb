@@ -21,9 +21,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { UserContext } from "../../context";
 
 import Container from "../containers/Container";
-import HandleOutsideClick from "../containers/HandleOutsideClick";
 import MakeAvatar from "../MakeAvatar";
-import NotificationList from "../NotificationList";
 import StarterModal from "../modals/Starter";
 import Text from "../views/Text";
 
@@ -38,7 +36,6 @@ import {
 import {
   getNotifications,
   getUnreadConversations,
-  howCompleteIsUserProfile,
   newNotificationCounter,
   readNotifications,
   resetUnreadConversationCount,
@@ -58,8 +55,6 @@ function Header() {
   const [mobileHeaderActive, setMobileHeaderActive] = useState(false);
   const [accountSectionActive, setAccountSectionActive] = useState(false);
   const [notifications, setNotifications] = useState([]);
-  const [showFeedback, setShowFeedback] = useState(true);
-  const [missingAccountPercentage, setMissingAccountPercentage] = useState();
   const [showNotificationDropdown, setShowNotificationDropdown] = useState(
     false
   );
@@ -73,20 +68,15 @@ function Header() {
       : ""
   );
 
-  let newNotificationsListenerUnsubscribe;
-  let newConversationsListenerUnsubscribe;
-  let onlineUsersUnsubscribe;
-
   useEffect(() => {
-    if (newNotificationsListenerUnsubscribe)
-      newNotificationsListenerUnsubscribe();
-    if (newConversationsListenerUnsubscribe)
-      newConversationsListenerUnsubscribe();
-    if (onlineUsersUnsubscribe) onlineUsersUnsubscribe();
+    let newNotificationsListenerUnsubscribe;
+    let newConversationsListenerUnsubscribe;
+    let onlineUsersUnsubscribe;
 
     onlineUsersUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) => {
       if (isMounted()) setTotalOnlineUsers(totalOnlineUsers);
     });
+
     if (user) {
       newConversationsListenerUnsubscribe = getUnreadConversations(
         isMounted,
@@ -96,7 +86,6 @@ function Header() {
       );
       getUserBasicInfo((newBasicUserInfo) => {
         setUserBasicInfo(newBasicUserInfo);
-        howCompleteIsUserProfile(setMissingAccountPercentage, newBasicUserInfo);
       }, user.uid);
       newNotificationsListenerUnsubscribe = getNotifications(
         isMounted,
@@ -110,8 +99,9 @@ function Header() {
         newNotificationsListenerUnsubscribe();
       if (newConversationsListenerUnsubscribe)
         newConversationsListenerUnsubscribe();
+      if (onlineUsersUnsubscribe) onlineUsersUnsubscribe();
     };
-  }, [location, user]);
+  }, [isMounted, pathname, user]);
 
   if (pathname === "/conversations" && user && unreadConversationsCount > 0)
     resetUnreadConversationCount(user.uid);

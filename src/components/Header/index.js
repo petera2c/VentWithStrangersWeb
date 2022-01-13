@@ -8,7 +8,6 @@ import { faChevronDown } from "@fortawesome/pro-solid-svg-icons/faChevronDown";
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
 import { faConciergeBell } from "@fortawesome/pro-duotone-svg-icons/faConciergeBell";
 import { faSearch } from "@fortawesome/pro-solid-svg-icons/faSearch";
-import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
 import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -24,7 +23,6 @@ import { capitolizeFirstChar, isPageActive, useIsMounted } from "../../util";
 import {
   getNotifications,
   getUnreadConversations,
-  howCompleteIsUserProfile,
   newNotificationCounter,
   readNotifications,
   resetUnreadConversationCount,
@@ -39,7 +37,6 @@ function Header({ navigate }) {
 
   const [activeModal, setActiveModal] = useState("");
   const [notifications, setNotifications] = useState([]);
-  const [showFeedback, setShowFeedback] = useState(true);
   const [showNotificationDropdown, setShowNotificationDropdown] = useState(
     false
   );
@@ -50,15 +47,9 @@ function Header({ navigate }) {
       ? search.substring(1, search.length)
       : ""
   );
-
-  let newNotificationsListenerUnsubscribe;
-  let newConversationsListenerUnsubscribe;
-
   useEffect(() => {
-    if (newNotificationsListenerUnsubscribe)
-      newNotificationsListenerUnsubscribe();
-    if (newConversationsListenerUnsubscribe)
-      newConversationsListenerUnsubscribe();
+    let newNotificationsListenerUnsubscribe;
+    let newConversationsListenerUnsubscribe;
 
     if (user) {
       newConversationsListenerUnsubscribe = getUnreadConversations(
@@ -81,7 +72,7 @@ function Header({ navigate }) {
       if (newConversationsListenerUnsubscribe)
         newConversationsListenerUnsubscribe();
     };
-  }, [location, user]);
+  }, [isMounted, pathname, user]);
 
   if (pathname === "/conversations" && user && unreadConversationsCount > 0)
     resetUnreadConversationCount(user.uid);
@@ -250,22 +241,6 @@ function Header({ navigate }) {
           </Container>
         </Container>
 
-        {false && (
-          <Container className="flex-fill wrap full-center bg-grey-4 px32">
-            <p className="flex-fill tac py16">
-              <Link to="/feedback">
-                Give us feedback on our website{" "}
-                <span className="blue">here</span>
-              </Link>
-            </p>
-            <Container
-              className="clickable round-icon"
-              onClick={() => setShowFeedback(false)}
-            >
-              <FontAwesomeIcon className="white" icon={faTimes} />
-            </Container>
-          </Container>
-        )}
         <StarterModal
           activeModal={activeModal}
           setActiveModal={setActiveModal}

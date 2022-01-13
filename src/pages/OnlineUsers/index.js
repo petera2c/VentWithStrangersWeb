@@ -1,6 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import AdSense from "react-adsense";
+import React, { useEffect, useState } from "react";
 
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
@@ -8,15 +6,13 @@ import UserComp from "../../components/User";
 
 import { getTotalOnlineUsers, isMobileOrTablet } from "../../util";
 import { getOnlineUsers } from "./util";
-import { UserContext } from "../../context";
 
 function OnlineUsers() {
-  const { user } = useContext(UserContext);
   const [onlineUsers, setOnlineUsers] = useState([]);
 
-  let onlineUsersUnsubscribe;
-
   useEffect(() => {
+    let onlineUsersUnsubscribe;
+
     onlineUsersUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) =>
       getOnlineUsers(setOnlineUsers, totalOnlineUsers)
     );

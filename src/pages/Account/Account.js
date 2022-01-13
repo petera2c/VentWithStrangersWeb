@@ -1,23 +1,19 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import moment from "moment-timezone";
 
 import { faBirthdayCake } from "@fortawesome/pro-duotone-svg-icons/faBirthdayCake";
-import { faChartNetwork } from "@fortawesome/pro-solid-svg-icons/faChartNetwork";
-import { faCog } from "@fortawesome/free-solid-svg-icons/faCog";
 import { faEye } from "@fortawesome/free-solid-svg-icons/faEye";
 import { faLockAlt } from "@fortawesome/pro-solid-svg-icons/faLockAlt";
 import { faMonument } from "@fortawesome/pro-light-svg-icons/faMonument";
 import { faPaperPlane } from "@fortawesome/pro-light-svg-icons/faPaperPlane";
 import { faTransgenderAlt } from "@fortawesome/free-solid-svg-icons/faTransgenderAlt";
-import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faVenusMars } from "@fortawesome/free-solid-svg-icons/faVenusMars";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Button from "../../components/views/Button";
 import Container from "../../components/containers/Container";
 import Dropdown from "../../components/containers/Dropdown";
-import Page from "../../components/containers/Page";
 import Text from "../../components/views/Text";
 
 import { isMobileOrTablet, useIsMounted } from "../../util";
@@ -80,7 +76,7 @@ function AccountSection({ user }) {
       if (isMounted()) setAccountInfo(userInfo);
       if (userInfo && isMounted()) setUserInfo(userInfo);
     }, user.uid);
-  }, []);
+  }, [isMounted, user, userInfo]);
 
   return (
     <Container

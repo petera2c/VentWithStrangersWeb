@@ -8,7 +8,6 @@ import { faGlassCheers } from "@fortawesome/free-solid-svg-icons/faGlassCheers";
 import { faLandmark } from "@fortawesome/free-solid-svg-icons/faLandmark";
 import { faPray } from "@fortawesome/free-solid-svg-icons/faPray";
 import { faSchool } from "@fortawesome/free-solid-svg-icons/faSchool";
-import { faUserLock } from "@fortawesome/free-solid-svg-icons/faUserLock";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Button from "../views/Button";
@@ -25,7 +24,6 @@ import {
   kidsList,
   partyingList,
   politicalBeliefsList,
-  religiousBeliefsList,
 } from "../../PersonalOptions";
 import {
   calculateKarma,
@@ -53,7 +51,7 @@ function UserComponent({
     getUserBasicInfo((newUserInfo) => {
       if (isMounted) setUserInfo(newUserInfo);
     }, userID);
-  }, []);
+  }, [isMounted, userID]);
 
   return (
     <Link

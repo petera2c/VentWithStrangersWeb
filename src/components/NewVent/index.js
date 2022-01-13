@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import { message, Space, Statistic } from "antd";
+import { message, Space } from "antd";
 import TextArea from "react-textarea-autosize";
 import { useNavigate } from "react-router-dom";
-import moment from "moment-timezone";
 
 import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -25,8 +24,6 @@ import {
   updateTags,
 } from "./util";
 
-const { Countdown } = Statistic;
-
 function NewVentComponent({ miniVersion, ventID }) {
   const isMounted = useIsMounted();
   const navigate = useNavigate();
@@ -34,10 +31,7 @@ function NewVentComponent({ miniVersion, ventID }) {
 
   const [isMinified, setIsMinified] = useState(miniVersion);
   const [description, setDescription] = useState("");
-  const [encouragingText, setEncouragingText] = useState(
-    selectEncouragingMessage()
-  );
-  const [gender, setGender] = useState(0);
+  const [encouragingText] = useState(selectEncouragingMessage());
   const [saving, setSaving] = useState(false);
   const [starterModal, setStarterModal] = useState(false);
   const [tags, setTags] = useState([]);
@@ -61,7 +55,7 @@ function NewVentComponent({ miniVersion, ventID }) {
           );
         }
       }, user.uid);
-  }, []);
+  }, [isMounted, user, ventID]);
 
   const checks = () => {
     if (userVentTimeOut && !ventID) return false;
@@ -244,7 +238,6 @@ function NewVentComponent({ miniVersion, ventID }) {
                       checks,
                       {
                         description,
-                        gender,
                         tags,
                         title,
                       },

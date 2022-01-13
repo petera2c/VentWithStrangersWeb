@@ -1,7 +1,6 @@
 import firebase from "firebase/compat/app";
 import moment from "moment-timezone";
 import db from "../../config/firebase";
-import { userSignUpProgress } from "../../util";
 
 export const countdown = (isMounted, setUserVentTimeOut, ventTimeout) => {
   if (isMounted()) {

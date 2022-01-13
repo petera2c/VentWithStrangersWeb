@@ -1,9 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useCollectionData } from "react-firebase-hooks/firestore";
 import { Link, useLocation } from "react-router-dom";
-import AdSense from "react-adsense";
-
-import db from "../../config/firebase";
 
 import { UserContext } from "../../context";
 
@@ -11,7 +7,6 @@ import StarterModal from "../../components/modals/Starter";
 
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
-import Button from "../../components/views/Button";
 
 import ConversationOption from "./ConversationOption";
 import Chat from "./chat";
@@ -41,9 +36,9 @@ function MobileConversations() {
   const [canLoadMore, setCanLoadMore] = useState(true);
   const [starterModal, setStarterModal] = useState(!user);
 
-  let newMessageListenerUnsubscribe;
-
   useEffect(() => {
+    let newMessageListenerUnsubscribe;
+
     if (newMessageListenerUnsubscribe) newMessageListenerUnsubscribe();
 
     if (user) {
@@ -86,7 +81,7 @@ function MobileConversations() {
     return () => {
       if (newMessageListenerUnsubscribe) newMessageListenerUnsubscribe();
     };
-  }, [user]);
+  }, [activeConversation, conversations, isMounted, search, user]);
 
   return (
     <Page
