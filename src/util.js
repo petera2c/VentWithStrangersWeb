@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
+import { sendEmailVerification } from "firebase/auth";
 import db from "./config/firebase";
-import { Modal, Button, Space } from "antd";
+import { Modal } from "antd";
 
 import { setUserOnlineStatus } from "./pages/util";
 
@@ -30,11 +30,19 @@ export const userSignUpProgress = (user, noAlert) => {
     return "NSI";
   } else if (!user.emailVerified) {
     if (!noAlert) {
-      user.sendEmailVerification();
-      Modal.info({
-        title: "Verify Email",
-        content: "We have re-sent you a verification email :)",
-      });
+      sendEmailVerification(user)
+        .then(() => {
+          Modal.info({
+            title: "Verify Email",
+            content: "We have re-sent you a verification email :)",
+          });
+        })
+        .catch((err) => {
+          Modal.error({
+            title: "Verify Email",
+            content: err,
+          });
+        });
     }
     return "NVE";
   } else return false;
@@ -121,7 +129,7 @@ export const signOut = async (userID) => {
 
 export const soundNotify = (sound = "bing") => {
   let audio;
-  if (process.env.NODE_ENV == "development")
+  if (process.env.NODE_ENV === "development")
     audio = new Audio("/static/" + sound + ".mp3");
   else audio = new Audio(sound + ".mp3");
 

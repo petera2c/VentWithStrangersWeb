@@ -140,35 +140,44 @@ function ProfileSection({ user }) {
               <h1>{capitolizeFirstChar(userBasicInfo.displayName)}</h1>
               <KarmaBadge karma={calculateKarma(userBasicInfo)} />
             </Space>
+            <h6 className="grey-1 fw-400">
+              {calculateKarma(userBasicInfo)} Karma Points
+            </h6>
 
-            <Space>
-              {Boolean(
-                new moment().year() - new moment(userInfo.birth_date).year()
-              ) && (
-                <Container className="column">
-                  <h6 className="fw-400">Age</h6>
-                  <h6 className="grey-1 fw-400">
-                    {new moment().diff(
-                      new moment(userInfo.birth_date),
-                      "years"
-                    )}
-                  </h6>
-                </Container>
-              )}
+            {(Boolean(
+              new moment().year() - new moment(userInfo.birth_date).year()
+            ) ||
+              userInfo.gender ||
+              userInfo.pronouns) && (
+              <Space>
+                {Boolean(
+                  new moment().year() - new moment(userInfo.birth_date).year()
+                ) && (
+                  <Container className="column">
+                    <h6 className="fw-400">Age</h6>
+                    <h6 className="grey-1 fw-400">
+                      {new moment().diff(
+                        new moment(userInfo.birth_date),
+                        "years"
+                      )}
+                    </h6>
+                  </Container>
+                )}
 
-              {userInfo.gender && (
-                <Container className="column ml8">
-                  <h6 className="fw-400">Gender</h6>
-                  <h6 className="grey-1 fw-400">{userInfo.gender}</h6>
-                </Container>
-              )}
-              {userInfo.pronouns && (
-                <Container className="column ml8">
-                  <h6 className="fw-400">Pronouns</h6>
-                  <h6 className="grey-1 fw-400">{userInfo.pronouns}</h6>
-                </Container>
-              )}
-            </Space>
+                {userInfo.gender && (
+                  <Container className="column ml8">
+                    <h6 className="fw-400">Gender</h6>
+                    <h6 className="grey-1 fw-400">{userInfo.gender}</h6>
+                  </Container>
+                )}
+                {userInfo.pronouns && (
+                  <Container className="column ml8">
+                    <h6 className="fw-400">Pronouns</h6>
+                    <h6 className="grey-1 fw-400">{userInfo.pronouns}</h6>
+                  </Container>
+                )}
+              </Space>
+            )}
             {userBasicInfo.server_timestamp && (
               <Container className="column">
                 <h6 className="fw-400">Created Account</h6>

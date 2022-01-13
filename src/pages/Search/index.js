@@ -1,24 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import moment from "moment-timezone";
+import { useLocation } from "react-router-dom";
 import algoliasearch from "algoliasearch";
 import { Space } from "antd";
-
-import db from "../../config/firebase";
 
 import LoadingHeart from "../../components/loaders/Heart";
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import Vent from "../../components/Vent";
-import LoadMore from "../../components/LoadMore";
-import KarmaBadge from "../../components/KarmaBadge";
 import User from "../../components/User";
 
-import {
-  calculateKarma,
-  capitolizeFirstChar,
-  isMobileOrTablet
-} from "../../util";
+import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
 
 const searchClient = algoliasearch(
   "N7KIA5G22X",
@@ -27,7 +18,8 @@ const searchClient = algoliasearch(
 const usersIndex = searchClient.initIndex("users");
 const ventsIndex = searchClient.initIndex("vents");
 
-function SearchPage({ location }) {
+function SearchPage() {
+  const location = useLocation();
   let search = location.search
     ? decodeURI(location.search.substring(1, location.search.length))
     : "";
@@ -40,21 +32,21 @@ function SearchPage({ location }) {
     if (isUsers) {
       usersIndex
         .search(search, {
-          hitsPerPage: 5
+          hitsPerPage: 5,
         })
         .then(({ hits }) => {
           setUsers(hits);
         })
-        .catch(err => {});
+        .catch((err) => {});
     } else {
       ventsIndex
         .search(search, {
-          hitsPerPage: 5
+          hitsPerPage: 5,
         })
         .then(({ hits }) => {
           setVents(hits);
         })
-        .catch(err => {});
+        .catch((err) => {});
     }
   }, [search, isUsers]);
 

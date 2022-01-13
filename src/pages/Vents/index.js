@@ -35,26 +35,22 @@ function VentsPage() {
   const { pathname, search } = location;
   const { metaDescription, metaTitle } = getMetaInformation(pathname);
   const [canLoadMore, setCanLoadMore] = useState(true);
-  const [pathname2, setPathname2] = useState(pathname);
   const [totalOnlineUsers, setTotalOnlineUsers] = useState(0);
-
-  if (pathname !== pathname2) {
-    setVents(null);
-    getVents(pathname, setCanLoadMore, setVents, null);
-    setPathname2(pathname);
-  }
 
   useEffect(() => {
     let onlineUsersUnsubscribe;
+    setVents(null);
+
+    onlineUsersUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) => {
+      if (isMounted()) setTotalOnlineUsers(totalOnlineUsers);
+    });
+
+    getVents(isMounted, pathname, setCanLoadMore, setVents, null);
 
     if (search) {
       const referral = /referral=([^&]+)/.exec(search)[1];
       if (referral) cookies.set("referral", referral);
     }
-    onlineUsersUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) => {
-      if (isMounted()) setTotalOnlineUsers(totalOnlineUsers);
-    });
-    getVents(pathname, setCanLoadMore, setVents, null);
 
     return () => {
       if (onlineUsersUnsubscribe) onlineUsersUnsubscribe.off("value");
@@ -126,7 +122,7 @@ function VentsPage() {
             <LoadMore
               canLoadMore={canLoadMore}
               loadMore={() =>
-                getVents(pathname, setCanLoadMore, setVents, vents)
+                getVents(isMounted, pathname, setCanLoadMore, setVents, vents)
               }
             >
               <Container className="bg-red clickable x-fill column bg-white mb16 br8">

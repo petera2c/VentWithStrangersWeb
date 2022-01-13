@@ -69,29 +69,11 @@ export const findPossibleUsersToTag = async (
   }
 };
 
-export const getVent = async (
-  isMounted,
-  getAuthor,
-  setDescription,
-  setTitle,
-  setVent,
-  ventID
-) => {
+export const getVent = async (setVent, ventID) => {
   const ventDoc = await db.collection("vents").doc(ventID).get();
-
-  if (!isMounted) return;
 
   if (!ventDoc.exists) return;
   const newVent = ventDoc.data();
-
-  if (setTitle && newVent && newVent.title) {
-    setTitle(newVent.title);
-  }
-  if (setDescription && newVent && newVent.description) {
-    setDescription(newVent.description);
-  }
-
-  getAuthor(newVent.userID);
 
   setVent({
     id: ventDoc.id,
@@ -131,7 +113,7 @@ export const getVentPartialLink = (vent) => {
 };
 
 export const newVentCommentListener = (
-  iisMounted,
+  isMounted,
   setComments,
   ventID,
   first = true
@@ -155,7 +137,7 @@ export const newVentCommentListener = (
             querySnapshot.docChanges()[0].type === "added" ||
             querySnapshot.docChanges()[0].type === "removed"
           ) {
-            if (iisMounted)
+            if (isMounted())
               setComments((oldComments) => [
                 {
                   ...querySnapshot.docs[0].data(),

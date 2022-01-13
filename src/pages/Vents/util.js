@@ -1,9 +1,8 @@
 import moment from "moment-timezone";
-import firebase from 'firebase/compat/app';
 import db from "../../config/firebase";
 import { getEndAtValueTimestamp } from "../../util";
 
-export const getMetaInformation = pathname => {
+export const getMetaInformation = (pathname) => {
   let metaTitle = "";
   let metaDescription =
     "People care. Vent and chat anonymously to be apart of a community committed to making the world a better place.";
@@ -28,7 +27,13 @@ export const getMetaInformation = pathname => {
   return { metaDescription, metaTitle };
 };
 
-export const getVents = async (pathname, setCanLoadMore, setVents, vents) => {
+export const getVents = async (
+  isMounted,
+  pathname,
+  setCanLoadMore,
+  setVents,
+  vents
+) => {
   let startAt = getEndAtValueTimestamp(vents);
 
   let snapshot;
@@ -49,17 +54,18 @@ export const getVents = async (pathname, setCanLoadMore, setVents, vents) => {
       .limit(10)
       .get();
   }
+  if (!isMounted()) return;
 
   if (snapshot.docs && snapshot.docs.length > 0) {
     let newVents = snapshot.docs.map((doc, index) => ({
       ...doc.data(),
       id: doc.id,
-      doc
+      doc,
     }));
 
     if (newVents.length < 10) setCanLoadMore(false);
     if (vents) {
-      return setVents(oldVents => {
+      return setVents((oldVents) => {
         if (oldVents) return [...oldVents, ...newVents];
         else return newVents;
       });

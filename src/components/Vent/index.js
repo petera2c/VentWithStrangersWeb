@@ -85,7 +85,7 @@ function Vent({
     displayCommentField
   );
   const [hasLiked, setHasLiked] = useState(false);
-  const [comments, setComments] = useState();
+  const [comments, setComments] = useState([]);
   const [isUserOnline, setIsUserOnline] = useState(false);
 
   const [blockModal, setBlockModal] = useState(false);
@@ -99,27 +99,27 @@ function Vent({
 
   useEffect(() => {
     let newCommentListenerUnsubscribe;
+    getVent((newVent) => {
+      if (setTitle && newVent && newVent.title && isMounted())
+        setTitle(newVent.title);
 
-    getVent(
-      isMounted,
-      (ventUserID) => {
-        getUserBasicInfo(setAuthor, ventUserID);
-        getIsUserOnline(setIsUserOnline, ventUserID);
-      },
-      setDescription,
-      setTitle,
-      setVent,
-      vent.id
-    );
+      if (setDescription && newVent && newVent.description && isMounted())
+        setDescription(newVent.description);
 
-    if (vent && vent.userID) {
+      console.log("going");
       getUserBasicInfo((author) => {
-        if (isMounted()) setAuthor(author);
-      }, vent.userID);
-      getIsUserOnline((status) => {
-        if (isMounted()) setIsUserOnline(status);
-      }, vent.userID);
-    }
+        console.log(isMounted());
+        if (isMounted()) {
+          console.log("here");
+          setAuthor(author);
+        }
+      }, newVent.userID);
+
+      getIsUserOnline((isUserOnline) => {
+        if (isMounted()) setIsUserOnline(isUserOnline);
+      }, newVent.userID);
+      if (isMounted()) setVent(newVent);
+    }, vent.id);
 
     if (user) {
       hasUserBlockedUser(user.uid, vent.userID, (isBlocked) => {
@@ -127,16 +127,13 @@ function Vent({
       });
     }
 
-    if (setTitle && vent && vent.title) setTitle(vent.title);
-    if (setDescription && vent && vent.description)
-      setDescription(vent.description);
-
     if (!searchPreviewMode && displayCommentField2)
       newCommentListenerUnsubscribe = newVentCommentListener(
         isMounted,
         setComments,
         vent.id
       );
+
     if (!searchPreviewMode)
       getVentComments(comments, isMounted, setComments, vent.id);
 
@@ -152,16 +149,7 @@ function Vent({
     return () => {
       if (newCommentListenerUnsubscribe) newCommentListenerUnsubscribe();
     };
-  }, [
-    comments,
-    displayCommentField2,
-    isMounted,
-    searchPreviewMode,
-    setDescription,
-    setTitle,
-    user,
-    vent,
-  ]);
+  }, []);
 
   if ((!vent || (vent && !vent.server_timestamp)) && isOnSingleVentPage)
     return (
@@ -373,8 +361,8 @@ function Vent({
                     }}
                     src={
                       hasLiked
-                        ? require("../../svgs/support-active.svg")
-                        : require("../../svgs/support.svg")
+                        ? "/svgs/support-active.svg"
+                        : "/svgs/support.svg"
                     }
                     style={{ height: "32px" }}
                     title="Give Support :)"

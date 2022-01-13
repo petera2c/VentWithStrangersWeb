@@ -116,7 +116,7 @@ function Header() {
           <img
             alt=""
             className="clickable"
-            src={require("../../svgs/icon.svg")}
+            src="/svgs/icon.svg"
             style={{ height: "50px" }}
           />
         </Link>

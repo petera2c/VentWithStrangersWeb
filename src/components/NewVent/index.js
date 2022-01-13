@@ -88,7 +88,10 @@ function NewVentComponent({ miniVersion, ventID }) {
         )}
         <Space className="x-fill" direction="vertical">
           <Container className="align-center">
-            <MakeAvatar userBasicInfo={userBasicInfo} />
+            <MakeAvatar
+              displayName={userBasicInfo.displayName}
+              userBasicInfo={userBasicInfo}
+            />
             <TextArea
               className="x-fill py8 px16 br4"
               onChange={(event) => {

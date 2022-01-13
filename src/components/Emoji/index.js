@@ -4,34 +4,46 @@ import { Picker } from "emoji-mart";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSmileBeam } from "@fortawesome/free-regular-svg-icons/faSmileBeam";
 
-import Container from "../containers/Container";
+import HandleOutsideClick from "../containers/HandleOutsideClick";
 
 import Button from "../views/Button";
 
-function Emoji({ handleChange }) {
+function Emoji({ handleChange, top }) {
   const [displayEmojiDropdown, setDisplayEmojiDropdown] = useState(false);
+  let style = {
+    position: "absolute",
+    top: "100%",
+    right: 0,
+    display: displayEmojiDropdown ? "" : "none",
+    zIndex: 10,
+  };
+
+  if (top)
+    style = {
+      position: "absolute",
+      bottom: "100%",
+      right: 0,
+      display: displayEmojiDropdown ? "" : "none",
+      zIndex: 10,
+    };
 
   return (
-    <Container className="column relative pa8 mx8">
+    <HandleOutsideClick
+      className="column relative pa8 mx8"
+      close={setDisplayEmojiDropdown}
+    >
       <Button onClick={() => setDisplayEmojiDropdown(!displayEmojiDropdown)}>
         <FontAwesomeIcon className="grey-5" icon={faSmileBeam} />
       </Button>
-      <div
-        style={{
-          position: "absolute",
-          top: "100%",
-          right: 0,
-          display: displayEmojiDropdown ? "" : "none",
-        }}
-      >
+      <div style={style}>
         <Picker
           onSelect={(emojiObject) => {
             setDisplayEmojiDropdown(false);
-            handleChange(emojiObject.emoji);
+            handleChange(emojiObject.native);
           }}
         />
       </div>
-    </Container>
+    </HandleOutsideClick>
   );
 }
 

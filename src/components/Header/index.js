@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "antd";
 
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
@@ -28,8 +28,9 @@ import {
   resetUnreadConversationCount,
 } from "./util";
 
-function Header({ navigate }) {
+function Header() {
   const isMounted = useIsMounted();
+  const navigate = useNavigate();
   const location = useLocation();
   const { pathname, search } = location;
 
@@ -89,7 +90,7 @@ function Header({ navigate }) {
               alt=""
               className="clickable"
               onClick={() => navigate("/")}
-              src={require("../../svgs/icon.svg")}
+              src="/svgs/icon.svg"
               style={{ height: "50px" }}
             />
           </Container>

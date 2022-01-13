@@ -69,7 +69,7 @@ function RoutesTest() {
         <img
           alt=""
           className="loading-animation"
-          src={require("../svgs/icon.svg")}
+          src="/svgs/icon.svg"
           style={{ height: "280px" }}
         />
       </Container>
@@ -81,29 +81,31 @@ function RoutesTest() {
         {error && { error }}
         {!loading && !error && (
           <Routes>
-            <Route path="/make-friends" element={<MakeFriendsPage />} />
-            <Route path="/friends" element={<FriendsPage />} />
-            <Route path="/" element={<VentsPage />} exact />
-            <Route path="/account" element={<AccountPage />} exact />
-            <Route path="/app-downloads" element={<AppDownloadPage />} />
-            <Route path="/avatar" element={<AccountPage />} exact />
-            <Route path="/conversations" element={<ConversationsPage />} />
-            <Route path="/online-users" element={<OnlineUsersPage />} />
-            <Route path="/feedback" element={<FeedbackPage />} />
-            <Route path="/home" element={<VentsPage />} />
-            <Route path="/notifications" element={<NotificationsPage />} />
-            <Route path="/popular" element={<VentsPage />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-            <Route path="/problem" element={<VentPage />} />
-            <Route path="/profile" element={<AccountPage />} />
-            <Route path="/recent" element={<VentsPage />} />
-            <Route path="/search" element={<SearchPage />} />
-            <Route path="/settings" element={<AccountPage />} exact />
-            <Route path="/site-info" element={<AboutUsPage />} />
-            <Route path="/trending" element={<VentsPage />} />
-            <Route path="/vent-to-strangers" element={<NewVentPage />} />
-            <Route path="/verified-email" element={<VerifiedEmailPage />} />
             <Route element={<NotFoundPage />} />
+            <Route path="" element={<VentsPage />} exact />
+            <Route path="account" element={<AccountPage />} exact />
+            <Route path="app-downloads" element={<AppDownloadPage />} />
+            <Route path="avatar" element={<AccountPage />} exact />
+            <Route path="conversations" element={<ConversationsPage />} />
+            <Route path="feedback" element={<FeedbackPage />} />
+            <Route path="friends" element={<FriendsPage />} />
+            <Route path="home" element={<VentsPage />} />
+            <Route path="make-friends" element={<MakeFriendsPage />} />
+            <Route path="notifications" element={<NotificationsPage />} />
+            <Route path="online-users" element={<OnlineUsersPage />} />
+            <Route path="popular" element={<VentsPage />} />
+            <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
+            <Route path="problem/:id" element={<VentPage />} />
+            <Route path="problem/:id/:title" element={<VentPage />} />
+            <Route path="profile" element={<AccountPage />} />
+            <Route path="recent" element={<VentsPage />} />
+            <Route path="search" element={<SearchPage />} />
+            <Route path="settings" element={<AccountPage />} exact />
+            <Route path="site-info" element={<AboutUsPage />} />
+            <Route path="trending" element={<VentsPage />} />
+            <Route path="vent-to-strangers" element={<NewVentPage />} />
+            <Route path="vent-to-strangers/:id" element={<NewVentPage />} />
+            <Route path="verified-email" element={<VerifiedEmailPage />} />
           </Routes>
         )}
       </Router>
