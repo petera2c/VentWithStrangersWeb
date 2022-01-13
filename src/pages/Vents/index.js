@@ -78,7 +78,7 @@ function VentsPage() {
             isMobileOrTablet() ? "container mobile-full" : "container large"
           }
           direction="vertical"
-          size="middle"
+          size="large"
         >
           <NewVentComponent miniVersion />
           <Container className="x-fill">
@@ -86,7 +86,7 @@ function VentsPage() {
           </Container>
 
           {vents && (
-            <Space className="x-fill" direction="vertical" size="middle">
+            <Space className="x-fill" direction="vertical" size="large">
               {vents &&
                 vents.map((vent, index) => {
                   return (

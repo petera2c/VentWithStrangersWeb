@@ -159,7 +159,7 @@ function Vent({
   return (
     <Container className="x-fill">
       {vent && (
-        <Container className="x-fill column bg-white br8">
+        <Container className="x-fill column bg-white py16 br8">
           <SmartLink
             className={
               "main-container x-fill wrap justify-between border-bottom py16 px32 " +
