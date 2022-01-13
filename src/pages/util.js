@@ -1,4 +1,4 @@
-import firebase from 'firebase/compat/app';
+import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 
 export const setUserOnlineStatus = async (status, uid) => {
@@ -7,12 +7,12 @@ export const setUserOnlineStatus = async (status, uid) => {
     .ref("status/" + uid)
     .set({
       state: status,
-      last_changed: firebase.database.ServerValue.TIMESTAMP
+      last_changed: firebase.database.ServerValue.TIMESTAMP,
     });
   return;
 };
 
-export const setIsUserOnlineToDatabase = user => {
+export const setIsUserOnlineToDatabase = (user) => {
   if (!user) return;
   var uid = user.uid;
 
@@ -20,19 +20,19 @@ export const setIsUserOnlineToDatabase = user => {
 
   var isOfflineForDatabase = {
     state: "offline",
-    last_changed: firebase.database.ServerValue.TIMESTAMP
+    last_changed: firebase.database.ServerValue.TIMESTAMP,
   };
 
   var isOnlineForDatabase = {
     state: "online",
-    last_changed: firebase.database.ServerValue.TIMESTAMP
+    last_changed: firebase.database.ServerValue.TIMESTAMP,
   };
 
   firebase
     .database()
     .ref(".info/connected")
-    .on("value", snapshot => {
-      if (snapshot.val() == false) {
+    .on("value", (snapshot) => {
+      if (!snapshot.val()) {
         return;
       }
 

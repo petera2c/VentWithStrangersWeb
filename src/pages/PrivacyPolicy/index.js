@@ -1,7 +1,6 @@
 import React from "react";
 
 import Page from "../../components/containers/Page";
-import Container from "../../components/containers/Container";
 
 function PrivacyPage() {
   return (

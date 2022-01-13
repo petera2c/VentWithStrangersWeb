@@ -17,7 +17,6 @@ import Settings from "./Settings";
 
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
-import Text from "../../components/views/Text";
 
 import { isMobileOrTablet, isPageActive, signOut } from "../../util";
 
@@ -131,7 +130,7 @@ function AccountPage() {
                     maxWidth: "300px",
                     minHeight: "100px",
                     height: "240px",
-                    maxHeight: "800px"
+                    maxHeight: "800px",
                   }}
                 />
               </Container>

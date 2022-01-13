@@ -17,7 +17,7 @@ function LoginModal({ setActiveModal }) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: {},
   } = useForm();
   const [canSeePassword, setCanSeePassword] = useState(false);
 

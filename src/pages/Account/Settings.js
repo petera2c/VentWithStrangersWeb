@@ -1,16 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useDocument } from "react-firebase-hooks/firestore";
-import firebase from 'firebase/compat/app';
 import db from "../../config/firebase";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMonument } from "@fortawesome/free-solid-svg-icons/faMonument";
-
-import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import LoadingHeart from "../../components/loaders/Heart";
 
-import Button from "../../components/views/Button";
 import Text from "../../components/views/Text";
 
 import { isMobileOrTablet } from "../../util";
@@ -18,7 +12,7 @@ import { isMobileOrTablet } from "../../util";
 function SettingsSection({ user }) {
   const settingsRef = db.collection("users_settings").doc(user.uid);
   const [settingsSnapshot] = useDocument(settingsRef, {
-    idField: "id"
+    idField: "id",
   });
 
   const handleChange = async (name, checked, notify = true) => {

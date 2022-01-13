@@ -5,9 +5,6 @@ import { faHeart } from "@fortawesome/pro-regular-svg-icons/faHeart";
 
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
-import Text from "../../components/views/Text";
-
-import { isMobileOrTablet } from "../../util";
 
 function FriendsPage() {
   return (

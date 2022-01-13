@@ -1,12 +1,7 @@
 import React, { useContext, useState } from "react";
-import moment from "moment-timezone";
 import { useLocation } from "react-router-dom";
-import TextArea from "react-textarea-autosize";
 import AdSense from "react-adsense";
 import { Space } from "antd";
-
-import firebase from 'firebase/compat/app';
-import "firebase/compat/database";
 
 import { UserContext } from "../../context";
 
@@ -15,12 +10,10 @@ import Page from "../../components/containers/Page";
 import UniqueShareLink from "../../components/UniqueShareLink";
 import Vent from "../../components/Vent";
 
-import Text from "../../components/views/Text";
-
 import { isMobileOrTablet } from "../../util";
 import { getMeta } from "./util";
 
-const getVentIdFromURL = pathname => {
+const getVentIdFromURL = (pathname) => {
   // regular expression will not work due to catastrophic backtracing
   //pathname.match(/(?<=\/problem\/\s*).*?(?=\s*\/)/gs);
   if (pathname) {
@@ -85,7 +78,7 @@ function VentPage() {
                       maxWidth: "1000px",
                       minHeight: "100px",
                       height: "240px",
-                      maxHeight: "800px"
+                      maxHeight: "800px",
                     }}
                   />
                 </Container>

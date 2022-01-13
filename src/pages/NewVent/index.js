@@ -15,7 +15,6 @@ function NewVentPage() {
   const { user } = useContext(UserContext);
 
   const { search } = location;
-  const [ventID, setVentID] = useState(search ? search.substring(1) : null);
   const [starterModal, setStarterModal] = useState(!user);
 
   return (
@@ -34,7 +33,7 @@ function NewVentPage() {
         }
       >
         <h4 className="fw-600 mb16">Post Your Vent | Vent To Strangers</h4>
-        <NewVentComponent ventID={ventID} />
+        <NewVentComponent ventID={search ? search.substring(1) : null} />
       </Container>
 
       {starterModal && (

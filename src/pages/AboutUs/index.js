@@ -7,10 +7,7 @@ import { faLinkedin } from "@fortawesome/free-brands-svg-icons/faLinkedin";
 
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
-import Text from "../../components/views/Text";
 import KarmaBadge from "../../components/KarmaBadge";
-
-import { calculateKarma } from "../../util";
 
 import { isMobileOrTablet } from "../../util";
 
@@ -150,7 +147,7 @@ class AboutUsPage extends Component {
                 className="clickable common-border white round-icon round pa8"
                 icon={faInstagram}
                 style={{
-                  backgroundColor: "#cd486b"
+                  backgroundColor: "#cd486b",
                 }}
               />
             </a>
@@ -164,7 +161,7 @@ class AboutUsPage extends Component {
                 className="clickable common-border white round-icon round pa8"
                 icon={faFacebook}
                 style={{
-                  backgroundColor: "#3b5998"
+                  backgroundColor: "#3b5998",
                 }}
               />
             </a>
@@ -178,7 +175,7 @@ class AboutUsPage extends Component {
                 className="clickable common-border white round-icon round pa8"
                 icon={faLinkedin}
                 style={{
-                  backgroundColor: "#0e76a8"
+                  backgroundColor: "#0e76a8",
                 }}
               />
             </a>

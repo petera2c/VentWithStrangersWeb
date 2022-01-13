@@ -26,13 +26,12 @@ import {
   kidsList,
   partyingList,
   politicalBeliefsList,
-  religiousBeliefsList
 } from "../../PersonalOptions";
 import {
   calculateKarma,
   capitolizeFirstChar,
   isMobileOrTablet,
-  userSignUpProgress
+  userSignUpProgress,
 } from "../../util";
 import { getUserInfo, getUserMatches, hasUserCompletedProfile } from "./util";
 
@@ -45,7 +44,7 @@ function MakeFriendsPage() {
 
   useEffect(() => {
     if (user)
-      getUserInfo(newUserInfo => {
+      getUserInfo((newUserInfo) => {
         setUserInfo(newUserInfo);
         if (hasUserCompletedProfile(newUserInfo))
           getUserMatches(setMatches, user.uid);
@@ -74,7 +73,7 @@ function MakeFriendsPage() {
               maxWidth: "2000px",
               minHeight: "100px",
               height: "150px",
-              maxHeight: "200px"
+              maxHeight: "200px",
             }}
           />
         </Container>
@@ -225,7 +224,7 @@ function MakeFriendsPage() {
                   {matchedUserInfo.displayName && user && (
                     <Button
                       className="button-2 px16 py8 mr16 br8"
-                      onClick={e => {
+                      onClick={(e) => {
                         e.preventDefault();
                         const userInteractionIssues = userSignUpProgress(user);
 

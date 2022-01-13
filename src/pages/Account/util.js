@@ -1,4 +1,4 @@
-import firebase from 'firebase/compat/app';
+import firebase from "firebase/compat/app";
 import db from "../../config/firebase";
 
 import { getInvalidCharacters } from "../../components/modals/SignUp/util";
@@ -26,12 +26,12 @@ export const getUsersVents = async (
     let newVents = snapshot.docs.map((doc, index) => ({
       ...doc.data(),
       id: doc.id,
-      doc
+      doc,
     }));
 
     if (newVents.length < 10) setCanLoadMoreVents(false);
     if (vents) {
-      return setVents(oldVents => {
+      return setVents((oldVents) => {
         if (oldVents) return [...oldVents, ...newVents];
         else return newVents;
       });
@@ -64,12 +64,12 @@ export const getUsersComments = async (
     let newComments = snapshot.docs.map((doc, index) => ({
       ...doc.data(),
       id: doc.id,
-      doc
+      doc,
     }));
 
     if (newComments.length < 10) setCanLoadMoreComments(false);
     if (comments) {
-      return setComments(oldComments => {
+      return setComments((oldComments) => {
         if (oldComments) return [...oldComments, ...newComments];
         else return newComments;
       });
@@ -85,10 +85,7 @@ export const getUser = async (callback, userID) => {
     return {};
   }
 
-  const authorDoc = await db
-    .collection("users_info")
-    .doc(userID)
-    .get();
+  const authorDoc = await db.collection("users_info").doc(userID).get();
 
   callback(authorDoc.exists ? { ...authorDoc.data(), id: authorDoc.id } : {});
 };
@@ -112,7 +109,7 @@ export const updateUser = async (
   let changesFound = false;
 
   if (
-    userInfo.birth_date != birthDate.valueOf() ||
+    userInfo.birth_date !== birthDate.valueOf() ||
     userInfo.gender !== gender ||
     userInfo.pronouns !== pronouns ||
     userInfo.education !== education ||
@@ -149,7 +146,7 @@ export const updateUser = async (
             politics,
             religion,
             userInfo
-          )
+          ),
         },
         { merge: true }
       );
@@ -166,7 +163,7 @@ export const updateUser = async (
     else
       user
         .updateProfile({
-          displayName
+          displayName,
         })
         .then(async () => {
           await db
@@ -175,7 +172,7 @@ export const updateUser = async (
             .update({ displayName });
           alert("Display name updated!");
         })
-        .catch(error => {
+        .catch((error) => {
           alert(error.message);
         });
   }
@@ -190,11 +187,11 @@ export const updateUser = async (
           .then(() => {
             alert("We have sent you an email verification link");
           })
-          .catch(error => {
+          .catch((error) => {
             // An error happened.
           });
       })
-      .catch(error => {
+      .catch((error) => {
         alert(error.message);
       });
   }
@@ -207,7 +204,7 @@ export const updateUser = async (
         .then(() => {
           alert("Changed password successfully!");
         })
-        .catch(error => {
+        .catch((error) => {
           alert(error.message);
         });
     } else alert("Passwords are not the same!");
@@ -221,7 +218,7 @@ const deleteField = async (field, userID) => {
     .doc(userID)
     .set(
       {
-        [field]: firebase.firestore.FieldValue.delete()
+        [field]: firebase.firestore.FieldValue.delete(),
       },
       { merge: true }
     );

@@ -2,17 +2,14 @@ import React, { useState } from "react";
 import moment from "moment-timezone";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
 import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons/faExclamationTriangle";
 import { faTrash } from "@fortawesome/pro-solid-svg-icons/faTrash";
-import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 
 import ConfirmAlertModal from "../../components/modals/ConfirmAlert";
 import Container from "../../components/containers/Container";
 
 import Text from "../../components/views/Text";
 
-import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
 import { deleteMessage } from "./util";
 
 function Message({ conversationID, message, setMessages, userID }) {
@@ -43,7 +40,7 @@ function Message({ conversationID, message, setMessages, userID }) {
               <Container className="column x-fill bg-white border-all px16 py8 br8">
                 <Container
                   className="button-8 clickable align-center"
-                  onClick={e => {
+                  onClick={(e) => {
                     e.preventDefault();
                     if (message.userID === userID) {
                       setDeleteMessageConfirm(true);

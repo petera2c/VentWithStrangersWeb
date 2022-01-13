@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Button, Space } from "antd";
 
 import { firebaseApp } from "../../../config/firebase";
 
 import Page from "../../../components/containers/Page";
-import Container from "../../../components/containers/Container";
 
 import { handleVerifyEmail } from "./util";
 
@@ -26,7 +25,7 @@ function VerifiedEmail() {
       setErrorMessage,
       setVerifiedSuccessly
     );
-  }, []);
+  }, [search]);
 
   return (
     <Page className="column bg-grey-2" description="" title="Email Verified">

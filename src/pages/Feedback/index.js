@@ -1,7 +1,6 @@
 import React from "react";
 
 import Page from "../../components/containers/Page";
-import Container from "../../components/containers/Container";
 
 function FeedbackPage() {
   return (
@@ -18,6 +17,7 @@ function FeedbackPage() {
         frameBorder="0"
         marginHeight="0"
         marginWidth="0"
+        title=""
       >
         Loading…
       </iframe>
