@@ -144,6 +144,17 @@ function ProfileSection({ user }) {
               {calculateKarma(userBasicInfo)} Karma Points
             </h6>
 
+            {userBasicInfo.server_timestamp && (
+              <Container className="column">
+                <h6 className="fw-400">Created Account</h6>
+                <h6 className="grey-1 fw-400">
+                  {new moment(userBasicInfo.server_timestamp).format(
+                    "MMMM Do YYYY"
+                  )}
+                </h6>
+              </Container>
+            )}
+
             {(Boolean(
               new moment().year() - new moment(userInfo.birth_date).year()
             ) ||
@@ -177,16 +188,6 @@ function ProfileSection({ user }) {
                   </Container>
                 )}
               </Space>
-            )}
-            {userBasicInfo.server_timestamp && (
-              <Container className="column">
-                <h6 className="fw-400">Created Account</h6>
-                <h6 className="grey-1 fw-400">
-                  {new moment(userBasicInfo.server_timestamp).format(
-                    "MMMM Do YYYY"
-                  )}
-                </h6>
-              </Container>
             )}
 
             <Space className="wrap">

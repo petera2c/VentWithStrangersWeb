@@ -76,7 +76,7 @@ function RoutesComp() {
     );
 
   return (
-    <UserContext.Provider value={{ user, userBasicInfo }}>
+    <UserContext.Provider value={{ user, userBasicInfo, setUserBasicInfo }}>
       <Router>
         {error && { error }}
         {!loading && !error && (

@@ -1,5 +1,13 @@
 import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import {
+  sendEmailVerification,
+  updateEmail,
+  updateProfile,
+} from "firebase/auth";
 import db from "../../config/firebase";
+
+import { message } from "antd";
 
 import { getInvalidCharacters } from "../../components/modals/SignUp/util";
 import { getEndAtValueTimestamp } from "../../util";
@@ -81,7 +89,7 @@ export const getUsersComments = async (
 
 export const getUser = async (callback, userID) => {
   if (!userID) {
-    alert("Reload the page please. An unexpected error has occurred.");
+    message.error("Reload the page please. An unexpected error has occurred.");
     return {};
   }
 
@@ -118,11 +126,12 @@ export const updateUser = async (
     userInfo.politics !== politics ||
     userInfo.religion !== religion
   ) {
-    changesFound = true;
     if (userInfo.gender && userInfo.gender.length > 20)
-      alert("Gender can only be a maximum of 20 characters.");
+      return message.error("Gender can only be a maximum of 20 characters.");
     if (userInfo.pronouns && userInfo.pronouns.length > 20)
-      alert("Pronouns can only be a maximum of 20 characters.");
+      return message.error("Pronouns can only be a maximum of 20 characters.");
+
+    changesFound = true;
 
     if (education === undefined) deleteField("education", user.uid);
     if (kids === undefined) deleteField("kids", user.uid);
@@ -150,49 +159,47 @@ export const updateUser = async (
         },
         { merge: true }
       );
-    alert("Your account information has been changed");
+    message.success("Your account information has been changed");
   }
 
   if (displayName && displayName !== user.displayName) {
-    changesFound = true;
     if (getInvalidCharacters(displayName))
-      alert(
+      return message.error(
         "These characters are not allowed in your display name. " +
           getInvalidCharacters(displayName)
       );
-    else
-      user
-        .updateProfile({
-          displayName,
-        })
-        .then(async () => {
-          await db
-            .collection("users_display_name")
-            .doc(user.uid)
-            .update({ displayName });
-          alert("Display name updated!");
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
+    changesFound = true;
+
+    updateProfile(user, {
+      displayName,
+    })
+      .then(async () => {
+        await db
+          .collection("users_display_name")
+          .doc(user.uid)
+          .update({ displayName });
+        message.success("Display name updated!");
+      })
+      .catch((error) => {
+        message.error(error.message);
+      });
   }
 
   if (email && email !== user.email) {
     changesFound = true;
-    user
-      .updateEmail(email)
+    updateEmail(user, email)
       .then(() => {
-        user
-          .sendEmailVerification()
+        console.log(user);
+        sendEmailVerification(user)
           .then(() => {
-            alert("We have sent you an email verification link");
+            message.success("We have sent you an email verification link");
           })
           .catch((error) => {
-            // An error happened.
+            message.error(error);
           });
       })
       .catch((error) => {
-        alert(error.message);
+        message.error(error.message);
       });
   }
   if (newPassword && confirmPassword)
@@ -202,14 +209,14 @@ export const updateUser = async (
       user
         .updatePassword(newPassword)
         .then(() => {
-          alert("Changed password successfully!");
+          message.success("Changed password successfully!");
         })
         .catch((error) => {
-          alert(error.message);
+          message.error(error.message);
         });
-    } else alert("Passwords are not the same!");
+    } else message.error("Passwords are not the same!");
 
-  if (!changesFound) alert("No changes!");
+  if (!changesFound) message.info("No changes!");
 };
 
 const deleteField = async (field, userID) => {

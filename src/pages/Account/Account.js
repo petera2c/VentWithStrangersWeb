@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import moment from "moment-timezone";
 
@@ -16,8 +16,8 @@ import Container from "../../components/containers/Container";
 import Dropdown from "../../components/containers/Dropdown";
 import Text from "../../components/views/Text";
 
-import { isMobileOrTablet, useIsMounted } from "../../util";
-import { getUser, updateUser } from "./util";
+import { UserContext } from "../../context";
+
 import {
   educationList,
   kidsList,
@@ -25,6 +25,8 @@ import {
   politicalBeliefsList,
   religiousBeliefsList,
 } from "../../PersonalOptions";
+import { isMobileOrTablet, useIsMounted } from "../../util";
+import { getUser, updateUser } from "./util";
 
 function createMonthArray(days) {
   let array = [];
@@ -41,8 +43,9 @@ function createYearArray(year) {
   return array;
 }
 
-function AccountSection({ user }) {
+function AccountSection() {
   const isMounted = useIsMounted();
+  const { user } = useContext(UserContext);
 
   const [birthDate, setBirthDate] = useState(new moment());
   const [canSeePassword, setCanSeePassword] = useState(false);

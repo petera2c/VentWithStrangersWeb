@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button, Space } from "antd";
+import { sendEmailVerification } from "firebase/auth";
 
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
 import { faBars } from "@fortawesome/pro-solid-svg-icons/faBars";
@@ -364,7 +365,7 @@ function Header() {
           </h4>
           <button
             className="button-2 no-bold py8 px16 my16 br8"
-            onClick={() => user.sendEmailVerification()}
+            onClick={() => sendEmailVerification(user)}
           >
             Re-send verification link
           </button>

@@ -162,34 +162,32 @@ function Vent({
         <Container className="x-fill column bg-white py16 br8">
           <SmartLink
             className={
-              "main-container x-fill wrap justify-between border-bottom py16 px32 " +
+              "main-container x-fill justify-between border-bottom py16 px32 " +
               (disablePostOnClick ? "" : "clickable")
             }
             disablePostOnClick={disablePostOnClick}
             to={vent && vent.title && vent.id ? getVentPartialLink(vent) : ""}
           >
             <Container
-              className="mr16"
+              className="full-center pr32"
               onClick={(e) => {
                 e.preventDefault();
                 if (author.id) navigate("/profile?" + author.id);
               }}
             >
-              <Container className="full-center">
-                <MakeAvatar
-                  displayName={author.displayName}
-                  userBasicInfo={author}
+              <MakeAvatar
+                displayName={author.displayName}
+                userBasicInfo={author}
+              />
+              <Container className="flex-fill full-center ov-hidden">
+                <Text
+                  className="button-1 ellipsis fw-400 mr8"
+                  text={capitolizeFirstChar(author.displayName)}
+                  type="h5"
                 />
-                <Container className="full-center">
-                  <Text
-                    className="button-1 fw-400 mr8"
-                    text={capitolizeFirstChar(author.displayName)}
-                    type="h5"
-                  />
-                  {isUserOnline && <div className="online-dot mr8" />}
-                </Container>
-                <KarmaBadge karma={calculateKarma(author)} />
+                {isUserOnline && <div className="online-dot mr8" />}
               </Container>
+              <KarmaBadge karma={calculateKarma(author)} />
             </Container>
             <Container className="relative flex-fill align-center justify-end">
               {user && (
@@ -210,7 +208,7 @@ function Vent({
                       style={{
                         top: "calc(100% + 8px)",
                         whiteSpace: "nowrap",
-                        zIndex: 1,
+                        zIndex: 10,
                       }}
                     >
                       <Container className="column x-fill bg-white border-all px16 py8 br8">

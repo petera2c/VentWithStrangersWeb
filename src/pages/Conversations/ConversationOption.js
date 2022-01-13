@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment-timezone";
 import { useNavigate } from "react-router-dom";
+import { Space } from "antd";
 
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 import { faTrash } from "@fortawesome/pro-solid-svg-icons/faTrash";
@@ -64,7 +65,7 @@ function ConversationOption({
   return (
     <Container
       className={
-        "relative align-center justify-between clickable pa8 br4 " +
+        "x-fill relative align-center justify-between clickable pa8 br4 " +
         (isActive ? "bg-grey-2" : "")
       }
       onClick={() => {
@@ -73,7 +74,7 @@ function ConversationOption({
       }}
     >
       <Container className="flex-fill column ov-hidden">
-        <Container>
+        <Container className="align-center flex-fill mr16">
           {conversationPartnerData && (
             <MakeAvatar
               displayName={conversationPartnerData.displayName}
@@ -81,8 +82,8 @@ function ConversationOption({
             />
           )}
 
-          <Container className="full-center">
-            <h6 className={"mr8 " + (hasSeen ? "grey-1" : "primary")}>
+          <Container className="flex-fill ov-hidden full-center">
+            <h6 className={"ellipsis mr8 " + (hasSeen ? "grey-1" : "primary")}>
               {conversationPartnerData
                 ? capitolizeFirstChar(conversationPartnerData.displayName)
                 : "Anonymous"}
@@ -109,15 +110,16 @@ function ConversationOption({
           </p>
         )}
       </Container>
-      <FontAwesomeIcon
-        className="clickable grey-9"
-        icon={faEllipsisV}
+      <div
+        className="clickable px8"
         onClick={(e) => {
           e.stopPropagation();
           if (!handleOutsideClickCalled)
             setConversationOptions(!conversationOptions);
         }}
-      />
+      >
+        <FontAwesomeIcon className="grey-9" icon={faEllipsisV} />
+      </div>
       {conversationOptions && (
         <div className="absolute top-100 pt4" style={{ zIndex: 1, right: "0" }}>
           <HandleOutsideClick
