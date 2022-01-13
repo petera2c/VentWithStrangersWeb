@@ -32,7 +32,6 @@ import Text from "../views/Text";
 import { UserContext } from "../../context";
 
 import {
-  addTagsToPage,
   blockUser,
   calculateKarma,
   capitolizeFirstChar,
@@ -40,7 +39,7 @@ import {
   getUserBasicInfo,
   hasUserBlockedUser,
   isMobileOrTablet,
-  userSignUpProgress
+  userSignUpProgress,
 } from "../../util";
 import {
   commentVent,
@@ -58,7 +57,7 @@ import {
   startConversation,
   tagUser,
   ventHasLiked,
-  ventListener
+  ventListener,
 } from "./util";
 
 import "./style.css";
@@ -83,7 +82,7 @@ function Vent({
   searchPreviewMode,
   setDescription,
   setTitle,
-  ventInit
+  ventInit,
 }) {
   const componentIsMounted = useRef(true);
   const { user } = useContext(UserContext);
@@ -120,7 +119,7 @@ function Vent({
   useEffect(() => {
     getVent(
       componentIsMounted,
-      ventUserID => {
+      (ventUserID) => {
         getUserBasicInfo(setAuthor, ventUserID);
         getIsUserOnline(setIsUserOnline, ventUserID);
       },
@@ -131,16 +130,16 @@ function Vent({
     );
 
     if (vent && vent.userID) {
-      getUserBasicInfo(author => {
+      getUserBasicInfo((author) => {
         if (componentIsMounted.current) setAuthor(author);
       }, vent.userID);
-      getIsUserOnline(status => {
+      getIsUserOnline((status) => {
         if (componentIsMounted.current) setIsUserOnline(status);
       }, vent.userID);
     }
 
     if (user) {
-      hasUserBlockedUser(user.uid, vent.userID, isBlocked => {
+      hasUserBlockedUser(user.uid, vent.userID, (isBlocked) => {
         if (componentIsMounted.current) setIsContentBlocked(isBlocked);
       });
     }
@@ -160,7 +159,7 @@ function Vent({
 
     if (user && !searchPreviewMode)
       ventHasLiked(
-        newHasLiked => {
+        (newHasLiked) => {
           if (componentIsMounted.current) setHasLiked(newHasLiked);
         },
         user.uid,
@@ -172,7 +171,7 @@ function Vent({
       if (newCommentListenerUnsubscribe) newCommentListenerUnsubscribe();
     };
   }, []);
-  const copyToClipboard = e => {
+  const copyToClipboard = (e) => {
     textAreaRef.current.select();
     document.execCommand("copy");
     e.target.focus();
@@ -202,7 +201,7 @@ function Vent({
           >
             <Container
               className="mr16"
-              onClick={e => {
+              onClick={(e) => {
                 e.preventDefault();
                 if (author.id) navigate("/profile?" + author.id);
               }}
@@ -224,30 +223,12 @@ function Vent({
               </Container>
             </Container>
             <Container className="relative flex-fill align-center justify-end">
-              <Container className="flex-fill wrap justify-end">
-                {vent &&
-                  vent.tags &&
-                  vent.tags.map((tag, index) => (
-                    <Text
-                      className="button-1 clickable mr8"
-                      key={index}
-                      onClick={e => {
-                        e.preventDefault();
-
-                        addTagsToPage(props, [tag]);
-                      }}
-                      text={tag.name}
-                      type="p"
-                    />
-                  ))}
-              </Container>
-
               {user && (
                 <HandleOutsideClick close={() => setPostOptions(false)}>
                   <FontAwesomeIcon
                     className="clickable grey-9"
                     icon={faEllipsisV}
-                    onClick={e => {
+                    onClick={(e) => {
                       e.preventDefault();
 
                       setPostOptions(!postOptions);
@@ -260,14 +241,14 @@ function Vent({
                       style={{
                         top: "calc(100% + 8px)",
                         whiteSpace: "nowrap",
-                        zIndex: 1
+                        zIndex: 1,
                       }}
                     >
                       <Container className="column x-fill bg-white border-all px16 py8 br8">
                         {vent.userID === user.uid && (
                           <Container
                             className="button-8 clickable align-center mb8"
-                            onClick={e => {
+                            onClick={(e) => {
                               e.preventDefault();
                               navigate("/vent-to-strangers?" + vent.id);
                             }}
@@ -283,7 +264,7 @@ function Vent({
                         {vent.userID === user.uid && (
                           <Container
                             className="button-8 clickable align-center"
-                            onClick={e => {
+                            onClick={(e) => {
                               e.preventDefault();
                               setDeleteVentConfirm(true);
                               setPostOptions(false);
@@ -300,7 +281,7 @@ function Vent({
                         {vent.userID !== user.uid && (
                           <Container
                             className="button-8 clickable align-center mb8"
-                            onClick={e => {
+                            onClick={(e) => {
                               e.preventDefault();
                               setReportModal(!reportModal);
                             }}
@@ -319,7 +300,7 @@ function Vent({
                         {vent.userID !== user.uid && (
                           <Container
                             className="button-8 clickable align-center"
-                            onClick={e => {
+                            onClick={(e) => {
                               e.preventDefault();
                               setBlockModal(!blockModal);
                             }}
@@ -385,7 +366,7 @@ function Vent({
                     className={`clickable heart ${
                       hasLiked ? "red" : "grey-5"
                     } mr4`}
-                    onClick={e => {
+                    onClick={(e) => {
                       e.preventDefault();
 
                       const userInteractionIssues = userSignUpProgress(user);
@@ -421,7 +402,7 @@ function Vent({
 
                   <Button
                     className="button-2 no-text-wrap px16 py8 mr16 br8"
-                    onClick={e => {
+                    onClick={(e) => {
                       e.preventDefault();
                       setDisplayCommentField(!displayCommentField2);
 
@@ -478,7 +459,7 @@ function Vent({
                       <MentionsInput
                         autoFocus
                         className="mentions"
-                        onChange={e => setCommentString(e.target.value)}
+                        onChange={(e) => setCommentString(e.target.value)}
                         placeholder="Say something nice :)"
                         value={commentString}
                       >
@@ -599,7 +580,7 @@ function Vent({
       {reportModal && (
         <ReportModal
           close={() => setReportModal(false)}
-          submit={option => reportVent(option, user.uid, vent.id)}
+          submit={(option) => reportVent(option, user.uid, vent.id)}
         />
       )}
       {blockModal && (

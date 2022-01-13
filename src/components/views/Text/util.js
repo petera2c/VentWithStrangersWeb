@@ -1,6 +1,6 @@
 import React from "react";
 
-export const getHtmlElement = props => {
+export const getHtmlElement = (props) => {
   const { children, text, type } = props;
 
   if (type === "h1") {
@@ -54,12 +54,7 @@ export const getHtmlElement = props => {
     );
   } else if (type === "label") {
     return (
-      <label
-        className={className}
-        onClick={onClick}
-        style={style}
-        title={title}
-      >
+      <label {...props}>
         {children}
         {text}
       </label>

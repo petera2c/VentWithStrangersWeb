@@ -1,27 +1,10 @@
 import React, { useCallback, useEffect, useRef } from "react";
-import firebase from 'firebase/compat/app';
+import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import db from "./config/firebase";
 import { Modal, Button, Space } from "antd";
 
 import { setUserOnlineStatus } from "./pages/util";
-
-export const addTagsToPage = (props, selectedTags) => {
-  const { browser, navigate, location } = props;
-  let searchPathname = location.pathname;
-  if (
-    searchPathname !== "/popular" &&
-    searchPathname !== "/recent" &&
-    searchPathname !== "/trending"
-  )
-    searchPathname = "/trending";
-
-  for (let index in selectedTags) {
-    if (index == 0) searchPathname += "?tags=" + selectedTags[index].name;
-    else searchPathname += "+" + selectedTags[index].name;
-  }
-  navigate(searchPathname);
-};
 
 export const blockUser = async (userID, userIDToBlock) => {
   const sortedUserArray = [userID, userIDToBlock].sort();
@@ -29,13 +12,13 @@ export const blockUser = async (userID, userIDToBlock) => {
     .collection("block_check")
     .doc(sortedUserArray[0] + "|||" + sortedUserArray[1])
     .set({
-      [userID]: true
+      [userID]: true,
     });
   alert("User has been blocked");
   window.location.reload();
 };
 
-export const calculateKarma = usereBasicInfo => {
+export const calculateKarma = (usereBasicInfo) => {
   const goodKarma = usereBasicInfo.good_karma ? usereBasicInfo.good_karma : 0;
   const badKarma = usereBasicInfo.bad_karma ? usereBasicInfo.bad_karma : 0;
 
@@ -50,7 +33,7 @@ export const userSignUpProgress = (user, noAlert) => {
       user.sendEmailVerification();
       Modal.info({
         title: "Verify Email",
-        content: "We have re-sent you a verification email :)"
+        content: "We have re-sent you a verification email :)",
       });
     }
     return "NVE";
@@ -58,10 +41,10 @@ export const userSignUpProgress = (user, noAlert) => {
 };
 
 // Taken from stack overflow
-export const capitolizeWordsInString = str => {
-  return str.replace(/\b\w/g, l => l.toUpperCase());
+export const capitolizeWordsInString = (str) => {
+  return str.replace(/\b\w/g, (l) => l.toUpperCase());
 };
-export const capitolizeFirstChar = string => {
+export const capitolizeFirstChar = (string) => {
   if (string) return string.charAt(0).toUpperCase() + string.slice(1);
   else return;
 };
@@ -71,7 +54,7 @@ export const combineObjectWithID = (id, object) => {
   return object;
 };
 
-export const getEndAtValueTimestamp = array => {
+export const getEndAtValueTimestamp = (array) => {
   let startAt = 10000000000000;
 
   if (array && array[array.length - 1] && array[array.length - 1].doc)
@@ -82,17 +65,17 @@ export const getEndAtValueTimestamp = array => {
 export const getIsUserOnline = (setIsUserOnline, userID) => {
   const ref = firebase.database().ref("status/" + userID);
 
-  ref.on("value", snapshot => {
+  ref.on("value", (snapshot) => {
     if (snapshot.val() && snapshot.val().state === "online")
       setIsUserOnline(true);
     else setIsUserOnline(false);
   });
 };
 
-export const getTotalOnlineUsers = callback => {
+export const getTotalOnlineUsers = (callback) => {
   const ref = firebase.database().ref("total_online_users");
 
-  ref.on("value", doc => {
+  ref.on("value", (doc) => {
     callback(doc.val());
   });
 
@@ -102,10 +85,7 @@ export const getTotalOnlineUsers = callback => {
 export const getUserBasicInfo = async (callback, userID) => {
   if (!userID) return {};
 
-  const authorDoc = await db
-    .collection("users_display_name")
-    .doc(userID)
-    .get();
+  const authorDoc = await db.collection("users_display_name").doc(userID).get();
 
   callback(authorDoc.exists ? { ...authorDoc.data(), id: authorDoc.id } : {});
 };
@@ -128,7 +108,7 @@ export const isPageActive = (page, pathname) => {
   else return "";
 };
 
-export const signOut = async userID => {
+export const signOut = async (userID) => {
   await setUserOnlineStatus("offline", userID);
 
   firebase

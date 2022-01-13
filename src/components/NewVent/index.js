@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { message, Space, Statistic } from "antd";
-const { Countdown } = Statistic;
 import TextArea from "react-textarea-autosize";
 import { useNavigate } from "react-router-dom";
 import moment from "moment-timezone";
@@ -25,6 +24,8 @@ import {
   selectEncouragingMessage,
   updateTags,
 } from "./util";
+
+const { Countdown } = Statistic;
 
 function NewVentComponent({ miniVersion, ventID }) {
   const componentIsMounted = useRef(true);

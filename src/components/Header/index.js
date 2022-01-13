@@ -27,10 +27,10 @@ import {
   howCompleteIsUserProfile,
   newNotificationCounter,
   readNotifications,
-  resetUnreadConversationCount
+  resetUnreadConversationCount,
 } from "./util";
 
-function Header() {
+function Header({ navigate }) {
   const componentIsMounted = useRef(true);
   const location = useLocation();
   const { pathname, search } = location;
@@ -159,7 +159,7 @@ function Header() {
                   pathname.substring(0, 7) === "/search" ? true : false
                 }
                 className="no-border bg-grey-4 br4"
-                onChange={e => {
+                onChange={(e) => {
                   setVentSearchString(e.target.value);
                   navigate("/search?" + e.target.value);
                 }}
@@ -225,7 +225,7 @@ function Header() {
                         position: "absolute",
                         top: "calc(100% + 8px)",
                         right: 0,
-                        maxHeight: "300px"
+                        maxHeight: "300px",
                       }}
                     >
                       <NotificationList notifications={notifications} />
@@ -239,7 +239,7 @@ function Header() {
                           position: "absolute",
                           top: "-12px",
                           right: "-12px",
-                          pointerEvents: "none"
+                          pointerEvents: "none",
                         }}
                       >
                         {newNotificationCounter(notifications)}

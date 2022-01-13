@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import moment from "moment-timezone";
 import { useIdleTimer } from "react-idle-timer";
 
 import firebase from "firebase/compat/app";
@@ -11,29 +10,25 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { UserContext } from "../context";
 
 import Container from "../components/containers/Container";
-import LoadingHeart from "../components/loaders/Heart";
 
 import AboutUsPage from "./AboutUs";
 import AccountPage from "./Account";
 import AppDownloadPage from "./AppDownload";
-import BlogPage from "./Blog";
 import ConversationsPage from "./Conversations";
 import OnlineUsersPage from "./OnlineUsers";
 import FeedbackPage from "./Feedback";
 import FriendsPage from "./Friends";
 import MakeFriendsPage from "./MakeFriends";
-import MentalHealthPage from "./Blogs/MentalHealth";
 import NewVentPage from "./NewVent";
 import NotFoundPage from "./NotFound";
 import NotificationsPage from "./Notifications";
 import PrivacyPolicyPage from "./PrivacyPolicy";
 import SearchPage from "./Search";
-import SignUpPage from "./SignUp";
 import VentPage from "./Vent";
 import VentsPage from "./Vents";
 import VerifiedEmailPage from "./EmailAuth/VerifiedEmail";
 
-import { getUserBasicInfo, isMobileOrTablet } from "../util";
+import { getUserBasicInfo } from "../util";
 import { setIsUserOnlineToDatabase, setUserOnlineStatus } from "./util";
 
 function RoutesTest() {
@@ -48,7 +43,7 @@ function RoutesTest() {
     if (user && user.uid) setUserOnlineStatus("online", user.uid);
   };
 
-  const { getRemainingTime, getLastActiveTime } = useIdleTimer({
+  useIdleTimer({
     timeout: 1000 * 60 * 15,
     onIdle: handleOnIdle,
     onActive: handleOnActive,
@@ -62,6 +57,10 @@ function RoutesTest() {
       getUserBasicInfo((newBasicUserInfo) => {
         setUserBasicInfo(newBasicUserInfo);
       }, user.uid);
+
+    return () => {
+      if (user) setUserOnlineStatus("offline", user.uid);
+    };
   }, [user]);
 
   if (loading)
@@ -82,17 +81,12 @@ function RoutesTest() {
         {error && { error }}
         {!loading && !error && (
           <Routes>
-            <Route
-              path="/blogs/why-talking-about-mental-health-is-important"
-              element={<MentalHealthPage />}
-            />
             <Route path="/make-friends" element={<MakeFriendsPage />} />
             <Route path="/friends" element={<FriendsPage />} />
             <Route path="/" element={<VentsPage />} exact />
             <Route path="/account" element={<AccountPage />} exact />
             <Route path="/app-downloads" element={<AppDownloadPage />} />
             <Route path="/avatar" element={<AccountPage />} exact />
-            <Route path="/blog" element={<BlogPage />} />
             <Route path="/conversations" element={<ConversationsPage />} />
             <Route path="/online-users" element={<OnlineUsersPage />} />
             <Route path="/feedback" element={<FeedbackPage />} />

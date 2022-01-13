@@ -1,4 +1,4 @@
-import firebase from 'firebase/compat/app';
+import firebase from "firebase/compat/app";
 import "firebase/compat/analytics";
 import "firebase/compat/firestore";
 
@@ -10,11 +10,11 @@ var firebaseConfig = {
   measurementId: "G-N5NTVEZHSN",
   messagingSenderId: "440569980458",
   projectId: "vent-with-strangers-2acc6",
-  storageBucket: "vent-with-strangers-2acc6.appspot.com"
+  storageBucket: "vent-with-strangers-2acc6.appspot.com",
 };
 
-//location.hostname === "localhost"
-if (location.hostname === "localhost")
+//window.location.hostname === "localhost"
+if (window.location.hostname === "localhost")
   firebaseConfig = {
     apiKey: "AIzaSyCk8EfNyqarIzBAQSCFgU8634o-e0iA_Os",
     appId: "1:440569980458:web:870c6bde68871e5fd78553",
@@ -23,14 +23,14 @@ if (location.hostname === "localhost")
     measurementId: "G-N5NTVEZHSN",
     messagingSenderId: "440569980458",
     projectId: "vent-with-strangers-2acc6",
-    storageBucket: "vent-with-strangers-2acc6.appspot.com"
+    storageBucket: "vent-with-strangers-2acc6.appspot.com",
   };
 
 export const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 let db = firebase.firestore();
 
-if (location.hostname === "localhost") {
+if (window.location.hostname === "localhost") {
   db.useEmulator("localhost", 8080);
 
   firebase.auth().useEmulator("http://localhost:9099");

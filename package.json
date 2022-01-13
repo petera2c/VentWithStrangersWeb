@@ -43,6 +43,12 @@
     "react-textarea-autosize": "^8.3.3",
     "universal-cookie": "^4.0.4"
   },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
   "scripts": {
     "start2": "react-scripts start",
     "start": "webpack-dev-server --mode development --hot --port 3000",
