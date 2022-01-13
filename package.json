@@ -50,10 +50,9 @@
     ]
   },
   "scripts": {
-    "start2": "react-scripts start",
-    "start": "webpack-dev-server --mode development --hot --port 3000",
-    "build": "webpack --mode production",
-    "deploy": "webpack --mode production && firebase deploy"
+    "start": "react-scripts start",
+    "build": "BUILD_PATH='./functions/build' react-scripts build",
+    "deploy": "react-scripts build && firebase deploy"
   },
   "browserslist": {
     "production": [

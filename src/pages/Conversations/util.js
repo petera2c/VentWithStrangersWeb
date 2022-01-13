@@ -269,25 +269,22 @@ export const conversationListener = (currentConversation, setConversations) => {
     .onSnapshot((doc) => {
       const updatedConversation = { id: doc.id, ...doc.data() };
 
-      if (
-        currentConversation.last_updated !== updatedConversation.last_updated
-      ) {
-        setConversations((oldConversations) => {
-          const indexOfUpdatedConversation = oldConversations.findIndex(
-            (conversation) => conversation.id === updatedConversation.id
-          );
+      setConversations((oldConversations) => {
+        const indexOfUpdatedConversation = oldConversations.findIndex(
+          (conversation) => conversation.id === updatedConversation.id
+        );
 
-          for (let index in updatedConversation) {
-            oldConversations[indexOfUpdatedConversation][index] =
-              updatedConversation[index];
-          }
-          oldConversations.sort((a, b) =>
-            a.last_updated < b.last_updated ? 1 : -1
-          );
+        for (let index in updatedConversation) {
+          oldConversations[indexOfUpdatedConversation][index] =
+            updatedConversation[index];
+        }
 
-          return [...oldConversations];
-        });
-      }
+        oldConversations.sort((a, b) =>
+          a.last_updated < b.last_updated ? 1 : -1
+        );
+
+        return [...oldConversations];
+      });
     });
 
   return unsubscribe;

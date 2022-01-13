@@ -40,6 +40,7 @@ function ConversationOption({
   const [handleOutsideClickCalled, setHandleOutsideClickCalled] = useState(
     false
   );
+  const hasSeen = conversation[userID];
 
   useEffect(() => {
     let conversationUpdatedListenerUnsubscribe;
@@ -50,16 +51,15 @@ function ConversationOption({
     );
 
     getConversationBasicData(conversation, setConversationsBasicDatas, userID);
+    if (isActive && !hasSeen) readConversation(conversation, userID);
 
     return () => {
       if (conversationUpdatedListenerUnsubscribe)
         conversationUpdatedListenerUnsubscribe();
     };
-  }, []);
+  }, [hasSeen, isActive]);
 
   if (!conversation) return <div>loading</div>;
-  const hasSeen = conversation[userID];
-  if (isActive && !hasSeen) readConversation(conversation, userID);
 
   return (
     <Container
