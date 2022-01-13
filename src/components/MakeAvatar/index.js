@@ -8,8 +8,8 @@ import { capitolizeFirstChar } from "../../util";
 function MakeAvatar({ displayName, size, userBasicInfo }) {
   if (!displayName) displayName = "Anonymous";
 
-  let width = "48px !important";
-  let height = "48px !important";
+  let width = "48px ";
+  let height = "48px ";
   if (size === "large") {
     width = "96px";
     height = "96px";
