@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AdSense from "react-adsense";
 
@@ -11,22 +11,20 @@ import { getOnlineUsers } from "./util";
 import { UserContext } from "../../context";
 
 function OnlineUsers() {
-  const componentIsMounted = useRef(true);
   const { user } = useContext(UserContext);
   const [onlineUsers, setOnlineUsers] = useState([]);
 
   let onlineUsersUnsubscribe;
 
   useEffect(() => {
-    onlineUsersUnsubscribe = getTotalOnlineUsers(totalOnlineUsers =>
+    onlineUsersUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) =>
       getOnlineUsers(setOnlineUsers, totalOnlineUsers)
     );
 
     return () => {
-      componentIsMounted.current = false;
       if (onlineUsersUnsubscribe) onlineUsersUnsubscribe.off("value");
     };
-  }, [location]);
+  }, []);
 
   return (
     <Page

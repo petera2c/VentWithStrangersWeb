@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { Link, useLocation } from "react-router-dom";
 import AdSense from "react-adsense";
@@ -16,18 +16,18 @@ import Button from "../../components/views/Button";
 import ConversationOption from "./ConversationOption";
 import Chat from "./chat";
 
-import { userSignUpProgress } from "../../util";
+import { useIsMounted, userSignUpProgress } from "../../util";
 
 import {
   getConversation,
   getConversations,
-  mostRecentConversationListener
+  mostRecentConversationListener,
 } from "./util";
 
 import "./style.css";
 
 function MobileConversations() {
-  const componentIsMounted = useRef(true);
+  const isMounted = useIsMounted();
   const { user } = useContext(UserContext);
 
   const [conversations, setConversations] = useState([]);
@@ -50,7 +50,7 @@ function MobileConversations() {
       getConversations(
         conversations,
         setActiveConversation,
-        newConversations => {
+        (newConversations) => {
           newMessageListenerUnsubscribe = mostRecentConversationListener(
             newConversations,
             setConversations,
@@ -60,11 +60,11 @@ function MobileConversations() {
           if (
             search &&
             !newConversations.find(
-              conversation => conversation.id === activeConversation
+              (conversation) => conversation.id === activeConversation
             )
           ) {
             getConversation(
-              componentIsMounted,
+              isMounted,
               activeConversation,
               setConversations,
               user.uid
@@ -85,7 +85,6 @@ function MobileConversations() {
 
     return () => {
       if (newMessageListenerUnsubscribe) newMessageListenerUnsubscribe();
-      componentIsMounted.current = false;
     };
   }, [user]);
 
@@ -130,16 +129,16 @@ function MobileConversations() {
               getConversations(
                 conversations,
                 setActiveConversation,
-                newConversations => {
+                (newConversations) => {
                   if (
                     newConversations.length % 5 !== 0 ||
                     newConversations.length === 0
                   )
                     setCanLoadMore(false);
 
-                  setConversations(oldConversations => [
+                  setConversations((oldConversations) => [
                     ...oldConversations,
-                    ...newConversations
+                    ...newConversations,
                   ]);
                 },
                 user.uid
@@ -153,7 +152,7 @@ function MobileConversations() {
       {activeConversation && (
         <Container className="container mobile-full column ov-hidden flex-fill bg-white">
           {!conversations.find(
-            conversation => conversation.id === activeConversation
+            (conversation) => conversation.id === activeConversation
           ) &&
             activeConversation && (
               <h1 className="x-fill tac py32">
@@ -161,7 +160,7 @@ function MobileConversations() {
               </h1>
             )}
           {!conversations.find(
-            conversation => conversation.id === activeConversation
+            (conversation) => conversation.id === activeConversation
           ) &&
             !activeConversation && (
               <h4
@@ -173,11 +172,11 @@ function MobileConversations() {
               </h4>
             )}
           {conversations.find(
-            conversation => conversation.id === activeConversation
+            (conversation) => conversation.id === activeConversation
           ) && (
             <Chat
               conversation={conversations.find(
-                conversation => conversation.id === activeConversation
+                (conversation) => conversation.id === activeConversation
               )}
               conversationPartnerData={
                 conversationsBasicDatas[activeConversation]

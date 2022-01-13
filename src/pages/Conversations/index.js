@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { Link, useLocation } from "react-router-dom";
 import AdSense from "react-adsense";
@@ -17,18 +17,18 @@ import MobileIndex from "./MobileIndex";
 import ConversationOption from "./ConversationOption";
 import Chat from "./chat";
 
-import { isMobileOrTablet, userSignUpProgress } from "../../util";
+import { isMobileOrTablet, useIsMounted, userSignUpProgress } from "../../util";
 
 import {
   getConversation,
   getConversations,
-  mostRecentConversationListener
+  mostRecentConversationListener,
 } from "./util";
 
 import "./style.css";
 
 function Conversations() {
-  const componentIsMounted = useRef(true);
+  const isMounted = useIsMounted();
   const { user } = useContext(UserContext);
 
   const [conversations, setConversations] = useState([]);
@@ -54,7 +54,7 @@ function Conversations() {
       getConversations(
         conversations,
         setActiveConversation,
-        newConversations => {
+        (newConversations) => {
           newMessageListenerUnsubscribe = mostRecentConversationListener(
             newConversations,
             setConversations,
@@ -64,11 +64,11 @@ function Conversations() {
           if (
             search &&
             !newConversations.find(
-              conversation => conversation.id === activeConversation
+              (conversation) => conversation.id === activeConversation
             )
           ) {
             getConversation(
-              componentIsMounted,
+              isMounted,
               activeConversation,
               setConversations,
               user.uid
@@ -89,7 +89,6 @@ function Conversations() {
 
     return () => {
       if (newMessageListenerUnsubscribe) newMessageListenerUnsubscribe();
-      componentIsMounted.current = false;
     };
   }, [user]);
 
@@ -134,16 +133,16 @@ function Conversations() {
                 getConversations(
                   conversations,
                   setActiveConversation,
-                  newConversations => {
+                  (newConversations) => {
                     if (
                       newConversations.length % 5 !== 0 ||
                       newConversations.length === 0
                     )
                       setCanLoadMore(false);
 
-                    setConversations(oldConversations => [
+                    setConversations((oldConversations) => [
                       ...oldConversations,
-                      ...newConversations
+                      ...newConversations,
                     ]);
                   },
                   user.uid
@@ -157,7 +156,7 @@ function Conversations() {
 
         <Container className="column flex-fill ov-hidden bg-white">
           {!conversations.find(
-            conversation => conversation.id === activeConversation
+            (conversation) => conversation.id === activeConversation
           ) &&
             activeConversation && (
               <h1 className="x-fill tac py32">
@@ -165,7 +164,7 @@ function Conversations() {
               </h1>
             )}
           {!conversations.find(
-            conversation => conversation.id === activeConversation
+            (conversation) => conversation.id === activeConversation
           ) &&
             !activeConversation && (
               <h4
@@ -184,11 +183,11 @@ function Conversations() {
               </h4>
             )}
           {conversations.find(
-            conversation => conversation.id === activeConversation
+            (conversation) => conversation.id === activeConversation
           ) && (
             <Chat
               conversation={conversations.find(
-                conversation => conversation.id === activeConversation
+                (conversation) => conversation.id === activeConversation
               )}
               conversationPartnerData={
                 conversationsBasicDatas[activeConversation]
@@ -214,7 +213,7 @@ function Conversations() {
                   maxWidth: "300px",
                   minHeight: "100px",
                   height: "240px",
-                  maxHeight: "800px"
+                  maxHeight: "800px",
                 }}
               />
             </Container>
@@ -234,7 +233,7 @@ function Conversations() {
                   maxWidth: "300px",
                   minHeight: "100px",
                   height: "240px",
-                  maxHeight: "800px"
+                  maxHeight: "800px",
                 }}
               />
             </Container>

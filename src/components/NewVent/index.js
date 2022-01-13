@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { message, Space, Statistic } from "antd";
 import TextArea from "react-textarea-autosize";
 import { useNavigate } from "react-router-dom";
@@ -15,9 +15,9 @@ import HandleOutsideClick from "../containers/HandleOutsideClick";
 import MakeAvatar from "../../components/MakeAvatar";
 import StarterModal from "../modals/Starter";
 
-import { userSignUpProgress } from "../../util";
+import { useIsMounted, userSignUpProgress } from "../../util";
 import {
-  doSomething,
+  countdown,
   getUserVentTimeOut,
   getVent,
   saveVent,
@@ -28,7 +28,7 @@ import {
 const { Countdown } = Statistic;
 
 function NewVentComponent({ miniVersion, ventID }) {
-  const componentIsMounted = useRef(true);
+  const isMounted = useIsMounted();
   const navigate = useNavigate();
   const { user, userBasicInfo } = useContext(UserContext);
 
@@ -54,17 +54,13 @@ function NewVentComponent({ miniVersion, ventID }) {
     if (user)
       getUserVentTimeOut((res) => {
         if (res) {
-          doSomething(componentIsMounted, setUserVentTimeOut, res);
+          countdown(isMounted, setUserVentTimeOut, res);
           setInterval(
-            () => doSomething(componentIsMounted, setUserVentTimeOut, res),
+            () => countdown(isMounted, setUserVentTimeOut, res),
             1000
           );
         }
       }, user.uid);
-
-    return () => {
-      componentIsMounted.current = false;
-    };
   }, []);
 
   const checks = () => {

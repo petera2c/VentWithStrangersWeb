@@ -39,6 +39,7 @@ import {
   getUserBasicInfo,
   hasUserBlockedUser,
   isMobileOrTablet,
+  useIsMounted,
   userSignUpProgress,
 } from "../../util";
 import {
@@ -84,7 +85,7 @@ function Vent({
   setTitle,
   ventInit,
 }) {
-  const componentIsMounted = useRef(true);
+  const isMounted = useIsMounted();
   const { user } = useContext(UserContext);
 
   const [author, setAuthor] = useState({});
@@ -118,7 +119,7 @@ function Vent({
 
   useEffect(() => {
     getVent(
-      componentIsMounted,
+      isMounted,
       (ventUserID) => {
         getUserBasicInfo(setAuthor, ventUserID);
         getIsUserOnline(setIsUserOnline, ventUserID);
@@ -131,16 +132,16 @@ function Vent({
 
     if (vent && vent.userID) {
       getUserBasicInfo((author) => {
-        if (componentIsMounted.current) setAuthor(author);
+        if (isMounted()) setAuthor(author);
       }, vent.userID);
       getIsUserOnline((status) => {
-        if (componentIsMounted.current) setIsUserOnline(status);
+        if (isMounted()) setIsUserOnline(status);
       }, vent.userID);
     }
 
     if (user) {
       hasUserBlockedUser(user.uid, vent.userID, (isBlocked) => {
-        if (componentIsMounted.current) setIsContentBlocked(isBlocked);
+        if (isMounted()) setIsContentBlocked(isBlocked);
       });
     }
 
@@ -150,24 +151,23 @@ function Vent({
 
     if (!searchPreviewMode && displayCommentField2)
       newCommentListenerUnsubscribe = newVentCommentListener(
-        componentIsMounted,
+        isMounted,
         setComments,
         vent.id
       );
     if (!searchPreviewMode)
-      getVentComments(comments, componentIsMounted, setComments, vent.id);
+      getVentComments(comments, isMounted, setComments, vent.id);
 
     if (user && !searchPreviewMode)
       ventHasLiked(
         (newHasLiked) => {
-          if (componentIsMounted.current) setHasLiked(newHasLiked);
+          if (isMounted()) setHasLiked(newHasLiked);
         },
         user.uid,
         vent.id
       );
 
     return () => {
-      componentIsMounted.current = false;
       if (newCommentListenerUnsubscribe) newCommentListenerUnsubscribe();
     };
   }, []);
@@ -547,7 +547,7 @@ function Vent({
                     onClick={() => {
                       getVentComments(
                         comments,
-                        componentIsMounted,
+                        isMounted,
                         setComments,
                         vent.id
                       );

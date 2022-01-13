@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button, Space } from "antd";
 
@@ -32,7 +32,8 @@ import {
   getUserBasicInfo,
   isPageActive,
   signOut,
-  getTotalOnlineUsers
+  getTotalOnlineUsers,
+  useIsMounted,
 } from "../../util";
 import {
   getNotifications,
@@ -40,15 +41,15 @@ import {
   howCompleteIsUserProfile,
   newNotificationCounter,
   readNotifications,
-  resetUnreadConversationCount
+  resetUnreadConversationCount,
 } from "./util";
 
 import "./style.css";
 
 function Header() {
-  const componentIsMounted = useRef(true);
+  const isMounted = useIsMounted();
   const location = useLocation();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { pathname, search } = location;
 
   const { user } = useContext(UserContext);
@@ -83,22 +84,22 @@ function Header() {
       newConversationsListenerUnsubscribe();
     if (onlineUsersUnsubscribe) onlineUsersUnsubscribe();
 
-    onlineUsersUnsubscribe = getTotalOnlineUsers(totalOnlineUsers => {
-      if (componentIsMounted.current) setTotalOnlineUsers(totalOnlineUsers);
+    onlineUsersUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) => {
+      if (isMounted()) setTotalOnlineUsers(totalOnlineUsers);
     });
     if (user) {
       newConversationsListenerUnsubscribe = getUnreadConversations(
-        componentIsMounted,
+        isMounted,
         pathname.substring(0, 7) === "/search",
         setUnreadConversationsCount,
         user.uid
       );
-      getUserBasicInfo(newBasicUserInfo => {
+      getUserBasicInfo((newBasicUserInfo) => {
         setUserBasicInfo(newBasicUserInfo);
         howCompleteIsUserProfile(setMissingAccountPercentage, newBasicUserInfo);
       }, user.uid);
       newNotificationsListenerUnsubscribe = getNotifications(
-        componentIsMounted,
+        isMounted,
         setNotifications,
         user
       );
@@ -109,8 +110,6 @@ function Header() {
         newNotificationsListenerUnsubscribe();
       if (newConversationsListenerUnsubscribe)
         newConversationsListenerUnsubscribe();
-
-      componentIsMounted.current = false;
     };
   }, [location, user]);
 
@@ -153,7 +152,7 @@ function Header() {
                       top: "-12px",
                       right: "-12px",
                       pointerEvents: "none",
-                      zIndex: 1
+                      zIndex: 1,
                     }}
                     type="p"
                   >
@@ -178,7 +177,7 @@ function Header() {
           <input
             autoFocus={pathname.substring(0, 7) === "/search" ? true : false}
             className="no-border bg-grey-4 br4"
-            onChange={e => {
+            onChange={(e) => {
               setVentSearchString(e.target.value);
               navigate("/search?" + e.target.value);
             }}
@@ -201,7 +200,7 @@ function Header() {
               <Space align="center" direction="vertical">
                 <Space
                   align="center"
-                  onClick={e => {
+                  onClick={(e) => {
                     e.stopPropagation();
                     setAccountSectionActive(!accountSectionActive);
                   }}

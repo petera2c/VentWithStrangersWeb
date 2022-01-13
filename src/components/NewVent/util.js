@@ -1,15 +1,11 @@
-import firebase from 'firebase/compat/app';
+import firebase from "firebase/compat/app";
 import moment from "moment-timezone";
 import db from "../../config/firebase";
 import { userSignUpProgress } from "../../util";
 
-export const doSomething = (
-  componentIsMounted,
-  setUserVentTimeOut,
-  ventTimeout
-) => {
-  if (componentIsMounted.current) {
-    setUserVentTimeOut(oldUserVentTimeOut => {
+export const countdown = (isMounted, setUserVentTimeOut, ventTimeout) => {
+  if (isMounted()) {
+    setUserVentTimeOut((oldUserVentTimeOut) => {
       if (oldUserVentTimeOut)
         return new moment(oldUserVentTimeOut).subtract(1, "seconds");
       else return new moment(ventTimeout);
@@ -35,10 +31,7 @@ export const getUserVentTimeOut = async (callback, userID) => {
 };
 
 export const getVent = async (setDescription, setTags, setTitle, ventID) => {
-  const ventDoc = await db
-    .collection("vents")
-    .doc(ventID)
-    .get();
+  const ventDoc = await db.collection("vents").doc(ventID).get();
 
   const vent = ventDoc.data();
 
@@ -60,15 +53,12 @@ export const saveVent = async (callback, checks, ventObject, ventID, user) => {
 
   let newVent = ventObject;
   if (ventID) {
-    await db
-      .collection("vents")
-      .doc(ventID)
-      .update(ventObject);
+    await db.collection("vents").doc(ventID).update(ventObject);
   } else newVent = await db.collection("vents").add(ventObject);
   callback({ id: newVent.id ? newVent.id : ventID, title: ventObject.title });
 };
 
-export const selectEncouragingMessage = userVentTimeOutFormatted => {
+export const selectEncouragingMessage = (userVentTimeOutFormatted) => {
   if (userVentTimeOutFormatted)
     return "You can vent again in " + userVentTimeOutFormatted + " :)";
 
@@ -76,7 +66,7 @@ export const selectEncouragingMessage = userVentTimeOutFormatted => {
     "Let it all out. You are not alone.",
     "What is going on in your life?",
     "What are you working through?",
-    "We are here for you."
+    "We are here for you.",
   ];
 
   return nicePlaceholdersArray[

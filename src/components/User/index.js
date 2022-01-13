@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import moment from "moment-timezone";
 
@@ -25,13 +25,14 @@ import {
   kidsList,
   partyingList,
   politicalBeliefsList,
-  religiousBeliefsList
+  religiousBeliefsList,
 } from "../../PersonalOptions";
 import {
   calculateKarma,
   capitolizeFirstChar,
   getUserBasicInfo,
-  userSignUpProgress
+  useIsMounted,
+  userSignUpProgress,
 } from "../../util";
 
 function UserComponent({
@@ -39,9 +40,9 @@ function UserComponent({
   isOnline,
   showAdditionaluserInformation,
   showMessageUser,
-  userID
+  userID,
 }) {
-  const componentIsMounted = useRef(true);
+  const isMounted = useIsMounted();
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -49,15 +50,9 @@ function UserComponent({
   const [starterModal, setStarterModal] = useState(false);
 
   useEffect(() => {
-    getUserBasicInfo(newUserInfo => {
-      if (componentIsMounted.current) setUserInfo(newUserInfo);
+    getUserBasicInfo((newUserInfo) => {
+      if (isMounted) setUserInfo(newUserInfo);
     }, userID);
-
-    if (componentIsMounted.current) {
-    }
-    return () => {
-      componentIsMounted.current = false;
-    };
   }, []);
 
   return (
@@ -142,7 +137,7 @@ function UserComponent({
         <Container className="align-center justify-between mt16">
           <Button
             className="button-2 px16 py8 mr16 br8"
-            onClick={e => {
+            onClick={(e) => {
               e.preventDefault();
 
               const userInteractionIssues = userSignUpProgress(user);

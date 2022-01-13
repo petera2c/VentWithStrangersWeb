@@ -10,7 +10,7 @@ import LoadingHeart from "../../components/loaders/Heart";
 
 import Text from "../../components/views/Text";
 
-import { isMobileOrTablet } from "../../util";
+import { isMobileOrTablet, useIsMounted } from "../../util";
 
 import {
   getNotifications,
@@ -18,11 +18,11 @@ import {
   howCompleteIsUserProfile,
   newNotificationCounter,
   readNotifications,
-  resetUnreadConversationCount
+  resetUnreadConversationCount,
 } from "../../components/Header/util";
 
 function NotificationsPage() {
-  const componentIsMounted = useRef(true);
+  const isMounted = useIsMounted();
   const { user } = useContext(UserContext);
 
   const [notifications, setNotifications] = useState([]);
@@ -30,7 +30,7 @@ function NotificationsPage() {
   let newNotificationsListenerUnsubscribe;
   useEffect(() => {
     newNotificationsListenerUnsubscribe = getNotifications(
-      componentIsMounted,
+      isMounted,
       setNotifications,
       user
     );
@@ -40,8 +40,6 @@ function NotificationsPage() {
     return () => {
       if (newNotificationsListenerUnsubscribe)
         newNotificationsListenerUnsubscribe();
-
-      componentIsMounted.current = false;
     };
   }, []);
 

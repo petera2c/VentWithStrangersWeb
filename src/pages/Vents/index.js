@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import AdSense from "react-adsense";
 import Cookies from "universal-cookie";
@@ -24,14 +24,15 @@ import { UserContext } from "../../context";
 import {
   capitolizeFirstChar,
   getTotalOnlineUsers,
-  isMobileOrTablet
+  isMobileOrTablet,
+  useIsMounted,
 } from "../../util";
 import { getMetaInformation, getVents } from "./util";
 
 const cookies = new Cookies();
 
 function VentsPage() {
-  const componentIsMounted = useRef(true);
+  const isMounted = useIsMounted();
   const { user } = useContext(UserContext);
 
   const [vents, setVents] = useState(null);
@@ -55,13 +56,12 @@ function VentsPage() {
       const referral = /referral=([^&]+)/.exec(search)[1];
       if (referral) cookies.set("referral", referral);
     }
-    onlineUsersUnsubscribe = getTotalOnlineUsers(totalOnlineUsers => {
-      if (componentIsMounted.current) setTotalOnlineUsers(totalOnlineUsers);
+    onlineUsersUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) => {
+      if (isMounted()) setTotalOnlineUsers(totalOnlineUsers);
     });
     getVents(pathname, setCanLoadMore, setVents, null);
 
     return () => {
-      componentIsMounted.current = false;
       if (onlineUsersUnsubscribe) onlineUsersUnsubscribe.off("value");
     };
   }, [location]);
@@ -74,7 +74,7 @@ function VentsPage() {
       title={metaTitle}
     >
       <Container className="container large">
-        <SubscribeComp />
+        {false && <SubscribeComp />}
       </Container>
 
       <Space
@@ -117,7 +117,7 @@ function VentsPage() {
                               responsive="true"
                               slot="1835301248"
                               style={{
-                                display: "block"
+                                display: "block",
                               }}
                             />
                           </Container>
@@ -214,7 +214,7 @@ function VentsPage() {
                       maxWidth: "1000px",
                       minHeight: "100px",
                       height: "240px",
-                      maxHeight: "800px"
+                      maxHeight: "800px",
                     }}
                   />
                 </Container>

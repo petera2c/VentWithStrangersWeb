@@ -1,10 +1,10 @@
-import firebase from 'firebase/compat/app';
+import firebase from "firebase/compat/app";
 import db from "../../config/firebase";
 
 import {
   calculateKarma,
   userSignUpProgress,
-  getEndAtValueTimestamp
+  getEndAtValueTimestamp,
 } from "../../util";
 
 const incrementVentCounter = (attributeToIncrement, shouldIncrease, vent) => {
@@ -27,7 +27,7 @@ export const commentVent = async (
     server_timestamp: firebase.firestore.Timestamp.now().toMillis(),
     text: commentString,
     userID: user.uid,
-    ventID
+    ventID,
   };
 
   setVent(incrementVentCounter("comment_counter", true, vent));
@@ -38,10 +38,7 @@ export const commentVent = async (
 };
 
 export const deleteVent = async (navigate, ventID) => {
-  await db
-    .collection("vents")
-    .doc(ventID)
-    .delete();
+  await db.collection("vents").doc(ventID).delete();
   alert("Vent deleted!");
   navigate("/");
 };
@@ -67,7 +64,7 @@ export const findPossibleUsersToTag = async (
       users = snapshot.docs.map((doc, index) => ({
         ...doc.data(),
         id: doc.id,
-        doc
+        doc,
       }));
 
     if (users)
@@ -83,7 +80,7 @@ export const findPossibleUsersToTag = async (
   }
 };
 
-export const getCurrentTypingIndex = element => {
+export const getCurrentTypingIndex = (element) => {
   // Taken from stack overflow
   var caretOffset = 0;
   var doc = element.ownerDocument || element.document;
@@ -137,19 +134,16 @@ const getCurrentTypingWord = (currentTypingIndex, fullString) => {
 };
 
 export const getVent = async (
-  componentIsMounted,
+  isMounted,
   getAuthor,
   setDescription,
   setTitle,
   setVent,
   ventID
 ) => {
-  const ventDoc = await db
-    .collection("vents")
-    .doc(ventID)
-    .get();
+  const ventDoc = await db.collection("vents").doc(ventID).get();
 
-  if (!componentIsMounted.current) return;
+  if (!isMounted) return;
 
   if (!ventDoc.exists) return;
   const newVent = ventDoc.data();
@@ -165,7 +159,7 @@ export const getVent = async (
 
   setVent({
     id: ventDoc.id,
-    ...newVent
+    ...newVent,
   });
 };
 
@@ -176,7 +170,7 @@ export const getVentDescription = (previewMode, vent) => {
   return description;
 };
 
-export const getVentFullLink = vent => {
+export const getVentFullLink = (vent) => {
   const partialLink =
     "/problem/" +
     vent.id +
@@ -188,7 +182,7 @@ export const getVentFullLink = vent => {
   return "https://www.ventwithstrangers.com" + partialLink;
 };
 
-export const getVentPartialLink = vent => {
+export const getVentPartialLink = (vent) => {
   return (
     "/problem/" +
     vent.id +
@@ -201,7 +195,7 @@ export const getVentPartialLink = vent => {
 };
 
 export const newVentCommentListener = (
-  icomponentIsMounted,
+  iisMounted,
   setComments,
   ventID,
   first = true
@@ -217,7 +211,7 @@ export const newVentCommentListener = (
     .orderBy("server_timestamp", "desc")
     .limit(1)
     .onSnapshot(
-      querySnapshot => {
+      (querySnapshot) => {
         if (first) {
           first = false;
         } else if (querySnapshot.docs && querySnapshot.docs[0]) {
@@ -225,26 +219,26 @@ export const newVentCommentListener = (
             querySnapshot.docChanges()[0].type === "added" ||
             querySnapshot.docChanges()[0].type === "removed"
           ) {
-            if (icomponentIsMounted.current)
-              setComments(oldComments => [
+            if (iisMounted)
+              setComments((oldComments) => [
                 {
                   ...querySnapshot.docs[0].data(),
                   id: querySnapshot.docs[0].id,
-                  doc: querySnapshot.docs[0]
+                  doc: querySnapshot.docs[0],
                 },
-                ...oldComments
+                ...oldComments,
               ]);
           }
         }
       },
-      err => {}
+      (err) => {}
     );
   return unsubscribe;
 };
 
 export const getVentComments = async (
   comments,
-  componentIsMounted,
+  isMounted,
   setComments,
   ventID
 ) => {
@@ -264,13 +258,13 @@ export const getVentComments = async (
       newComments.push({ ...doc.data(), id: doc.id, doc });
     });
 
-    if (componentIsMounted.current)
-      setComments(oldComments => {
+    if (isMounted)
+      setComments((oldComments) => {
         if (oldComments) return [...oldComments, ...newComments];
         else return newComments;
       });
   } else {
-    if (componentIsMounted.current) setComments([]);
+    if (isMounted) setComments([]);
   }
 };
 
@@ -340,7 +334,7 @@ export const tagUser = (
 
   const taggedUser = {
     display: user._id,
-    id: user._id
+    id: user._id,
   };
 
   taggedUsers.push(taggedUser);
@@ -348,7 +342,7 @@ export const tagUser = (
   return callback({
     commentString,
     possibleUsersToTag: undefined,
-    taggedUsers
+    taggedUsers,
   });
 };
 
@@ -362,7 +356,7 @@ export const startConversation = async (navigate, user, ventUserID) => {
     .where("members", "==", sortedMemberIDs)
     .get();
 
-  const goToPage = conversationID => {
+  const goToPage = (conversationID) => {
     navigate("/conversations?" + conversationID);
   };
 
@@ -380,7 +374,7 @@ export const startConversation = async (navigate, user, ventUserID) => {
       last_updated: firebase.firestore.Timestamp.now().toMillis(),
       members: sortedMemberIDs,
       server_timestamp: firebase.firestore.Timestamp.now().toMillis(),
-      ...tempHasSeenObject
+      ...tempHasSeenObject,
     });
     goToPage(conversationDocNew.id);
   }

@@ -2,7 +2,7 @@ import db from "../../config/firebase";
 import { soundNotify } from "../../util";
 
 export const getNotifications = (
-  componentIsMounted,
+  isMounted,
   setNotifications,
   user,
   firstLoad = true
@@ -12,10 +12,10 @@ export const getNotifications = (
     .orderBy("server_timestamp")
     .where("userID", "==", user.uid)
     .limitToLast(10)
-    .onSnapshot("value", snapshot => {
+    .onSnapshot("value", (snapshot) => {
       if (snapshot.docs) {
-        if (componentIsMounted.current)
-          setNotifications(oldNotifications => {
+        if (isMounted())
+          setNotifications((oldNotifications) => {
             const newNotifications = snapshot.docs
               .map((item, i) => {
                 return { id: item.id, ...item.data(), doc: item };
@@ -32,7 +32,7 @@ export const getNotifications = (
             return newNotifications;
           });
       } else {
-        if (componentIsMounted.current) setNotifications([]);
+        if (isMounted()) setNotifications([]);
       }
       firstLoad = false;
     });
@@ -41,7 +41,7 @@ export const getNotifications = (
 };
 
 export const getUnreadConversations = (
-  componentIsMounted,
+  isMounted,
   isOnSearchPage,
   setUnreadConversations,
   userID,
@@ -50,13 +50,12 @@ export const getUnreadConversations = (
   const unsubscribe = db
     .collection("unread_conversations_count")
     .doc(userID)
-    .onSnapshot("value", doc => {
+    .onSnapshot("value", (doc) => {
       if (doc.data() && doc.data().count) {
-        if (componentIsMounted.current)
-          setUnreadConversations(doc.data().count);
+        if (isMounted()) setUnreadConversations(doc.data().count);
         if (!first && !isOnSearchPage) soundNotify();
       } else {
-        if (componentIsMounted.current) setUnreadConversations(0);
+        if (isMounted()) setUnreadConversations(0);
       }
       first = false;
     });
@@ -82,7 +81,7 @@ export const howCompleteIsUserProfile = (
   setMissingAccountPercentage(percentage);
 };
 
-export const newNotificationCounter = notifications => {
+export const newNotificationCounter = (notifications) => {
   let counter = 0;
 
   for (let index in notifications) {
@@ -93,21 +92,17 @@ export const newNotificationCounter = notifications => {
   else return counter;
 };
 
-export const readNotifications = notifications => {
+export const readNotifications = (notifications) => {
   for (let index in notifications) {
     const notification = notifications[index];
     if (!notification.hasSeen) {
-      db.collection("notifications")
-        .doc(notification.id)
-        .update({
-          hasSeen: true
-        });
+      db.collection("notifications").doc(notification.id).update({
+        hasSeen: true,
+      });
     }
   }
 };
 
-export const resetUnreadConversationCount = userID => {
-  db.collection("unread_conversations_count")
-    .doc(userID)
-    .set({ count: 0 });
+export const resetUnreadConversationCount = (userID) => {
+  db.collection("unread_conversations_count").doc(userID).set({ count: 0 });
 };

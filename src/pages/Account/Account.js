@@ -20,14 +20,14 @@ import Dropdown from "../../components/containers/Dropdown";
 import Page from "../../components/containers/Page";
 import Text from "../../components/views/Text";
 
-import { isMobileOrTablet } from "../../util";
+import { isMobileOrTablet, useIsMounted } from "../../util";
 import { getUser, updateUser } from "./util";
 import {
   educationList,
   kidsList,
   partyingList,
   politicalBeliefsList,
-  religiousBeliefsList
+  religiousBeliefsList,
 } from "../../PersonalOptions";
 
 function createMonthArray(days) {
@@ -46,7 +46,7 @@ function createYearArray(year) {
 }
 
 function AccountSection({ user }) {
-  const componentIsMounted = useRef(true);
+  const isMounted = useIsMounted();
 
   const [birthDate, setBirthDate] = useState(new moment());
   const [canSeePassword, setCanSeePassword] = useState(false);
@@ -64,7 +64,7 @@ function AccountSection({ user }) {
   const [politics, setPolitics] = useState();
   const [religion, setReligion] = useState();
 
-  const setAccountInfo = userInfo => {
+  const setAccountInfo = (userInfo) => {
     if (userInfo.gender) setGender(userInfo.gender);
     if (userInfo.pronouns) setPronouns(userInfo.pronouns);
     if (userInfo.birth_date) setBirthDate(new moment(userInfo.birth_date));
@@ -76,14 +76,10 @@ function AccountSection({ user }) {
   };
 
   useEffect(() => {
-    getUser(userInfo => {
-      if (componentIsMounted.current) setAccountInfo(userInfo);
-      if (userInfo && componentIsMounted.current) setUserInfo(userInfo);
+    getUser((userInfo) => {
+      if (isMounted()) setAccountInfo(userInfo);
+      if (userInfo && isMounted()) setUserInfo(userInfo);
     }, user.uid);
-
-    return () => {
-      componentIsMounted.current = false;
-    };
   }, []);
 
   return (
@@ -112,7 +108,7 @@ function AccountSection({ user }) {
               <FontAwesomeIcon className="grey-5 mr8" icon={faMonument} />
               <input
                 className="x-fill no-border bg-grey-4 br4"
-                onChange={e => setDisplayName(e.target.value)}
+                onChange={(e) => setDisplayName(e.target.value)}
                 placeholder="Art Vandalay"
                 type="text"
                 value={displayName}
@@ -129,7 +125,7 @@ function AccountSection({ user }) {
               <FontAwesomeIcon className="grey-5 mr8" icon={faPaperPlane} />
               <input
                 className="x-fill no-border bg-grey-4 br4"
-                onChange={e => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
                 name="email"
                 placeholder="artvandalay@gmail.com"
                 type="text"
@@ -151,7 +147,7 @@ function AccountSection({ user }) {
               <FontAwesomeIcon className="grey-5 mr8" icon={faTransgenderAlt} />
               <input
                 className="x-fill no-border bg-grey-4 br4"
-                onChange={e => {
+                onChange={(e) => {
                   if (e.target.value.length > 50)
                     return alert(
                       "You can not write more than 50 characters for your gender"
@@ -177,7 +173,7 @@ function AccountSection({ user }) {
               <input
                 autoComplete="off"
                 className="x-fill no-border bg-grey-4 br4"
-                onChange={e => {
+                onChange={(e) => {
                   if (e.target.value.length > 50)
                     return alert(
                       "You can not write more than 50 characters for your pronoun"
@@ -205,7 +201,7 @@ function AccountSection({ user }) {
               <Container className="relative full-center column">
                 <p className="mb4">Day</p>
                 <Dropdown
-                  dropdownOptionClicked={day =>
+                  dropdownOptionClicked={(day) =>
                     setBirthDate(new moment(birthDate).set("date", day))
                   }
                   dropdownOptions={createMonthArray(birthDate.daysInMonth())}
@@ -215,7 +211,7 @@ function AccountSection({ user }) {
               <Container className="relative full-center column ml8">
                 <p className="mb4">Month</p>
                 <Dropdown
-                  dropdownOptionClicked={month =>
+                  dropdownOptionClicked={(month) =>
                     setBirthDate(new moment(birthDate).set("month", month - 1))
                   }
                   dropdownOptions={createMonthArray(12)}
@@ -225,7 +221,7 @@ function AccountSection({ user }) {
               <Container className="relative full-center column ml8">
                 <p className="mb4">Year</p>
                 <Dropdown
-                  dropdownOptionClicked={year =>
+                  dropdownOptionClicked={(year) =>
                     setBirthDate(new moment(birthDate).set("year", year))
                   }
                   dropdownOptions={createYearArray(new moment().year())}
@@ -250,7 +246,7 @@ function AccountSection({ user }) {
                         (partying === index ? "blue active" : "")
                       }
                       key={index}
-                      onClick={e => {
+                      onClick={(e) => {
                         e.preventDefault();
                         if (partying !== index) setPartying(index);
                         else setPartying(undefined);
@@ -274,7 +270,7 @@ function AccountSection({ user }) {
                         (politics === index ? "blue active" : "")
                       }
                       key={index}
-                      onClick={e => {
+                      onClick={(e) => {
                         e.preventDefault();
 
                         if (politics !== index) setPolitics(index);
@@ -298,7 +294,7 @@ function AccountSection({ user }) {
                         (religion === str ? "blue active" : "")
                       }
                       key={index}
-                      onClick={e => {
+                      onClick={(e) => {
                         e.preventDefault();
 
                         if (religion !== str) setReligion(str);
@@ -322,7 +318,7 @@ function AccountSection({ user }) {
                         (education === index ? "blue active" : "")
                       }
                       key={index}
-                      onClick={e => {
+                      onClick={(e) => {
                         e.preventDefault();
 
                         if (education !== index) setEducation(index);
@@ -346,7 +342,7 @@ function AccountSection({ user }) {
                         (kids === index ? "blue active" : "")
                       }
                       key={index}
-                      onClick={e => {
+                      onClick={(e) => {
                         e.preventDefault();
 
                         if (kids !== index) setKids(index);
@@ -382,7 +378,7 @@ function AccountSection({ user }) {
                 autoComplete="off"
                 className="x-fill no-border bg-grey-4 br4"
                 name="password-change"
-                onChange={e => setNewPassword(e.target.value)}
+                onChange={(e) => setNewPassword(e.target.value)}
                 placeholder="*******"
                 type={canSeePassword ? "" : "password"}
                 value={newPassword}
@@ -400,7 +396,7 @@ function AccountSection({ user }) {
                   autoComplete="off"
                   className="x-fill no-border bg-grey-4 br4"
                   name="confirm-password-change"
-                  onChange={e => setConfirmPassword(e.target.value)}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="*******"
                   type={canSeePassword ? "" : "password"}
                   value={confirmPassword}
@@ -420,7 +416,7 @@ function AccountSection({ user }) {
       <Container className="full-center bg-white pa16 br8">
         <Button
           className="cancel py8 px32 mx4 br4"
-          onClick={e => {
+          onClick={(e) => {
             setDisplayName(user.displayName);
             setEmail(user.email);
             setNewPassword("");

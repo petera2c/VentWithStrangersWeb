@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "antd";
 
@@ -20,7 +20,7 @@ import StarterModal from "../modals/Starter";
 
 import { UserContext } from "../../context";
 
-import { capitolizeFirstChar, isPageActive } from "../../util";
+import { capitolizeFirstChar, isPageActive, useIsMounted } from "../../util";
 import {
   getNotifications,
   getUnreadConversations,
@@ -31,7 +31,7 @@ import {
 } from "./util";
 
 function Header({ navigate }) {
-  const componentIsMounted = useRef(true);
+  const isMounted = useIsMounted();
   const location = useLocation();
   const { pathname, search } = location;
 
@@ -62,14 +62,14 @@ function Header({ navigate }) {
 
     if (user) {
       newConversationsListenerUnsubscribe = getUnreadConversations(
-        componentIsMounted,
+        isMounted,
         pathname.substring(0, 7) === "/search",
         setUnreadConversationsCount,
         user.uid
       );
 
       newNotificationsListenerUnsubscribe = getNotifications(
-        componentIsMounted,
+        isMounted,
         setNotifications,
         user
       );
@@ -80,7 +80,6 @@ function Header({ navigate }) {
         newNotificationsListenerUnsubscribe();
       if (newConversationsListenerUnsubscribe)
         newConversationsListenerUnsubscribe();
-      componentIsMounted.current = false;
     };
   }, [location, user]);
 

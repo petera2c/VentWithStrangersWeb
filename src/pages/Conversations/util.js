@@ -1,4 +1,4 @@
-import firebase from 'firebase/compat/app';
+import firebase from "firebase/compat/app";
 import db from "../../config/firebase";
 
 import { getEndAtValueTimestamp, getIsUserOnline } from "../../util";
@@ -8,9 +8,9 @@ export const deleteConversation = async (
   setConversations,
   userID
 ) => {
-  setConversations(oldConversations => {
+  setConversations((oldConversations) => {
     const deleteIndex = oldConversations.findIndex(
-      conversation => conversation.id === conversationID
+      (conversation) => conversation.id === conversationID
     );
     oldConversations.splice(deleteIndex, 1);
     return [...oldConversations];
@@ -20,7 +20,7 @@ export const deleteConversation = async (
     .collection("conversations")
     .doc(conversationID)
     .update({
-      members: firebase.firestore.FieldValue.arrayRemove(userID)
+      members: firebase.firestore.FieldValue.arrayRemove(userID),
     });
 
   alert("Conversation deleted!");
@@ -33,9 +33,9 @@ export const deleteMessage = async (conversationID, messageID, setMessages) => {
     .doc(messageID)
     .delete();
 
-  setMessages(messages => {
+  setMessages((messages) => {
     messages.splice(
-      messages.findIndex(message => message.id === messageID),
+      messages.findIndex((message) => message.id === messageID),
       1
     );
     return [...messages];
@@ -60,11 +60,11 @@ export const getConversationBasicData = async (
     .get();
 
   if (userBasicInfo.data() && userBasicInfo.data().displayName) {
-    getIsUserOnline(isUserOnline => {
-      setConversationsBasicDatas(currentUsersBasicInfo => {
+    getIsUserOnline((isUserOnline) => {
+      setConversationsBasicDatas((currentUsersBasicInfo) => {
         currentUsersBasicInfo[conversation.id] = {
           ...userBasicInfo.data(),
-          isUserOnline
+          isUserOnline,
         };
         return { ...currentUsersBasicInfo };
       });
@@ -90,7 +90,7 @@ export const messageListener = (
     .orderBy("server_timestamp", "desc")
     .limit(1)
     .onSnapshot(
-      querySnapshot => {
+      (querySnapshot) => {
         if (first) {
           first = false;
         } else if (querySnapshot.docs && querySnapshot.docs[0]) {
@@ -98,13 +98,13 @@ export const messageListener = (
             querySnapshot.docChanges()[0].type === "added" ||
             querySnapshot.docChanges()[0].type === "removed"
           ) {
-            setMessages(oldMessages => [
+            setMessages((oldMessages) => [
               {
                 ...querySnapshot.docs[0].data(),
                 id: querySnapshot.docs[0].id,
-                doc: querySnapshot.docs[0]
+                doc: querySnapshot.docs[0],
               },
-              ...oldMessages
+              ...oldMessages,
             ]);
             setTimeout(() => {
               scrollToBottom();
@@ -112,13 +112,13 @@ export const messageListener = (
           }
         }
       },
-      err => {}
+      (err) => {}
     );
   return unsubscribe;
 };
 
 export const getConversation = async (
-  componentIsMounted,
+  isMounted,
   conversationID,
   setConversations,
   userID
@@ -129,12 +129,12 @@ export const getConversation = async (
     .get();
   if (!conversationDoc.exists) return;
 
-  if (componentIsMounted.current)
-    setConversations(oldConversations => {
+  if (isMounted())
+    setConversations((oldConversations) => {
       oldConversations.push({
         id: conversationDoc.id,
         ...conversationDoc.data(),
-        doc: conversationDoc
+        doc: conversationDoc,
       });
       return oldConversations;
     });
@@ -158,12 +158,13 @@ export const getConversations = async (
 
   let newConversations = [];
   conversationsQuerySnapshot.docs.forEach((item, i) => {
-    if (conversations.find(conversation => conversation.id === item.id)) return;
+    if (conversations.find((conversation) => conversation.id === item.id))
+      return;
 
     const temp = {
       id: item.id,
       ...item.data(),
-      doc: conversationsQuerySnapshot.docs[i]
+      doc: conversationsQuerySnapshot.docs[i],
     };
 
     newConversations.push(temp);
@@ -205,7 +206,7 @@ export const getMessages = async (
         scrollToBottom();
       }, 200);
     } else {
-      setMessages(oldMessages => {
+      setMessages((oldMessages) => {
         if (oldMessages) return [...oldMessages, ...newMessages];
         else return newMessages;
       });
@@ -227,16 +228,16 @@ export const mostRecentConversationListener = (
     .where("last_updated", ">=", firebase.firestore.Timestamp.now().toMillis())
     .orderBy("last_updated", "desc")
     .limit(1)
-    .onSnapshot(querySnapshot => {
+    .onSnapshot((querySnapshot) => {
       const conversationDoc = querySnapshot.docs[0];
 
       if (first) {
         first = false;
       } else if (conversationDoc) {
         if (currentConversations && currentConversations.length > 0) {
-          setConversations(oldConversations => {
+          setConversations((oldConversations) => {
             const isConversationAlreadyListening = oldConversations.some(
-              obj => obj.id === conversationDoc.id
+              (obj) => obj.id === conversationDoc.id
             );
 
             if (!isConversationAlreadyListening)
@@ -244,9 +245,9 @@ export const mostRecentConversationListener = (
                 {
                   doc: conversationDoc,
                   id: conversationDoc.id,
-                  ...conversationDoc.data()
+                  ...conversationDoc.data(),
                 },
-                ...oldConversations
+                ...oldConversations,
               ];
             else return oldConversations;
           });
@@ -271,7 +272,7 @@ export const sendMessage = async (conversationID, message, userID) => {
     .add({
       body: message,
       server_timestamp: firebase.firestore.Timestamp.now().toMillis(),
-      userID
+      userID,
     });
 };
 
@@ -282,8 +283,8 @@ export const setConversationIsTyping = async (conversationID, userID) => {
     .set(
       {
         isTyping: {
-          [userID]: firebase.firestore.Timestamp.now().toMillis()
-        }
+          [userID]: firebase.firestore.Timestamp.now().toMillis(),
+        },
       },
       { merge: true }
     );
@@ -297,17 +298,17 @@ export const conversationListener = (
   const unsubscribe = db
     .collection("conversations")
     .doc(currentConversation.id)
-    .onSnapshot(doc => {
+    .onSnapshot((doc) => {
       const updatedConversation = { ...doc.data(), id: doc.id };
 
-      setCurrentConversation(oldConversation => updatedConversation);
+      setCurrentConversation((oldConversation) => updatedConversation);
 
       if (
         currentConversation.last_updated !== updatedConversation.last_updated
       ) {
-        setConversations(oldConversations => {
+        setConversations((oldConversations) => {
           const indexOfUpdatedConversation = oldConversations.findIndex(
-            conversation => conversation.id === updatedConversation.id
+            (conversation) => conversation.id === updatedConversation.id
           );
 
           oldConversations[indexOfUpdatedConversation] = updatedConversation;
