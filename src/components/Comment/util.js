@@ -1,26 +1,20 @@
 import React from "react";
-import firebase from 'firebase/compat/app';
+import firebase from "firebase/compat/app";
 import db from "../../config/firebase";
 
 export const getComment = async (commentID, setComment, ventID) => {
-  const doc = await db
-    .collection("comments")
-    .doc(commentID)
-    .get();
+  const doc = await db.collection("comments").doc(commentID).get();
   const comment = doc.data();
 
   if (comment) setComment({ id: doc.id, ...comment });
 };
 export const deleteComment = async (commentID, setComments) => {
-  let res = await db
-    .collection("comments")
-    .doc(commentID)
-    .delete();
+  await db.collection("comments").doc(commentID).delete();
 
   if (setComments)
-    setComments(comments => {
+    setComments((comments) => {
       comments.splice(
-        comments.findIndex(comment => comment.id === commentID),
+        comments.findIndex((comment) => comment.id === commentID),
         1
       );
       return [...comments];
@@ -29,20 +23,17 @@ export const deleteComment = async (commentID, setComments) => {
 };
 
 export const editComment = async (commentID, commentString, setComments) => {
-  await db
-    .collection("comments")
-    .doc(commentID)
-    .set(
-      {
-        text: commentString,
-        last_updated: firebase.firestore.Timestamp.now().toMillis()
-      },
-      { merge: true }
-    );
+  await db.collection("comments").doc(commentID).set(
+    {
+      text: commentString,
+      last_updated: firebase.firestore.Timestamp.now().toMillis(),
+    },
+    { merge: true }
+  );
 
-  setComments(comments => {
+  setComments((comments) => {
     const commentIndex = comments.findIndex(
-      comment => comment.id === commentID
+      (comment) => comment.id === commentID
     );
     comments[commentIndex].text = commentString;
     setComments([...comments]);
@@ -84,11 +75,10 @@ export const reportComment = async (option, userID, commentID, ventID) => {
   );
 };
 
-export const swapTags = commentText => {
+export const swapTags = (commentText) => {
   if (!commentText) return;
   const regexFull = /@\[[\x21-\x5A|\x61-\x7A|\x5f]+\]\([\x21-\x5A|\x61-\x7A]+\)/gi;
   const regexDisplay = /\[[\x21-\x5A|\x61-\x7A|\x5f]+\]/gi;
-  const tags = commentText.match(regexFull) || [];
 
   let listOfTaggedDisplayNames = [];
 
@@ -103,7 +93,7 @@ export const swapTags = commentText => {
       listOfTaggedDisplayNames.push({
         start: index,
         end: possibleTag.length + index,
-        value: displayTag
+        value: displayTag,
       });
       return displayNameArray[0];
     } else return possibleTag;
@@ -118,7 +108,7 @@ export const swapTags = commentText => {
             commentText.slice(0, obj.start),
             <span className="mentions__mention" key={index}>
               {obj.value}
-            </span>
+            </span>,
           ];
         } else {
           return [
@@ -128,14 +118,14 @@ export const swapTags = commentText => {
             ),
             <span className="mentions__mention" key={index}>
               {obj.value}
-            </span>
+            </span>,
           ];
         }
       }),
       commentText.slice(
         listOfTaggedDisplayNames[listOfTaggedDisplayNames.length - 1].end,
         commentText.length
-      )
+      ),
     ];
   }
 };

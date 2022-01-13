@@ -4,8 +4,6 @@ import moment from "moment-timezone";
 import Container from "../containers/Container";
 import Text from "../views/Text";
 
-import Button from "../views/Button";
-
 function NotificationList({ notifications }) {
   return (
     <Container className="column x-fill">

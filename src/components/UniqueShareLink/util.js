@@ -1,8 +1,8 @@
 import db from "../../config/firebase";
 
-export const createShareLink = secondUID => {
+export const createShareLink = (secondUID) => {
   let link = "https://www.ventwithstrangers.com?referral=" + secondUID;
-  if (process.env.NODE_ENV == "development")
+  if (process.env.NODE_ENV === "development")
     link = "http://localhost:3000?referral=" + secondUID;
 
   return link;

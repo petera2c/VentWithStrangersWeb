@@ -37,13 +37,11 @@ function Conversations() {
   useEffect(() => {
     let newMessageListenerUnsubscribe;
 
-    if (isMounted()) {
-    }
-
-    newMessageListenerUnsubscribe = mostRecentConversationListener(
-      setConversations,
-      user.uid
-    );
+    if (user)
+      newMessageListenerUnsubscribe = mostRecentConversationListener(
+        setConversations,
+        user.uid
+      );
 
     if (user) {
       getConversations(

@@ -13,7 +13,7 @@ import { isMobileOrTablet } from "../../../util";
 import "./style.css";
 
 function Page(props) {
-  const { children, className, homePage, testMode, user } = props;
+  const { children, className, testMode } = props;
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -22,7 +22,7 @@ function Page(props) {
       ReactGA.pageview(pathname);
     }
     window.scrollTo(0, 0);
-  }, []);
+  }, [pathname]);
 
   const checkPropsVariables = (activePage) => {
     let { title, description, image, style } = props; // Variables

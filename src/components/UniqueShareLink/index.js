@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import { Button, message, Space } from "antd";
 
 import { createShareLink, getSecondUID } from "./util";
 
 function UniqueShareLink({ user }) {
   const [secondUID, setSecondUID] = useState("");
-  const location = useLocation();
 
   useEffect(() => {
     if (user) getSecondUID(setSecondUID, user.uid);
-  }, []);
+  }, [user]);
 
   return (
     <Space align="start" className="x-fill">

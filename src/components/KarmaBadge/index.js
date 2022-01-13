@@ -10,15 +10,13 @@ import Container from "../containers/Container";
 function KarmaBadge({ karma, noOnClick }) {
   const navigate = useNavigate();
 
-  const title =
-    "Karma Badges are awarded based on Karma Points. Get Karma Points when your Vent or comment gets upvoted or when you upvote a Vent or comment. Lose Karma points if you get reported for a valid reason.";
   let karmaColor = "";
   if (karma >= 5000)
     return (
       <Tooltip title={karma + " Karma Points"}>
         <Container
           className="clickable"
-          onClick={e => {
+          onClick={(e) => {
             if (noOnClick) return;
             e.stopPropagation();
             e.preventDefault();
@@ -41,7 +39,7 @@ function KarmaBadge({ karma, noOnClick }) {
         <span>
           <Container
             className="clickable"
-            onClick={e => {
+            onClick={(e) => {
               if (noOnClick) return;
 
               e.stopPropagation();

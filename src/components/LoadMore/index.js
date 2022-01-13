@@ -1,8 +1,5 @@
 import React, { useEffect } from "react";
 
-import { faFire } from "@fortawesome/pro-solid-svg-icons/faFire";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import Container from "../../components/containers/Container";
 import LoadingHeart from "../loaders/Heart";
 

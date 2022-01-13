@@ -1,14 +1,13 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import {
   CardElement,
   Elements,
-  ElementsConsumer
+  ElementsConsumer,
 } from "@stripe/react-stripe-js";
 
 class CheckoutForm extends React.Component {
-  handleSubmit = async event => {
+  handleSubmit = async (event) => {
     event.preventDefault();
     const { stripe, elements } = this.props;
 
@@ -18,7 +17,7 @@ class CheckoutForm extends React.Component {
 
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
-      card: elements.getElement(CardElement)
+      card: elements.getElement(CardElement),
     });
   };
 
