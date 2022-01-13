@@ -143,6 +143,14 @@ function Conversations() {
                 Can not find this conversation!
               </h1>
             )}
+          {!activeConversation && user && user.emailVerified && (
+            <Link className="grey-1 tac pa32" to="online-users">
+              <h4 className="tac">
+                Check your messages from friends on Vent With Strangers,{" "}
+              </h4>
+              <h1 className="blue">See Who is Online :)</h1>
+            </Link>
+          )}
           {(!user || (user && !user.emailVerified)) && (
             <h4
               className="button-1 grey-1 tac pa32"
