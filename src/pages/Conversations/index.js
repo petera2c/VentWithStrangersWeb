@@ -144,7 +144,7 @@ function Conversations() {
               </h1>
             )}
           {!activeConversation && user && user.emailVerified && (
-            <Link className="grey-1 tac pa32" to="online-users">
+            <Link className="grey-1 tac pa32" to="/online-users">
               <h4 className="tac">
                 Check your messages from friends on Vent With Strangers,{" "}
               </h4>
