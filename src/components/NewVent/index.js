@@ -112,11 +112,9 @@ function NewVentComponent({ miniVersion, ventID }) {
               }}
               onClick={() => setIsMinified(false)}
               placeholder={
-                "You can vent again in " +
                 (userVentTimeOut > 0
-                  ? formatSeconds(userVentTimeOut)
-                  : encouragingText) +
-                " :)"
+                  ? "You can vent again in " + formatSeconds(userVentTimeOut)
+                  : encouragingText) + " :)"
               }
               minRows={isMinified ? 1 : 3}
               value={description}
