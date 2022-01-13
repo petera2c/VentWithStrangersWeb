@@ -52,7 +52,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "BUILD_PATH='./functions/build' react-scripts build",
-    "deploy": "react-scripts build && firebase deploy"
+    "deploy": "BUILD_PATH='./functions/build' react-scripts build && firebase deploy"
   },
   "browserslist": {
     "production": [
