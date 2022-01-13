@@ -64,6 +64,10 @@
 
   --font-theme: "Nunito Sans";
 }
+
+.emoji-mart-preview {
+  display: none !important;
+}
 .blog h1 {
   color: var(--primary-font-color);
   margin-bottom: 16px;

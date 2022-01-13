@@ -227,6 +227,7 @@ function Chat({
             handleChange={(emoji) => {
               setMessageString(messageString + emoji);
             }}
+            top
           />
           <button
             className={
