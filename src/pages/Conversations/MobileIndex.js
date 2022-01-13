@@ -13,11 +13,7 @@ import Chat from "./chat";
 
 import { useIsMounted, userSignUpProgress } from "../../util";
 
-import {
-  getConversation,
-  getConversations,
-  mostRecentConversationListener,
-} from "./util";
+import { getConversations, mostRecentConversationListener } from "./util";
 
 import "./style.css";
 
@@ -39,33 +35,19 @@ function MobileConversations() {
   useEffect(() => {
     let newMessageListenerUnsubscribe;
 
-    if (newMessageListenerUnsubscribe) newMessageListenerUnsubscribe();
+    if (isMounted()) {
+    }
+
+    newMessageListenerUnsubscribe = mostRecentConversationListener(
+      setConversations,
+      user.uid
+    );
 
     if (user) {
       getConversations(
         conversations,
         setActiveConversation,
         (newConversations) => {
-          newMessageListenerUnsubscribe = mostRecentConversationListener(
-            newConversations,
-            setConversations,
-            user.uid
-          );
-
-          if (
-            search &&
-            !newConversations.find(
-              (conversation) => conversation.id === activeConversation
-            )
-          ) {
-            getConversation(
-              isMounted,
-              activeConversation,
-              setConversations,
-              user.uid
-            );
-          }
-
           if (
             newConversations.length % 5 !== 0 ||
             newConversations.length === 0
@@ -73,6 +55,13 @@ function MobileConversations() {
             setCanLoadMore(false);
 
           setConversations(newConversations);
+
+          if (
+            !activeConversation &&
+            newConversations &&
+            newConversations.length !== 0
+          )
+            setActiveConversation(newConversations[0].id);
         },
         user.uid
       );
@@ -81,7 +70,7 @@ function MobileConversations() {
     return () => {
       if (newMessageListenerUnsubscribe) newMessageListenerUnsubscribe();
     };
-  }, [activeConversation, conversations, isMounted, search, user]);
+  }, []);
 
   return (
     <Page

@@ -106,18 +106,14 @@ function Vent({
       if (setDescription && newVent && newVent.description && isMounted())
         setDescription(newVent.description);
 
-      console.log("going");
       getUserBasicInfo((author) => {
-        console.log(isMounted());
-        if (isMounted()) {
-          console.log("here");
-          setAuthor(author);
-        }
+        if (isMounted()) setAuthor(author);
       }, newVent.userID);
 
       getIsUserOnline((isUserOnline) => {
         if (isMounted()) setIsUserOnline(isUserOnline);
       }, newVent.userID);
+
       if (isMounted()) setVent(newVent);
     }, vent.id);
 
@@ -298,7 +294,7 @@ function Vent({
           </SmartLink>
           <SmartLink
             className={
-              "main-container column border-bottom py16 px32 " +
+              "main-container column border-bottom pa16 " +
               (disablePostOnClick ? "" : "clickable")
             }
             disablePostOnClick={disablePostOnClick}
@@ -327,7 +323,7 @@ function Vent({
           {!searchPreviewMode && (
             <Container
               className={
-                "relative wrap justify-between pt16 px32 " +
+                "relative wrap justify-between pa16 " +
                 (!searchPreviewMode && displayCommentField2
                   ? "border-bottom"
                   : "")

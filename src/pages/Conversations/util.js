@@ -100,8 +100,8 @@ export const messageListener = (
           ) {
             setMessages((oldMessages) => [
               {
-                ...querySnapshot.docs[0].data(),
                 id: querySnapshot.docs[0].id,
+                ...querySnapshot.docs[0].data(),
                 doc: querySnapshot.docs[0],
               },
               ...oldMessages,
@@ -115,29 +115,6 @@ export const messageListener = (
       (err) => {}
     );
   return unsubscribe;
-};
-
-export const getConversation = async (
-  isMounted,
-  conversationID,
-  setConversations,
-  userID
-) => {
-  const conversationDoc = await db
-    .collection("conversations")
-    .doc(conversationID)
-    .get();
-  if (!conversationDoc.exists) return;
-
-  if (isMounted())
-    setConversations((oldConversations) => {
-      oldConversations.push({
-        id: conversationDoc.id,
-        ...conversationDoc.data(),
-        doc: conversationDoc,
-      });
-      return oldConversations;
-    });
 };
 
 export const getConversations = async (
@@ -161,13 +138,11 @@ export const getConversations = async (
     if (conversations.find((conversation) => conversation.id === item.id))
       return;
 
-    const temp = {
+    newConversations.push({
       id: item.id,
       ...item.data(),
       doc: conversationsQuerySnapshot.docs[i],
-    };
-
-    newConversations.push(temp);
+    });
   });
 
   setConversations(newConversations);
@@ -217,7 +192,6 @@ export const getMessages = async (
 };
 
 export const mostRecentConversationListener = (
-  currentConversations,
   setConversations,
   userID,
   first = true
@@ -234,24 +208,22 @@ export const mostRecentConversationListener = (
       if (first) {
         first = false;
       } else if (conversationDoc) {
-        if (currentConversations && currentConversations.length > 0) {
-          setConversations((oldConversations) => {
-            const isConversationAlreadyListening = oldConversations.some(
-              (obj) => obj.id === conversationDoc.id
-            );
+        setConversations((oldConversations) => {
+          const isConversationAlreadyListening = oldConversations.some(
+            (obj) => obj.id === conversationDoc.id
+          );
 
-            if (!isConversationAlreadyListening)
-              return [
-                {
-                  doc: conversationDoc,
-                  id: conversationDoc.id,
-                  ...conversationDoc.data(),
-                },
-                ...oldConversations,
-              ];
-            else return oldConversations;
-          });
-        }
+          if (!isConversationAlreadyListening)
+            return [
+              ...oldConversations,
+              {
+                doc: conversationDoc,
+                id: conversationDoc.id,
+                ...conversationDoc.data(),
+              },
+            ];
+          else return oldConversations;
+        });
       }
     });
   return unsubscribe;
@@ -277,6 +249,7 @@ export const sendMessage = async (conversationID, message, userID) => {
 };
 
 export const setConversationIsTyping = async (conversationID, userID) => {
+  return;
   await db
     .collection("conversations")
     .doc(conversationID)
@@ -290,18 +263,12 @@ export const setConversationIsTyping = async (conversationID, userID) => {
     );
 };
 
-export const conversationListener = (
-  currentConversation,
-  setConversations,
-  setCurrentConversation
-) => {
+export const conversationListener = (currentConversation, setConversations) => {
   const unsubscribe = db
     .collection("conversations")
     .doc(currentConversation.id)
     .onSnapshot((doc) => {
-      const updatedConversation = { ...doc.data(), id: doc.id };
-
-      setCurrentConversation((oldConversation) => updatedConversation);
+      const updatedConversation = { id: doc.id, ...doc.data() };
 
       if (
         currentConversation.last_updated !== updatedConversation.last_updated
@@ -311,7 +278,10 @@ export const conversationListener = (
             (conversation) => conversation.id === updatedConversation.id
           );
 
-          oldConversations[indexOfUpdatedConversation] = updatedConversation;
+          for (let index in updatedConversation) {
+            oldConversations[indexOfUpdatedConversation][index] =
+              updatedConversation[index];
+          }
           oldConversations.sort((a, b) =>
             a.last_updated < b.last_updated ? 1 : -1
           );

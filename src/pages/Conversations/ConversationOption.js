@@ -1,31 +1,24 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment-timezone";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 import { faTrash } from "@fortawesome/pro-solid-svg-icons/faTrash";
 import { faUserLock } from "@fortawesome/pro-solid-svg-icons/faUserLock";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Button from "../../components/views/Button";
 import ConfirmAlertModal from "../../components/modals/ConfirmAlert";
 import Container from "../../components/containers/Container";
 import HandleOutsideClick from "../../components/containers/HandleOutsideClick";
 import KarmaBadge from "../../components/KarmaBadge";
 import MakeAvatar from "../../components/MakeAvatar";
-import Page from "../../components/containers/Page";
 
-import {
-  blockUser,
-  calculateKarma,
-  capitolizeFirstChar,
-  isMobileOrTablet
-} from "../../util";
+import { blockUser, calculateKarma, capitolizeFirstChar } from "../../util";
 import {
   deleteConversation,
   getConversationBasicData,
   conversationListener,
-  readConversation
+  readConversation,
 } from "./util";
 
 function ConversationOption({
@@ -36,7 +29,7 @@ function ConversationOption({
   setActiveConversation,
   setConversationsBasicDatas,
   setConversations,
-  userID
+  userID,
 }) {
   const navigate = useNavigate();
   const [blockModal, setBlockModal] = useState(false);
@@ -48,17 +41,15 @@ function ConversationOption({
     false
   );
 
-  const [currentConversation, setCurrentConversation] = useState(conversation);
-
   useEffect(() => {
     let conversationUpdatedListenerUnsubscribe;
 
-    getConversationBasicData(conversation, setConversationsBasicDatas, userID);
     conversationUpdatedListenerUnsubscribe = conversationListener(
-      currentConversation,
-      setConversations,
-      setCurrentConversation
+      conversation,
+      setConversations
     );
+
+    getConversationBasicData(conversation, setConversationsBasicDatas, userID);
 
     return () => {
       if (conversationUpdatedListenerUnsubscribe)
@@ -77,8 +68,8 @@ function ConversationOption({
         (isActive ? "bg-grey-2" : "")
       }
       onClick={() => {
-        setActiveConversation(currentConversation.id);
-        navigate("/conversations?" + currentConversation.id);
+        setActiveConversation(conversation.id);
+        navigate("/conversations?" + conversation.id);
       }}
     >
       <Container className="flex-fill column ov-hidden">
@@ -108,28 +99,25 @@ function ConversationOption({
             />
           )}
         </Container>
-        {currentConversation.last_message && (
+        {conversation.last_message && (
           <p>
-            {currentConversation.last_message.length > 40
-              ? currentConversation.last_message.substring(0, 40) + "..."
-              : currentConversation.last_message}{" "}
+            {conversation.last_message.length > 40
+              ? conversation.last_message.substring(0, 40) + "..."
+              : conversation.last_message}{" "}
             ·{" "}
-            {moment(currentConversation.last_updated)
-              .subtract(1, "minute")
-              .fromNow()}
+            {moment(conversation.last_updated).subtract(1, "minute").fromNow()}
           </p>
         )}
       </Container>
       <FontAwesomeIcon
-        className="clickable grey-9 px8"
+        className="clickable grey-9"
         icon={faEllipsisV}
-        onClick={e => {
+        onClick={(e) => {
           e.stopPropagation();
           if (!handleOutsideClickCalled)
             setConversationOptions(!conversationOptions);
         }}
       />
-
       {conversationOptions && (
         <div className="absolute top-100 pt4" style={{ zIndex: 1, right: "0" }}>
           <HandleOutsideClick
@@ -144,7 +132,7 @@ function ConversationOption({
             <Container className="column x-fill bg-white border-all px16 py8 br8">
               <Container
                 className="button-9 clickable align-center"
-                onClick={e => {
+                onClick={(e) => {
                   setDeleteConversationConfirm(true);
                   setConversationOptions(false);
                 }}
@@ -154,7 +142,7 @@ function ConversationOption({
               </Container>
               <Container
                 className="button-8 clickable align-center"
-                onClick={e => {
+                onClick={(e) => {
                   e.stopPropagation();
                   setBlockModal(!blockModal);
                 }}
@@ -171,7 +159,7 @@ function ConversationOption({
           close={() => setDeleteConversationConfirm(false)}
           message="Deleting this conversation will be permanent and there will be no way to recover these messages once you have taken this action. Are you sure you would like to delete this conversation and all of your messages associated with it?"
           submit={() =>
-            deleteConversation(currentConversation.id, setConversations, userID)
+            deleteConversation(conversation.id, setConversations, userID)
           }
           title="Delete Conversation"
         />
@@ -183,8 +171,9 @@ function ConversationOption({
           submit={() => {
             blockUser(
               userID,
-              currentConversation.members.find(memberID => {
-                if (memberID != userID) return memberID;
+              conversation.members.find((memberID) => {
+                if (memberID !== userID) return memberID;
+                else return undefined;
               })
             );
           }}

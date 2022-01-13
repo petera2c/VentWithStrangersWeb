@@ -15,11 +15,7 @@ import Chat from "./chat";
 
 import { isMobileOrTablet, useIsMounted, userSignUpProgress } from "../../util";
 
-import {
-  getConversation,
-  getConversations,
-  mostRecentConversationListener,
-} from "./util";
+import { getConversations, mostRecentConversationListener } from "./util";
 
 import "./style.css";
 
@@ -38,39 +34,22 @@ function Conversations() {
   const [canLoadMore, setCanLoadMore] = useState(true);
   const [starterModal, setStarterModal] = useState(!user);
 
-  if (conversations && conversations.length !== 0 && !activeConversation)
-    setActiveConversation(conversations[0].id);
-
   useEffect(() => {
     let newMessageListenerUnsubscribe;
 
-    if (newMessageListenerUnsubscribe) newMessageListenerUnsubscribe();
+    if (isMounted()) {
+    }
+
+    newMessageListenerUnsubscribe = mostRecentConversationListener(
+      setConversations,
+      user.uid
+    );
 
     if (user) {
       getConversations(
         conversations,
         setActiveConversation,
         (newConversations) => {
-          newMessageListenerUnsubscribe = mostRecentConversationListener(
-            newConversations,
-            setConversations,
-            user.uid
-          );
-
-          if (
-            search &&
-            !newConversations.find(
-              (conversation) => conversation.id === activeConversation
-            )
-          ) {
-            getConversation(
-              isMounted,
-              activeConversation,
-              setConversations,
-              user.uid
-            );
-          }
-
           if (
             newConversations.length % 5 !== 0 ||
             newConversations.length === 0
@@ -78,6 +57,13 @@ function Conversations() {
             setCanLoadMore(false);
 
           setConversations(newConversations);
+
+          if (
+            !activeConversation &&
+            newConversations &&
+            newConversations.length !== 0
+          )
+            setActiveConversation(newConversations[0].id);
         },
         user.uid
       );
@@ -86,7 +72,7 @@ function Conversations() {
     return () => {
       if (newMessageListenerUnsubscribe) newMessageListenerUnsubscribe();
     };
-  }, [activeConversation, conversations, isMounted, search, user]);
+  }, []);
 
   return (
     <Page
@@ -159,25 +145,22 @@ function Conversations() {
                 Can not find this conversation!
               </h1>
             )}
-          {!conversations.find(
-            (conversation) => conversation.id === activeConversation
-          ) &&
-            !activeConversation && (
-              <h4
-                className="button-1 grey-1 tac pa32"
-                onClick={() => {
-                  if (!user) setStarterModal(true);
-                  else {
-                    userSignUpProgress(user);
-                  }
-                }}
-              >
-                Check your messages from friends on Vent With Strangers,
-                <span className="blue">
-                  {user ? " verify your email!" : " get started here!"}
-                </span>
-              </h4>
-            )}
+          {(!user || (user && !user.emailVerified)) && (
+            <h4
+              className="button-1 grey-1 tac pa32"
+              onClick={() => {
+                if (!user) setStarterModal(true);
+                else {
+                  userSignUpProgress(user);
+                }
+              }}
+            >
+              Check your messages from friends on Vent With Strangers,
+              <span className="blue">
+                {user ? " verify your email!" : " get started here!"}
+              </span>
+            </h4>
+          )}
           {conversations.find(
             (conversation) => conversation.id === activeConversation
           ) && (

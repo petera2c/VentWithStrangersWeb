@@ -1,16 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import moment from "moment-timezone";
-import firebase from 'firebase/compat/app';
-import { Button, Space } from "antd";
+import firebase from "firebase/compat/app";
+import { Button } from "antd";
 
-import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
-import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons/faExclamationTriangle";
-import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
-import { faTrash } from "@fortawesome/pro-solid-svg-icons/faTrash";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-import ConfirmAlertModal from "../../components/modals/ConfirmAlert";
 import Container from "../../components/containers/Container";
 import Emoji from "../../components/Emoji";
 import KarmaBadge from "../../components/KarmaBadge";
@@ -20,13 +12,13 @@ import Message from "./message";
 import {
   calculateKarma,
   capitolizeFirstChar,
-  isMobileOrTablet
+  isMobileOrTablet,
 } from "../../util";
 import {
   getMessages,
   messageListener,
   sendMessage,
-  setConversationIsTyping
+  setConversationIsTyping,
 } from "./util";
 
 let typingTimer;
@@ -36,11 +28,11 @@ function Chat({
   conversation,
   conversationPartnerData = {},
   setActiveConversation,
-  userID
+  userID,
 }) {
   const [value, setValue] = useState(0); // integer state
 
-  const checkIsUserTyping = isTyping => {
+  const checkIsUserTyping = (isTyping) => {
     if (typingTimer2) clearTimeout(typingTimer2);
     if (isTyping) {
       for (let memberID in isTyping) {
@@ -50,7 +42,7 @@ function Chat({
             4000
           ) {
             typingTimer2 = setTimeout(() => {
-              setValue(value => value + 1);
+              setValue((value) => value + 1);
             }, 4000);
             return true;
           } else return false;
@@ -66,7 +58,7 @@ function Chat({
         block: "nearest",
         inline: "center",
         behavior: "smooth",
-        alignToTop: false
+        alignToTop: false,
       });
   };
 
@@ -77,11 +69,9 @@ function Chat({
   const [isUserCurrentlyTyping, setIsUserCurrentlyTyping] = useState(false);
   let messageDivs = [];
 
-  let messageListenerUnsubscribe;
-
   useEffect(() => {
-    setCanLoadMore(true);
-    setMessages([]);
+    let messageListenerUnsubscribe;
+
     getMessages(
       conversation.id,
       messages,
@@ -90,7 +80,6 @@ function Chat({
       setMessages
     );
 
-    if (messageListenerUnsubscribe) messageListenerUnsubscribe();
     messageListenerUnsubscribe = messageListener(
       conversation.id,
       scrollToBottom,
@@ -105,7 +94,7 @@ function Chat({
 
   let conversationPartnerID;
   if (conversation.members && conversation.members.length === 2)
-    conversationPartnerID = conversation.members.find(memberID => {
+    conversationPartnerID = conversation.members.find((memberID) => {
       return memberID !== userID;
     });
 
@@ -183,7 +172,7 @@ function Chat({
       <Container
         className="ease-in-out x-fill"
         style={{
-          maxHeight: checkIsUserTyping(conversation.isTyping) ? "56px" : "0"
+          maxHeight: checkIsUserTyping(conversation.isTyping) ? "56px" : "0",
         }}
       >
         <Container className="ov-hidden full-center pa16">
@@ -201,7 +190,7 @@ function Chat({
             (isMobileOrTablet() ? "" : "align-center pr16")
           }
           style={{
-            minHeight: isMobileOrTablet() ? "" : "80px"
+            minHeight: isMobileOrTablet() ? "" : "80px",
           }}
         >
           <textarea
@@ -210,7 +199,7 @@ function Chat({
               "send-message-textarea light-scrollbar " +
               (isMobileOrTablet() ? "" : "pa16")
             }
-            onChange={event => {
+            onChange={(event) => {
               if (event.target.value === "\n") return;
               setMessageString(event.target.value);
 
@@ -224,7 +213,7 @@ function Chat({
                 setConversationIsTyping(conversationID, userID);
               }
             }}
-            onKeyDown={e => {
+            onKeyDown={(e) => {
               if (e.key === "Enter") {
                 if (!messageString) return;
                 sendMessage(conversation.id, messageString, userID);
@@ -235,7 +224,7 @@ function Chat({
             value={messageString}
           />
           <Emoji
-            handleChange={emoji => {
+            handleChange={(emoji) => {
               setMessageString(messageString + emoji);
             }}
           />
