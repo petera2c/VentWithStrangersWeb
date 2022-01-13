@@ -85,6 +85,10 @@
   width: 24px;
   height: 24px;
 }
+.round-icon.large {
+  width: 48px !important;
+  height: 48px;
+}
 
 .x-fill {
   width: 100%;

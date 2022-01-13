@@ -8,8 +8,8 @@ import { capitolizeFirstChar } from "../../util";
 function MakeAvatar({ displayName, size, userBasicInfo }) {
   if (!displayName) displayName = "Anonymous";
 
-  let width = "48px ";
-  let height = "48px ";
+  let width = "48px";
+  let height = "48px";
   if (size === "large") {
     width = "96px";
     height = "96px";
@@ -37,8 +37,8 @@ function MakeAvatar({ displayName, size, userBasicInfo }) {
       <Container
         className="bg-blue full-center br-round"
         style={{
-          width: "84px",
-          height: "84px",
+          width,
+          height,
         }}
       >
         <h1 className="white fs-40">{capitolizeFirstChar(displayName[0])}</h1>
@@ -46,7 +46,10 @@ function MakeAvatar({ displayName, size, userBasicInfo }) {
     );
   else
     return (
-      <h6 className="round-icon bg-blue white mr8" style={{ width, height }}>
+      <h6
+        className="round-icon large bg-blue white mr8"
+        style={{ width, height }}
+      >
         {capitolizeFirstChar(displayName[0])}
       </h6>
     );
