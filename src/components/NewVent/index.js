@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { message, Space } from "antd";
 import TextArea from "react-textarea-autosize";
 import { useNavigate } from "react-router-dom";
+import moment from "moment-timezone";
 
 import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -39,10 +40,6 @@ function NewVentComponent({ miniVersion, ventID }) {
   const [title, setTitle] = useState("");
   const [userVentTimeOut, setUserVentTimeOut] = useState(false);
 
-  let userVentTimeOutFormatted;
-  if (userVentTimeOut)
-    userVentTimeOutFormatted = userVentTimeOut.format("hh:mm:ss");
-
   useEffect(() => {
     if (ventID) getVent(setDescription, setTags, setTitle, ventID);
     if (user)
@@ -69,6 +66,20 @@ function NewVentComponent({ miniVersion, ventID }) {
     return true;
   };
 
+  const formatSeconds = (userVentTimeOut) => {
+    const hours = Math.floor(userVentTimeOut / 3600);
+    const minutes = Math.floor((userVentTimeOut % 3600) / 60);
+    const seconds = (userVentTimeOut % 3600) % 60;
+
+    return (
+      (hours < 10 ? "0" + hours : hours) +
+      ":" +
+      (minutes < 10 ? "0" + minutes : minutes) +
+      ":" +
+      (seconds < 10 ? "0" + seconds : seconds)
+    );
+  };
+
   return (
     <HandleOutsideClick
       className="x-fill column bg-white br8"
@@ -77,13 +88,13 @@ function NewVentComponent({ miniVersion, ventID }) {
       }}
     >
       <Space className="pa32 br4" direction="vertical" size="large">
-        {!miniVersion && userVentTimeOut && !ventID && (
+        {!miniVersion && userVentTimeOut > 0 && !ventID && (
           <Space direction="vertical">
             <p className="tac">
               To avoid spam, people can only post once every few hours. With
               more Karma Points you can post more often. Please come back in
             </p>
-            <h1 className="tac">{userVentTimeOutFormatted}</h1>
+            <h1 className="tac">{formatSeconds(userVentTimeOut)}</h1>
           </Space>
         )}
         <Space className="x-fill" direction="vertical">
@@ -101,9 +112,11 @@ function NewVentComponent({ miniVersion, ventID }) {
               }}
               onClick={() => setIsMinified(false)}
               placeholder={
-                userVentTimeOut
-                  ? selectEncouragingMessage(userVentTimeOutFormatted)
-                  : encouragingText
+                "You can vent again in " +
+                (userVentTimeOut > 0
+                  ? formatSeconds(userVentTimeOut)
+                  : encouragingText) +
+                " :)"
               }
               minRows={isMinified ? 1 : 3}
               value={description}

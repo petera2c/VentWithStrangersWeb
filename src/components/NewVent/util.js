@@ -5,9 +5,8 @@ import db from "../../config/firebase";
 export const countdown = (isMounted, setUserVentTimeOut, ventTimeout) => {
   if (isMounted()) {
     setUserVentTimeOut((oldUserVentTimeOut) => {
-      if (oldUserVentTimeOut)
-        return new moment(oldUserVentTimeOut).subtract(1, "seconds");
-      else return new moment(ventTimeout);
+      if (oldUserVentTimeOut) return oldUserVentTimeOut - 1;
+      else return Math.round(new moment(ventTimeout).diff(new moment()) / 1000);
     });
   }
 };
@@ -57,10 +56,7 @@ export const saveVent = async (callback, checks, ventObject, ventID, user) => {
   callback({ id: newVent.id ? newVent.id : ventID, title: ventObject.title });
 };
 
-export const selectEncouragingMessage = (userVentTimeOutFormatted) => {
-  if (userVentTimeOutFormatted)
-    return "You can vent again in " + userVentTimeOutFormatted + " :)";
-
+export const selectEncouragingMessage = () => {
   const nicePlaceholdersArray = [
     "Let it all out. You are not alone.",
     "What is going on in your life?",
