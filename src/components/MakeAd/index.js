@@ -7,7 +7,7 @@ function MakeAd({ banner, className, layoutKey, slot, userSubscription }) {
   if (banner) {
     if (!userSubscription && process.env.NODE_ENV === "production")
       return (
-        <Container className="x-fill column">
+        <Container className={"x-fill column " + className}>
           <AdSense.Google
             className="adsbygoogle"
             client="ca-pub-5185907024931065"
@@ -24,7 +24,7 @@ function MakeAd({ banner, className, layoutKey, slot, userSubscription }) {
     else
       return (
         <Container
-          className="full-center test3 br8"
+          className={"full-center test3 br8 " + className}
           style={{
             minWidth: "100px",
             width: "100%",
@@ -62,7 +62,7 @@ function MakeAd({ banner, className, layoutKey, slot, userSubscription }) {
     else
       return (
         <Container
-          className="full-center test3 br8"
+          className={"full-center test3 br8 " + className}
           style={{
             minWidth: "100px",
             width: "100%",

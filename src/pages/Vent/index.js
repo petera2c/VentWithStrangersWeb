@@ -7,6 +7,7 @@ import { UserContext } from "../../context";
 
 import Container from "../../components/containers/Container";
 import Page from "../../components/containers/Page";
+import SubscribeColumn from "../../components/SubscribeColumn";
 import UniqueShareLink from "../../components/UniqueShareLink";
 import Vent from "../../components/Vent";
 
@@ -48,53 +49,11 @@ function VentPage() {
   if (regexMatch) ventID = regexMatch;
 
   return (
-    <Page
-      description={description}
-      className="justify-start align-center bg-grey-2"
-      title={title}
-    >
-      <Container
-        className={isMobileOrTablet() ? "column align-center py16" : "py32"}
-      >
+    <Page className="pa16" description={description} title={title}>
+      <Container>
         {ventFound === false && <h4>Vent Not Found</h4>}
-        {!isMobileOrTablet() && (
-          <Container className="container ad column align-center">
-            {!userSubscription && process.env.NODE_ENV === "production" && (
-              <Container
-                className="sticky top-0 column x-fill"
-                style={{ top: "120px" }}
-              >
-                <Container className="x-fill mb8">
-                  <AdSense.Google
-                    className="adsbygoogle"
-                    client="ca-pub-5185907024931065"
-                    format=""
-                    responsive="true"
-                    slot="3872937497"
-                    style={{
-                      display: "block",
-                      minWidth: "100px",
-                      width: "100%",
-                      maxWidth: "1000px",
-                      minHeight: "100px",
-                      height: "240px",
-                      maxHeight: "800px",
-                    }}
-                  />
-                </Container>
-              </Container>
-            )}
-          </Container>
-        )}
         {ventFound === undefined && ventID && (
-          <Space
-            className={
-              "px16 " +
-              (isMobileOrTablet() ? "container mobile-full" : "container large")
-            }
-            direction="vertical"
-            size="middle"
-          >
+          <Space className="flex-fill" direction="vertical" size="middle">
             <Vent
               disablePostOnClick={true}
               displayCommentField
@@ -106,9 +65,7 @@ function VentPage() {
             />
           </Space>
         )}
-        <Container className="container ad column align-center">
-          {user && <UniqueShareLink user={user} />}
-        </Container>
+        <SubscribeColumn uniqueShareLink slot="" />
       </Container>
     </Page>
   );

@@ -4,20 +4,21 @@ import { Button, Space } from "antd";
 
 import Container from "../containers/Container";
 import MakeAd from "../MakeAd";
+import UniqueShareLink from "../UniqueShareLink";
 
 import { UserContext } from "../../context";
 
 import { isMobileOrTablet } from "../../util";
 
-function SubscribeColumn({ slot }) {
+function SubscribeColumn({ slot, uniqueShareLink }) {
   const { user, userSubscription } = useContext(UserContext);
   if (!userSubscription && !isMobileOrTablet())
     return (
       <Container className="container ad column pl16">
         <Container className="sticky top-0 column x-fill">
-          {user && (
+          {user && !uniqueShareLink && (
             <Space
-              className="x-fill full-center bg-white pa16 mb16 br8"
+              className="x-fill full-center bg-white pa16 br8"
               direction="vertical"
             >
               <h4 className="tac">Become a Subscriber</h4>
@@ -33,6 +34,7 @@ function SubscribeColumn({ slot }) {
               </Link>
             </Space>
           )}
+          {uniqueShareLink && <UniqueShareLink user={user} />}
           <MakeAd
             className="mt16"
             slot={slot}

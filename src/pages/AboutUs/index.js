@@ -11,8 +11,6 @@ import KarmaBadge from "../../components/KarmaBadge";
 import Page from "../../components/containers/Page";
 import SubscribeColumn from "../../components/SubscribeColumn";
 
-import { isMobileOrTablet } from "../../util";
-
 function AboutUsPage() {
   return (
     <Page
