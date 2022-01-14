@@ -53,10 +53,7 @@ function SideBarLink({ icon, link, onClick, pathname, text }) {
   if (onClick)
     return (
       <Container
-        className={
-          "x-fill align-center grid-1 button-4 clickable py8 " +
-          isPageActive("link", pathname)
-        }
+        className="x-fill align-center grid-1 button-4 clickable py8"
         onClick={onClick}
       >
         <Container className="flex x-fill full-center">
@@ -142,12 +139,14 @@ function Page(props) {
               pathname={pathname}
               text="Post a Vent"
             />
-            <SideBarLink
-              icon={faComments}
-              link="/conversations"
-              pathname={pathname}
-              text="Inbox"
-            />
+            {user && (
+              <SideBarLink
+                icon={faComments}
+                link="/conversations"
+                pathname={pathname}
+                text="Inbox"
+              />
+            )}
             <SideBarLink
               icon={faUsers}
               link="/make-friends"
@@ -157,44 +156,54 @@ function Page(props) {
 
             <MakeAd className="mt16" slot="4732645487" />
 
-            <SideBarLink
-              icon={faChartNetwork}
-              link={"/profile" + search}
-              pathname={pathname}
-              text="My Public Profile"
-            />
-            <SideBarLink
-              icon={faUser}
-              link="/account"
-              pathname={pathname}
-              text="Account"
-            />
-            <SideBarLink
-              icon={faUserAstronaut}
-              link="/avatar"
-              pathname={pathname}
-              text="Avatar"
-            />
-            <SideBarLink
-              icon={faCog}
-              link="/settings"
-              pathname={pathname}
-              text="Notifications / Settings"
-            />
+            {user && (
+              <SideBarLink
+                icon={faChartNetwork}
+                link="/profile"
+                pathname={pathname}
+                text="My Public Profile"
+              />
+            )}
+            {user && (
+              <SideBarLink
+                icon={faUser}
+                link="/account"
+                pathname={pathname}
+                text="Account"
+              />
+            )}
+            {user && (
+              <SideBarLink
+                icon={faUserAstronaut}
+                link="/avatar"
+                pathname={pathname}
+                text="Avatar"
+              />
+            )}
+            {user && (
+              <SideBarLink
+                icon={faCog}
+                link="/settings"
+                pathname={pathname}
+                text="Notifications / Settings"
+              />
+            )}
             <SideBarLink
               icon={faInfo}
               link="/site-info"
               pathname={pathname}
               text="Site Info"
             />
-            <SideBarLink
-              icon={faCog}
-              onClick={() => {
-                signOut(user.uid);
-              }}
-              pathname={pathname}
-              text="Sign Out"
-            />
+            {user && (
+              <SideBarLink
+                icon={faCog}
+                onClick={() => {
+                  signOut(user.uid);
+                }}
+                pathname={pathname}
+                text="Sign Out"
+              />
+            )}
           </Space>
         )}
         <Container

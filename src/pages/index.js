@@ -12,11 +12,9 @@ import { UserContext } from "../context";
 import Container from "../components/containers/Container";
 
 import AboutUsPage from "./AboutUs";
-import SettingsPage from "./Account/Settings";
-import AvatarPage from "./Account/Avatar";
 import AccountPage from "./Account/Account";
-import ProfilePage from "./Account/Profile";
 import AppDownloadPage from "./AppDownload";
+import AvatarPage from "./Account/Avatar";
 import ConversationsPage from "./Conversations";
 import FeedbackPage from "./Feedback";
 import FriendsPage from "./Friends";
@@ -26,7 +24,10 @@ import NotFoundPage from "./NotFound";
 import NotificationsPage from "./Notifications";
 import OnlineUsersPage from "./OnlineUsers";
 import PrivacyPolicyPage from "./PrivacyPolicy";
+import ProfilePage from "./Account/Profile";
 import SearchPage from "./Search";
+import SettingsPage from "./Account/Settings";
+import SignUpPage from "./SignUp";
 import SubscribePage from "./Subscribe";
 import SubSuccessPage from "./SubscriptionSuccess";
 import VentPage from "./Vent";
@@ -100,11 +101,13 @@ function RoutesComp() {
         {error && { error }}
         {!loading && !error && (
           <Routes>
-            <Route element={<NotFoundPage />} />
-            <Route path="" element={<VentsPage />} exact />
-            <Route path="account" element={<AccountPage />} exact />
+            <Route path="/*" element={<NotFoundPage />} />
+            <Route path="" element={<VentsPage />} />
+            {user && <Route path="account" element={<AccountPage />} />}
+            {!user && <Route path="account" element={<SignUpPage />} />}
             <Route path="app-downloads" element={<AppDownloadPage />} />
-            <Route path="avatar" element={<AvatarPage />} exact />
+            {user && <Route path="avatar" element={<AvatarPage />} />}
+            {!user && <Route path="avatar" element={<SignUpPage />} />}
             <Route path="conversations" element={<ConversationsPage />} />
             <Route path="feedback" element={<FeedbackPage />} />
             <Route path="friends" element={<FriendsPage />} />
@@ -119,7 +122,8 @@ function RoutesComp() {
             <Route path="profile" element={<ProfilePage />} />
             <Route path="recent" element={<VentsPage />} />
             <Route path="search" element={<SearchPage />} />
-            <Route path="settings" element={<SettingsPage />} exact />
+            {user && <Route path="settings" element={<SettingsPage />} />}
+            {!user && <Route path="settings" element={<SignUpPage />} />}
             <Route path="site-info" element={<AboutUsPage />} />
             <Route path="subscribe" element={<SubscribePage />} />
             <Route

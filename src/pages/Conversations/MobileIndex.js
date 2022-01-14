@@ -38,10 +38,11 @@ function MobileConversations() {
     if (isMounted()) {
     }
 
-    newMessageListenerUnsubscribe = mostRecentConversationListener(
-      setConversations,
-      user.uid
-    );
+    if (user)
+      newMessageListenerUnsubscribe = mostRecentConversationListener(
+        setConversations,
+        user.uid
+      );
 
     if (user) {
       getConversations(
