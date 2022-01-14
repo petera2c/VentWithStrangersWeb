@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import {
   CardElement,
@@ -6,13 +7,17 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { Button, Space } from "antd";
+import { Button, message, Space } from "antd";
 import axios from "axios";
 
 import Container from "../../components/containers/Container";
 import Page from "../../components/containers/Page";
 
+import { UserContext } from "../../context";
+
 const CheckoutForm = () => {
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();
 
@@ -28,7 +33,16 @@ const CheckoutForm = () => {
       card: elements.getElement(CardElement),
     });
 
-    axios.post("http://localhost:5002/subscribe", { paymentMethod, email: "" });
+    axios
+      .post("/subscribe", {
+        payment_method: paymentMethod.id,
+        email: user.email,
+      })
+      .then((res) => {
+        const { success } = res.data;
+        if (success) navigate("/subscription-successful");
+        else message.error(res.data.message);
+      });
   };
 
   return (
@@ -48,7 +62,11 @@ const CheckoutForm = () => {
   );
 };
 
-const stripePromise = loadStripe("pk_test_6pRNASCoBOKtIshFeQd4XMUh");
+const stripePromise = loadStripe(
+  window.location.hostname === "localhost"
+    ? "pk_test_C6VKqentibktzCQjTRZ9vOuY"
+    : "pk_live_fbteh655nQqpE4WEFr6fs5Pm"
+);
 
 const App = () => (
   <Page

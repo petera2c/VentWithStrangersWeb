@@ -8,7 +8,7 @@ const {
   amazonAccessKeyID,
   amazonSecretAccessKey,
   amazonBucket,
-} = require("../config/localKeys");
+} = require("../config/keys");
 
 const s3 = new AWS.S3({
   accessKeyId: amazonAccessKeyID,

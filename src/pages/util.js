@@ -1,6 +1,17 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/database";
+import db from "../config/firebase";
+
+export const getIsUserSubscribed = async (setUserSubscription, userID) => {
+  const userSubscriptionDoc = await db
+    .collection("user_subscription")
+    .doc(userID)
+    .get();
+
+  if (userSubscriptionDoc.exists && userSubscriptionDoc.data())
+    setUserSubscription(userSubscriptionDoc.data());
+};
 
 export const setUserOnlineStatus = async (status, uid) => {
   await firebase

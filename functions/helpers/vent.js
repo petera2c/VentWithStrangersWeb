@@ -4,8 +4,6 @@ const moment = require("moment-timezone");
 const { createNotification } = require("./notification");
 const { calculateKarma, createVentLink } = require("./util");
 
-const { webflowApiKey } = require("../config/localKeys");
-
 const VENT_LIKE_TRENDING_SCORE_INCREMENT = 24;
 
 const decreaseUserVentCounter = async () => {
@@ -50,19 +48,6 @@ const decreaseTrendingScore = async () => {
 };
 
 const newVentListener = async (doc, context) => {
-  // Initialize the API
-  /*
-  const api = new Webflow({ token: webflowApiKey });
-
-  const items = api.items(
-    { collectionId: "61c15b996c97cffafd29cc5d" },
-    { limit: 1 }
-  );
-  console.log(items);
-
-  items.then((i) => console.log(i));
-*/
-
   const vent = { id: doc.id, ...doc.data() };
 
   if (vent.server_timestamp > admin.firestore.Timestamp.now().toMillis()) {
@@ -194,11 +179,7 @@ const newVentReportListener = async (doc, context) => {
       report_counter: admin.firestore.FieldValue.increment(1),
     });
 
-  const ventDoc = await admin
-    .firestore()
-    .collection("vents")
-    .doc(ventID)
-    .get();
+  const ventDoc = await admin.firestore().collection("vents").doc(ventID).get();
 
   await admin
     .firestore()
@@ -211,13 +192,10 @@ const newVentReportListener = async (doc, context) => {
       { merge: true }
     );
 
-  await admin
-    .firestore()
-    .collection("admin_notifications")
-    .add({
-      ventID,
-      user_that_reported: userID,
-    });
+  await admin.firestore().collection("admin_notifications").add({
+    ventID,
+    user_that_reported: userID,
+  });
 };
 
 const ventDeleteListener = async (doc, context) => {

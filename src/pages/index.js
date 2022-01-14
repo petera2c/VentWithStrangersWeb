@@ -15,26 +15,32 @@ import AboutUsPage from "./AboutUs";
 import AccountPage from "./Account";
 import AppDownloadPage from "./AppDownload";
 import ConversationsPage from "./Conversations";
-import OnlineUsersPage from "./OnlineUsers";
 import FeedbackPage from "./Feedback";
 import FriendsPage from "./Friends";
 import MakeFriendsPage from "./MakeFriends";
 import NewVentPage from "./NewVent";
 import NotFoundPage from "./NotFound";
 import NotificationsPage from "./Notifications";
+import OnlineUsersPage from "./OnlineUsers";
 import PrivacyPolicyPage from "./PrivacyPolicy";
 import SearchPage from "./Search";
 import SubscribePage from "./Subscribe";
+import SubSuccessPage from "./SubscriptionSuccess";
 import VentPage from "./Vent";
 import VentsPage from "./Vents";
 import VerifiedEmailPage from "./EmailAuth/VerifiedEmail";
 
 import { getUserBasicInfo } from "../util";
-import { setIsUserOnlineToDatabase, setUserOnlineStatus } from "./util";
+import {
+  getIsUserSubscribed,
+  setIsUserOnlineToDatabase,
+  setUserOnlineStatus,
+} from "./util";
 
 function RoutesComp() {
   const [user, loading, error] = useAuthState(firebase.auth());
   const [userBasicInfo, setUserBasicInfo] = useState({});
+  const [userSubscription, setUserSubscription] = useState();
 
   const handleOnIdle = (event) => {
     if (user && user.uid) setUserOnlineStatus("offline", user.uid);
@@ -52,6 +58,7 @@ function RoutesComp() {
   });
 
   useEffect(() => {
+    if (user) getIsUserSubscribed(setUserSubscription, user.uid);
     setIsUserOnlineToDatabase(user);
 
     if (user)
@@ -77,7 +84,15 @@ function RoutesComp() {
     );
 
   return (
-    <UserContext.Provider value={{ user, userBasicInfo, setUserBasicInfo }}>
+    <UserContext.Provider
+      value={{
+        user,
+        userBasicInfo,
+        userSubscription,
+        setUserBasicInfo,
+        setUserSubscription,
+      }}
+    >
       <Router>
         {error && { error }}
         {!loading && !error && (
@@ -104,6 +119,10 @@ function RoutesComp() {
             <Route path="settings" element={<AccountPage />} exact />
             <Route path="site-info" element={<AboutUsPage />} />
             <Route path="subscribe" element={<SubscribePage />} />
+            <Route
+              path="subscription-successful"
+              element={<SubSuccessPage />}
+            />
             <Route path="trending" element={<VentsPage />} />
             <Route path="vent-to-strangers" element={<NewVentPage />} />
             <Route path="vent-to-strangers/:id" element={<NewVentPage />} />
