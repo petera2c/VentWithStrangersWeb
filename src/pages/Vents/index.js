@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import AdSense from "react-adsense";
 import Cookies from "universal-cookie";
 import { Button, Space } from "antd";
+import AdSense from "react-adsense";
 
 import Container from "../../components/containers/Container";
 import LoadMore from "../../components/LoadMore";
+import MakeAd from "../../components/MakeAd";
 import NewVentComponent from "../../components/NewVent";
 import Page from "../../components/containers/Page";
 import Vent from "../../components/Vent";
@@ -40,25 +41,12 @@ function VentsPage() {
 
   return (
     <Page
-      className="column align-center bg-grey-2"
+      className="bg-grey-2 pa16"
       description={metaDescription}
-      keywords=""
       title={metaTitle}
     >
-      <Container
-        align="start"
-        className={isMobileOrTablet() ? "py16" : "py32"}
-        size="large"
-      >
-        <Space
-          className={
-            isMobileOrTablet()
-              ? "container mobile-full px8"
-              : "container large justify-start px16"
-          }
-          direction="vertical"
-          size="large"
-        >
+      <Container className="x-fill">
+        <Space className="flex-fill" direction="vertical" size="large">
           <NewVentComponent miniVersion />
           <Container className="x-fill">
             <h1 className="primary fs-26">{metaTitle + " Vents"}</h1>
@@ -76,23 +64,13 @@ function VentsPage() {
                       key={index}
                     >
                       <Vent previewMode={true} ventInit={vent} />
-                      {!userSubscription &&
-                        process.env.NODE_ENV === "production" &&
-                        index % 3 === 0 && (
-                          <Container className="x-fill column">
-                            <AdSense.Google
-                              className="adsbygoogle"
-                              client="ca-pub-5185907024931065"
-                              format="fluid"
-                              layoutKey="-em+1v+cz-83-96"
-                              responsive="true"
-                              slot="1835301248"
-                              style={{
-                                display: "block",
-                              }}
-                            />
-                          </Container>
-                        )}
+                      {index % 3 === 0 && (
+                        <MakeAd
+                          banner
+                          layoutKey="-em+1v+cz-83-96"
+                          slot="1835301248"
+                        />
+                      )}
                     </Space>
                   );
                 })}
@@ -140,28 +118,32 @@ function VentsPage() {
           )}
         </Space>
 
-        {!userSubscription && !isMobileOrTablet() && user && (
-          <Container className="container ad column">
-            <Container
-              className="sticky top-0 column x-fill"
-              style={{ top: "96px" }}
-            >
-              <Space
-                className="x-fill full-center bg-white pa16 mb16 br8"
-                direction="vertical"
-              >
-                <h4 className="tac">Become a Subscriber</h4>
-                <p className="tac">
-                  Vent With Strangers needs your help. Support our team to build
-                  the application our community needs. Please consider
-                  subscribing.
-                </p>
-                <Link to="/subscribe">
-                  <Button size="large" type="primary">
-                    Subscribe For $1/Month
-                  </Button>
-                </Link>
-              </Space>
+        {!userSubscription && !isMobileOrTablet() && (
+          <Container className="container ad column pl16">
+            <Container className="sticky top-0 column x-fill">
+              {user && (
+                <Space
+                  className="x-fill full-center bg-white pa16 mb16 br8"
+                  direction="vertical"
+                >
+                  <h4 className="tac">Become a Subscriber</h4>
+                  <p className="tac">
+                    Vent With Strangers needs your help. Support our team to
+                    build the application our community needs. Please consider
+                    subscribing.
+                  </p>
+                  <Link to="/subscribe">
+                    <Button size="large" type="primary">
+                      Subscribe For $1/Month
+                    </Button>
+                  </Link>
+                </Space>
+              )}
+              <MakeAd
+                className="mt16"
+                slot="3226323822"
+                userSubscription={userSubscription}
+              />
             </Container>
           </Container>
         )}

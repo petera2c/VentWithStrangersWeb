@@ -53,36 +53,15 @@ function MakeFriendsPage() {
 
   return (
     <Page
-      className="bg-grey-2 align-center"
+      className="bg-grey-2 align-center pa16"
       description="Make friends online on vent with strangers!"
       keywords="Learn about Vent With Strangers"
       title="Find Friends Online and Connect With Likeminded People"
     >
-      {!userSubscription && process.env.NODE_ENV === "production" && (
-        <Container className="container large full-center mt16">
-          <AdSense.Google
-            className="adsbygoogle"
-            client="ca-pub-5185907024931065"
-            format=""
-            responsive="true"
-            slot="3444073995"
-            style={{
-              display: "block",
-              minWidth: "100px",
-              width: "100%",
-              maxWidth: "2000px",
-              minHeight: "100px",
-              height: "150px",
-              maxHeight: "200px",
-            }}
-          />
-        </Container>
-      )}
-
       {!user && (
         <Container
           className={
-            "column full-center bg-white pa16 mt16 br8 " +
+            "column full-center bg-white pa16 br8 " +
             (isMobileOrTablet() ? "mx8" : "container large ")
           }
         >

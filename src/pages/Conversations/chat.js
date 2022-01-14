@@ -139,24 +139,8 @@ function Chat({
           <Button onClick={() => setActiveConversation(false)}>Go Back</Button>
         )}
       </Container>
+
       <Container className="column x-fill flex-fill ov-hidden pt16 px16">
-        {canLoadMore && (
-          <button
-            className="button-2 pa8 mb8 br4"
-            onClick={() =>
-              getMessages(
-                conversation.id,
-                messages,
-                scrollToBottom,
-                setCanLoadMore,
-                setMessages,
-                false
-              )
-            }
-          >
-            Load More Messages
-          </button>
-        )}
         {!messages ||
           ((messages && messages.length) === 0 && (
             <h4 className="tac">
@@ -165,6 +149,23 @@ function Chat({
           ))}
 
         <Container className="column flex-fill ov-auto">
+          {canLoadMore && (
+            <button
+              className="button-2 pa8 mb8 br4"
+              onClick={() =>
+                getMessages(
+                  conversation.id,
+                  messages,
+                  scrollToBottom,
+                  setCanLoadMore,
+                  setMessages,
+                  false
+                )
+              }
+            >
+              Load More Messages
+            </button>
+          )}
           {messageDivs}
           <div ref={dummyRef} />
         </Container>

@@ -218,6 +218,7 @@ function Header() {
                         top: "calc(100% + 8px)",
                         right: 0,
                         maxHeight: "300px",
+                        zIndex: 10,
                       }}
                     >
                       <NotificationList notifications={notifications} />

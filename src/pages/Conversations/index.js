@@ -77,7 +77,6 @@ function Conversations() {
       className="bg-grey-2 ov-hidden"
       description="Sometimes, all we need is an available ear. This is where you can anonymously talk to someone that wants to listen, or anonymously listen to someone that wants to be heard."
       keywords="vent, strangers, help"
-      style={{ height: "100vh" }}
       title="Chats"
     >
       <Container className="flex-fill x-fill gap4 ov-hidden pa4">
@@ -179,49 +178,6 @@ function Conversations() {
               }
               userID={user.uid}
             />
-          )}
-        </Container>
-
-        <Container className="container small column ov-auto bg-white pa8 br4">
-          {!userSubscription && process.env.NODE_ENV === "production" && (
-            <Container className="full-center mb8">
-              <AdSense.Google
-                className="adsbygoogle"
-                client="ca-pub-5185907024931065"
-                format=""
-                responsive="true"
-                slot="7871419499"
-                style={{
-                  display: "block",
-                  minWidth: "100px",
-                  width: "100%",
-                  maxWidth: "300px",
-                  minHeight: "100px",
-                  height: "240px",
-                  maxHeight: "800px",
-                }}
-              />
-            </Container>
-          )}
-          {!userSubscription && process.env.NODE_ENV === "production" && (
-            <Container className="full-center">
-              <AdSense.Google
-                className="adsbygoogle"
-                client="ca-pub-5185907024931065"
-                format=""
-                responsive="true"
-                slot="1120703532"
-                style={{
-                  display: "block",
-                  minWidth: "100px",
-                  width: "100%",
-                  maxWidth: "300px",
-                  minHeight: "100px",
-                  height: "240px",
-                  maxHeight: "800px",
-                }}
-              />
-            </Container>
           )}
         </Container>
       </Container>

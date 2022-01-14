@@ -18,8 +18,8 @@ import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Container from "../Container";
-
 import Header from "../../Header";
+import MakeAd from "../../MakeAd";
 import MobileHeader from "../../Header/MobileHeader";
 
 import { UserContext } from "../../../context";
@@ -103,8 +103,7 @@ function Page(props) {
 
   return (
     <Container
-      className={"screen-container column ov-hidden " + className}
-      style={style}
+      className="screen-container column ov-hidden"
       testMode={testMode}
     >
       <Helmet defer={false}>
@@ -157,26 +156,8 @@ function Page(props) {
               text="Make Friends"
             />
 
-            {!userSubscription && process.env.NODE_ENV === "production" && (
-              <Container className="x-fill mt16">
-                <AdSense.Google
-                  className="adsbygoogle"
-                  client="ca-pub-5185907024931065"
-                  format=""
-                  responsive="true"
-                  slot="3226323822"
-                  style={{
-                    display: "block",
-                    minWidth: "100px",
-                    width: "100%",
-                    maxWidth: "1000px",
-                    minHeight: "100px",
-                    height: "240px",
-                    maxHeight: "800px",
-                  }}
-                />
-              </Container>
-            )}
+            <MakeAd className="mt16" slot="3226323822" />
+
             <SideBarLink
               icon={faChartNetwork}
               link={"/profile" + search}
@@ -217,7 +198,12 @@ function Page(props) {
             />
           </Space>
         )}
-        <Container className="flex-fill ov-auto">{children}</Container>
+        <Container
+          className={"column flex-fill ov-auto bg-grey-2 " + className}
+          style={style}
+        >
+          {children}
+        </Container>
       </Container>
     </Container>
   );
