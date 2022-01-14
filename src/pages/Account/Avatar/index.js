@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import Avatar from "avataaars";
-import { Button, Space } from "antd";
 
 import { faCut } from "@fortawesome/pro-duotone-svg-icons/faCut";
 import { faEye } from "@fortawesome/pro-duotone-svg-icons/faEye";
@@ -18,7 +17,7 @@ import SubscribeColumn from "../../../components/SubscribeColumn";
 
 import { UserContext } from "../../../context";
 
-import { getUserBasicInfo, isMobileOrTablet } from "../../../util";
+import { getUserBasicInfo } from "../../../util";
 import {
   accessoriesArray,
   clothesArray,
@@ -34,7 +33,7 @@ import {
 } from "./util";
 
 function AvatarSection() {
-  const { setUserBasicInfo, user, userSubscription } = useContext(UserContext);
+  const { setUserBasicInfo, user } = useContext(UserContext);
 
   const [activeSection, setActiveSection] = useState(0);
   const [avatar, setAvatar] = useState({});

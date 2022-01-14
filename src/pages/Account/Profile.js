@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import moment from "moment-timezone";
-import AdSense from "react-adsense";
 import { Button, Space } from "antd";
 
 import { faBaby } from "@fortawesome/free-solid-svg-icons/faBaby";
@@ -41,7 +40,6 @@ import {
   calculateKarma,
   capitolizeFirstChar,
   getUserBasicInfo,
-  isMobileOrTablet,
   useIsMounted,
   userSignUpProgress,
 } from "../../util";
@@ -49,7 +47,7 @@ import { getUser, getUsersComments, getUsersVents } from "./util";
 
 function ProfileSection() {
   const isMounted = useIsMounted();
-  const { user, userSubscription } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const location = useLocation();
   let { search } = location;

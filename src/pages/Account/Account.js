@@ -260,7 +260,6 @@ function AccountSection() {
                             else setPartying(undefined);
                           }}
                           size="large"
-                          size="large"
                         >
                           {str}
                         </Button>
