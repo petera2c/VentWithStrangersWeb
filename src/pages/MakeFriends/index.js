@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import moment from "moment-timezone";
-import AdSense from "react-adsense";
 
 import { faBaby } from "@fortawesome/free-solid-svg-icons/faBaby";
 import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
@@ -37,7 +36,7 @@ import { getUserInfo, getUserMatches, hasUserCompletedProfile } from "./util";
 
 function MakeFriendsPage() {
   const navigate = useNavigate();
-  const { user, userSubscription } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [userInfo, setUserInfo] = useState({});
   const [matches, setMatches] = useState([]);
   const [starterModal, setStarterModal] = useState(!user);

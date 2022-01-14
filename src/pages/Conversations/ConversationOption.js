@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment-timezone";
 import { useNavigate } from "react-router-dom";
-import { Space } from "antd";
 
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 import { faTrash } from "@fortawesome/pro-solid-svg-icons/faTrash";

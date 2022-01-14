@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import AdSense from "react-adsense";
 import ReactGA from "react-ga";
 import { Helmet } from "react-helmet";
 import { Space } from "antd";
@@ -70,7 +69,7 @@ function SideBarLink({ icon, link, onClick, pathname, text }) {
 
 function Page(props) {
   const isMounted = useIsMounted();
-  const { user, userSubscription } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const { children, className, testMode } = props;
   const { pathname, search } = useLocation();

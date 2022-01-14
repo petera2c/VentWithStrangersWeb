@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { message, Space } from "antd";
 import TextArea from "react-textarea-autosize";
 import { useNavigate } from "react-router-dom";
-import moment from "moment-timezone";
 
 import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

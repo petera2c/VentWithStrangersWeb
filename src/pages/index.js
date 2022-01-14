@@ -12,7 +12,10 @@ import { UserContext } from "../context";
 import Container from "../components/containers/Container";
 
 import AboutUsPage from "./AboutUs";
-import AccountPage from "./Account";
+import SettingsPage from "./Account/Settings";
+import AvatarPage from "./Account/Avatar";
+import AccountPage from "./Account/Account";
+import ProfilePage from "./Account/Profile";
 import AppDownloadPage from "./AppDownload";
 import ConversationsPage from "./Conversations";
 import FeedbackPage from "./Feedback";
@@ -101,7 +104,7 @@ function RoutesComp() {
             <Route path="" element={<VentsPage />} exact />
             <Route path="account" element={<AccountPage />} exact />
             <Route path="app-downloads" element={<AppDownloadPage />} />
-            <Route path="avatar" element={<AccountPage />} exact />
+            <Route path="avatar" element={<AvatarPage />} exact />
             <Route path="conversations" element={<ConversationsPage />} />
             <Route path="feedback" element={<FeedbackPage />} />
             <Route path="friends" element={<FriendsPage />} />
@@ -113,10 +116,10 @@ function RoutesComp() {
             <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
             <Route path="problem/:id" element={<VentPage />} />
             <Route path="problem/:id/:title" element={<VentPage />} />
-            <Route path="profile" element={<AccountPage />} />
+            <Route path="profile" element={<ProfilePage />} />
             <Route path="recent" element={<VentsPage />} />
             <Route path="search" element={<SearchPage />} />
-            <Route path="settings" element={<AccountPage />} exact />
+            <Route path="settings" element={<SettingsPage />} exact />
             <Route path="site-info" element={<AboutUsPage />} />
             <Route path="subscribe" element={<SubscribePage />} />
             <Route

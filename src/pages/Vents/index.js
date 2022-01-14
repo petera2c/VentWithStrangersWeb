@@ -1,26 +1,23 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import Cookies from "universal-cookie";
-import { Button, Space } from "antd";
-import AdSense from "react-adsense";
+import { Space } from "antd";
 
 import Container from "../../components/containers/Container";
 import LoadMore from "../../components/LoadMore";
 import MakeAd from "../../components/MakeAd";
 import NewVentComponent from "../../components/NewVent";
 import Page from "../../components/containers/Page";
+import SubscribeColumn from "../../components/SubscribeColumn";
 import Vent from "../../components/Vent";
 
-import { UserContext } from "../../context";
-
-import { isMobileOrTablet, useIsMounted } from "../../util";
+import { useIsMounted } from "../../util";
 import { getMetaInformation, getVents } from "./util";
 
 const cookies = new Cookies();
 
 function VentsPage() {
   const isMounted = useIsMounted();
-  const { user, userSubscription } = useContext(UserContext);
 
   const [vents, setVents] = useState(null);
   const location = useLocation();
@@ -40,12 +37,8 @@ function VentsPage() {
   }, [isMounted, pathname, search]);
 
   return (
-    <Page
-      className="bg-grey-2 pa16"
-      description={metaDescription}
-      title={metaTitle}
-    >
-      <Container className="x-fill">
+    <Page className="pa16" description={metaDescription} title={metaTitle}>
+      <Container className="flex-fill x-fill">
         <Space className="flex-fill" direction="vertical" size="large">
           <NewVentComponent miniVersion />
           <Container className="x-fill">
@@ -118,35 +111,7 @@ function VentsPage() {
           )}
         </Space>
 
-        {!userSubscription && !isMobileOrTablet() && (
-          <Container className="container ad column pl16">
-            <Container className="sticky top-0 column x-fill">
-              {user && (
-                <Space
-                  className="x-fill full-center bg-white pa16 mb16 br8"
-                  direction="vertical"
-                >
-                  <h4 className="tac">Become a Subscriber</h4>
-                  <p className="tac">
-                    Vent With Strangers needs your help. Support our team to
-                    build the application our community needs. Please consider
-                    subscribing.
-                  </p>
-                  <Link to="/subscribe">
-                    <Button size="large" type="primary">
-                      Subscribe For $1/Month
-                    </Button>
-                  </Link>
-                </Space>
-              )}
-              <MakeAd
-                className="mt16"
-                slot="3226323822"
-                userSubscription={userSubscription}
-              />
-            </Container>
-          </Container>
-        )}
+        <SubscribeColumn slot="3226323822" />
       </Container>
     </Page>
   );

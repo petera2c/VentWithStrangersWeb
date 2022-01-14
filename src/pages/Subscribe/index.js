@@ -7,7 +7,7 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { Button, message, Space } from "antd";
+import { Button, message } from "antd";
 import axios from "axios";
 
 import Container from "../../components/containers/Container";

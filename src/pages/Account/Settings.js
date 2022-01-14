@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useDocument } from "react-firebase-hooks/firestore";
 import db from "../../config/firebase";
 
 import Container from "../../components/containers/Container";
 import LoadingHeart from "../../components/loaders/Heart";
-
+import Page from "../../components/containers/Page";
 import Text from "../../components/views/Text";
+
+import { UserContext } from "../../context";
 
 import { isMobileOrTablet } from "../../util";
 
-function SettingsSection({ user }) {
+function SettingsSection() {
+  const { user } = useContext(UserContext);
+
   const settingsRef = db.collection("users_settings").doc(user.uid);
   const [settingsSnapshot] = useDocument(settingsRef, {
     idField: "id",
@@ -33,13 +37,12 @@ function SettingsSection({ user }) {
     );
 
   return (
-    <Container
+    <Page
       className={
         "container column px16 " +
         (isMobileOrTablet() ? "mobile-full" : "large")
       }
     >
-      <Text className="mb16" text="Settings" type="h4" />
       <Container className="column bg-white pa16 mb2 br8">
         <Container className="column">
           <Text
@@ -496,7 +499,7 @@ function SettingsSection({ user }) {
           type="p"
         />
       </Container>
-    </Container>
+    </Page>
   );
 }
 

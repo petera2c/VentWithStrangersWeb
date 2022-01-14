@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import AdSense from "react-adsense";
 
 import { UserContext } from "../../context";
 
@@ -21,7 +20,7 @@ import "./style.css";
 
 function Conversations() {
   const isMounted = useIsMounted();
-  const { user, userSubscription } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const [conversations, setConversations] = useState([]);
 
