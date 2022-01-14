@@ -204,20 +204,6 @@ const getMetaInformation = async (url, callback) => {
       },
       true
     );
-  else if (
-    url === "/blogs/why-talking-about-mental-health-is-important" ||
-    url === "/blogs/why-talking-about-mental-health-is-important?ref=quuu"
-  )
-    return callback(
-      {
-        metaDescription:
-          "When we talk about something, it can make it feel more real. There is reluctance and fear associated with talking about mental health due to past stigmas and judgements surrounding many mental health conditions...",
-        metaImage: defaultMetaObject.metaImage,
-        metaTitle:
-          "Why Talking About Mental Health Is Important | Vent With Strangers",
-      },
-      true
-    );
   else return callback(defaultMetaObject, false);
 };
 

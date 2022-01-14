@@ -27,10 +27,7 @@ const createProxy = () =>
 const createSitemap = async () => {
   if (process.env.FUNCTIONS_EMULATOR === "true") return;
   console.log("Starting sitemap construction");
-  const vents = await admin
-    .firestore()
-    .collection("vents")
-    .get();
+  const vents = await admin.firestore().collection("vents").get();
 
   let siteMapString =
     '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n';
@@ -56,8 +53,6 @@ const createSitemap = async () => {
     "<url>\n<loc>https://www.ventwithstrangers.com/site-info</loc>\n<lastmod>2021-06-17</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.6</priority>\n</url>\n\n";
   siteMapString +=
     "<url>\n<loc>https://www.ventwithstrangers.com/conversations</loc>\n<lastmod>2022-01-04</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.6</priority>\n</url>\n\n";
-  siteMapString +=
-    "<url>\n<loc>https://www.ventwithstrangers.com/blogs/why-talking-about-mental-health-is-important</loc>\n<lastmod>2021-06-12</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.4</priority>\n</url>\n\n";
 
   for (let index in vents.docs) {
     const vent = vents.docs[index].data();

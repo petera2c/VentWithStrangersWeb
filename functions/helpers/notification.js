@@ -10,16 +10,13 @@ const createNotification = async (
 ) => {
   if (!userID) return;
 
-  await admin
-    .firestore()
-    .collection("notifications")
-    .add({
-      hasSeen: false,
-      link,
-      message,
-      server_timestamp: admin.firestore.Timestamp.now().toMillis(),
-      userID,
-    });
+  await admin.firestore().collection("notifications").add({
+    hasSeen: false,
+    link,
+    message,
+    server_timestamp: admin.firestore.Timestamp.now().toMillis(),
+    userID,
+  });
 
   admin
     .database()

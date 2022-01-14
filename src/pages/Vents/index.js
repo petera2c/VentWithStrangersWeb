@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import AdSense from "react-adsense";
 import Cookies from "universal-cookie";
-import { Space } from "antd";
+import { Button, Space } from "antd";
 
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
 import { faInfo } from "@fortawesome/pro-duotone-svg-icons/faInfo";
@@ -15,8 +15,9 @@ import Container from "../../components/containers/Container";
 import LoadMore from "../../components/LoadMore";
 import NewVentComponent from "../../components/NewVent";
 import Page from "../../components/containers/Page";
-import SubscribeComp from "../../components/Subscribe";
 import Vent from "../../components/Vent";
+
+import { UserContext } from "../../context";
 
 import {
   getTotalOnlineUsers,
@@ -29,6 +30,7 @@ const cookies = new Cookies();
 
 function VentsPage() {
   const isMounted = useIsMounted();
+  const { user } = useContext(UserContext);
 
   const [vents, setVents] = useState(null);
   const location = useLocation();
@@ -64,18 +66,66 @@ function VentsPage() {
       keywords=""
       title={metaTitle}
     >
-      <Container className="container large">
-        {false && <SubscribeComp />}
-      </Container>
-
-      <Space
+      <Container
         align="start"
         className={isMobileOrTablet() ? "py16" : "py32"}
         size="large"
       >
+        {!isMobileOrTablet() && (
+          <Container className="container ad align-start">
+            <Space
+              className="sticky column x-fill align-start bg-white br8 pa16"
+              style={{ top: "96px" }}
+            >
+              <Link className="button-3 fs-18 mb16" to="/online-users">
+                <FontAwesomeIcon className="mr8" icon={faUserFriends} />
+                {totalOnlineUsers}{" "}
+                {totalOnlineUsers === 1 ? "Person" : "People"} Online
+              </Link>
+              <Link className="button-3 fs-18 mb16" to="/vent-to-strangers">
+                <FontAwesomeIcon className="mr8" icon={faPen} />
+                Post a Vent
+              </Link>
+              <Link className="button-3 fs-18 mb16" to="/conversations">
+                <FontAwesomeIcon className="mr8" icon={faComments} />
+                Inbox
+              </Link>
+              <Link className="button-3 fs-18 mb16" to="/make-friends">
+                <FontAwesomeIcon className="mr8" icon={faUsers} />
+                Make Friends
+              </Link>
+              <Link className="button-3 fs-18" to="/site-info">
+                <FontAwesomeIcon className="ml8 mr16" icon={faInfo} />
+                Site Info
+              </Link>
+            </Space>
+            {process.env.NODE_ENV === "production" && (
+              <Container className="x-fill mb8">
+                <AdSense.Google
+                  className="adsbygoogle"
+                  client="ca-pub-5185907024931065"
+                  format=""
+                  responsive="true"
+                  slot="3226323822"
+                  style={{
+                    display: "block",
+                    minWidth: "100px",
+                    width: "100%",
+                    maxWidth: "1000px",
+                    minHeight: "100px",
+                    height: "240px",
+                    maxHeight: "800px",
+                  }}
+                />
+              </Container>
+            )}
+          </Container>
+        )}
         <Space
           className={
-            isMobileOrTablet() ? "container mobile-full" : "container large"
+            isMobileOrTablet()
+              ? "container mobile-full px8"
+              : "container large justify-start px16"
           }
           direction="vertical"
           size="large"
@@ -160,60 +210,32 @@ function VentsPage() {
           )}
         </Space>
 
-        {!isMobileOrTablet() && (
+        {!isMobileOrTablet() && user && (
           <Container className="container ad column">
             <Container
               className="sticky top-0 column x-fill"
-              style={{ top: "80px" }}
+              style={{ top: "96px" }}
             >
-              <Container className="x-fill column align-start bg-white pa16 mb16 br8">
-                <Link className="button-3 fs-18 mb16" to="/online-users">
-                  <FontAwesomeIcon className="mr8" icon={faUserFriends} />
-                  {totalOnlineUsers}{" "}
-                  {totalOnlineUsers === 1 ? "Person" : "People"} Online
+              <Space
+                className="x-fill full-center bg-white pa16 mb16 br8"
+                direction="vertical"
+              >
+                <h4 className="tac">Become a Subscriber</h4>
+                <p className="tac">
+                  Vent With Strangers needs your help. Support our team to build
+                  the application our community needs. Please consider
+                  subscribing.
+                </p>
+                <Link to="/subscribe">
+                  <Button size="large" type="primary">
+                    Subscribe For $1/Month
+                  </Button>
                 </Link>
-                <Link className="button-3 fs-18 mb16" to="/vent-to-strangers">
-                  <FontAwesomeIcon className="mr8" icon={faPen} />
-                  Post a Vent
-                </Link>
-                <Link className="button-3 fs-18 mb16" to="/conversations">
-                  <FontAwesomeIcon className="mr8" icon={faComments} />
-                  Inbox
-                </Link>
-                <Link className="button-3 fs-18 mb16" to="/make-friends">
-                  <FontAwesomeIcon className="mr8" icon={faUsers} />
-                  Make Friends
-                </Link>
-                <Link className="button-3 fs-18" to="/site-info">
-                  <FontAwesomeIcon className="ml8 mr16" icon={faInfo} />
-                  Site Info
-                </Link>
-              </Container>
-
-              {process.env.NODE_ENV === "production" && (
-                <Container className="x-fill mb8">
-                  <AdSense.Google
-                    className="adsbygoogle"
-                    client="ca-pub-5185907024931065"
-                    format=""
-                    responsive="true"
-                    slot="3226323822"
-                    style={{
-                      display: "block",
-                      minWidth: "100px",
-                      width: "100%",
-                      maxWidth: "1000px",
-                      minHeight: "100px",
-                      height: "240px",
-                      maxHeight: "800px",
-                    }}
-                  />
-                </Container>
-              )}
+              </Space>
             </Container>
           </Container>
         )}
-      </Space>
+      </Container>
     </Page>
   );
 }

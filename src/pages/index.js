@@ -24,6 +24,7 @@ import NotFoundPage from "./NotFound";
 import NotificationsPage from "./Notifications";
 import PrivacyPolicyPage from "./PrivacyPolicy";
 import SearchPage from "./Search";
+import SubscribePage from "./Subscribe";
 import VentPage from "./Vent";
 import VentsPage from "./Vents";
 import VerifiedEmailPage from "./EmailAuth/VerifiedEmail";
@@ -102,6 +103,7 @@ function RoutesComp() {
             <Route path="search" element={<SearchPage />} />
             <Route path="settings" element={<AccountPage />} exact />
             <Route path="site-info" element={<AboutUsPage />} />
+            <Route path="subscribe" element={<SubscribePage />} />
             <Route path="trending" element={<VentsPage />} />
             <Route path="vent-to-strangers" element={<NewVentPage />} />
             <Route path="vent-to-strangers/:id" element={<NewVentPage />} />

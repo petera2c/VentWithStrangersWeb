@@ -19,6 +19,7 @@ const { conversationUpdateListener } = require("./helpers/conversation");
 const { messagesListener } = require("./helpers/messages");
 
 const { createProxy, createSitemap } = require("./helpers/sitemap");
+const { subscribeToPlan } = require("./helpers/subscribe");
 const { newUserSetup, userWasInvited } = require("./helpers/user");
 const {
   getMetaInformation,
@@ -122,6 +123,8 @@ const injectMetaData = (req, res) => {
     });
   });
 };
+
+app.post("/subscribe", subscribeToPlan);
 app.get("/sitemap.xml", createProxy());
 
 app.get("*", async (req, res) => {
