@@ -61,11 +61,10 @@ const CheckoutForm = () => {
     </form>
   );
 };
+//window.location.hostname === "localhost"
 
 const stripePromise = loadStripe(
-  window.location.hostname === "localhost"
-    ? "pk_test_C6VKqentibktzCQjTRZ9vOuY"
-    : "pk_live_fbteh655nQqpE4WEFr6fs5Pm"
+  true ? "pk_test_C6VKqentibktzCQjTRZ9vOuY" : "pk_live_fbteh655nQqpE4WEFr6fs5Pm"
 );
 
 const App = () => (

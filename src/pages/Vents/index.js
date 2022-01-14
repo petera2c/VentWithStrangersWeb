@@ -72,55 +72,56 @@ function VentsPage() {
         size="large"
       >
         {!isMobileOrTablet() && (
-          <Container className="container ad column align-start">
-            <Space
-              className="sticky x-fill align-start bg-white br8 pa16"
-              direction="vertical"
-              size="middle"
-              style={{ top: "96px" }}
-            >
-              <Link className="button-3 fs-18" to="/online-users">
-                <FontAwesomeIcon className="mr8" icon={faUserFriends} />
-                {totalOnlineUsers}{" "}
-                {totalOnlineUsers === 1 ? "Person" : "People"} Online
-              </Link>
-              <Link className="button-3 fs-18" to="/vent-to-strangers">
-                <FontAwesomeIcon className="mr8" icon={faPen} />
-                Post a Vent
-              </Link>
-              <Link className="button-3 fs-18" to="/conversations">
-                <FontAwesomeIcon className="mr8" icon={faComments} />
-                Inbox
-              </Link>
-              <Link className="button-3 fs-18" to="/make-friends">
-                <FontAwesomeIcon className="mr8" icon={faUsers} />
-                Make Friends
-              </Link>
-              <Link className="button-3 fs-18" to="/site-info">
-                <FontAwesomeIcon className="ml8 mr16" icon={faInfo} />
-                Site Info
-              </Link>
-            </Space>
-            {!userSubscription && process.env.NODE_ENV === "production" && (
-              <Container className="x-fill mt16">
-                <AdSense.Google
-                  className="adsbygoogle"
-                  client="ca-pub-5185907024931065"
-                  format=""
-                  responsive="true"
-                  slot="3226323822"
-                  style={{
-                    display: "block",
-                    minWidth: "100px",
-                    width: "100%",
-                    maxWidth: "1000px",
-                    minHeight: "100px",
-                    height: "240px",
-                    maxHeight: "800px",
-                  }}
-                />
-              </Container>
-            )}
+          <Container className="container ad align-start">
+            <Container className="sticky column x-fill" style={{ top: "96px" }}>
+              <Space
+                className="x-fill align-start bg-white br8 pa16"
+                direction="vertical"
+                size="middle"
+              >
+                <Link className="button-3 fs-18" to="/online-users">
+                  <FontAwesomeIcon className="mr8" icon={faUserFriends} />
+                  {totalOnlineUsers}{" "}
+                  {totalOnlineUsers === 1 ? "Person" : "People"} Online
+                </Link>
+                <Link className="button-3 fs-18" to="/vent-to-strangers">
+                  <FontAwesomeIcon className="mr8" icon={faPen} />
+                  Post a Vent
+                </Link>
+                <Link className="button-3 fs-18" to="/conversations">
+                  <FontAwesomeIcon className="mr8" icon={faComments} />
+                  Inbox
+                </Link>
+                <Link className="button-3 fs-18" to="/make-friends">
+                  <FontAwesomeIcon className="mr8" icon={faUsers} />
+                  Make Friends
+                </Link>
+                <Link className="button-3 fs-18" to="/site-info">
+                  <FontAwesomeIcon className="ml8 mr16" icon={faInfo} />
+                  Site Info
+                </Link>
+              </Space>
+              {!userSubscription && process.env.NODE_ENV === "production" && (
+                <Container className="x-fill mt16">
+                  <AdSense.Google
+                    className="adsbygoogle"
+                    client="ca-pub-5185907024931065"
+                    format=""
+                    responsive="true"
+                    slot="3226323822"
+                    style={{
+                      display: "block",
+                      minWidth: "100px",
+                      width: "100%",
+                      maxWidth: "1000px",
+                      minHeight: "100px",
+                      height: "240px",
+                      maxHeight: "800px",
+                    }}
+                  />
+                </Container>
+              )}
+            </Container>
           </Container>
         )}
         <Space
