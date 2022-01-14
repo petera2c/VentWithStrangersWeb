@@ -72,25 +72,26 @@ function VentsPage() {
         size="large"
       >
         {!isMobileOrTablet() && (
-          <Container className="container ad align-start">
+          <Container className="container ad column align-start">
             <Space
-              className="sticky column x-fill align-start bg-white br8 pa16"
+              className="sticky x-fill align-start bg-white br8 pa16"
+              size="middle"
               style={{ top: "96px" }}
             >
-              <Link className="button-3 fs-18 mb16" to="/online-users">
+              <Link className="button-3 fs-18" to="/online-users">
                 <FontAwesomeIcon className="mr8" icon={faUserFriends} />
                 {totalOnlineUsers}{" "}
                 {totalOnlineUsers === 1 ? "Person" : "People"} Online
               </Link>
-              <Link className="button-3 fs-18 mb16" to="/vent-to-strangers">
+              <Link className="button-3 fs-18" to="/vent-to-strangers">
                 <FontAwesomeIcon className="mr8" icon={faPen} />
                 Post a Vent
               </Link>
-              <Link className="button-3 fs-18 mb16" to="/conversations">
+              <Link className="button-3 fs-18" to="/conversations">
                 <FontAwesomeIcon className="mr8" icon={faComments} />
                 Inbox
               </Link>
-              <Link className="button-3 fs-18 mb16" to="/make-friends">
+              <Link className="button-3 fs-18" to="/make-friends">
                 <FontAwesomeIcon className="mr8" icon={faUsers} />
                 Make Friends
               </Link>
