@@ -2,9 +2,6 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useIdleTimer } from "react-idle-timer";
 
-import ReactGA from "react-ga";
-import { Helmet } from "react-helmet";
-
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";

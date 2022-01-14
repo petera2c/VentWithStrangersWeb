@@ -1,17 +1,12 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
-import AdSense from "react-adsense";
 import { Space } from "antd";
-
-import { UserContext } from "../../context";
 
 import Container from "../../components/containers/Container";
 import Page from "../../components/containers/Page";
 import SubscribeColumn from "../../components/SubscribeColumn";
-import UniqueShareLink from "../../components/UniqueShareLink";
 import Vent from "../../components/Vent";
 
-import { isMobileOrTablet } from "../../util";
 import { getMeta } from "./util";
 
 const getVentIdFromURL = (pathname) => {
@@ -30,7 +25,6 @@ const getVentIdFromURL = (pathname) => {
 };
 
 function VentPage() {
-  const { user, userSubscription } = useContext(UserContext);
   const location = useLocation();
   const { pathname } = location;
 
