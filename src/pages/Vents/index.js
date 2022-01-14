@@ -111,7 +111,7 @@ function VentsPage() {
           )}
         </Space>
 
-        <SubscribeColumn slot="3226323822" />
+        <SubscribeColumn slot="7871419499" />
       </Container>
     </Page>
   );

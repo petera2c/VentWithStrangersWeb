@@ -102,12 +102,7 @@ function MakeFriendsPage() {
       </Container>
 
       {user && hasUserCompletedProfile(userInfo) && (
-        <Container
-          className={
-            "wrap container justify-center gap16 mb32 mt16 " +
-            (isMobileOrTablet() ? "mobile-full" : "full")
-          }
-        >
+        <Container className="wrap container justify-center gap16 mb32 mt16">
           {matches.map((matchedUserInfo, index) => {
             return (
               <Link

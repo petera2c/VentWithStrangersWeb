@@ -155,7 +155,7 @@ function Page(props) {
               text="Make Friends"
             />
 
-            <MakeAd className="mt16" slot="3226323822" />
+            <MakeAd className="mt16" slot="4732645487" />
 
             <SideBarLink
               icon={faChartNetwork}

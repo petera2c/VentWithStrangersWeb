@@ -202,7 +202,7 @@ function AvatarSection() {
             </button>
           </Container>
         </Container>
-        <SubscribeColumn slot="1935732380" />
+        <SubscribeColumn slot="9793400477" />
       </Container>
     </Page>
   );

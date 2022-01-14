@@ -469,7 +469,7 @@ function AccountSection() {
             </Button>
           </Container>
         </Container>
-        <SubscribeColumn slot="1935732380" />
+        <SubscribeColumn slot="1200594581" />
       </Container>
     </Page>
   );

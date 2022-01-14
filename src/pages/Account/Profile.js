@@ -408,7 +408,7 @@ function ProfileSection() {
           )}
         </Space>
 
-        <SubscribeColumn slot="1935732380" />
+        <SubscribeColumn slot="8314288538" />
       </Container>
       {blockModal && (
         <ConfirmAlertModal
