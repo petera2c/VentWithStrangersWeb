@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import moment from "moment-timezone";
 import { MentionsInput, Mention } from "react-mentions";
+import { Space } from "antd";
 
 import { faClock } from "@fortawesome/pro-regular-svg-icons/faClock";
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
@@ -319,24 +320,70 @@ function Vent({
           </SmartLink>
 
           {!searchPreviewMode && (
-            <Container
+            <Space
               className={
-                "relative wrap justify-between py16 px32 " +
+                "relative justify-between py16 px32 " +
                 (!searchPreviewMode && displayCommentField2
                   ? "border-bottom"
                   : "")
               }
+              wrap
             >
-              <Container className="x-fill align-center justify-between wrap">
-                <Container className="align-center mb16">
-                  <img
-                    alt="Support"
-                    className={`clickable heart ${
-                      hasLiked ? "red" : "grey-5"
-                    } mr4`}
-                    onClick={(e) => {
-                      e.preventDefault();
+              <Container className="align-center">
+                <img
+                  alt="Support"
+                  className={`clickable heart ${
+                    hasLiked ? "red" : "grey-5"
+                  } mr4`}
+                  onClick={(e) => {
+                    e.preventDefault();
 
+                    const userInteractionIssues = userSignUpProgress(user);
+
+                    if (userInteractionIssues) {
+                      if (userInteractionIssues === "NSI")
+                        setStarterModal(true);
+                      return;
+                    }
+
+                    likeOrUnlikeVent(
+                      hasLiked,
+                      setHasLiked,
+                      setVent,
+                      user,
+                      vent
+                    );
+                  }}
+                  src={
+                    hasLiked ? "/svgs/support-active.svg" : "/svgs/support.svg"
+                  }
+                  style={{ height: "32px" }}
+                  title="Give Support :)"
+                />
+
+                <Text
+                  className="grey-5 mr8"
+                  text={vent.like_counter ? vent.like_counter : 0}
+                  type="p"
+                />
+
+                <Button
+                  className="button-2 no-text-wrap px16 py8 mr16 br8"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setDisplayCommentField(!displayCommentField2);
+                  }}
+                >
+                  {vent.comment_counter ? vent.comment_counter : 0}{" "}
+                  {vent.comment_counter === 1 ? "Comment" : "Comments"}
+                </Button>
+              </Container>
+
+              <Container>
+                {(!user || (user && user.uid !== vent.userID && author.id)) && (
+                  <Button
+                    className="button-2 px16 py8 br8"
+                    onClick={() => {
                       const userInteractionIssues = userSignUpProgress(user);
 
                       if (userInteractionIssues) {
@@ -345,65 +392,15 @@ function Vent({
                         return;
                       }
 
-                      likeOrUnlikeVent(
-                        hasLiked,
-                        setHasLiked,
-                        setVent,
-                        user,
-                        vent
-                      );
-                    }}
-                    src={
-                      hasLiked
-                        ? "/svgs/support-active.svg"
-                        : "/svgs/support.svg"
-                    }
-                    style={{ height: "32px" }}
-                    title="Give Support :)"
-                  />
-
-                  <Text
-                    className="grey-5 mr8"
-                    text={vent.like_counter ? vent.like_counter : 0}
-                    type="p"
-                  />
-
-                  <Button
-                    className="button-2 no-text-wrap px16 py8 mr16 br8"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setDisplayCommentField(!displayCommentField2);
+                      startConversation(navigate, user, vent.userID);
                     }}
                   >
-                    {vent.comment_counter ? vent.comment_counter : 0}{" "}
-                    {vent.comment_counter === 1 ? "Comment" : "Comments"}
+                    <FontAwesomeIcon className="mr8" icon={faComments} />
+                    Message {capitolizeFirstChar(author.displayName)}
                   </Button>
-                </Container>
-
-                <Container className="mb16">
-                  {(!user ||
-                    (user && user.uid !== vent.userID && author.id)) && (
-                    <Button
-                      className="button-2 px16 py8 br8"
-                      onClick={() => {
-                        const userInteractionIssues = userSignUpProgress(user);
-
-                        if (userInteractionIssues) {
-                          if (userInteractionIssues === "NSI")
-                            setStarterModal(true);
-                          return;
-                        }
-
-                        startConversation(navigate, user, vent.userID);
-                      }}
-                    >
-                      <FontAwesomeIcon className="mr8" icon={faComments} />
-                      Message {capitolizeFirstChar(author.displayName)}
-                    </Button>
-                  )}
-                </Container>
+                )}
               </Container>
-            </Container>
+            </Space>
           )}
           {!searchPreviewMode && displayCommentField2 && (
             <Container
