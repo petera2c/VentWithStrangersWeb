@@ -4,13 +4,6 @@ import AdSense from "react-adsense";
 import Cookies from "universal-cookie";
 import { Button, Space } from "antd";
 
-import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
-import { faInfo } from "@fortawesome/pro-duotone-svg-icons/faInfo";
-import { faPen } from "@fortawesome/pro-duotone-svg-icons/faPen";
-import { faUserFriends } from "@fortawesome/pro-duotone-svg-icons/faUserFriends";
-import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import Container from "../../components/containers/Container";
 import LoadMore from "../../components/LoadMore";
 import NewVentComponent from "../../components/NewVent";
@@ -19,11 +12,7 @@ import Vent from "../../components/Vent";
 
 import { UserContext } from "../../context";
 
-import {
-  getTotalOnlineUsers,
-  isMobileOrTablet,
-  useIsMounted,
-} from "../../util";
+import { isMobileOrTablet, useIsMounted } from "../../util";
 import { getMetaInformation, getVents } from "./util";
 
 const cookies = new Cookies();
@@ -37,15 +26,9 @@ function VentsPage() {
   const { pathname, search } = location;
   const { metaDescription, metaTitle } = getMetaInformation(pathname);
   const [canLoadMore, setCanLoadMore] = useState(true);
-  const [totalOnlineUsers, setTotalOnlineUsers] = useState(0);
 
   useEffect(() => {
-    let onlineUsersUnsubscribe;
     setVents(null);
-
-    onlineUsersUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) => {
-      if (isMounted()) setTotalOnlineUsers(totalOnlineUsers);
-    });
 
     getVents(isMounted, pathname, setCanLoadMore, setVents, null);
 
@@ -53,10 +36,6 @@ function VentsPage() {
       const referral = /referral=([^&]+)/.exec(search)[1];
       if (referral) cookies.set("referral", referral);
     }
-
-    return () => {
-      if (onlineUsersUnsubscribe) onlineUsersUnsubscribe.off("value");
-    };
   }, [isMounted, pathname, search]);
 
   return (
@@ -71,59 +50,6 @@ function VentsPage() {
         className={isMobileOrTablet() ? "py16" : "py32"}
         size="large"
       >
-        {!isMobileOrTablet() && (
-          <Container className="container ad align-start">
-            <Container className="sticky column x-fill" style={{ top: "96px" }}>
-              <Space
-                className="x-fill align-start bg-white br8 pa16"
-                direction="vertical"
-                size="middle"
-              >
-                <Link className="button-3 fs-18" to="/online-users">
-                  <FontAwesomeIcon className="mr8" icon={faUserFriends} />
-                  {totalOnlineUsers}{" "}
-                  {totalOnlineUsers === 1 ? "Person" : "People"} Online
-                </Link>
-                <Link className="button-3 fs-18" to="/vent-to-strangers">
-                  <FontAwesomeIcon className="mr8" icon={faPen} />
-                  Post a Vent
-                </Link>
-                <Link className="button-3 fs-18" to="/conversations">
-                  <FontAwesomeIcon className="mr8" icon={faComments} />
-                  Inbox
-                </Link>
-                <Link className="button-3 fs-18" to="/make-friends">
-                  <FontAwesomeIcon className="mr8" icon={faUsers} />
-                  Make Friends
-                </Link>
-                <Link className="button-3 fs-18" to="/site-info">
-                  <FontAwesomeIcon className="ml8 mr16" icon={faInfo} />
-                  Site Info
-                </Link>
-              </Space>
-              {!userSubscription && process.env.NODE_ENV === "production" && (
-                <Container className="x-fill mt16">
-                  <AdSense.Google
-                    className="adsbygoogle"
-                    client="ca-pub-5185907024931065"
-                    format=""
-                    responsive="true"
-                    slot="3226323822"
-                    style={{
-                      display: "block",
-                      minWidth: "100px",
-                      width: "100%",
-                      maxWidth: "1000px",
-                      minHeight: "100px",
-                      height: "240px",
-                      maxHeight: "800px",
-                    }}
-                  />
-                </Container>
-              )}
-            </Container>
-          </Container>
-        )}
         <Space
           className={
             isMobileOrTablet()

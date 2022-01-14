@@ -1,20 +1,80 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import AdSense from "react-adsense";
 import ReactGA from "react-ga";
-import { useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import { Space } from "antd";
+
+import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
+import { faChartNetwork } from "@fortawesome/pro-solid-svg-icons/faChartNetwork";
+import { faCog } from "@fortawesome/free-solid-svg-icons/faCog";
+import { faUserAstronaut } from "@fortawesome/pro-duotone-svg-icons/faUserAstronaut";
+
+import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
+import { faInfo } from "@fortawesome/pro-duotone-svg-icons/faInfo";
+import { faPen } from "@fortawesome/pro-duotone-svg-icons/faPen";
+import { faUserFriends } from "@fortawesome/pro-duotone-svg-icons/faUserFriends";
+import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Container from "../Container";
 
 import Header from "../../Header";
 import MobileHeader from "../../Header/MobileHeader";
 
-import { isMobileOrTablet } from "../../../util";
+import { UserContext } from "../../../context";
+
+import {
+  getTotalOnlineUsers,
+  isMobileOrTablet,
+  isPageActive,
+  signOut,
+  useIsMounted,
+} from "../../../util";
 
 import "./style.css";
 
+function SideBarLink({ icon, link, onClick, pathname, text }) {
+  if (link)
+    return (
+      <Link
+        className={
+          "x-fill align-center grid-1 button-4 clickable py8 " +
+          isPageActive(link, pathname)
+        }
+        to={link}
+      >
+        <Container className="flex x-fill full-center">
+          <FontAwesomeIcon icon={icon} />
+        </Container>
+        <h5 className="grey-1 inherit-color">{text}</h5>
+      </Link>
+    );
+
+  if (onClick)
+    return (
+      <Container
+        className={
+          "x-fill align-center grid-1 button-4 clickable py8 " +
+          isPageActive("link", pathname)
+        }
+        onClick={onClick}
+      >
+        <Container className="flex x-fill full-center">
+          <FontAwesomeIcon icon={icon} />
+        </Container>
+        <h5 className="grey-1 inherit-color">{text}</h5>
+      </Container>
+    );
+}
+
 function Page(props) {
+  const isMounted = useIsMounted();
+  const { user, userSubscription } = useContext(UserContext);
+
   const { children, className, testMode } = props;
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
+  const [totalOnlineUsers, setTotalOnlineUsers] = useState(0);
 
   useEffect(() => {
     if (process.env.NODE_ENV !== "development") {
@@ -22,6 +82,15 @@ function Page(props) {
       ReactGA.pageview(pathname);
     }
     window.scrollTo(0, 0);
+    let onlineUsersUnsubscribe;
+
+    onlineUsersUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) => {
+      if (isMounted()) setTotalOnlineUsers(totalOnlineUsers);
+    });
+
+    return () => {
+      if (onlineUsersUnsubscribe) onlineUsersUnsubscribe.off("value");
+    };
   }, [pathname]);
 
   const checkPropsVariables = (activePage) => {
@@ -34,7 +103,7 @@ function Page(props) {
 
   return (
     <Container
-      className={"screen-container column " + className}
+      className={"screen-container column ov-hidden " + className}
       style={style}
       testMode={testMode}
     >
@@ -52,7 +121,104 @@ function Page(props) {
       {!isMobileOrTablet() && <Header />}
       {isMobileOrTablet() && <MobileHeader />}
 
-      {children}
+      <Container className="flex-fill x-fill ov-hidden">
+        {!isMobileOrTablet() && (
+          <Space
+            className="column ov-auto bg-white border-top pa16"
+            direction="vertical"
+          >
+            <SideBarLink
+              icon={faUserFriends}
+              link="/online-users"
+              pathname={pathname}
+              text={
+                totalOnlineUsers +
+                " " +
+                (totalOnlineUsers === 1 ? "Person" : "People") +
+                " Online"
+              }
+            />
+            <SideBarLink
+              icon={faPen}
+              link="/vent-to-strangers"
+              pathname={pathname}
+              text="Post a Vent"
+            />
+            <SideBarLink
+              icon={faComments}
+              link="/conversations"
+              pathname={pathname}
+              text="Inbox"
+            />
+            <SideBarLink
+              icon={faUsers}
+              link="/make-friends"
+              pathname={pathname}
+              text="Make Friends"
+            />
+
+            {!userSubscription && process.env.NODE_ENV === "production" && (
+              <Container className="x-fill mt16">
+                <AdSense.Google
+                  className="adsbygoogle"
+                  client="ca-pub-5185907024931065"
+                  format=""
+                  responsive="true"
+                  slot="3226323822"
+                  style={{
+                    display: "block",
+                    minWidth: "100px",
+                    width: "100%",
+                    maxWidth: "1000px",
+                    minHeight: "100px",
+                    height: "240px",
+                    maxHeight: "800px",
+                  }}
+                />
+              </Container>
+            )}
+            <SideBarLink
+              icon={faChartNetwork}
+              link={"/profile" + search}
+              pathname={pathname}
+              text="My Public Profile"
+            />
+            <SideBarLink
+              icon={faUser}
+              link="/account"
+              pathname={pathname}
+              text="Account"
+            />
+            <SideBarLink
+              icon={faUserAstronaut}
+              link="/avatar"
+              pathname={pathname}
+              text="Avatar"
+            />
+            <SideBarLink
+              icon={faCog}
+              link="/settings"
+              pathname={pathname}
+              text="Notifications / Settings"
+            />
+            <SideBarLink
+              icon={faInfo}
+              link="/site-info"
+              pathname={pathname}
+              text="Site Info"
+            />
+            <SideBarLink
+              icon={faCog}
+              onClick={() => {
+                signOut(user.uid);
+              }}
+              pathname={pathname}
+              text="Sign Out"
+            />
+          </Space>
+        )}
+        <Container className="flex-fill ov-auto">{children}</Container>
+      </Container>
     </Container>
   );
 }

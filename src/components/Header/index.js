@@ -80,7 +80,7 @@ function Header() {
     resetUnreadConversationCount(user.uid);
 
   return (
-    <Container className="column x-fill sticky top-0" style={{ zIndex: 10 }}>
+    <Container className="column x-fill">
       <Container className="column x-fill justify-center bg-white border-top large active">
         <Container className="x-fill align-center">
           <Container
