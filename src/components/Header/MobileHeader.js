@@ -100,7 +100,7 @@ function Header() {
         newNotificationsListenerUnsubscribe();
       if (newConversationsListenerUnsubscribe)
         newConversationsListenerUnsubscribe();
-      if (onlineUsersUnsubscribe) onlineUsersUnsubscribe();
+      if (onlineUsersUnsubscribe) onlineUsersUnsubscribe.off("value");
     };
   }, [isMounted, pathname, user]);
 
