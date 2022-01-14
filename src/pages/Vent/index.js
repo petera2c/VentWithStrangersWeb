@@ -29,7 +29,7 @@ const getVentIdFromURL = (pathname) => {
 };
 
 function VentPage() {
-  const { user } = useContext(UserContext);
+  const { user, userSubscription } = useContext(UserContext);
   const location = useLocation();
   const { pathname } = location;
 
@@ -59,7 +59,7 @@ function VentPage() {
         {ventFound === false && <h4>Vent Not Found</h4>}
         {!isMobileOrTablet() && (
           <Container className="container ad column align-center">
-            {process.env.NODE_ENV === "production" && (
+            {!userSubscription && process.env.NODE_ENV === "production" && (
               <Container
                 className="sticky top-0 column x-fill"
                 style={{ top: "120px" }}

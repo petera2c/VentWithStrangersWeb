@@ -21,7 +21,7 @@ import Container from "../../components/containers/Container";
 import { isMobileOrTablet, isPageActive, signOut } from "../../util";
 
 function AccountPage() {
-  const { user } = useContext(UserContext);
+  const { user, userSubscription } = useContext(UserContext);
   const navigate = useNavigate();
 
   const location = useLocation();
@@ -115,7 +115,7 @@ function AccountPage() {
                 </h5>
               </Container>
             </Container>
-            {process.env.NODE_ENV === "production" && (
+            {!userSubscription && process.env.NODE_ENV === "production" && (
               <Container className="sticky top-0 pa16" style={{ top: "75px" }}>
                 <AdSense.Google
                   className="adsbygoogle"

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import moment from "moment-timezone";
 import AdSense from "react-adsense";
@@ -25,6 +25,8 @@ import LoadMore from "../../components/LoadMore";
 import KarmaBadge from "../../components/KarmaBadge";
 import StarterModal from "../../components/modals/Starter";
 
+import { UserContext } from "../../context";
+
 import { startConversation } from "../../components/Vent/util";
 import {
   educationList,
@@ -43,8 +45,9 @@ import {
 } from "../../util";
 import { getUser, getUsersComments, getUsersVents } from "./util";
 
-function ProfileSection({ user }) {
+function ProfileSection() {
   const isMounted = useIsMounted();
+  const { user, userSubscription } = useContext(UserContext);
   const navigate = useNavigate();
   const location = useLocation();
   let { search } = location;
@@ -95,7 +98,7 @@ function ProfileSection({ user }) {
     <Container className="x-fill">
       {!isMobileOrTablet() && location.search && (
         <Container className="container ad column">
-          {process.env.NODE_ENV === "production" && (
+          {!userSubscription && process.env.NODE_ENV === "production" && (
             <Container className="mb8">
               <AdSense.Google
                 className="adsbygoogle"
@@ -431,7 +434,7 @@ function ProfileSection({ user }) {
       </Space>
       {!isMobileOrTablet() && location.search && (
         <Container className="container ad column">
-          {process.env.NODE_ENV === "production" && (
+          {!userSubscription && process.env.NODE_ENV === "production" && (
             <Container className="mb8">
               <AdSense.Google
                 className="adsbygoogle"

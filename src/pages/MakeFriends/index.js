@@ -37,7 +37,7 @@ import { getUserInfo, getUserMatches, hasUserCompletedProfile } from "./util";
 
 function MakeFriendsPage() {
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
+  const { user, userSubscription } = useContext(UserContext);
   const [userInfo, setUserInfo] = useState({});
   const [matches, setMatches] = useState([]);
   const [starterModal, setStarterModal] = useState(!user);
@@ -58,7 +58,7 @@ function MakeFriendsPage() {
       keywords="Learn about Vent With Strangers"
       title="Find Friends Online and Connect With Likeminded People"
     >
-      {process.env.NODE_ENV === "production" && (
+      {!userSubscription && process.env.NODE_ENV === "production" && (
         <Container className="container large full-center mt16">
           <AdSense.Google
             className="adsbygoogle"

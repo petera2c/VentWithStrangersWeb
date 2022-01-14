@@ -21,7 +21,7 @@ import "./style.css";
 
 function Conversations() {
   const isMounted = useIsMounted();
-  const { user } = useContext(UserContext);
+  const { user, userSubscription } = useContext(UserContext);
 
   const [conversations, setConversations] = useState([]);
 
@@ -183,7 +183,7 @@ function Conversations() {
         </Container>
 
         <Container className="container small column ov-auto bg-white pa8 br4">
-          {process.env.NODE_ENV === "production" && (
+          {!userSubscription && process.env.NODE_ENV === "production" && (
             <Container className="full-center mb8">
               <AdSense.Google
                 className="adsbygoogle"
@@ -203,7 +203,7 @@ function Conversations() {
               />
             </Container>
           )}
-          {process.env.NODE_ENV === "production" && (
+          {!userSubscription && process.env.NODE_ENV === "production" && (
             <Container className="full-center">
               <AdSense.Google
                 className="adsbygoogle"

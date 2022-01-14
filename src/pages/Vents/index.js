@@ -30,7 +30,7 @@ const cookies = new Cookies();
 
 function VentsPage() {
   const isMounted = useIsMounted();
-  const { user } = useContext(UserContext);
+  const { user, userSubscription } = useContext(UserContext);
 
   const [vents, setVents] = useState(null);
   const location = useLocation();
@@ -99,7 +99,7 @@ function VentsPage() {
                 Site Info
               </Link>
             </Space>
-            {process.env.NODE_ENV === "production" && (
+            {!userSubscription && process.env.NODE_ENV === "production" && (
               <Container className="x-fill mb8">
                 <AdSense.Google
                   className="adsbygoogle"
@@ -147,7 +147,8 @@ function VentsPage() {
                       key={index}
                     >
                       <Vent previewMode={true} ventInit={vent} />
-                      {process.env.NODE_ENV === "production" &&
+                      {!userSubscription &&
+                        process.env.NODE_ENV === "production" &&
                         index % 3 === 0 && (
                           <Container className="x-fill column">
                             <AdSense.Google
@@ -210,7 +211,7 @@ function VentsPage() {
           )}
         </Space>
 
-        {!isMobileOrTablet() && user && (
+        {!userSubscription && !isMobileOrTablet() && user && (
           <Container className="container ad column">
             <Container
               className="sticky top-0 column x-fill"
