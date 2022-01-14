@@ -75,6 +75,7 @@ function VentsPage() {
           <Container className="container ad column align-start">
             <Space
               className="sticky x-fill align-start bg-white br8 pa16"
+              direction="vertical"
               size="middle"
               style={{ top: "96px" }}
             >
@@ -101,7 +102,7 @@ function VentsPage() {
               </Link>
             </Space>
             {!userSubscription && process.env.NODE_ENV === "production" && (
-              <Container className="x-fill mb8">
+              <Container className="x-fill mt16">
                 <AdSense.Google
                   className="adsbygoogle"
                   client="ca-pub-5185907024931065"
