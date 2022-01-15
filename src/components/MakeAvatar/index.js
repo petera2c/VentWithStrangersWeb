@@ -1,8 +1,6 @@
 import React from "react";
 import Avatar from "avataaars";
 
-import Container from "../containers/Container";
-
 import { capitolizeFirstChar } from "../../util";
 
 function MakeAvatar({ displayName, size, userBasicInfo }) {

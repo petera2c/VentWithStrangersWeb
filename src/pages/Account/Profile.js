@@ -112,11 +112,61 @@ function ProfileSection() {
                 />
               </Container>
 
-              <Space className="align-center">
-                <h1>{capitolizeFirstChar(userBasicInfo.displayName)}</h1>
-                <KarmaBadge karma={calculateKarma(userBasicInfo)} />
+              <Space size="large" wrap>
+                <Space direction="vertical">
+                  <Space className="align-center">
+                    <h1>{capitolizeFirstChar(userBasicInfo.displayName)}</h1>
+                    <KarmaBadge karma={calculateKarma(userBasicInfo)} />
+                  </Space>
+                  <p>{calculateKarma(userBasicInfo)} Karma Points</p>
+                </Space>
+                {userBasicInfo.server_timestamp && (
+                  <Container className="column">
+                    <h6>Created Account</h6>
+                    <p>
+                      {new moment(userBasicInfo.server_timestamp).format(
+                        "MMMM Do YYYY"
+                      )}
+                    </p>
+                  </Container>
+                )}
+
+                {(Boolean(
+                  new moment().year() - new moment(userInfo.birth_date).year()
+                ) ||
+                  userInfo.gender ||
+                  userInfo.pronouns) && (
+                  <Space>
+                    {Boolean(
+                      new moment().year() -
+                        new moment(userInfo.birth_date).year()
+                    ) && (
+                      <Container className="column">
+                        <h6>Age</h6>
+                        <p>
+                          {new moment().diff(
+                            new moment(userInfo.birth_date),
+                            "years"
+                          )}
+                        </p>
+                      </Container>
+                    )}
+
+                    {userInfo.gender && (
+                      <Container className="column ml8">
+                        <h6>Gender</h6>
+                        <h6 className="grey-1">{userInfo.gender}</h6>
+                      </Container>
+                    )}
+                    {userInfo.pronouns && (
+                      <Container className="column ml8">
+                        <h6>Pronouns</h6>
+                        <h6 className="grey-1">{userInfo.pronouns}</h6>
+                      </Container>
+                    )}
+                  </Space>
+                )}
               </Space>
-              <p>{calculateKarma(userBasicInfo)} Karma Points</p>
 
               {userInfo.bio && (
                 <Container className="column">
@@ -125,53 +175,7 @@ function ProfileSection() {
                 </Container>
               )}
 
-              {userBasicInfo.server_timestamp && (
-                <Container className="column">
-                  <h6>Created Account</h6>
-                  <p>
-                    {new moment(userBasicInfo.server_timestamp).format(
-                      "MMMM Do YYYY"
-                    )}
-                  </p>
-                </Container>
-              )}
-
-              {(Boolean(
-                new moment().year() - new moment(userInfo.birth_date).year()
-              ) ||
-                userInfo.gender ||
-                userInfo.pronouns) && (
-                <Space>
-                  {Boolean(
-                    new moment().year() - new moment(userInfo.birth_date).year()
-                  ) && (
-                    <Container className="column">
-                      <h6>Age</h6>
-                      <p>
-                        {new moment().diff(
-                          new moment(userInfo.birth_date),
-                          "years"
-                        )}
-                      </p>
-                    </Container>
-                  )}
-
-                  {userInfo.gender && (
-                    <Container className="column ml8">
-                      <h6>Gender</h6>
-                      <h6 className="grey-1">{userInfo.gender}</h6>
-                    </Container>
-                  )}
-                  {userInfo.pronouns && (
-                    <Container className="column ml8">
-                      <h6>Pronouns</h6>
-                      <h6 className="grey-1">{userInfo.pronouns}</h6>
-                    </Container>
-                  )}
-                </Space>
-              )}
-
-              <Space className="wrap">
+              <Space wrap>
                 {userInfo.education !== undefined && (
                   <Container className="border-all align-center px8 py4 br4">
                     <FontAwesomeIcon className="mr8" icon={faSchool} />
