@@ -116,9 +116,14 @@ export const updateUser = async (
   userInfo
 ) => {
   let changesFound = false;
+  let birthdayChanged = false;
+
+  if (userInfo.birth_date && !birthDate) birthdayChanged = true;
+  if (birthDate)
+    if (userInfo.birth_date !== birthDate.valueOf()) birthdayChanged = true;
 
   if (
-    userInfo.birth_date !== birthDate.valueOf() ||
+    birthdayChanged ||
     userInfo.gender !== gender ||
     userInfo.pronouns !== pronouns ||
     userInfo.education !== education ||
@@ -145,7 +150,7 @@ export const updateUser = async (
       .doc(user.uid)
       .set(
         {
-          birth_date: birthDate.valueOf(),
+          birth_date: birthDate ? birthDate.valueOf() : null,
           gender,
           pronouns,
 

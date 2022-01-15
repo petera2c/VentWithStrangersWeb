@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import moment from "moment-timezone";
-import { Button } from "antd";
+import { Button, DatePicker, message } from "antd";
 
 import { faBirthdayCake } from "@fortawesome/pro-duotone-svg-icons/faBirthdayCake";
 import { faEye } from "@fortawesome/free-solid-svg-icons/faEye";
@@ -12,7 +12,6 @@ import { faVenusMars } from "@fortawesome/free-solid-svg-icons/faVenusMars";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Container from "../../components/containers/Container";
-import Dropdown from "../../components/containers/Dropdown";
 import Page from "../../components/containers/Page";
 import SubscribeColumn from "../../components/SubscribeColumn";
 import Text from "../../components/views/Text";
@@ -29,26 +28,11 @@ import {
 import { isMobileOrTablet, useIsMounted } from "../../util";
 import { getUser, updateUser } from "./util";
 
-function createMonthArray(days) {
-  let array = [];
-  for (let day = 1; day <= days; day++) {
-    array.push(day);
-  }
-  return array;
-}
-function createYearArray(year) {
-  let array = [];
-  for (let i = year - 110; i < year - 5; i++) {
-    array.push(i);
-  }
-  return array;
-}
-
 function AccountSection() {
   const isMounted = useIsMounted();
   const { user, setUserBasicInfo } = useContext(UserContext);
 
-  const [birthDate, setBirthDate] = useState(new moment());
+  const [birthDate, setBirthDate] = useState();
   const [canSeePassword, setCanSeePassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [displayName, setDisplayName] = useState(user.displayName);
@@ -202,40 +186,26 @@ function AccountSection() {
                 </Container>
 
                 <Container className="align-center">
-                  <Container className="relative full-center column">
-                    <p className="mb4">Day</p>
-                    <Dropdown
-                      dropdownOptionClicked={(day) =>
-                        setBirthDate(new moment(birthDate).set("date", day))
-                      }
-                      dropdownOptions={createMonthArray(
-                        birthDate.daysInMonth()
-                      )}
-                      value={birthDate.date()}
-                    />
-                  </Container>
-                  <Container className="relative full-center column ml8">
-                    <p className="mb4">Month</p>
-                    <Dropdown
-                      dropdownOptionClicked={(month) =>
-                        setBirthDate(
-                          new moment(birthDate).set("month", month - 1)
-                        )
-                      }
-                      dropdownOptions={createMonthArray(12)}
-                      value={birthDate.month() + 1}
-                    />
-                  </Container>
-                  <Container className="relative full-center column ml8">
-                    <p className="mb4">Year</p>
-                    <Dropdown
-                      dropdownOptionClicked={(year) =>
-                        setBirthDate(new moment(birthDate).set("year", year))
-                      }
-                      dropdownOptions={createYearArray(new moment().year())}
-                      value={birthDate.year()}
-                    />
-                  </Container>
+                  <DatePicker
+                    value={
+                      birthDate
+                        ? moment(birthDate.format("YYYY/MM/DD"), "YYYY/MM/DD")
+                        : null
+                    }
+                    format={"YYYY/MM/DD"}
+                    onChange={(dateString) => {
+                      if (!dateString) return setBirthDate(null);
+                      const date = new moment(dateString);
+
+                      const diffInYears = new moment().diff(date) / 31536000000;
+                      if (diffInYears > 11) setBirthDate(date);
+                      else
+                        message.error(
+                          "You are too young to use this application :'("
+                        );
+                    }}
+                    size="large"
+                  />
                 </Container>
 
                 <p className="mt32">
