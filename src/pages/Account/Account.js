@@ -80,7 +80,7 @@ function AccountSection() {
       if (isMounted()) setAccountInfo(userInfo);
       if (userInfo && isMounted()) setUserInfo(userInfo);
     }, user.uid);
-  }, [isMounted, user, userInfo]);
+  }, [isMounted, user]);
 
   return (
     <Page className="pa16" title="Account">
@@ -256,6 +256,7 @@ function AccountSection() {
                           key={index}
                           onClick={(e) => {
                             e.preventDefault();
+                            console.log("here");
                             if (partying !== index) setPartying(index);
                             else setPartying(undefined);
                           }}
