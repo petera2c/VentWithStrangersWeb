@@ -81,7 +81,7 @@ function ConversationOption({
             />
           )}
 
-          <Container className="flex-fill ov-hidden">
+          <Container className="flex-fill align-center ov-hidden">
             <h6 className={"ellipsis mr8 " + (hasSeen ? "grey-1" : "primary")}>
               {conversationPartnerData
                 ? capitolizeFirstChar(conversationPartnerData.displayName)
