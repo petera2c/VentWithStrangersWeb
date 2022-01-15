@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import moment from "moment-timezone";
+import TextArea from "react-textarea-autosize";
 import { Button, DatePicker, message } from "antd";
 
 import { faBirthdayCake } from "@fortawesome/pro-duotone-svg-icons/faBirthdayCake";
@@ -25,13 +26,14 @@ import {
   politicalBeliefsList,
   religiousBeliefsList,
 } from "../../PersonalOptions";
-import { isMobileOrTablet, useIsMounted } from "../../util";
+import { calculateKarma, isMobileOrTablet, useIsMounted } from "../../util";
 import { getUser, updateUser } from "./util";
 
 function AccountSection() {
   const isMounted = useIsMounted();
-  const { user, setUserBasicInfo } = useContext(UserContext);
+  const { user, userBasicInfo, setUserBasicInfo } = useContext(UserContext);
 
+  const [bio, setBio] = useState();
   const [birthDate, setBirthDate] = useState();
   const [canSeePassword, setCanSeePassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -49,13 +51,14 @@ function AccountSection() {
   const [religion, setReligion] = useState();
 
   const setAccountInfo = (userInfo) => {
-    if (userInfo.gender) setGender(userInfo.gender);
-    if (userInfo.pronouns) setPronouns(userInfo.pronouns);
+    if (userInfo.bio) setBio(userInfo.bio);
     if (userInfo.birth_date) setBirthDate(new moment(userInfo.birth_date));
     if (userInfo.education !== undefined) setEducation(userInfo.education);
+    if (userInfo.gender) setGender(userInfo.gender);
     if (userInfo.kids !== undefined) setKids(userInfo.kids);
     if (userInfo.partying !== undefined) setPartying(userInfo.partying);
     if (userInfo.politics !== undefined) setPolitics(userInfo.politics);
+    if (userInfo.pronouns) setPronouns(userInfo.pronouns);
     if (userInfo.religion !== undefined) setReligion(userInfo.religion);
   };
 
@@ -177,6 +180,22 @@ function AccountSection() {
                 </Container>
               </Container>
             </Container>
+
+            <p className="mb8">Bio</p>
+            <TextArea
+              className="x-fill py8 px16 br4"
+              onChange={(event) => {
+                if (calculateKarma(userBasicInfo) < 20)
+                  return message.info(
+                    "You need 20 karma points to interact with this :)"
+                  );
+
+                setBio(event.target.value);
+              }}
+              placeholder="Let us know about you :)"
+              minRows={3}
+              value={bio}
+            />
 
             <Container className="x-fill wrap">
               <Container className="column pr8 mb16">
@@ -416,6 +435,7 @@ function AccountSection() {
               className="button-2 py8 px32 mx4 br4"
               onClick={() =>
                 updateUser(
+                  bio,
                   birthDate,
                   confirmPassword,
                   displayName,

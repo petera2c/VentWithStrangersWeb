@@ -57,9 +57,9 @@ function ProfileSection() {
   const [canLoadMoreVents, setCanLoadMoreVents] = useState(true);
   const [postOptions, setPostOptions] = useState(false);
   const [postsSection, setPostsSection] = useState(true);
+  const [starterModal, setStarterModal] = useState(false);
   const [userBasicInfo, setUserBasicInfo] = useState({});
   const [userInfo, setUserInfo] = useState({});
-  const [starterModal, setStarterModal] = useState(false);
 
   const [vents, setVents] = useState([]);
   const [comments, setComments] = useState([]);
@@ -75,6 +75,7 @@ function ProfileSection() {
   useEffect(() => {
     setVents([]);
     setComments([]);
+
     if (search) {
       getUserBasicInfo((userBasicInfo) => {
         if (isMounted()) setUserBasicInfo(userBasicInfo);
@@ -115,18 +116,23 @@ function ProfileSection() {
                 <h1>{capitolizeFirstChar(userBasicInfo.displayName)}</h1>
                 <KarmaBadge karma={calculateKarma(userBasicInfo)} />
               </Space>
-              <h6 className="grey-1 fw-400">
-                {calculateKarma(userBasicInfo)} Karma Points
-              </h6>
+              <p>{calculateKarma(userBasicInfo)} Karma Points</p>
+
+              {userInfo.bio && (
+                <Container className="column">
+                  <h6>Bio</h6>
+                  <p className="word-break grey-1">{userInfo.bio}</p>
+                </Container>
+              )}
 
               {userBasicInfo.server_timestamp && (
                 <Container className="column">
-                  <h6 className="fw-400">Created Account</h6>
-                  <h6 className="grey-1 fw-400">
+                  <h6>Created Account</h6>
+                  <p>
                     {new moment(userBasicInfo.server_timestamp).format(
                       "MMMM Do YYYY"
                     )}
-                  </h6>
+                  </p>
                 </Container>
               )}
 
@@ -140,26 +146,26 @@ function ProfileSection() {
                     new moment().year() - new moment(userInfo.birth_date).year()
                   ) && (
                     <Container className="column">
-                      <h6 className="fw-400">Age</h6>
-                      <h6 className="grey-1 fw-400">
+                      <h6>Age</h6>
+                      <p>
                         {new moment().diff(
                           new moment(userInfo.birth_date),
                           "years"
                         )}
-                      </h6>
+                      </p>
                     </Container>
                   )}
 
                   {userInfo.gender && (
                     <Container className="column ml8">
-                      <h6 className="fw-400">Gender</h6>
-                      <h6 className="grey-1 fw-400">{userInfo.gender}</h6>
+                      <h6>Gender</h6>
+                      <h6 className="grey-1">{userInfo.gender}</h6>
                     </Container>
                   )}
                   {userInfo.pronouns && (
                     <Container className="column ml8">
-                      <h6 className="fw-400">Pronouns</h6>
-                      <h6 className="grey-1 fw-400">{userInfo.pronouns}</h6>
+                      <h6>Pronouns</h6>
+                      <h6 className="grey-1">{userInfo.pronouns}</h6>
                     </Container>
                   )}
                 </Space>
@@ -263,9 +269,7 @@ function ProfileSection() {
                                           setBlockModal(!blockModal);
                                         }}
                                       >
-                                        <p className="fw-400 flex-fill">
-                                          Block User
-                                        </p>
+                                        <p className=" flex-fill">Block User</p>
                                         <FontAwesomeIcon
                                           className="ml8"
                                           icon={faUserLock}
@@ -319,9 +323,7 @@ function ProfileSection() {
                     ventInit={vent}
                   />
                 ))}
-              {vents && vents.length === 0 && (
-                <h4 className="fw-400">No vents found.</h4>
-              )}
+              {vents && vents.length === 0 && <h4>No vents found.</h4>}
               {canLoadMoreVents && (
                 <LoadMore
                   canLoadMore={canLoadMoreVents}
@@ -378,9 +380,7 @@ function ProfileSection() {
                     );
                   })}
               </Container>
-              {comments && comments.length === 0 && (
-                <h4 className="fw-400">No comments found.</h4>
-              )}
+              {comments && comments.length === 0 && <h4>No comments found.</h4>}
               {canLoadMoreComments && (
                 <Button
                   block

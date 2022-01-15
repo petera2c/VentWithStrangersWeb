@@ -4,9 +4,6 @@ import ReactGA from "react-ga";
 import { Helmet } from "react-helmet";
 
 import Container from "../Container";
-import Sidebar from "../../Sidebar";
-
-import { isMobileOrTablet } from "../../../util";
 
 import "./style.css";
 

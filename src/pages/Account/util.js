@@ -99,6 +99,7 @@ export const getUser = async (callback, userID) => {
 };
 
 export const updateUser = async (
+  bio,
   birthDate,
   confirmPassword,
   displayName,
@@ -124,18 +125,21 @@ export const updateUser = async (
 
   if (
     birthdayChanged ||
-    userInfo.gender !== gender ||
-    userInfo.pronouns !== pronouns ||
+    userInfo.bio !== bio ||
     userInfo.education !== education ||
+    userInfo.gender !== gender ||
     userInfo.kids !== kids ||
     userInfo.partying !== partying ||
     userInfo.politics !== politics ||
+    userInfo.pronouns !== pronouns ||
     userInfo.religion !== religion
   ) {
-    if (userInfo.gender && userInfo.gender.length > 20)
-      return message.error("Gender can only be a maximum of 20 characters.");
-    if (userInfo.pronouns && userInfo.pronouns.length > 20)
-      return message.error("Pronouns can only be a maximum of 20 characters.");
+    if (gender && gender.length > 15)
+      return message.error("Gender can only be a maximum of 15 characters.");
+    if (pronouns && pronouns.length > 15)
+      return message.error("Pronouns can only be a maximum of 15 characters.");
+    if (bio && bio.length > 500)
+      return message.error("Bio has a maximum of 500 characters");
 
     changesFound = true;
 
@@ -150,10 +154,10 @@ export const updateUser = async (
       .doc(user.uid)
       .set(
         {
+          bio,
           birth_date: birthDate ? birthDate.valueOf() : null,
           gender,
           pronouns,
-
           ...whatInformationHasChanged(
             education,
             kids,

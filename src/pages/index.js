@@ -110,13 +110,15 @@ function RoutesComp() {
             {error && { error }}
             {!loading && !error && (
               <Routes>
-                <Route path="/*" element={<NotFoundPage />} />
-                <Route path="" element={<VentsPage />} />
-                {user && <Route path="account" element={<AccountPage />} />}
                 {!user && <Route path="account" element={<SignUpPage />} />}
-                <Route path="app-downloads" element={<AppDownloadPage />} />
-                {user && <Route path="avatar" element={<AvatarPage />} />}
                 {!user && <Route path="avatar" element={<SignUpPage />} />}
+                {!user && <Route path="settings" element={<SignUpPage />} />}
+                {user && <Route path="account" element={<AccountPage />} />}
+                {user && <Route path="avatar" element={<AvatarPage />} />}
+                {user && <Route path="settings" element={<SettingsPage />} />}
+                <Route path="" element={<VentsPage />} />
+                <Route path="/*" element={<NotFoundPage />} />
+                <Route path="app-downloads" element={<AppDownloadPage />} />
                 <Route path="conversations" element={<ConversationsPage />} />
                 <Route path="feedback" element={<FeedbackPage />} />
                 <Route path="friends" element={<FriendsPage />} />
@@ -131,8 +133,6 @@ function RoutesComp() {
                 <Route path="profile" element={<ProfilePage />} />
                 <Route path="recent" element={<VentsPage />} />
                 <Route path="search" element={<SearchPage />} />
-                {user && <Route path="settings" element={<SettingsPage />} />}
-                {!user && <Route path="settings" element={<SignUpPage />} />}
                 <Route path="site-info" element={<AboutUsPage />} />
                 <Route path="subscribe" element={<SubscribePage />} />
                 <Route

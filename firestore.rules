@@ -68,6 +68,26 @@ service cloud.firestore {
       allow read, write, update, delete: if request.auth.uid == userID;
     }
 
+    match /user_expo_tokens/{userID} {
+      allow read, write, update, delete: if request.auth.uid == userID;
+    }
+    match /user_matches/{userID} {
+      allow read, write, update, delete: if true;
+    }
+    match /user_day_limit_vents/{userID} {
+      allow read: if request.auth.uid == userID;
+      allow write, update, delete: if false;
+    }
+    match /user_mobile_app_rating/{userID} {
+      allow read, write, update, delete: if request.auth.uid == userID;
+    }
+    match /user_subscription/{userID} {
+      allow read, write, update, delete: if request.auth.uid == userID;
+    }
+    match /user_vent_timeout/{userID} {
+      allow read: if request.auth.uid == userID;
+      allow write, update, delete: if false;
+    }
     match /users/{userID} {
       allow read, write, update, delete: if request.auth.uid == userID;
     }
@@ -84,29 +104,9 @@ service cloud.firestore {
         allow write, update, delete: if false;
       }
     }
-    match /user_expo_tokens/{userID} {
-      allow read, write, update, delete: if request.auth.uid == userID;
-    }
-    match /user_matches/{userID} {
-      allow read, write, update, delete: if true;
-    }
     match /users_info/{userID} {
       allow read: if true;
       allow write, update, delete: if request.auth.uid == userID;
-    }
-    match /user_mobile_app_rating/{userID} {
-      allow read, write, update, delete: if request.auth.uid == userID;
-    }
-    match /user_day_limit_vents/{userID} {
-      allow read: if request.auth.uid == userID;
-      allow write, update, delete: if false;
-    }
-    match /user_vent_timeout/{userID} {
-      allow read: if request.auth.uid == userID;
-      allow write, update, delete: if false;
-    }
-    match /user_subscription/{userID} {
-      allow read, write, update, delete: if request.auth.uid == userID;
     }
     match /users_settings/{userID} {
       allow read, write, update, delete: if request.auth.uid == userID;

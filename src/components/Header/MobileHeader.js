@@ -358,9 +358,7 @@ function Header() {
       )}
       {user && !user.emailVerified && (
         <Container className="x-fill full-center bg-grey-2">
-          <h4 className="word-break tac mr16">
-            Please verify your email address!
-          </h4>
+          <h4 className="tac mr16">Please verify your email address!</h4>
           <button
             className="button-2 no-bold py8 px16 my16 br8"
             onClick={() => sendEmailVerification(user)}
