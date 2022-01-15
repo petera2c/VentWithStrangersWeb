@@ -7,7 +7,7 @@ import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-import { UserContext } from "../context";
+import { OnlineUsersContext, UserContext } from "../context";
 
 import Container from "../components/containers/Container";
 import Header from "../components/Header";
@@ -46,6 +46,7 @@ import {
 
 function RoutesComp() {
   const [user, loading, error] = useAuthState(firebase.auth());
+  const [totalOnlineUsers, setTotalOnlineUsers] = useState();
   const [userBasicInfo, setUserBasicInfo] = useState({});
   const [userSubscription, setUserSubscription] = useState();
 
@@ -100,54 +101,70 @@ function RoutesComp() {
         setUserSubscription,
       }}
     >
-      <Router>
-        <Container className="screen-container column ov-hidden">
-          {!isMobileOrTablet() && <Header />}
-          {isMobileOrTablet() && <MobileHeader />}
+      <OnlineUsersContext.Provider
+        value={{
+          setTotalOnlineUsers,
+          totalOnlineUsers,
+        }}
+      >
+        <Router>
+          <Container className="screen-container column ov-hidden">
+            {!isMobileOrTablet() && <Header />}
+            {isMobileOrTablet() && <MobileHeader />}
 
-          <Container className="flex-fill x-fill ov-hidden">
-            {!isMobileOrTablet() && <Sidebar />}
-            {error && { error }}
-            {!loading && !error && (
-              <Routes>
-                {!user && <Route path="account" element={<SignUpPage />} />}
-                {!user && <Route path="avatar" element={<SignUpPage />} />}
-                {!user && <Route path="settings" element={<SignUpPage />} />}
-                {user && <Route path="account" element={<AccountPage />} />}
-                {user && <Route path="avatar" element={<AvatarPage />} />}
-                {user && <Route path="settings" element={<SettingsPage />} />}
-                <Route path="" element={<VentsPage />} />
-                <Route path="/*" element={<NotFoundPage />} />
-                <Route path="app-downloads" element={<AppDownloadPage />} />
-                <Route path="conversations" element={<ConversationsPage />} />
-                <Route path="feedback" element={<FeedbackPage />} />
-                <Route path="friends" element={<FriendsPage />} />
-                <Route path="home" element={<VentsPage />} />
-                <Route path="make-friends" element={<MakeFriendsPage />} />
-                <Route path="notifications" element={<NotificationsPage />} />
-                <Route path="online-users" element={<OnlineUsersPage />} />
-                <Route path="popular" element={<VentsPage />} />
-                <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
-                <Route path="problem/:id" element={<VentPage />} />
-                <Route path="problem/:id/:title" element={<VentPage />} />
-                <Route path="profile" element={<ProfilePage />} />
-                <Route path="recent" element={<VentsPage />} />
-                <Route path="search" element={<SearchPage />} />
-                <Route path="site-info" element={<AboutUsPage />} />
-                <Route path="subscribe" element={<SubscribePage />} />
-                <Route
-                  path="subscription-successful"
-                  element={<SubSuccessPage />}
-                />
-                <Route path="trending" element={<VentsPage />} />
-                <Route path="vent-to-strangers" element={<NewVentPage />} />
-                <Route path="vent-to-strangers/:id" element={<NewVentPage />} />
-                <Route path="verified-email" element={<VerifiedEmailPage />} />
-              </Routes>
-            )}
+            <Container className="flex-fill x-fill ov-hidden">
+              {!isMobileOrTablet() && <Sidebar />}
+              {error && { error }}
+              {!loading && !error && (
+                <Routes>
+                  {!user && <Route path="account" element={<SignUpPage />} />}
+                  {!user && <Route path="avatar" element={<SignUpPage />} />}
+                  {!user && <Route path="settings" element={<SignUpPage />} />}
+                  {user && <Route path="account" element={<AccountPage />} />}
+                  {user && <Route path="avatar" element={<AvatarPage />} />}
+                  {user && <Route path="settings" element={<SettingsPage />} />}
+                  <Route path="" element={<VentsPage />} />
+                  <Route path="/*" element={<NotFoundPage />} />
+                  <Route path="app-downloads" element={<AppDownloadPage />} />
+                  <Route path="conversations" element={<ConversationsPage />} />
+                  <Route path="feedback" element={<FeedbackPage />} />
+                  <Route path="friends" element={<FriendsPage />} />
+                  <Route path="home" element={<VentsPage />} />
+                  <Route path="make-friends" element={<MakeFriendsPage />} />
+                  <Route path="notifications" element={<NotificationsPage />} />
+                  <Route path="online-users" element={<OnlineUsersPage />} />
+                  <Route path="popular" element={<VentsPage />} />
+                  <Route
+                    path="privacy-policy"
+                    element={<PrivacyPolicyPage />}
+                  />
+                  <Route path="problem/:id" element={<VentPage />} />
+                  <Route path="problem/:id/:title" element={<VentPage />} />
+                  <Route path="profile" element={<ProfilePage />} />
+                  <Route path="recent" element={<VentsPage />} />
+                  <Route path="search" element={<SearchPage />} />
+                  <Route path="site-info" element={<AboutUsPage />} />
+                  <Route path="subscribe" element={<SubscribePage />} />
+                  <Route
+                    path="subscription-successful"
+                    element={<SubSuccessPage />}
+                  />
+                  <Route path="trending" element={<VentsPage />} />
+                  <Route path="vent-to-strangers" element={<NewVentPage />} />
+                  <Route
+                    path="vent-to-strangers/:id"
+                    element={<NewVentPage />}
+                  />
+                  <Route
+                    path="verified-email"
+                    element={<VerifiedEmailPage />}
+                  />
+                </Routes>
+              )}
+            </Container>
           </Container>
-        </Container>
-      </Router>
+        </Router>
+      </OnlineUsersContext.Provider>
     </UserContext.Provider>
   );
 }

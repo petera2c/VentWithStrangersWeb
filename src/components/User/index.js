@@ -60,7 +60,7 @@ function UserComponent({
       to={"/profile?" + userInfo.id}
     >
       <Container className="column x-fill flex-fill" direction="vertical">
-        <Container className="x-fill full-center mb8">
+        <Container className="x-fill full-center mb16">
           <MakeAvatar
             displayName={userInfo.displayName}
             size="large"

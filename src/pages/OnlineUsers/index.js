@@ -1,26 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import Page from "../../components/containers/Page";
 import Container from "../../components/containers/Container";
 import UserComp from "../../components/User";
 
-import { getTotalOnlineUsers, isMobileOrTablet } from "../../util";
+import { OnlineUsersContext } from "../../context";
+
+import { isMobileOrTablet } from "../../util";
 import { getOnlineUsers } from "./util";
 
 function OnlineUsers() {
   const [onlineUsers, setOnlineUsers] = useState([]);
 
+  const { totalOnlineUsers } = useContext(OnlineUsersContext);
+
   useEffect(() => {
-    let onlineUsersUnsubscribe;
-
-    onlineUsersUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) =>
-      getOnlineUsers(setOnlineUsers, totalOnlineUsers)
-    );
-
-    return () => {
-      if (onlineUsersUnsubscribe) onlineUsersUnsubscribe.off("value");
-    };
-  }, []);
+    getOnlineUsers(setOnlineUsers, totalOnlineUsers);
+  }, [totalOnlineUsers]);
 
   return (
     <Page

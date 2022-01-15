@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { Space } from "antd";
@@ -18,7 +18,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Container from "../containers/Container";
 import MakeAd from "../MakeAd";
 
-import { UserContext } from "../../context";
+import { OnlineUsersContext, UserContext } from "../../context";
 
 import {
   getTotalOnlineUsers,
@@ -63,7 +63,9 @@ function Sidebar() {
   const { pathname } = useLocation();
   const { user } = useContext(UserContext);
 
-  const [totalOnlineUsers, setTotalOnlineUsers] = useState(0);
+  const { totalOnlineUsers, setTotalOnlineUsers } = useContext(
+    OnlineUsersContext
+  );
 
   useEffect(() => {
     let onlineUsersUnsubscribe;
