@@ -284,7 +284,7 @@ function ProfileSection() {
           )}
 
           <h1 className="fs-26">Activity</h1>
-          <Container className="ov-hidden column bg-white mb16 br8">
+          <Container className="ov-hidden column bg-white br8">
             <Container>
               <Container
                 className={
