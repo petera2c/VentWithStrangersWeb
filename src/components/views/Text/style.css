@@ -6,9 +6,6 @@
   color: inherit;
 }
 
-.word-break {
-  word-break: break-all;
-}
 
 .white {
   color: var(--white-color);

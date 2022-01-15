@@ -114,7 +114,7 @@ function ProfileSection() {
 
               <Space size="large" wrap>
                 <Space direction="vertical">
-                  <Space className="align-center">
+                  <Space align="center">
                     <h1>{capitolizeFirstChar(userBasicInfo.displayName)}</h1>
                     <KarmaBadge karma={calculateKarma(userBasicInfo)} />
                   </Space>
@@ -155,13 +155,13 @@ function ProfileSection() {
                     {userInfo.gender && (
                       <Container className="column ml8">
                         <h6>Gender</h6>
-                        <h6 className="grey-1">{userInfo.gender}</h6>
+                        <p>{userInfo.gender}</p>
                       </Container>
                     )}
                     {userInfo.pronouns && (
                       <Container className="column ml8">
                         <h6>Pronouns</h6>
-                        <h6 className="grey-1">{userInfo.pronouns}</h6>
+                        <p>{userInfo.pronouns}</p>
                       </Container>
                     )}
                   </Space>
@@ -171,7 +171,7 @@ function ProfileSection() {
               {userInfo.bio && (
                 <Container className="column">
                   <h6>Bio</h6>
-                  <p className="word-break grey-1">{userInfo.bio}</p>
+                  <p className="break-word grey-1">{userInfo.bio}</p>
                 </Container>
               )}
 
