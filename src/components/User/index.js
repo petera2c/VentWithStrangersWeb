@@ -59,7 +59,7 @@ function UserComponent({
       className="flex container twentyvw ov-hidden column bg-white pa16 mb16 br8"
       to={"/profile?" + userInfo.id}
     >
-      <Space className="x-fill" direction="vertical">
+      <Container className="column x-fill flex-fill" direction="vertical">
         <Container className="x-fill full-center">
           <MakeAvatar
             displayName={userInfo.displayName}
@@ -138,9 +138,9 @@ function UserComponent({
           </Space>
         )}
         {showMessageUser && (
-          <Container className="full-center">
+          <Container className="flex-fill align-end">
             <Button
-              className="button-2 px16 py8 mr16 br8"
+              className="x-fill button-2 px16 py8 br8"
               onClick={(e) => {
                 e.preventDefault();
 
@@ -155,11 +155,13 @@ function UserComponent({
               }}
             >
               <FontAwesomeIcon className="mr8" icon={faComments} />
-              Message {capitolizeFirstChar(userInfo.displayName)}
+              <p className="ellipsis">
+                Message {capitolizeFirstChar(userInfo.displayName)}
+              </p>
             </Button>
           </Container>
         )}
-      </Space>
+      </Container>
       {starterModal && (
         <StarterModal
           activeModal={starterModal}

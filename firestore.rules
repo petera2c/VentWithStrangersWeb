@@ -68,6 +68,10 @@ service cloud.firestore {
       allow read, write, update, delete: if request.auth.uid == userID;
     }
 
+    match /user_rewards/{userID} {
+      allow read: if request.auth.uid == userID;
+      allow write, update, delete: if false;
+    }
     match /user_expo_tokens/{userID} {
       allow read, write, update, delete: if request.auth.uid == userID;
     }
