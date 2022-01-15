@@ -22,6 +22,7 @@ function MakeAvatar({ displayName, size, userBasicInfo }) {
             eyebrowType={userBasicInfo.avatar.eyebrowType}
             mouthType={userBasicInfo.avatar.mouthType}
             skinColor={userBasicInfo.avatar.skinColor}
+            style={{ height: "100%" }}
           />
         </div>
       );
@@ -39,6 +40,7 @@ function MakeAvatar({ displayName, size, userBasicInfo }) {
             eyebrowType={userBasicInfo.avatar.eyebrowType}
             mouthType={userBasicInfo.avatar.mouthType}
             skinColor={userBasicInfo.avatar.skinColor}
+            style={{ height: "100%" }}
           />
         </div>
       );
