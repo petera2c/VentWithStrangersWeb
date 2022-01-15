@@ -60,7 +60,7 @@ function UserComponent({
       to={"/profile?" + userInfo.id}
     >
       <Container className="column x-fill flex-fill" direction="vertical">
-        <Container className="x-fill full-center">
+        <Container className="x-fill full-center mb8">
           <MakeAvatar
             displayName={userInfo.displayName}
             size="large"
@@ -68,9 +68,11 @@ function UserComponent({
           />
         </Container>
 
-        <Container className="align-center">
-          {isOnline && <div className="online-dot mr8" />}
-          <h1 className="primary break-word mr8">{userInfo.displayName}</h1>
+        <Container className="x-fill align-center wrap">
+          <Container className="align-center mr8">
+            {isOnline && <div className="online-dot mr8" />}
+            <h1 className="primary ellipsis">{userInfo.displayName}</h1>
+          </Container>
           <KarmaBadge karma={calculateKarma(userInfo)} />
         </Container>
         <h6 className="grey-1 fw-400">
