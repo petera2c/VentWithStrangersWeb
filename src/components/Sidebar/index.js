@@ -10,6 +10,7 @@ import { faInfo } from "@fortawesome/pro-duotone-svg-icons/faInfo";
 import { faPen } from "@fortawesome/pro-duotone-svg-icons/faPen";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faUserAstronaut } from "@fortawesome/pro-duotone-svg-icons/faUserAstronaut";
+import { faSignOut } from "@fortawesome/pro-duotone-svg-icons/faSignOut";
 import { faUserFriends } from "@fortawesome/pro-duotone-svg-icons/faUserFriends";
 import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -155,7 +156,7 @@ function Sidebar() {
       />
       {user && (
         <SideBarLink
-          icon={faCog}
+          icon={faSignOut}
           onClick={() => {
             signOut(user.uid);
           }}

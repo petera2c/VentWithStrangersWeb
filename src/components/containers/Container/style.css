@@ -70,6 +70,29 @@
   flex-direction: column;
 }
 
+.avatar {
+  width: 60px !important;
+  height: 60px !important;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+.avatar.semi-large {
+  width: 120px !important;
+  height: 120px !important;
+}
+.avatar.large {
+  width: 148px !important;
+  height: 148px !important;
+}
+.avatar.small {
+  width: 48px !important;
+  height: 48px !important;
+}
+
+
 .round-icon {
   display: flex;
   justify-content: center;

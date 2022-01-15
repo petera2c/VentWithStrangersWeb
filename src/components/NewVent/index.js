@@ -96,42 +96,40 @@ function NewVentComponent({ miniVersion, ventID }) {
             <h1 className="tac">{formatSeconds(userVentTimeOut)}</h1>
           </Space>
         )}
-        <Space className="x-fill" direction="vertical">
-          <Container className="align-center">
-            <MakeAvatar
-              displayName={userBasicInfo.displayName}
-              userBasicInfo={userBasicInfo}
-            />
-            <TextArea
-              className="x-fill py8 px16 br4"
-              onChange={(event) => {
-                if (!checks()) return;
+        <Container className="align-center">
+          <MakeAvatar
+            displayName={userBasicInfo.displayName}
+            userBasicInfo={userBasicInfo}
+          />
+          <TextArea
+            className="x-fill py8 px16 br4"
+            onChange={(event) => {
+              if (!checks()) return;
 
-                setDescription(event.target.value);
-              }}
-              onClick={() => setIsMinified(false)}
-              placeholder={
-                (userVentTimeOut > 0
-                  ? "You can vent again in " + formatSeconds(userVentTimeOut)
-                  : encouragingText) + " :)"
+              setDescription(event.target.value);
+            }}
+            onClick={() => setIsMinified(false)}
+            placeholder={
+              (userVentTimeOut > 0
+                ? "You can vent again in " + formatSeconds(userVentTimeOut)
+                : encouragingText) + " :)"
+            }
+            minRows={isMinified ? 1 : 3}
+            value={description}
+          />
+          <Emoji
+            handleChange={(emoji) => {
+              const userInteractionIssues = userSignUpProgress(user);
+
+              if (userInteractionIssues) {
+                if (userInteractionIssues === "NSI") setStarterModal(true);
+                return;
               }
-              minRows={isMinified ? 1 : 3}
-              value={description}
-            />
-            <Emoji
-              handleChange={(emoji) => {
-                const userInteractionIssues = userSignUpProgress(user);
 
-                if (userInteractionIssues) {
-                  if (userInteractionIssues === "NSI") setStarterModal(true);
-                  return;
-                }
-
-                setDescription(description + emoji);
-              }}
-            />
-          </Container>
-        </Space>
+              setDescription(description + emoji);
+            }}
+          />
+        </Container>
         {!isMinified && (
           <Space className="x-fill" direction="vertical">
             <h5 className="fw-400">Title</h5>
