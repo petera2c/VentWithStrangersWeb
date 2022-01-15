@@ -187,27 +187,25 @@ function Header() {
           size="large"
         >
           {user && (
-            <Space align="center" direction="vertical">
-              <Space align="center" direction="vertical">
-                <Space
-                  align="center"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setAccountSectionActive(!accountSectionActive);
-                  }}
-                >
-                  <MakeAvatar
-                    displayName={user.displayName}
-                    userBasicInfo={userBasicInfo}
-                  />
+            <Container className="align-center column">
+              <Space
+                align="center"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setAccountSectionActive(!accountSectionActive);
+                }}
+              >
+                <MakeAvatar
+                  displayName={user.displayName}
+                  userBasicInfo={userBasicInfo}
+                />
 
-                  <Text
-                    className="mr8"
-                    text={`Hello, ${capitolizeFirstChar(user.displayName)}`}
-                    type="p"
-                  />
-                  <FontAwesomeIcon icon={faChevronDown} />
-                </Space>
+                <Text
+                  className="mr8"
+                  text={`Hello, ${capitolizeFirstChar(user.displayName)}`}
+                  type="p"
+                />
+                <FontAwesomeIcon icon={faChevronDown} />
               </Space>
               {accountSectionActive && (
                 <Space align="center" direction="vertical" size="middle">
@@ -262,7 +260,7 @@ function Header() {
                   </Link>
                 </Space>
               )}
-            </Space>
+            </Container>
           )}
 
           <Space align="center" direction="vertical" size="middle">

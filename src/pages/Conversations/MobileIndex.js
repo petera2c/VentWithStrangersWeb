@@ -78,7 +78,6 @@ function MobileConversations() {
       className="bg-grey-2"
       description="Sometimes, all we need is an available ear. This is where you can anonymously talk to someone that wants to listen, or anonymously listen to someone that wants to be heard."
       keywords="vent, strangers, help"
-      style={{ height: "100vh" }}
       title="Chats"
     >
       <Container

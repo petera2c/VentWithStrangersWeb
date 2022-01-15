@@ -256,7 +256,6 @@ function AccountSection() {
                           key={index}
                           onClick={(e) => {
                             e.preventDefault();
-                            console.log("here");
                             if (partying !== index) setPartying(index);
                             else setPartying(undefined);
                           }}
