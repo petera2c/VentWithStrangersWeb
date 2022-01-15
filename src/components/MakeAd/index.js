@@ -17,6 +17,12 @@ function MakeAd({ banner, className, layoutKey, slot, userSubscription }) {
             slot={slot}
             style={{
               display: "block",
+              minWidth: "240px",
+              width: "100%",
+              maxWidth: "1000px",
+              minHeight: "100px",
+              height: "180px",
+              maxHeight: "300px",
             }}
           />
         </Container>
@@ -24,7 +30,7 @@ function MakeAd({ banner, className, layoutKey, slot, userSubscription }) {
     else
       return (
         <Container
-          className={"full-center test3 br8 " + className}
+          className={"x-fill full-center test3 br8 " + className}
           style={{
             minWidth: "100px",
             width: "100%",
