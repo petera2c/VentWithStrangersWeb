@@ -113,7 +113,7 @@ function Sidebar() {
         text="Make Friends"
       />
 
-      <MakeAd className="mt16" slot="4732645487" />
+      {false && <MakeAd className="mt16" slot="4732645487" />}
 
       {user && (
         <SideBarLink
