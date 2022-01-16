@@ -17,13 +17,12 @@ function NotificationList({ notifications }) {
             key={index}
             href={notification.link}
           >
-            <Text text={notification.message} type="h6" />
-            <Text
-              text={moment(notification.server_timestamp)
+            <h6>{notification.message} </h6>
+            <p className="inherit-color">
+              {moment(notification.server_timestamp)
                 .subtract(1, "minute")
                 .fromNow()}
-              type="p"
-            />
+            </p>
           </a>
         );
       })}
