@@ -148,6 +148,8 @@ h6 {
   font-size: var(--twenty-font-size);
 }
 p {
+  color: var(--grey-color-1);
+
   margin: 0;
   text-align: left;
   font-size: var(--eighteen-font-size);

@@ -447,7 +447,8 @@ function Vent({
                                 className="button-7 column pa16"
                                 key={entry.id}
                               >
-                                <Text text={entry.display} type="h6" />
+                                <h6>{entry.display}</h6>
+                                <p>{entry.id}</p>
                               </Container>
                             );
                           }}
