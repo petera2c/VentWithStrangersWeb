@@ -129,10 +129,7 @@ export const signOut = async (userID) => {
 };
 
 export const soundNotify = (sound = "bing") => {
-  let audio;
-  if (process.env.NODE_ENV === "development")
-    audio = new Audio("/static/" + sound + ".mp3");
-  else audio = new Audio(sound + ".mp3");
+  let audio = new Audio("/static/" + sound + ".mp3");
 
   audio.play();
 };

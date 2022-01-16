@@ -3,6 +3,14 @@ const { createNotification } = require("./notification");
 const { createProfileLink } = require("./util");
 
 const newUserSetup = async (user) => {
+  await admin.firestore().collection("user_rewards").doc(user.uid).set({
+    created_comment_support_counter: 0,
+    created_comments_counter: 0,
+    created_vent_supports: 0,
+    created_vents_counter: 0,
+    received_comment_support_counter: 0,
+    received_vent_support_counter: 0,
+  });
   await admin
     .firestore()
     .collection("invite_uid")
