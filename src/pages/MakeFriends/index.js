@@ -1,41 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import moment from "moment-timezone";
-
-import { faBaby } from "@fortawesome/free-solid-svg-icons/faBaby";
-import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
-import { faGlassCheers } from "@fortawesome/free-solid-svg-icons/faGlassCheers";
-import { faLandmark } from "@fortawesome/free-solid-svg-icons/faLandmark";
-import { faPray } from "@fortawesome/free-solid-svg-icons/faPray";
-import { faSchool } from "@fortawesome/free-solid-svg-icons/faSchool";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 
 import { UserContext } from "../../context";
 
-import Button from "../../components/views/Button";
 import Container from "../../components/containers/Container";
-import KarmaBadge from "../../components/KarmaBadge";
-import MakeAvatar from "../../components/MakeAvatar";
 import Page from "../../components/containers/Page";
 import StarterModal from "../../components/modals/Starter";
+import UserComp from "../../components/User";
 
-import { startConversation } from "../../components/Vent/util";
-import {
-  educationList,
-  kidsList,
-  partyingList,
-  politicalBeliefsList,
-} from "../../PersonalOptions";
-import {
-  calculateKarma,
-  capitolizeFirstChar,
-  isMobileOrTablet,
-  userSignUpProgress,
-} from "../../util";
+import { isMobileOrTablet } from "../../util";
 import { getUserInfo, getUserMatches, hasUserCompletedProfile } from "./util";
 
 function MakeFriendsPage() {
-  const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const [userInfo, setUserInfo] = useState({});
   const [matches, setMatches] = useState([]);
@@ -48,7 +24,11 @@ function MakeFriendsPage() {
         if (hasUserCompletedProfile(newUserInfo))
           getUserMatches(setMatches, user.uid);
       }, user.uid);
-  }, []);
+    else {
+      setUserInfo({});
+      setMatches([]);
+    }
+  }, [user]);
 
   return (
     <Page
@@ -105,121 +85,13 @@ function MakeFriendsPage() {
         <Container className="wrap container justify-center gap16 mb32 mt16">
           {matches.map((matchedUserInfo, index) => {
             return (
-              <Link
-                className={
-                  "flex container twentyvw ov-hidden column bg-white pa16 mb16 br8 " +
-                  (isMobileOrTablet() ? "" : "")
-                }
+              <UserComp
+                additionalUserInfo={matchedUserInfo}
                 key={index}
-                to={"/profile?" + matchedUserInfo.userID}
-              >
-                <Container className="x-fill full-center">
-                  <MakeAvatar
-                    displayName={matchedUserInfo.displayName}
-                    size="large"
-                    userBasicInfo={matchedUserInfo}
-                  />
-                </Container>
-
-                <Container className="align-center">
-                  <h1 className="primary mr8">
-                    {capitolizeFirstChar(matchedUserInfo.displayName)}
-                  </h1>
-                  <KarmaBadge karma={calculateKarma(matchedUserInfo)} />
-                </Container>
-                <h6 className="grey-1 fw-400">
-                  {calculateKarma(matchedUserInfo)} Karma Points
-                </h6>
-                <Container className="mt8">
-                  {Boolean(
-                    new moment().year() -
-                      new moment(matchedUserInfo.birth_date).year()
-                  ) && (
-                    <Container className="column">
-                      <h6 className="fw-400">Age</h6>
-                      <h6 className="grey-1 fw-400">
-                        {new moment().year() -
-                          new moment(matchedUserInfo.birth_date).year()}
-                      </h6>
-                    </Container>
-                  )}
-                  {matchedUserInfo.gender && (
-                    <Container className="column ml8">
-                      <h6 className="fw-400">Gender</h6>
-                      <h6 className="grey-1 fw-400">
-                        {matchedUserInfo.gender}
-                      </h6>
-                    </Container>
-                  )}
-                  {matchedUserInfo.pronouns && (
-                    <Container className="column ml8">
-                      <h6 className="fw-400">Pronouns</h6>
-                      <h6 className="grey-1 fw-400">
-                        {matchedUserInfo.pronouns}
-                      </h6>
-                    </Container>
-                  )}
-                </Container>
-
-                <Container className="wrap gap8 mt8">
-                  {matchedUserInfo.education !== undefined && (
-                    <Container className="border-all align-center px8 py4 br4">
-                      <FontAwesomeIcon className="mr8" icon={faSchool} />
-                      {educationList[matchedUserInfo.education]}
-                    </Container>
-                  )}
-                  {matchedUserInfo.kids !== undefined && (
-                    <Container className="border-all align-center px8 py4 br4">
-                      <FontAwesomeIcon className="mr8" icon={faBaby} />
-                      {kidsList[matchedUserInfo.kids]}
-                    </Container>
-                  )}
-                  {matchedUserInfo.partying !== undefined && (
-                    <Container className="border-all align-center px8 py4 br4">
-                      <FontAwesomeIcon className="mr8" icon={faGlassCheers} />
-                      {partyingList[matchedUserInfo.partying]}
-                    </Container>
-                  )}
-                  {matchedUserInfo.politics !== undefined && (
-                    <Container className="border-all align-center px8 py4 br4">
-                      <FontAwesomeIcon className="mr8" icon={faLandmark} />
-                      {politicalBeliefsList[matchedUserInfo.politics]}
-                    </Container>
-                  )}
-                  {matchedUserInfo.religion !== undefined && (
-                    <Container className="border-all align-center px8 py4 br4">
-                      <FontAwesomeIcon className="mr8" icon={faPray} />
-                      {matchedUserInfo.religion}
-                    </Container>
-                  )}
-                </Container>
-                <Container className="align-center justify-between mt16">
-                  {matchedUserInfo.displayName && user && (
-                    <Button
-                      className="button-2 px16 py8 mr16 br8"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        const userInteractionIssues = userSignUpProgress(user);
-
-                        if (userInteractionIssues) {
-                          if (userInteractionIssues === "NSI")
-                            setStarterModal(true);
-                          return;
-                        }
-
-                        startConversation(
-                          navigate,
-                          user,
-                          matchedUserInfo.userID
-                        );
-                      }}
-                    >
-                      <FontAwesomeIcon className="mr8" icon={faComments} />
-                      Message {capitolizeFirstChar(matchedUserInfo.displayName)}
-                    </Button>
-                  )}
-                </Container>
-              </Link>
+                showAdditionaluserInformation
+                showMessageUser
+                userID={matchedUserInfo.userID}
+              />
             );
           })}
         </Container>

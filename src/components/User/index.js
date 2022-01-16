@@ -35,6 +35,7 @@ import {
 } from "../../util";
 
 function UserComponent({
+  additionalUserInfo,
   displayName,
   isOnline,
   showAdditionaluserInformation,
@@ -45,7 +46,7 @@ function UserComponent({
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const [userInfo, setUserInfo] = useState({ displayName, id: userID });
+  const [userInfo, setUserInfo] = useState({ displayName });
   const [starterModal, setStarterModal] = useState(false);
 
   useEffect(() => {
@@ -107,40 +108,50 @@ function UserComponent({
 
         {showAdditionaluserInformation && (
           <Space wrap>
-            {userInfo.education !== undefined && (
+            {additionalUserInfo.education !== undefined && (
               <Container className="border-all align-center px8 py4 br4">
-                <FontAwesomeIcon className="mr8" icon={faSchool} />
-                {educationList[userInfo.education]}
+                <p>
+                  <FontAwesomeIcon className="mr8" icon={faSchool} />
+                  {educationList[additionalUserInfo.education]}
+                </p>
               </Container>
             )}
-            {userInfo.kids !== undefined && (
+            {additionalUserInfo.kids !== undefined && (
               <Container className="border-all align-center px8 py4 br4">
-                <FontAwesomeIcon className="mr8" icon={faBaby} />
-                {kidsList[userInfo.kids]}
+                <p>
+                  <FontAwesomeIcon className="mr8" icon={faBaby} />
+                  {kidsList[additionalUserInfo.kids]}
+                </p>
               </Container>
             )}
-            {userInfo.partying !== undefined && (
+            {additionalUserInfo.partying !== undefined && (
               <Container className="border-all align-center px8 py4 br4">
-                <FontAwesomeIcon className="mr8" icon={faGlassCheers} />
-                {partyingList[userInfo.partying]}
+                <p>
+                  <FontAwesomeIcon className="mr8" icon={faGlassCheers} />
+                  {partyingList[additionalUserInfo.partying]}
+                </p>
               </Container>
             )}
-            {userInfo.politics !== undefined && (
+            {additionalUserInfo.politics !== undefined && (
               <Container className="border-all align-center px8 py4 br4">
-                <FontAwesomeIcon className="mr8" icon={faLandmark} />
-                {politicalBeliefsList[userInfo.politics]}
+                <p>
+                  <FontAwesomeIcon className="mr8" icon={faLandmark} />
+                  {politicalBeliefsList[additionalUserInfo.politics]}
+                </p>
               </Container>
             )}
-            {userInfo.religion !== undefined && (
+            {additionalUserInfo.religion !== undefined && (
               <Container className="border-all align-center px8 py4 br4">
-                <FontAwesomeIcon className="mr8" icon={faPray} />
-                {userInfo.religion}
+                <p>
+                  <FontAwesomeIcon className="mr8" icon={faPray} />
+                  {additionalUserInfo.religion}
+                </p>
               </Container>
             )}
           </Space>
         )}
         {showMessageUser && (
-          <Container className="flex-fill align-end">
+          <Container className="flex-fill align-end mt8">
             <Button
               className="x-fill button-2 px16 py8 br8"
               onClick={(e) => {
@@ -153,11 +164,11 @@ function UserComponent({
                   return;
                 }
 
-                startConversation(navigate, user, userInfo.id);
+                startConversation(navigate, user, userID);
               }}
             >
               <FontAwesomeIcon className="mr8" icon={faComments} />
-              <p className="ellipsis">
+              <p className="inherit-color ellipsis">
                 Message {capitolizeFirstChar(userInfo.displayName)}
               </p>
             </Button>
