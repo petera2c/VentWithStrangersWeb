@@ -33,7 +33,7 @@ function AccountSection() {
   const isMounted = useIsMounted();
   const { user, userBasicInfo, setUserBasicInfo } = useContext(UserContext);
 
-  const [bio, setBio] = useState();
+  const [bio, setBio] = useState("");
   const [birthDate, setBirthDate] = useState();
   const [canSeePassword, setCanSeePassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -137,7 +137,7 @@ function AccountSection() {
                     className="x-fill no-border bg-grey-4 br4"
                     onChange={(e) => {
                       if (e.target.value.length > 50)
-                        return alert(
+                        return message.info(
                           "You can not write more than 50 characters for your gender"
                         );
 
@@ -166,7 +166,7 @@ function AccountSection() {
                     className="x-fill no-border bg-grey-4 br4"
                     onChange={(e) => {
                       if (e.target.value.length > 50)
-                        return alert(
+                        return message.info(
                           "You can not write more than 50 characters for your pronoun"
                         );
 
@@ -190,6 +190,7 @@ function AccountSection() {
                     "You need 20 karma points to interact with this :)"
                   );
 
+                console.log("here");
                 setBio(event.target.value);
               }}
               placeholder="Let us know about you :)"

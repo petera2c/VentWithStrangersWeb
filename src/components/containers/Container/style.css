@@ -79,6 +79,11 @@
   align-items: center;
   border-radius: 50%;
 }
+.avatar.small {
+  min-width: 48px;
+  width: 48px !important;
+  height: 48px !important;
+}
 .avatar.semi-large {
   width: 120px !important;
   height: 120px !important;
@@ -86,10 +91,6 @@
 .avatar.large {
   width: 148px !important;
   height: 148px !important;
-}
-.avatar.small {
-  width: 48px !important;
-  height: 48px !important;
 }
 
 
