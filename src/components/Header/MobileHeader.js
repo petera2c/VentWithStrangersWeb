@@ -20,7 +20,7 @@ import { faUserFriends } from "@fortawesome/pro-duotone-svg-icons/faUserFriends"
 import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { UserContext } from "../../context";
+import { UserContext, OnlineUsersContext } from "../../context";
 
 import Container from "../containers/Container";
 import MakeAvatar from "../MakeAvatar";
@@ -53,6 +53,9 @@ function Header() {
 
   const { user } = useContext(UserContext);
 
+  const { totalOnlineUsers, setTotalOnlineUsers } = useContext(
+    OnlineUsersContext
+  );
   const [starterModal, setStarterModal] = useState(false);
   const [mobileHeaderActive, setMobileHeaderActive] = useState(false);
   const [accountSectionActive, setAccountSectionActive] = useState(false);
@@ -62,7 +65,6 @@ function Header() {
   );
   const [unreadConversationsCount, setUnreadConversationsCount] = useState();
   const [userBasicInfo, setUserBasicInfo] = useState({});
-  const [totalOnlineUsers, setTotalOnlineUsers] = useState(0);
 
   const [ventSearchString, setVentSearchString] = useState(
     pathname.substring(0, 7) === "/search"
