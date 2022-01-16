@@ -10,7 +10,7 @@ import { UserContext } from "../../context";
 
 import { isMobileOrTablet } from "../../util";
 
-function SubscribeColumn({ slot, uniqueShareLink }) {
+function SubscribeColumn({ slot, uniqueShareLink = true }) {
   const { user, userSubscription } = useContext(UserContext);
   if (!userSubscription && !isMobileOrTablet())
     return (
