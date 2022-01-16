@@ -28,6 +28,7 @@ import NotificationsPage from "./Notifications";
 import OnlineUsersPage from "./OnlineUsers";
 import PrivacyPolicyPage from "./PrivacyPolicy";
 import ProfilePage from "./Account/Profile";
+import RewardsPage from "./Rewards";
 import SearchPage from "./Search";
 import SettingsPage from "./Account/Settings";
 import SignUpPage from "./SignUp";
@@ -142,6 +143,7 @@ function RoutesComp() {
                   <Route path="problem/:id/:title" element={<VentPage />} />
                   <Route path="profile" element={<ProfilePage />} />
                   <Route path="recent" element={<VentsPage />} />
+                  <Route path="rewards" element={<RewardsPage />} />
                   <Route path="search" element={<SearchPage />} />
                   <Route path="site-info" element={<AboutUsPage />} />
                   <Route path="subscribe" element={<SubscribePage />} />

@@ -4,11 +4,11 @@ import { Link, useLocation } from "react-router-dom";
 import { Space } from "antd";
 
 import { faChartNetwork } from "@fortawesome/pro-solid-svg-icons/faChartNetwork";
-import { faCog } from "@fortawesome/free-solid-svg-icons/faCog";
+import { faCog } from "@fortawesome/pro-duotone-svg-icons/faCog";
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
 import { faInfo } from "@fortawesome/pro-duotone-svg-icons/faInfo";
-import { faPen } from "@fortawesome/pro-duotone-svg-icons/faPen";
-import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
+import { faStarShooting } from "@fortawesome/pro-duotone-svg-icons/faStarShooting";
+import { faUser } from "@fortawesome/pro-duotone-svg-icons/faUser";
 import { faUserAstronaut } from "@fortawesome/pro-duotone-svg-icons/faUserAstronaut";
 import { faSignOut } from "@fortawesome/pro-duotone-svg-icons/faSignOut";
 import { faUserFriends } from "@fortawesome/pro-duotone-svg-icons/faUserFriends";
@@ -37,8 +37,8 @@ function SideBarLink({ icon, link, onClick, pathname, text }) {
         }
         to={link}
       >
-        <Container className="flex x-fill full-center">
-          <FontAwesomeIcon icon={icon} />
+        <Container className="flex blue x-fill full-center">
+          <FontAwesomeIcon icon={icon} style={{ fontSize: "1.25rem" }} />
         </Container>
         <h5 className="grey-1 inherit-color">{text}</h5>
       </Link>
@@ -51,7 +51,7 @@ function SideBarLink({ icon, link, onClick, pathname, text }) {
         onClick={onClick}
       >
         <Container className="flex x-fill full-center">
-          <FontAwesomeIcon icon={icon} />
+          <FontAwesomeIcon icon={icon} style={{ fontSize: "1.25rem" }} />
         </Container>
         <h5 className="grey-1 inherit-color">{text}</h5>
       </Container>
@@ -96,10 +96,10 @@ function Sidebar() {
         }
       />
       <SideBarLink
-        icon={faPen}
-        link="/vent-to-strangers"
+        icon={faStarShooting}
+        link="/rewards"
         pathname={pathname}
-        text="Post a Vent"
+        text="Rewards"
       />
       {user && (
         <SideBarLink

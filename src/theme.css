@@ -15,6 +15,7 @@
   --purple-theme-color: #e056fd;
   --orange-theme-color: #ff9f1a;
   --red-color: #f44336;
+  --orange-color: #FF570A;
 
   --light-blue-color: #ebf5fe;
 
@@ -92,7 +93,7 @@
 }
 .grid-1 {
   display: grid;
-  grid-template-columns: 32px 5fr;
+  grid-template-columns: 48px 5fr;
 }
 .pa64 {
   padding: 64px;

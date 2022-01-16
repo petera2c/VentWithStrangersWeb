@@ -134,16 +134,6 @@ function Header() {
                 </p>
               )}
             </Link>
-            <Link
-              className={
-                "full-center flex button-3 mr32  " +
-                isPageActive("/make-friends", pathname.substring(0, 13))
-              }
-              to="/make-friends"
-            >
-              <FontAwesomeIcon className="mr8" icon={faUsers} />
-              <p className="inherit-color py16">Make Friends</p>
-            </Link>
             <Container className="full-center bg-grey-4 py4 px8 my16 mr16 br4">
               <FontAwesomeIcon className="grey-5 mr8" icon={faSearch} />
               <input

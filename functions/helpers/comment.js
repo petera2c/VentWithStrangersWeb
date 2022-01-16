@@ -64,6 +64,23 @@ const commentLikeListener = async (change, context) => {
   // If user liked their own comment do not notify or give karma
   if (comment.userID == commentIDuserIDArray[1]) return;
 
+  await admin
+    .firestore()
+    .collection("user_rewards")
+    .doc(comment.userID)
+    .update({
+      received_comment_supports_counter: admin.firestore.FieldValue.increment(
+        1
+      ),
+    });
+  await admin
+    .firestore()
+    .collection("user_rewards")
+    .doc(commentIDuserIDArray[1])
+    .update({
+      created_comment_supports_counter: admin.firestore.FieldValue.increment(1),
+    });
+
   // Give +4 to the user that made the comment
   if (comment.userID)
     await admin
@@ -196,6 +213,14 @@ const commentUpdateListener = async (change, context) => {
     createNewCommentNotification(change.after, context);
 
     let comment = { ...change.after.data() };
+
+    await admin
+      .firestore()
+      .collection("user_rewards")
+      .doc(comment.userID)
+      .update({
+        created_comments_counter: admin.firestore.FieldValue.increment(1),
+      });
 
     if (comment.server_timestamp > admin.firestore.Timestamp.now().toMillis()) {
       comment.server_timestamp = admin.firestore.Timestamp.now().toMillis();

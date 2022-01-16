@@ -17,6 +17,12 @@ const createProfileLink = (userID) => {
   return link;
 };
 
+const createRewardsLink = () => {
+  let link = "https://www.ventwithstrangers.com/rewards";
+  if (process.env.FUNCTIONS_EMULATOR) link = "http://localhost:3000/rewards";
+  return link;
+};
+
 const createVentLink = (vent) => {
   let link =
     "https://www.ventwithstrangers.com/problem/" +

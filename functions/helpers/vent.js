@@ -60,17 +60,20 @@ const newVentListener = async (doc, context) => {
   }
 
   if (vent.userID) {
-    await admin
-      .firestore()
-      .collection("vent_likes")
-      .doc(vent.id + "|||" + vent.userID)
-      .set({ liked: true, ventID: vent.id });
-
     const usersBasicInfoDoc = await admin
       .firestore()
       .collection("users_display_name")
       .doc(vent.userID)
       .get();
+
+    console.log(vent.userID);
+    await admin
+      .firestore()
+      .collection("user_rewards")
+      .doc(vent.userID)
+      .update({
+        created_vents_counter: admin.firestore.FieldValue.increment(1),
+      });
 
     let hoursTillNextVent = 5;
     const usersKarma = calculateKarma(usersBasicInfoDoc.data());
@@ -133,15 +136,32 @@ const newVentLikeListener = async (change, context) => {
     .doc(ventIDuserIDArray[0])
     .get();
 
+  const vent = { id: ventDoc.id, ...ventDoc.data() };
+
   // If user liked their own vent do not notify or give karma
-  if (ventDoc.data().userID == ventIDuserIDArray[1]) return;
+  if (vent.userID == ventIDuserIDArray[1]) return;
+
+  await admin
+    .firestore()
+    .collection("user_rewards")
+    .doc(vent.userID)
+    .update({
+      received_vent_supports_counter: admin.firestore.FieldValue.increment(1),
+    });
+  await admin
+    .firestore()
+    .collection("user_rewards")
+    .doc(ventIDuserIDArray[1])
+    .update({
+      created_vent_supports_counter: admin.firestore.FieldValue.increment(1),
+    });
 
   // Give +2 to the user that received the upvote
-  if (ventDoc.data().userID)
+  if (vent.userID)
     await admin
       .firestore()
       .collection("users_display_name")
-      .doc(ventDoc.data().userID)
+      .doc(vent.userID)
       .set(
         {
           karma: admin.firestore.FieldValue.increment(2),
@@ -149,12 +169,10 @@ const newVentLikeListener = async (change, context) => {
         { merge: true }
       );
 
-  const vent = { id: ventDoc.id, ...ventDoc.data() };
-
   const userSettingsDoc = await admin
     .firestore()
     .collection("users_settings")
-    .doc(comment.userID)
+    .doc(vent.userID)
     .get();
 
   if (userSettingsDoc.data() && userSettingsDoc.data().master_vent_like)
@@ -200,6 +218,7 @@ const newVentReportListener = async (doc, context) => {
 
 const ventDeleteListener = async (doc, context) => {
   const ventID = doc.id;
+
   const commentsOfVentSnapshot = await admin
     .firestore()
     .collection("comments")

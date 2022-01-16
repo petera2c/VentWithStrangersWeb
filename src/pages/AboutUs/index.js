@@ -30,9 +30,6 @@ function AboutUsPage() {
           <h4>What Can You Do on VWS?</h4>
           <p className="pl8">· Chat anonymously with strangers</p>
           <p className="pl8">
-            · Sign up entirely anonymously or use the website without signing up
-          </p>
-          <p className="pl8">
             ·{" "}
             <a
               className="no-bold a-tag-common-link"
@@ -52,13 +49,12 @@ function AboutUsPage() {
           <p>
             Karma Points are awarded to you when your Vent or comment gets
             upvoted or when you upvote a Vent or comment. Karma Points are taken
-            away when you get reported for a valid reason. Be nice and don’t get
-            reported!
+            away when you get reported. Be nice and don’t get reported!
           </p>
           <h6 className="bold">Karma Points are Awarded as Follows</h6>
-          <p className="pl8">· +4 for an upvote on your comment</p>
-          <p className="pl8">· +2 for an upvote on your vent</p>
-          <p className="pl8">· -4 when you get reported for a valid reason</p>
+          <p className="pl8">· +4 For an upvote on your comment</p>
+          <p className="pl8">· +2 For an upvote on your vent</p>
+          <p className="pl8">· -30 When you get reported for a valid reason</p>
           <h6 className="bold">Karma Badges</h6>
           <Container className="flex align-center pl8">
             <Container className="mr16">

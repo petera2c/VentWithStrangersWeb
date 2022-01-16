@@ -20,7 +20,11 @@ const { messagesListener } = require("./helpers/messages");
 
 const { createProxy, createSitemap } = require("./helpers/sitemap");
 const { subscribeToPlan } = require("./helpers/subscribe");
-const { newUserSetup, userWasInvited } = require("./helpers/user");
+const {
+  newUserSetup,
+  userRewardsListener,
+  userWasInvited,
+} = require("./helpers/user");
 const {
   getMetaInformation,
   updateTotalUsersOnline,
@@ -45,28 +49,15 @@ exports.blockUserListener = functions.firestore
   .document("/block_check/{userID1userID2}")
   .onWrite(blockUserListener);
 
-exports.commentUpdateListener = functions.firestore
-  .document("/comments/{commentID}")
-  .onWrite(commentUpdateListener);
 exports.commentLikeListener = functions.firestore
   .document("/comment_likes/{commentIDUserID}")
   .onWrite(commentLikeListener);
+exports.commentUpdateListener = functions.firestore
+  .document("/comments/{commentID}")
+  .onWrite(commentUpdateListener);
 exports.newCommentReportListener = functions.firestore
   .document("/comment_reports/{commentIDUserID}")
   .onCreate(newCommentReportListener);
-
-exports.newVentListener = functions.firestore
-  .document("/vents/{ventID}")
-  .onCreate(newVentListener);
-exports.ventDeleteListener = functions.firestore
-  .document("/vents/{ventID}")
-  .onDelete(ventDeleteListener);
-exports.newVentLikeListener = functions.firestore
-  .document("/vent_likes/{ventIDuserID}")
-  .onWrite(newVentLikeListener);
-exports.newVentReportListener = functions.firestore
-  .document("/vent_reports/{ventIDuserID}")
-  .onCreate(newVentReportListener);
 
 exports.messagesListener = functions.firestore
   .document("/conversation_extra_data/{conversationID}/messages/{messageID}")
@@ -75,6 +66,23 @@ exports.conversationUpdateListener = functions.firestore
   .document("/conversations/{conversationID}")
   .onWrite(conversationUpdateListener);
 
+exports.userRewardsListener = functions.firestore
+  .document("/user_rewards/{userID}")
+  .onWrite(userRewardsListener);
+
+exports.newVentLikeListener = functions.firestore
+  .document("/vent_likes/{ventIDuserID}")
+  .onWrite(newVentLikeListener);
+exports.newVentReportListener = functions.firestore
+  .document("/vent_reports/{ventIDuserID}")
+  .onCreate(newVentReportListener);
+exports.newVentListener = functions.firestore
+  .document("/vents/{ventID}")
+  .onCreate(newVentListener);
+exports.ventDeleteListener = functions.firestore
+  .document("/vents/{ventID}")
+  .onDelete(ventDeleteListener);
+
 exports.onlineStatusListener = functions.database
   .ref("/status/{userID}")
   .onWrite(updateTotalUsersOnline);
@@ -82,11 +90,9 @@ exports.onlineStatusListener = functions.database
 exports.cronUpdateSitemap = functions.pubsub
   .schedule("0 0 * * *")
   .onRun(async () => createSitemap());
-
 exports.cronDecreaseTrendingScore = functions.pubsub
   .schedule("0 * * * *")
   .onRun(async () => decreaseTrendingScore());
-
 exports.cronDecreaseUserVentCounter = functions.pubsub
   .schedule("0 12 * * *")
   .onRun(async () => decreaseUserVentCounter());
