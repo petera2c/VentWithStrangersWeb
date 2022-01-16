@@ -22,7 +22,7 @@ function Message({ conversationID, message, setMessages, userID }) {
       <Container
         className={
           "clickable mb8 br4 " +
-          (message.userID === userID ? "bg-blue white" : "grey-1 bg-grey-10")
+          (message.userID === userID ? "bg-blue" : "bg-grey-10")
         }
         onClick={() => {
           setMessageOptions(!messageOptions);
@@ -30,10 +30,23 @@ function Message({ conversationID, message, setMessages, userID }) {
         onMouseLeave={() => setMessageOptions(false)}
         style={{ maxWidth: "80%" }}
       >
-        <p className="flex-fill break-word px16 py8">{message.body}</p>
+        <p
+          className={
+            "flex-fill break-word px16 py8 " +
+            (message.userID === userID ? "white" : "grey-1")
+          }
+        >
+          {message.body}
+        </p>
         <Container className="relative br4">
-          <Container className="fs-12 align-end pr2">
-            {moment(message.server_timestamp).format("h:mm A")}
+          <Container className="align-end pr2">
+            <p
+              className={
+                "fs-12 " + (message.userID === userID ? "white" : "grey-1")
+              }
+            >
+              {moment(message.server_timestamp).format("h:mm A")}
+            </p>
           </Container>
           {messageOptions && (
             <div className="absolute top-100 left-0 pt4" style={{ zIndex: 1 }}>
