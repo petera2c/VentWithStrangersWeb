@@ -1,5 +1,6 @@
 import React from "react";
 import firebase from "firebase/compat/app";
+import { message } from "antd";
 import db from "../../config/firebase";
 
 export const getComment = async (commentID, setComment, ventID) => {
@@ -70,9 +71,7 @@ export const reportComment = async (option, userID, commentID, ventID) => {
     .doc(commentID + "|||" + userID)
     .set({ commentID, option, ventID });
 
-  alert(
-    "You have successfully reported this comment. We will review this quickly and will take action against this user if their comment goes against our rules."
-  );
+  message.success("Report successful :)");
 };
 
 export const swapTags = (commentText) => {

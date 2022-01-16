@@ -1,4 +1,5 @@
 import firebase from "firebase/compat/app";
+import { message } from "antd";
 import db from "../../config/firebase";
 
 import { userSignUpProgress, getEndAtValueTimestamp } from "../../util";
@@ -222,9 +223,7 @@ export const reportVent = async (option, userID, ventID) => {
     .doc(ventID + "|||" + userID)
     .set({ option, ventID });
 
-  alert(
-    "You have successfully reported this vent. We will review this quickly and will take action against this user if their post goes against our rules."
-  );
+  message.success("Report successful :)");
 };
 
 export const tagUser = (
