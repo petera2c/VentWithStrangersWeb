@@ -14,6 +14,12 @@
 .red {
   color: var(--red-color);
 }
+.purple {
+  color: var(--purple-color);
+}
+.green {
+  color: var(--green-color);
+}
 .blue {
   color: var(--main-color) !important;
   fill: var(--main-color) !important;

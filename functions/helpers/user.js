@@ -31,12 +31,20 @@ const createMilestone = async (reward, title, userID) => {
     );
 
   const stringTitle = await admin.firestore().collection("rewards").add({
+    karma_gained: reward,
     server_timestamp: admin.firestore.Timestamp.now().toMillis(),
     title,
     userID,
   });
 
-  createNotification(true, true, createRewardsLink(), title, userID);
+  /*
+  createNotification(
+    true,
+    true,
+    createRewardsLink(),
+    title + " +" + reward + " Karma Points",
+    userID
+  );*/
 };
 
 const checkIfCanCreateMilestone = async (
@@ -86,56 +94,82 @@ const checkIfCanCreateMilestone = async (
   }
 
   if (reward) {
-    createMilestone(reward, first ? secondTitle() : title(reward), userID);
+    createMilestone(reward, first ? secondTitle : title(counter), userID);
   }
 };
 
 const userRewardsListener = async (change, context) => {
   const { userID } = context.params;
-  const userRewards = { id: change.after.id, ...change.after.data() };
-  if (userRewards) {
-    checkIfCanCreateMilestone(
-      userRewards.created_comment_supports_counter,
-      "medium",
-      (number) => "You have supported " + number + " comments!",
-      undefined,
-      userID
-    );
-    checkIfCanCreateMilestone(
-      userRewards.created_comments_counter,
-      "small",
-      (number) => "You have created " + number + " comments!",
-      () => "You have created your first comment!!!",
-      userID
-    );
-    checkIfCanCreateMilestone(
-      userRewards.created_vent_supports_counter,
-      "medium",
-      (number) => "You have supported " + number + " vents!",
-      undefined,
-      userID
-    );
-    checkIfCanCreateMilestone(
-      userRewards.created_vents_counter,
-      "small",
-      (number) => "You have created " + number + " vents!",
-      () => "You have created your first vent!!!",
-      userID
-    );
-    checkIfCanCreateMilestone(
-      userRewards.received_comment_supports_counter,
-      "medium",
-      (number) => "Your comments have received " + number + " supports!",
-      undefined,
-      userID
-    );
-    checkIfCanCreateMilestone(
-      userRewards.received_vent_supports_counter,
-      "medium",
-      (number) => "Your vents have received " + number + " supports!",
-      undefined,
-      userID
-    );
+  const afterUserRewards = { id: change.after.id, ...change.after.data() };
+  const beforeUserRewards = { id: change.before.id, ...change.before.data() };
+
+  if (afterUserRewards && beforeUserRewards) {
+    if (
+      afterUserRewards.created_comment_supports_counter !==
+      beforeUserRewards.created_comment_supports_counter
+    )
+      checkIfCanCreateMilestone(
+        afterUserRewards.created_comment_supports_counter,
+        "medium",
+        (number) => "You have supported " + number + " comments!",
+        undefined,
+        userID
+      );
+    if (
+      afterUserRewards.created_comments_counter !==
+      beforeUserRewards.created_comments_counter
+    )
+      checkIfCanCreateMilestone(
+        afterUserRewards.created_comments_counter,
+        "small",
+        (number) => "You have created " + number + " comments!",
+        "You have created your first comment!!!",
+        userID
+      );
+    if (
+      afterUserRewards.created_vent_supports_counter !==
+      beforeUserRewards.created_vent_supports_counter
+    )
+      checkIfCanCreateMilestone(
+        afterUserRewards.created_vent_supports_counter,
+        "medium",
+        (number) => "You have supported " + number + " vents!",
+        undefined,
+        userID
+      );
+    if (
+      afterUserRewards.created_vents_counter !==
+      beforeUserRewards.created_vents_counter
+    )
+      checkIfCanCreateMilestone(
+        afterUserRewards.created_vents_counter,
+        "small",
+        (number) => "You have created " + number + " vents!",
+        "You have created your first vent!!!",
+        userID
+      );
+    if (
+      afterUserRewards.received_comment_supports_counter !==
+      beforeUserRewards.received_comment_supports_counter
+    )
+      checkIfCanCreateMilestone(
+        afterUserRewards.received_comment_supports_counter,
+        "medium",
+        (number) => "Your comments have received " + number + " supports!",
+        undefined,
+        userID
+      );
+    if (
+      afterUserRewards.received_vent_supports_counter !==
+      beforeUserRewards.received_vent_supports_counter
+    )
+      checkIfCanCreateMilestone(
+        afterUserRewards.received_vent_supports_counter,
+        "medium",
+        (number) => "Your vents have received " + number + " supports!",
+        undefined,
+        userID
+      );
   }
 };
 

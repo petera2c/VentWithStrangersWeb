@@ -40,13 +40,43 @@ export const getNextMilestone = (counter, size) => {
     else if (counter >= 250) return 500;
     else if (counter >= 100) return 250;
     else if (counter >= 50) return 100;
+    else if (counter >= 10) return 50;
     else if (counter >= 0) return 10;
   }
 };
 
-export const getUserRewards = async (isMounted, setData, userID) => {
+export const getUserRecentRewards = async (
+  isMounted,
+  setRecentRewards,
+  userID
+) => {
+  const recentRewardsSnapshot = await db
+    .collection("rewards")
+    .where("userID", "==", userID)
+    .orderBy("server_timestamp", "desc")
+    .limit(5)
+    .get();
+
+  let recentRewards = [];
+  if (recentRewardsSnapshot.docs)
+    for (let index in recentRewardsSnapshot.docs) {
+      const rewardDoc = recentRewardsSnapshot.docs[index];
+      recentRewards.push({
+        id: rewardDoc.id,
+        ...rewardDoc.data(),
+        doc: rewardDoc,
+      });
+    }
+  setRecentRewards(recentRewards);
+};
+
+export const getUserRewardsProgress = async (
+  isMounted,
+  setUserRewards,
+  userID
+) => {
   const userRewardsDoc = await db.collection("user_rewards").doc(userID).get();
 
   if (userRewardsDoc.exists && userRewardsDoc.data())
-    setData(userRewardsDoc.data());
+    setUserRewards(userRewardsDoc.data());
 };

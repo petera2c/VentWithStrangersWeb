@@ -264,6 +264,7 @@ module.exports = {
   calculateKarma,
   combineObjectWithID,
   createProfileLink,
+  createRewardsLink,
   createVentLink,
   getMetaInformation,
   updateTotalUsersOnline,

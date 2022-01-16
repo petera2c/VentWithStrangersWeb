@@ -42,13 +42,6 @@ service cloud.firestore {
       }
     }
 
-    match /notifications/{notificationID} {
-      allow read: if request.auth.uid == resource.data.userID;
-      allow write, delete: if request.auth.uid == request.resource.data.userID;
-      allow update: if request.auth.uid == request.resource.data.userID
-        && request.resource.data.userID == resource.data.userID;
-    }
-
     match /invite_uid/{secondUID} {
       allow read: if resource.data.primary_uid == request.auth.uid;
       allow write, update, delete: if false;
@@ -56,6 +49,19 @@ service cloud.firestore {
     match /invited_users/{uid} {
       allow write: if request.auth.uid == uid;
       allow read, delete: if false;
+    }
+
+    match /notifications/{notificationID} {
+      allow read: if request.auth.uid == resource.data.userID;
+      allow write, delete: if request.auth.uid == request.resource.data.userID;
+      allow update: if request.auth.uid == request.resource.data.userID
+        && request.resource.data.userID == resource.data.userID;
+    }
+
+
+    match /rewards/{rewardID} {
+      allow read: if request.auth.uid == resource.data.userID;
+      allow write, update, delete: if false;
     }
 
     match /total_users_online/{randomID} {
