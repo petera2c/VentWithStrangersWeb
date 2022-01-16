@@ -106,7 +106,7 @@ function Header() {
               to="/trending"
             >
               <FontAwesomeIcon className="mr8" icon={faAnalytics} />
-              <p className="py16">Trending</p>
+              <p className="inherit-color py16">Trending</p>
             </Link>
             <Link
               className={
@@ -116,7 +116,7 @@ function Header() {
               to="/recent"
             >
               <FontAwesomeIcon className="mr8" icon={faConciergeBell} />
-              <p className="py16">Recent</p>
+              <p className="inherit-color py16">Recent</p>
             </Link>
             <Link
               className={
@@ -126,7 +126,7 @@ function Header() {
               to="/conversations"
             >
               <FontAwesomeIcon className="mr8" icon={faComments} />
-              <p className="py16">Inbox</p>
+              <p className="inherit-color py16">Inbox</p>
 
               {Boolean(unreadConversationsCount) && (
                 <p className="fs-14 bg-red white round ml4 pa4 br4">
@@ -142,7 +142,7 @@ function Header() {
               to="/make-friends"
             >
               <FontAwesomeIcon className="mr8" icon={faUsers} />
-              <p className="py16">Make Friends</p>
+              <p className="inherit-color py16">Make Friends</p>
             </Link>
             <Container className="full-center bg-grey-4 py4 px8 my16 mr16 br4">
               <FontAwesomeIcon className="grey-5 mr8" icon={faSearch} />
