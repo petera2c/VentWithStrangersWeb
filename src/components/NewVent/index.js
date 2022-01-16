@@ -14,7 +14,12 @@ import HandleOutsideClick from "../containers/HandleOutsideClick";
 import MakeAvatar from "../../components/MakeAvatar";
 import StarterModal from "../modals/Starter";
 
-import { useIsMounted, userSignUpProgress } from "../../util";
+import {
+  calculateKarma,
+  canUserPost,
+  useIsMounted,
+  userSignUpProgress,
+} from "../../util";
 import {
   countdown,
   getUserVentTimeOut,
@@ -61,6 +66,8 @@ function NewVentComponent({ miniVersion, ventID }) {
       if (userInteractionIssues === "NSI") setStarterModal(true);
       return false;
     }
+
+    if (!canUserPost(userBasicInfo)) return false;
 
     return true;
   };

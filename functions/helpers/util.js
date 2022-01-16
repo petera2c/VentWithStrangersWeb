@@ -1,10 +1,7 @@
 const admin = require("firebase-admin");
 
 const calculateKarma = (usereBasicInfo) => {
-  const goodKarma = usereBasicInfo.good_karma ? usereBasicInfo.good_karma : 0;
-  const badKarma = usereBasicInfo.bad_karma ? usereBasicInfo.bad_karma : 0;
-
-  return goodKarma - badKarma;
+  return usereBasicInfo.karma ? usereBasicInfo.karma : 0;
 };
 
 const combineObjectWithID = (id, object) => {

@@ -47,7 +47,7 @@ const userWasInvited = async (doc, context) => {
     .doc(userIDThatInvited)
     .set(
       {
-        good_karma: admin.firestore.FieldValue.increment(50),
+        karma: admin.firestore.FieldValue.increment(50),
       },
       { merge: true }
     );

@@ -17,8 +17,7 @@ service cloud.firestore {
 
     match /comments/{commentID} {
       allow read: if true;
-      allow write: if request.auth.uid == request.resource.data.userID;
-      allow update: if request.auth.uid == resource.data.userID;
+      allow write, update: if request.auth.uid == request.resource.data.userID && get(/databases/$(database)/documents/users_display_name/$(request.auth.uid)).data.karma > -50;
       allow delete: if request.auth.uid == resource.data.userID || get(/databases/$(database)/documents/vents/$(resource.data.ventID)).data.userID == request.auth.uid;
     }
     match /comment_likes/{commentIDUserID} {
@@ -99,11 +98,7 @@ service cloud.firestore {
       allow read: if true;
       allow write, update, delete: if request.auth.uid == userID;
 
-      match /bad_karma {
-        allow read: if true;
-        allow write, update, delete: if false;
-      }
-      match /good_karma {
+      match /karma {
         allow read: if true;
         allow write, update, delete: if false;
       }
@@ -119,11 +114,8 @@ service cloud.firestore {
 
     match /vents/{ventID} {
       allow read: if true;
-      allow write: if request.auth.uid == request.resource.data.userID && (!exists(/databases/$(database)/documents/user_day_limit_vents/$(request.auth.uid)) || get(/databases/$(database)/documents/user_day_limit_vents/$(request.auth.uid)).data.vent_counter < 2);
-      allow update: if request.auth.uid == request.resource.data.userID
-        && request.resource.data.userID == resource.data.userID;
+      allow write, update: if request.auth.uid == request.resource.data.userID && get(/databases/$(database)/documents/users_display_name/$(request.auth.uid)).data.karma > -50;
       allow delete: if request.auth.uid == resource.data.userID;
-
 
       match /trending_score {
         allow read: if true;

@@ -3,7 +3,7 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/database";
 import { sendEmailVerification } from "firebase/auth";
 import db from "./config/firebase";
-import { Modal } from "antd";
+import { message, Modal } from "antd";
 
 import { setUserOnlineStatus } from "./pages/util";
 
@@ -20,10 +20,18 @@ export const blockUser = async (userID, userIDToBlock) => {
 };
 
 export const calculateKarma = (usereBasicInfo) => {
-  const goodKarma = usereBasicInfo.good_karma ? usereBasicInfo.good_karma : 0;
-  const badKarma = usereBasicInfo.bad_karma ? usereBasicInfo.bad_karma : 0;
+  return usereBasicInfo.karma ? usereBasicInfo.karma : 0;
+};
 
-  return goodKarma - badKarma;
+export const canUserPost = (userBasicInfo) => {
+  if (calculateKarma(userBasicInfo) <= -50) {
+    message.error(
+      "Your karma is currently " +
+        calculateKarma(userBasicInfo) +
+        ". This indicates you have not been following our rules and are now forbidden to comment or post."
+    );
+    return false;
+  } else return true;
 };
 
 export const userSignUpProgress = (user, noAlert) => {

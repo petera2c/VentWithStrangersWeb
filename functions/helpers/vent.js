@@ -144,7 +144,7 @@ const newVentLikeListener = async (change, context) => {
       .doc(ventDoc.data().userID)
       .set(
         {
-          good_karma: admin.firestore.FieldValue.increment(2),
+          karma: admin.firestore.FieldValue.increment(2),
         },
         { merge: true }
       );
@@ -187,7 +187,7 @@ const newVentReportListener = async (doc, context) => {
     .doc(ventDoc.data().userID)
     .set(
       {
-        bad_karma: admin.firestore.FieldValue.increment(2),
+        karma: admin.firestore.FieldValue.increment(-30),
       },
       { merge: true }
     );

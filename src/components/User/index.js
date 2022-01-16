@@ -57,7 +57,7 @@ function UserComponent({
   return (
     <Link
       className="flex container twentyvw ov-hidden column bg-white pa16 mb16 br8"
-      to={"/profile?" + userInfo.id}
+      to={"/profile?" + userID}
     >
       <Container className="column x-fill flex-fill" direction="vertical">
         <Container className="x-fill full-center mb16">

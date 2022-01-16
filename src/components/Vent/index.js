@@ -30,6 +30,7 @@ import { UserContext } from "../../context";
 import {
   blockUser,
   calculateKarma,
+  canUserPost,
   capitolizeFirstChar,
   getIsUserOnline,
   getUserBasicInfo,
@@ -77,7 +78,7 @@ function Vent({
   ventInit,
 }) {
   const isMounted = useIsMounted();
-  const { user } = useContext(UserContext);
+  const { user, userBasicInfo } = useContext(UserContext);
 
   const [author, setAuthor] = useState({});
   const [commentString, setCommentString] = useState("");
@@ -416,7 +417,11 @@ function Vent({
                       <MentionsInput
                         autoFocus
                         className="mentions"
-                        onChange={(e) => setCommentString(e.target.value)}
+                        onChange={(e) => {
+                          if (!canUserPost(userBasicInfo)) return;
+
+                          setCommentString(e.target.value);
+                        }}
                         placeholder="Say something nice :)"
                         value={commentString}
                       >

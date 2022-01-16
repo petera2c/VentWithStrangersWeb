@@ -72,7 +72,7 @@ const commentLikeListener = async (change, context) => {
       .doc(comment.userID)
       .set(
         {
-          good_karma: admin.firestore.FieldValue.increment(4),
+          karma: admin.firestore.FieldValue.increment(4),
         },
         { merge: true }
       );
@@ -197,10 +197,7 @@ const commentUpdateListener = async (change, context) => {
 
     let comment = { ...change.after.data() };
 
-    if (
-      comment.server_timestamp >
-      admin.firestore.Timestamp.now().toMillis()
-    ) {
+    if (comment.server_timestamp > admin.firestore.Timestamp.now().toMillis()) {
       comment.server_timestamp = admin.firestore.Timestamp.now().toMillis();
       await admin
         .firestore()
@@ -247,19 +244,16 @@ const newCommentReportListener = async (doc, context) => {
     .doc(commentDoc.data().userID)
     .set(
       {
-        bad_karma: admin.firestore.FieldValue.increment(10),
+        karma: admin.firestore.FieldValue.increment(-30),
       },
       { merge: true }
     );
 
-  await admin
-    .firestore()
-    .collection("admin_notifications")
-    .add({
-      ventID: doc.data().ventID,
-      commentID,
-      user_that_reported: userID,
-    });
+  await admin.firestore().collection("admin_notifications").add({
+    ventID: doc.data().ventID,
+    commentID,
+    user_that_reported: userID,
+  });
 };
 
 module.exports = {
