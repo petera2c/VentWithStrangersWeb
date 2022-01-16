@@ -430,7 +430,6 @@ function Vent({
                           data={(currentTypingTag, callback) => {
                             findPossibleUsersToTag(
                               currentTypingTag,
-                              () => {},
                               vent.id,
                               callback
                             );
