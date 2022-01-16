@@ -101,20 +101,6 @@ function Sidebar() {
         pathname={pathname}
         text="Rewards"
       />
-      {user && (
-        <SideBarLink
-          icon={faComments}
-          link="/conversations"
-          pathname={pathname}
-          text="Inbox"
-        />
-      )}
-      <SideBarLink
-        icon={faUsers}
-        link="/make-friends"
-        pathname={pathname}
-        text="Make Friends"
-      />
 
       {false && <MakeAd className="mt16" slot="4732645487" />}
 
@@ -155,6 +141,12 @@ function Sidebar() {
         link="/site-info"
         pathname={pathname}
         text="Site Info"
+      />
+      <SideBarLink
+        icon={faUsers}
+        link="/make-friends"
+        pathname={pathname}
+        text="Make Friends"
       />
       {user && (
         <SideBarLink

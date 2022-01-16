@@ -13,6 +13,35 @@ export const getIsUserSubscribed = async (setUserSubscription, userID) => {
     setUserSubscription(userSubscriptionDoc.data());
 };
 
+export const newRewardListener = (
+  isMounted,
+  setNewReward,
+  userID,
+  first = true
+) => {
+  const unsubscribe = db
+    .collection("rewards")
+    .where("userID", "==", userID)
+    .orderBy("server_timestamp", "desc")
+    .limit(1)
+    .onSnapshot(
+      (querySnapshot) => {
+        if (first) {
+          first = false;
+        } else if (querySnapshot.docs && querySnapshot.docs[0] && isMounted()) {
+          setNewReward(() => {
+            return {
+              id: querySnapshot.docs[0].id,
+              ...querySnapshot.docs[0].data(),
+            };
+          });
+        }
+      },
+      (err) => {}
+    );
+  return unsubscribe;
+};
+
 export const setUserOnlineStatus = async (status, uid) => {
   await firebase
     .database()

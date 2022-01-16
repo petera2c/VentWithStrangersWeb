@@ -4,16 +4,17 @@ import { Button, Space } from "antd";
 import { sendEmailVerification } from "firebase/auth";
 
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
-import { faBars } from "@fortawesome/pro-solid-svg-icons/faBars";
+import { faBars } from "@fortawesome/pro-duotone-svg-icons/faBars";
 import { faBell } from "@fortawesome/pro-duotone-svg-icons/faBell";
-import { faChartNetwork } from "@fortawesome/pro-solid-svg-icons/faChartNetwork";
-import { faChevronDown } from "@fortawesome/pro-solid-svg-icons/faChevronDown";
-import { faCog } from "@fortawesome/pro-solid-svg-icons/faCog";
+import { faChartNetwork } from "@fortawesome/pro-duotone-svg-icons/faChartNetwork";
+import { faChevronDown } from "@fortawesome/pro-duotone-svg-icons/faChevronDown";
+import { faCog } from "@fortawesome/pro-duotone-svg-icons/faCog";
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
 import { faConciergeBell } from "@fortawesome/pro-duotone-svg-icons/faConciergeBell";
 import { faInfo } from "@fortawesome/pro-duotone-svg-icons/faInfo";
-import { faSearch } from "@fortawesome/pro-solid-svg-icons/faSearch";
-import { faUser } from "@fortawesome/pro-solid-svg-icons/faUser";
+import { faSearch } from "@fortawesome/pro-duotone-svg-icons/faSearch";
+import { faStarShooting } from "@fortawesome/pro-duotone-svg-icons/faStarShooting";
+import { faUser } from "@fortawesome/pro-duotone-svg-icons/faUser";
 import { faUserAstronaut } from "@fortawesome/pro-duotone-svg-icons/faUserAstronaut";
 import { faUserFriends } from "@fortawesome/pro-duotone-svg-icons/faUserFriends";
 import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
@@ -277,7 +278,7 @@ function Header() {
             </Link>
             <Link
               className={
-                "flex full-center button-3" + isPageActive("/recent", pathname)
+                "flex full-center button-3 " + isPageActive("/recent", pathname)
               }
               to="/recent"
             >
@@ -320,16 +321,25 @@ function Header() {
               <FontAwesomeIcon className="mr8" icon={faUsers} />
               <p className="inherit-color">Make Friends</p>
             </Link>
-
             <Link
               className={
-                "flex full-center button-3" +
+                "flex full-center button-3 " +
                 isPageActive("/vent-to-strangers", pathname)
               }
               to="/vent-to-strangers"
             >
               <FontAwesomeIcon className="mr8" icon={faConciergeBell} />
               <p className="inherit-color">Post a Vent</p>
+            </Link>
+            <Link
+              className={
+                "flex full-center button-3 " +
+                isPageActive("/rewards", pathname)
+              }
+              to="/rewards"
+            >
+              <FontAwesomeIcon className="mr8" icon={faStarShooting} />
+              <p className="inherit-color">Rewards</p>
             </Link>
             <Link
               className={

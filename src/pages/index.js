@@ -12,6 +12,7 @@ import { OnlineUsersContext, UserContext } from "../context";
 import Container from "../components/containers/Container";
 import Header from "../components/Header";
 import MobileHeader from "../components/Header/MobileHeader";
+import NewRewardModal from "../components/modals/NewReward";
 import Sidebar from "../components/Sidebar";
 
 import AboutUsPage from "./AboutUs";
@@ -38,18 +39,21 @@ import VentPage from "./Vent";
 import VentsPage from "./Vents";
 import VerifiedEmailPage from "./EmailAuth/VerifiedEmail";
 
-import { getUserBasicInfo, isMobileOrTablet } from "../util";
+import { getUserBasicInfo, isMobileOrTablet, useIsMounted } from "../util";
 import {
   getIsUserSubscribed,
+  newRewardListener,
   setIsUserOnlineToDatabase,
   setUserOnlineStatus,
 } from "./util";
 
 function RoutesComp() {
+  const isMounted = useIsMounted();
   const [user, loading, error] = useAuthState(firebase.auth());
   const [totalOnlineUsers, setTotalOnlineUsers] = useState();
   const [userBasicInfo, setUserBasicInfo] = useState({});
   const [userSubscription, setUserSubscription] = useState();
+  const [newReward, setNewReward] = useState();
 
   const handleOnIdle = (event) => {
     if (user && user.uid) setUserOnlineStatus("offline", user.uid);
@@ -67,15 +71,24 @@ function RoutesComp() {
   });
 
   useEffect(() => {
-    if (user) getIsUserSubscribed(setUserSubscription, user.uid);
-    setIsUserOnlineToDatabase(user);
+    let newRewardListenerUnsubscribe;
+    if (user) {
+      newRewardListenerUnsubscribe = newRewardListener(
+        isMounted,
+        setNewReward,
+        user.uid
+      );
 
-    if (user)
+      setIsUserOnlineToDatabase(user);
+      getIsUserSubscribed(setUserSubscription, user.uid);
+
       getUserBasicInfo((newBasicUserInfo) => {
         setUserBasicInfo(newBasicUserInfo);
       }, user.uid);
+    }
 
     return () => {
+      if (newRewardListenerUnsubscribe) newRewardListenerUnsubscribe();
       if (user) setUserOnlineStatus("offline", user.uid);
     };
   }, [user]);
@@ -164,6 +177,12 @@ function RoutesComp() {
                 </Routes>
               )}
             </Container>
+            {newReward && (
+              <NewRewardModal
+                close={() => setNewReward(false)}
+                newReward={newReward}
+              />
+            )}
           </Container>
         </Router>
       </OnlineUsersContext.Provider>

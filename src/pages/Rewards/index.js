@@ -8,7 +8,7 @@ import SubscribeColumn from "../../components/SubscribeColumn";
 
 import { UserContext } from "../../context";
 
-import { useIsMounted } from "../../util";
+import { isMobileOrTablet, useIsMounted } from "../../util";
 import {
   calculateMilestone,
   getNextMilestone,
@@ -50,8 +50,6 @@ function RewardsPage() {
     }
   }, []);
 
-  console.log(userRewards);
-
   return (
     <Page
       className="pa16"
@@ -63,6 +61,7 @@ function RewardsPage() {
           <Space
             align="start"
             className="x-fill bg-white pa32 br8"
+            direction={isMobileOrTablet() ? "vertical" : "horizontal"}
             size="large"
           >
             <Space className="flex-fill" direction="vertical" size="large">
@@ -107,7 +106,10 @@ function RewardsPage() {
           >
             <h1>Recent Rewards</h1>
             {recentRewards.map((obj, index) => (
-              <Container className="column x-fill bg-white pa16 br8">
+              <Container
+                className="column x-fill bg-white pa16 br8"
+                key={index}
+              >
                 <h6>{obj.title}</h6>
                 <p className="blue">+ {obj.karma_gained} Karma Points</p>
                 <p>{moment(obj.server_timestamp).fromNow()}</p>
