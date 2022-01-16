@@ -190,7 +190,6 @@ function AccountSection() {
                     "You need 20 karma points to interact with this :)"
                   );
 
-                console.log("here");
                 setBio(event.target.value);
               }}
               placeholder="Let us know about you :)"
