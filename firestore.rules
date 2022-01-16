@@ -17,7 +17,7 @@ service cloud.firestore {
 
     match /comments/{commentID} {
       allow read: if true;
-      allow write, update: if request.auth.uid == request.resource.data.userID && get(/databases/$(database)/documents/users_display_name/$(request.auth.uid)).data.karma > -50;
+      allow write, update: if request.auth.uid == request.resource.data.userID && (!(get(/databases/$(database)/documents/users_display_name/$(request.auth.uid)).data.keys().hasAny(['karma'])) || get(/databases/$(database)/documents/users_display_name/$(request.auth.uid)).data.karma > -50);
       allow delete: if request.auth.uid == resource.data.userID || get(/databases/$(database)/documents/vents/$(resource.data.ventID)).data.userID == request.auth.uid;
     }
     match /comment_likes/{commentIDUserID} {
@@ -114,7 +114,7 @@ service cloud.firestore {
 
     match /vents/{ventID} {
       allow read: if true;
-      allow write, update: if request.auth.uid == request.resource.data.userID && get(/databases/$(database)/documents/users_display_name/$(request.auth.uid)).data.karma > -50;
+      allow write, update: if request.auth.uid == request.resource.data.userID && (!(get(/databases/$(database)/documents/users_display_name/$(request.auth.uid)).data.keys().hasAny(['karma'])) || get(/databases/$(database)/documents/users_display_name/$(request.auth.uid)).data.karma > -50);
       allow delete: if request.auth.uid == resource.data.userID;
 
       match /trending_score {
