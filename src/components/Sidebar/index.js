@@ -5,7 +5,6 @@ import { Space } from "antd";
 
 import { faChartNetwork } from "@fortawesome/pro-solid-svg-icons/faChartNetwork";
 import { faCog } from "@fortawesome/pro-duotone-svg-icons/faCog";
-import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
 import { faInfo } from "@fortawesome/pro-duotone-svg-icons/faInfo";
 import { faStarShooting } from "@fortawesome/pro-duotone-svg-icons/faStarShooting";
 import { faUser } from "@fortawesome/pro-duotone-svg-icons/faUser";

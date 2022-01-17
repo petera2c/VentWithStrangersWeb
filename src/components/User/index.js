@@ -152,7 +152,7 @@ function UserComponent({
           </Space>
         )}
         {showMessageUser && (
-          <Container className="column flex-fill align-end mt8">
+          <Container className="column flex-fill justify-end mt8">
             <Button
               className="x-fill button-2 px16 py8 br8"
               onClick={(e) => {

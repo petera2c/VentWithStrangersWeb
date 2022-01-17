@@ -10,7 +10,6 @@ export const getOnlineUsers = (callback, totalOnlineUsers) => {
       .limitToLast(totalOnlineUsers)
       .once("value", (snapshot) => {
         let usersArray = [];
-        let totalOnlineUsers2 = 0;
 
         snapshot.forEach((data) => {
           if (data.val().state === "online") {
@@ -18,7 +17,6 @@ export const getOnlineUsers = (callback, totalOnlineUsers) => {
               lastOnline: data.val().last_online,
               userID: data.key,
             });
-            totalOnlineUsers2++;
           }
         });
 
