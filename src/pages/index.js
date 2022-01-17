@@ -96,7 +96,7 @@ function RoutesComp() {
       if (newRewardListenerUnsubscribe) newRewardListenerUnsubscribe();
       if (user) setUserOnlineStatus("offline", user.uid);
     };
-  }, [user]);
+  }, [isMounted, user]);
 
   if (loading)
     return (

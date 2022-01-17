@@ -45,7 +45,7 @@ function RewardsPage() {
       getUserRecentRewards(isMounted, setRecentRewards, user.uid);
       getUserRewardsProgress(isMounted, setUserRewards, user.uid);
     }
-  }, []);
+  }, [isMounted, user]);
 
   return (
     <Page

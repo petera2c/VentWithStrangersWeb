@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Container from "../containers/Container";
 import MakeAd from "../MakeAd";
 
-import { OnlineUsersContext, UserContext } from "../../context";
+import { OnlineUsersContext } from "../../context";
 
 import { getTotalOnlineUsers, isPageActive, useIsMounted } from "../../util";
 
@@ -50,7 +50,6 @@ function SideBarLink({ icon, link, onClick, pathname, text }) {
 function Sidebar() {
   const isMounted = useIsMounted();
   const { pathname } = useLocation();
-  const { user } = useContext(UserContext);
 
   const { totalOnlineUsers, setTotalOnlineUsers } = useContext(
     OnlineUsersContext

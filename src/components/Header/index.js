@@ -14,11 +14,9 @@ import { faSearch } from "@fortawesome/pro-solid-svg-icons/faSearch";
 import { faSignOut } from "@fortawesome/pro-duotone-svg-icons/faSignOut";
 import { faUser } from "@fortawesome/pro-duotone-svg-icons/faUser";
 import { faUserAstronaut } from "@fortawesome/pro-duotone-svg-icons/faUserAstronaut";
-import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Container from "../containers/Container";
-import HandleOutsideClick from "../containers/HandleOutsideClick";
 import MakeAvatar from "../MakeAvatar";
 import NotificationList from "../NotificationList";
 import StarterModal from "../modals/Starter";
@@ -80,9 +78,6 @@ function Header() {
 
   const [activeModal, setActiveModal] = useState("");
   const [notifications, setNotifications] = useState([]);
-  const [showNotificationDropdown, setShowNotificationDropdown] = useState(
-    false
-  );
   const [unreadConversationsCount, setUnreadConversationsCount] = useState();
 
   const [ventSearchString, setVentSearchString] = useState(

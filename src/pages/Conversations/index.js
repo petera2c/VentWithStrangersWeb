@@ -36,17 +36,18 @@ function Conversations() {
   useEffect(() => {
     let newMessageListenerUnsubscribe;
 
-    if (user)
+    if (user) {
       newMessageListenerUnsubscribe = mostRecentConversationListener(
         setConversations,
         user.uid
       );
 
-    if (user) {
       getConversations(
         conversations,
         setActiveConversation,
         (newConversations) => {
+          if (!isMounted()) return;
+
           if (
             newConversations.length % 5 !== 0 ||
             newConversations.length === 0
