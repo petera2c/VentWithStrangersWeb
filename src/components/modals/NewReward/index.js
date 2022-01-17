@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Space } from "antd";
 
 import { faComet } from "@fortawesome/pro-duotone-svg-icons/faComet";
@@ -11,11 +11,17 @@ import Container from "../../../components/containers/Container";
 import { isMobileOrTablet } from "../../../util";
 
 function NewRewardModal({ close, newReward }) {
+  const [canClose, setCanClose] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => setCanClose(true), 2000);
+  }, []);
+
   return (
     <Container
       className="modal-container full-center"
       onClick={(e) => {
-        close();
+        if (canClose) close();
       }}
     >
       <Container
