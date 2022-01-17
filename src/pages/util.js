@@ -1,4 +1,5 @@
 import firebase from "firebase/compat/app";
+import { serverTimestamp } from "firebase/database";
 import "firebase/compat/auth";
 import "firebase/compat/database";
 import db from "../config/firebase";
@@ -49,7 +50,7 @@ export const setUserOnlineStatus = async (status, uid) => {
       .ref("status/" + uid)
       .set({
         state: status,
-        last_online: firebase.database.ServerValue.TIMESTAMP,
+        last_online: serverTimestamp(),
       });
   else
     await firebase
@@ -69,12 +70,11 @@ export const setIsUserOnlineToDatabase = (user) => {
 
   var isOfflineForDatabase = {
     state: "offline",
-    last_online: firebase.database.ServerValue.TIMESTAMP,
   };
 
   var isOnlineForDatabase = {
     state: "online",
-    last_online: firebase.database.ServerValue.TIMESTAMP,
+    last_online: serverTimestamp(),
   };
 
   firebase
@@ -87,9 +87,9 @@ export const setIsUserOnlineToDatabase = (user) => {
 
       userStatusDatabaseRef
         .onDisconnect()
-        .set(isOfflineForDatabase)
+        .update(isOfflineForDatabase)
         .then(() => {
-          userStatusDatabaseRef.set(isOnlineForDatabase);
+          userStatusDatabaseRef.update(isOnlineForDatabase);
         });
     });
 };
