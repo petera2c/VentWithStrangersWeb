@@ -112,7 +112,7 @@ function Chat({
   }
 
   return (
-    <Container className="column flex-fill x-fill full-center ov-hidden bg-white br4">
+    <Container className="column flex-fill x-fill full-center ov-hidden br4">
       <Container className="justify-between x-fill border-bottom pa16">
         {conversationPartnerID && (
           <Link className="flex" to={"/profile?" + conversationPartnerID}>

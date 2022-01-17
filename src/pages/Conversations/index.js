@@ -132,7 +132,7 @@ function Conversations() {
           )}
         </Container>
 
-        <Container className="column flex-fill ov-hidden bg-white">
+        <Container className="column flex-fill ov-hidden bg-white br4">
           {!conversations.find(
             (conversation) => conversation.id === activeConversation
           ) &&
