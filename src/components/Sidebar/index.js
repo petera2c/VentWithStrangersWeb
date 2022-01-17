@@ -67,7 +67,7 @@ function Sidebar() {
     return () => {
       if (onlineUsersUnsubscribe) onlineUsersUnsubscribe.off("value");
     };
-  }, []);
+  }, [isMounted, setTotalOnlineUsers]);
 
   return (
     <Space

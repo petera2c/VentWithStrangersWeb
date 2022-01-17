@@ -105,7 +105,7 @@ function Header() {
         newConversationsListenerUnsubscribe();
       if (onlineUsersUnsubscribe) onlineUsersUnsubscribe.off("value");
     };
-  }, [isMounted, pathname, user]);
+  }, [isMounted, pathname, setTotalOnlineUsers, user]);
 
   if (pathname === "/conversations" && user && unreadConversationsCount > 0)
     resetUnreadConversationCount(user.uid);

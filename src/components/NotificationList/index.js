@@ -11,14 +11,14 @@ function NotificationList({ notifications }) {
         return (
           <a
             className={
-              "column pa16 " +
+              "column grey-1 pa16 " +
               (index !== notifications.length - 1 ? "border-bottom" : "")
             }
             key={index}
             href={notification.link}
           >
-            <h6>{notification.message} </h6>
-            <p className="inherit-color">
+            <h6>{notification.message}</h6>
+            <p className="grey-1 inherit-color">
               {moment(notification.server_timestamp)
                 .subtract(1, "minute")
                 .fromNow()}
