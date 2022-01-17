@@ -14,7 +14,12 @@ import HandleOutsideClick from "../containers/HandleOutsideClick";
 import MakeAvatar from "../../components/MakeAvatar";
 import StarterModal from "../modals/Starter";
 
-import { canUserPost, useIsMounted, userSignUpProgress } from "../../util";
+import {
+  canUserPost,
+  isMobileOrTablet,
+  useIsMounted,
+  userSignUpProgress,
+} from "../../util";
 import {
   countdown,
   getUserVentTimeOut,
@@ -99,12 +104,14 @@ function NewVentComponent({ miniVersion, ventID }) {
           </Space>
         )}
         <Container className="align-center">
-          <Link to="/avatar">
-            <MakeAvatar
-              displayName={userBasicInfo.displayName}
-              userBasicInfo={userBasicInfo}
-            />
-          </Link>
+          {(!isMobileOrTablet() || (isMobileOrTablet() && isMinified)) && (
+            <Link to="/avatar">
+              <MakeAvatar
+                displayName={userBasicInfo.displayName}
+                userBasicInfo={userBasicInfo}
+              />
+            </Link>
+          )}
           <TextArea
             className="x-fill py8 px16 br4"
             onChange={(event) => {
@@ -121,18 +128,20 @@ function NewVentComponent({ miniVersion, ventID }) {
             minRows={isMinified ? 1 : 3}
             value={description}
           />
-          <Emoji
-            handleChange={(emoji) => {
-              const userInteractionIssues = userSignUpProgress(user);
+          {!isMobileOrTablet() && (
+            <Emoji
+              handleChange={(emoji) => {
+                const userInteractionIssues = userSignUpProgress(user);
 
-              if (userInteractionIssues) {
-                if (userInteractionIssues === "NSI") setStarterModal(true);
-                return;
-              }
+                if (userInteractionIssues) {
+                  if (userInteractionIssues === "NSI") setStarterModal(true);
+                  return;
+                }
 
-              setDescription(description + emoji);
-            }}
-          />
+                setDescription(description + emoji);
+              }}
+            />
+          )}
         </Container>
         {!isMinified && (
           <Space className="x-fill" direction="vertical">

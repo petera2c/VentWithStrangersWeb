@@ -12,7 +12,12 @@ import { isMobileOrTablet } from "../../../util";
 
 function NewRewardModal({ close, newReward }) {
   return (
-    <Container className="modal-container full-center">
+    <Container
+      className="modal-container full-center"
+      onClick={(e) => {
+        close();
+      }}
+    >
       <Container
         className={
           "modal column align-center ov-auto bg-white pa32 br8 " +
@@ -32,12 +37,7 @@ function NewRewardModal({ close, newReward }) {
           </Space>
         </Space>
       </Container>
-      <Container
-        className="modal-background"
-        onClick={(e) => {
-          close();
-        }}
-      />
+      <Container className="modal-background" />
     </Container>
   );
 }

@@ -120,6 +120,7 @@ function Header() {
           <img
             alt=""
             className="clickable"
+            onClick={() => setMobileHeaderActive(false)}
             src="/svgs/icon.svg"
             style={{ height: "50px" }}
           />

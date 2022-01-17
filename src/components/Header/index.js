@@ -124,13 +124,14 @@ function Header() {
             className="full-center"
             style={{ width: "calc(12.5vw - 24px)" }}
           >
-            <img
-              alt=""
-              className="clickable"
-              onClick={() => navigate("/")}
-              src="/svgs/icon.svg"
-              style={{ height: "50px" }}
-            />
+            <Link to="/">
+              <img
+                alt=""
+                className="clickable"
+                src="/svgs/icon.svg"
+                style={{ height: "50px" }}
+              />
+            </Link>
           </Container>
 
           <Container className="flex-fill align-center wrap">
