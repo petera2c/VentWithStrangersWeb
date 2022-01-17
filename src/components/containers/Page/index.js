@@ -8,7 +8,7 @@ import Container from "../Container";
 import "./style.css";
 
 function Page(props) {
-  const { children, className } = props;
+  const { children, className, id } = props;
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -31,6 +31,7 @@ function Page(props) {
   return (
     <Container
       className={"column flex-fill ov-auto bg-grey-2 " + className}
+      id={id}
       style={style}
     >
       <Helmet defer={false}>

@@ -75,6 +75,7 @@ function Vent({
   searchPreviewMode,
   setDescription,
   setTitle,
+  ventID,
   ventInit,
 }) {
   const isMounted = useIsMounted();
@@ -147,7 +148,7 @@ function Vent({
     return () => {
       if (newCommentListenerUnsubscribe) newCommentListenerUnsubscribe();
     };
-  }, []);
+  }, [isMounted, ventID]);
 
   if ((!vent || (vent && !vent.server_timestamp)) && isOnSingleVentPage)
     return (

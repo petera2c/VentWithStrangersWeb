@@ -32,6 +32,7 @@ import {
   getIsUserOnline,
   getUserBasicInfo,
   hasUserBlockedUser,
+  useIsMounted,
 } from "../../util";
 import {
   deleteComment,
@@ -51,6 +52,7 @@ function Comment({
   setComments,
   ventUserID,
 }) {
+  const isMounted = useIsMounted();
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const [blockModal, setBlockModal] = useState(false);
@@ -69,12 +71,22 @@ function Comment({
   useEffect(() => {
     if (user) {
       hasUserBlockedUser(user.uid, comment.userID, setIsContentBlocked);
-      getCommentHasLiked(commentID, setHasLiked, user.uid);
+      getCommentHasLiked(
+        commentID,
+        (hasLiked) => {
+          if (isMounted()) setHasLiked(hasLiked);
+        },
+        user.uid
+      );
     }
 
-    getUserBasicInfo(setUserBasicInfo, comment2.userID);
-    getIsUserOnline(setIsUserOnline, comment2.userID);
-  }, [commentID, comment2.userID, comment.userID, user]);
+    getUserBasicInfo((newBasicUserInfo) => {
+      if (isMounted()) setUserBasicInfo(newBasicUserInfo);
+    }, comment2.userID);
+    getIsUserOnline((isUserOnline) => {
+      if (isMounted()) setIsUserOnline(isUserOnline);
+    }, comment2.userID);
+  }, [commentID, comment2.userID, comment.userID, isMounted, user]);
 
   if (isContentBlocked) return <div />;
 

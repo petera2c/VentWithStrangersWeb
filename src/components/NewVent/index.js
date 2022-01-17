@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { message, Space } from "antd";
 import TextArea from "react-textarea-autosize";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,12 +14,7 @@ import HandleOutsideClick from "../containers/HandleOutsideClick";
 import MakeAvatar from "../../components/MakeAvatar";
 import StarterModal from "../modals/Starter";
 
-import {
-  calculateKarma,
-  canUserPost,
-  useIsMounted,
-  userSignUpProgress,
-} from "../../util";
+import { canUserPost, useIsMounted, userSignUpProgress } from "../../util";
 import {
   countdown,
   getUserVentTimeOut,
@@ -104,10 +99,12 @@ function NewVentComponent({ miniVersion, ventID }) {
           </Space>
         )}
         <Container className="align-center">
-          <MakeAvatar
-            displayName={userBasicInfo.displayName}
-            userBasicInfo={userBasicInfo}
-          />
+          <Link to="/avatar">
+            <MakeAvatar
+              displayName={userBasicInfo.displayName}
+              userBasicInfo={userBasicInfo}
+            />
+          </Link>
           <TextArea
             className="x-fill py8 px16 br4"
             onChange={(event) => {

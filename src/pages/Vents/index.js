@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Cookies from "universal-cookie";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { Space } from "antd";
 
 import Container from "../../components/containers/Container";
-import LoadMore from "../../components/LoadMore";
 import MakeAd from "../../components/MakeAd";
 import NewVentComponent from "../../components/NewVent";
 import Page from "../../components/containers/Page";
@@ -37,7 +37,12 @@ function VentsPage() {
   }, [isMounted, pathname, search]);
 
   return (
-    <Page className="pa16" description={metaDescription} title={metaTitle}>
+    <Page
+      className="pa16"
+      description={metaDescription}
+      id="scrollable-div"
+      title={metaTitle}
+    >
       <Container className="flex-fill x-fill">
         <Space className="flex-fill" direction="vertical" size="large">
           <NewVentComponent miniVersion />
@@ -46,64 +51,71 @@ function VentsPage() {
           </Container>
 
           {vents && (
-            <Space className="x-fill" direction="vertical" size="large">
-              {vents &&
-                vents.map((vent, index) => {
-                  return (
-                    <Space
-                      className="x-fill"
-                      direction="vertical"
-                      size="middle"
-                      key={index}
-                    >
-                      <Vent previewMode={true} ventInit={vent} />
-                      {index % 3 === 0 && (
-                        <MakeAd
-                          banner
-                          layoutKey="-em+1v+cz-83-96"
-                          slot="1835301248"
-                        />
-                      )}
-                    </Space>
-                  );
-                })}
-            </Space>
-          )}
-          {canLoadMore && (
-            <LoadMore
-              canLoadMore={canLoadMore}
-              loadMore={() =>
-                getVents(isMounted, pathname, setCanLoadMore, setVents, vents)
+            <InfiniteScroll
+              dataLength={vents.length}
+              endMessage={
+                <p className="tac">
+                  <b>Yay! You have seen it all</b>
+                </p>
               }
-            >
-              <Container className="bg-red clickable x-fill column bg-white mb16 br8">
-                <Container className="justify-between pt16 px32">
-                  <Container>
-                    <div className="round-icon bg-grey-2 mr8" />
+              hasMore={canLoadMore}
+              loader={
+                <Container className="bg-red clickable x-fill column bg-white mb16 br8">
+                  <Container className="justify-between pt16 px32">
+                    <Container>
+                      <div className="round-icon bg-grey-2 mr8" />
+                      <div
+                        className=" bg-grey-2 br16"
+                        style={{ width: "140px", height: "24px" }}
+                      />
+                    </Container>
+                    <div
+                      className="bg-grey-2 br16"
+                      style={{ width: "140px", height: "24px" }}
+                    />
+                  </Container>
+                  <Container className="pt16 px32">
+                    <div
+                      className="x-fill bg-grey-2 br8"
+                      style={{ height: "100px" }}
+                    />
+                  </Container>
+                  <Container className="py16 px32">
                     <div
                       className=" bg-grey-2 br16"
                       style={{ width: "140px", height: "24px" }}
                     />
                   </Container>
-                  <div
-                    className="bg-grey-2 br16"
-                    style={{ width: "140px", height: "24px" }}
-                  />
                 </Container>
-                <Container className="pt16 px32">
-                  <div
-                    className="x-fill bg-grey-2 br8"
-                    style={{ height: "100px" }}
-                  />
-                </Container>
-                <Container className="py16 px32">
-                  <div
-                    className=" bg-grey-2 br16"
-                    style={{ width: "140px", height: "24px" }}
-                  />
-                </Container>
-              </Container>
-            </LoadMore>
+              }
+              next={() =>
+                getVents(isMounted, pathname, setCanLoadMore, setVents, vents)
+              }
+              scrollableTarget="scrollable-div"
+            >
+              <Space className="x-fill" direction="vertical" size="large">
+                {vents &&
+                  vents.map((vent, index) => {
+                    return (
+                      <Space
+                        className="x-fill"
+                        direction="vertical"
+                        size="middle"
+                        key={index}
+                      >
+                        <Vent previewMode={true} ventInit={vent} />
+                        {index % 3 === 0 && (
+                          <MakeAd
+                            banner
+                            layoutKey="-em+1v+cz-83-96"
+                            slot="1835301248"
+                          />
+                        )}
+                      </Space>
+                    );
+                  })}
+              </Space>
+            </InfiniteScroll>
           )}
 
           {vents && vents.length === 0 && (

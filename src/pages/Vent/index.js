@@ -55,6 +55,7 @@ function VentPage() {
               setDescription={setDescription}
               setTitle={setTitle}
               setVentFound={setVentFound}
+              ventID={ventID}
               ventInit={{ ...ventFromMeta, id: ventID }}
             />
           </Space>

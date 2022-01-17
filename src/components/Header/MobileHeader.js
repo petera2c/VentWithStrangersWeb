@@ -89,7 +89,7 @@ function Header() {
         user.uid
       );
       getUserBasicInfo((newBasicUserInfo) => {
-        setUserBasicInfo(newBasicUserInfo);
+        if (isMounted()) setUserBasicInfo(newBasicUserInfo);
       }, user.uid);
       newNotificationsListenerUnsubscribe = getNotifications(
         isMounted,

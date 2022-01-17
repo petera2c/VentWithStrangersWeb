@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import moment from "moment-timezone";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { Button, Space } from "antd";
 
 import { faBaby } from "@fortawesome/free-solid-svg-icons/faBaby";
@@ -19,7 +20,6 @@ import Container from "../../components/containers/Container";
 import HandleOutsideClick from "../../components/containers/HandleOutsideClick";
 import KarmaBadge from "../../components/KarmaBadge";
 import LoadingHeart from "../../components/loaders/Heart";
-import LoadMore from "../../components/LoadMore";
 import MakeAvatar from "../../components/MakeAvatar";
 import Page from "../../components/containers/Page";
 import StarterModal from "../../components/modals/Starter";
@@ -96,7 +96,7 @@ function ProfileSection() {
   }, [isMounted, navigate, search]);
 
   return (
-    <Page className="pa16" title="Profile">
+    <Page className="pa16" id="scrollable-div" title="Profile">
       <Container className="flex-fill x-fill">
         <Space className="flex-fill" direction="vertical" size="large">
           {search && (
@@ -317,54 +317,71 @@ function ProfileSection() {
             </Container>
           </Container>
           {postsSection && (
-            <Space className="x-fill" direction="vertical" size="middle">
-              {vents &&
-                vents.map((vent, index) => (
-                  <Vent
-                    key={index}
-                    navigate={navigate}
-                    previewMode={true}
-                    ventInit={vent}
-                  />
-                ))}
-              {vents && vents.length === 0 && <h4>No vents found.</h4>}
-              {canLoadMoreVents && (
-                <LoadMore
-                  canLoadMore={canLoadMoreVents}
-                  loadMore={() =>
-                    getUsersVents(search, setCanLoadMoreVents, setVents, vents)
-                  }
-                >
-                  <Container className="clickable x-fill column bg-white mb16 br8">
-                    <Container className="justify-between pt16 px32">
-                      <Container>
-                        <div className="round-icon bg-grey-2 mr8" />
-                        <div
-                          className=" bg-grey-2 br16"
-                          style={{ width: "140px", height: "24px" }}
-                        />
-                      </Container>
-                      <div
-                        className="bg-grey-2 br16"
-                        style={{ width: "140px", height: "24px" }}
-                      />
-                    </Container>
-                    <Container className="pt16 px32">
-                      <div
-                        className="x-fill bg-grey-2 br8"
-                        style={{ height: "100px" }}
-                      />
-                    </Container>
-                    <Container className="py16 px32">
+            <InfiniteScroll
+              dataLength={vents.length}
+              endMessage={
+                vents.length !== 0 ? (
+                  <p className="tac mt16">
+                    <b>Yay! You have seen it all</b>
+                  </p>
+                ) : (
+                  <div />
+                )
+              }
+              hasMore={canLoadMoreVents}
+              loader={
+                <Container className="bg-red clickable x-fill column bg-white mt16 br8">
+                  <Container className="justify-between pt16 px32">
+                    <Container>
+                      <div className="round-icon bg-grey-2 mr8" />
                       <div
                         className=" bg-grey-2 br16"
                         style={{ width: "140px", height: "24px" }}
                       />
                     </Container>
+                    <div
+                      className="bg-grey-2 br16"
+                      style={{ width: "140px", height: "24px" }}
+                    />
                   </Container>
-                </LoadMore>
-              )}
-            </Space>
+                  <Container className="pt16 px32">
+                    <div
+                      className="x-fill bg-grey-2 br8"
+                      style={{ height: "100px" }}
+                    />
+                  </Container>
+                  <Container className="py16 px32">
+                    <div
+                      className=" bg-grey-2 br16"
+                      style={{ width: "140px", height: "24px" }}
+                    />
+                  </Container>
+                </Container>
+              }
+              next={() =>
+                getUsersVents(
+                  isMounted,
+                  search,
+                  setCanLoadMoreVents,
+                  setVents,
+                  vents
+                )
+              }
+              scrollableTarget="scrollable-div"
+            >
+              <Space className="x-fill" direction="vertical" size="middle">
+                {vents &&
+                  vents.map((vent, index) => (
+                    <Vent
+                      key={index}
+                      navigate={navigate}
+                      previewMode={true}
+                      ventInit={vent}
+                    />
+                  ))}
+                {vents && vents.length === 0 && <h4>No vents found.</h4>}
+              </Space>
+            </InfiniteScroll>
           )}
           {!postsSection && (
             <Container className="x-fill column">
