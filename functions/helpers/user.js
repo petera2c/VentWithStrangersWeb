@@ -117,10 +117,18 @@ const signPeopleOut = () => {
               if (data.val().status === "online") numberOfUsersOnline++;
 
               const hoursInactive = Math.floor(
-                new moment(data.val().last_online).diff(new moment()) /
+                new moment().diff(new moment(data.val().last_online)) /
                   1000 /
                   3600
               );
+              if (!data.val().last_online) {
+                admin
+                  .database()
+                  .ref("status/" + data.key)
+                  .update({
+                    last_online: admin.database.ServerValue.TIMESTAMP,
+                  });
+              }
 
               if (hoursInactive >= 1) {
                 admin
