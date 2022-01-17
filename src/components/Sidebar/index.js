@@ -133,14 +133,14 @@ function Sidebar() {
           icon={faCog}
           link="/settings"
           pathname={pathname}
-          text="Notifications / Settings"
+          text="Notification Settings"
         />
       )}
       <SideBarLink
         icon={faInfo}
         link="/site-info"
         pathname={pathname}
-        text="Site Info"
+        text="VWS Info"
       />
       <SideBarLink
         icon={faUsers}
