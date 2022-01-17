@@ -1,5 +1,6 @@
 import React from "react";
 import moment from "moment-timezone";
+import { Link } from "react-router-dom";
 
 import Container from "../containers/Container";
 import Text from "../views/Text";
@@ -9,13 +10,13 @@ function NotificationList({ notifications }) {
     <Container className="column x-fill">
       {notifications.map((notification, index) => {
         return (
-          <a
+          <Link
             className={
               "column grey-1 pa16 " +
               (index !== notifications.length - 1 ? "border-bottom" : "")
             }
             key={index}
-            href={notification.link}
+            to={notification.link}
           >
             <h6>{notification.message}</h6>
             <p className="grey-1 inherit-color">
@@ -23,7 +24,7 @@ function NotificationList({ notifications }) {
                 .subtract(1, "minute")
                 .fromNow()}
             </p>
-          </a>
+          </Link>
         );
       })}
       {((notifications && notifications.length === 0) || !notifications) && (

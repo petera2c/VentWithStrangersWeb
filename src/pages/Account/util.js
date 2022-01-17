@@ -206,10 +206,9 @@ export const updateUser = async (
     changesFound = true;
     updateEmail(user, email)
       .then(() => {
-        console.log(user);
         sendEmailVerification(user)
           .then(() => {
-            message.success("We have sent you an email verification link");
+            message.success("Verification email sent! :)");
           })
           .catch((error) => {
             message.error(error);

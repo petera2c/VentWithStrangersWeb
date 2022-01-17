@@ -18,24 +18,19 @@ const createProfileLink = (userID) => {
 };
 
 const createRewardsLink = () => {
-  let link = "https://www.ventwithstrangers.com/rewards";
-  if (process.env.FUNCTIONS_EMULATOR) link = "http://localhost:3000/rewards";
-  return link;
+  return "/rewards";
 };
 
 const createVentLink = (vent) => {
-  let link =
-    "https://www.ventwithstrangers.com/problem/" +
+  return (
+    "/problem/" +
     vent.id +
     "/" +
     vent.title
       .replace(/[^a-zA-Z ]/g, "")
       .replace(/ /g, "-")
-      .toLowerCase();
-  if (process.env.FUNCTIONS_EMULATOR)
-    link = "http://localhost:3000/problem/" + vent.id + "/" + vent.title;
-
-  return link;
+      .toLowerCase()
+  );
 };
 
 const getMetaInformation = async (url, callback) => {
