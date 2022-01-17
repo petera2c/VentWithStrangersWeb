@@ -60,7 +60,7 @@ function RoutesComp() {
   };
 
   useIdleTimer({
-    timeout: 1000 * 60 * 0.1,
+    timeout: 1000 * 60 * 1,
     onActive: handleOnActive,
     debounce: 500,
   });

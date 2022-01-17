@@ -20,8 +20,9 @@ function AboutUsPage() {
       title="Site Info"
     >
       <Container>
-        <Space className="bg-white pa16 br8" direction="vertical">
-          <p className="box-sizing fw-400">
+        <Space className="bg-white pa32 br8" direction="vertical">
+          <h1 className="tac">Constructive. Feedback. Only.</h1>
+          <p className="tac fw-400 mb16">
             People care and help is here. Vent and chat anonymously to be a part
             of a community committed to making the world a better place. This is
             a website for people that want to be heard and people that want to
