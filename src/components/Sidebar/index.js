@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Container from "../containers/Container";
 import MakeAd from "../MakeAd";
 
-import { OnlineUsersContext } from "../../context";
+import { OnlineUsersContext, UserContext } from "../../context";
 
 import { getTotalOnlineUsers, isPageActive, useIsMounted } from "../../util";
 
@@ -51,6 +51,8 @@ function Sidebar() {
   const isMounted = useIsMounted();
   const { pathname } = useLocation();
 
+  const { userSubscription } = useContext(UserContext);
+
   const { totalOnlineUsers, setTotalOnlineUsers } = useContext(
     OnlineUsersContext
   );
@@ -69,7 +71,7 @@ function Sidebar() {
 
   return (
     <Space
-      className="column ov-auto bg-white border-top pa16"
+      className="container ad column ov-auto bg-white border-top pa16"
       direction="vertical"
     >
       <SideBarLink
@@ -101,7 +103,11 @@ function Sidebar() {
         pathname={pathname}
         text="Make Friends"
       />
-      <MakeAd className="mt16" slot="4732645487" />
+      <MakeAd
+        className="mt16"
+        slot="4732645487"
+        userSubscription={userSubscription}
+      />
     </Space>
   );
 }
