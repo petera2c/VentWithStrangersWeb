@@ -406,14 +406,15 @@ function ProfileSection() {
                 <Button
                   block
                   className="mt16"
-                  onClick={() => {
+                  onClick={() =>
                     getUsersComments(
+                      isMounted,
                       search,
                       setCanLoadMoreComments,
                       setComments,
                       comments
-                    );
-                  }}
+                    )
+                  }
                   size="large"
                   type="primary"
                 >

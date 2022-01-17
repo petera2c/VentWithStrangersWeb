@@ -26,7 +26,7 @@ function CounterDisplay({ counter, size, title }) {
         <h6 className="blue">{title}</h6>
       </Space>
       <Progress
-        percent={(counter / getNextMilestone(counter, size)) * 100}
+        percent={Math.round((counter / getNextMilestone(counter, size)) * 100)}
         strokeColor="#2096f2"
       />
       <p className="flex justify-end" style={{ lineHeight: 1.25 }}>

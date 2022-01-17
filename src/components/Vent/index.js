@@ -102,23 +102,26 @@ function Vent({
 
   useEffect(() => {
     let newCommentListenerUnsubscribe;
-    getVent((newVent) => {
-      if (setTitle && newVent && newVent.title && isMounted())
-        setTitle(newVent.title);
+    getVent(
+      (newVent) => {
+        if (setTitle && newVent && newVent.title && isMounted())
+          setTitle(newVent.title);
 
-      if (setDescription && newVent && newVent.description && isMounted())
-        setDescription(newVent.description);
+        if (setDescription && newVent && newVent.description && isMounted())
+          setDescription(newVent.description);
 
-      getUserBasicInfo((author) => {
-        if (isMounted()) setAuthor(author);
-      }, newVent.userID);
+        getUserBasicInfo((author) => {
+          if (isMounted()) setAuthor(author);
+        }, newVent.userID);
 
-      getIsUserOnline((isUserOnline) => {
-        if (isMounted()) setIsUserOnline(isUserOnline);
-      }, newVent.userID);
+        getIsUserOnline((isUserOnline) => {
+          if (isMounted()) setIsUserOnline(isUserOnline);
+        }, newVent.userID);
 
-      if (isMounted()) setVent(newVent);
-    }, vent.id);
+        if (isMounted()) setVent(newVent);
+      },
+      ventID ? ventID : vent.id
+    );
 
     if (user) {
       hasUserBlockedUser(user.uid, vent.userID, (isBlocked) => {
@@ -130,11 +133,16 @@ function Vent({
       newCommentListenerUnsubscribe = newVentCommentListener(
         isMounted,
         setComments,
-        vent.id
+        ventID ? ventID : vent.id
       );
 
     if (!searchPreviewMode)
-      getVentComments(comments, isMounted, setComments, vent.id);
+      getVentComments(
+        comments,
+        isMounted,
+        setComments,
+        ventID ? ventID : vent.id
+      );
 
     if (user && !searchPreviewMode)
       ventHasLiked(
@@ -142,7 +150,7 @@ function Vent({
           if (isMounted()) setHasLiked(newHasLiked);
         },
         user.uid,
-        vent.id
+        ventID ? ventID : vent.id
       );
 
     return () => {
