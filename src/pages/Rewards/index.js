@@ -25,7 +25,10 @@ function CounterDisplay({ counter, size, title }) {
         </h4>
         <h6 className="blue">{title}</h6>
       </Space>
-      <Progress percent={(counter / getNextMilestone(counter, size)) * 100} />
+      <Progress
+        percent={(counter / getNextMilestone(counter, size)) * 100}
+        strokeColor="#2096f2"
+      />
       <p className="flex justify-end" style={{ lineHeight: 1.25 }}>
         {calculateMilestone(counter, size)} Karma Points
       </p>

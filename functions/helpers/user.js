@@ -130,7 +130,7 @@ const signPeopleOut = () => {
                   });
               }
 
-              if (hoursInactive >= 1) {
+              if (hoursInactive >= 8) {
                 admin
                   .database()
                   .ref("status/" + data.key)
