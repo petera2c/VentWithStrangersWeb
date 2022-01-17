@@ -66,7 +66,6 @@ const newVentListener = async (doc, context) => {
       .doc(vent.userID)
       .get();
 
-    console.log(vent.userID);
     await admin
       .firestore()
       .collection("user_rewards")
