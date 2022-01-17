@@ -48,6 +48,7 @@ function SideBarLink({ icon, link, onClick, pathname, text }) {
 }
 
 function Sidebar() {
+  return <div></div>;
   const isMounted = useIsMounted();
   const { pathname } = useLocation();
 

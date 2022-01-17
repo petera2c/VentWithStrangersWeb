@@ -101,6 +101,10 @@ function Chat({
       return memberID !== userID;
     });
 
+  const something = checkIsUserTyping(conversation.isTyping);
+
+  if (something) setTimeout(scrollToBottom, 200);
+
   return (
     <Container className="column flex-fill x-fill full-center ov-hidden br4">
       <Container className="justify-between x-fill border-bottom pa16">
@@ -171,14 +175,17 @@ function Chat({
       <Container
         className="ease-in-out x-fill"
         style={{
-          maxHeight: checkIsUserTyping(conversation.isTyping) ? "56px" : "0",
+          maxHeight: something ? "56px" : "0",
         }}
       >
-        <Container className="ov-hidden full-center pa16">
-          <MakeAvatar
-            displayName={conversationPartnerData.displayName}
-            userBasicInfo={conversationPartnerData}
-          />
+        <Container className="bg-none ov-hidden full-center">
+          <Container className="align-end pl16">
+            <MakeAvatar
+              displayName={conversationPartnerData.displayName}
+              userBasicInfo={conversationPartnerData}
+            />
+            <h4>...</h4>
+          </Container>
         </Container>
       </Container>
 
