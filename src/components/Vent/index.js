@@ -310,7 +310,6 @@ function Vent({
               }}
             >
               {getVentDescription(previewMode, vent)}
-              {getVentDescription(previewMode, vent)}
             </p>
             <Container className="x-fill align-center justify-end">
               <FontAwesomeIcon className="grey-5 mr8" icon={faClock} />

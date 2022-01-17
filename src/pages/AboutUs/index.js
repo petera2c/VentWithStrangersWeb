@@ -26,7 +26,7 @@ function AboutUsPage() {
             People care and help is here. Vent and chat anonymously to be a part
             of a community committed to making the world a better place. This is
             a website for people that want to be heard and people that want to
-            listen. Your emotional health is our priority.
+            listen. Your mental health is our priority.
           </p>
           <h4>What Can You Do on VWS?</h4>
           <p className="pl8">· Chat anonymously with strangers</p>

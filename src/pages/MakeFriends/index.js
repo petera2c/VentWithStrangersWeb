@@ -125,7 +125,7 @@ function MakeFriendsPage() {
               to share. That’s why online friendships can be a safe, wonderful
               place to vent and share your heart. That’s part of why we created
               VWS! We have a no-tolerance policy for trolls, bullying, or anyone
-              putting others’ emotional health at risk.
+              putting others’ mentall health at risk.
             </p>
           </div>
 
