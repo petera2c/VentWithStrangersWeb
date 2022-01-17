@@ -1,14 +1,19 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Button } from "antd";
+import { Button, Dropdown, Space } from "antd";
 import { sendEmailVerification } from "firebase/auth";
 
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
 import { faBell } from "@fortawesome/pro-duotone-svg-icons/faBell";
+import { faChartNetwork } from "@fortawesome/pro-solid-svg-icons/faChartNetwork";
 import { faChevronDown } from "@fortawesome/pro-solid-svg-icons/faChevronDown";
+import { faCog } from "@fortawesome/pro-duotone-svg-icons/faCog";
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
 import { faConciergeBell } from "@fortawesome/pro-duotone-svg-icons/faConciergeBell";
 import { faSearch } from "@fortawesome/pro-solid-svg-icons/faSearch";
+import { faSignOut } from "@fortawesome/pro-duotone-svg-icons/faSignOut";
+import { faUser } from "@fortawesome/pro-duotone-svg-icons/faUser";
+import { faUserAstronaut } from "@fortawesome/pro-duotone-svg-icons/faUserAstronaut";
 import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -20,7 +25,12 @@ import StarterModal from "../modals/Starter";
 
 import { UserContext } from "../../context";
 
-import { capitolizeFirstChar, isPageActive, useIsMounted } from "../../util";
+import {
+  capitolizeFirstChar,
+  isPageActive,
+  signOut,
+  useIsMounted,
+} from "../../util";
 import {
   getNotifications,
   getUnreadConversations,
@@ -28,6 +38,37 @@ import {
   readNotifications,
   resetUnreadConversationCount,
 } from "./util";
+
+function SideBarLink({ icon, link, onClick, pathname, text }) {
+  if (link)
+    return (
+      <Link
+        className={
+          "x-fill align-center grid-1 button-4 clickable py8 " +
+          isPageActive(link, pathname)
+        }
+        to={link}
+      >
+        <Container className="flex blue x-fill full-center">
+          <FontAwesomeIcon icon={icon} style={{ fontSize: "1.25rem" }} />
+        </Container>
+        <h5 className="grey-1 inherit-color">{text}</h5>
+      </Link>
+    );
+
+  if (onClick)
+    return (
+      <Container
+        className="x-fill align-center grid-1 button-4 clickable py8"
+        onClick={onClick}
+      >
+        <Container className="flex x-fill full-center">
+          <FontAwesomeIcon icon={icon} style={{ fontSize: "1.25rem" }} />
+        </Container>
+        <h5 className="grey-1 inherit-color">{text}</h5>
+      </Container>
+    );
+}
 
 function Header() {
   const isMounted = useIsMounted();
@@ -49,6 +90,7 @@ function Header() {
       ? search.substring(1, search.length)
       : ""
   );
+
   useEffect(() => {
     let newNotificationsListenerUnsubscribe;
     let newConversationsListenerUnsubscribe;
@@ -174,48 +216,77 @@ function Header() {
               </button>
             )}
             {user && (
-              <Container className="align-center wrap">
-                <Link className="flex full-center mr16" to="/profile">
-                  <MakeAvatar
-                    displayName={user.displayName}
-                    userBasicInfo={userBasicInfo}
-                  />
-                  <p className="mr8">{`Hello, ${capitolizeFirstChar(
-                    user.displayName
-                  )}`}</p>
-                  <FontAwesomeIcon icon={faChevronDown} />
-                </Link>
-
-                <HandleOutsideClick
-                  className="relative"
-                  close={() => setShowNotificationDropdown(false)}
+              <Space align="center" size="large" wrap>
+                <Dropdown
+                  overlay={
+                    <div className="bg-white shadow-2 pa8 br8">
+                      <SideBarLink
+                        icon={faChartNetwork}
+                        link="/profile"
+                        pathname={pathname}
+                        text="My Public Profile"
+                      />
+                      <SideBarLink
+                        icon={faUser}
+                        link="/account"
+                        pathname={pathname}
+                        text="Account"
+                      />
+                      <SideBarLink
+                        icon={faUserAstronaut}
+                        link="/avatar"
+                        pathname={pathname}
+                        text="Avatar"
+                      />
+                      <SideBarLink
+                        icon={faCog}
+                        link="/settings"
+                        pathname={pathname}
+                        text="Notification Settings"
+                      />
+                      <SideBarLink
+                        icon={faSignOut}
+                        onClick={() => {
+                          signOut(user.uid);
+                        }}
+                        pathname={pathname}
+                        text="Sign Out"
+                      />
+                    </div>
+                  }
+                  trigger={["click"]}
                 >
-                  <FontAwesomeIcon
-                    className="clickable blue"
-                    icon={faBell}
-                    onClick={() => {
-                      setShowNotificationDropdown(!showNotificationDropdown);
+                  <div align="center" className="flex align-center clickable">
+                    <MakeAvatar
+                      displayName={user.displayName}
+                      userBasicInfo={userBasicInfo}
+                    />
+                    <p className="mr8">
+                      {`Hello, ${capitolizeFirstChar(user.displayName)}`}
+                    </p>
+                    <FontAwesomeIcon icon={faChevronDown} />
+                  </div>
+                </Dropdown>
 
-                      readNotifications(notifications);
-                    }}
-                    size="2x"
-                  />
-                  {showNotificationDropdown && (
+                <Dropdown
+                  overlay={
                     <Container
                       className="container small bg-white shadow-2 ov-auto br8"
                       style={{
-                        position: "absolute",
-                        top: "calc(100% + 8px)",
-                        right: 0,
                         maxHeight: "300px",
-                        zIndex: 10,
                       }}
                     >
                       <NotificationList notifications={notifications} />
                     </Container>
-                  )}
-                  {newNotificationCounter(notifications) &&
-                    !showNotificationDropdown && (
+                  }
+                  onVisibleChange={(isVisible) =>
+                    readNotifications(notifications)
+                  }
+                  trigger={["click"]}
+                >
+                  <div className="clickable relative">
+                    <FontAwesomeIcon className="blue" icon={faBell} size="2x" />
+                    {newNotificationCounter(notifications) && (
                       <p
                         className="fs-14 bg-red white pa4 br8"
                         style={{
@@ -228,8 +299,9 @@ function Header() {
                         {newNotificationCounter(notifications)}
                       </p>
                     )}
-                </HandleOutsideClick>
-              </Container>
+                  </div>
+                </Dropdown>
+              </Space>
             )}
           </Container>
         </Container>

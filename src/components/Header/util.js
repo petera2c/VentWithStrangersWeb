@@ -29,6 +29,7 @@ export const getNotifications = (
             for (let index in newNotifications)
               if (!newNotifications[index].hasSeen) counter2++;
             if (counter2 > counter1 && !firstLoad) soundNotify();
+
             return newNotifications;
           });
       } else {

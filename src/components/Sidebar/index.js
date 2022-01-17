@@ -3,13 +3,8 @@ import { Link, useLocation } from "react-router-dom";
 
 import { Space } from "antd";
 
-import { faChartNetwork } from "@fortawesome/pro-solid-svg-icons/faChartNetwork";
-import { faCog } from "@fortawesome/pro-duotone-svg-icons/faCog";
 import { faInfo } from "@fortawesome/pro-duotone-svg-icons/faInfo";
 import { faStarShooting } from "@fortawesome/pro-duotone-svg-icons/faStarShooting";
-import { faUser } from "@fortawesome/pro-duotone-svg-icons/faUser";
-import { faUserAstronaut } from "@fortawesome/pro-duotone-svg-icons/faUserAstronaut";
-import { faSignOut } from "@fortawesome/pro-duotone-svg-icons/faSignOut";
 import { faUserFriends } from "@fortawesome/pro-duotone-svg-icons/faUserFriends";
 import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,12 +14,7 @@ import MakeAd from "../MakeAd";
 
 import { OnlineUsersContext, UserContext } from "../../context";
 
-import {
-  getTotalOnlineUsers,
-  isPageActive,
-  signOut,
-  useIsMounted,
-} from "../../util";
+import { getTotalOnlineUsers, isPageActive, useIsMounted } from "../../util";
 
 function SideBarLink({ icon, link, onClick, pathname, text }) {
   if (link)
@@ -103,38 +93,6 @@ function Sidebar() {
 
       {false && <MakeAd className="mt16" slot="4732645487" />}
 
-      {user && (
-        <SideBarLink
-          icon={faChartNetwork}
-          link="/profile"
-          pathname={pathname}
-          text="My Public Profile"
-        />
-      )}
-      {user && (
-        <SideBarLink
-          icon={faUser}
-          link="/account"
-          pathname={pathname}
-          text="Account"
-        />
-      )}
-      {user && (
-        <SideBarLink
-          icon={faUserAstronaut}
-          link="/avatar"
-          pathname={pathname}
-          text="Avatar"
-        />
-      )}
-      {user && (
-        <SideBarLink
-          icon={faCog}
-          link="/settings"
-          pathname={pathname}
-          text="Notification Settings"
-        />
-      )}
       <SideBarLink
         icon={faInfo}
         link="/site-info"
@@ -147,16 +105,6 @@ function Sidebar() {
         pathname={pathname}
         text="Make Friends"
       />
-      {user && (
-        <SideBarLink
-          icon={faSignOut}
-          onClick={() => {
-            signOut(user.uid);
-          }}
-          pathname={pathname}
-          text="Sign Out"
-        />
-      )}
     </Space>
   );
 }
