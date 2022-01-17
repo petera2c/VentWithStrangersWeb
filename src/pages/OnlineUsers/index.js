@@ -34,9 +34,15 @@ function OnlineUsers() {
             : "container extra-large")
         }
       >
-        {onlineUsers.map((userID, index) => {
+        {onlineUsers.map(({ lastChanged, userID }, index) => {
           return (
-            <UserComp isOnline key={index} showMessageUser userID={userID} />
+            <UserComp
+              isOnline
+              key={index}
+              lastChanged={lastChanged}
+              showMessageUser
+              userID={userID}
+            />
           );
         })}
       </Container>

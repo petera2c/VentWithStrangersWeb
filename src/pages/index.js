@@ -55,17 +55,12 @@ function RoutesComp() {
   const [userSubscription, setUserSubscription] = useState();
   const [newReward, setNewReward] = useState();
 
-  const handleOnIdle = (event) => {
-    if (user && user.uid) setUserOnlineStatus("offline", user.uid);
-  };
-
   const handleOnActive = (event) => {
     if (user && user.uid) setUserOnlineStatus("online", user.uid);
   };
 
   useIdleTimer({
-    timeout: 1000 * 60 * 3,
-    onIdle: handleOnIdle,
+    timeout: 1000 * 60 * 0.1,
     onActive: handleOnActive,
     debounce: 500,
   });

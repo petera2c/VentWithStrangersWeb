@@ -14,12 +14,20 @@ export const getOnlineUsers = (callback, totalOnlineUsers) => {
 
         snapshot.forEach((data) => {
           if (data.val().state === "online") {
-            usersArray.push(data.key);
+            usersArray.push({
+              lastChanged: data.val().last_changed,
+              userID: data.key,
+            });
             totalOnlineUsers2++;
           }
         });
 
-        console.log(totalOnlineUsers2);
+        usersArray.sort((a, b) => {
+          if (a.lastChanged < b.lastChanged) return 1;
+          if (a.lastChanged > b.lastChanged) return -1;
+          return 0;
+        });
+
         callback(usersArray);
       });
 };
