@@ -21,8 +21,8 @@ export const getOnlineUsers = (callback, totalOnlineUsers) => {
         });
 
         usersArray.sort((a, b) => {
-          if (a.lastOnline < b.lastOnline) return 1;
-          if (a.lastOnline > b.lastOnline) return -1;
+          if (a.lastOnline < b.lastOnline || !a.lastOnline) return 1;
+          if (a.lastOnline > b.lastOnline || !b.lastOnline) return -1;
           return 0;
         });
 
