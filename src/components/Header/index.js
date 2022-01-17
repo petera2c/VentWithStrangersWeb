@@ -249,9 +249,10 @@ function Header() {
                       />
                     </div>
                   }
+                  placement="bottomRight"
                   trigger={["click"]}
                 >
-                  <div align="center" className="flex align-center clickable">
+                  <div className="flex align-center clickable">
                     <MakeAvatar
                       displayName={user.displayName}
                       userBasicInfo={userBasicInfo}
