@@ -73,3 +73,9 @@
 .mentions__mention {
   background-color: var(--light-blue-theme-color);
 }
+
+.description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

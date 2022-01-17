@@ -6,7 +6,6 @@
   color: inherit !important;
 }
 
-
 .white {
   color: var(--white-color);
   fill: var(--white-color);
@@ -126,20 +125,17 @@ h1 {
 
   font-size: var(--thirty-two-font-size);
   font-weight: 900;
-
 }
 h2 {
   color: var(--primary-font-color);
   margin: 0;
 
   font-size: var(--thirty-two-font-size);
-
 }
 h3 {
   margin: 0;
   padding: 0;
   font-size: var(--twenty-two-font-size);
-
 }
 h4 {
   color: var(--primary-font-color);
@@ -147,28 +143,25 @@ h4 {
   text-align: left;
 
   font-size: var(--twenty-two-font-size);
-
 }
 h5 {
   margin: 0;
 
   font-size: var(--twenty-font-size);
-
 }
 h6 {
   color: var(--primary-font-color);
   margin: 0;
 
   font-size: var(--twenty-font-size);
-
 }
 p {
   color: var(--grey-color-1);
-
   margin: 0;
   text-align: left;
   font-size: var(--eighteen-font-size);
   font-weight: normal;
+  white-space: pre-line;
 }
 
 text {

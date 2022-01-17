@@ -303,9 +303,13 @@ function Vent({
             <Text className="fs-20 primary mb8" text={vent.title} type="h1" />
 
             <p
-              className="fs-18 fw-400 grey-1"
-              style={{ whiteSpace: "pre-line" }}
+              className="fs-18 fw-400 grey-1 description"
+              style={{
+                WebkitLineClamp: displayCommentField2 ? 150 : 3,
+                lineClamp: displayCommentField2 ? 150 : 3,
+              }}
             >
+              {getVentDescription(previewMode, vent)}
               {getVentDescription(previewMode, vent)}
             </p>
             <Container className="x-fill align-center justify-end">
@@ -415,7 +419,6 @@ function Vent({
                   <Container className="column x-fill align-end br8">
                     <Container className="relative x-fill">
                       <MentionsInput
-                        autoFocus
                         className="mentions"
                         onChange={(e) => {
                           if (!canUserPost(userBasicInfo)) return;
