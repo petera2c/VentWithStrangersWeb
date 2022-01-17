@@ -13,6 +13,7 @@ import {
   calculateKarma,
   capitolizeFirstChar,
   isMobileOrTablet,
+  useIsMounted,
 } from "../../util";
 import {
   getMessages,
@@ -30,6 +31,7 @@ function Chat({
   setActiveConversation,
   userID,
 }) {
+  const isMounted = useIsMounted();
   const [value, setValue] = useState(0); // integer state
 
   const checkIsUserTyping = (isTyping) => {
@@ -67,13 +69,13 @@ function Chat({
   const [messages, setMessages] = useState([]);
   const [messageString, setMessageString] = useState("");
   const [isUserCurrentlyTyping, setIsUserCurrentlyTyping] = useState(false);
-  let messageDivs = [];
 
   useEffect(() => {
     let messageListenerUnsubscribe;
 
     getMessages(
       conversation.id,
+      isMounted,
       messages,
       scrollToBottom,
       setCanLoadMore,
@@ -82,10 +84,11 @@ function Chat({
 
     messageListenerUnsubscribe = messageListener(
       conversation.id,
+      isMounted,
       scrollToBottom,
       setMessages
     );
-    setConversationID(conversation.id);
+    if (isMounted) setConversationID(conversation.id);
 
     return () => {
       if (messageListenerUnsubscribe) messageListenerUnsubscribe();
@@ -97,19 +100,6 @@ function Chat({
     conversationPartnerID = conversation.members.find((memberID) => {
       return memberID !== userID;
     });
-
-  for (let index in messages) {
-    const message = messages[index];
-    messageDivs.unshift(
-      <Message
-        conversationID={conversation.id}
-        key={index}
-        message={message}
-        setMessages={setMessages}
-        userID={userID}
-      />
-    );
-  }
 
   return (
     <Container className="column flex-fill x-fill full-center ov-hidden br4">
@@ -166,7 +156,15 @@ function Chat({
               Load More Messages
             </button>
           )}
-          {messageDivs}
+          {messages.map((message, index) => (
+            <Message
+              conversationID={conversation.id}
+              key={index}
+              message={message}
+              setMessages={setMessages}
+              userID={userID}
+            />
+          ))}
           <div ref={dummyRef} />
         </Container>
       </Container>

@@ -38,6 +38,7 @@ function Conversations() {
 
     if (user) {
       newMessageListenerUnsubscribe = mostRecentConversationListener(
+        isMounted,
         setConversations,
         user.uid
       );

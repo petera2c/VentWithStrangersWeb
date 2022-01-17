@@ -74,6 +74,7 @@ export const getConversationBasicData = async (
 
 export const messageListener = (
   conversationID,
+  isMounted,
   scrollToBottom,
   setMessages,
   first = true
@@ -98,14 +99,15 @@ export const messageListener = (
             querySnapshot.docChanges()[0].type === "added" ||
             querySnapshot.docChanges()[0].type === "removed"
           ) {
-            setMessages((oldMessages) => [
-              {
-                id: querySnapshot.docs[0].id,
-                ...querySnapshot.docs[0].data(),
-                doc: querySnapshot.docs[0],
-              },
-              ...oldMessages,
-            ]);
+            if (isMounted())
+              setMessages((oldMessages) => [
+                ...oldMessages,
+                {
+                  id: querySnapshot.docs[0].id,
+                  ...querySnapshot.docs[0].data(),
+                  doc: querySnapshot.docs[0],
+                },
+              ]);
             setTimeout(() => {
               scrollToBottom();
             }, 200);
@@ -150,6 +152,7 @@ export const getConversations = async (
 
 export const getMessages = async (
   conversationID,
+  isMounted,
   messages,
   scrollToBottom,
   setCanLoadMore,
@@ -168,10 +171,12 @@ export const getMessages = async (
     .limit(10)
     .get();
 
+  if (!isMounted()) return;
+
   if (snapshot.docs && snapshot.docs.length > 0) {
     let newMessages = [];
     snapshot.docs.forEach((doc, index) => {
-      newMessages.push({ ...doc.data(), id: doc.id, doc });
+      newMessages.unshift({ id: doc.id, doc, ...doc.data() });
     });
 
     if (newMessages.length < 10) setCanLoadMore(false);
@@ -192,6 +197,7 @@ export const getMessages = async (
 };
 
 export const mostRecentConversationListener = (
+  isMounted,
   setConversations,
   userID,
   first = true
@@ -207,7 +213,7 @@ export const mostRecentConversationListener = (
 
       if (first) {
         first = false;
-      } else if (conversationDoc) {
+      } else if (conversationDoc && isMounted()) {
         setConversations((oldConversations) => {
           const isConversationAlreadyListening = oldConversations.some(
             (obj) => obj.id === conversationDoc.id

@@ -153,26 +153,28 @@ function UserComponent({
         )}
         {showMessageUser && (
           <Container className="column flex-fill justify-end mt8">
-            <Button
-              className="x-fill button-2 px16 py8 br8"
-              onClick={(e) => {
-                e.preventDefault();
+            {(!user || (user && user.uid !== userID)) && (
+              <Button
+                className="x-fill button-2 px16 py8 br8"
+                onClick={(e) => {
+                  e.preventDefault();
 
-                const userInteractionIssues = userSignUpProgress(user);
+                  const userInteractionIssues = userSignUpProgress(user);
 
-                if (userInteractionIssues) {
-                  if (userInteractionIssues === "NSI") setStarterModal(true);
-                  return;
-                }
+                  if (userInteractionIssues) {
+                    if (userInteractionIssues === "NSI") setStarterModal(true);
+                    return;
+                  }
 
-                startConversation(navigate, user, userID);
-              }}
-            >
-              <FontAwesomeIcon className="mr8" icon={faComments} />
-              <p className="inherit-color ellipsis">
-                Message {capitolizeFirstChar(userInfo.displayName)}
-              </p>
-            </Button>
+                  startConversation(navigate, user, userID);
+                }}
+              >
+                <FontAwesomeIcon className="mr8" icon={faComments} />
+                <p className="inherit-color ellipsis">
+                  Message {capitolizeFirstChar(userInfo.displayName)}
+                </p>
+              </Button>
+            )}
             {lastOnline && (
               <p className="x-fill mt8">
                 Last Seen: {moment(lastOnline).subtract(1, "minute").fromNow()}
