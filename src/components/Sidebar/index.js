@@ -89,9 +89,6 @@ function Sidebar() {
         pathname={pathname}
         text="Rewards"
       />
-
-      {false && <MakeAd className="mt16" slot="4732645487" />}
-
       <SideBarLink
         icon={faInfo}
         link="/site-info"
@@ -104,6 +101,7 @@ function Sidebar() {
         pathname={pathname}
         text="Make Friends"
       />
+      <MakeAd className="mt16" slot="4732645487" />
     </Space>
   );
 }
