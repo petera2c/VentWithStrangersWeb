@@ -55,12 +55,9 @@ export const setUserOnlineStatus = async (status, uid) => {
     await firebase
       .database()
       .ref("status/" + uid)
-      .set(
-        {
-          state: status,
-        },
-        { merge: true }
-      );
+      .update({
+        state: status,
+      });
   return;
 };
 
