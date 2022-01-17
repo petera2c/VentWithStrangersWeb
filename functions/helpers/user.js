@@ -1,22 +1,7 @@
 const admin = require("firebase-admin");
+const moment = require("moment-timezone");
 const { createNotification } = require("./notification");
 const { createRewardsLink } = require("./util");
-
-const newUserSetup = async (user) => {
-  await admin.firestore().collection("user_rewards").doc(user.uid).set({
-    created_comment_supports_counter: 0,
-    created_comments_counter: 0,
-    created_vent_supports_counter: 0,
-    created_vents_counter: 0,
-    received_comment_supports_counter: 0,
-    received_vent_supports_counter: 0,
-  });
-
-  await admin
-    .firestore()
-    .collection("invite_uid")
-    .add({ primary_uid: user.uid });
-};
 
 const createMilestone = async (reward, title, userID) => {
   await admin
@@ -96,6 +81,58 @@ const checkIfCanCreateMilestone = async (
   if (reward) {
     createMilestone(reward, first ? secondTitle : title(counter), userID);
   }
+};
+
+const newUserSetup = async (user) => {
+  await admin.firestore().collection("user_rewards").doc(user.uid).set({
+    created_comment_supports_counter: 0,
+    created_comments_counter: 0,
+    created_vent_supports_counter: 0,
+    created_vents_counter: 0,
+    received_comment_supports_counter: 0,
+    received_vent_supports_counter: 0,
+  });
+
+  await admin
+    .firestore()
+    .collection("invite_uid")
+    .add({ primary_uid: user.uid });
+};
+
+const signPeopleOut = () => {
+  admin
+    .database()
+    .ref("total_online_users")
+    .on("value", (doc) => {
+      if (doc.val())
+        admin
+          .database()
+          .ref("status")
+          .orderByChild("state")
+          .limitToLast(doc.val())
+          .once("value", (snapshot) => {
+            let numberOfUsersOnline = 0;
+
+            snapshot.forEach((data) => {
+              if (data.val().status === "online") numberOfUsersOnline++;
+
+              const hoursInactive = Math.floor(
+                new moment(data.val().last_online).diff(new moment()) /
+                  1000 /
+                  3600
+              );
+
+              if (hoursInactive >= 1) {
+                admin
+                  .database()
+                  .ref("status/" + data.key)
+                  .update({
+                    state: "offline",
+                  });
+              }
+            });
+          });
+    });
 };
 
 const userRewardsListener = async (change, context) => {
@@ -221,6 +258,7 @@ const userWasInvited = async (doc, context) => {
 
 module.exports = {
   newUserSetup,
+  signPeopleOut,
   userRewardsListener,
   userWasInvited,
 };

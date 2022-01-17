@@ -43,13 +43,24 @@ export const newRewardListener = (
 };
 
 export const setUserOnlineStatus = async (status, uid) => {
-  await firebase
-    .database()
-    .ref("status/" + uid)
-    .set({
-      state: status,
-      last_changed: firebase.database.ServerValue.TIMESTAMP,
-    });
+  if (status === "online")
+    await firebase
+      .database()
+      .ref("status/" + uid)
+      .set({
+        state: status,
+        last_online: firebase.database.ServerValue.TIMESTAMP,
+      });
+  else
+    await firebase
+      .database()
+      .ref("status/" + uid)
+      .set(
+        {
+          state: status,
+        },
+        { merge: true }
+      );
   return;
 };
 
@@ -61,12 +72,12 @@ export const setIsUserOnlineToDatabase = (user) => {
 
   var isOfflineForDatabase = {
     state: "offline",
-    last_changed: firebase.database.ServerValue.TIMESTAMP,
+    last_online: firebase.database.ServerValue.TIMESTAMP,
   };
 
   var isOnlineForDatabase = {
     state: "online",
-    last_changed: firebase.database.ServerValue.TIMESTAMP,
+    last_online: firebase.database.ServerValue.TIMESTAMP,
   };
 
   firebase

@@ -22,6 +22,7 @@ const { createProxy, createSitemap } = require("./helpers/sitemap");
 const { subscribeToPlan } = require("./helpers/subscribe");
 const {
   newUserSetup,
+  signPeopleOut,
   userRewardsListener,
   userWasInvited,
 } = require("./helpers/user");
@@ -96,6 +97,9 @@ exports.cronDecreaseTrendingScore = functions.pubsub
 exports.cronDecreaseUserVentCounter = functions.pubsub
   .schedule("0 12 * * *")
   .onRun(async () => decreaseUserVentCounter());
+exports.cronSignPeopleOut = functions.pubsub
+  .schedule("0 * * * *")
+  .onRun(async () => signPeopleOut());
 
 const injectMetaData = (req, res) => {
   const filePath = path.resolve(__dirname, "./build/index.html");

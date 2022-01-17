@@ -38,7 +38,7 @@ function UserComponent({
   additionalUserInfo,
   displayName,
   isOnline,
-  lastChanged,
+  lastOnline,
   showAdditionaluserInformation,
   showMessageUser,
   userID,
@@ -173,9 +173,9 @@ function UserComponent({
                 Message {capitolizeFirstChar(userInfo.displayName)}
               </p>
             </Button>
-            {lastChanged && (
+            {lastOnline && (
               <p className="x-fill mt8">
-                Last Seen: {moment(lastChanged).subtract(1, "minute").fromNow()}
+                Last Seen: {moment(lastOnline).subtract(1, "minute").fromNow()}
               </p>
             )}
           </Container>

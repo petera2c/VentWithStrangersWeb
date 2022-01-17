@@ -15,7 +15,7 @@ export const getOnlineUsers = (callback, totalOnlineUsers) => {
         snapshot.forEach((data) => {
           if (data.val().state === "online") {
             usersArray.push({
-              lastChanged: data.val().last_changed,
+              lastOnline: data.val().last_online,
               userID: data.key,
             });
             totalOnlineUsers2++;
@@ -23,8 +23,8 @@ export const getOnlineUsers = (callback, totalOnlineUsers) => {
         });
 
         usersArray.sort((a, b) => {
-          if (a.lastChanged < b.lastChanged) return 1;
-          if (a.lastChanged > b.lastChanged) return -1;
+          if (a.lastOnline < b.lastOnline) return 1;
+          if (a.lastOnline > b.lastOnline) return -1;
           return 0;
         });
 
