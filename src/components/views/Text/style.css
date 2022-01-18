@@ -163,6 +163,14 @@ p {
   font-weight: normal;
   white-space: pre-line;
 }
+li {
+  color: var(--grey-color-1);
+  margin: 0;
+  text-align: left;
+  font-size: var(--eighteen-font-size);
+  font-weight: normal;
+  white-space: pre-line;
+}
 
 text {
   font-size: var(--eighteen-font-size);

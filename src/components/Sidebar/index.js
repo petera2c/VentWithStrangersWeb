@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Space } from "antd";
 
 import { faInfo } from "@fortawesome/pro-duotone-svg-icons/faInfo";
+import { faPrayingHands } from "@fortawesome/pro-duotone-svg-icons/faPrayingHands";
 import { faStarShooting } from "@fortawesome/pro-duotone-svg-icons/faStarShooting";
 import { faUserFriends } from "@fortawesome/pro-duotone-svg-icons/faUserFriends";
 import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
@@ -90,6 +91,12 @@ function Sidebar() {
         link="/rewards"
         pathname={pathname}
         text="Rewards"
+      />
+      <SideBarLink
+        icon={faPrayingHands}
+        link="/rules"
+        pathname={pathname}
+        text="Rules"
       />
       <SideBarLink
         icon={faInfo}
