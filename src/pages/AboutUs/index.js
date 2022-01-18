@@ -56,30 +56,30 @@ function AboutUsPage() {
           <p className="pl8">· +2 For an upvote on your vent</p>
           <p className="pl8">· -30 When you get reported for a valid reason</p>
           <h6 className="bold">Karma Badges</h6>
-          <Container className="flex align-center pl8">
-            <Container className="mr16">
-              <KarmaBadge karma={50} />
-            </Container>
+          <Space align="center">
+            <KarmaBadge karma={50} />
             <p>Orange Badge @ 50 Karma Points</p>
-          </Container>
-          <Container className="flex align-center pl8">
-            <Container className="mr16">
-              <KarmaBadge karma={100} />
-            </Container>
+          </Space>
+          <Space align="center">
+            <KarmaBadge karma={100} />
             <p>Red Badge @ 100 Karma Points</p>
-          </Container>
-          <Container className="flex align-center pl8">
-            <Container className="mr16">
-              <KarmaBadge karma={250} />
-            </Container>
+          </Space>
+          <Space align="center">
+            <KarmaBadge karma={250} />
             <p>Green Badge @ 250 Karma Points</p>
-          </Container>
-          <Container className="flex align-center pl8">
-            <Container className="mr16">
-              <KarmaBadge karma={500} />
-            </Container>
+          </Space>
+          <Space align="center">
+            <KarmaBadge karma={500} />
             <p>Blue Badge @ 500 Karma Points</p>
-          </Container>
+          </Space>
+          <Space align="center">
+            <KarmaBadge karma={2000} />
+            <p>Purple Badge @ 2000 Karma Points</p>
+          </Space>
+          <Space align="center">
+            <KarmaBadge karma={4000} />
+            <p>Fiery Rose Badge @ 4000 Karma Points</p>
+          </Space>
 
           <h6 className="bold">With Great Power Comes Great Responsibility</h6>
           <Space align="center">
@@ -100,7 +100,11 @@ function AboutUsPage() {
           </Space>
           <Space align="center">
             <KarmaBadge karma={2000} />
-            <p> can create a vent once every hour</p>
+            <p> can create a vent once 15 minutes</p>
+          </Space>
+          <Space align="center">
+            <KarmaBadge karma={4000} />
+            <p> can create vents freely</p>
           </Space>
           <Space align="center">
             <KarmaBadge karma={5000} />

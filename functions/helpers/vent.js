@@ -77,7 +77,7 @@ const newVentListener = async (doc, context) => {
     let minutesTillNextVent = 300;
     const usersKarma = calculateKarma(usersBasicInfoDoc.data());
 
-    if (usersKarma >= 5000) minutesTillNextVent = 0;
+    if (usersKarma >= 4000) minutesTillNextVent = 0;
     else if (usersKarma >= 2000) minutesTillNextVent = 15;
     else if (usersKarma >= 500) minutesTillNextVent = 60;
     else if (usersKarma >= 250) minutesTillNextVent = 120;
