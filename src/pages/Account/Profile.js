@@ -245,7 +245,7 @@ function ProfileSection() {
                           }}
                         >
                           <FontAwesomeIcon className="mr8" icon={faComments} />
-                          Message
+                          Message{" "}
                           {capitolizeFirstChar(userBasicInfo.displayName)}
                         </button>
                       )}
