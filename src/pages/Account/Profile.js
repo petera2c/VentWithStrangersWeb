@@ -120,6 +120,9 @@ function ProfileSection() {
               <Space size="large" wrap>
                 <Space direction="vertical">
                   <Space align="center">
+                    {isUserOnline && isUserOnline.state === "online" && (
+                      <div className="online-dot" />
+                    )}
                     <h1>{capitolizeFirstChar(userBasicInfo.displayName)}</h1>
                     <KarmaBadge karma={calculateKarma(userBasicInfo)} />
                   </Space>
@@ -180,38 +183,44 @@ function ProfileSection() {
                 </Container>
               )}
 
-              <Space wrap>
-                {userInfo.education !== undefined && (
-                  <Container className="border-all align-center px8 py4 br4">
-                    <FontAwesomeIcon className="mr8" icon={faSchool} />
-                    <p>{educationList[userInfo.education]}</p>
-                  </Container>
-                )}
-                {userInfo.kids !== undefined && (
-                  <Container className="border-all align-center px8 py4 br4">
-                    <FontAwesomeIcon className="mr8" icon={faBaby} />
-                    <p>{kidsList[userInfo.kids]}</p>
-                  </Container>
-                )}
-                {userInfo.partying !== undefined && (
-                  <Container className="border-all align-center px8 py4 br4">
-                    <FontAwesomeIcon className="mr8" icon={faGlassCheers} />
-                    <p>{partyingList[userInfo.partying]}</p>
-                  </Container>
-                )}
-                {userInfo.politics !== undefined && (
-                  <Container className="border-all align-center px8 py4 br4">
-                    <FontAwesomeIcon className="mr8" icon={faLandmark} />
-                    <p>{politicalBeliefsList[userInfo.politics]}</p>
-                  </Container>
-                )}
-                {userInfo.religion !== undefined && (
-                  <Container className="border-all align-center px8 py4 br4">
-                    <FontAwesomeIcon className="mr8" icon={faPray} />
-                    <p>{userInfo.religion}</p>
-                  </Container>
-                )}
-              </Space>
+              {(userInfo.education !== undefined ||
+                userInfo.kids !== undefined ||
+                userInfo.partying !== undefined ||
+                userInfo.politics !== undefined ||
+                userInfo.religion !== undefined) && (
+                <Space wrap>
+                  {userInfo.education !== undefined && (
+                    <Container className="border-all align-center px8 py4 br4">
+                      <FontAwesomeIcon className="mr8" icon={faSchool} />
+                      <p>{educationList[userInfo.education]}</p>
+                    </Container>
+                  )}
+                  {userInfo.kids !== undefined && (
+                    <Container className="border-all align-center px8 py4 br4">
+                      <FontAwesomeIcon className="mr8" icon={faBaby} />
+                      <p>{kidsList[userInfo.kids]}</p>
+                    </Container>
+                  )}
+                  {userInfo.partying !== undefined && (
+                    <Container className="border-all align-center px8 py4 br4">
+                      <FontAwesomeIcon className="mr8" icon={faGlassCheers} />
+                      <p>{partyingList[userInfo.partying]}</p>
+                    </Container>
+                  )}
+                  {userInfo.politics !== undefined && (
+                    <Container className="border-all align-center px8 py4 br4">
+                      <FontAwesomeIcon className="mr8" icon={faLandmark} />
+                      <p>{politicalBeliefsList[userInfo.politics]}</p>
+                    </Container>
+                  )}
+                  {userInfo.religion !== undefined && (
+                    <Container className="border-all align-center px8 py4 br4">
+                      <FontAwesomeIcon className="mr8" icon={faPray} />
+                      <p>{userInfo.religion}</p>
+                    </Container>
+                  )}
+                </Space>
+              )}
               {userBasicInfo.displayName &&
                 search &&
                 (user ? search !== user.uid : true) && (
@@ -294,7 +303,9 @@ function ProfileSection() {
                   </Container>
                 )}
               {isUserOnline && isUserOnline.last_online && (
-                <p>Last Seen: {moment(isUserOnline.last_online).fromNow()}</p>
+                <Space align="center">
+                  <p>Last Seen: {moment(isUserOnline.last_online).fromNow()}</p>
+                </Space>
               )}
             </Space>
           )}
