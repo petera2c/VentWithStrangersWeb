@@ -26,7 +26,6 @@ import { UserContext } from "../../context";
 
 import {
   blockUser,
-  calculateKarma,
   userSignUpProgress,
   capitolizeFirstChar,
   getIsUserOnline,

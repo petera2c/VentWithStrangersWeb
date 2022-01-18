@@ -29,7 +29,6 @@ import { UserContext } from "../../context";
 
 import {
   blockUser,
-  calculateKarma,
   canUserPost,
   capitolizeFirstChar,
   getIsUserOnline,
@@ -156,7 +155,7 @@ function Vent({
     return () => {
       if (newCommentListenerUnsubscribe) newCommentListenerUnsubscribe();
     };
-  }, [isMounted, ventID]);
+  }, [isMounted, user, ventID]);
 
   if ((!vent || (vent && !vent.server_timestamp)) && isOnSingleVentPage)
     return (

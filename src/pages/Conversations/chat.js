@@ -123,10 +123,7 @@ function Chat({
                 {capitolizeFirstChar(conversationPartnerData.displayName)}
               </h5>
             )}
-            <KarmaBadge
-              karma={calculateKarma(conversationPartnerData)}
-              noOnClick
-            />
+            <KarmaBadge noOnClick userBasicInfo={conversationPartnerData} />
           </Link>
         )}
         {isMobileOrTablet() && (
