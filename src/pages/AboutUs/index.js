@@ -52,10 +52,6 @@ function AboutUsPage() {
               </Space>
               <ul>
                 <li>Can create a vent once every 4 hours</li>
-                <li>
-                  Reporting a comment or vent will strip 10 karma from the
-                  reported user
-                </li>
               </ul>
             </Container>
             <Container className="column">
@@ -65,10 +61,6 @@ function AboutUsPage() {
               </Space>
               <ul>
                 <li>Can create a vent once every 3 hours</li>
-                <li>
-                  Reporting a comment or vent will strip 20 karma from the
-                  reported user
-                </li>
               </ul>
             </Container>
             <Container className="column">
@@ -78,10 +70,6 @@ function AboutUsPage() {
               </Space>
               <ul>
                 <li>Can create a vent once every 2 hours</li>
-                <li>
-                  Reporting a comment or vent will strip 50 karma from the
-                  reported user
-                </li>
               </ul>
             </Container>
             <Container className="column">
@@ -91,10 +79,6 @@ function AboutUsPage() {
               </Space>
               <ul>
                 <li>Can create a vent once every 1 hours</li>
-                <li>
-                  Reporting a comment or vent will strip 100 karma from the
-                  reported user
-                </li>
               </ul>
             </Container>
             <Container className="column">
@@ -104,10 +88,6 @@ function AboutUsPage() {
               </Space>
               <ul>
                 <li>Can create a vent once every 30 minutes</li>
-                <li>
-                  Reporting a comment or vent will strip 200 karma from the
-                  reported user
-                </li>
               </ul>
             </Container>
             <Container className="column">
@@ -117,10 +97,6 @@ function AboutUsPage() {
               </Space>
               <ul>
                 <li>Can create a vent once every 15 minutes</li>
-                <li>
-                  Reporting a comment or vent will strip 200 karma from the
-                  reported user
-                </li>
               </ul>
             </Container>
             <Container className="column">
@@ -130,10 +106,6 @@ function AboutUsPage() {
               </Space>
               <ul>
                 <li>Can create vents freely</li>
-                <li>
-                  Reporting a comment or vent will strip 200 karma from the
-                  reported user
-                </li>
               </ul>
             </Container>
             <Container className="column">
@@ -143,10 +115,6 @@ function AboutUsPage() {
               </Space>
               <ul>
                 <li>Can create vents freely</li>
-                <li>
-                  Reporting a comment or vent will strip 200 karma from the
-                  reported user
-                </li>
               </ul>
             </Container>
           </Space>
@@ -192,8 +160,8 @@ function AboutUsPage() {
                   </Link>
                 </li>
                 <li>
-                  <span className="red">- 5, 10, 25, 50, 100 or 200</span> When
-                  you get reported (for a valid reason)
+                  <span className="red">- 30</span> When you get reported (for a
+                  valid reason)
                 </li>
               </Space>
             </ul>

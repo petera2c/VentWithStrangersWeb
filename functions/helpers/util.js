@@ -5,6 +5,7 @@ const calculateKarma = (usereBasicInfo) => {
 };
 
 const calculateKarmaUserCanStrip = (usereBasicInfo) => {
+  return 30;
   if (!usereBasicInfo) return 5;
 
   if (usereBasicInfo.karma > 1000) return 200;
