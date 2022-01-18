@@ -45,7 +45,6 @@ function AboutUsPage() {
             username
           </p>
           <p className="pl8">· Earn Karma Points</p>
-
           <h4>What the Heck are Karma Points?</h4>
           <p>
             Karma Points are awarded to you when your Vent or comment gets
@@ -88,12 +87,30 @@ function AboutUsPage() {
             <p>Moderator Title @ 5000 Karma Points</p>
           </Container>
           <h6 className="bold">With Great Power Comes Great Responsibility</h6>
-          <p>
-            Orange, Red, Green, and Blue badges are milestones while you work
-            your way to the Moderator Title. As a Moderator, you will be able to
-            edit/delete up to 3 vents and comments a day and also ban 2 users
-            per day.
-          </p>
+          <Space align="center">
+            <KarmaBadge karma={50} />
+            <p> can create a vent once every 4 hours</p>
+          </Space>
+          <Space align="center">
+            <KarmaBadge karma={100} />
+            <p> can create a vent once every 3 hours</p>
+          </Space>
+          <Space align="center">
+            <KarmaBadge karma={250} />
+            <p> can create a vent once every 2 hours</p>
+          </Space>
+          <Space align="center">
+            <KarmaBadge karma={500} />
+            <p> can create a vent once every hour</p>
+          </Space>
+          <Space align="center">
+            <KarmaBadge karma={2000} />
+            <p> can create a vent once every hour</p>
+          </Space>
+          <Space align="center">
+            <KarmaBadge karma={5000} />
+            <p>Moderators can create vents freely</p>
+          </Space>
 
           <h4>Where Else Can You Access VWS?</h4>
           <p>

@@ -74,20 +74,23 @@ const newVentListener = async (doc, context) => {
         created_vents_counter: admin.firestore.FieldValue.increment(1),
       });
 
-    let hoursTillNextVent = 5;
+    let minutesTillNextVent = 300;
     const usersKarma = calculateKarma(usersBasicInfoDoc.data());
 
-    if (usersKarma > 5000) hoursTillNextVent = 0;
-    else if (usersKarma > 500) hoursTillNextVent = 1;
-    else if (usersKarma > 250) hoursTillNextVent = 2;
-    else if (usersKarma > 100) hoursTillNextVent = 3;
-    else if (usersKarma > 50) hoursTillNextVent = 4;
+    if (usersKarma >= 5000) minutesTillNextVent = 0;
+    else if (usersKarma >= 2000) minutesTillNextVent = 15;
+    else if (usersKarma >= 500) minutesTillNextVent = 60;
+    else if (usersKarma >= 250) minutesTillNextVent = 120;
+    else if (usersKarma >= 100) minutesTillNextVent = 180;
+    else if (usersKarma >= 50) minutesTillNextVent = 240;
 
     await admin
       .firestore()
       .collection("user_vent_timeout")
       .doc(vent.userID)
-      .set({ value: new moment().add(hoursTillNextVent, "hours").format() });
+      .set({
+        value: new moment().add(minutesTillNextVent, "minutes").format(),
+      });
   }
 
   const userSettingsDoc = await admin

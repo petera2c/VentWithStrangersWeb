@@ -30,6 +30,7 @@ function KarmaBadge({ karma, noOnClick }) {
         </span>
       </Tooltip>
     );
+  else if (karma >= 2000) karmaColor = "#e056fd";
   else if (karma >= 500) karmaColor = "#9bf6ff";
   else if (karma >= 250) karmaColor = "#caffbf";
   else if (karma >= 100) karmaColor = "#ffadad";
