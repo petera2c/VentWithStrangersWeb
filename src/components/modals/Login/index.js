@@ -36,7 +36,7 @@ function LoginModal({ setActiveModal }) {
           <form
             className="x-fill column"
             onSubmit={handleSubmit((formData) =>
-              login(formData, () => setActiveModal(""))
+              login(formData, setActiveModal)
             )}
           >
             <Container className="x-fill column px32 py16">

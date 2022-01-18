@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,6 +13,7 @@ import { isMobileOrTablet } from "../../../util";
 import { signUp } from "./util";
 
 function SignUpModal({ setActiveModal }) {
+  const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
   const [canSeePassword, setCanSeePassword] = useState(false);
 
@@ -30,7 +32,9 @@ function SignUpModal({ setActiveModal }) {
         <Container className="x-fill column">
           <form
             className="x-fill column"
-            onSubmit={handleSubmit((data) => signUp(data))}
+            onSubmit={handleSubmit((data) =>
+              signUp(data, navigate, setActiveModal)
+            )}
           >
             <Container className="x-fill column px32 py16">
               <input

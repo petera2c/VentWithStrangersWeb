@@ -1,14 +1,15 @@
-import firebase from 'firebase/compat/app';
+import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 
-export const login = ({ email, password }, close) => {
+export const login = ({ email, password }, setActiveModal) => {
   firebase
     .auth()
     .signInWithEmailAndPassword(email, password)
-    .then(res => {
-      window.location.reload();
+    .then((res) => {
+      setActiveModal();
+      //window.location.reload();
     })
-    .catch(error => {
+    .catch((error) => {
       alert(error);
     });
 };

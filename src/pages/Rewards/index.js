@@ -106,13 +106,13 @@ function RewardsPage() {
                 <CounterDisplay
                   counter={userRewards.received_comment_supports_counter}
                   size="medium"
-                  tooltip="The total number of supports on your comments :)"
+                  tooltip="The total number of supports received on your comments :)"
                   title="Comment Supports Received"
                 />
                 <CounterDisplay
                   counter={userRewards.received_vent_supports_counter}
                   size="medium"
-                  tooltip="The total number of supports on your vents :)"
+                  tooltip="The total number of supports received on your vents :)"
                   title="Vent Supports Received"
                 />
               </Space>

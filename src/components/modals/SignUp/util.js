@@ -19,7 +19,11 @@ export const getInvalidCharacters = (displayName) => {
   return invalidCharacters;
 };
 
-export const signUp = ({ email, displayName, password, passwordConfirm }) => {
+export const signUp = (
+  { email, displayName, password, passwordConfirm },
+  navigate,
+  setActiveModal
+) => {
   if (getInvalidCharacters(displayName)) {
     return message.error(
       "These characters are not allowed in your display name. " +
@@ -77,7 +81,9 @@ export const signUp = ({ email, displayName, password, passwordConfirm }) => {
         await res.user.updateProfile({
           displayName,
         });
-        window.location.reload();
+        setActiveModal(false);
+        navigate("/rules");
+        //window.location.reload();
       }
     })
     .catch((e) => {
