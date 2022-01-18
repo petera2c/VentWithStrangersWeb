@@ -48,10 +48,10 @@ function AboutUsPage() {
             <Container className="column">
               <Space align="center">
                 <KarmaBadge karma={50} />
-                <p>orange Badge @ 50 Karma Points</p>
+                <p>Orange Badge @ 50 Karma Points</p>
               </Space>
               <ul>
-                <li>can create a vent once every 4 hours</li>
+                <li>Can create a vent once every 4 hours</li>
               </ul>
             </Container>
             <Container className="column">
@@ -60,7 +60,7 @@ function AboutUsPage() {
                 <p>Red Badge @ 100 Karma Points</p>
               </Space>
               <ul>
-                <li>can create a vent once every 3 hours</li>
+                <li>Can create a vent once every 3 hours</li>
               </ul>
             </Container>
             <Container className="column">
@@ -69,7 +69,7 @@ function AboutUsPage() {
                 <p>Green Badge @ 250 Karma Points</p>
               </Space>
               <ul>
-                <li>can create a vent once every 2 hours</li>
+                <li>Can create a vent once every 2 hours</li>
               </ul>
             </Container>
             <Container className="column">
@@ -78,7 +78,7 @@ function AboutUsPage() {
                 <p>Blue Badge @ 500 Karma Points</p>
               </Space>
               <ul>
-                <li>can create a vent once every 1 hours</li>
+                <li>Can create a vent once every 1 hours</li>
               </ul>
             </Container>
             <Container className="column">
@@ -87,7 +87,7 @@ function AboutUsPage() {
                 <p>Purple Badge @ 2000 Karma Points</p>
               </Space>
               <ul>
-                <li>can create a vent once every 15 minutes</li>
+                <li>Can create a vent once every 15 minutes</li>
               </ul>
             </Container>
             <Container className="column">
@@ -96,7 +96,7 @@ function AboutUsPage() {
                 <p>Fiery Rose Badge @ 4000 Karma Points</p>
               </Space>
               <ul>
-                <li>can create vents freely</li>
+                <li>Can create vents freely</li>
               </ul>
             </Container>
           </Space>
@@ -120,6 +120,31 @@ function AboutUsPage() {
                   username
                 </li>
                 <li>Earn Karma Points</li>
+              </Space>
+            </ul>
+          </Space>
+
+          <Space direction="vertical">
+            <h4>How Do You Gain Karma Points?</h4>
+            <ul>
+              <Space direction="vertical">
+                <li>
+                  <span className="green">+4</span> For an upvote on your
+                  comment
+                </li>
+                <li>
+                  <span className="green">+2</span> For an upvote on your vent
+                </li>
+                <li>
+                  However, the best way to earn karma is through{" "}
+                  <Link className="blue" to="/rewards">
+                    Rewards
+                  </Link>
+                </li>
+                <li>
+                  <span className="red">-30</span> When you get reported (for a
+                  valid reason)
+                </li>
               </Space>
             </ul>
           </Space>

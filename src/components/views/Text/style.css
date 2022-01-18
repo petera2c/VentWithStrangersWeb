@@ -164,6 +164,7 @@ p {
   white-space: pre-line;
 }
 ul {
+  padding-left: 64px;
   margin: 0;
 }
 li {
