@@ -23,23 +23,24 @@ function RulesPage() {
           <ol>
             <Space direction="vertical" size="large">
               <li>
-                No racist / sexist / prejudice / discriminatory vents, comments,
-                or direct messages. Grouping/categorizing people and judging
-                them en masse is unacceptable in our community.
+                Supportive comments only. We encourage everyone to comment on
+                vents, but all comments must be supportive even if you disagree
+                with the content of the vent.
               </li>
               <li>
-                No harassment, no bullying, and no attacking of users through
-                vents, comments, or direct messages.
+                People who create racist, sexist, prejudice or discriminatory
+                content will be permanently banned without warning.
+              </li>
+              <li>
+                Any form of harassment, bullying, or attacking of people through
+                vents, comments, or direct messages will cause you to be
+                permanently banned without warning.
               </li>
               <li>
                 To protect from predators, we do not allow advertising of any
                 social media profiles or pages.
               </li>
-              <li>
-                Supportive comments only. We encourage all users to comment on
-                vents, but all comments must be supportive even if you disagree
-                with the content of the vent.
-              </li>
+
               <li>Have fun! :)</li>
             </Space>
           </ol>
