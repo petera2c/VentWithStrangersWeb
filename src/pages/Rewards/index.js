@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import moment from "moment-timezone";
-import { Progress, Space } from "antd";
+import { Progress, Space, Tooltip } from "antd";
 
 import Container from "../../components/containers/Container";
 import Page from "../../components/containers/Page";
@@ -16,22 +16,29 @@ import {
   getUserRewardsProgress,
 } from "./util";
 
-function CounterDisplay({ counter, size, title }) {
+function CounterDisplay({ counter, size, tooltip, title }) {
   return (
     <Space className="x-fill" direction="vertical">
       <Space align="center">
         <h4>
           {counter}/{getNextMilestone(counter, size)}
         </h4>
-        <h6 className="blue">{title}</h6>
+        <Tooltip placement="bottom" title={tooltip}>
+          <h6 className="blue">{title}</h6>
+        </Tooltip>
       </Space>
       <Progress
         percent={Math.round((counter / getNextMilestone(counter, size)) * 100)}
         strokeColor="#2096f2"
       />
-      <p className="flex justify-end" style={{ lineHeight: 1.25 }}>
-        {calculateMilestone(counter, size)} Karma Points
-      </p>
+      <Tooltip
+        placement="bottom"
+        title="The amount of karma you will receive after reaching your next milestone :)"
+      >
+        <p className="flex justify-end" style={{ lineHeight: 1.25 }}>
+          {calculateMilestone(counter, size)} Karma Points
+        </p>
+      </Tooltip>
     </Space>
   );
 }
@@ -73,16 +80,19 @@ function RewardsPage() {
                 <CounterDisplay
                   counter={userRewards.created_vents_counter}
                   size="small"
+                  tooltip="The total number of vents you have created :)"
                   title="Vents Created"
                 />
                 <CounterDisplay
                   counter={userRewards.created_comments_counter}
                   size="small"
+                  tooltip="The total number of comments you have created :)"
                   title="Comments Created"
                 />
                 <CounterDisplay
                   counter={userRewards.created_vent_supports_counter}
                   size="medium"
+                  tooltip="The total number of vents you have supported :)"
                   title="Vents You Supported"
                 />
               </Space>
@@ -90,16 +100,19 @@ function RewardsPage() {
                 <CounterDisplay
                   counter={userRewards.created_comment_supports_counter}
                   size="medium"
+                  tooltip="The total number of comments you have supported :)"
                   title="Comments You Supported"
                 />
                 <CounterDisplay
                   counter={userRewards.received_comment_supports_counter}
                   size="medium"
+                  tooltip="The total number of supports on your comments :)"
                   title="Comment Supports Received"
                 />
                 <CounterDisplay
                   counter={userRewards.received_vent_supports_counter}
                   size="medium"
+                  tooltip="The total number of supports on your vents :)"
                   title="Vent Supports Received"
                 />
               </Space>

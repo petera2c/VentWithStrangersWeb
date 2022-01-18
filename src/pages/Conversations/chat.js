@@ -142,7 +142,9 @@ function Chat({
             </h4>
           ))}
 
-        <Container className="column flex-fill ov-auto">
+        <Container
+          className={"column flex-fill ov-auto " + (canLoadMore ? "" : "pt8")}
+        >
           {canLoadMore && (
             <button
               className="button-2 pa8 mb8 br4"

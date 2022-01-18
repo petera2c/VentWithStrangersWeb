@@ -43,6 +43,7 @@ export const userSignUpProgress = (user, noAlert) => {
         .then(() => {
           Modal.info({
             title: "Verify Email",
+            centered: true,
             content: "We have re-sent you a verification email :)",
           });
         })

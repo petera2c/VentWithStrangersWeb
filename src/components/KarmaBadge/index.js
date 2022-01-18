@@ -13,19 +13,21 @@ function KarmaBadge({ karma, noOnClick }) {
   let karmaColor = "";
   if (karma >= 5000)
     return (
-      <Tooltip title={karma + " Karma Points"}>
-        <Container
-          className="clickable"
-          onClick={(e) => {
-            if (noOnClick) return;
-            e.stopPropagation();
-            e.preventDefault();
+      <Tooltip placement="bottom" title={karma + " Karma Points"}>
+        <span>
+          <Container
+            className="clickable"
+            onClick={(e) => {
+              if (noOnClick) return;
+              e.stopPropagation();
+              e.preventDefault();
 
-            navigate("/site-info");
-          }}
-        >
-          <h5 className="bg-blue white fw-400 px8 py4 br8">Moderator</h5>
-        </Container>
+              navigate("/site-info");
+            }}
+          >
+            <h5 className="bg-blue white fw-400 px8 py4 br8">Moderator</h5>
+          </Container>
+        </span>
       </Tooltip>
     );
   else if (karma >= 500) karmaColor = "#9bf6ff";
@@ -35,7 +37,7 @@ function KarmaBadge({ karma, noOnClick }) {
 
   if (karmaColor)
     return (
-      <Tooltip title={karma + " Karma Points"}>
+      <Tooltip placement="bottom" title={karma + " Karma Points"}>
         <span>
           <Container
             className="clickable"
