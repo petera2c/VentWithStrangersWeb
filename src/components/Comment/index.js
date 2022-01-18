@@ -84,7 +84,7 @@ function Comment({
       if (isMounted()) setUserBasicInfo(newBasicUserInfo);
     }, comment2.userID);
     getIsUserOnline((isUserOnline) => {
-      if (isMounted()) setIsUserOnline(isUserOnline);
+      if (isMounted()) setIsUserOnline(isUserOnline.state);
     }, comment2.userID);
   }, [commentID, comment2.userID, comment.userID, isMounted, user]);
 
@@ -321,9 +321,7 @@ function Comment({
           <FontAwesomeIcon className="clickable grey-5 mr8" icon={faClock} />
           <Text
             className="grey-5 fs-16"
-            text={moment(comment.server_timestamp)
-              .subtract(1, "minute")
-              .fromNow()}
+            text={moment(comment.server_timestamp).fromNow()}
             type="p"
           />
         </Container>

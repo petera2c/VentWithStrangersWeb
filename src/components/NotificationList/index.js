@@ -20,9 +20,7 @@ function NotificationList({ notifications }) {
           >
             <h6>{notification.message}</h6>
             <p className="grey-1 inherit-color">
-              {moment(notification.server_timestamp)
-                .subtract(1, "minute")
-                .fromNow()}
+              {moment(notification.server_timestamp).fromNow()}
             </p>
           </Link>
         );

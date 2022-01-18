@@ -68,7 +68,7 @@ export const getConversationBasicData = async (
       setConversationsBasicDatas((currentUsersBasicInfo) => {
         currentUsersBasicInfo[conversation.id] = {
           ...userBasicInfo.data(),
-          isUserOnline,
+          isUserOnline: isUserOnline.state,
         };
         return { ...currentUsersBasicInfo };
       });

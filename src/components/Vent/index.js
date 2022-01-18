@@ -115,7 +115,7 @@ function Vent({
         }, newVent.userID);
 
         getIsUserOnline((isUserOnline) => {
-          if (isMounted()) setIsUserOnline(isUserOnline);
+          if (isMounted()) setIsUserOnline(isUserOnline.state);
         }, newVent.userID);
 
         if (isMounted()) setVent(newVent);
@@ -324,9 +324,7 @@ function Vent({
               <FontAwesomeIcon className="grey-5 mr8" icon={faClock} />
               <Text
                 className="grey-5 fs-16"
-                text={moment(vent.server_timestamp)
-                  .subtract(1, "minute")
-                  .fromNow()}
+                text={moment(vent.server_timestamp).fromNow()}
                 type="p"
               />
             </Container>

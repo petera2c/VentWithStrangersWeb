@@ -92,8 +92,8 @@ export const getIsUserOnline = (setIsUserOnline, userID) => {
 
   ref.on("value", (snapshot) => {
     if (snapshot.val() && snapshot.val().state === "online")
-      setIsUserOnline(true);
-    else setIsUserOnline(false);
+      setIsUserOnline(snapshot.val());
+    else setIsUserOnline({ state: false });
   });
 };
 

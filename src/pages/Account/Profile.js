@@ -39,6 +39,7 @@ import {
   blockUser,
   calculateKarma,
   capitolizeFirstChar,
+  getIsUserOnline,
   getUserBasicInfo,
   useIsMounted,
   userSignUpProgress,
@@ -57,6 +58,7 @@ function ProfileSection() {
   const [canLoadMoreVents, setCanLoadMoreVents] = useState(true);
   const [postOptions, setPostOptions] = useState(false);
   const [postsSection, setPostsSection] = useState(true);
+  const [isUserOnline, setIsUserOnline] = useState(false);
   const [starterModal, setStarterModal] = useState(false);
   const [userBasicInfo, setUserBasicInfo] = useState({});
   const [userInfo, setUserInfo] = useState({});
@@ -77,6 +79,9 @@ function ProfileSection() {
     setComments([]);
 
     if (search) {
+      getIsUserOnline((isUserOnline) => {
+        if (isMounted()) setIsUserOnline(isUserOnline);
+      }, search);
       getUserBasicInfo((userBasicInfo) => {
         if (isMounted()) setUserBasicInfo(userBasicInfo);
       }, search);
@@ -231,7 +236,7 @@ function ProfileSection() {
                           }}
                         >
                           <FontAwesomeIcon className="mr8" icon={faComments} />
-                          Message{" "}
+                          Message
                           {capitolizeFirstChar(userBasicInfo.displayName)}
                         </button>
                       )}
@@ -288,6 +293,9 @@ function ProfileSection() {
                       )}
                   </Container>
                 )}
+              {isUserOnline && isUserOnline.last_online && (
+                <p>Last Seen: {moment(isUserOnline.last_online).fromNow()}</p>
+              )}
             </Space>
           )}
 
