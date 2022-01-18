@@ -80,12 +80,7 @@ function AboutUsPage() {
             </Container>
             <p>Blue Badge @ 500 Karma Points</p>
           </Container>
-          <Container className="flex align-center pl8">
-            <Container className="mr16">
-              <KarmaBadge karma={5000} />
-            </Container>
-            <p>Moderator Title @ 5000 Karma Points</p>
-          </Container>
+
           <h6 className="bold">With Great Power Comes Great Responsibility</h6>
           <Space align="center">
             <KarmaBadge karma={50} />
