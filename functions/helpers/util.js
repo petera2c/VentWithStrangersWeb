@@ -4,6 +4,17 @@ const calculateKarma = (usereBasicInfo) => {
   return usereBasicInfo.karma ? usereBasicInfo.karma : 0;
 };
 
+const calculateKarmaUserCanStrip = (usereBasicInfo) => {
+  if (!usereBasicInfo) return 2;
+
+  if (usereBasicInfo.karma > 1000) return 100;
+  else if (usereBasicInfo.karma > 500) return 50;
+  else if (usereBasicInfo.karma > 250) return 25;
+  else if (usereBasicInfo.karma > 100) return 10;
+  else if (usereBasicInfo.karma > 50) return 5;
+  else if (usereBasicInfo.karma > 0) return 2;
+};
+
 const combineObjectWithID = (id, object) => {
   object.id = id;
   return object;
@@ -262,6 +273,7 @@ const updateTotalUsersOnline = (change, context) => {
 
 module.exports = {
   calculateKarma,
+  calculateKarmaUserCanStrip,
   combineObjectWithID,
   createProfileLink,
   createRewardsLink,

@@ -2,7 +2,11 @@ const admin = require("firebase-admin");
 const Webflow = require("webflow-api");
 const moment = require("moment-timezone");
 const { createNotification } = require("./notification");
-const { calculateKarma, createVentLink } = require("./util");
+const {
+  calculateKarma,
+  calculateKarmaUserCanStrip,
+  createVentLink,
+} = require("./util");
 
 const VENT_LIKE_TRENDING_SCORE_INCREMENT = 24;
 
@@ -202,13 +206,24 @@ const newVentReportListener = async (doc, context) => {
 
   const ventDoc = await admin.firestore().collection("vents").doc(ventID).get();
 
+  const usereBasicInfoDoc = await admin
+    .firestore()
+    .collection("users_display_name")
+    .doc(userID)
+    .get();
+  const karmaUserCanStrip = calculateKarmaUserCanStrip(
+    usereBasicInfoDoc.data()
+  );
+
+  console.log(karmaUserCanStrip);
+
   await admin
     .firestore()
     .collection("users_display_name")
     .doc(ventDoc.data().userID)
     .set(
       {
-        karma: admin.firestore.FieldValue.increment(-30),
+        karma: admin.firestore.FieldValue.increment(-karmaUserCanStrip),
       },
       { merge: true }
     );
@@ -216,6 +231,7 @@ const newVentReportListener = async (doc, context) => {
   await admin.firestore().collection("admin_notifications").add({
     ventID,
     user_that_reported: userID,
+    user_that_got_reported: ventDoc.data().userID,
   });
 };
 

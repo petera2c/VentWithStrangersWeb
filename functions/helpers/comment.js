@@ -1,6 +1,6 @@
 const admin = require("firebase-admin");
 const { createNotification } = require("./notification");
-const { createVentLink } = require("./util");
+const { calculateKarmaUserCanStrip, createVentLink } = require("./util");
 
 const COMMENT_LIKE_TRENDING_SCORE_INCREMENT = 24;
 
@@ -263,21 +263,33 @@ const newCommentReportListener = async (doc, context) => {
     .doc(commentID)
     .get();
 
+  const usereBasicInfoDoc = await admin
+    .firestore()
+    .collection("users_display_name")
+    .doc(userID)
+    .get();
+  const karmaUserCanStrip = calculateKarmaUserCanStrip(
+    usereBasicInfoDoc.data()
+  );
+
+  console.log(karmaUserCanStrip);
+
   await admin
     .firestore()
     .collection("users_display_name")
     .doc(commentDoc.data().userID)
     .set(
       {
-        karma: admin.firestore.FieldValue.increment(-30),
+        karma: admin.firestore.FieldValue.increment(-karmaUserCanStrip),
       },
       { merge: true }
     );
 
   await admin.firestore().collection("admin_notifications").add({
-    ventID: doc.data().ventID,
     commentID,
     user_that_reported: userID,
+    user_that_got_reported: commentDoc.data().userID,
+    ventID: doc.data().ventID,
   });
 };
 
