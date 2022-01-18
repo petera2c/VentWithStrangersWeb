@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import moment from "moment-timezone";
 import { MentionsInput, Mention } from "react-mentions";
 import { useNavigate } from "react-router-dom";
+import { Space } from "antd";
 
 import { faClock } from "@fortawesome/pro-regular-svg-icons/faClock";
 import { faEdit } from "@fortawesome/pro-light-svg-icons/faEdit";
@@ -31,6 +32,7 @@ import {
   getIsUserOnline,
   getUserBasicInfo,
   hasUserBlockedUser,
+  isMobileOrTablet,
   useIsMounted,
 } from "../../util";
 import {
@@ -99,13 +101,19 @@ function Comment({
         borderBottomRightRadius: arrayLength - 1 === commentIndex ? "8px" : "",
       }}
     >
-      <Container className="justify-between wrap py16 px32">
-        <Container
-          className="clickable align-center mb8"
+      <Container
+        className={
+          "justify-between py16 " + (isMobileOrTablet() ? "px16" : "px32")
+        }
+      >
+        <Space
+          align="center"
+          className="clickable mb8"
           onClick={(e) => {
             e.preventDefault();
             navigate("/profile?" + comment.userID);
           }}
+          wrap
         >
           <MakeAvatar
             displayName={userBasicInfo.displayName}
@@ -122,7 +130,7 @@ function Comment({
             </Container>
           )}
           {userBasicInfo && <KarmaBadge userBasicInfo={userBasicInfo} />}
-        </Container>
+        </Space>
         <Container className="relative column full-center">
           {user && (
             <HandleOutsideClick close={() => setCommentOptions(false)}>
@@ -285,9 +293,9 @@ function Comment({
           </Container>
         </Container>
       )}
-      <Container className="align-center justify-between">
+      <Space className="align-center justify-between px32 py16" wrap>
         <Container
-          className="clickable align-center py16 px32"
+          className="clickable align-center"
           onClick={async (e) => {
             e.preventDefault();
             const userInteractionIssues = userSignUpProgress(user);
@@ -314,7 +322,7 @@ function Comment({
             type="p"
           />
         </Container>
-        <Container className="align-center wrap py16 px32">
+        <Container className="align-center">
           <FontAwesomeIcon className="clickable grey-5 mr8" icon={faClock} />
           <Text
             className="grey-5 fs-16"
@@ -322,7 +330,7 @@ function Comment({
             type="p"
           />
         </Container>
-      </Container>
+      </Space>
       {reportModal && (
         <ReportModal
           close={() => setReportModal(false)}

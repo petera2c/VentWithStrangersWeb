@@ -178,13 +178,7 @@ function Vent({
             disablePostOnClick={disablePostOnClick}
             to={vent && vent.title && vent.id ? getVentPartialLink(vent) : ""}
           >
-            <Container
-              className="full-center pr32"
-              onClick={(e) => {
-                e.preventDefault();
-                if (author.id) navigate("/profile?" + author.id);
-              }}
-            >
+            <Space align="center" wrap>
               <MakeAvatar
                 displayName={author.displayName}
                 userBasicInfo={author}
@@ -192,13 +186,17 @@ function Vent({
               <Container className="flex-fill full-center ov-hidden">
                 <Text
                   className="button-1 ellipsis fw-400 mr8"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (author.id) navigate("/profile?" + author.id);
+                  }}
                   text={capitolizeFirstChar(author.displayName)}
                   type="h5"
                 />
                 {isUserOnline && <div className="online-dot mr8" />}
               </Container>
               <KarmaBadge userBasicInfo={author} />
-            </Container>
+            </Space>
             <Container className="relative flex-fill align-center justify-end">
               {user && (
                 <HandleOutsideClick close={() => setPostOptions(false)}>
@@ -389,27 +387,25 @@ function Vent({
                 </Button>
               </Container>
 
-              <Container>
-                {(!user || (user && user.uid !== vent.userID && author.id)) && (
-                  <Button
-                    className="button-2 px16 py8 br8"
-                    onClick={() => {
-                      const userInteractionIssues = userSignUpProgress(user);
+              {(!user || (user && user.uid !== vent.userID && author.id)) && (
+                <Container
+                  className="button-2 wrap ellipsis fs-20 px16 py8 br8"
+                  onClick={() => {
+                    const userInteractionIssues = userSignUpProgress(user);
 
-                      if (userInteractionIssues) {
-                        if (userInteractionIssues === "NSI")
-                          setStarterModal(true);
-                        return;
-                      }
+                    if (userInteractionIssues) {
+                      if (userInteractionIssues === "NSI")
+                        setStarterModal(true);
+                      return;
+                    }
 
-                      startConversation(navigate, user, vent.userID);
-                    }}
-                  >
-                    <FontAwesomeIcon className="mr8" icon={faComments} />
-                    Message {capitolizeFirstChar(author.displayName)}
-                  </Button>
-                )}
-              </Container>
+                    startConversation(navigate, user, vent.userID);
+                  }}
+                >
+                  <FontAwesomeIcon className="mr8" icon={faComments} />
+                  Message {capitolizeFirstChar(author.displayName)}
+                </Container>
+              )}
             </Space>
           )}
           {!searchPreviewMode && displayCommentField2 && (
