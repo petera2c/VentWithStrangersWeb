@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Picker } from "emoji-mart";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSmileBeam } from "@fortawesome/free-regular-svg-icons/faSmileBeam";
+import { faSmileBeam } from "@fortawesome/pro-regular-svg-icons/faSmileBeam";
 
 import HandleOutsideClick from "../containers/HandleOutsideClick";
 

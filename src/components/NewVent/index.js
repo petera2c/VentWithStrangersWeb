@@ -3,7 +3,7 @@ import { message, Space } from "antd";
 import TextArea from "react-textarea-autosize";
 import { Link, useNavigate } from "react-router-dom";
 
-import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
+import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { UserContext } from "../../context";

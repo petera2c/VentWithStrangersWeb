@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons/faEye";
+import { faEye } from "@fortawesome/pro-solid-svg-icons/faEye";
 
 import Container from "../../containers/Container";
 import Text from "../../views/Text";

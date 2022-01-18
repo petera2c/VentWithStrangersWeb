@@ -3,12 +3,12 @@ import moment from "moment-timezone";
 import { MentionsInput, Mention } from "react-mentions";
 import { useNavigate } from "react-router-dom";
 
-import { faClock } from "@fortawesome/free-regular-svg-icons/faClock";
+import { faClock } from "@fortawesome/pro-regular-svg-icons/faClock";
 import { faEdit } from "@fortawesome/pro-light-svg-icons/faEdit";
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 import { faExclamationTriangle } from "@fortawesome/pro-light-svg-icons/faExclamationTriangle";
-import { faHeart } from "@fortawesome/free-regular-svg-icons/faHeart";
-import { faHeart as faHeart2 } from "@fortawesome/free-solid-svg-icons/faHeart";
+import { faHeart } from "@fortawesome/pro-regular-svg-icons/faHeart";
+import { faHeart as faHeart2 } from "@fortawesome/pro-solid-svg-icons/faHeart";
 import { faTrash } from "@fortawesome/pro-duotone-svg-icons/faTrash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 

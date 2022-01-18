@@ -2,8 +2,9 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Tooltip } from "antd";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBadgeSheriff } from "@fortawesome/pro-duotone-svg-icons/faBadgeSheriff";
 import { faMedal } from "@fortawesome/pro-solid-svg-icons/faMedal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Container from "../containers/Container";
 
@@ -14,8 +15,6 @@ function KarmaBadge({ noOnClick, userBasicInfo }) {
 
   const karma = calculateKarma(userBasicInfo);
   const isAdmin = userBasicInfo ? userBasicInfo.is_admin : false;
-
-  let karmaColor = "";
 
   if (isAdmin)
     return (
@@ -37,16 +36,35 @@ function KarmaBadge({ noOnClick, userBasicInfo }) {
       </Tooltip>
     );
 
-  if (karma >= 10000) karmaColor = "#10BEBC";
-  else if (karma >= 5000) karmaColor = "#269400";
-  else if (karma >= 2500) karmaColor = "#FF0022";
-  else if (karma >= 1000) karmaColor = "#F85E00";
-  else if (karma >= 500) karmaColor = "#9bf6ff";
-  else if (karma >= 250) karmaColor = "#caffbf";
-  else if (karma >= 100) karmaColor = "#ffadad";
-  else if (karma >= 50) karmaColor = "#ffd6a5";
+  let badgeColor;
+  let badgeIcon;
+  if (karma >= 10000) {
+    badgeColor = "#256EFF";
+    badgeIcon = faBadgeSheriff;
+  } else if (karma >= 5000) {
+    badgeColor = "#72B01D";
+    badgeIcon = faBadgeSheriff;
+  } else if (karma >= 2500) {
+    badgeColor = "#FF0022";
+    badgeIcon = faBadgeSheriff;
+  } else if (karma >= 1000) {
+    badgeColor = "#FB5012";
+    badgeIcon = faBadgeSheriff;
+  } else if (karma >= 500) {
+    badgeColor = "#9bf6ff";
+    badgeIcon = faMedal;
+  } else if (karma >= 250) {
+    badgeColor = "#caffbf";
+    badgeIcon = faMedal;
+  } else if (karma >= 100) {
+    badgeColor = "#ffadad";
+    badgeIcon = faMedal;
+  } else if (karma >= 50) {
+    badgeColor = "#ffd6a5";
+    badgeIcon = faMedal;
+  }
 
-  if (karmaColor)
+  if (badgeColor && badgeIcon)
     return (
       <Tooltip placement="bottom" title={karma + " Karma Points"}>
         <span>
@@ -60,7 +78,7 @@ function KarmaBadge({ noOnClick, userBasicInfo }) {
               navigate("/site-info");
             }}
           >
-            <FontAwesomeIcon icon={faMedal} color={karmaColor} size="2x" />
+            <FontAwesomeIcon icon={badgeIcon} color={badgeColor} size="2x" />
           </Container>
         </span>
       </Tooltip>

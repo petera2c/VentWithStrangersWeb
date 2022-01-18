@@ -3,12 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import moment from "moment-timezone";
 import { Space } from "antd";
 
-import { faBaby } from "@fortawesome/free-solid-svg-icons/faBaby";
-import { faComments } from "@fortawesome/free-solid-svg-icons/faComments";
-import { faGlassCheers } from "@fortawesome/free-solid-svg-icons/faGlassCheers";
-import { faLandmark } from "@fortawesome/free-solid-svg-icons/faLandmark";
-import { faPray } from "@fortawesome/free-solid-svg-icons/faPray";
-import { faSchool } from "@fortawesome/free-solid-svg-icons/faSchool";
+import { faBaby } from "@fortawesome/pro-solid-svg-icons/faBaby";
+import { faComments } from "@fortawesome/pro-solid-svg-icons/faComments";
+import { faGlassCheers } from "@fortawesome/pro-solid-svg-icons/faGlassCheers";
+import { faLandmark } from "@fortawesome/pro-solid-svg-icons/faLandmark";
+import { faPray } from "@fortawesome/pro-solid-svg-icons/faPray";
+import { faSchool } from "@fortawesome/pro-solid-svg-icons/faSchool";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Button from "../views/Button";

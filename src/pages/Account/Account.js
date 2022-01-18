@@ -4,12 +4,12 @@ import TextArea from "react-textarea-autosize";
 import { Button, DatePicker, message } from "antd";
 
 import { faBirthdayCake } from "@fortawesome/pro-duotone-svg-icons/faBirthdayCake";
-import { faEye } from "@fortawesome/free-solid-svg-icons/faEye";
+import { faEye } from "@fortawesome/pro-solid-svg-icons/faEye";
 import { faLockAlt } from "@fortawesome/pro-solid-svg-icons/faLockAlt";
 import { faMonument } from "@fortawesome/pro-light-svg-icons/faMonument";
 import { faPaperPlane } from "@fortawesome/pro-light-svg-icons/faPaperPlane";
-import { faTransgenderAlt } from "@fortawesome/free-solid-svg-icons/faTransgenderAlt";
-import { faVenusMars } from "@fortawesome/free-solid-svg-icons/faVenusMars";
+import { faTransgenderAlt } from "@fortawesome/pro-solid-svg-icons/faTransgenderAlt";
+import { faVenusMars } from "@fortawesome/pro-solid-svg-icons/faVenusMars";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Container from "../../components/containers/Container";
