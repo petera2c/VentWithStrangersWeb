@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Space } from "antd";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -20,118 +21,130 @@ function AboutUsPage() {
       title="Site Info"
     >
       <Container>
-        <Space className="bg-white pa32 br8" direction="vertical">
-          <h1 className="tac">Constructive. Feedback. Only.</h1>
-          <p className="tac fw-400 mb16">
-            People care and help is here. Vent and chat anonymously to be a part
-            of a community committed to making the world a better place. This is
-            a website for people that want to be heard and people that want to
-            listen. Your mental health is our priority.
-          </p>
-          <h4>What Can You Do on VWS?</h4>
-          <p className="pl8">· Chat anonymously with strangers</p>
-          <p className="pl8">
-            ·{" "}
-            <a
-              className="no-bold a-tag-common-link"
-              href="https://www.ventwithstrangers.com/vent-to-strangers"
-            >
-              Post on our board anonymously
-            </a>
-          </p>
-          <p className="pl8">· Comment on our board anonymously</p>
-          <p className="pl8">
-            · Tag someone in a post or comment by placing @ before their
-            username
-          </p>
-          <p className="pl8">· Earn Karma Points</p>
-          <h4>What the Heck are Karma Points?</h4>
-          <p>
-            Karma Points are awarded to you when your Vent or comment gets
-            upvoted or when you upvote a Vent or comment. Karma Points are taken
-            away when you get reported. Be nice and don’t get reported!
-          </p>
-          <h6 className="bold">Karma Points are Awarded as Follows</h6>
-          <p className="pl8">· +4 For an upvote on your comment</p>
-          <p className="pl8">· +2 For an upvote on your vent</p>
-          <p className="pl8">· -30 When you get reported for a valid reason</p>
-          <h6 className="bold">Karma Badges</h6>
-          <Space align="center">
-            <KarmaBadge karma={50} />
-            <p>Orange Badge @ 50 Karma Points</p>
+        <Space className="bg-white pa32 br8" direction="vertical" size="large">
+          <Space direction="vertical">
+            <h1 className="tac">Constructive. Feedback. Only.</h1>
+            <p className="tac fw-400 mb16">
+              People care and help is here. Vent and chat anonymously to be a
+              part of a community committed to making the world a better place.
+              This is a website for people that want to be heard and people that
+              want to listen. Your mental health is our priority.
+            </p>
           </Space>
-          <Space align="center">
-            <KarmaBadge karma={100} />
-            <p>Red Badge @ 100 Karma Points</p>
-          </Space>
-          <Space align="center">
-            <KarmaBadge karma={250} />
-            <p>Green Badge @ 250 Karma Points</p>
-          </Space>
-          <Space align="center">
-            <KarmaBadge karma={500} />
-            <p>Blue Badge @ 500 Karma Points</p>
-          </Space>
-          <Space align="center">
-            <KarmaBadge karma={2000} />
-            <p>Purple Badge @ 2000 Karma Points</p>
-          </Space>
-          <Space align="center">
-            <KarmaBadge karma={4000} />
-            <p>Fiery Rose Badge @ 4000 Karma Points</p>
+          <Space direction="vertical">
+            <h4>What the Heck are Karma Points?</h4>
+            <p>
+              Karma Points are gained when your Vent or comment gets upvoted or
+              when you reach a new{" "}
+              <Link className="blue" to="/rewards">
+                milestone
+              </Link>
+              . Karma points will be lost if you are reported.
+            </p>
           </Space>
 
-          <h6 className="bold">With Great Power Comes Great Responsibility</h6>
-          <Space align="center">
-            <KarmaBadge karma={50} />
-            <p> can create a vent once every 4 hours</p>
-          </Space>
-          <Space align="center">
-            <KarmaBadge karma={100} />
-            <p> can create a vent once every 3 hours</p>
-          </Space>
-          <Space align="center">
-            <KarmaBadge karma={250} />
-            <p> can create a vent once every 2 hours</p>
-          </Space>
-          <Space align="center">
-            <KarmaBadge karma={500} />
-            <p> can create a vent once every hour</p>
-          </Space>
-          <Space align="center">
-            <KarmaBadge karma={2000} />
-            <p> can create a vent once 15 minutes</p>
-          </Space>
-          <Space align="center">
-            <KarmaBadge karma={4000} />
-            <p> can create vents freely</p>
-          </Space>
-          <Space align="center">
-            <KarmaBadge karma={5000} />
-            <p>Moderators can create vents freely</p>
+          <Space direction="vertical" size="middle">
+            <h6 className="mb8">With Great Power Comes Great Responsibility</h6>
+            <Container className="column">
+              <Space align="center">
+                <KarmaBadge karma={50} />
+                <p>orange Badge @ 50 Karma Points</p>
+              </Space>
+              <ul>
+                <li>can create a vent once every 4 hours</li>
+              </ul>
+            </Container>
+            <Container className="column">
+              <Space align="center">
+                <KarmaBadge karma={100} />
+                <p>Red Badge @ 100 Karma Points</p>
+              </Space>
+              <ul>
+                <li>can create a vent once every 3 hours</li>
+              </ul>
+            </Container>
+            <Container className="column">
+              <Space align="center">
+                <KarmaBadge karma={250} />
+                <p>Green Badge @ 250 Karma Points</p>
+              </Space>
+              <ul>
+                <li>can create a vent once every 2 hours</li>
+              </ul>
+            </Container>
+            <Container className="column">
+              <Space align="center">
+                <KarmaBadge karma={500} />
+                <p>Blue Badge @ 500 Karma Points</p>
+              </Space>
+              <ul>
+                <li>can create a vent once every 1 hours</li>
+              </ul>
+            </Container>
+            <Container className="column">
+              <Space align="center">
+                <KarmaBadge karma={2000} />
+                <p>Purple Badge @ 2000 Karma Points</p>
+              </Space>
+              <ul>
+                <li>can create a vent once every 15 minutes</li>
+              </ul>
+            </Container>
+            <Container className="column">
+              <Space align="center">
+                <KarmaBadge karma={4000} />
+                <p>Fiery Rose Badge @ 4000 Karma Points</p>
+              </Space>
+              <ul>
+                <li>can create vents freely</li>
+              </ul>
+            </Container>
           </Space>
 
-          <h4>Where Else Can You Access VWS?</h4>
-          <p>
-            {" "}
-            ·{" "}
-            <a
-              className="underline no-bold a-tag-common-link"
-              href="https://apps.apple.com/us/app/vent-with-strangers/id1509120090"
-            >
-              Apple App Store
-            </a>
-          </p>
-          <p>
-            {" "}
-            ·{" "}
-            <a
-              className="underline no-bold a-tag-common-link"
-              href="https://play.google.com/store/apps/details?id=com.commontech.ventwithstrangers&hl=en"
-            >
-              Google Play Store
-            </a>
-          </p>
+          <Space direction="vertical">
+            <h4>What Can You Do on VWS?</h4>
+            <ul>
+              <Space direction="vertical">
+                <li>Chat anonymously with strangers</li>
+                <li>
+                  <Link
+                    className="no-bold a-tag-common-link"
+                    to="/vent-to-strangers"
+                  >
+                    Create vents anonymously
+                  </Link>
+                </li>
+                <li>Comment on vents anonymously</li>
+                <li>
+                  Tag someone in a post or comment by placing @ before their
+                  username
+                </li>
+                <li>Earn Karma Points</li>
+              </Space>
+            </ul>
+          </Space>
+
+          <Space direction="vertical">
+            <h4>Where Else Can You Access VWS?</h4>
+            <ul>
+              <li>
+                <a
+                  className="underline no-bold a-tag-common-link"
+                  href="https://apps.apple.com/us/app/vent-with-strangers/id1509120090"
+                >
+                  Apple App Store
+                </a>
+              </li>
+              <li>
+                <a
+                  className="underline no-bold a-tag-common-link"
+                  href="https://play.google.com/store/apps/details?id=com.commontech.ventwithstrangers&hl=en"
+                >
+                  Google Play Store
+                </a>
+              </li>
+            </ul>
+          </Space>
           <h6 className="bold">Follow Us on Social Media!</h6>
           <Container>
             <a

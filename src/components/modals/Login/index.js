@@ -14,11 +14,7 @@ import { login } from "./util";
 import "./style.css";
 
 function LoginModal({ setActiveModal }) {
-  const {
-    register,
-    handleSubmit,
-    formState: {},
-  } = useForm();
+  const { register, handleSubmit } = useForm();
   const [canSeePassword, setCanSeePassword] = useState(false);
 
   return (

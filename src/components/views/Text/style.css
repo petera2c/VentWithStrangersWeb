@@ -163,6 +163,9 @@ p {
   font-weight: normal;
   white-space: pre-line;
 }
+ul {
+  margin: 0;
+}
 li {
   color: var(--grey-color-1);
   margin: 0;
