@@ -1,7 +1,11 @@
 import firebase from "firebase/compat/app";
 import db from "../../config/firebase";
 
-import { getEndAtValueTimestamp, getIsUserOnline } from "../../util";
+import {
+  getEndAtValueTimestamp,
+  getEndAtValueTimestampFirst,
+  getIsUserOnline,
+} from "../../util";
 
 export const deleteConversation = async (
   conversationID,
@@ -121,6 +125,7 @@ export const messageListener = (
 
 export const getConversations = async (
   conversations,
+  isMounted,
   setActiveConversation,
   setConversations,
   userID
@@ -147,7 +152,7 @@ export const getConversations = async (
     });
   });
 
-  setConversations(newConversations);
+  if (isMounted()) setConversations(newConversations);
 };
 
 export const getMessages = async (
@@ -159,8 +164,8 @@ export const getMessages = async (
   setMessages,
   first = true
 ) => {
-  let startAt = getEndAtValueTimestamp(messages);
-  if (first) startAt = getEndAtValueTimestamp([]);
+  let startAt = getEndAtValueTimestampFirst(messages);
+  if (first) startAt = getEndAtValueTimestampFirst([]);
 
   const snapshot = await db
     .collection("conversation_extra_data")
@@ -187,7 +192,7 @@ export const getMessages = async (
       }, 200);
     } else {
       setMessages((oldMessages) => {
-        if (oldMessages) return [...oldMessages, ...newMessages];
+        if (oldMessages) return [...newMessages, ...oldMessages];
         else return newMessages;
       });
     }

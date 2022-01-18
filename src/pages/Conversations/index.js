@@ -45,6 +45,7 @@ function Conversations() {
 
       getConversations(
         conversations,
+        isMounted,
         setActiveConversation,
         (newConversations) => {
           if (!isMounted()) return;
@@ -112,6 +113,7 @@ function Conversations() {
               onClick={() => {
                 getConversations(
                   conversations,
+                  isMounted,
                   setActiveConversation,
                   (newConversations) => {
                     if (

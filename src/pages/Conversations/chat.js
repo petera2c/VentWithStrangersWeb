@@ -134,7 +134,7 @@ function Chat({
         )}
       </Container>
 
-      <Container className="column x-fill flex-fill ov-hidden pt16 px16">
+      <Container className="column x-fill flex-fill ov-hidden px16">
         {!messages ||
           ((messages && messages.length) === 0 && (
             <h4 className="tac">
@@ -149,6 +149,7 @@ function Chat({
               onClick={() =>
                 getMessages(
                   conversation.id,
+                  isMounted,
                   messages,
                   scrollToBottom,
                   setCanLoadMore,

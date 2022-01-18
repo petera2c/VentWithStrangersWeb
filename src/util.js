@@ -71,6 +71,13 @@ export const combineObjectWithID = (id, object) => {
   return object;
 };
 
+export const getEndAtValueTimestampFirst = (array) => {
+  let startAt = 10000000000000;
+
+  if (array && array[0] && array[0].doc) startAt = array[0].doc;
+  return startAt;
+};
+
 export const getEndAtValueTimestamp = (array) => {
   let startAt = 10000000000000;
 

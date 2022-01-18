@@ -35,11 +35,9 @@ function MobileConversations() {
   useEffect(() => {
     let newMessageListenerUnsubscribe;
 
-    if (isMounted()) {
-    }
-
     if (user)
       newMessageListenerUnsubscribe = mostRecentConversationListener(
+        isMounted,
         setConversations,
         user.uid
       );
@@ -47,6 +45,7 @@ function MobileConversations() {
     if (user) {
       getConversations(
         conversations,
+        isMounted,
         setActiveConversation,
         (newConversations) => {
           if (
@@ -112,6 +111,7 @@ function MobileConversations() {
             onClick={() => {
               getConversations(
                 conversations,
+                isMounted,
                 setActiveConversation,
                 (newConversations) => {
                   if (
