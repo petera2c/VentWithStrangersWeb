@@ -84,7 +84,7 @@ function AboutUsPage() {
             <Container className="column">
               <Space align="center">
                 <KarmaBadge userBasicInfo={{ karma: 1000 }} />
-                <p>Sheriff Orange Badge @ 1000 Karma Points</p>
+                <p>Super Orange Badge @ 1000 Karma Points</p>
               </Space>
               <ul>
                 <li>Can create a vent once every 30 minutes</li>
@@ -93,7 +93,7 @@ function AboutUsPage() {
             <Container className="column">
               <Space align="center">
                 <KarmaBadge userBasicInfo={{ karma: 2500 }} />
-                <p>Sheriff Red Badge @ 2500 Karma Points</p>
+                <p>Super Red Badge @ 2500 Karma Points</p>
               </Space>
               <ul>
                 <li>Can create a vent once every 15 minutes</li>
@@ -102,7 +102,7 @@ function AboutUsPage() {
             <Container className="column">
               <Space align="center">
                 <KarmaBadge userBasicInfo={{ karma: 5000 }} />
-                <p>Sheriff Green Badge @ 5000 Karma Points</p>
+                <p>Super Green Badge @ 5000 Karma Points</p>
               </Space>
               <ul>
                 <li>Can create vents freely</li>
@@ -111,7 +111,7 @@ function AboutUsPage() {
             <Container className="column">
               <Space align="center">
                 <KarmaBadge userBasicInfo={{ karma: 10000 }} />
-                <p>Sheriff Blue Badge @ 10000 Karma Points</p>
+                <p>Super Blue Badge @ 10000 Karma Points</p>
               </Space>
               <ul>
                 <li>Can create vents freely</li>
