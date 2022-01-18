@@ -34,7 +34,7 @@ function AboutUsPage() {
           <Space direction="vertical">
             <h4>What the Heck are Karma Points?</h4>
             <p>
-              Karma Points are gained when your Vent or comment gets upvoted or
+              Karma Points are gained when your vent or comment gets upvoted or
               when you reach a new{" "}
               <Link className="blue" to="/rewards">
                 milestone
@@ -53,7 +53,7 @@ function AboutUsPage() {
               <ul>
                 <li>Can create a vent once every 4 hours</li>
                 <li>
-                  Reporting a comment or vent will strip 5 karma from the
+                  Reporting a comment or vent will strip 10 karma from the
                   reported user
                 </li>
               </ul>
@@ -66,7 +66,7 @@ function AboutUsPage() {
               <ul>
                 <li>Can create a vent once every 3 hours</li>
                 <li>
-                  Reporting a comment or vent will strip 10 karma from the
+                  Reporting a comment or vent will strip 20 karma from the
                   reported user
                 </li>
               </ul>
@@ -79,7 +79,7 @@ function AboutUsPage() {
               <ul>
                 <li>Can create a vent once every 2 hours</li>
                 <li>
-                  Reporting a comment or vent will strip 25 karma from the
+                  Reporting a comment or vent will strip 50 karma from the
                   reported user
                 </li>
               </ul>
@@ -92,7 +92,7 @@ function AboutUsPage() {
               <ul>
                 <li>Can create a vent once every 1 hours</li>
                 <li>
-                  Reporting a comment or vent will strip 50 karma from the
+                  Reporting a comment or vent will strip 100 karma from the
                   reported user
                 </li>
               </ul>
@@ -105,7 +105,7 @@ function AboutUsPage() {
               <ul>
                 <li>Can create a vent once every 30 minutes</li>
                 <li>
-                  Reporting a comment or vent will strip 100 karma from the
+                  Reporting a comment or vent will strip 200 karma from the
                   reported user
                 </li>
               </ul>
@@ -118,7 +118,7 @@ function AboutUsPage() {
               <ul>
                 <li>Can create a vent once every 15 minutes</li>
                 <li>
-                  Reporting a comment or vent will strip 100 karma from the
+                  Reporting a comment or vent will strip 200 karma from the
                   reported user
                 </li>
               </ul>
@@ -131,7 +131,7 @@ function AboutUsPage() {
               <ul>
                 <li>Can create vents freely</li>
                 <li>
-                  Reporting a comment or vent will strip 100 karma from the
+                  Reporting a comment or vent will strip 200 karma from the
                   reported user
                 </li>
               </ul>
@@ -144,7 +144,7 @@ function AboutUsPage() {
               <ul>
                 <li>Can create vents freely</li>
                 <li>
-                  Reporting a comment or vent will strip 100 karma from the
+                  Reporting a comment or vent will strip 200 karma from the
                   reported user
                 </li>
               </ul>
@@ -192,8 +192,8 @@ function AboutUsPage() {
                   </Link>
                 </li>
                 <li>
-                  <span className="red">- 5, 10, 25, 50, or 100</span> When you
-                  get reported (for a valid reason)
+                  <span className="red">- 5, 10, 25, 50, 100 or 200</span> When
+                  you get reported (for a valid reason)
                 </li>
               </Space>
             </ul>

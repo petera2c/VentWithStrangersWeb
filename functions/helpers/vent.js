@@ -96,6 +96,14 @@ const newVentListener = async (doc, context) => {
       .set({
         value: new moment().add(minutesTillNextVent, "minutes").format(),
       });
+
+    await admin
+      .firestore()
+      .collection("user_day_limit_vents")
+      .doc(vent.userID)
+      .set({
+        vent_counter: 2,
+      });
   }
 
   const userSettingsDoc = await admin
@@ -214,8 +222,6 @@ const newVentReportListener = async (doc, context) => {
   const karmaUserCanStrip = calculateKarmaUserCanStrip(
     usereBasicInfoDoc.data()
   );
-
-  console.log(karmaUserCanStrip);
 
   await admin
     .firestore()

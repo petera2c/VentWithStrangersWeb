@@ -272,8 +272,6 @@ const newCommentReportListener = async (doc, context) => {
     usereBasicInfoDoc.data()
   );
 
-  console.log(karmaUserCanStrip);
-
   await admin
     .firestore()
     .collection("users_display_name")

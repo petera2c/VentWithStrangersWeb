@@ -5,14 +5,14 @@ const calculateKarma = (usereBasicInfo) => {
 };
 
 const calculateKarmaUserCanStrip = (usereBasicInfo) => {
-  if (!usereBasicInfo) return 2;
+  if (!usereBasicInfo) return 5;
 
-  if (usereBasicInfo.karma > 1000) return 100;
-  else if (usereBasicInfo.karma > 500) return 50;
-  else if (usereBasicInfo.karma > 250) return 25;
-  else if (usereBasicInfo.karma > 100) return 10;
-  else if (usereBasicInfo.karma > 50) return 5;
-  else if (usereBasicInfo.karma > 0) return 2;
+  if (usereBasicInfo.karma > 1000) return 200;
+  else if (usereBasicInfo.karma > 500) return 100;
+  else if (usereBasicInfo.karma > 250) return 50;
+  else if (usereBasicInfo.karma > 100) return 20;
+  else if (usereBasicInfo.karma > 50) return 10;
+  else if (usereBasicInfo.karma > 0) return 5;
 };
 
 const combineObjectWithID = (id, object) => {

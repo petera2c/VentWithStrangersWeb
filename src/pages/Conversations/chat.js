@@ -100,9 +100,9 @@ function Chat({
       return memberID !== userID;
     });
 
-  const something = checkIsUserTyping(conversation.isTyping);
+  const isFriendTyping = checkIsUserTyping(conversation.isTyping);
 
-  if (something) setTimeout(scrollToBottom, 200);
+  if (isFriendTyping) setTimeout(scrollToBottom, 400);
 
   return (
     <Container className="column flex-fill x-fill full-center ov-hidden br4">
@@ -174,7 +174,7 @@ function Chat({
       <Container
         className="ease-in-out x-fill"
         style={{
-          maxHeight: something ? "56px" : "0",
+          maxHeight: isFriendTyping ? "56px" : "0",
         }}
       >
         <Container className="bg-none ov-hidden full-center">
