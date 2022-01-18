@@ -3,7 +3,6 @@ import moment from "moment-timezone";
 import { Link } from "react-router-dom";
 
 import Container from "../containers/Container";
-import Text from "../views/Text";
 
 function NotificationList({ notifications }) {
   return (
@@ -27,11 +26,7 @@ function NotificationList({ notifications }) {
       })}
       {((notifications && notifications.length === 0) || !notifications) && (
         <Container className="full-center">
-          <Text
-            className="fw-400 pa16"
-            text="There are no notifications to show!"
-            type="h6"
-          />
+          <h6 className="fw-400 pa16">There are no notifications to show!</h6>
         </Container>
       )}
     </Container>

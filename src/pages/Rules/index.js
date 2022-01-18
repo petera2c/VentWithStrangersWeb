@@ -23,9 +23,9 @@ function RulesPage() {
           <ol>
             <Space direction="vertical" size="large">
               <li>
-                No racist/sexist/prejudice/discriminatory vents, comments, or
-                direct messages. Grouping/categorizing people and judging them
-                en masse is unacceptable in our community.
+                No racist / sexist / prejudice / discriminatory vents, comments,
+                or direct messages. Grouping/categorizing people and judging
+                them en masse is unacceptable in our community.
               </li>
               <li>
                 No harassment, no bullying, and no attacking of users through
