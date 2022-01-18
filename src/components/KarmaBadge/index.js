@@ -37,9 +37,9 @@ function KarmaBadge({ noOnClick, userBasicInfo }) {
       </Tooltip>
     );
 
-  if (karma >= 8000) karmaColor = "#10BEBC";
-  else if (karma >= 4000) karmaColor = "#269400";
-  else if (karma >= 2000) karmaColor = "#FF0022";
+  if (karma >= 10000) karmaColor = "#10BEBC";
+  else if (karma >= 5000) karmaColor = "#269400";
+  else if (karma >= 2500) karmaColor = "#FF0022";
   else if (karma >= 1000) karmaColor = "#F85E00";
   else if (karma >= 500) karmaColor = "#9bf6ff";
   else if (karma >= 250) karmaColor = "#caffbf";

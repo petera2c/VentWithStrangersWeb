@@ -92,8 +92,8 @@ function AboutUsPage() {
             </Container>
             <Container className="column">
               <Space align="center">
-                <KarmaBadge userBasicInfo={{ karma: 2000 }} />
-                <p>Fiery Red Badge @ 2000 Karma Points</p>
+                <KarmaBadge userBasicInfo={{ karma: 2500 }} />
+                <p>Fiery Red Badge @ 2500 Karma Points</p>
               </Space>
               <ul>
                 <li>Can create a vent once every 15 minutes</li>
@@ -101,8 +101,8 @@ function AboutUsPage() {
             </Container>
             <Container className="column">
               <Space align="center">
-                <KarmaBadge userBasicInfo={{ karma: 4000 }} />
-                <p>Field Green Badge @ 4000 Karma Points</p>
+                <KarmaBadge userBasicInfo={{ karma: 5000 }} />
+                <p>Field Green Badge @ 5000 Karma Points</p>
               </Space>
               <ul>
                 <li>Can create vents freely</li>
@@ -110,8 +110,8 @@ function AboutUsPage() {
             </Container>
             <Container className="column">
               <Space align="center">
-                <KarmaBadge userBasicInfo={{ karma: 8000 }} />
-                <p>Ocean Blue Badge @ 8000 Karma Points</p>
+                <KarmaBadge userBasicInfo={{ karma: 10000 }} />
+                <p>Ocean Blue Badge @ 10000 Karma Points</p>
               </Space>
               <ul>
                 <li>Can create vents freely</li>

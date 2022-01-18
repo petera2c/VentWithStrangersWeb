@@ -10,7 +10,6 @@ import MakeAvatar from "../../components/MakeAvatar";
 import Message from "./message";
 
 import {
-  calculateKarma,
   capitolizeFirstChar,
   isMobileOrTablet,
   useIsMounted,

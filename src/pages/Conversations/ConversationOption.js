@@ -13,7 +13,7 @@ import HandleOutsideClick from "../../components/containers/HandleOutsideClick";
 import KarmaBadge from "../../components/KarmaBadge";
 import MakeAvatar from "../../components/MakeAvatar";
 
-import { blockUser, calculateKarma, capitolizeFirstChar } from "../../util";
+import { blockUser, capitolizeFirstChar } from "../../util";
 import {
   deleteConversation,
   getConversationBasicData,
