@@ -7,11 +7,17 @@ import { faMedal } from "@fortawesome/pro-solid-svg-icons/faMedal";
 
 import Container from "../containers/Container";
 
-function KarmaBadge({ karma, noOnClick }) {
+import { calculateKarma } from "../../util";
+
+function KarmaBadge({ noOnClick, userBasicInfo }) {
   const navigate = useNavigate();
 
+  const karma = calculateKarma(userBasicInfo);
+  const isAdmin = userBasicInfo ? userBasicInfo.is_admin : false;
+
   let karmaColor = "";
-  if (karma >= 5000)
+
+  if (isAdmin)
     return (
       <Tooltip placement="bottom" title={karma + " Karma Points"}>
         <span>
@@ -30,8 +36,11 @@ function KarmaBadge({ karma, noOnClick }) {
         </span>
       </Tooltip>
     );
-  else if (karma >= 4000) karmaColor = "#F45B69";
-  else if (karma >= 2000) karmaColor = "#e056fd";
+
+  if (karma >= 8000) karmaColor = "#10BEBC";
+  else if (karma >= 4000) karmaColor = "#269400";
+  else if (karma >= 2000) karmaColor = "#FF0022";
+  else if (karma >= 1000) karmaColor = "#F85E00";
   else if (karma >= 500) karmaColor = "#9bf6ff";
   else if (karma >= 250) karmaColor = "#caffbf";
   else if (karma >= 100) karmaColor = "#ffadad";

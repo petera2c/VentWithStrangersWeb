@@ -124,7 +124,7 @@ function ProfileSection() {
                       <div className="online-dot" />
                     )}
                     <h1>{capitolizeFirstChar(userBasicInfo.displayName)}</h1>
-                    <KarmaBadge karma={calculateKarma(userBasicInfo)} />
+                    <KarmaBadge userBasicInfo={userBasicInfo} />
                   </Space>
                   <p>{calculateKarma(userBasicInfo)} Karma Points</p>
                 </Space>

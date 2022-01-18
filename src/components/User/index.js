@@ -75,7 +75,7 @@ function UserComponent({
             {isOnline && <div className="online-dot mr8" />}
             <h1 className="primary ellipsis">{userInfo.displayName}</h1>
           </Container>
-          <KarmaBadge karma={calculateKarma(userInfo)} />
+          <KarmaBadge userBasicInfo={userInfo} />
         </Container>
         <h6 className="grey-1 fw-400">
           {calculateKarma(userInfo)} Karma Points

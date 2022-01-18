@@ -104,6 +104,10 @@ service cloud.firestore {
       allow read: if true;
       allow write, update, delete: if request.auth.uid == userID;
 
+      match /is_admin {
+        allow read: if true;
+        allow write, update, delete: if false;
+      }
       match /karma {
         allow read: if true;
         allow write, update, delete: if false;

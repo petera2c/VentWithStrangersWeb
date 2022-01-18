@@ -198,7 +198,7 @@ function Vent({
                 />
                 {isUserOnline && <div className="online-dot mr8" />}
               </Container>
-              <KarmaBadge karma={calculateKarma(author)} />
+              <KarmaBadge userBasicInfo={author} />
             </Container>
             <Container className="relative flex-fill align-center justify-end">
               {user && (

@@ -122,9 +122,7 @@ function Comment({
               {isUserOnline && <div className="online-dot mr8" />}
             </Container>
           )}
-          {userBasicInfo && (
-            <KarmaBadge karma={calculateKarma(userBasicInfo)} />
-          )}
+          {userBasicInfo && <KarmaBadge userBasicInfo={userBasicInfo} />}
         </Container>
         <Container className="relative column full-center">
           {user && (

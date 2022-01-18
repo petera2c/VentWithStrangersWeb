@@ -47,7 +47,7 @@ function AboutUsPage() {
             <h6 className="mb8">With Great Power Comes Great Responsibility</h6>
             <Container className="column">
               <Space align="center">
-                <KarmaBadge karma={50} />
+                <KarmaBadge userBasicInfo={{ karma: 50 }} />
                 <p>Orange Badge @ 50 Karma Points</p>
               </Space>
               <ul>
@@ -56,7 +56,7 @@ function AboutUsPage() {
             </Container>
             <Container className="column">
               <Space align="center">
-                <KarmaBadge karma={100} />
+                <KarmaBadge userBasicInfo={{ karma: 100 }} />
                 <p>Red Badge @ 100 Karma Points</p>
               </Space>
               <ul>
@@ -65,7 +65,7 @@ function AboutUsPage() {
             </Container>
             <Container className="column">
               <Space align="center">
-                <KarmaBadge karma={250} />
+                <KarmaBadge userBasicInfo={{ karma: 250 }} />
                 <p>Green Badge @ 250 Karma Points</p>
               </Space>
               <ul>
@@ -74,7 +74,7 @@ function AboutUsPage() {
             </Container>
             <Container className="column">
               <Space align="center">
-                <KarmaBadge karma={500} />
+                <KarmaBadge userBasicInfo={{ karma: 500 }} />
                 <p>Blue Badge @ 500 Karma Points</p>
               </Space>
               <ul>
@@ -83,8 +83,17 @@ function AboutUsPage() {
             </Container>
             <Container className="column">
               <Space align="center">
-                <KarmaBadge karma={2000} />
-                <p>Purple Badge @ 2000 Karma Points</p>
+                <KarmaBadge userBasicInfo={{ karma: 1000 }} />
+                <p>Fiery Orange Badge @ 1000 Karma Points</p>
+              </Space>
+              <ul>
+                <li>Can create a vent once every 30 minutes</li>
+              </ul>
+            </Container>
+            <Container className="column">
+              <Space align="center">
+                <KarmaBadge userBasicInfo={{ karma: 2000 }} />
+                <p>Fiery Red Badge @ 2000 Karma Points</p>
               </Space>
               <ul>
                 <li>Can create a vent once every 15 minutes</li>
@@ -92,8 +101,17 @@ function AboutUsPage() {
             </Container>
             <Container className="column">
               <Space align="center">
-                <KarmaBadge karma={4000} />
-                <p>Fiery Rose Badge @ 4000 Karma Points</p>
+                <KarmaBadge userBasicInfo={{ karma: 4000 }} />
+                <p>Field Green Badge @ 4000 Karma Points</p>
+              </Space>
+              <ul>
+                <li>Can create vents freely</li>
+              </ul>
+            </Container>
+            <Container className="column">
+              <Space align="center">
+                <KarmaBadge userBasicInfo={{ karma: 8000 }} />
+                <p>Ocean Blue Badge @ 8000 Karma Points</p>
               </Space>
               <ul>
                 <li>Can create vents freely</li>
