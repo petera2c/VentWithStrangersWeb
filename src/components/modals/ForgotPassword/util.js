@@ -1,5 +1,7 @@
-import firebase from 'firebase/compat/app';
+import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
+
+import { message } from "antd";
 
 export const sendPasswordReset = ({ email }) => {
   const auth = firebase.auth();
@@ -8,9 +10,9 @@ export const sendPasswordReset = ({ email }) => {
     .sendPasswordResetEmail(email)
     .then(() => {
       // Email sent.
-      alert("Email password reset link sent!");
+      message.success("Email password reset link sent!");
     })
-    .catch(error => {
-      alert("error");
+    .catch((error) => {
+      message.error(error);
     });
 };

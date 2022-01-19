@@ -64,7 +64,7 @@ export const findPossibleUsersToTag = async (
     if (users)
       callback(
         users.map((user, index) => {
-          return { id: user.id, display: user.displayName };
+          return { id: user.id, display: user.displayName, ...user };
         })
       );
   }

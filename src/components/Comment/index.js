@@ -162,11 +162,7 @@ function Comment({
                           setEditingComment(true);
                         }}
                       >
-                        <Text
-                          className="flex-fill"
-                          text="Edit Comment"
-                          type="p"
-                        />
+                        <p className="flex-fill inherit-color">Edit Comment</p>
                         <FontAwesomeIcon className="ml8" icon={faEdit} />
                       </Container>
                     )}
@@ -181,11 +177,9 @@ function Comment({
                             setCommentOptions(false);
                           }}
                         >
-                          <Text
-                            className="flex-fill"
-                            text="Delete Comment"
-                            type="p"
-                          />
+                          <p className="flex-fill inherit-color">
+                            Delete Comment
+                          </p>
                           <FontAwesomeIcon className="ml8" icon={faTrash} />
                         </Container>
                       )}
@@ -197,11 +191,9 @@ function Comment({
                           setReportModal(!reportModal);
                         }}
                       >
-                        <Text
-                          className="flex-fill"
-                          text="Report Comment"
-                          type="p"
-                        />
+                        <p className="flex-fill inherit-color">
+                          Report Comment
+                        </p>
                         <FontAwesomeIcon
                           className="ml8"
                           icon={faExclamationTriangle}
@@ -216,11 +208,7 @@ function Comment({
                           setBlockModal(!blockModal);
                         }}
                       >
-                        <Text
-                          className="flex-fill"
-                          text="Block User"
-                          type="p"
-                        />
+                        <p className="flex-fill inherit-color">Block User</p>
                         <FontAwesomeIcon
                           className="ml8"
                           icon={faExclamationTriangle}

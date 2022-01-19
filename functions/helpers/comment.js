@@ -4,7 +4,7 @@ const { calculateKarmaUserCanStrip, createVentLink } = require("./util");
 
 const COMMENT_LIKE_TRENDING_SCORE_INCREMENT = 24;
 
-const deleteAllCommentLikesAndSubtractCommentCounter = async (doc, context) => {
+const commentDeleteListener = async (doc, context) => {
   const commentID = doc.id;
 
   const commentLikesSnapshot = await admin
@@ -205,44 +205,40 @@ const createNotificationsToAnyTaggedUsers = async (doc, context) => {
   }
 };
 
-const commentUpdateListener = async (change, context) => {
-  if (!change.after.data()) {
-    deleteAllCommentLikesAndSubtractCommentCounter(change.before, context);
-  } else if (!change.before.data()) {
-    createNotificationsToAnyTaggedUsers(change.after, context);
-    createNewCommentNotification(change.after, context);
+const commentCreateListener = async (doc, context) => {
+  createNotificationsToAnyTaggedUsers(doc, context);
+  createNewCommentNotification(doc, context);
 
-    let comment = { ...change.after.data() };
+  let comment = { ...doc.data() };
 
+  await admin
+    .firestore()
+    .collection("user_rewards")
+    .doc(comment.userID)
+    .update({
+      created_comments_counter: admin.firestore.FieldValue.increment(1),
+    });
+
+  // Make sure comment timestamp is ok
+  if (comment.server_timestamp > admin.firestore.Timestamp.now().toMillis()) {
+    comment.server_timestamp = admin.firestore.Timestamp.now().toMillis();
     await admin
       .firestore()
-      .collection("user_rewards")
-      .doc(comment.userID)
-      .update({
-        created_comments_counter: admin.firestore.FieldValue.increment(1),
-      });
-
-    if (comment.server_timestamp > admin.firestore.Timestamp.now().toMillis()) {
-      comment.server_timestamp = admin.firestore.Timestamp.now().toMillis();
-      await admin
-        .firestore()
-        .collection("comments")
-        .doc(change.after.id)
-        .set(comment, { merge: true });
-    }
-
-    await admin
-      .firestore()
-      .collection("vents")
-      .doc(change.after.data().ventID)
-      .update({
-        comment_counter: admin.firestore.FieldValue.increment(1),
-        trending_score: admin.firestore.FieldValue.increment(
-          COMMENT_LIKE_TRENDING_SCORE_INCREMENT
-        ),
-      });
-  } else {
+      .collection("comments")
+      .doc(doc.id)
+      .set(comment, { merge: true });
   }
+
+  await admin
+    .firestore()
+    .collection("vents")
+    .doc(doc.data().ventID)
+    .update({
+      comment_counter: admin.firestore.FieldValue.increment(1),
+      trending_score: admin.firestore.FieldValue.increment(
+        COMMENT_LIKE_TRENDING_SCORE_INCREMENT
+      ),
+    });
 };
 
 const newCommentReportListener = async (doc, context) => {
@@ -292,7 +288,8 @@ const newCommentReportListener = async (doc, context) => {
 };
 
 module.exports = {
+  commentCreateListener,
+  commentDeleteListener,
   commentLikeListener,
-  commentUpdateListener,
   newCommentReportListener,
 };

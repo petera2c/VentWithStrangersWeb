@@ -20,7 +20,7 @@ export const deleteComment = async (commentID, setComments) => {
       );
       return [...comments];
     });
-  alert("Comment deleted!");
+  message.success("Comment deleted!");
 };
 
 export const editComment = async (commentID, commentString, setComments) => {
@@ -55,7 +55,7 @@ export const getCommentHasLiked = async (commentID, setHasLiked, userID) => {
 
 export const likeOrUnlikeComment = async (comment, hasLiked, user) => {
   if (!user)
-    return alert(
+    return message.info(
       "You must sign in or register an account to support a comment!"
     );
 

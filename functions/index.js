@@ -12,7 +12,8 @@ const path = require("path");
 const { blockUserListener } = require("./helpers/block");
 const {
   commentLikeListener,
-  commentUpdateListener,
+  commentCreateListener,
+  commentDeleteListener,
   newCommentReportListener,
 } = require("./helpers/comment");
 const { conversationUpdateListener } = require("./helpers/conversation");
@@ -53,9 +54,12 @@ exports.blockUserListener = functions.firestore
 exports.commentLikeListener = functions.firestore
   .document("/comment_likes/{commentIDUserID}")
   .onWrite(commentLikeListener);
-exports.commentUpdateListener = functions.firestore
+exports.commentCreateListener = functions.firestore
   .document("/comments/{commentID}")
-  .onWrite(commentUpdateListener);
+  .onCreate(commentCreateListener);
+exports.commentDeleteListener = functions.firestore
+  .document("/comments/{commentID}")
+  .onDelete(commentDeleteListener);
 exports.newCommentReportListener = functions.firestore
   .document("/comment_reports/{commentIDUserID}")
   .onCreate(newCommentReportListener);

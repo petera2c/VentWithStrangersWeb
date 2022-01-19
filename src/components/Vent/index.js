@@ -446,13 +446,19 @@ function Vent({
                             index,
                             focused
                           ) => {
+                            console.log(entry);
                             return (
-                              <Container
-                                className="button-7 column pa16"
-                                key={entry.id}
-                              >
-                                <h6>{entry.display}</h6>
-                                <p>{entry.id}</p>
+                              <Container className="flex-fill align-center wrap ov-hidden pa8 gap8">
+                                <MakeAvatar
+                                  displayName={entry.displayName}
+                                  userBasicInfo={entry}
+                                />
+                                <Container className="button-7">
+                                  <h5 className="ellipsis fw-400 mr8">
+                                    {capitolizeFirstChar(entry.displayName)}
+                                  </h5>
+                                </Container>
+                                <KarmaBadge userBasicInfo={entry} />
                               </Container>
                             );
                           }}
