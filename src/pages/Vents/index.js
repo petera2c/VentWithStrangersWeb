@@ -83,7 +83,7 @@ function VentsPage() {
               scrollableTarget="scrollable-div"
             >
               <Space className="x-fill" direction="vertical" size="large">
-                {true && (
+                {waitingVents.length > 0 && (
                   <Button
                     className="x-fill "
                     onClick={() => {
