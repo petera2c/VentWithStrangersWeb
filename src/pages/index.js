@@ -128,7 +128,18 @@ function RoutesComp() {
         }}
       >
         <Router>
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense
+            fallback={
+              <Container className="screen-container full-center pr32">
+                <img
+                  alt=""
+                  className="loading-animation"
+                  src="/svgs/icon.svg"
+                  style={{ height: "280px" }}
+                />
+              </Container>
+            }
+          >
             <Container className="screen-container column ov-hidden">
               {!isMobileOrTablet() && <Header />}
               {isMobileOrTablet() && <MobileHeader />}
