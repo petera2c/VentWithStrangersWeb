@@ -134,7 +134,7 @@ function ConversationOption({
                   setConversationOptions(false);
                 }}
               >
-                <p className="flex-fill">Delete Conversation</p>
+                <p className="flex-fill inherit-color">Delete Conversation</p>
                 <FontAwesomeIcon className="ml8" icon={faTrash} />
               </Container>
               <Container

@@ -446,7 +446,6 @@ function Vent({
                             index,
                             focused
                           ) => {
-                            console.log(entry);
                             return (
                               <Container className="flex-fill align-center wrap ov-hidden pa8 gap8">
                                 <MakeAvatar
@@ -458,7 +457,7 @@ function Vent({
                                     {capitolizeFirstChar(entry.displayName)}
                                   </h5>
                                 </Container>
-                                <KarmaBadge userBasicInfo={entry} />
+                                <KarmaBadge userBasicInfo={entry} noOnClick />
                               </Container>
                             );
                           }}

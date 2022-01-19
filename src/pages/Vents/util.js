@@ -58,9 +58,9 @@ export const getVents = async (
 
   if (snapshot.docs && snapshot.docs.length > 0) {
     let newVents = snapshot.docs.map((doc, index) => ({
-      ...doc.data(),
-      id: doc.id,
       doc,
+      id: doc.id,
+      ...doc.data(),
     }));
 
     if (newVents.length < 10) setCanLoadMore(false);
@@ -73,4 +73,40 @@ export const getVents = async (
       return setVents(newVents);
     }
   } else return setCanLoadMore(false);
+};
+
+export const newVentListener = (
+  isMounted,
+  pathname,
+  setWaitingVents,
+  first = true
+) => {
+  if (pathname !== "/recent") return;
+
+  const unsubscribe = db
+    .collection("vents")
+    .orderBy("server_timestamp", "desc")
+    .limit(1)
+    .onSnapshot((querySnapshot) => {
+      if (first) {
+        first = false;
+      } else if (querySnapshot.docs && querySnapshot.docs[0]) {
+        if (
+          querySnapshot.docChanges()[0].type === "added" ||
+          querySnapshot.docChanges()[0].type === "removed"
+        ) {
+          if (isMounted())
+            setWaitingVents((vents) => [
+              {
+                doc: querySnapshot.docs[0],
+                id: querySnapshot.docs[0].id,
+                ...querySnapshot.docs[0].data(),
+              },
+              ...vents,
+            ]);
+        }
+      }
+    });
+
+  return unsubscribe;
 };

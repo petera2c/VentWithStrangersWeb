@@ -27,7 +27,7 @@ function VerifiedEmail() {
       setErrorMessage,
       setVerifiedSuccessly
     );
-  }, [search]);
+  }, [navigate, search]);
 
   return (
     <Page className="column bg-grey-2" description="" title="Email Verified">

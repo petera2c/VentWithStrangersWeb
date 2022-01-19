@@ -6,7 +6,6 @@ import UserComp from "../../components/User";
 
 import { OnlineUsersContext } from "../../context";
 
-import { isMobileOrTablet } from "../../util";
 import { getOnlineUsers } from "./util";
 
 function OnlineUsers() {
@@ -23,9 +22,9 @@ function OnlineUsers() {
       className="column align-center bg-grey-2"
       description="Current people online."
       keywords=""
-      title="People online"
+      title="People Online"
     >
-      <Container className={"wrap justify-center pa16 gap16 "}>
+      <Container className="justify-center wrap pa16 gap16">
         {onlineUsers.map(({ lastOnline, userID }, index) => {
           return (
             <UserComp

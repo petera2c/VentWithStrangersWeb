@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Cookies from "universal-cookie";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Space } from "antd";
+import { Button, Space } from "antd";
 
 import Container from "../../components/containers/Container";
 import LoadingHeart from "../../components/loaders/Heart";
@@ -13,28 +13,40 @@ import SubscribeColumn from "../../components/SubscribeColumn";
 import Vent from "../../components/Vent";
 
 import { useIsMounted } from "../../util";
-import { getMetaInformation, getVents } from "./util";
+import { getMetaInformation, getVents, newVentListener } from "./util";
 
 const cookies = new Cookies();
 
 function VentsPage() {
   const isMounted = useIsMounted();
 
-  const [vents, setVents] = useState(null);
+  const [vents, setVents] = useState([]);
+  const [waitingVents, setWaitingVents] = useState([]);
   const location = useLocation();
   const { pathname, search } = location;
   const { metaDescription, metaTitle } = getMetaInformation(pathname);
   const [canLoadMore, setCanLoadMore] = useState(true);
 
   useEffect(() => {
-    setVents(null);
-
-    getVents(isMounted, pathname, setCanLoadMore, setVents, null);
-
     if (search) {
       const referral = /referral=([^&]+)/.exec(search)[1];
       if (referral) cookies.set("referral", referral);
     }
+
+    let newVentListenerUnsubscribe;
+
+    setWaitingVents([]);
+    setVents([]);
+    getVents(isMounted, pathname, setCanLoadMore, setVents, null);
+    newVentListenerUnsubscribe = newVentListener(
+      isMounted,
+      pathname,
+      setWaitingVents
+    );
+
+    return () => {
+      if (newVentListenerUnsubscribe) return newVentListenerUnsubscribe();
+    };
   }, [isMounted, pathname, search]);
 
   return (
@@ -71,6 +83,19 @@ function VentsPage() {
               scrollableTarget="scrollable-div"
             >
               <Space className="x-fill" direction="vertical" size="large">
+                {true && (
+                  <Button
+                    className="x-fill "
+                    onClick={() => {
+                      setVents((vents) => [...waitingVents, ...vents]);
+                      setWaitingVents([]);
+                    }}
+                    shape="round"
+                    size="large"
+                  >
+                    Load New Vent{waitingVents.length > 1 ? "s" : ""}
+                  </Button>
+                )}
                 {vents &&
                   vents.map((vent, index) => {
                     return (
@@ -78,7 +103,7 @@ function VentsPage() {
                         className="x-fill"
                         direction="vertical"
                         size="middle"
-                        key={index}
+                        key={vent.id}
                       >
                         <Vent previewMode={true} ventInit={vent} />
                         {index % 3 === 0 && (
