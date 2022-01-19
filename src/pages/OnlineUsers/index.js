@@ -25,14 +25,7 @@ function OnlineUsers() {
       keywords=""
       title="People online"
     >
-      <Container
-        className={
-          "wrap justify-center pa16 gap16 " +
-          (isMobileOrTablet()
-            ? "container mobile-full px16"
-            : "container extra-large")
-        }
-      >
+      <Container className={"wrap justify-center pa16 gap16 "}>
         {onlineUsers.map(({ lastOnline, userID }, index) => {
           return (
             <UserComp
