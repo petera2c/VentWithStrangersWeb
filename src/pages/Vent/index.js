@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Space } from "antd";
 
 import Container from "../../components/containers/Container";
 import Page from "../../components/containers/Page";

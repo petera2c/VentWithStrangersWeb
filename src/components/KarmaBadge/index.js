@@ -39,16 +39,16 @@ function KarmaBadge({ noOnClick, userBasicInfo }) {
   let badgeColor;
   let badgeIcon;
   if (karma >= 10000) {
-    badgeColor = "#256EFF";
+    badgeColor = "#004FFF";
     badgeIcon = faBadgeSheriff;
   } else if (karma >= 5000) {
     badgeColor = "#72B01D";
     badgeIcon = faBadgeSheriff;
   } else if (karma >= 2500) {
-    badgeColor = "#FF0022";
+    badgeColor = "#DD0426";
     badgeIcon = faBadgeSheriff;
   } else if (karma >= 1000) {
-    badgeColor = "#FB5012";
+    badgeColor = "#ff7433";
     badgeIcon = faBadgeSheriff;
   } else if (karma >= 500) {
     badgeColor = "#9bf6ff";

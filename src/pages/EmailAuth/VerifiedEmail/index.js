@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button, Space } from "antd";
 
 import { firebaseApp } from "../../../config/firebase";
@@ -14,6 +14,7 @@ function VerifiedEmail() {
 
   const location = useLocation();
   let { search } = location;
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!search) return;
@@ -21,6 +22,7 @@ function VerifiedEmail() {
 
     handleVerifyEmail(
       firebaseApp.auth(),
+      navigate,
       oobCode,
       setErrorMessage,
       setVerifiedSuccessly

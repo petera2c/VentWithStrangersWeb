@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import moment from "moment-timezone";
 import { MentionsInput, Mention } from "react-mentions";
-import { Space } from "antd";
 
 import { faClock } from "@fortawesome/pro-regular-svg-icons/faClock";
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
