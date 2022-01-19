@@ -80,9 +80,8 @@ function Sidebar() {
         link="/online-users"
         pathname={pathname}
         text={
-          totalOnlineUsers +
-          " " +
-          (totalOnlineUsers === 1 ? "Person" : "People") +
+          (totalOnlineUsers ? totalOnlineUsers : "0") +
+          (totalOnlineUsers === 1 ? " Person" : " People") +
           " Online"
         }
       />
