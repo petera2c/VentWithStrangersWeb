@@ -232,6 +232,15 @@ const getMetaInformation = async (url, callback) => {
       },
       true
     );
+  else if (url === "/rules")
+    return callback(
+      {
+        metaDescription: "VWS Rules",
+        metaImage: defaultMetaObject.metaImage,
+        metaTitle: "Rules",
+      },
+      true
+    );
   else return callback(defaultMetaObject, false);
 };
 
