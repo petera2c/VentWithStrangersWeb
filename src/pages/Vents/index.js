@@ -45,7 +45,7 @@ function VentsPage() {
       title={metaTitle}
     >
       <Container className="flex-fill x-fill">
-        <Space className="flex-fill" direction="vertical" size="large">
+        <Container className="column flex-fill gap16">
           <NewVentComponent miniVersion />
           <Container className="x-fill">
             <h1 className="primary fs-26">{metaTitle + " Vents"}</h1>
@@ -98,7 +98,7 @@ function VentsPage() {
           {vents && vents.length === 0 && (
             <h4 className="fw-400">No vents found.</h4>
           )}
-        </Space>
+        </Container>
 
         <SubscribeColumn slot="7871419499" />
       </Container>

@@ -103,12 +103,9 @@ function ProfileSection() {
   return (
     <Page className="pa16" id="scrollable-div" title="Profile">
       <Container className="flex-fill x-fill">
-        <Space className="flex-fill" direction="vertical" size="large">
+        <Container className="column flex-fill gap16">
           {search && (
-            <Space
-              className="x-fill ov-hidden bg-white pa16 br8"
-              direction="vertical"
-            >
+            <Container className="column x-fill ov-hidden bg-white pa16 gap8 br8">
               <Container className="x-fill full-center">
                 <MakeAvatar
                   displayName={userBasicInfo.displayName}
@@ -117,24 +114,26 @@ function ProfileSection() {
                 />
               </Container>
 
-              <Space size="large" wrap>
-                <Space direction="vertical">
-                  <Space align="center">
+              <Container className="wrap gap16">
+                <Container className="column" direction="vertical">
+                  <Container className="align-center gap8">
                     {isUserOnline && isUserOnline.state === "online" && (
                       <div className="online-dot" />
                     )}
-                    <h1>{capitolizeFirstChar(userBasicInfo.displayName)}</h1>
+                    <h1 className="ellipsis">
+                      {capitolizeFirstChar(userBasicInfo.displayName)}
+                    </h1>
                     <KarmaBadge userBasicInfo={userBasicInfo} />
-                  </Space>
+                  </Container>
                   <p>{calculateKarma(userBasicInfo)} Karma Points</p>
-                </Space>
+                </Container>
 
                 {(Boolean(
                   new moment().year() - new moment(userInfo.birth_date).year()
                 ) ||
                   userInfo.gender ||
                   userInfo.pronouns) && (
-                  <Space>
+                  <Container>
                     {Boolean(
                       new moment().year() -
                         new moment(userInfo.birth_date).year()
@@ -162,7 +161,7 @@ function ProfileSection() {
                         <p>{userInfo.pronouns}</p>
                       </Container>
                     )}
-                  </Space>
+                  </Container>
                 )}
                 {userBasicInfo.server_timestamp && (
                   <Container className="column">
@@ -174,7 +173,7 @@ function ProfileSection() {
                     </p>
                   </Container>
                 )}
-              </Space>
+              </Container>
 
               {userInfo.bio && (
                 <Container className="column">
@@ -188,7 +187,7 @@ function ProfileSection() {
                 userInfo.partying !== undefined ||
                 userInfo.politics !== undefined ||
                 userInfo.religion !== undefined) && (
-                <Space wrap>
+                <Container className="wrap gap8">
                   {userInfo.education !== undefined && (
                     <Container className="border-all align-center px8 py4 br4">
                       <FontAwesomeIcon className="mr8" icon={faSchool} />
@@ -219,7 +218,7 @@ function ProfileSection() {
                       <p>{userInfo.religion}</p>
                     </Container>
                   )}
-                </Space>
+                </Container>
               )}
               {userBasicInfo.displayName &&
                 search &&
@@ -228,8 +227,8 @@ function ProfileSection() {
                     {userBasicInfo.displayName &&
                       search &&
                       (user ? search !== user.uid : true) && (
-                        <button
-                          className="button-2 px16 py8 mr16 br8"
+                        <Container
+                          className="button-2 wrap px16 py8 mr16 br8"
                           onClick={() => {
                             const userInteractionIssues = userSignUpProgress(
                               user
@@ -245,9 +244,11 @@ function ProfileSection() {
                           }}
                         >
                           <FontAwesomeIcon className="mr8" icon={faComments} />
-                          Message{" "}
-                          {capitolizeFirstChar(userBasicInfo.displayName)}
-                        </button>
+                          <p className="fs-20 inherit-color ellipsis">
+                            Message{" "}
+                            {capitolizeFirstChar(userBasicInfo.displayName)}
+                          </p>
+                        </Container>
                       )}
                     {userBasicInfo.displayName &&
                       search &&
@@ -307,7 +308,7 @@ function ProfileSection() {
                   <p>Last Seen: {moment(isUserOnline.last_online).fromNow()}</p>
                 </Space>
               )}
-            </Space>
+            </Container>
           )}
 
           <h1 className="fs-26">Activity</h1>
@@ -423,7 +424,7 @@ function ProfileSection() {
               <LoadingHeart />
             </Container>
           )}
-        </Space>
+        </Container>
 
         <SubscribeColumn slot="8314288538" />
       </Container>

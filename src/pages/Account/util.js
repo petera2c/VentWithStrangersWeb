@@ -9,8 +9,7 @@ import db from "../../config/firebase";
 
 import { message } from "antd";
 
-import { getInvalidCharacters } from "../../components/modals/SignUp/util";
-import { getEndAtValueTimestamp } from "../../util";
+import { displayNameErrors, getEndAtValueTimestamp } from "../../util";
 
 export const getUsersVents = async (
   isMounted,
@@ -173,11 +172,8 @@ export const updateUser = async (
   }
 
   if (displayName && displayName !== user.displayName) {
-    if (getInvalidCharacters(displayName))
-      return message.error(
-        "These characters are not allowed in your display name. " +
-          getInvalidCharacters(displayName)
-      );
+    if (displayNameErrors(displayName)) return;
+
     changesFound = true;
 
     updateProfile(user, {

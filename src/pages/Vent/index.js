@@ -47,7 +47,7 @@ function VentPage() {
       <Container>
         {ventFound === false && <h4>Vent Not Found</h4>}
         {ventFound === undefined && ventID && (
-          <Space className="flex-fill" direction="vertical" size="middle">
+          <Container className="column flex-fill gap12">
             <Vent
               disablePostOnClick={true}
               displayCommentField
@@ -58,7 +58,7 @@ function VentPage() {
               ventID={ventID}
               ventInit={{ ...ventFromMeta, id: ventID }}
             />
-          </Space>
+          </Container>
         )}
         <SubscribeColumn uniqueShareLink slot="3336443960" />
       </Container>

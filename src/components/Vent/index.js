@@ -178,7 +178,7 @@ function Vent({
             disablePostOnClick={disablePostOnClick}
             to={vent && vent.title && vent.id ? getVentPartialLink(vent) : ""}
           >
-            <Space align="center" wrap>
+            <Container className="align-center wrap gap8">
               <MakeAvatar
                 displayName={author.displayName}
                 userBasicInfo={author}
@@ -196,7 +196,7 @@ function Vent({
                 {isUserOnline && <div className="online-dot mr8" />}
               </Container>
               <KarmaBadge userBasicInfo={author} />
-            </Space>
+            </Container>
             <Container className="relative flex-fill align-center justify-end">
               {user && (
                 <HandleOutsideClick close={() => setPostOptions(false)}>
@@ -328,14 +328,13 @@ function Vent({
           </SmartLink>
 
           {!searchPreviewMode && (
-            <Space
+            <Container
               className={
-                "relative justify-between py16 px32 " +
+                "relative justify-between wrap py16 px32 gap8 " +
                 (!searchPreviewMode && displayCommentField2
                   ? "border-bottom"
                   : "")
               }
-              wrap
             >
               <Container className="align-center">
                 <img
@@ -389,7 +388,7 @@ function Vent({
 
               {(!user || (user && user.uid !== vent.userID && author.id)) && (
                 <Container
-                  className="button-2 wrap ellipsis fs-20 px16 py8 br8"
+                  className="button-2 wrap fs-20 px16 py8 br8"
                   onClick={() => {
                     const userInteractionIssues = userSignUpProgress(user);
 
@@ -403,10 +402,12 @@ function Vent({
                   }}
                 >
                   <FontAwesomeIcon className="mr8" icon={faComments} />
-                  Message {capitolizeFirstChar(author.displayName)}
+                  <p className="fs-20 inherit-color ellipsis">
+                    Message {capitolizeFirstChar(author.displayName)}
+                  </p>
                 </Container>
               )}
-            </Space>
+            </Container>
           )}
           {!searchPreviewMode && displayCommentField2 && (
             <Container

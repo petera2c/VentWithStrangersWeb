@@ -5,35 +5,19 @@ import { message } from "antd";
 import moment from "moment-timezone";
 import db from "../../../config/firebase";
 
+import { displayNameErrors } from "../../../util";
+
 const cookies = new Cookies();
-
-export const getInvalidCharacters = (displayName) => {
-  const invalidCharactersArray = displayName.split(
-    /[\x30-\x39|\x41-\x5A|\x61-\x7a|\x5F]+/gi
-  );
-  let invalidCharacters = "";
-
-  for (let index in invalidCharactersArray) {
-    invalidCharacters += invalidCharactersArray[index];
-  }
-  return invalidCharacters;
-};
 
 export const signUp = (
   { email, displayName, password, passwordConfirm },
   navigate,
   setActiveModal
 ) => {
-  if (getInvalidCharacters(displayName)) {
-    return message.error(
-      "These characters are not allowed in your display name. " +
-        getInvalidCharacters(displayName)
-    );
-  }
+  if (displayNameErrors(displayName)) return;
 
-  if (password !== passwordConfirm) {
+  if (password !== passwordConfirm)
     return message.error("Passwords do not match.");
-  }
 
   const referral = cookies.get("referral");
 

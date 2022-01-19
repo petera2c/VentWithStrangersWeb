@@ -34,28 +34,15 @@ export const canUserPost = (userBasicInfo) => {
   } else return true;
 };
 
-export const userSignUpProgress = (user, noAlert) => {
-  if (!user) {
-    return "NSI";
-  } else if (!user.emailVerified) {
-    if (!noAlert) {
-      sendEmailVerification(user)
-        .then(() => {
-          Modal.info({
-            title: "Verify Email",
-            centered: true,
-            content: "We have re-sent you a verification email :)",
-          });
-        })
-        .catch((err) => {
-          Modal.error({
-            title: "Verify Email",
-            content: err,
-          });
-        });
-    }
-    return "NVE";
-  } else return false;
+export const displayNameErrors = (displayName) => {
+  if (getInvalidCharacters(displayName)) {
+    return message.error(
+      "These characters are not allowed in your display name. " +
+        getInvalidCharacters(displayName)
+    );
+  } else if (displayName.length > 15)
+    return message.error("Display name is too long :'(");
+  else return false;
 };
 
 // Taken from stack overflow
@@ -95,6 +82,18 @@ export const getIsUserOnline = (setIsUserOnline, userID) => {
       setIsUserOnline(snapshot.val());
     else setIsUserOnline({ state: false });
   });
+};
+
+const getInvalidCharacters = (displayName) => {
+  const invalidCharactersArray = displayName.split(
+    /[\x30-\x39|\x41-\x5A|\x61-\x7a|\x5F]+/gi
+  );
+  let invalidCharacters = "";
+
+  for (let index in invalidCharactersArray) {
+    invalidCharacters += invalidCharactersArray[index];
+  }
+  return invalidCharacters;
 };
 
 export const getTotalOnlineUsers = (callback) => {
@@ -150,7 +149,7 @@ export const soundNotify = (sound = "bing") => {
   audio.play();
 };
 
-export function useIsMounted() {
+export const useIsMounted = () => {
   const isMountedRef = useRef(true);
   const isMounted = useCallback(() => isMountedRef.current, []);
 
@@ -159,4 +158,28 @@ export function useIsMounted() {
   }, []);
 
   return isMounted;
-}
+};
+
+export const userSignUpProgress = (user, noAlert) => {
+  if (!user) {
+    return "NSI";
+  } else if (!user.emailVerified) {
+    if (!noAlert) {
+      sendEmailVerification(user)
+        .then(() => {
+          Modal.info({
+            title: "Verify Email",
+            centered: true,
+            content: "We have re-sent you a verification email :)",
+          });
+        })
+        .catch((err) => {
+          Modal.error({
+            title: "Verify Email",
+            content: err,
+          });
+        });
+    }
+    return "NVE";
+  } else return false;
+};
