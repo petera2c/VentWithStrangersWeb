@@ -244,7 +244,7 @@ function ProfileSection() {
                           }}
                         >
                           <FontAwesomeIcon className="mr8" icon={faComments} />
-                          <p className="fs-20 inherit-color ellipsis">
+                          <p className="inherit-color ellipsis">
                             Message{" "}
                             {capitolizeFirstChar(userBasicInfo.displayName)}
                           </p>

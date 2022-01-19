@@ -2,8 +2,10 @@ import { useCallback, useEffect, useRef } from "react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/database";
 import { sendEmailVerification } from "firebase/auth";
-import db from "./config/firebase";
+import moment from "moment-timezone";
 import { message, Modal } from "antd";
+
+import db from "./config/firebase";
 
 import { setUserOnlineStatus } from "./pages/util";
 
@@ -34,6 +36,16 @@ export const canUserPost = (userBasicInfo) => {
   } else return true;
 };
 
+export const capitolizeFirstChar = (string) => {
+  if (string) return string.charAt(0).toUpperCase() + string.slice(1);
+  else return;
+};
+
+export const combineObjectWithID = (id, object) => {
+  object.id = id;
+  return object;
+};
+
 export const displayNameErrors = (displayName) => {
   if (getInvalidCharacters(displayName)) {
     return message.error(
@@ -45,27 +57,6 @@ export const displayNameErrors = (displayName) => {
   else return false;
 };
 
-// Taken from stack overflow
-export const capitolizeWordsInString = (str) => {
-  return str.replace(/\b\w/g, (l) => l.toUpperCase());
-};
-export const capitolizeFirstChar = (string) => {
-  if (string) return string.charAt(0).toUpperCase() + string.slice(1);
-  else return;
-};
-
-export const combineObjectWithID = (id, object) => {
-  object.id = id;
-  return object;
-};
-
-export const getEndAtValueTimestampFirst = (array) => {
-  let startAt = 10000000000000;
-
-  if (array && array[0] && array[0].doc) startAt = array[0].doc;
-  return startAt;
-};
-
 export const getEndAtValueTimestamp = (array) => {
   let startAt = 10000000000000;
 
@@ -74,14 +65,11 @@ export const getEndAtValueTimestamp = (array) => {
   return startAt;
 };
 
-export const getIsUserOnline = (setIsUserOnline, userID) => {
-  const ref = firebase.database().ref("status/" + userID);
+export const getEndAtValueTimestampFirst = (array) => {
+  let startAt = 10000000000000;
 
-  ref.on("value", (snapshot) => {
-    if (snapshot.val() && snapshot.val().state === "online")
-      setIsUserOnline(snapshot.val());
-    else setIsUserOnline({ state: false });
-  });
+  if (array && array[0] && array[0].doc) startAt = array[0].doc;
+  return startAt;
 };
 
 const getInvalidCharacters = (displayName) => {
@@ -94,6 +82,16 @@ const getInvalidCharacters = (displayName) => {
     invalidCharacters += invalidCharactersArray[index];
   }
   return invalidCharacters;
+};
+
+export const getIsUserOnline = (setIsUserOnline, userID) => {
+  const ref = firebase.database().ref("status/" + userID);
+
+  ref.on("value", (snapshot) => {
+    if (snapshot.val() && snapshot.val().state === "online")
+      setIsUserOnline(snapshot.val());
+    else setIsUserOnline({ state: false });
+  });
 };
 
 export const getTotalOnlineUsers = (callback) => {
@@ -130,6 +128,19 @@ export const isMobileOrTablet = () => window.screen.width < 940;
 export const isPageActive = (page, pathname) => {
   if (page === pathname) return " active ";
   else return "";
+};
+
+export const isUserAccountNew = (userBasicInfo) => {
+  if (!userBasicInfo) return false;
+
+  const seconds = Math.round(
+    moment().diff(moment(userBasicInfo.server_timestamp)) / 1000
+  );
+
+  const hours = Math.floor(seconds / 3600);
+
+  if (hours > 72) return false;
+  else return true;
 };
 
 export const signOut = async (userID) => {

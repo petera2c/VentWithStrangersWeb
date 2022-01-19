@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import moment from "moment-timezone";
 import { MentionsInput, Mention } from "react-mentions";
+import { Button } from "antd";
 
 import { faClock } from "@fortawesome/pro-regular-svg-icons/faClock";
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
@@ -12,7 +13,6 @@ import { faTrash } from "@fortawesome/pro-duotone-svg-icons/faTrash";
 import { faUserLock } from "@fortawesome/pro-duotone-svg-icons/faUserLock";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Button from "../views/Button";
 import Comment from "../Comment";
 import ConfirmAlertModal from "../modals/ConfirmAlert";
 import Container from "../containers/Container";
@@ -33,6 +33,7 @@ import {
   getIsUserOnline,
   getUserBasicInfo,
   hasUserBlockedUser,
+  isUserAccountNew,
   useIsMounted,
   userSignUpProgress,
 } from "../../util";
@@ -308,7 +309,7 @@ function Vent({
             <Text className="fs-20 primary mb8" text={vent.title} type="h1" />
 
             <p
-              className="fs-18 fw-400 grey-1 description"
+              className="fw-400 grey-1 description"
               style={{
                 WebkitLineClamp: displayCommentField2 ? 150 : 3,
                 lineClamp: displayCommentField2 ? 150 : 3,
@@ -373,7 +374,7 @@ function Vent({
                   type="p"
                 />
 
-                <Button
+                <button
                   className="button-2 no-text-wrap px16 py8 mr16 br8"
                   onClick={(e) => {
                     e.preventDefault();
@@ -382,12 +383,12 @@ function Vent({
                 >
                   {vent.comment_counter ? vent.comment_counter : 0}{" "}
                   {vent.comment_counter === 1 ? "Comment" : "Comments"}
-                </Button>
+                </button>
               </Container>
 
               {(!user || (user && user.uid !== vent.userID && author.id)) && (
                 <Container
-                  className="button-2 wrap fs-20 px16 py8 br8"
+                  className="button-2 wrap px16 py8 br8"
                   onClick={() => {
                     const userInteractionIssues = userSignUpProgress(user);
 
@@ -401,7 +402,7 @@ function Vent({
                   }}
                 >
                   <FontAwesomeIcon className="mr8" icon={faComments} />
-                  <p className="fs-20 inherit-color ellipsis">
+                  <p className="inherit-color ellipsis">
                     Message {capitolizeFirstChar(author.displayName)}
                   </p>
                 </Container>
@@ -418,7 +419,18 @@ function Vent({
               <Container className="x-fill column py16 br8">
                 <Container className="x-fill px16">
                   <Container className="column x-fill align-end br8">
-                    <Container className="relative x-fill">
+                    <Container className="relative column x-fill">
+                      {isUserAccountNew(userBasicInfo) && (
+                        <Link to="/rules">
+                          <button
+                            className="blue ml8 mb8"
+                            size="large"
+                            type="link"
+                          >
+                            Read VWS Rules
+                          </button>
+                        </Link>
+                      )}
                       <MentionsInput
                         className="mentions"
                         onChange={(e) => {
@@ -465,8 +477,7 @@ function Vent({
                         />
                       </MentionsInput>
                     </Container>
-
-                    <Button
+                    <button
                       className="button-2 px32 py8 mt8 br4"
                       onClick={async () => {
                         const userInteractionIssues = userSignUpProgress(user);
@@ -488,8 +499,9 @@ function Vent({
 
                         setCommentString("");
                       }}
-                      text="Send"
-                    />
+                    >
+                      Send
+                    </button>
                   </Container>
                 </Container>
               </Container>
@@ -512,7 +524,7 @@ function Vent({
                   );
                 })}
                 {vent.comment_counter > comments.length && (
-                  <Button
+                  <button
                     className="blue underline"
                     onClick={() => {
                       getVentComments(
@@ -525,7 +537,7 @@ function Vent({
                     key={comments.length}
                   >
                     Load More Comments
-                  </Button>
+                  </button>
                 )}
               </Container>
             </Container>

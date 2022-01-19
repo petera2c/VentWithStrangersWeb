@@ -111,6 +111,9 @@ button {
   cursor: pointer;
   outline: 0;
 
+  margin: 0;
+  padding: 0;
+
   border: none;
   background-color: transparent;
   pointer-events: auto;
