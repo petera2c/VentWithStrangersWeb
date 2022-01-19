@@ -5,6 +5,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Space } from "antd";
 
 import Container from "../../components/containers/Container";
+import LoadingHeart from "../../components/loaders/Heart";
 import MakeAd from "../../components/MakeAd";
 import NewVentComponent from "../../components/NewVent";
 import Page from "../../components/containers/Page";
@@ -60,32 +61,8 @@ function VentsPage() {
               }
               hasMore={canLoadMore}
               loader={
-                <Container className="bg-red clickable x-fill column bg-white mb16 br8">
-                  <Container className="justify-between pt16 px32">
-                    <Container>
-                      <div className="round-icon bg-grey-2 mr8" />
-                      <div
-                        className=" bg-grey-2 br16"
-                        style={{ width: "140px", height: "24px" }}
-                      />
-                    </Container>
-                    <div
-                      className="bg-grey-2 br16"
-                      style={{ width: "140px", height: "24px" }}
-                    />
-                  </Container>
-                  <Container className="pt16 px32">
-                    <div
-                      className="x-fill bg-grey-2 br8"
-                      style={{ height: "100px" }}
-                    />
-                  </Container>
-                  <Container className="py16 px32">
-                    <div
-                      className=" bg-grey-2 br16"
-                      style={{ width: "140px", height: "24px" }}
-                    />
-                  </Container>
+                <Container className="x-fill full-center">
+                  <LoadingHeart />
                 </Container>
               }
               next={() =>
