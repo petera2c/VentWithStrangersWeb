@@ -53,6 +53,8 @@ const createSitemap = async () => {
     "<url>\n<loc>https://www.ventwithstrangers.com/site-info</loc>\n<lastmod>2021-06-17</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.6</priority>\n</url>\n\n";
   siteMapString +=
     "<url>\n<loc>https://www.ventwithstrangers.com/conversations</loc>\n<lastmod>2022-01-04</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.6</priority>\n</url>\n\n";
+  siteMapString +=
+    "<url>\n<loc>https://www.ventwithstrangers.com/rewards</loc>\n<lastmod>2022-01-19</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.6</priority>\n</url>\n\n";
 
   for (let index in vents.docs) {
     const vent = vents.docs[index].data();

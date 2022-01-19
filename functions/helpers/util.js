@@ -214,6 +214,24 @@ const getMetaInformation = async (url, callback) => {
       },
       true
     );
+  else if (url === "/rewards")
+    return callback(
+      {
+        metaDescription: "Make friends and earn some awesome rewards!",
+        metaImage: defaultMetaObject.metaImage,
+        metaTitle: "Rewards",
+      },
+      true
+    );
+  else if (url === "/online-users")
+    return callback(
+      {
+        metaDescription: "Current people online.",
+        metaImage: defaultMetaObject.metaImage,
+        metaTitle: "Online Users",
+      },
+      true
+    );
   else return callback(defaultMetaObject, false);
 };
 
