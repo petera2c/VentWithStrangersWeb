@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 import { faWalkieTalkie } from "@fortawesome/pro-duotone-svg-icons/faWalkieTalkie";
 import { faHandsHelping } from "@fortawesome/pro-duotone-svg-icons/faHandsHelping";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,20 +11,40 @@ import Text from "../../components/views/Text";
 
 import { UserContext } from "../../context";
 
-import { isMobileOrTablet, userSignUpProgress } from "../../util";
-import { isInQueue, joinQueue, leaveQueue } from "./util";
+import { isMobileOrTablet, useIsMounted, userSignUpProgress } from "../../util";
+import {
+  conversationsListener,
+  countHelpersOrVenters,
+  getIsUserInQueue,
+  joinQueue,
+  leaveQueue,
+  queueListener,
+} from "./util";
 
 function ChatWithStrangersPage() {
   const { user } = useContext(UserContext);
+  const isMounted = useIsMounted();
+  const navigate = useNavigate();
 
+  const [queue, setQueue] = useState([]);
   const [isInQueue, setIsInQueue] = useState(false);
   const [starterModal, setStarterModal] = useState();
 
   useEffect(() => {
+    const queueUnsubscribe = queueListener(isMounted, setQueue);
+
+    let conversationsUnsubscribe;
+    if (user) {
+      conversationsUnsubscribe = conversationsListener(navigate, user.uid);
+      getIsUserInQueue(isMounted, setIsInQueue, user.uid);
+    }
+
     return () => {
+      if (conversationsUnsubscribe) conversationsUnsubscribe();
+      if (queueUnsubscribe) queueUnsubscribe();
       if (user && isInQueue) leaveQueue(user.uid);
     };
-  }, []);
+  }, [isInQueue, isMounted, navigate, user]);
 
   return (
     <Page
@@ -46,7 +66,7 @@ function ChatWithStrangersPage() {
             </p>
           )}
         </Container>
-        {!isInQueue && (
+        {true && (
           <Container className="wrap full-center gap16">
             <Container
               className="container small column button-6 bg-white border-all2 br8"
@@ -84,7 +104,16 @@ function ChatWithStrangersPage() {
                   text="Listeners Waiting"
                   type="h5"
                 />
-                <Text className="grey-5 tac" text={0 + " People"} type="p" />
+                <Text
+                  className="grey-5 tac"
+                  text={
+                    countHelpersOrVenters(queue, "helper") +
+                    (countHelpersOrVenters(queue, "helper") === 1
+                      ? " Person"
+                      : " People")
+                  }
+                  type="p"
+                />
               </Container>
             </Container>
             <Container
@@ -123,7 +152,16 @@ function ChatWithStrangersPage() {
                   text="Venters Waiting"
                   type="h5"
                 />
-                <Text className="grey-5 tac" text={0 + " People"} type="p" />
+                <Text
+                  className="grey-5 tac"
+                  text={
+                    countHelpersOrVenters(queue, "venter") +
+                    (countHelpersOrVenters(queue, "venter") === 1
+                      ? " Person"
+                      : " People")
+                  }
+                  type="p"
+                />
               </Container>
             </Container>
           </Container>

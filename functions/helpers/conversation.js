@@ -12,16 +12,94 @@ function arraysEqual(a, b) {
 }
 
 const chatQueueListener = async (change, context) => {
-  const doc = change.before.data();
-  if (doc) {
-    const section = doc.data().listener ? "listener" : "helper";
-    const lookingFor = section === "helper" ? "helper" : "venter";
+  const { userID } = context.params;
+  const doc = change.after.data();
 
-    const partnerDoc = await db
+  if (doc) {
+    const lookingFor = doc.venter ? "helper" : "venter";
+    const partnerSnapshot = await admin
+      .firestore()
       .collection("chat_queue")
       .where(lookingFor, "==", true)
       .orderBy("server_timestamp", "asc")
-      .limit(1);
+      .limit(1)
+      .get();
+
+    if (!partnerSnapshot.docs || !partnerSnapshot.docs[0]) return;
+    const partnerDoc = partnerSnapshot.docs[0];
+
+    const partnerDocRef = admin
+      .firestore()
+      .collection("chat_queue")
+      .doc(partnerDoc.id);
+
+    return admin
+      .firestore()
+      .runTransaction((transaction) => {
+        // This code may get re-run multiple times if there are conflicts.
+        return transaction.get(partnerDocRef).then(async (partnerDoc) => {
+          if (!partnerDoc.exists) {
+            throw "Document does not exist!";
+          }
+
+          // create chat
+          await startConversation(partnerDoc.id, userID);
+
+          admin
+            .firestore()
+            .collection("chat_queue")
+            .doc(partnerDoc.id)
+            .delete();
+          admin.firestore().collection("chat_queue").doc(userID).delete();
+        });
+      })
+      .then(() => {
+        console.log("Transaction successfully committed!");
+      })
+      .catch((error) => {
+        console.log("Transaction failed: ", error);
+      });
+  }
+};
+
+const startConversation = async (partnerID, userID) => {
+  const sortedMemberIDs = [userID, partnerID].sort();
+  const conversationQuerySnapshot = await admin
+    .firestore()
+    .collection("conversations")
+    .where("members", "==", sortedMemberIDs)
+    .get();
+
+  const goToPage = async (conversationID) => {
+    await admin.firestore().collection("conversations").doc(conversationID).set(
+      {
+        go_to_inbox: true,
+        last_updated: admin.firestore.Timestamp.now().toMillis(),
+      },
+      { merge: true }
+    );
+  };
+
+  if (!conversationQuerySnapshot.empty) {
+    conversationQuerySnapshot.forEach(async (conversationDoc, i) => {
+      return await goToPage(conversationDoc.id);
+    });
+  } else {
+    let tempHasSeenObject = {};
+    for (let index in sortedMemberIDs) {
+      tempHasSeenObject[sortedMemberIDs[index]] = false;
+    }
+
+    const conversationDocNew = await admin
+      .firestore()
+      .collection("conversations")
+      .add({
+        last_updated: admin.firestore.Timestamp.now().toMillis(),
+        members: sortedMemberIDs,
+        server_timestamp: admin.firestore.Timestamp.now().toMillis(),
+        ...tempHasSeenObject,
+      });
+    return await goToPage(conversationDocNew.id);
   }
 };
 

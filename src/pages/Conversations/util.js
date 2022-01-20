@@ -244,7 +244,7 @@ export const readConversation = async (conversation, userID) => {
   await db
     .collection("conversations")
     .doc(conversation.id)
-    .set({ [userID]: true }, { merge: true });
+    .set({ [userID]: true, go_to_inbox: false }, { merge: true });
 };
 
 export const sendMessage = async (conversationID, message, userID) => {

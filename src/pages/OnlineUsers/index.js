@@ -6,16 +6,18 @@ import UserComp from "../../components/User";
 
 import { OnlineUsersContext } from "../../context";
 
+import { useIsMounted } from "../../util";
 import { getOnlineUsers } from "./util";
 
 function OnlineUsers() {
+  const isMounted = useIsMounted();
   const [onlineUsers, setOnlineUsers] = useState([]);
 
   const { totalOnlineUsers } = useContext(OnlineUsersContext);
 
   useEffect(() => {
-    getOnlineUsers(setOnlineUsers, totalOnlineUsers);
-  }, [totalOnlineUsers]);
+    getOnlineUsers(isMounted, setOnlineUsers, totalOnlineUsers);
+  }, [isMounted, setOnlineUsers, totalOnlineUsers]);
 
   return (
     <Page
