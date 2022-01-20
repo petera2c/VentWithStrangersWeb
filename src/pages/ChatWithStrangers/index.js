@@ -60,9 +60,8 @@ function ChatWithStrangersPage() {
         <Container className="container medium column">
           <h1 className="tac">Chat With Strangers</h1>
           <p className="tac py16">
-            Hello :) This is a <b className="primary">new page</b>, and 100%
-            will have some <b className="primary">problems</b>. If you see any
-            issues please message <b className="primary">@First</b>
+            Hello :) This is a <b className="primary">new page</b>. If you see
+            any issues please message <b className="primary">@First</b>
           </p>
           {isInQueue && (
             <p className="tac">
