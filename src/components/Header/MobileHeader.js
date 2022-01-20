@@ -161,14 +161,21 @@ function Header() {
             <FontAwesomeIcon
               className="blue"
               icon={faBars}
-              onClick={() => setMobileHeaderActive(!mobileHeaderActive)}
+              onClick={() => {
+                setMobileHeaderActive(!mobileHeaderActive);
+                setAccountSectionActive(false);
+              }}
             />
           </Container>
         </Container>
       </Container>
       {(mobileHeaderActive || pathname.substring(0, 7) === "/search") && (
         <Space align="center" className="bg-grey-4 py4 px8 my8 br4">
-          <FontAwesomeIcon className="grey-5 mr8" icon={faSearch} />
+          <FontAwesomeIcon
+            className="grey-5 mr8"
+            icon={faSearch}
+            onClick={() => setMobileHeaderActive(false)}
+          />
           <input
             autoFocus={pathname.substring(0, 7) === "/search" ? true : false}
             className="no-border bg-grey-4 br4"
