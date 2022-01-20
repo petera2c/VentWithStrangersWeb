@@ -181,7 +181,12 @@ function Header() {
                 className="no-border bg-grey-4 br4"
                 onChange={(e) => {
                   setVentSearchString(e.target.value);
-                  navigate("/search?" + e.target.value);
+
+                  if (
+                    e.target.value ||
+                    (!e.target.value && pathname === "search")
+                  )
+                    navigate("/search?" + e.target.value);
                 }}
                 placeholder="Search"
                 type="text"
