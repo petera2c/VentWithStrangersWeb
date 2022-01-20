@@ -46,8 +46,6 @@ function ChatWithStrangersPage() {
     };
   }, [isInQueue, isMounted, navigate, user]);
 
-  console.log(isInQueue);
-
   return (
     <Page
       className="pa16"

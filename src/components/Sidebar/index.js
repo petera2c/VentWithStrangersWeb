@@ -86,12 +86,14 @@ function Sidebar() {
           " Online"
         }
       />
-      <SideBarLink
-        icon={faComments}
-        link="/chat-with-strangers"
-        pathname={pathname}
-        text="Chat With Strangers"
-      />
+      {false && (
+        <SideBarLink
+          icon={faComments}
+          link="/chat-with-strangers"
+          pathname={pathname}
+          text="Chat With Strangers"
+        />
+      )}
       <SideBarLink
         icon={faStarShooting}
         link="/rewards"
