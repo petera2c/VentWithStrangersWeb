@@ -11,6 +11,7 @@ import Text from "../../components/views/Text";
 
 import { UserContext } from "../../context";
 
+import { startConversation } from "../../components/Vent/util";
 import { isMobileOrTablet, useIsMounted, userSignUpProgress } from "../../util";
 import {
   conversationsListener,
@@ -59,10 +60,27 @@ function ChatWithStrangersPage() {
       >
         <Container className="container medium column">
           <h1 className="tac">Chat With Strangers</h1>
-          <p className="tac py16">
-            Hello :) This is a <b className="primary">new page</b>. If you see
-            any issues please message <b className="primary">@First</b>
-          </p>
+          {user && (
+            <p className="tac py16">
+              Hello :) This is a <b className="primary">new page</b>. If you see
+              any issues please message{" "}
+              <span
+                className="blue"
+                onClick={() => {
+                  const userInteractionIssues = userSignUpProgress(user);
+
+                  if (userInteractionIssues) {
+                    if (userInteractionIssues === "NSI") setStarterModal(true);
+                    return;
+                  }
+
+                  startConversation(navigate, user, "5e33869b7c945900156e75e2");
+                }}
+              >
+                @First
+              </span>
+            </p>
+          )}
           {isInQueue && (
             <p className="tac">
               You are in queue! :) Stay on this page to remain in the queue
