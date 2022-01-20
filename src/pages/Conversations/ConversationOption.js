@@ -51,7 +51,9 @@ function ConversationOption({
     );
 
     getConversationBasicData(conversation, setConversationsBasicDatas, userID);
-    if (isActive && !hasSeen) readConversation(conversation, userID);
+
+    if (isActive && (!hasSeen || conversation.go_to_inbox))
+      readConversation(conversation, userID);
 
     return () => {
       if (conversationUpdatedListenerUnsubscribe)
