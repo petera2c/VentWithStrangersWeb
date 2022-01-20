@@ -64,8 +64,8 @@ function ChatWithStrangersPage() {
             <p className="tac py16">
               Hello :) This is a <b className="primary">new page</b>. If you see
               any issues please message{" "}
-              <span
-                className="blue"
+              <b
+                className="clickable blue"
                 onClick={() => {
                   const userInteractionIssues = userSignUpProgress(user);
 
@@ -78,7 +78,7 @@ function ChatWithStrangersPage() {
                 }}
               >
                 @First
-              </span>
+              </b>
             </p>
           )}
           {isInQueue && (
