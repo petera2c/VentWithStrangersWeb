@@ -46,6 +46,8 @@ function ChatWithStrangersPage() {
     };
   }, [isInQueue, isMounted, navigate, user]);
 
+  console.log(isInQueue);
+
   return (
     <Page
       className="pa16"
@@ -59,10 +61,14 @@ function ChatWithStrangersPage() {
       >
         <Container className="container medium column">
           <h1 className="tac">Chat With Strangers</h1>
-          {false && (
+          <p className="tac py16">
+            Hello :) This is a <b className="primary">new page</b>, and 100%
+            will have some <b className="primary">problems</b>. If you see any
+            issues please message <b className="primary">@First</b>
+          </p>
+          {isInQueue && (
             <p className="tac">
-              After joining you can go to the rest of the site. When a user is
-              connected you will be redirected to your chat :)
+              You are in queue! :) Stay on this page to remain in the queue
             </p>
           )}
         </Container>
