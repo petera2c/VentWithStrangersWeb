@@ -119,10 +119,6 @@ function VentsPage() {
               </Space>
             </InfiniteScroll>
           )}
-
-          {vents && vents.length === 0 && (
-            <h4 className="fw-400">No vents found.</h4>
-          )}
         </Container>
 
         <SubscribeColumn slot="7871419499" />

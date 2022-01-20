@@ -27,6 +27,7 @@ import AboutUsPage from "./AboutUs";
 import AccountPage from "./Account/Account";
 import AppDownloadPage from "./AppDownload";
 import AvatarPage from "./Account/Avatar";
+import ChatWithStrangersPage from "./ChatWithStrangers";
 import ConversationsPage from "./Conversations";
 import FeedbackPage from "./Feedback";
 import FriendsPage from "./Friends";
@@ -146,6 +147,10 @@ function RoutesComp() {
                   <Route path="" element={<VentsPage />} />
                   <Route path="/*" element={<NotFoundPage />} />
                   <Route path="app-downloads" element={<AppDownloadPage />} />
+                  <Route
+                    path="chat-with-strangers"
+                    element={<ChatWithStrangersPage />}
+                  />
                   <Route path="conversations" element={<ConversationsPage />} />
                   <Route path="feedback" element={<FeedbackPage />} />
                   <Route path="friends" element={<FriendsPage />} />

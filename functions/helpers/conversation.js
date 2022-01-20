@@ -11,6 +11,20 @@ function arraysEqual(a, b) {
   return true;
 }
 
+const chatQueueListener = async (change, context) => {
+  const doc = change.before.data();
+  if (doc) {
+    const section = doc.data().listener ? "listener" : "helper";
+    const lookingFor = section === "helper" ? "helper" : "venter";
+
+    const partnerDoc = await db
+      .collection("chat_queue")
+      .where(lookingFor, "==", true)
+      .orderBy("server_timestamp", "asc")
+      .limit(1);
+  }
+};
+
 const conversationUpdateListener = async (change, context) => {
   const { conversationID } = context.params;
 
@@ -46,35 +60,6 @@ const conversationUpdateListener = async (change, context) => {
       }
     }
   }
-
-  // Is user typing code
-  /*
-  if (
-    JSON.stringify(conversationBefore.isTyping) !==
-    JSON.stringify(conversationAfter.isTyping)
-  ) {
-    let areAnyUsersTyping = false;
-    let isTypingChangeObject = {};
-    for (let index in conversationAfter.isTyping) {
-      isTypingChangeObject[index] = conversationAfter.isTyping[index];
-      if (conversationAfter.isTyping[index]) areAnyUsersTyping = true;
-      if (
-        conversationAfter.isTyping[index] !==
-          conversationBefore.isTyping[index] &&
-        conversationAfter.isTyping[index]
-      )
-        isTypingChangeObject[index] = false;
-    }
-    if (areAnyUsersTyping) {
-      setTimeout(async () => {
-        await admin
-          .firestore()
-          .collection("conversations")
-          .doc(conversationID)
-          .set({ isTyping: isTypingChangeObject }, { merge: true });
-      }, 4000);
-    }
-  }*/
 };
 
-module.exports = { conversationUpdateListener };
+module.exports = { chatQueueListener, conversationUpdateListener };

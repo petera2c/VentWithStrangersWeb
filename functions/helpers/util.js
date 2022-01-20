@@ -141,13 +141,13 @@ const getMetaInformation = async (url, callback) => {
       },
       true
     );
-  else if (url === "/vent-to-a-stranger")
+  else if (url === "/chat-with-strangers")
     return callback(
       {
         metaDescription:
-          "Chat anonymously and post a vent anonymously. Find strangers just like you to vent with. We are here to listen, you are not alone.",
+          "Sometimes, all we need is an available ear. This is where you can anonymously talk to someone that wants to listen, or anonymously listen to someone that wants to be heard.",
         metaImage: defaultMetaObject.metaImage,
-        metaTitle: "Chat and Post Anonymously | Vent With Strangers",
+        metaTitle: "Chat With Strangers | Vent With Strangers",
       },
       true
     );

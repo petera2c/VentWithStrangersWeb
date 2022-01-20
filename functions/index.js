@@ -16,7 +16,10 @@ const {
   commentDeleteListener,
   newCommentReportListener,
 } = require("./helpers/comment");
-const { conversationUpdateListener } = require("./helpers/conversation");
+const {
+  chatQueueListener,
+  conversationUpdateListener,
+} = require("./helpers/conversation");
 const { messagesListener } = require("./helpers/messages");
 
 const { createProxy, createSitemap } = require("./helpers/sitemap");
@@ -50,6 +53,10 @@ exports.userWasInvited = functions.firestore
 exports.blockUserListener = functions.firestore
   .document("/block_check/{userID1userID2}")
   .onWrite(blockUserListener);
+
+exports.chatQueueListener = functions.firestore
+  .document("/chat_queue/{userID}")
+  .onWrite(chatQueueListener);
 
 exports.commentLikeListener = functions.firestore
   .document("/comment_likes/{commentIDUserID}")

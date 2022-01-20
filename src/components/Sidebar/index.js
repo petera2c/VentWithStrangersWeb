@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 
 import { Space } from "antd";
 
+import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
 import { faInfo } from "@fortawesome/pro-duotone-svg-icons/faInfo";
 import { faPrayingHands } from "@fortawesome/pro-duotone-svg-icons/faPrayingHands";
 import { faStarShooting } from "@fortawesome/pro-duotone-svg-icons/faStarShooting";
@@ -84,6 +85,12 @@ function Sidebar() {
           (totalOnlineUsers === 1 ? " Person" : " People") +
           " Online"
         }
+      />
+      <SideBarLink
+        icon={faComments}
+        link="/chat-with-strangers"
+        pathname={pathname}
+        text="Chat With Strangers"
       />
       <SideBarLink
         icon={faStarShooting}
