@@ -43,6 +43,7 @@ function ConversationOption({
   const hasSeen = conversation[userID];
 
   useEffect(() => {
+    console.log("here");
     let conversationUpdatedListenerUnsubscribe;
 
     conversationUpdatedListenerUnsubscribe = conversationListener(
@@ -59,7 +60,14 @@ function ConversationOption({
       if (conversationUpdatedListenerUnsubscribe)
         conversationUpdatedListenerUnsubscribe();
     };
-  }, [hasSeen, isActive]);
+  }, [
+    conversation,
+    hasSeen,
+    isActive,
+    setConversations,
+    setConversationsBasicDatas,
+    userID,
+  ]);
 
   if (!conversation) return <div>loading</div>;
 

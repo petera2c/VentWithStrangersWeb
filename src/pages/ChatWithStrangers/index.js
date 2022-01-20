@@ -44,7 +44,7 @@ function ChatWithStrangersPage() {
       if (queueUnsubscribe) queueUnsubscribe();
       if (user && isInQueue) leaveQueue(user.uid);
     };
-  }, [isInQueue, isMounted, navigate, leaveQueue, user]);
+  }, [isInQueue, isMounted, navigate, user]);
 
   return (
     <Page

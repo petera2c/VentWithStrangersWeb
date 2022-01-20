@@ -8,7 +8,7 @@ export const getOnlineUsers = (isMounted, callback, totalOnlineUsers) => {
       .ref("status")
       .orderByChild("state")
       .limitToLast(totalOnlineUsers)
-      .on("value", (snapshot) => {
+      .once("value", (snapshot) => {
         let usersArray = [];
 
         snapshot.forEach((data) => {
