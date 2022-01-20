@@ -1,6 +1,8 @@
 import firebase from "firebase/compat/app";
 import db from "../../config/firebase";
 
+import { message } from "antd";
+
 import {
   getEndAtValueTimestamp,
   getEndAtValueTimestampFirst,
@@ -27,8 +29,9 @@ export const deleteConversation = async (
       members: firebase.firestore.FieldValue.arrayRemove(userID),
     });
 
-  alert("Conversation deleted!");
+  message.success("Conversation deleted!");
 };
+
 export const deleteMessage = async (conversationID, messageID, setMessages) => {
   await db
     .collection("conversation_extra_data")

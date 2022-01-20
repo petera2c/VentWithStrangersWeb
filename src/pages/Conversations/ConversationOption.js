@@ -43,7 +43,6 @@ function ConversationOption({
   const hasSeen = conversation[userID];
 
   useEffect(() => {
-    console.log("here");
     let conversationUpdatedListenerUnsubscribe;
 
     conversationUpdatedListenerUnsubscribe = conversationListener(
