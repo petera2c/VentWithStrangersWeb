@@ -27,7 +27,7 @@ const messagesListener = async (doc, context) => {
           .database()
           .ref("status/" + index)
           .once("value", (doc) => {
-            if (doc.val().state !== "online")
+            if (!doc.val() || (doc.val() && doc.val().state !== "online"))
               sendMobilePushNotifications("You have a new message!", index);
           });
       }

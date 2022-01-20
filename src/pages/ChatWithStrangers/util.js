@@ -25,7 +25,7 @@ export const countHelpersOrVenters = (queue, section) => {
 };
 
 export const getIsUserInQueue = async (isMounted, setIsInQueue, userID) => {
-  const isInQueueDoc = db.collection("chat_queue").doc(userID).get();
+  const isInQueueDoc = await db.collection("chat_queue").doc(userID).get();
 
   if (isInQueueDoc.exists && isMounted()) setIsInQueue(true);
 };
@@ -45,6 +45,7 @@ export const queueListener = (isMounted, setQueue) => {
             ...snapshot.docs[index].data(),
           });
         }
+
       if (isMounted()) setQueue(chatQueueList);
     });
 
