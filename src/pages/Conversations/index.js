@@ -44,6 +44,7 @@ function Conversations() {
       );
 
       getConversations(
+        activeConversation,
         conversations,
         isMounted,
         setActiveConversation,
@@ -72,7 +73,7 @@ function Conversations() {
     return () => {
       if (newMessageListenerUnsubscribe) newMessageListenerUnsubscribe();
     };
-  }, []);
+  }, [isMounted, user]);
 
   return (
     <Page

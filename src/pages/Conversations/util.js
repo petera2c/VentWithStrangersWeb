@@ -127,6 +127,7 @@ export const messageListener = (
 };
 
 export const getConversations = async (
+  activeConversation,
   conversations,
   isMounted,
   setActiveConversation,
@@ -154,6 +155,25 @@ export const getConversations = async (
       doc: conversationsQuerySnapshot.docs[i],
     });
   });
+
+  if (
+    !newConversations.find(
+      (conversation) => conversation.id === activeConversation
+    )
+  ) {
+    console.log("here");
+    const conversationDoc = await db
+      .collection("conversations")
+      .doc(activeConversation)
+      .get();
+
+    if (conversationDoc.exists)
+      newConversations.push({
+        id: conversationDoc.id,
+        ...conversationDoc.data(),
+        doc: conversationDoc,
+      });
+  }
 
   if (isMounted()) setConversations(newConversations);
 };
