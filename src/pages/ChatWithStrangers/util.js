@@ -24,10 +24,13 @@ export const countHelpersOrVenters = (queue, section) => {
   return counter;
 };
 
-export const getIsUserInQueue = async (isMounted, setIsInQueue, userID) => {
-  const isInQueueDoc = await db.collection("chat_queue").doc(userID).get();
-
-  if (isInQueueDoc.exists && isMounted()) setIsInQueue(true);
+export const isUserInQueue = (queue, userID) => {
+  for (let index in queue) {
+    if (queue[index].id === userID) {
+      return true;
+    }
+  }
+  return false;
 };
 
 export const queueListener = (isMounted, setQueue) => {
@@ -52,9 +55,7 @@ export const queueListener = (isMounted, setQueue) => {
   return unsubscribe;
 };
 
-export const joinQueue = async (section, setIsInQueue, userID) => {
-  setIsInQueue(true);
-
+export const joinQueue = async (section, userID) => {
   await db
     .collection("chat_queue")
     .doc(userID)

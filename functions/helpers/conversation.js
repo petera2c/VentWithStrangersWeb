@@ -146,9 +146,9 @@ const conversationUpdateListener = async (change, context) => {
       .limit(1)
       .get();
     if (conversationSnapshot.docs && conversationSnapshot.docs[0]) {
-      const someDoc = conversationSnapshot.docs[0];
+      const conversationDoc = conversationSnapshot.docs[0];
 
-      if (someDoc.id !== change.after.id) {
+      if (conversationDoc.id !== change.after.id) {
         await admin
           .firestore()
           .collection("conversation_extra_data")

@@ -1,4 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
+import useState from "react-usestateref";
+
 import { useNavigate } from "react-router-dom";
 import { faWalkieTalkie } from "@fortawesome/pro-duotone-svg-icons/faWalkieTalkie";
 import { faHandsHelping } from "@fortawesome/pro-duotone-svg-icons/faHandsHelping";
@@ -16,7 +18,7 @@ import { isMobileOrTablet, useIsMounted, userSignUpProgress } from "../../util";
 import {
   conversationsListener,
   countHelpersOrVenters,
-  getIsUserInQueue,
+  isUserInQueue,
   joinQueue,
   leaveQueue,
   queueListener,
@@ -27,25 +29,29 @@ function ChatWithStrangersPage() {
   const isMounted = useIsMounted();
   const navigate = useNavigate();
 
-  const [queue, setQueue] = useState([]);
-  const [isInQueue, setIsInQueue] = useState(false);
+  const [queue, setQueue, queueRef] = useState([]);
   const [starterModal, setStarterModal] = useState();
 
   useEffect(() => {
     const queueUnsubscribe = queueListener(isMounted, setQueue);
 
     let conversationsUnsubscribe;
-    if (user) {
+    if (user)
       conversationsUnsubscribe = conversationsListener(navigate, user.uid);
-      getIsUserInQueue(isMounted, setIsInQueue, user.uid);
-    }
 
-    return () => {
+    const cleanup = () => {
       if (conversationsUnsubscribe) conversationsUnsubscribe();
       if (queueUnsubscribe) queueUnsubscribe();
-      if (user && isInQueue) leaveQueue(user.uid);
+      if (user && isUserInQueue(queueRef.current, user.uid))
+        leaveQueue(user.uid);
+
+      window.removeEventListener("beforeunload", cleanup);
     };
-  }, [isInQueue, isMounted, navigate, user]);
+
+    window.addEventListener("beforeunload", cleanup);
+
+    return cleanup;
+  }, [isMounted, navigate, user]);
 
   return (
     <Page
@@ -81,7 +87,7 @@ function ChatWithStrangersPage() {
               </b>
             </p>
           )}
-          {isInQueue && (
+          {isUserInQueue(queue, user.uid) && (
             <p className="tac">
               You are in queue! :) Stay on this page to remain in the queue
             </p>
@@ -99,7 +105,7 @@ function ChatWithStrangersPage() {
                   return;
                 }
 
-                joinQueue("helper", setIsInQueue, user.uid);
+                joinQueue("helper", user.uid);
               }}
             >
               <Container
@@ -147,7 +153,7 @@ function ChatWithStrangersPage() {
                   return;
                 }
 
-                joinQueue("venter", setIsInQueue, user.uid);
+                joinQueue("venter", user.uid);
               }}
             >
               <Container
