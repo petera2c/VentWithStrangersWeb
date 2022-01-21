@@ -47,7 +47,7 @@ export const deleteMessage = async (conversationID, messageID, setMessages) => {
     );
     return [...messages];
   });
-  alert("Message deleted!");
+  message.success("Message deleted!");
 };
 
 export const getConversationBasicData = async (
@@ -229,6 +229,7 @@ export const getMessages = async (
       });
     }
   } else {
+    setMessages([]);
     setCanLoadMore(false);
   }
 };
