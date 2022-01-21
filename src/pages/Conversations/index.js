@@ -34,7 +34,6 @@ function Conversations() {
   const [starterModal, setStarterModal] = useState(!user);
 
   useEffect(() => {
-    console.log("here");
     let newMessageListenerUnsubscribe;
 
     if (user) {
@@ -114,9 +113,9 @@ function Conversations() {
                   conversations,
                   isMounted,
                   setActiveConversation,
-                  (newConversations) => {
+                  (newConversations, subtraction) => {
                     if (
-                      newConversations.length < 5 ||
+                      newConversations.length < 5 - subtraction ||
                       newConversations.length === 0
                     )
                       setCanLoadMore(false);

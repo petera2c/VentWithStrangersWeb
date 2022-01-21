@@ -58,10 +58,19 @@ export const displayNameErrors = (displayName) => {
 };
 
 export const getEndAtValueTimestamp = (array) => {
-  let startAt = 10000000000000;
+  const recurse = (myArray) => {
+    if (
+      myArray[myArray.length - 1] &&
+      myArray[myArray.length - 1].useToPaginate === false
+    ) {
+      return recurse(array.slice(0, -1));
+    } else if (myArray[myArray.length - 1])
+      return myArray[myArray.length - 1].doc;
+    else return 10000000000000;
+  };
 
-  if (array && array[array.length - 1] && array[array.length - 1].doc)
-    startAt = array[array.length - 1].doc;
+  const startAt = recurse(array);
+
   return startAt;
 };
 

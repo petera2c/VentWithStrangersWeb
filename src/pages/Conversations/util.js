@@ -144,15 +144,19 @@ export const getConversations = async (
     .limit(5)
     .get();
 
+  let isActiveConversationInNewConversations = 0;
   let newConversations = [];
   conversationsQuerySnapshot.docs.forEach((item, i) => {
-    if (conversations.find((conversation) => conversation.id === item.id))
+    if (conversations.find((conversation) => conversation.id === item.id)) {
+      isActiveConversationInNewConversations++;
       return;
+    }
 
     newConversations.push({
       id: item.id,
       ...item.data(),
       doc: conversationsQuerySnapshot.docs[i],
+      useToPaginate: true,
     });
   });
 
@@ -175,10 +179,12 @@ export const getConversations = async (
         id: conversationDoc.id,
         ...conversationDoc.data(),
         doc: conversationDoc,
+        useToPaginate: false,
       });
   }
 
-  if (isMounted()) setConversations(newConversations);
+  if (isMounted())
+    setConversations(newConversations, isActiveConversationInNewConversations);
 };
 
 export const getMessages = async (
