@@ -1,7 +1,7 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-import { Space } from "antd";
+import { Avatar, Space } from "antd";
 
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
 import { faInfo } from "@fortawesome/pro-duotone-svg-icons/faInfo";
@@ -13,26 +13,62 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Container from "../containers/Container";
 import MakeAd from "../MakeAd";
+import MakeAvatar from "../MakeAvatar";
 
 import { OnlineUsersContext, UserContext } from "../../context";
 
 import { getTotalOnlineUsers, isPageActive, useIsMounted } from "../../util";
 import { getUserAvatars } from "./util";
 
-function SideBarLink({ icon, link, onClick, pathname, text }) {
+function SideBarLink({
+  icon,
+  link,
+  onClick,
+  pathname,
+  firstOnlineUsers,
+  text,
+  totalOnlineUsers,
+}) {
   if (link)
     return (
       <Link
         className={
-          "x-fill align-center grid-1 button-4 clickable py8 " +
-          isPageActive(link, pathname)
+          "align-center button-4 clickable py8 " +
+          isPageActive(link, pathname) +
+          (firstOnlineUsers ? " grid-2" : " grid-1")
         }
         to={link}
       >
-        <Container className="flex blue x-fill full-center">
+        <Container className="blue x-fill full-center">
           <FontAwesomeIcon icon={icon} style={{ fontSize: "1.25rem" }} />
         </Container>
         <h5 className="grey-1 inherit-color">{text}</h5>
+        {firstOnlineUsers && (
+          <Container className="flex-fill align-end">
+            {firstOnlineUsers.map((userBasicInfo, index) => (
+              <Container className="relative avatar small" key={index}>
+                <Container
+                  className="absolute"
+                  style={{ left: `-${index * 24}px` }}
+                >
+                  <MakeAvatar
+                    displayName={userBasicInfo.displayName}
+                    userBasicInfo={userBasicInfo}
+                    size="small"
+                  />
+                </Container>
+              </Container>
+            ))}
+            <Container className="relative test2 avatar very-small">
+              <Container
+                className="absolute avatar very-small bg-grey-2"
+                style={{ left: `-${firstOnlineUsers.length * 24}px`, top: 0 }}
+              >
+                <div className="avatar small">+{totalOnlineUsers - 3}</div>
+              </Container>
+            </Container>
+          </Container>
+        )}
       </Link>
     );
 
@@ -55,17 +91,18 @@ function Sidebar() {
   const { pathname } = useLocation();
 
   const { userSubscription } = useContext(UserContext);
-
   const { totalOnlineUsers, setTotalOnlineUsers } = useContext(
     OnlineUsersContext
   );
+
+  const [firstOnlineUsers, setFirstOnlineUsers] = useState();
 
   useEffect(() => {
     let onlineUsersUnsubscribe;
 
     onlineUsersUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) => {
       if (isMounted()) {
-        //getUserAvatars(totalOnlineUsers);
+        getUserAvatars(setFirstOnlineUsers, totalOnlineUsers);
         setTotalOnlineUsers(totalOnlineUsers);
       }
     });
@@ -77,18 +114,20 @@ function Sidebar() {
 
   return (
     <Space
-      className="container ad column ov-auto bg-white border-top pa16"
+      className="container small column ov-auto bg-white border-top pa16"
       direction="vertical"
     >
       <SideBarLink
         icon={faUserFriends}
         link="/online-users"
         pathname={pathname}
+        firstOnlineUsers={firstOnlineUsers}
         text={
           (totalOnlineUsers ? totalOnlineUsers : "0") +
           (totalOnlineUsers === 1 ? " Person" : " People") +
           " Online"
         }
+        totalOnlineUsers={totalOnlineUsers}
       />
       <SideBarLink
         icon={faComments}

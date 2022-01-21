@@ -79,6 +79,11 @@
   align-items: center;
   border-radius: 50%;
 }
+.avatar.very-small {
+  min-width: 42px;
+  width: 42px !important;
+  height: 42px !important;
+}
 .avatar.small {
   min-width: 48px;
   width: 48px !important;

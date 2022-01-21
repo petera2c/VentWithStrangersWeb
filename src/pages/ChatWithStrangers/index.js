@@ -87,7 +87,7 @@ function ChatWithStrangersPage() {
               </b>
             </p>
           )}
-          {isUserInQueue(queue, user.uid) && (
+          {user && isUserInQueue(queue, user.uid) && (
             <p className="tac">
               You are in queue! :) Stay on this page to remain in the queue
             </p>

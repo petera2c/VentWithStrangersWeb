@@ -1,32 +1,42 @@
 import firebase from "firebase/compat/app";
-import { doc, writeBatch } from "firebase/firestore";
 import "firebase/compat/database";
-
 import db from "../../config/firebase";
 
-export const getUserAvatars = (totalOnlineUsers) => {
+export const getUserAvatars = (setFirstOnlineUsers, totalOnlineUsers) => {
   if (totalOnlineUsers > 0)
     firebase
       .database()
       .ref("status")
-      .orderByChild("last_online")
-      .limitToLast(totalOnlineUsers >= 3 ? 3 : totalOnlineUsers)
-      .once("value", (snapshot) => {
-        let usersArray = [];
+      .orderByChild("state")
+      .limitToLast(totalOnlineUsers)
+      .once("value", async (snapshot) => {
+        let usersOnline = [];
 
         snapshot.forEach((data) => {
-          if (data.val().state === "online") {
-            usersArray.push({
+          if (usersOnline.length >= 3) return;
+          else if (data.val().state === "online") {
+            usersOnline.push({
               lastOnline: data.val().last_online,
               userID: data.key,
             });
           }
         });
-        console.log(usersArray);
 
-        const batch = writeBatch(db);
+        usersOnline.sort((a, b) => {
+          if (a.lastOnline < b.lastOnline || !a.lastOnline) return 1;
+          if (a.lastOnline > b.lastOnline || !b.lastOnline) return -1;
+          return 0;
+        });
 
-        const nycRef = doc(db, "cities", "NYC");
-        //batch.set(nycRef, { name: "New York City" });
+        const onlineUsersAvatars = [];
+
+        for (let index in usersOnline) {
+          const test = await db
+            .collection("users_display_name")
+            .doc(usersOnline[index].userID)
+            .get();
+          if (test.data()) onlineUsersAvatars.push(test.data());
+        }
+        setFirstOnlineUsers(onlineUsersAvatars);
       });
 };
