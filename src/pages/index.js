@@ -1,5 +1,6 @@
 import React, { Suspense, useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import loadable from "@loadable/component";
 import { useIdleTimer } from "react-idle-timer";
 
 import firebase from "firebase/compat/app";
@@ -9,13 +10,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 import { OnlineUsersContext, UserContext } from "../context";
 
-import Container from "../components/containers/Container";
-import Header from "../components/Header";
-import LoadingHeart from "../components/loaders/Heart";
-import MobileHeader from "../components/Header/MobileHeader";
-import NewRewardModal from "../components/modals/NewReward";
-import Sidebar from "../components/Sidebar";
-
 import { getUserBasicInfo, isMobileOrTablet, useIsMounted } from "../util";
 import {
   getIsUserSubscribed,
@@ -23,6 +17,15 @@ import {
   setIsUserOnlineToDatabase,
   setUserOnlineStatus,
 } from "./util";
+
+const Container = loadable(() => import("../components/containers/Container"));
+const Header = loadable(() => import("../components/Header"));
+const LoadingHeart = loadable(() => import("../components/loaders/Heart"));
+const MobileHeader = loadable(() =>
+  import("../components/Header/MobileHeader")
+);
+const NewRewardModal = loadable(() => import("../components/modals/NewReward"));
+const Sidebar = loadable(() => import("../components/Sidebar"));
 
 const AboutUsPage = React.lazy(() => import("./AboutUs"));
 const AccountPage = React.lazy(() => import("./Account/Account"));
@@ -100,18 +103,6 @@ function RoutesComp() {
       if (user) setUserOnlineStatus("offline", user.uid);
     };
   }, [isMounted, user]);
-
-  if (loading)
-    return (
-      <Container className="screen-container full-center pr32">
-        <img
-          alt=""
-          className="loading-animation"
-          src="/svgs/icon.svg"
-          style={{ height: "280px" }}
-        />
-      </Container>
-    );
 
   return (
     <UserContext.Provider
