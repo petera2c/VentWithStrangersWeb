@@ -1,7 +1,6 @@
 import { Component } from "react";
 
 import { getHtmlElement } from "./util";
-import "./style.css";
 
 class Text extends Component {
   render() {

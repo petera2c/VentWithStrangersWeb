@@ -51,8 +51,6 @@ import {
   ventHasLiked,
 } from "./util";
 
-import "./style.css";
-
 const SmartLink = ({ children, className, disablePostOnClick, to }) => {
   if (disablePostOnClick || !to) {
     return <Container className={className}>{children}</Container>;
