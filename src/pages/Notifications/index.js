@@ -1,13 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
+import loadable from "@loadable/component";
 
 import { UserContext } from "../../context";
 
-import Page from "../../components/containers/Page";
-import Container from "../../components/containers/Container";
-import NotificationList from "../../components/NotificationList";
-
 import { getNotifications } from "../../components/Header/util";
 import { isMobileOrTablet, useIsMounted } from "../../util";
+
+const Container = loadable(() =>
+  import("../../components/containers/Container")
+);
+const NotificationList = loadable(() =>
+  import("../../components/NotificationList")
+);
+const Page = loadable(() => import("../../components/containers/Page"));
 
 function NotificationsPage() {
   const isMounted = useIsMounted();

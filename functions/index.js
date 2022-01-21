@@ -133,7 +133,8 @@ const injectMetaData = (req, res) => {
         /https:\/\/res.cloudinary.com\/dnc1t9z9o\/image\/upload\/v1580431332\/VENT.jpg/g,
         metaImage
       );
-      // res.set("Cache-Control", "public", "max-age=600", "s-maxage=1200");
+
+      res.set("Cache-Control", "public", "max-age=600", "s-maxage=1200");
       if (vent)
         data = data.replace(
           /vent-data-example/g,
@@ -144,7 +145,6 @@ const injectMetaData = (req, res) => {
     });
   });
 };
-
 app.post("/subscribe", subscribeToPlan);
 app.get("/sitemap.xml", createProxy());
 

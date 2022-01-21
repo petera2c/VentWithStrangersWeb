@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import loadable from "@loadable/component";
 import { Button, Space } from "antd";
 
 import { firebaseApp } from "../../../config/firebase";
 
-import Page from "../../../components/containers/Page";
-
 import { handleVerifyEmail } from "./util";
+
+const Page = loadable(() => import("../../../components/containers/Page"));
 
 function VerifiedEmail() {
   const [verifiedSuccessfully, setVerifiedSuccessly] = useState(false);

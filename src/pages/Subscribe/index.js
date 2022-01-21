@@ -1,5 +1,7 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import loadable from "@loadable/component";
+
 import { loadStripe } from "@stripe/stripe-js";
 import {
   CardElement,
@@ -10,10 +12,12 @@ import {
 import { Button, message } from "antd";
 import axios from "axios";
 
-import Container from "../../components/containers/Container";
-import Page from "../../components/containers/Page";
-
 import { UserContext } from "../../context";
+
+const Container = loadable(() =>
+  import("../../components/containers/Container")
+);
+const Page = loadable(() => import("../../components/containers/Page"));
 
 const CheckoutForm = () => {
   const { user } = useContext(UserContext);

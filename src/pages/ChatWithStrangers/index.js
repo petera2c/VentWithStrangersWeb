@@ -1,15 +1,11 @@
 import React, { useContext, useEffect } from "react";
 import useState from "react-usestateref";
+import loadable from "@loadable/component";
 
 import { useNavigate } from "react-router-dom";
 import { faWalkieTalkie } from "@fortawesome/pro-duotone-svg-icons/faWalkieTalkie";
 import { faHandsHelping } from "@fortawesome/pro-duotone-svg-icons/faHandsHelping";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-import Container from "../../components/containers/Container";
-import Page from "../../components/containers/Page";
-import StarterModal from "../../components/modals/Starter";
-import Text from "../../components/views/Text";
 
 import { UserContext } from "../../context";
 
@@ -23,6 +19,13 @@ import {
   leaveQueue,
   queueListener,
 } from "./util";
+
+const Container = loadable(() =>
+  import("../../components/containers/Container")
+);
+const Page = loadable(() => import("../../components/containers/Page"));
+const StarterModal = loadable(() => import("../../components/modals/Starter"));
+const Text = loadable(() => import("../../components/views/Text"));
 
 function ChatWithStrangersPage() {
   const { user } = useContext(UserContext);

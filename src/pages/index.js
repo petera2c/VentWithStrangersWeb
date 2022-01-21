@@ -140,7 +140,7 @@ function RoutesComp() {
               {!loading && !error && (
                 <Suspense
                   fallback={
-                    <Container className="x-fill full-center">
+                    <Container className="x-fill full-center bg-grey-2">
                       <LoadingHeart />
                     </Container>
                   }

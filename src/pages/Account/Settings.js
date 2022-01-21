@@ -1,17 +1,21 @@
 import React, { useContext } from "react";
 import { useDocument } from "react-firebase-hooks/firestore";
+import loadable from "@loadable/component";
 import { message } from "antd";
 import db from "../../config/firebase";
 
-import Container from "../../components/containers/Container";
-import LoadingHeart from "../../components/loaders/Heart";
-import Page from "../../components/containers/Page";
-import SubscribeColumn from "../../components/SubscribeColumn";
-import Text from "../../components/views/Text";
-
 import { UserContext } from "../../context";
-
 import { isMobileOrTablet } from "../../util";
+
+const Container = loadable(() =>
+  import("../../components/containers/Container")
+);
+const LoadingHeart = loadable(() => import("../../components/loaders/Heart"));
+const Page = loadable(() => import("../../components/containers/Page"));
+const SubscribeColumn = loadable(() =>
+  import("../../components/SubscribeColumn")
+);
+const Text = loadable(() => import("../../components/views/Text"));
 
 function SettingsSection() {
   const { user } = useContext(UserContext);

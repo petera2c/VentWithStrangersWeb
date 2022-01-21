@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import loadable from "@loadable/component";
 import moment from "moment-timezone";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Button, Space } from "antd";
@@ -13,18 +14,6 @@ import { faPray } from "@fortawesome/pro-solid-svg-icons/faPray";
 import { faSchool } from "@fortawesome/pro-solid-svg-icons/faSchool";
 import { faUserLock } from "@fortawesome/pro-solid-svg-icons/faUserLock";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-import Comment from "../../components/Comment";
-import ConfirmAlertModal from "../../components/modals/ConfirmAlert";
-import Container from "../../components/containers/Container";
-import HandleOutsideClick from "../../components/containers/HandleOutsideClick";
-import KarmaBadge from "../../components/KarmaBadge";
-import LoadingHeart from "../../components/loaders/Heart";
-import MakeAvatar from "../../components/MakeAvatar";
-import Page from "../../components/containers/Page";
-import StarterModal from "../../components/modals/Starter";
-import SubscribeColumn from "../../components/SubscribeColumn";
-import Vent from "../../components/Vent";
 
 import { UserContext } from "../../context";
 
@@ -45,6 +34,26 @@ import {
   userSignUpProgress,
 } from "../../util";
 import { getUser, getUsersComments, getUsersVents } from "./util";
+
+const Comment = loadable(() => import("../../components/Comment"));
+const ConfirmAlertModal = loadable(() =>
+  import("../../components/modals/ConfirmAlert")
+);
+const Container = loadable(() =>
+  import("../../components/containers/Container")
+);
+const HandleOutsideClick = loadable(() =>
+  import("../../components/containers/HandleOutsideClick")
+);
+const KarmaBadge = loadable(() => import("../../components/KarmaBadge"));
+const LoadingHeart = loadable(() => import("../../components/loaders/Heart"));
+const MakeAvatar = loadable(() => import("../../components/MakeAvatar"));
+const Page = loadable(() => import("../../components/containers/Page"));
+const StarterModal = loadable(() => import("../../components/modals/Starter"));
+const SubscribeColumn = loadable(() =>
+  import("../../components/SubscribeColumn")
+);
+const Vent = loadable(() => import("../../components/Vent"));
 
 function ProfileSection() {
   const isMounted = useIsMounted();

@@ -1,14 +1,17 @@
 import React from "react";
+import loadable from "@loadable/component";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook } from "@fortawesome/free-brands-svg-icons/faFacebook";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons/faInstagram";
 
-import Page from "../../components/containers/Page";
-import Container from "../../components/containers/Container";
-import Text from "../../components/views/Text";
-
 import { isMobileOrTablet } from "../../util";
+
+const Page = loadable(() => import("../../components/containers/Page"));
+const Container = loadable(() =>
+  import("../../components/containers/Container")
+);
+const Text = loadable(() => import("../../components/views/Text"));
 
 function AppDownloadPage() {
   return (
@@ -18,12 +21,7 @@ function AppDownloadPage() {
       keywords=""
       title="App Downloads"
     >
-      <Container
-        className={
-          "column flex-fill ov-auto full-center py16 " +
-          (isMobileOrTablet() ? "" : "")
-        }
-      >
+      <Container className="column flex-fill ov-auto full-center py16">
         <Container className="column full-center">
           <Container className="column full-center mb16">
             <img

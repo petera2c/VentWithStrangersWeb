@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
-
-import Container from "../../components/containers/Container";
-import Page from "../../components/containers/Page";
-import SubscribeColumn from "../../components/SubscribeColumn";
-import Vent from "../../components/Vent";
+import loadable from "@loadable/component";
 
 import { getMeta } from "./util";
+
+const Container = loadable(() =>
+  import("../../components/containers/Container")
+);
+const Page = loadable(() => import("../../components/containers/Page"));
+const SubscribeColumn = loadable(() =>
+  import("../../components/SubscribeColumn")
+);
+const Vent = loadable(() => import("../../components/Vent"));
 
 const getVentIdFromURL = (pathname) => {
   // regular expression will not work due to catastrophic backtracing

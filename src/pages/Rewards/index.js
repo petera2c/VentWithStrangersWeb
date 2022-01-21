@@ -1,10 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
+import loadable from "@loadable/component";
 import moment from "moment-timezone";
 import { Progress, Space, Tooltip } from "antd";
-
-import Container from "../../components/containers/Container";
-import Page from "../../components/containers/Page";
-import SubscribeColumn from "../../components/SubscribeColumn";
 
 import { UserContext } from "../../context";
 
@@ -15,6 +12,14 @@ import {
   getUserRecentRewards,
   getUserRewardsProgress,
 } from "./util";
+
+const Container = loadable(() =>
+  import("../../components/containers/Container")
+);
+const Page = loadable(() => import("../../components/containers/Page"));
+const SubscribeColumn = loadable(() =>
+  import("../../components/SubscribeColumn")
+);
 
 function CounterDisplay({ counter, size, tooltip, title }) {
   return (

@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import loadable from "@loadable/component";
 import moment from "moment-timezone";
 import TextArea from "react-textarea-autosize";
 import { Button, DatePicker, message } from "antd";
@@ -12,11 +13,6 @@ import { faTransgenderAlt } from "@fortawesome/pro-solid-svg-icons/faTransgender
 import { faVenusMars } from "@fortawesome/pro-solid-svg-icons/faVenusMars";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Container from "../../components/containers/Container";
-import Page from "../../components/containers/Page";
-import SubscribeColumn from "../../components/SubscribeColumn";
-import Text from "../../components/views/Text";
-
 import { UserContext } from "../../context";
 
 import {
@@ -28,6 +24,15 @@ import {
 } from "../../PersonalOptions";
 import { calculateKarma, isMobileOrTablet, useIsMounted } from "../../util";
 import { getUser, updateUser } from "./util";
+
+const Container = loadable(() =>
+  import("../../components/containers/Container")
+);
+const Page = loadable(() => import("../../components/containers/Page"));
+const SubscribeColumn = loadable(() =>
+  import("../../components/SubscribeColumn")
+);
+const Text = loadable(() => import("../../components/views/Text"));
 
 function AccountSection() {
   const isMounted = useIsMounted();

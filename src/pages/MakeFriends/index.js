@@ -1,15 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import loadable from "@loadable/component";
 
 import { UserContext } from "../../context";
 
-import Container from "../../components/containers/Container";
-import Page from "../../components/containers/Page";
-import StarterModal from "../../components/modals/Starter";
-import UserComp from "../../components/User";
-
 import { isMobileOrTablet } from "../../util";
 import { getUserInfo, getUserMatches, hasUserCompletedProfile } from "./util";
+
+const Container = loadable(() =>
+  import("../../components/containers/Container")
+);
+const Page = loadable(() => import("../../components/containers/Page"));
+const StarterModal = loadable(() => import("../../components/modals/Starter"));
+const UserComp = loadable(() => import("../../components/User"));
 
 function MakeFriendsPage() {
   const { user } = useContext(UserContext);

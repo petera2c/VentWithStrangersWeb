@@ -1,6 +1,7 @@
 import React from "react";
+import loadable from "@loadable/component";
 
-import Page from "../../components/containers/Page";
+const Page = loadable(() => import("../../components/containers/Page"));
 
 function FeedbackPage() {
   return (

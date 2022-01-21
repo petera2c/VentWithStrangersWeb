@@ -1,22 +1,24 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-
-import { UserContext } from "../../context";
+import loadable from "@loadable/component";
 
 import StarterModal from "../../components/modals/Starter";
 
-import Page from "../../components/containers/Page";
-import Container from "../../components/containers/Container";
-
-import MobileIndex from "./MobileIndex";
-import ConversationOption from "./ConversationOption";
-import Chat from "./chat";
+import { UserContext } from "../../context";
 
 import { isMobileOrTablet, useIsMounted, userSignUpProgress } from "../../util";
 
 import { getConversations, mostRecentConversationListener } from "./util";
 
 import "./style.css";
+
+const Chat = loadable(() => import("./chat"));
+const Container = loadable(() =>
+  import("../../components/containers/Container")
+);
+const ConversationOption = loadable(() => import("./ConversationOption"));
+const MobileIndex = loadable(() => import("./MobileIndex"));
+const Page = loadable(() => import("../../components/containers/Page"));
 
 function Conversations() {
   const isMounted = useIsMounted();

@@ -1,10 +1,13 @@
 import React from "react";
+import loadable from "@loadable/component";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/pro-regular-svg-icons/faHeart";
 
-import Page from "../../components/containers/Page";
-import Container from "../../components/containers/Container";
+const Page = loadable(() => import("../../components/containers/Page"));
+const Container = loadable(() =>
+  import("../../components/containers/Container")
+);
 
 function FriendsPage() {
   return (
@@ -37,7 +40,10 @@ function FriendsPage() {
             We are always looking to connect with new people! Help our mission
             to eliminate mental illness. If you want to contact us, please
             message us on one of our social media channels or email us at{" "}
-            <a>ventwithstrangers@gmail.com</a>.
+            <a href="mailto:ventwithstrangers@gmail.com">
+              ventwithstrangers@gmail.com
+            </a>
+            .
           </p>
         </Container>
       </Container>
