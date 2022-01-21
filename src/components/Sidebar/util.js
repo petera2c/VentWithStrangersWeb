@@ -39,7 +39,10 @@ export const getUserAvatars = (setFirstOnlineUsers, totalOnlineUsers) => {
             .doc(usersOnline[i].userID)
             .get();
           if (userBasicInfoDoc.data())
-            onlineUsersAvatars.push(userBasicInfoDoc.data());
+            onlineUsersAvatars.push({
+              id: userBasicInfoDoc.id,
+              ...userBasicInfoDoc.data(),
+            });
         }
 
         setFirstOnlineUsers(onlineUsersAvatars);

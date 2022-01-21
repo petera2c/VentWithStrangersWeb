@@ -46,7 +46,10 @@ function SideBarLink({
         {firstOnlineUsers && (
           <Container className="flex-fill align-end">
             {firstOnlineUsers.map((userBasicInfo, index) => (
-              <Container className="relative avatar small" key={index}>
+              <Container
+                className="relative avatar small"
+                key={userBasicInfo.id}
+              >
                 <Container
                   className="absolute"
                   style={{ left: `-${index * 24}px` }}
