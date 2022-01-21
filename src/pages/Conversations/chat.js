@@ -71,6 +71,7 @@ function Chat({
 
   useEffect(() => {
     let messageListenerUnsubscribe;
+    setCanLoadMore(true);
 
     getMessages(
       conversation.id,
