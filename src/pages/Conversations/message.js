@@ -10,6 +10,7 @@ import Container from "../../components/containers/Container";
 
 import Text from "../../components/views/Text";
 
+import { urlify } from "../../util";
 import { deleteMessage } from "./util";
 
 function Message({ conversationID, message, setMessages, userID }) {
@@ -21,25 +22,33 @@ function Message({ conversationID, message, setMessages, userID }) {
     <Container className="x-fill">
       <Container
         className={
-          "clickable mb8 br4 " +
-          (message.userID === userID ? "bg-blue" : "bg-grey-10")
+          "mb8 br4 " + (message.userID === userID ? "bg-blue" : "bg-grey-10")
         }
-        onClick={() => {
-          setMessageOptions(!messageOptions);
-        }}
-        onMouseLeave={() => setMessageOptions(false)}
         style={{ maxWidth: "80%" }}
       >
-        <p
-          className={
-            "flex-fill break-word px16 py8 " +
-            (message.userID === userID ? "white" : "grey-1")
-          }
-        >
-          {message.body}
-        </p>
+        <div className="flex-fill description px16 py8">
+          {urlify(message.body).map((obj, index) => {
+            return (
+              <p
+                className={
+                  "description " +
+                  (message.userID === userID ? "white" : "grey-1")
+                }
+                key={index}
+              >
+                {obj}
+              </p>
+            );
+          })}
+        </div>
         <Container className="relative br4">
-          <Container className="align-end pr2">
+          <Container
+            className="clickable align-end pr2"
+            onClick={() => {
+              setMessageOptions(!messageOptions);
+            }}
+            onMouseLeave={() => setMessageOptions(false)}
+          >
             <p
               className={
                 "fs-12 " + (message.userID === userID ? "white" : "grey-1")

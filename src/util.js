@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
+import reactStringReplace from "react-string-replace";
 import firebase from "firebase/compat/app";
 import "firebase/compat/database";
 import { sendEmailVerification } from "firebase/auth";
@@ -169,6 +170,14 @@ export const soundNotify = (sound = "bing") => {
 
   audio.play();
 };
+
+//https://stackoverflow.com/a/1500501/7332319
+export const urlify = (text) =>
+  reactStringReplace(text, /(https?:\/\/[^\s]+)/g, (match, i) => (
+    <a className="button-1 no-hover" href={match}>
+      {match}
+    </a>
+  ));
 
 export const useIsMounted = () => {
   const isMountedRef = useRef(true);

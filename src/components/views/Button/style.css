@@ -1,13 +1,9 @@
 .blue-fade {
   background: linear-gradient(to top, var(--main-color), #64b5f6);
 }
-.grey-button {
-  border: 1px solid var(--grey-font-color);
-  color: var(--grey-font-color) !important;
-  background-color: var(--white-color);
-}
-.transparent-button.active {
-  color: var(--four-blue-color);
+
+.no-hover:hover {
+  color: inherit;
 }
 .button-1:hover {
   cursor: pointer;
