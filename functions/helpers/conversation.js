@@ -28,6 +28,8 @@ const chatQueueListener = async (change, context) => {
     if (!partnerSnapshot.docs || !partnerSnapshot.docs[0]) return;
     const partnerDoc = partnerSnapshot.docs[0];
 
+    if (partnerDoc.id === userID) return;
+
     const partnerDocRef = admin
       .firestore()
       .collection("chat_queue")
