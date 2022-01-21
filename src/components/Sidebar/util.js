@@ -13,8 +13,7 @@ export const getUserAvatars = (setFirstOnlineUsers, totalOnlineUsers) => {
         let usersOnline = [];
 
         snapshot.forEach((data) => {
-          if (usersOnline.length >= 3) return;
-          else if (data.val().state === "online") {
+          if (data.val().state === "online") {
             usersOnline.push({
               lastOnline: data.val().last_online,
               userID: data.key,
@@ -30,13 +29,19 @@ export const getUserAvatars = (setFirstOnlineUsers, totalOnlineUsers) => {
 
         const onlineUsersAvatars = [];
 
-        for (let index in usersOnline) {
-          const test = await db
+        for (
+          let i = 0;
+          i < (usersOnline.length >= 3 ? 3 : usersOnline.length);
+          i++
+        ) {
+          const userBasicInfoDoc = await db
             .collection("users_display_name")
-            .doc(usersOnline[index].userID)
+            .doc(usersOnline[i].userID)
             .get();
-          if (test.data()) onlineUsersAvatars.push(test.data());
+          if (userBasicInfoDoc.data())
+            onlineUsersAvatars.push(userBasicInfoDoc.data());
         }
+
         setFirstOnlineUsers(onlineUsersAvatars);
       });
 };
