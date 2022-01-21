@@ -34,6 +34,7 @@ function Conversations() {
   const [starterModal, setStarterModal] = useState(!user);
 
   useEffect(() => {
+    console.log("here");
     let newMessageListenerUnsubscribe;
 
     if (user) {
@@ -51,11 +52,7 @@ function Conversations() {
         (newConversations) => {
           if (!isMounted()) return;
 
-          if (
-            newConversations.length % 5 !== 0 ||
-            newConversations.length === 0
-          )
-            setCanLoadMore(false);
+          if (newConversations.length < 5) setCanLoadMore(false);
 
           setConversations(newConversations);
 
@@ -113,12 +110,13 @@ function Conversations() {
               className="button-2 pa8 my8 br4"
               onClick={() => {
                 getConversations(
+                  activeConversation,
                   conversations,
                   isMounted,
                   setActiveConversation,
                   (newConversations) => {
                     if (
-                      newConversations.length % 5 !== 0 ||
+                      newConversations.length < 5 ||
                       newConversations.length === 0
                     )
                       setCanLoadMore(false);

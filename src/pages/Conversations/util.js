@@ -157,11 +157,13 @@ export const getConversations = async (
   });
 
   if (
+    !conversations.find(
+      (conversation) => conversation.id === activeConversation
+    ) &&
     !newConversations.find(
       (conversation) => conversation.id === activeConversation
     )
   ) {
-    console.log("here");
     const conversationDoc = await db
       .collection("conversations")
       .doc(activeConversation)
@@ -174,7 +176,6 @@ export const getConversations = async (
         doc: conversationDoc,
       });
   }
-
   if (isMounted()) setConversations(newConversations);
 };
 
