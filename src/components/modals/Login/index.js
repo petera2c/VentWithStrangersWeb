@@ -11,14 +11,12 @@ import { isMobileOrTablet } from "../../../util";
 
 import { login } from "./util";
 
-import "./style.css";
-
 function LoginModal({ setActiveModal }) {
   const { register, handleSubmit } = useForm();
   const [canSeePassword, setCanSeePassword] = useState(false);
 
   return (
-    <Container className="modal-container full-center">
+    <Container className="modal-container">
       <Container
         className={
           "modal column align-center ov-auto bg-white br4 " +

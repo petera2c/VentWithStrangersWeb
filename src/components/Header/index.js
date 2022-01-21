@@ -56,15 +56,15 @@ function SideBarLink({ icon, link, onClick, pathname, text }) {
 
   if (onClick)
     return (
-      <Container
+      <div
         className="x-fill align-center grid-1 button-4 clickable py8"
         onClick={onClick}
       >
-        <Container className="flex x-fill full-center">
+        <Container className="full-center">
           <FontAwesomeIcon icon={icon} style={{ fontSize: "1.25rem" }} />
         </Container>
         <h5 className="grey-1 inherit-color">{text}</h5>
-      </Container>
+      </div>
     );
 }
 
