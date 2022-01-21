@@ -110,7 +110,7 @@ function ConversationOption({
             {conversation.last_message.length > 40
               ? conversation.last_message.substring(0, 40) + "..."
               : conversation.last_message}{" "}
-            · {moment(conversation.last_updated).fromNow()}
+            · {new moment(conversation.last_updated).fromNow()}
           </p>
         )}
       </Container>
