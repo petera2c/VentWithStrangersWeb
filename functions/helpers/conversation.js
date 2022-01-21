@@ -111,32 +111,54 @@ const conversationUpdateListener = async (change, context) => {
   const conversationBefore = change.before.data();
   const conversationAfter = change.after.data();
 
-  // If user has deleted conversation code
-  if (
-    conversationBefore &&
-    !arraysEqual(conversationBefore.members, conversationAfter.members)
-  ) {
-    for (let index in conversationBefore.members) {
-      if (
-        conversationBefore.members[index] !== conversationAfter.members[index]
-      ) {
-        const snapshot = await admin
+  if (conversationAfter && conversationBefore) {
+    if (!arraysEqual(conversationBefore.members, conversationAfter.members)) {
+      // If user has deleted conversation code
+      for (let index in conversationBefore.members) {
+        if (
+          conversationBefore.members[index] !== conversationAfter.members[index]
+        ) {
+          const snapshot = await admin
+            .firestore()
+            .collection("conversation_extra_data")
+            .doc(conversationID)
+            .collection("messages")
+            .where("userID", "==", conversationBefore.members[index])
+            .get();
+          if (snapshot && snapshot.docs)
+            for (let index in snapshot.docs) {
+              await admin
+                .firestore()
+                .collection("conversation_extra_data")
+                .doc(conversationID)
+                .collection("messages")
+                .doc(snapshot.docs[index].id)
+                .delete();
+            }
+        }
+      }
+    }
+  } else if (conversationAfter) {
+    const conversationSnapshot = await admin
+      .firestore()
+      .collection("conversations")
+      .where("members", "==", conversationAfter.members)
+      .limit(1)
+      .get();
+    if (conversationSnapshot.docs && conversationSnapshot.docs[0]) {
+      const someDoc = conversationSnapshot.docs[0];
+
+      if (someDoc.id !== change.after.id) {
+        await admin
           .firestore()
           .collection("conversation_extra_data")
-          .doc(conversationID)
-          .collection("messages")
-          .where("userID", "==", conversationBefore.members[index])
-          .get();
-        if (snapshot && snapshot.docs)
-          for (let index in snapshot.docs) {
-            await admin
-              .firestore()
-              .collection("conversation_extra_data")
-              .doc(conversationID)
-              .collection("messages")
-              .doc(snapshot.docs[index].id)
-              .delete();
-          }
+          .doc(change.after.id)
+          .delete();
+        await admin
+          .firestore()
+          .collection("conversations")
+          .doc(change.after.id)
+          .delete();
       }
     }
   }

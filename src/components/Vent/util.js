@@ -257,6 +257,7 @@ export const startConversation = async (navigate, user, ventUserID) => {
   const conversationQuerySnapshot = await db
     .collection("conversations")
     .where("members", "==", sortedMemberIDs)
+    .limit(1)
     .get();
 
   const goToPage = (conversationID) => {
