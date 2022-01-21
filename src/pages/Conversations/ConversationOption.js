@@ -106,7 +106,13 @@ function ConversationOption({
           )}
         </Container>
         {conversation.last_message && (
-          <p>
+          <p
+            className="description"
+            style={{
+              WebkitLineClamp: 1,
+              lineClamp: 1,
+            }}
+          >
             {conversation.last_message.length > 40
               ? conversation.last_message.substring(0, 40) + "..."
               : conversation.last_message}{" "}
