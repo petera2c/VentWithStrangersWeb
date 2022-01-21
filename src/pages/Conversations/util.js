@@ -157,6 +157,7 @@ export const getConversations = async (
   });
 
   if (
+    activeConversation &&
     !conversations.find(
       (conversation) => conversation.id === activeConversation
     ) &&
@@ -176,6 +177,7 @@ export const getConversations = async (
         doc: conversationDoc,
       });
   }
+
   if (isMounted()) setConversations(newConversations);
 };
 
