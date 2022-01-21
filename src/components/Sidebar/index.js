@@ -59,14 +59,18 @@ function SideBarLink({
                 </Container>
               </Container>
             ))}
-            <Container className="relative test2 avatar very-small">
-              <Container
-                className="absolute avatar very-small bg-grey-2"
-                style={{ left: `-${firstOnlineUsers.length * 24}px`, top: 0 }}
-              >
-                <div className="avatar small">+{totalOnlineUsers - 3}</div>
+            {totalOnlineUsers - firstOnlineUsers.length > 0 && (
+              <Container className="relative avatar very-small">
+                <Container
+                  className="absolute avatar very-small bg-grey-2"
+                  style={{ left: `-${firstOnlineUsers.length * 24}px`, top: 0 }}
+                >
+                  <div className="avatar small blue">
+                    +{totalOnlineUsers - firstOnlineUsers.length}
+                  </div>
+                </Container>
               </Container>
-            </Container>
+            )}
           </Container>
         )}
       </Link>
