@@ -17,6 +17,7 @@ import MakeAd from "../MakeAd";
 import { OnlineUsersContext, UserContext } from "../../context";
 
 import { getTotalOnlineUsers, isPageActive, useIsMounted } from "../../util";
+import { getUserAvatars } from "./util";
 
 function SideBarLink({ icon, link, onClick, pathname, text }) {
   if (link)
@@ -63,7 +64,10 @@ function Sidebar() {
     let onlineUsersUnsubscribe;
 
     onlineUsersUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) => {
-      if (isMounted()) setTotalOnlineUsers(totalOnlineUsers);
+      if (isMounted()) {
+        //getUserAvatars(totalOnlineUsers);
+        setTotalOnlineUsers(totalOnlineUsers);
+      }
     });
 
     return () => {
