@@ -43,8 +43,6 @@ import {
   resetUnreadConversationCount,
 } from "./util";
 
-import "./style.css";
-
 function Header() {
   const isMounted = useIsMounted();
   const location = useLocation();

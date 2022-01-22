@@ -10,8 +10,6 @@ import { isMobileOrTablet, useIsMounted, userSignUpProgress } from "../../util";
 
 import { getConversations, mostRecentConversationListener } from "./util";
 
-import "./style.css";
-
 const Chat = loadable(() => import("./chat"));
 const Container = loadable(() =>
   import("../../components/containers/Container")

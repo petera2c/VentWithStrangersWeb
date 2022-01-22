@@ -15,8 +15,6 @@ import { useIsMounted, userSignUpProgress } from "../../util";
 
 import { getConversations, mostRecentConversationListener } from "./util";
 
-import "./style.css";
-
 function MobileConversations() {
   const isMounted = useIsMounted();
   const { user } = useContext(UserContext);

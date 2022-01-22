@@ -1,7 +1,5 @@
 import React from "react";
 
-import "./style.css";
-
 function Container({
   children,
   className,
@@ -10,7 +8,7 @@ function Container({
   onClick,
   onScroll,
   style,
-  testMode
+  testMode,
 }) {
   if (testMode) className += " test-mode";
 

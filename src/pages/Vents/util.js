@@ -7,11 +7,7 @@ export const getMetaInformation = (pathname) => {
   let metaDescription =
     "People care. Vent and chat anonymously to be apart of a community committed to making the world a better place.";
 
-  if (pathname === "/popular") {
-    metaTitle = "Popular";
-    metaDescription =
-      "Vents and issues that have the most upvotes and comments of all time. Post, comment, and/or like anonymously.";
-  } else if (pathname === "/recent") {
+  if (pathname === "/recent") {
     metaTitle = "Recent";
     metaDescription =
       "The latest vents and issues people have posted. Post, comment, and/or like anonymously.";

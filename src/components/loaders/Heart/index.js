@@ -1,7 +1,5 @@
 import React from "react";
 
-import "./style.css";
-
 function LoadingHeart() {
   return (
     <div className="loader-heart-container">

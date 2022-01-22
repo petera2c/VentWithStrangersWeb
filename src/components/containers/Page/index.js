@@ -5,8 +5,6 @@ import { Helmet } from "react-helmet";
 
 import Container from "../Container";
 
-import "./style.css";
-
 function Page(props) {
   const { children, className, id } = props;
   const { pathname } = useLocation();
