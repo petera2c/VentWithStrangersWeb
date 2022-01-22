@@ -61,6 +61,12 @@ const createSitemap = async () => {
   for (let index in vents.docs) {
     const vent = vents.docs[index].data();
 
+    if (
+      !vent.description ||
+      (vent.description && vent.description.length < 500)
+    )
+      continue;
+
     let url =
       "https://www.ventwithstrangers.com/problem/" +
       vents.docs[index].id +
