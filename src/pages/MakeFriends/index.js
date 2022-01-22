@@ -99,12 +99,7 @@ function MakeFriendsPage() {
           })}
         </Container>
       )}
-      <Container
-        className={
-          "column full-center bg-white pa16 mt16 br8 " +
-          (isMobileOrTablet() ? "mx8" : "container extra-large")
-        }
-      >
+      <Container className="column full-center bg-white pa16 mt16 br8">
         <Container className="x-fill wrap gap16">
           <div className="x-fill">
             <p>

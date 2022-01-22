@@ -119,16 +119,16 @@ function RoutesComp() {
         }}
       >
         <Router>
-          <Container className="screen-container column ov-hidden">
+          <Container className="screen-container column">
             {!isMobileOrTablet() && <Header />}
             {isMobileOrTablet() && <MobileHeader />}
 
-            <Container className="flex-fill x-fill ov-hidden">
+            <Container className="flex-fill">
               {!isMobileOrTablet() && <Sidebar />}
               {!loading && (
                 <Suspense
                   fallback={
-                    <Container className="x-fill full-center bg-grey-2">
+                    <Container className="flex-fill justify-center bg-grey-2">
                       <LoadingHeart />
                     </Container>
                   }
