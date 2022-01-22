@@ -83,7 +83,7 @@ function AboutUsPage() {
                 <p>Basic Blue Badge @ 500 Karma Points</p>
               </Space>
               <ul>
-                <li>Can create a vent once every 1 hours</li>
+                <li>Can create a vent once every 1 hour</li>
               </ul>
             </Container>
             <Container className="column">
@@ -92,7 +92,7 @@ function AboutUsPage() {
                 <p>Super Orange Badge @ 1000 Karma Points</p>
               </Space>
               <ul>
-                <li>Can create a vent once every 30 minutes</li>
+                <li>Can create a vent once every 1 hour</li>
               </ul>
             </Container>
             <Container className="column">
@@ -101,7 +101,7 @@ function AboutUsPage() {
                 <p>Super Red Badge @ 2500 Karma Points</p>
               </Space>
               <ul>
-                <li>Can create a vent once every 15 minutes</li>
+                <li>Can create a vent once every 1 hour</li>
               </ul>
             </Container>
             <Container className="column">
@@ -110,7 +110,7 @@ function AboutUsPage() {
                 <p>Super Green Badge @ 5000 Karma Points</p>
               </Space>
               <ul>
-                <li>Can create vents freely</li>
+                <li>Can create a vent once every 1 hour</li>
               </ul>
             </Container>
             <Container className="column">
@@ -119,7 +119,7 @@ function AboutUsPage() {
                 <p>Super Blue Badge @ 10000 Karma Points</p>
               </Space>
               <ul>
-                <li>Can create vents freely</li>
+                <li>Can create a vent once every 1 hour</li>
               </ul>
             </Container>
           </Space>

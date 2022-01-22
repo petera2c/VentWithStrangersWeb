@@ -53,7 +53,7 @@ const VerifiedEmailPage = React.lazy(() => import("./EmailAuth/VerifiedEmail"));
 
 function RoutesComp() {
   const isMounted = useIsMounted();
-  const [user] = useAuthState(firebase.auth());
+  const [user, loading] = useAuthState(firebase.auth());
   const [totalOnlineUsers, setTotalOnlineUsers] = useState();
   const [userBasicInfo, setUserBasicInfo] = useState({});
   const [userSubscription, setUserSubscription] = useState();
@@ -125,62 +125,74 @@ function RoutesComp() {
 
             <Container className="flex-fill x-fill ov-hidden">
               {!isMobileOrTablet() && <Sidebar />}
-              <Suspense
-                fallback={
-                  <Container className="x-fill full-center bg-grey-2">
-                    <LoadingHeart />
-                  </Container>
-                }
-              >
-                <Routes>
-                  {!user && <Route path="account" element={<SignUpPage />} />}
-                  {!user && <Route path="avatar" element={<SignUpPage />} />}
-                  {!user && <Route path="settings" element={<SignUpPage />} />}
-                  {user && <Route path="account" element={<AccountPage />} />}
-                  {user && <Route path="avatar" element={<AvatarPage />} />}
-                  {user && <Route path="settings" element={<SettingsPage />} />}
-                  <Route path="" element={<VentsPage />} />
-                  <Route path="/*" element={<NotFoundPage />} />
-                  <Route
-                    path="chat-with-strangers"
-                    element={<ChatWithStrangersPage />}
-                  />
-                  <Route path="conversations" element={<ConversationsPage />} />
-                  <Route path="friends" element={<FriendsPage />} />
-                  <Route path="home" element={<VentsPage />} />
-                  <Route path="make-friends" element={<MakeFriendsPage />} />
-                  <Route path="notifications" element={<NotificationsPage />} />
-                  <Route path="online-users" element={<OnlineUsersPage />} />
-                  <Route path="popular" element={<VentsPage />} />
-                  <Route
-                    path="privacy-policy"
-                    element={<PrivacyPolicyPage />}
-                  />
-                  <Route path="problem/:id" element={<VentPage />} />
-                  <Route path="problem/:id/:title" element={<VentPage />} />
-                  <Route path="profile" element={<ProfilePage />} />
-                  <Route path="recent" element={<VentsPage />} />
-                  <Route path="rewards" element={<RewardsPage />} />
-                  <Route path="rules" element={<RulesPage />} />
-                  <Route path="search" element={<SearchPage />} />
-                  <Route path="site-info" element={<AboutUsPage />} />
-                  <Route path="subscribe" element={<SubscribePage />} />
-                  <Route
-                    path="subscription-successful"
-                    element={<SubSuccessPage />}
-                  />
-                  <Route path="trending" element={<VentsPage />} />
-                  <Route path="vent-to-strangers" element={<NewVentPage />} />
-                  <Route
-                    path="vent-to-strangers/:id"
-                    element={<NewVentPage />}
-                  />
-                  <Route
-                    path="verified-email"
-                    element={<VerifiedEmailPage />}
-                  />
-                </Routes>
-              </Suspense>
+              {!loading && (
+                <Suspense
+                  fallback={
+                    <Container className="x-fill full-center bg-grey-2">
+                      <LoadingHeart />
+                    </Container>
+                  }
+                >
+                  <Routes>
+                    {!user && <Route path="account" element={<SignUpPage />} />}
+                    {!user && <Route path="avatar" element={<SignUpPage />} />}
+                    {!user && (
+                      <Route path="settings" element={<SignUpPage />} />
+                    )}
+                    {user && <Route path="account" element={<AccountPage />} />}
+                    {user && <Route path="avatar" element={<AvatarPage />} />}
+                    {user && (
+                      <Route path="settings" element={<SettingsPage />} />
+                    )}
+                    <Route path="" element={<VentsPage />} />
+                    <Route path="/*" element={<NotFoundPage />} />
+                    <Route
+                      path="chat-with-strangers"
+                      element={<ChatWithStrangersPage />}
+                    />
+                    <Route
+                      path="conversations"
+                      element={<ConversationsPage />}
+                    />
+                    <Route path="friends" element={<FriendsPage />} />
+                    <Route path="home" element={<VentsPage />} />
+                    <Route path="make-friends" element={<MakeFriendsPage />} />
+                    <Route
+                      path="notifications"
+                      element={<NotificationsPage />}
+                    />
+                    <Route path="online-users" element={<OnlineUsersPage />} />
+                    <Route path="popular" element={<VentsPage />} />
+                    <Route
+                      path="privacy-policy"
+                      element={<PrivacyPolicyPage />}
+                    />
+                    <Route path="problem/:id" element={<VentPage />} />
+                    <Route path="problem/:id/:title" element={<VentPage />} />
+                    <Route path="profile" element={<ProfilePage />} />
+                    <Route path="recent" element={<VentsPage />} />
+                    <Route path="rewards" element={<RewardsPage />} />
+                    <Route path="rules" element={<RulesPage />} />
+                    <Route path="search" element={<SearchPage />} />
+                    <Route path="site-info" element={<AboutUsPage />} />
+                    <Route path="subscribe" element={<SubscribePage />} />
+                    <Route
+                      path="subscription-successful"
+                      element={<SubSuccessPage />}
+                    />
+                    <Route path="trending" element={<VentsPage />} />
+                    <Route path="vent-to-strangers" element={<NewVentPage />} />
+                    <Route
+                      path="vent-to-strangers/:id"
+                      element={<NewVentPage />}
+                    />
+                    <Route
+                      path="verified-email"
+                      element={<VerifiedEmailPage />}
+                    />
+                  </Routes>
+                </Suspense>
+              )}
             </Container>
             {newReward && (
               <NewRewardModal
