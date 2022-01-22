@@ -123,7 +123,7 @@ function RoutesComp() {
             {!isMobileOrTablet() && <Header />}
             {isMobileOrTablet() && <MobileHeader />}
 
-            <Container className="flex-fill">
+            <Container className="flex-fill ov-hidden">
               {!isMobileOrTablet() && <Sidebar />}
               {!loading && (
                 <Suspense
