@@ -416,7 +416,7 @@ function Vent({
 
           {!searchPreviewMode && displayCommentField && comments && (
             <Container className="column mb16">
-              {vent.comment_counter > 0 && (
+              {vent.comment_counter === 0 && (
                 <p className="tac pt16">
                   There are no comments yet. Please help this person :)
                 </p>
