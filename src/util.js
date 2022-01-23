@@ -76,6 +76,24 @@ export const getEndAtValueTimestamp = (array) => {
   return startAt;
 };
 
+export const getEndAtValueTimestampAsc = (array) => {
+  const recurse = (myArray) => {
+    if (
+      myArray &&
+      myArray[myArray.length - 1] &&
+      myArray[myArray.length - 1].useToPaginate === false
+    ) {
+      return recurse(array.slice(0, -1));
+    } else if (myArray && myArray[myArray.length - 1])
+      return myArray[myArray.length - 1].doc;
+    else return 0;
+  };
+
+  const startAt = recurse(array);
+
+  return startAt;
+};
+
 export const getEndAtValueTimestampFirst = (array) => {
   let startAt = 10000000000000;
 

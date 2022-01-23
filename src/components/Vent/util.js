@@ -2,7 +2,11 @@ import firebase from "firebase/compat/app";
 import { message } from "antd";
 import db from "../../config/firebase";
 
-import { userSignUpProgress, getEndAtValueTimestamp } from "../../util";
+import {
+  userSignUpProgress,
+  getEndAtValueTimestamp,
+  getEndAtValueTimestampAsc,
+} from "../../util";
 
 const incrementVentCounter = (attributeToIncrement, shouldIncrease, vent) => {
   const newVent = { ...vent };
@@ -140,12 +144,12 @@ export const newVentCommentListener = (
           ) {
             if (isMounted())
               setComments((oldComments) => [
+                ...oldComments,
                 {
                   ...querySnapshot.docs[0].data(),
                   id: querySnapshot.docs[0].id,
                   doc: querySnapshot.docs[0],
                 },
-                ...oldComments,
               ]);
           }
         }
@@ -161,12 +165,12 @@ export const getVentComments = async (
   setComments,
   ventID
 ) => {
-  const startAt = getEndAtValueTimestamp(comments);
+  const startAt = getEndAtValueTimestampAsc(comments);
 
   const snapshot = await db
     .collection("comments")
     .where("ventID", "==", ventID)
-    .orderBy("server_timestamp", "desc")
+    .orderBy("server_timestamp")
     .startAfter(startAt)
     .limit(10)
     .get();

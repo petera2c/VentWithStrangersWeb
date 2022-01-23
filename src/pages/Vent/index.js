@@ -47,7 +47,7 @@ function VentPage() {
   if (regexMatch) ventID = regexMatch;
 
   return (
-    <Page className="pa16" description={description} title={title}>
+    <Page className="px16 pt16" description={description} title={title}>
       <Container>
         {ventFound === false && <h4>Vent Not Found</h4>}
         {ventFound === undefined && ventID && (

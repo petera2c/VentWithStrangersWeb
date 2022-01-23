@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import moment from "moment-timezone";
 import { MentionsInput, Mention } from "react-mentions";
+import { Space } from "antd";
 
 import { faClock } from "@fortawesome/pro-regular-svg-icons/faClock";
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
@@ -80,9 +81,6 @@ function Vent({
   const [author, setAuthor] = useState({});
   const [commentString, setCommentString] = useState("");
   const [deleteVentConfirm, setDeleteVentConfirm] = useState(false);
-  const [displayCommentField2, setDisplayCommentField] = useState(
-    displayCommentField
-  );
   const [hasLiked, setHasLiked] = useState(false);
   const [comments, setComments] = useState([]);
   const [isUserOnline, setIsUserOnline] = useState(false);
@@ -125,7 +123,7 @@ function Vent({
       });
     }
 
-    if (!searchPreviewMode && displayCommentField2)
+    if (!searchPreviewMode && displayCommentField)
       newCommentListenerUnsubscribe = newVentCommentListener(
         isMounted,
         setComments,
@@ -166,7 +164,7 @@ function Vent({
   return (
     <Container className="x-fill">
       {vent && (
-        <Container className="x-fill column bg-white py16 br8">
+        <Container className="x-fill column bg-white pt16 br8">
           <SmartLink
             className={
               "main-container x-fill justify-between border-bottom py16 px32 " +
@@ -308,8 +306,8 @@ function Vent({
             <p
               className="fw-400 grey-1 description"
               style={{
-                WebkitLineClamp: displayCommentField2 ? 150 : 3,
-                lineClamp: displayCommentField2 ? 150 : 3,
+                WebkitLineClamp: displayCommentField ? 150 : 3,
+                lineClamp: displayCommentField ? 150 : 3,
               }}
             >
               {getVentDescription(previewMode, vent)}
@@ -328,59 +326,68 @@ function Vent({
             <Container
               className={
                 "relative justify-between wrap py16 px32 gap8 " +
-                (!searchPreviewMode && displayCommentField2
+                (!searchPreviewMode && displayCommentField
                   ? "border-bottom"
                   : "")
               }
             >
-              <Container className="align-center">
-                <img
-                  alt="Support"
-                  className={`clickable heart ${
-                    hasLiked ? "red" : "grey-5"
-                  } mr4`}
-                  onClick={(e) => {
-                    e.preventDefault();
+              <Container className="align-center gap16">
+                <Container className="align-center gap4">
+                  <img
+                    alt="Support"
+                    className={`clickable heart ${hasLiked ? "red" : "grey-5"}`}
+                    onClick={(e) => {
+                      e.preventDefault();
 
-                    const userInteractionIssues = userSignUpProgress(user);
+                      const userInteractionIssues = userSignUpProgress(user);
 
-                    if (userInteractionIssues) {
-                      if (userInteractionIssues === "NSI")
-                        setStarterModal(true);
-                      return;
+                      if (userInteractionIssues) {
+                        if (userInteractionIssues === "NSI")
+                          setStarterModal(true);
+                        return;
+                      }
+
+                      likeOrUnlikeVent(
+                        hasLiked,
+                        setHasLiked,
+                        setVent,
+                        user,
+                        vent
+                      );
+                    }}
+                    src={
+                      hasLiked
+                        ? "/svgs/support-active.svg"
+                        : "/svgs/support.svg"
                     }
+                    style={{ height: "32px" }}
+                    title="Give Support :)"
+                  />
+                  <Text
+                    className="grey-5"
+                    text={vent.like_counter ? vent.like_counter : 0}
+                    type="p"
+                  />
+                </Container>
 
-                    likeOrUnlikeVent(
-                      hasLiked,
-                      setHasLiked,
-                      setVent,
-                      user,
-                      vent
-                    );
-                  }}
-                  src={
-                    hasLiked ? "/svgs/support-active.svg" : "/svgs/support.svg"
+                <SmartLink
+                  className="flex align-center gap4"
+                  disablePostOnClick={disablePostOnClick}
+                  to={
+                    vent && vent.title && vent.id
+                      ? getVentPartialLink(vent)
+                      : ""
                   }
-                  style={{ height: "32px" }}
-                  title="Give Support :)"
-                />
-
-                <Text
-                  className="grey-5 mr8"
-                  text={vent.like_counter ? vent.like_counter : 0}
-                  type="p"
-                />
-
-                <button
-                  className="button-2 no-text-wrap px16 py8 mr16 br8"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setDisplayCommentField(!displayCommentField2);
-                  }}
                 >
-                  {vent.comment_counter ? vent.comment_counter : 0}{" "}
-                  {vent.comment_counter === 1 ? "Comment" : "Comments"}
-                </button>
+                  <FontAwesomeIcon
+                    className="blue"
+                    icon={faComments}
+                    size="2x"
+                  />
+                  <p className="grey-5">
+                    {vent.comment_counter ? vent.comment_counter : 0}
+                  </p>
+                </SmartLink>
               </Container>
 
               {(!user || (user && user.uid !== vent.userID && author.id)) && (
@@ -406,105 +413,8 @@ function Vent({
               )}
             </Container>
           )}
-          {!searchPreviewMode && displayCommentField2 && (
-            <Container
-              className={
-                "x-fill " +
-                (comments && comments.length > 0 ? "border-bottom" : "")
-              }
-            >
-              <Container className="x-fill column py16 br8">
-                <Container className="x-fill px16">
-                  <Container className="column x-fill align-end br8">
-                    <Container className="relative column x-fill">
-                      {isUserAccountNew(userBasicInfo) && (
-                        <Link to="/rules">
-                          <button
-                            className="blue ml8 mb8"
-                            size="large"
-                            type="link"
-                          >
-                            Read VWS Rules
-                          </button>
-                        </Link>
-                      )}
-                      <MentionsInput
-                        className="mentions"
-                        onChange={(e) => {
-                          if (!canUserPost(userBasicInfo)) return;
 
-                          setCommentString(e.target.value);
-                        }}
-                        placeholder="Say something nice :)"
-                        value={commentString}
-                      >
-                        <Mention
-                          className="mentions__mention"
-                          data={(currentTypingTag, callback) => {
-                            findPossibleUsersToTag(
-                              currentTypingTag,
-                              vent.id,
-                              callback
-                            );
-                          }}
-                          markup="@[__display__](__id__)"
-                          renderSuggestion={(
-                            entry,
-                            search,
-                            highlightedDisplay,
-                            index,
-                            focused
-                          ) => {
-                            return (
-                              <Container className="flex-fill align-center wrap ov-hidden pa8 gap8">
-                                <MakeAvatar
-                                  displayName={entry.displayName}
-                                  userBasicInfo={entry}
-                                />
-                                <Container className="button-7">
-                                  <h5 className="ellipsis fw-400 mr8">
-                                    {capitolizeFirstChar(entry.displayName)}
-                                  </h5>
-                                </Container>
-                                <KarmaBadge userBasicInfo={entry} noOnClick />
-                              </Container>
-                            );
-                          }}
-                          trigger="@"
-                        />
-                      </MentionsInput>
-                    </Container>
-                    <button
-                      className="button-2 px32 py8 mt8 br4"
-                      onClick={async () => {
-                        const userInteractionIssues = userSignUpProgress(user);
-
-                        if (userInteractionIssues) {
-                          if (userInteractionIssues === "NSI")
-                            setStarterModal(true);
-                          return;
-                        }
-
-                        if (!commentString) return;
-                        commentVent(
-                          commentString,
-                          setVent,
-                          user,
-                          vent,
-                          vent.id
-                        );
-
-                        setCommentString("");
-                      }}
-                    >
-                      Send
-                    </button>
-                  </Container>
-                </Container>
-              </Container>
-            </Container>
-          )}
-          {!searchPreviewMode && displayCommentField2 && comments && (
+          {!searchPreviewMode && displayCommentField && comments && (
             <Container className="column mb16">
               <Container className="column br8">
                 {comments.map((comment, index) => {
@@ -537,11 +447,96 @@ function Vent({
                   </button>
                 )}
               </Container>
+              {vent.comment_counter === 0 && (
+                <p className="tac pt16">
+                  There are no comments yet. Please help this person :)
+                </p>
+              )}
             </Container>
           )}
-          {displayCommentField2 && !comments && (
+          {displayCommentField && !comments && (
             <Container className="x-fill full-center">
               <LoadingHeart />
+            </Container>
+          )}
+
+          {!searchPreviewMode && displayCommentField && (
+            <Container
+              className="sticky column x-fill align-end bg-white border-top pa16 br8"
+              style={{ bottom: 2 }}
+            >
+              <Container className="relative column x-fill">
+                {isUserAccountNew(userBasicInfo) && (
+                  <Link to="/rules">
+                    <button className="blue ml8 mb8" size="large" type="link">
+                      Read VWS Rules
+                    </button>
+                  </Link>
+                )}
+                <MentionsInput
+                  className="mentions"
+                  onChange={(e) => {
+                    if (!canUserPost(userBasicInfo)) return;
+
+                    setCommentString(e.target.value);
+                  }}
+                  placeholder="Say something nice :)"
+                  value={commentString}
+                >
+                  <Mention
+                    className="mentions__mention"
+                    data={(currentTypingTag, callback) => {
+                      findPossibleUsersToTag(
+                        currentTypingTag,
+                        vent.id,
+                        callback
+                      );
+                    }}
+                    markup="@[__display__](__id__)"
+                    renderSuggestion={(
+                      entry,
+                      search,
+                      highlightedDisplay,
+                      index,
+                      focused
+                    ) => {
+                      return (
+                        <Container className="flex-fill align-center wrap ov-hidden pa8 gap8">
+                          <MakeAvatar
+                            displayName={entry.displayName}
+                            userBasicInfo={entry}
+                          />
+                          <Container className="button-7">
+                            <h5 className="ellipsis fw-400 mr8">
+                              {capitolizeFirstChar(entry.displayName)}
+                            </h5>
+                          </Container>
+                          <KarmaBadge userBasicInfo={entry} noOnClick />
+                        </Container>
+                      );
+                    }}
+                    trigger="@"
+                  />
+                </MentionsInput>
+              </Container>
+              <button
+                className="button-2 px32 py8 mt8 br4"
+                onClick={async () => {
+                  const userInteractionIssues = userSignUpProgress(user);
+
+                  if (userInteractionIssues) {
+                    if (userInteractionIssues === "NSI") setStarterModal(true);
+                    return;
+                  }
+
+                  if (!commentString) return;
+                  commentVent(commentString, setVent, user, vent, vent.id);
+
+                  setCommentString("");
+                }}
+              >
+                Send
+              </button>
             </Container>
           )}
         </Container>

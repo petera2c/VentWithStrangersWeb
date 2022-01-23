@@ -38,6 +38,20 @@
         },
         {
           "fieldPath": "server_timestamp",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "comments",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "userID",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "server_timestamp",
           "order": "DESCENDING"
         }
       ]
