@@ -101,11 +101,7 @@ function Comment({
         borderBottomRightRadius: arrayLength - 1 === commentIndex ? "8px" : "",
       }}
     >
-      <Container
-        className={
-          "justify-between py16 " + (isMobileOrTablet() ? "px16" : "px32")
-        }
-      >
+      <Container className="justify-between py16">
         <Space
           align="center"
           className="clickable mb8"
@@ -222,13 +218,9 @@ function Comment({
           )}
         </Container>
       </Container>
-      {!editingComment && (
-        <Text className="px32" type="p">
-          {swapTags(comment.text)}
-        </Text>
-      )}
+      {!editingComment && <Text type="p">{swapTags(comment.text)}</Text>}
       {editingComment && (
-        <Container className="column x-fill align-end px32 br8">
+        <Container className="column x-fill align-end br8">
           <Container className="relative x-fill">
             <MentionsInput
               className="mentions"
@@ -281,7 +273,7 @@ function Comment({
           </Container>
         </Container>
       )}
-      <Space className="align-center justify-between px32 py16" wrap>
+      <Space className="align-center justify-between py16" wrap>
         <Container
           className="clickable align-center"
           onClick={async (e) => {

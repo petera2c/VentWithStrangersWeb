@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import moment from "moment-timezone";
 import { MentionsInput, Mention } from "react-mentions";
-import { Space } from "antd";
+import { Button, Dropdown, Space } from "antd";
 
 import { faClock } from "@fortawesome/pro-regular-svg-icons/faClock";
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
@@ -415,45 +415,52 @@ function Vent({
           )}
 
           {!searchPreviewMode && displayCommentField && comments && (
-            <Container className="column mb16">
-              {vent.comment_counter === 0 && (
-                <p className="tac pt16">
-                  There are no comments yet. Please help this person :)
-                </p>
+            <Container className="column px32 py16 gap16">
+              {false && vent.comment_counter > 0 && (
+                <Dropdown
+                  arrow
+                  overlay={<div>hello world</div>}
+                  placement="bottomLeft"
+                  trigger={["click"]}
+                >
+                  <Button>bottomLeft</Button>
+                </Dropdown>
               )}
-              <Container className="column">
-                {comments.map((comment, index) => {
-                  return (
-                    <Comment
-                      arrayLength={comments.length}
-                      commentID={comment.id}
-                      commentIndex={index}
-                      comment2={comment}
-                      setComments={setComments}
-                      ventUserID={vent.userID}
-                      key={comment.id}
-                    />
-                  );
-                })}
-                {vent.comment_counter > comments.length && (
-                  <button
-                    className="blue underline"
-                    onClick={() => {
-                      getVentComments(
-                        comments,
-                        isMounted,
-                        setComments,
-                        vent.id
-                      );
-                    }}
-                    key={comments.length}
-                  >
-                    Load More Comments
-                  </button>
-                )}
-              </Container>
+              {comments && comments.length > 0 && (
+                <Container className="column">
+                  {comments.map((comment, index) => {
+                    return (
+                      <Comment
+                        arrayLength={comments.length}
+                        commentID={comment.id}
+                        commentIndex={index}
+                        comment2={comment}
+                        setComments={setComments}
+                        ventUserID={vent.userID}
+                        key={comment.id}
+                      />
+                    );
+                  })}
+                  {vent.comment_counter > comments.length && (
+                    <button
+                      className="blue underline"
+                      onClick={() => {
+                        getVentComments(
+                          comments,
+                          isMounted,
+                          setComments,
+                          vent.id
+                        );
+                      }}
+                      key={comments.length}
+                    >
+                      Load More Comments
+                    </button>
+                  )}
+                </Container>
+              )}
               {vent.comment_counter === 0 && (
-                <p className="tac pt16">
+                <p className="tac">
                   There are no comments yet. Please help this person :)
                 </p>
               )}
