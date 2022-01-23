@@ -102,7 +102,6 @@ exports.onlineStatusListener = functions.database
 exports.cronUpdateSitemap = functions.pubsub
   .schedule("0 0 * * *")
   .onRun(async () => createSitemap());
-createSitemap();
 exports.cronDecreaseTrendingScore = functions.pubsub
   .schedule("0 * * * *")
   .onRun(async () => decreaseTrendingScore());
