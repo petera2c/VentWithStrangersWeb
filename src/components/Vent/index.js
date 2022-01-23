@@ -416,7 +416,12 @@ function Vent({
 
           {!searchPreviewMode && displayCommentField && comments && (
             <Container className="column mb16">
-              <Container className="column br8">
+              {vent.comment_counter > 0 && (
+                <p className="tac pt16">
+                  There are no comments yet. Please help this person :)
+                </p>
+              )}
+              <Container className="column">
                 {comments.map((comment, index) => {
                   return (
                     <Comment

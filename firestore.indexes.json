@@ -33,7 +33,7 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "userID",
+          "fieldPath": "ventID",
           "order": "ASCENDING"
         },
         {
