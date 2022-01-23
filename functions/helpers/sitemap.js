@@ -32,6 +32,8 @@ const createSitemap = async () => {
   let siteMapString =
     '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n';
   siteMapString +=
+    "<sitemap><loc>https://blog.ventwithstrangers.com/sitemap.xml</loc><lastmod>2022-01-23</lastmod></sitemap>";
+  siteMapString +=
     "<url>\n<loc>https://www.ventwithstrangers.com/</loc>\n<lastmod>" +
     new moment().format("YYYY-MM-DD") +
     "</lastmod>\n<changefreq>daily</changefreq>\n<priority>1</priority>\n</url>\n\n";
