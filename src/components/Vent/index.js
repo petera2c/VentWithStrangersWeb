@@ -538,7 +538,7 @@ function Vent({
 
           {!searchPreviewMode && displayCommentField && (
             <Container
-              className="sticky column x-fill align-end bg-white border-top pa16 br8"
+              className="sticky column x-fill align-end bg-white border-top shadow-2 pa16 br8"
               style={{ bottom: 2 }}
             >
               <Container className="relative column x-fill">
