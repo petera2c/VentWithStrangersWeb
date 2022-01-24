@@ -538,14 +538,14 @@ function Vent({
 
           {!searchPreviewMode && displayCommentField && (
             <Container
-              className="sticky column x-fill align-end bg-white border-top shadow-2 pa16 br8"
-              style={{ bottom: 2 }}
+              className="sticky x-fill align-center ov-hidden bg-white border-top shadow-2 br8 gap8 pa16"
+              style={{ bottom: 0 }}
             >
-              <Container className="relative column x-fill">
-                {isUserAccountNew(userBasicInfo) && (
+              <Container className="relative column flex-fill ov-hidden">
+                {false && isUserAccountNew(userBasicInfo) && (
                   <Link to="/rules">
                     <button className="blue ml8 mb8" size="large" type="link">
-                      Read VWS Rules
+                      Read Our VWS Rules
                     </button>
                   </Link>
                 )}
@@ -595,8 +595,7 @@ function Vent({
                   />
                 </MentionsInput>
               </Container>
-              <button
-                className="button-2 px32 py8 mt8 br4"
+              <Button
                 onClick={async () => {
                   const userInteractionIssues = userSignUpProgress(user);
 
@@ -610,9 +609,11 @@ function Vent({
 
                   setCommentString("");
                 }}
+                size="large"
+                type="primary"
               >
                 Send
-              </button>
+              </Button>
             </Container>
           )}
         </Container>

@@ -51,7 +51,10 @@ function VentPage() {
       <Container>
         {ventFound === false && <h4>Vent Not Found</h4>}
         {ventFound === undefined && ventID && (
-          <Container className="column flex-fill gap12">
+          <Container
+            className="column flex-fill"
+            style={{ maxWidth: "calc(100% - 316px)" }}
+          >
             <Vent
               disablePostOnClick={true}
               displayCommentField
