@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import loadable from "@loadable/component";
 
+import { isMobileOrTablet } from "../../util";
 import { getMeta } from "./util";
 
 const Container = loadable(() =>
@@ -53,7 +54,7 @@ function VentPage() {
         {ventFound === undefined && ventID && (
           <Container
             className="column flex-fill"
-            style={{ maxWidth: "calc(100% - 316px)" }}
+            style={{ maxWidth: isMobileOrTablet() ? "" : "calc(100% - 316px)" }}
           >
             <Vent
               disablePostOnClick={true}

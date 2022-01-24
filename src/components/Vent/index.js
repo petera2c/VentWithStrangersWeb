@@ -538,82 +538,85 @@ function Vent({
 
           {!searchPreviewMode && displayCommentField && (
             <Container
-              className="sticky x-fill align-center ov-hidden bg-white border-top shadow-2 br8 gap8 pa16"
+              className="sticky column x-fill ov-hidden bg-white border-top shadow-2 br8 pa16"
               style={{ bottom: 0 }}
             >
-              <Container className="relative column flex-fill ov-hidden">
-                {false && isUserAccountNew(userBasicInfo) && (
-                  <Link to="/rules">
-                    <button className="blue ml8 mb8" size="large" type="link">
-                      Read Our VWS Rules
-                    </button>
-                  </Link>
-                )}
-                <MentionsInput
-                  className="mentions"
-                  onChange={(e) => {
-                    if (!canUserPost(userBasicInfo)) return;
+              {isUserAccountNew(userBasicInfo) && (
+                <Link to="/rules">
+                  <button className="blue ml8 mb8" size="large" type="link">
+                    Read Our VWS Rules
+                  </button>
+                </Link>
+              )}
+              <Container className="flex-fill align-center gap8">
+                <Container className="relative column flex-fill ov-hidden">
+                  <MentionsInput
+                    className="mentions"
+                    onChange={(e) => {
+                      if (!canUserPost(userBasicInfo)) return;
 
-                    setCommentString(e.target.value);
-                  }}
-                  placeholder="Say something nice :)"
-                  value={commentString}
-                >
-                  <Mention
-                    className="mentions__mention"
-                    data={(currentTypingTag, callback) => {
-                      findPossibleUsersToTag(
-                        currentTypingTag,
-                        vent.id,
-                        callback
-                      );
+                      setCommentString(e.target.value);
                     }}
-                    markup="@[__display__](__id__)"
-                    renderSuggestion={(
-                      entry,
-                      search,
-                      highlightedDisplay,
-                      index,
-                      focused
-                    ) => {
-                      return (
-                        <Container className="flex-fill align-center wrap ov-hidden pa8 gap8">
-                          <MakeAvatar
-                            displayName={entry.displayName}
-                            userBasicInfo={entry}
-                          />
-                          <Container className="button-7">
-                            <h5 className="ellipsis fw-400 mr8">
-                              {capitolizeFirstChar(entry.displayName)}
-                            </h5>
+                    placeholder="Say something nice :)"
+                    value={commentString}
+                  >
+                    <Mention
+                      className="mentions__mention"
+                      data={(currentTypingTag, callback) => {
+                        findPossibleUsersToTag(
+                          currentTypingTag,
+                          vent.id,
+                          callback
+                        );
+                      }}
+                      markup="@[__display__](__id__)"
+                      renderSuggestion={(
+                        entry,
+                        search,
+                        highlightedDisplay,
+                        index,
+                        focused
+                      ) => {
+                        return (
+                          <Container className="flex-fill align-center wrap ov-hidden pa8 gap8">
+                            <MakeAvatar
+                              displayName={entry.displayName}
+                              userBasicInfo={entry}
+                            />
+                            <Container className="button-7">
+                              <h5 className="ellipsis fw-400 mr8">
+                                {capitolizeFirstChar(entry.displayName)}
+                              </h5>
+                            </Container>
+                            <KarmaBadge userBasicInfo={entry} noOnClick />
                           </Container>
-                          <KarmaBadge userBasicInfo={entry} noOnClick />
-                        </Container>
-                      );
-                    }}
-                    trigger="@"
-                  />
-                </MentionsInput>
+                        );
+                      }}
+                      trigger="@"
+                    />
+                  </MentionsInput>
+                </Container>
+                <Button
+                  onClick={async () => {
+                    const userInteractionIssues = userSignUpProgress(user);
+
+                    if (userInteractionIssues) {
+                      if (userInteractionIssues === "NSI")
+                        setStarterModal(true);
+                      return;
+                    }
+
+                    if (!commentString) return;
+                    commentVent(commentString, setVent, user, vent, vent.id);
+
+                    setCommentString("");
+                  }}
+                  size="large"
+                  type="primary"
+                >
+                  Send
+                </Button>
               </Container>
-              <Button
-                onClick={async () => {
-                  const userInteractionIssues = userSignUpProgress(user);
-
-                  if (userInteractionIssues) {
-                    if (userInteractionIssues === "NSI") setStarterModal(true);
-                    return;
-                  }
-
-                  if (!commentString) return;
-                  commentVent(commentString, setVent, user, vent, vent.id);
-
-                  setCommentString("");
-                }}
-                size="large"
-                type="primary"
-              >
-                Send
-              </Button>
             </Container>
           )}
         </Container>

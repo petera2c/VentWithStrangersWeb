@@ -37,6 +37,20 @@
           "order": "ASCENDING"
         },
         {
+          "fieldPath": "like_counter",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "comments",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "ventID",
+          "order": "ASCENDING"
+        },
+        {
           "fieldPath": "server_timestamp",
           "order": "ASCENDING"
         }
