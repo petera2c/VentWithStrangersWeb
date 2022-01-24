@@ -78,15 +78,16 @@ function Vent({
   const isMounted = useIsMounted();
   const { user, userBasicInfo } = useContext(UserContext);
 
+  const [activeSort, setActiveSort] = useState("first");
   const [author, setAuthor] = useState({});
+  const [blockModal, setBlockModal] = useState(false);
+  const [canLoadMoreComments, setCanLoadMoreComments] = useState(true);
+  const [comments, setComments] = useState([]);
   const [commentString, setCommentString] = useState("");
   const [deleteVentConfirm, setDeleteVentConfirm] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
-  const [comments, setComments] = useState([]);
-  const [isUserOnline, setIsUserOnline] = useState(false);
-
-  const [blockModal, setBlockModal] = useState(false);
   const [isContentBlocked, setIsContentBlocked] = useState(user ? true : false);
+  const [isUserOnline, setIsUserOnline] = useState(false);
   const [postOptions, setPostOptions] = useState(false);
   const [reportModal, setReportModal] = useState(false);
   const [starterModal, setStarterModal] = useState(false);
@@ -132,9 +133,12 @@ function Vent({
 
     if (!searchPreviewMode)
       getVentComments(
+        activeSort,
         comments,
         isMounted,
+        setCanLoadMoreComments,
         setComments,
+        false,
         ventID ? ventID : vent.id
       );
 
@@ -416,15 +420,71 @@ function Vent({
 
           {!searchPreviewMode && displayCommentField && comments && (
             <Container className="column px32 py16 gap16">
-              {false && vent.comment_counter > 0 && (
-                <Dropdown
-                  arrow
-                  overlay={<div>hello world</div>}
-                  placement="bottomLeft"
-                  trigger={["click"]}
-                >
-                  <Button>bottomLeft</Button>
-                </Dropdown>
+              {vent.comment_counter > 0 && (
+                <Container>
+                  <Dropdown
+                    overlay={
+                      <Container className="column bg-white shadow-2 pa8 br8">
+                        <p
+                          className="button-4 py8"
+                          onClick={() => {
+                            setActiveSort("first");
+                            getVentComments(
+                              "first",
+                              [],
+                              isMounted,
+                              setCanLoadMoreComments,
+                              setComments,
+                              false,
+                              ventID ? ventID : vent.id
+                            );
+                          }}
+                        >
+                          First
+                        </p>
+                        <p
+                          className="button-4 py8"
+                          onClick={() => {
+                            setActiveSort("best");
+                            getVentComments(
+                              "best",
+                              [],
+                              isMounted,
+                              setCanLoadMoreComments,
+                              setComments,
+                              false,
+                              ventID ? ventID : vent.id
+                            );
+                          }}
+                        >
+                          Best
+                        </p>
+                        <p
+                          className="button-4 py8"
+                          onClick={() => {
+                            setActiveSort("last");
+                            getVentComments(
+                              "last",
+                              [],
+                              isMounted,
+                              setCanLoadMoreComments,
+                              setComments,
+                              false,
+                              ventID ? ventID : vent.id
+                            );
+                          }}
+                        >
+                          Best
+                        </p>
+                      </Container>
+                    }
+                    trigger={["click"]}
+                  >
+                    <button className="blue">
+                      Sory By: {capitolizeFirstChar(activeSort)}
+                    </button>
+                  </Dropdown>
+                </Container>
               )}
               {comments && comments.length > 0 && (
                 <Container className="column">
@@ -441,22 +501,26 @@ function Vent({
                       />
                     );
                   })}
-                  {vent.comment_counter > comments.length && (
-                    <button
-                      className="blue underline"
-                      onClick={() => {
-                        getVentComments(
-                          comments,
-                          isMounted,
-                          setComments,
-                          vent.id
-                        );
-                      }}
-                      key={comments.length}
-                    >
-                      Load More Comments
-                    </button>
-                  )}
+                  {canLoadMoreComments &&
+                    vent.comment_counter !== comments.length && (
+                      <button
+                        className="blue underline"
+                        onClick={() => {
+                          getVentComments(
+                            activeSort,
+                            comments,
+                            isMounted,
+                            setCanLoadMoreComments,
+                            setComments,
+                            true,
+                            vent.id
+                          );
+                        }}
+                        key={comments.length}
+                      >
+                        Load More Comments
+                      </button>
+                    )}
                 </Container>
               )}
               {vent.comment_counter === 0 && (

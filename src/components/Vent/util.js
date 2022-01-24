@@ -149,6 +149,7 @@ export const newVentCommentListener = (
                   ...querySnapshot.docs[0].data(),
                   id: querySnapshot.docs[0].id,
                   doc: querySnapshot.docs[0],
+                  useToPaginate: false,
                 },
               ]);
           }
@@ -160,31 +161,87 @@ export const newVentCommentListener = (
 };
 
 export const getVentComments = async (
+  activeSort,
   comments,
   isMounted,
+  setCanLoadMoreComments,
   setComments,
+  useOldComments,
   ventID
 ) => {
-  const startAt = getEndAtValueTimestampAsc(comments);
-
-  const snapshot = await db
-    .collection("comments")
-    .where("ventID", "==", ventID)
-    .orderBy("server_timestamp")
-    .startAfter(startAt)
-    .limit(10)
-    .get();
+  let snapshot;
+  if (activeSort === "first") {
+    snapshot = await db
+      .collection("comments")
+      .where("ventID", "==", ventID)
+      .orderBy("server_timestamp")
+      .startAfter(getEndAtValueTimestampAsc(comments))
+      .limit(10)
+      .get();
+  } else if (activeSort === "best") {
+    snapshot = await db
+      .collection("comments")
+      .where("ventID", "==", ventID)
+      .orderBy("like_counter", "desc")
+      .startAfter(getEndAtValueTimestamp(comments))
+      .limit(10)
+      .get();
+  } else if (activeSort === "last") {
+    snapshot = await db
+      .collection("comments")
+      .where("ventID", "==", ventID)
+      .orderBy("server_timestamp", "desc")
+      .startAfter(getEndAtValueTimestamp(comments))
+      .limit(10)
+      .get();
+  }
 
   if (snapshot.docs && snapshot.docs.length > 0) {
     let newComments = [];
     snapshot.docs.forEach((doc, index) => {
-      newComments.push({ ...doc.data(), id: doc.id, doc });
+      if (comments.find((comment) => comment.id === doc.id)) return;
+      else
+        newComments.push({
+          ...doc.data(),
+          id: doc.id,
+          doc,
+          useToPaginate: true,
+        });
     });
+
+    if (newComments.length < 10) setCanLoadMoreComments(false);
+    else setCanLoadMoreComments(true);
 
     if (isMounted)
       setComments((oldComments) => {
-        if (oldComments) return [...oldComments, ...newComments];
-        else return newComments;
+        if (oldComments && useOldComments) {
+          let returnComments = [...oldComments, ...newComments];
+
+          if (activeSort === "first") {
+            returnComments.sort((a, b) => {
+              if (a.server_timestamp < b.server_timestamp) return -1;
+              if (a.server_timestamp > b.server_timestamp) return 1;
+              return 0;
+            });
+          } else if (activeSort === "best") {
+            returnComments.sort((a, b) => {
+              if (a.like_counter < b.like_counter) return 1;
+              if (a.like_counter > b.like_counter) return -1;
+
+              if (a.server_timestamp < b.server_timestamp) return -1;
+              if (a.server_timestamp > b.server_timestamp) return 1;
+              return 0;
+            });
+          } else if (activeSort === "last") {
+            returnComments.sort((a, b) => {
+              if (a.server_timestamp < b.server_timestamp) return 1;
+              if (a.server_timestamp > b.server_timestamp) return -1;
+              return 0;
+            });
+          }
+
+          return returnComments;
+        } else return newComments;
       });
   } else {
     if (isMounted) setComments([]);
