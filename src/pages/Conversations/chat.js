@@ -195,16 +195,10 @@ function Chat({
             "x-fill border-top  " +
             (isMobileOrTablet() ? "" : "align-center pr16")
           }
-          style={{
-            minHeight: isMobileOrTablet() ? "" : "80px",
-          }}
         >
           <textarea
             autoFocus
-            className={
-              "send-message-textarea light-scrollbar " +
-              (isMobileOrTablet() ? "" : "pa16")
-            }
+            className="send-message-textarea light-scrollbar"
             onChange={(event) => {
               if (event.target.value === "\n") return;
               setMessageString(event.target.value);
@@ -228,6 +222,7 @@ function Chat({
             }}
             placeholder="Type a helpful message here..."
             value={messageString}
+            rows={1}
           />
           <Emoji
             handleChange={(emoji) => {
