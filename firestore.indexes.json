@@ -38,7 +38,7 @@
         },
         {
           "fieldPath": "like_counter",
-          "order": "ASCENDING"
+          "order": "DESCENDING"
         }
       ]
     },
