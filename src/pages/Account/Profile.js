@@ -30,6 +30,7 @@ import {
   capitolizeFirstChar,
   getIsUserOnline,
   getUserBasicInfo,
+  isMobileOrTablet,
   useIsMounted,
   userSignUpProgress,
 } from "../../util";
@@ -66,7 +67,7 @@ function ProfileSection() {
   const [canLoadMoreComments, setCanLoadMoreComments] = useState(true);
   const [canLoadMoreVents, setCanLoadMoreVents] = useState(true);
   const [postOptions, setPostOptions] = useState(false);
-  const [postsSection, setPostsSection] = useState(true);
+  const [postsSection, setPostsSection] = useState(false);
   const [isUserOnline, setIsUserOnline] = useState(false);
   const [starterModal, setStarterModal] = useState(false);
   const [userBasicInfo, setUserBasicInfo] = useState({});
@@ -112,7 +113,12 @@ function ProfileSection() {
   return (
     <Page className="pa16" id="scrollable-div" title="Profile">
       <Container className="flex-fill x-fill">
-        <Container className="column flex-fill gap16">
+        <Container
+          className="column flex-fill gap16"
+          style={{
+            maxWidth: isMobileOrTablet() ? "" : "calc(100% - 316px)",
+          }}
+        >
           {search && (
             <Container className="column x-fill ov-hidden bg-white pa16 gap8 br8">
               <Container className="x-fill full-center">
@@ -390,22 +396,27 @@ function ProfileSection() {
           )}
           {!postsSection && (
             <Container className="x-fill column">
-              <Container className="column br8">
-                {comments &&
-                  comments.map((comment, index) => {
-                    return (
-                      <Link key={index} to={"/problem/" + comment.ventID + "/"}>
-                        <Comment
-                          arrayLength={comments.length}
-                          commentID={comment.id}
-                          commentIndex={index}
-                          comment2={comment}
+              {comments && comments.length > 0 && (
+                <Container className="column bg-white br8 px32 py16">
+                  {comments &&
+                    comments.map((comment, index) => {
+                      return (
+                        <Link
                           key={index}
-                        />
-                      </Link>
-                    );
-                  })}
-              </Container>
+                          to={"/problem/" + comment.ventID + "/"}
+                        >
+                          <Comment
+                            arrayLength={comments.length}
+                            commentID={comment.id}
+                            commentIndex={index}
+                            comment2={comment}
+                            key={index}
+                          />
+                        </Link>
+                      );
+                    })}
+                </Container>
+              )}
               {comments && comments.length === 0 && <h4>No comments found.</h4>}
               {canLoadMoreComments && (
                 <Button
