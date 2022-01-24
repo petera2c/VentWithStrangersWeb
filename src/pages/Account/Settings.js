@@ -43,7 +43,7 @@ function SettingsSection() {
     );
 
   return (
-    <Page className="pa16" title="Settings">
+    <Page className="pa16">
       <Container>
         <Container className="column flex-fill bg-white pa16 mb2 br8">
           <Container className="column">

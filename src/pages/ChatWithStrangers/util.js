@@ -10,7 +10,7 @@ export const conversationsListener = (navigate, userID) => {
     .onSnapshot((snapshot) => {
       if (snapshot.docs && snapshot.docs[0]) {
         const doc = snapshot.docs[0];
-        if (doc.data().go_to_inbox) navigate("/conversations?" + doc.id);
+        if (doc.data().go_to_inbox) navigate("/chat?" + doc.id);
       }
     });
 

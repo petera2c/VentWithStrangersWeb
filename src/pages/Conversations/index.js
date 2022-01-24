@@ -72,16 +72,11 @@ function Conversations() {
   }, [isMounted, user]);
 
   return (
-    <Page
-      className="bg-grey-2 ov-hidden"
-      description="Sometimes, all we need is an available ear. This is where you can anonymously talk to someone that wants to listen, or anonymously listen to someone that wants to be heard."
-      keywords="vent, strangers, help"
-      title="Chats"
-    >
+    <Page className="bg-grey-2 ov-hidden">
       <Container className="flex-fill x-fill gap4 ov-hidden pa4">
         <Container className="container small column ov-auto bg-white pa8 br4">
           {conversations.length === 0 && (
-            <Link className="" to="/online-users">
+            <Link className="" to="/people-online">
               <h6 className="button-1 grey-1 tac">
                 Start a conversation with someone!
               </h6>
@@ -144,7 +139,7 @@ function Conversations() {
               </h1>
             )}
           {!activeConversation && user && user.emailVerified && (
-            <Link className="grey-1 tac pa32" to="/online-users">
+            <Link className="grey-1 tac pa32" to="/people-online">
               <h4 className="tac">
                 Check your messages from friends on Vent With Strangers,{" "}
               </h4>

@@ -15,10 +15,8 @@ const SubscribeColumn = loadable(() =>
 const Vent = loadable(() => import("../../components/Vent"));
 
 const getVentIdFromURL = (pathname) => {
-  // regular expression will not work due to catastrophic backtracing
-  //pathname.match(/(?<=\/problem\/\s*).*?(?=\s*\/)/gs);
   if (pathname) {
-    const ventIdStart = pathname.slice(9, pathname.length);
+    const ventIdStart = pathname.slice(6, pathname.length);
     let ventID = "";
     for (let index in ventIdStart) {
       if (ventIdStart[index] === "/") break;

@@ -32,27 +32,23 @@ const createSitemap = async () => {
   let siteMapString =
     '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n';
   siteMapString +=
-    "<sitemap>\n<loc>https://blog.ventwithstrangers.com/sitemap.xml</loc>\n<lastmod>2022-01-23</lastmod>\n</sitemap>\n\n";
+    "<sitemap>\n<loc>https://blog.ventwithstrangers.com/sitemap.xml</loc>\n<lastmod>2022-01-24</lastmod>\n</sitemap>\n\n";
   siteMapString +=
-    "<url>\n<loc>https://www.ventwithstrangers.com/</loc>\n<lastmod>2022-01-23</lastmod>\n<changefreq>monthly</changefreq>\n<priority>1</priority>\n</url>\n\n";
+    "<url>\n<loc>https://www.ventwithstrangers.com/</loc>\n<lastmod>>2022-01-24</lastmod>\n<changefreq>monthly</changefreq>\n<priority>1</priority>\n</url>\n\n";
   siteMapString +=
-    "<url>\n<loc>https://www.ventwithstrangers.com/recent</loc>\n<lastmod>2022-01-23</lastmod>\n<changefreq>monthly</changefreq>\n<priority>1</priority>\n</url>\n\n";
+    "<url>\n<loc>https://www.ventwithstrangers.com/chat-with-strangers</loc>\n<lastmod>>2022-01-24</lastmod>\n<changefreq>yearly</changefreq>\n<priority>1</priority>\n</url>\n\n";
   siteMapString +=
-    "<url>\n<loc>https://www.ventwithstrangers.com/trending</loc>\n<lastmod>2022-01-23</lastmod>\n<changefreq>monthly</changefreq>\n<priority>1</priority>\n</url>\n\n";
+    "<url>\n<loc>https://www.ventwithstrangers.com/make-friends</loc>\n<lastmod>>2022-01-24</lastmod>\n<changefreq>yearly</changefreq>\n<priority>1</priority>\n</url>\n\n";
   siteMapString +=
-    "<url>\n<loc>https://www.ventwithstrangers.com/vent-to-strangers</loc>\n<lastmod>2021-03-13</lastmod>\n<changefreq>yearly</changefreq>\n<priority>1</priority>\n</url>\n\n";
+    "<url>\n<loc>https://www.ventwithstrangers.com/people-online</loc>\n<lastmod>2022-01-24</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.9</priority>\n</url>\n\n";
   siteMapString +=
-    "<url>\n<loc>https://www.ventwithstrangers.com/make-friends</loc>\n<lastmod>2022-01-03</lastmod>\n<changefreq>yearly</changefreq>\n<priority>1</priority>\n</url>\n\n";
+    "<url>\n<loc>https://www.ventwithstrangers.com/rewards</loc>\n<lastmod>>2022-01-24</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.3</priority>\n</url>\n\n";
   siteMapString +=
-    "<url>\n<loc>https://www.ventwithstrangers.com/chat-with-strangers</loc>\n<lastmod>2022-01-19</lastmod>\n<changefreq>yearly</changefreq>\n<priority>1</priority>\n</url>\n\n";
+    "<url>\n<loc>https://www.ventwithstrangers.com/rules</loc>\n<lastmod>>2022-01-24</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.6</priority>\n</url>\n\n";
   siteMapString +=
-    "<url>\n<loc>https://www.ventwithstrangers.com/site-info</loc>\n<lastmod>2021-06-17</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.9</priority>\n</url>\n\n";
+    "<url>\n<loc>https://www.ventwithstrangers.com/site-info</loc>\n<lastmod>>2022-01-24</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.6</priority>\n</url>\n\n";
   siteMapString +=
-    "<url>\n<loc>https://www.ventwithstrangers.com/conversations</loc>\n<lastmod>2022-01-04</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.9</priority>\n</url>\n\n";
-  siteMapString +=
-    "<url>\n<loc>https://www.ventwithstrangers.com/rewards</loc>\n<lastmod>2022-01-19</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.9</priority>\n</url>\n\n";
-  siteMapString +=
-    "<url>\n<loc>https://www.ventwithstrangers.com/rules</loc>\n<lastmod>2022-01-19</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.9</priority>\n</url>\n\n";
+    "<url>\n<loc>https://www.ventwithstrangers.com/vent-to-strangers</loc>\n<lastmod>>2022-01-24</lastmod>\n<changefreq>yearly</changefreq>\n<priority>1</priority>\n</url>\n\n";
 
   for (let index in vents.docs) {
     const vent = vents.docs[index].data();
@@ -64,7 +60,7 @@ const createSitemap = async () => {
       continue;
 
     let url =
-      "https://www.ventwithstrangers.com/problem/" +
+      "https://www.ventwithstrangers.com/vent/" +
       vents.docs[index].id +
       "/" +
       vent.title

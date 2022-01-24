@@ -23,12 +23,7 @@ function OnlineUsers() {
   }, [isMounted, setOnlineUsers, totalOnlineUsers]);
 
   return (
-    <Page
-      className="column align-center bg-grey-2"
-      description="Current people online."
-      keywords=""
-      title="People Online"
-    >
+    <Page className="column align-center bg-grey-2">
       <Container className="justify-center wrap pa16 gap16">
         {onlineUsers.map(({ lastOnline, userID }, index) => {
           return (

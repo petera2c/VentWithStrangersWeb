@@ -61,7 +61,7 @@ function AvatarSection() {
   }, []);
 
   return (
-    <Page className="pa16" title="Avatar">
+    <Page className="pa16">
       <Container className="x-fill flex-fill">
         <Container className="column flex-fill">
           <Container

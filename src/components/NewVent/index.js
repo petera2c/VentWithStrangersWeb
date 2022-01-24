@@ -250,7 +250,7 @@ function NewVentComponent({ miniVersion, ventID }) {
                       (vent) => {
                         setSaving(false);
                         navigate(
-                          "/problem/" +
+                          "/vent/" +
                             vent.id +
                             "/" +
                             vent.title

@@ -19,12 +19,7 @@ const SubscribeColumn = loadable(() =>
 
 function AboutUsPage() {
   return (
-    <Page
-      className="pa16"
-      description=""
-      keywords="Learn about Vent With Strangers"
-      title="Site Info"
-    >
+    <Page className="pa16">
       <Container>
         <Space className="bg-white pa32 br8" direction="vertical" size="large">
           <Space direction="vertical">

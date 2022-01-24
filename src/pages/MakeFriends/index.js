@@ -34,12 +34,7 @@ function MakeFriendsPage() {
   }, [user]);
 
   return (
-    <Page
-      className="bg-grey-2 align-center pa16"
-      description="Make friends online on vent with strangers!"
-      keywords="Learn about Vent With Strangers"
-      title="Find Friends Online and Connect With Likeminded People"
-    >
+    <Page className="bg-grey-2 align-center pa16">
       {!user && (
         <Container
           className={

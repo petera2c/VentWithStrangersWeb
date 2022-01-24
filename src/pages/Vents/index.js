@@ -55,12 +55,7 @@ function VentsPage() {
   }, [isMounted, pathname, search]);
 
   return (
-    <Page
-      className="pa16"
-      description={metaDescription}
-      id="scrollable-div"
-      title={metaTitle}
-    >
+    <Page className="pa16" id="scrollable-div">
       <Container className="flex-fill x-fill">
         <Container className="column flex-fill gap16">
           <NewVentComponent miniVersion />

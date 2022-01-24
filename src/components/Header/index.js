@@ -113,7 +113,7 @@ function Header() {
     };
   }, [isMounted, pathname, user]);
 
-  if (pathname === "/conversations" && user && unreadConversationsCount > 0)
+  if (pathname === "/chat" && user && unreadConversationsCount > 0)
     resetUnreadConversationCount(user.uid);
 
   return (
@@ -159,9 +159,9 @@ function Header() {
             <Link
               className={
                 "full-center flex button-3 mr32 " +
-                isPageActive("/conversations", pathname.substring(0, 14))
+                isPageActive("/chat", pathname.substring(0, 14))
               }
-              to="/conversations"
+              to="/chat"
             >
               <FontAwesomeIcon className="mr8" icon={faComments} />
               <p className="inherit-color py16">Inbox</p>

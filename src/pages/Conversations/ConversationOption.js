@@ -78,7 +78,7 @@ function ConversationOption({
       }
       onClick={() => {
         setActiveConversation(conversation.id);
-        navigate("/conversations?" + conversation.id);
+        navigate("/chat?" + conversation.id);
       }}
     >
       <Container className="flex-fill column ov-hidden">

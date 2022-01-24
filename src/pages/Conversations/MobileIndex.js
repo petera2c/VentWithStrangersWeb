@@ -71,18 +71,13 @@ function MobileConversations() {
   }, []);
 
   return (
-    <Page
-      className="bg-grey-2"
-      description="Sometimes, all we need is an available ear. This is where you can anonymously talk to someone that wants to listen, or anonymously listen to someone that wants to be heard."
-      keywords="vent, strangers, help"
-      title="Chats"
-    >
+    <Page className="bg-grey-2">
       <Container
         className="flex-fill column ov-auto bg-white pa8 mt16 mx8 br4"
         style={{ display: activeConversation ? "none" : "flex" }}
       >
         {conversations.length === 0 && (
-          <Link className="" to="/online-users">
+          <Link className="" to="/people-online">
             <h1 className="button-1 grey-1 tac">
               <span className="blue">Start</span> a conversation with someone!
             </h1>

@@ -150,25 +150,20 @@ function RoutesComp() {
                       path="chat-with-strangers"
                       element={<ChatWithStrangersPage />}
                     />
-                    <Route
-                      path="conversations"
-                      element={<ConversationsPage />}
-                    />
+                    <Route path="chat" element={<ConversationsPage />} />
                     <Route path="friends" element={<FriendsPage />} />
-                    <Route path="home" element={<VentsPage />} />
                     <Route path="make-friends" element={<MakeFriendsPage />} />
                     <Route
                       path="notifications"
                       element={<NotificationsPage />}
                     />
-                    <Route path="online-users" element={<OnlineUsersPage />} />
-                    <Route path="popular" element={<VentsPage />} />
+                    <Route path="people-online" element={<OnlineUsersPage />} />
                     <Route
                       path="privacy-policy"
                       element={<PrivacyPolicyPage />}
                     />
-                    <Route path="problem/:id" element={<VentPage />} />
-                    <Route path="problem/:id/:title" element={<VentPage />} />
+                    <Route path="vent/:id" element={<VentPage />} />
+                    <Route path="vent/:id/:title" element={<VentPage />} />
                     <Route path="profile" element={<ProfilePage />} />
                     <Route path="recent" element={<VentsPage />} />
                     <Route path="rewards" element={<RewardsPage />} />

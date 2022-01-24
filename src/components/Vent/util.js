@@ -95,7 +95,7 @@ export const getVentDescription = (previewMode, vent) => {
 
 export const getVentFullLink = (vent) => {
   const partialLink =
-    "/problem/" +
+    "/vent/" +
     vent.id +
     "/" +
     vent.title
@@ -107,7 +107,7 @@ export const getVentFullLink = (vent) => {
 
 export const getVentPartialLink = (vent) => {
   return (
-    "/problem/" +
+    "/vent/" +
     vent.id +
     "/" +
     vent.title
@@ -327,7 +327,7 @@ export const startConversation = async (navigate, user, ventUserID) => {
     .get();
 
   const goToPage = (conversationID) => {
-    navigate("/conversations?" + conversationID);
+    navigate("/chat?" + conversationID);
   };
 
   if (!conversationQuerySnapshot.empty) {

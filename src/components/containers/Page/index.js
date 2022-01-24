@@ -5,8 +5,17 @@ import { Helmet } from "react-helmet";
 
 import Container from "../Container";
 
-function Page(props) {
-  const { children, className, id } = props;
+import { getMetaData } from "./util";
+
+function Page({
+  children,
+  className,
+  description,
+  id,
+  keywords,
+  style,
+  title,
+}) {
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -18,13 +27,7 @@ function Page(props) {
     window.scrollTo(0, 0);
   }, [pathname]);
 
-  const checkPropsVariables = (activePage) => {
-    let { title, description, image, style } = props; // Variables
-    title += " | Vent With Strangers";
-    return { style, title, description, image };
-  };
-
-  const { description, image, style, title } = checkPropsVariables(pathname);
+  const { description2, keywords2, title2 } = getMetaData(pathname); // Variables
 
   return (
     <Container
@@ -34,13 +37,18 @@ function Page(props) {
     >
       <Helmet defer={false}>
         <meta charSet="utf-8" />
-        <title>{title}</title>
-        <meta name="title" content={title} />
-        <meta name="og:title" content={title} />
-        <meta name="description" content={description} />
-        <meta name="og:description" content={description} />
-        <meta property="image" content={image} />
-        <meta property="og:image" content={image} />
+        <title>{title ? title : title2}</title>
+        <meta name="title" content={title ? title : title2} />
+        <meta name="og:title" content={title ? title : title2} />
+        <meta
+          name="description"
+          content={description ? description : description2}
+        />
+        <meta
+          name="og:description"
+          content={description ? description : description2}
+        />
+        <meta name="keywords" content={keywords ? keywords : keywords2} />
       </Helmet>
 
       {children}

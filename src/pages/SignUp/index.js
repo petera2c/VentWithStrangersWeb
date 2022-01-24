@@ -14,7 +14,7 @@ function SignUpPage() {
   const [starterModal, setStarterModal] = useState(true);
 
   return (
-    <Page className="pa16">
+    <Page className="pa16" title="Sign Up">
       <Container>
         <Container className="flex-fill full-center bg-white pa16 br8">
           <h2

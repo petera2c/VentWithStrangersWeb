@@ -20,7 +20,7 @@ app_1.default.initializeApp({
 
 const createVentLink = (vent, ventID) => {
   let link =
-    "https://www.ventwithstrangers.com/problem/" +
+    "https://www.ventwithstrangers.com/vent/" +
     ventID +
     "/" +
     vent.title
@@ -28,7 +28,7 @@ const createVentLink = (vent, ventID) => {
       .replace(/ /g, "-")
       .toLowerCase();
   if (process.env.FUNCTIONS_EMULATOR)
-    link = "http://localhost:3000/problem/" + ventID + "/" + vent.title;
+    link = "http://localhost:3000/vent/" + ventID + "/" + vent.title;
   return link;
 };
 const createNotification = (link, message, userID) => {

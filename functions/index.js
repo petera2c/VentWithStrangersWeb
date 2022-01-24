@@ -121,18 +121,17 @@ const injectMetaData = (req, res) => {
     }
 
     getMetaInformation(req.originalUrl, (metaObj, foundPage, vent) => {
-      const { metaDescription, metaImage, metaTitle } = metaObj;
-
-      data = data.replace(/We Care \| Vent With Strangers/g, metaTitle);
-      data = data.replace(
-        /Vent, and chat anonymously to be apart of a community committed to making the world a happier place./g,
-        metaDescription
-      );
+      const { description, keywords, title } = metaObj;
 
       data = data.replace(
-        /https:\/\/res.cloudinary.com\/dnc1t9z9o\/image\/upload\/v1580431332\/VENT.jpg/g,
-        metaImage
+        /Vent online with strangers. VWS is a site where you can make friends and get help on your specific situation all for free. Our site is 100% anonymous./g,
+        description
       );
+      data = data.replace(
+        /vent to someone,vent app,I need to vent,anonymous chat,talk to strangers, chat rooms, chat with strangers/g,
+        keywords
+      );
+      data = data.replace(/Vent and Chat Anonymously With Strangers/g, title);
 
       res.set("Cache-Control", "public", "max-age=600", "s-maxage=1200");
       if (vent)
@@ -148,6 +147,9 @@ const injectMetaData = (req, res) => {
 app.post("/subscribe", subscribeToPlan);
 app.get("/sitemap.xml", createProxy());
 
+app.get("/", async (req, res) => {
+  return injectMetaData(req, res);
+});
 app.get("*", async (req, res) => {
   return injectMetaData(req, res);
 });

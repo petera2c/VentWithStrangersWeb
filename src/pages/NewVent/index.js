@@ -22,12 +22,7 @@ function NewVentPage() {
   const [starterModal, setStarterModal] = useState(!user);
 
   return (
-    <Page
-      className="pa16"
-      description="You aren’t alone, and you should never feel alone. If you are feeling down, anonymously post your issue here. There is an entire community of people that want to help you."
-      keywords=""
-      title="Vent To Strangers"
-    >
+    <Page className="pa16">
       <Container>
         <Container className="flex-fill ">
           <NewVentComponent ventID={search ? search.substring(1) : null} />

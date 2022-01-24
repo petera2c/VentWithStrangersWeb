@@ -126,7 +126,7 @@ function Sidebar() {
     >
       <SideBarLink
         icon={faUserFriends}
-        link="/online-users"
+        link="/people-online"
         pathname={pathname}
         firstOnlineUsers={firstOnlineUsers}
         text={

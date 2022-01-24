@@ -105,7 +105,7 @@ function Header() {
     };
   }, [isMounted, pathname, setTotalOnlineUsers, user]);
 
-  if (pathname === "/conversations" && user && unreadConversationsCount > 0)
+  if (pathname === "/chat" && user && unreadConversationsCount > 0)
     resetUnreadConversationCount(user.uid);
 
   return (
@@ -296,9 +296,9 @@ function Header() {
             <Link
               className={
                 "button-3 flex full-center relative " +
-                isPageActive("/conversations", pathname)
+                isPageActive("/chat", pathname)
               }
-              to="/conversations"
+              to="/chat"
             >
               <FontAwesomeIcon className="mr8" icon={faComments} />
               <p className="inherit-color">Inbox</p>
@@ -352,9 +352,9 @@ function Header() {
             <Link
               className={
                 "flex full-center button-3 " +
-                isPageActive("/online-users", pathname)
+                isPageActive("/people-online", pathname)
               }
-              to="/online-users"
+              to="/people-online"
             >
               <FontAwesomeIcon className="mr8" icon={faUserFriends} />
               <p className="inherit-color">

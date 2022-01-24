@@ -63,11 +63,7 @@ function RewardsPage() {
   }, [isMounted, user]);
 
   return (
-    <Page
-      className="pa16"
-      description="Make friends and earn some awesome rewards!"
-      title="Rewards"
-    >
+    <Page className="pa16">
       <Container>
         <Space className="column flex-fill" direction="vertical">
           <Container

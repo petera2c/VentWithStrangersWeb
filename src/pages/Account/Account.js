@@ -75,7 +75,7 @@ function AccountSection() {
   }, [isMounted, user]);
 
   return (
-    <Page className="pa16" title="Account">
+    <Page className="pa16">
       <Container>
         <Container className="flex-fill column">
           <form

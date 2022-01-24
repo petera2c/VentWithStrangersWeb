@@ -35,7 +35,7 @@ const createRewardsLink = () => {
 
 const createVentLink = (vent) => {
   return (
-    "/problem/" +
+    "/vent/" +
     vent.id +
     "/" +
     vent.title
@@ -46,18 +46,13 @@ const createVentLink = (vent) => {
 };
 
 const getMetaInformation = async (url, callback) => {
-  if (url && url[1] === "?") url = "/";
-  const defaultMetaObject = {
-    metaDescription:
-      "Vent, and chat anonymously to be apart of a community committed to making the world a happier place.",
-    metaImage:
-      "https://res.cloudinary.com/dnc1t9z9o/image/upload/v1580431332/VENT.jpg",
-    metaTitle: "We Care | Vent With Strangers",
-  };
+  let description = "";
+  let keywords = "";
+  let title = "";
 
-  const checkIsVent = url.match(/(?<=\/problem\/\s*).*?(?=\s*\/)/gs);
-  const userObjectID = url.split("/profile?")[1];
+  const checkIsVent = url.match(/(?<=\/vent\/\s*).*?(?=\s*\/)/gs);
   let ventID;
+  let vent;
   if (checkIsVent) ventID = checkIsVent[0];
 
   if (checkIsVent && ventID) {
@@ -66,182 +61,85 @@ const getMetaInformation = async (url, callback) => {
       .collection("vents")
       .doc(ventID)
       .get();
-    const vent = ventDoc.data();
+    vent = ventDoc.data();
 
-    if (vent)
-      return callback(
-        {
-          metaDescription: vent.description
-            ? vent.description.substring(0, 200)
-            : "",
-          metaImage: defaultMetaObject.metaImage,
-          metaTitle:
-            (vent.title ? vent.title.substring(0, 140) : "") +
-            " | Vent With Strangers",
-        },
-        Boolean(ventDoc.id),
-        { id: ventDoc.id, ...vent }
-      );
-    else return callback(defaultMetaObject);
-  } else if (userObjectID) {
-    return callback(
-      {
-        metaImage: defaultMetaObject.metaImage,
-        metaTitle: "Account | Vent With Strangers",
-        metaDescription: "",
-      },
-      true
-    );
-  } else if (url === "/")
-    return callback(
-      {
-        metaDescription:
-          "People’s problems and issues with the most upvotes in the past 24 hours. Post, comment, and/or like anonymously.",
-        metaImage: defaultMetaObject.metaImage,
-        metaTitle: "We Care | Vent With Strangers",
-      },
-      true
-    );
-  else if (url === "/recent")
-    return callback(
-      {
-        metaDescription:
-          "The latest problems and issues people have posted. Post, comment, and/or like anonymously.",
-        metaImage: defaultMetaObject.metaImage,
-        metaTitle: "Recent | Vent With Strangers",
-      },
-      true
-    );
-  else if (url === "/trending")
-    return callback(
-      {
-        metaDescription:
-          "People’s problems and issues with the most upvotes in the past 24 hours. Post, comment, and/or like anonymously.",
-        metaImage: defaultMetaObject.metaImage,
-        metaTitle: "Trending | Vent With Strangers",
-      },
-      true
-    );
-  else if (url === "/make-friends")
-    return callback(
-      {
-        metaDescription: "Make friends online on vent with strangers!",
-        metaImage: defaultMetaObject.metaImage,
-        metaTitle: "Make Friends | Vent With Strangers",
-      },
-      true
-    );
-  else if (url === "/vent-to-strangers")
-    return callback(
-      {
-        metaDescription:
-          "Vent to strangers. You aren’t alone, and you should never feel alone. If you are feeling down, anonymously post your issue here. There is an entire community of people that want to help you.",
-        metaImage: defaultMetaObject.metaImage,
-        metaTitle: "Post a Vent | Vent With Strangers",
-      },
-      true
-    );
-  else if (url === "/chat-with-strangers")
-    return callback(
-      {
-        metaDescription:
-          "Sometimes, all we need is an available ear. This is where you can anonymously talk to someone that wants to listen, or anonymously listen to someone that wants to be heard.",
-        metaImage: defaultMetaObject.metaImage,
-        metaTitle: "Chat With Strangers | Vent With Strangers",
-      },
-      true
-    );
-  else if (url === "/site-info")
-    return callback(
-      {
-        metaDescription: "Learn about Vent With Strangers",
-        metaImage: defaultMetaObject.metaImage,
-        metaTitle: "Site Info | Vent With Strangers",
-      },
-      true
-    );
-  else if (url.substring(0, 14) === "/conversations")
-    return callback(
-      {
-        metaDescription: "",
-        metaImage: defaultMetaObject.metaImage,
-        metaTitle: "Inbox | Vent With Strangers",
-      },
-      true
-    );
-  else if (url.substring(0, 14) === "/profile")
-    return callback(
-      {
-        metaDescription: "",
-        metaImage: defaultMetaObject.metaImage,
-        metaTitle: "Profile | Vent With Strangers",
-      },
-      true
-    );
-  else if (url.substring(0, 14) === "/account")
-    return callback(
-      {
-        metaDescription: "",
-        metaImage: defaultMetaObject.metaImage,
-        metaTitle: "Account | Vent With Strangers",
-      },
-      true
-    );
-  else if (url.substring(0, 14) === "/avatar")
-    return callback(
-      {
-        metaDescription: "",
-        metaImage: defaultMetaObject.metaImage,
-        metaTitle: "Avatar | Vent With Strangers",
-      },
-      true
-    );
-  else if (url.substring(0, 14) === "/settings")
-    return callback(
-      {
-        metaDescription: "",
-        metaImage: defaultMetaObject.metaImage,
-        metaTitle: "Settings | Vent With Strangers",
-      },
-      true
-    );
-  else if (url === "/privacy-policy")
-    return callback(
-      {
-        metaDescription: "",
-        metaImage: defaultMetaObject.metaImage,
-        metaTitle: "Privacy Policy | Vent With Strangers",
-      },
-      true
-    );
-  else if (url === "/rewards")
-    return callback(
-      {
-        metaDescription: "Make friends and earn some awesome rewards!",
-        metaImage: defaultMetaObject.metaImage,
-        metaTitle: "Rewards",
-      },
-      true
-    );
-  else if (url === "/online-users")
-    return callback(
-      {
-        metaDescription: "Current people online.",
-        metaImage: defaultMetaObject.metaImage,
-        metaTitle: "Online Users",
-      },
-      true
-    );
-  else if (url === "/rules")
-    return callback(
-      {
-        metaDescription: "VWS Rules",
-        metaImage: defaultMetaObject.metaImage,
-        metaTitle: "Rules",
-      },
-      true
-    );
-  else return callback(defaultMetaObject, false);
+    if (vent) {
+      description = vent.description ? vent.description.substring(0, 200) : "";
+      title = vent.title ? vent.title.substring(0, 140) : "";
+      vent = { id: ventDoc.id, ...vent };
+    }
+  }
+
+  if (url === "/") {
+    description =
+      "Vent online with strangers. VWS is a site where you can make friends and get help on your specific situation all for free. Our site is 100% anonymous.";
+    keywords =
+      "vent to someone,vent app,I need to vent,anonymous chat,talk to strangers, chat rooms, chat with strangers";
+    title = "Vent and Chat Anonymously With Strangers";
+  } else if (url === "/account") {
+    title = "Account";
+  } else if (url === "/avatar") {
+    title = "Avatar";
+  } else if (url === "/chat-with-strangers") {
+    description =
+      "Chat anonymously with great strangers. Our site is free of bullies, bots and perverts. Everything is 100% free and no credit card is required.";
+    keywords = "anonymously chat,random chat,vent chat,chat rooms";
+    title = "Chat With Strangers";
+  } else if (url === "/chat") {
+    description = "Your inbox.";
+    keywords = "";
+    title = "Chat";
+  } else if (url === "/make-friends") {
+    description =
+      "Making friends online has never been easier. After filling out your profile we will match you with like minded people! :)";
+    keywords = "make friends online,make friends,make friends app";
+    title = "Make Friends";
+  } else if (url === "/people-online") {
+    description =
+      "The help you have been looking for is here. These are people online right now. Start chatting with real and kind people.";
+    keywords = "";
+    title = "People Online";
+  } else if (url === "/profile") {
+    title = "Profile";
+  } else if (url === "/privacy-policy") {
+    title = "Privacy Policy";
+  } else if (url === "/recent") {
+    title = "Recent Vents";
+  } else if (url === "/rewards") {
+    description =
+      "You can earn rewards on Vent With Strangers. Interact and help people to gain Karma Points :)";
+    keywords = "";
+    title = "Your Rewards";
+  } else if (url === "/rules") {
+    description =
+      "Our rules are very easy to follow :) Be nice and you will be totally fine!";
+    keywords = "";
+    title = "VWS Rules";
+  } else if (url === "/search") {
+    title = "Search";
+  } else if (url === "/settings") {
+    title = "Settings";
+  } else if (url === "/site-info") {
+    description = "Read about how our website works.";
+    keywords = "vent with strangers";
+    title = "VWS Info";
+  } else if (url === "/trending") {
+    title = "Trending Vents";
+  } else if (url === "/vent-to-strangers") {
+    description =
+      "Vent to strangers. You aren’t alone, and you should never feel alone. If you are feeling down, anonymously post your issue here. There is an entire community of people that want to help you.";
+    keywords = "vent to strangers,vent to someone,chat with strangers";
+    title = "Vent To Strangers";
+  }
+  return callback(
+    {
+      description,
+      keywords,
+      title,
+    },
+    Boolean(title),
+    vent
+  );
 };
 
 const getInvalidDisplayNameCharacters = (displayName) => {

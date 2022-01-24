@@ -57,11 +57,7 @@ function ChatWithStrangersPage() {
   }, [isMounted, navigate, user]);
 
   return (
-    <Page
-      className="pa16"
-      description="Sometimes, all we need is an available ear. This is where you can anonymously talk to someone that wants to listen, or anonymously listen to someone that wants to be heard."
-      title="Chat With Strangers"
-    >
+    <Page className="pa16">
       <Container
         className={
           "column align-center gap32 " + (isMobileOrTablet() ? "pt16" : "pt64")

@@ -12,11 +12,7 @@ const SubscribeColumn = loadable(() =>
 
 function RulesPage() {
   return (
-    <Page
-      className="pa16"
-      description="Constructive. Feedback. Only"
-      title="VWS Rules"
-    >
+    <Page className="pa16">
       <Container>
         <Space
           className="flex-fill align-center bg-white pa32 br8"

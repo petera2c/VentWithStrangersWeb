@@ -111,7 +111,15 @@ function ProfileSection() {
   }, [isMounted, navigate, search]);
 
   return (
-    <Page className="pa16" id="scrollable-div" title="Profile">
+    <Page
+      className="pa16"
+      id="scrollable-div"
+      title={
+        userBasicInfo
+          ? capitolizeFirstChar(userBasicInfo.displayName)
+          : "Profile"
+      }
+    >
       <Container className="flex-fill x-fill">
         <Container
           className="column flex-fill gap16"
@@ -401,10 +409,7 @@ function ProfileSection() {
                   {comments &&
                     comments.map((comment, index) => {
                       return (
-                        <Link
-                          key={index}
-                          to={"/problem/" + comment.ventID + "/"}
-                        >
+                        <Link key={index} to={"/vent/" + comment.ventID + "/"}>
                           <Comment
                             arrayLength={comments.length}
                             commentID={comment.id}
