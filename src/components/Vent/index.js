@@ -127,7 +127,9 @@ function Vent({
     if (!searchPreviewMode && displayCommentField)
       newCommentListenerUnsubscribe = newVentCommentListener(
         isMounted,
+        setCanLoadMoreComments,
         setComments,
+        user ? user.uid : "",
         ventID ? ventID : vent.id
       );
 
@@ -501,33 +503,33 @@ function Vent({
                       />
                     );
                   })}
-                  {canLoadMoreComments &&
-                    vent.comment_counter !== comments.length && (
-                      <button
-                        className="blue underline"
-                        onClick={() => {
-                          getVentComments(
-                            activeSort,
-                            comments,
-                            isMounted,
-                            setCanLoadMoreComments,
-                            setComments,
-                            true,
-                            vent.id
-                          );
-                        }}
-                        key={comments.length}
-                      >
-                        Load More Comments
-                      </button>
-                    )}
+                  {canLoadMoreComments && (
+                    <button
+                      className="blue underline"
+                      onClick={() => {
+                        getVentComments(
+                          activeSort,
+                          comments,
+                          isMounted,
+                          setCanLoadMoreComments,
+                          setComments,
+                          true,
+                          vent.id
+                        );
+                      }}
+                      key={comments.length}
+                    >
+                      Load More Comments
+                    </button>
+                  )}
                 </Container>
               )}
-              {vent.comment_counter === 0 && (
-                <p className="tac px32 py16">
-                  There are no comments yet. Please help this person :)
-                </p>
-              )}
+              {vent.comment_counter === 0 &&
+                (!comments || (comments && comments.length === 0)) && (
+                  <p className="tac px32 py16">
+                    There are no comments yet. Please help this person :)
+                  </p>
+                )}
             </Container>
           )}
           {displayCommentField && !comments && (

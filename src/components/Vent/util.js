@@ -119,7 +119,9 @@ export const getVentPartialLink = (vent) => {
 
 export const newVentCommentListener = (
   isMounted,
+  setCanLoadMoreComments,
   setComments,
+  userID,
   ventID,
   first = true
 ) => {
@@ -142,16 +144,19 @@ export const newVentCommentListener = (
             querySnapshot.docChanges()[0].type === "added" ||
             querySnapshot.docChanges()[0].type === "removed"
           ) {
-            if (isMounted())
-              setComments((oldComments) => [
-                ...oldComments,
-                {
-                  ...querySnapshot.docs[0].data(),
-                  id: querySnapshot.docs[0].id,
-                  doc: querySnapshot.docs[0],
-                  useToPaginate: false,
-                },
-              ]);
+            if (isMounted()) {
+              if (querySnapshot.docs[0].data().userID === userID)
+                setComments((oldComments) => [
+                  {
+                    ...querySnapshot.docs[0].data(),
+                    id: querySnapshot.docs[0].id,
+                    doc: querySnapshot.docs[0],
+                    useToPaginate: false,
+                  },
+                  ...oldComments,
+                ]);
+              else setCanLoadMoreComments(true);
+            }
           }
         }
       },
