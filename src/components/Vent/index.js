@@ -419,9 +419,9 @@ function Vent({
           )}
 
           {!searchPreviewMode && displayCommentField && comments && (
-            <Container className="column px32 py16 gap16">
+            <Container className="column gap16">
               {vent.comment_counter > 0 && (
-                <Container>
+                <Container className="border-bottom px32 py16">
                   <Dropdown
                     overlay={
                       <Container className="column bg-white shadow-2 pa8 br8">
@@ -481,13 +481,13 @@ function Vent({
                     trigger={["click"]}
                   >
                     <button className="blue">
-                      Sory By: {capitolizeFirstChar(activeSort)}
+                      Sort By: {capitolizeFirstChar(activeSort)}
                     </button>
                   </Dropdown>
                 </Container>
               )}
               {comments && comments.length > 0 && (
-                <Container className="column">
+                <Container className="column px32 pb16">
                   {comments.map((comment, index) => {
                     return (
                       <Comment
@@ -524,7 +524,7 @@ function Vent({
                 </Container>
               )}
               {vent.comment_counter === 0 && (
-                <p className="tac">
+                <p className="tac px32 py16">
                   There are no comments yet. Please help this person :)
                 </p>
               )}
