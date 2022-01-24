@@ -67,7 +67,7 @@ function ProfileSection() {
   const [canLoadMoreComments, setCanLoadMoreComments] = useState(true);
   const [canLoadMoreVents, setCanLoadMoreVents] = useState(true);
   const [postOptions, setPostOptions] = useState(false);
-  const [postsSection, setPostsSection] = useState(false);
+  const [postsSection, setPostsSection] = useState(true);
   const [isUserOnline, setIsUserOnline] = useState(false);
   const [starterModal, setStarterModal] = useState(false);
   const [userBasicInfo, setUserBasicInfo] = useState({});
