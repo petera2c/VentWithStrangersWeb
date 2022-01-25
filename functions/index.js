@@ -146,6 +146,7 @@ const injectMetaData = (req, res) => {
 };
 app.post("/subscribe", subscribeToPlan);
 app.get("/sitemap.xml", createProxy);
+app.get("/sitemapurls.xml", createProxy);
 
 app.get("/", async (req, res) => {
   return injectMetaData(req, res);

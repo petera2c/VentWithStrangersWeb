@@ -25,9 +25,9 @@ const createProxy = (req, res, next) => {
 };
 
 const createSitemap = async () => {
-  if (process.env.FUNCTIONS_EMULATOR === "true") return;
+  //if (process.env.FUNCTIONS_EMULATOR === "true") return;
   console.log("Starting sitemap construction");
-  const vents = await admin.firestore().collection("vents").get();
+  /*const vents = await admin.firestore().collection("vents").get();
 
   let siteMapString =
     '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n';
@@ -87,12 +87,12 @@ const createSitemap = async () => {
 
   s3.putObject(params, (err, data) => {
     if (err) console.log(err);
-  });
+  });*/
 
   const siteMapIndexString =
     '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n<sitemap>\n<loc>https://blog.ventwithstrangers.com/sitemap.xml</loc>\n<lastmod>' +
     new moment().format("YYYY-MM-DD") +
-    "</lastmod>\n\n<sitemap>\n<loc>https://www.ventwithstrangers.com/sitemapurls.xml</loc>\n<lastmod>" +
+    "</lastmod>\n\n</sitemap>\n<sitemap>\n<loc>https://www.ventwithstrangers.com/sitemapurls.xml</loc>\n<lastmod>" +
     new moment().format("YYYY-MM-DD") +
     "</lastmod>\n</sitemap>\n\n</sitemapindex>";
 
