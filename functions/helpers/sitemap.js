@@ -40,11 +40,11 @@ const createSitemap = async () => {
   siteMapString +=
     "<url>\n<loc>https://www.ventwithstrangers.com/people-online</loc>\n<lastmod>2022-01-24</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.9</priority>\n</url>\n\n";
   siteMapString +=
-    "<url>\n<loc>https://www.ventwithstrangers.com/rewards</loc>\n<lastmod>>2022-01-24</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.3</priority>\n</url>\n\n";
+    "<url>\n<loc>https://www.ventwithstrangers.com/rewards</loc>\n<lastmod>>2022-01-24</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.2</priority>\n</url>\n\n";
   siteMapString +=
-    "<url>\n<loc>https://www.ventwithstrangers.com/rules</loc>\n<lastmod>>2022-01-24</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.6</priority>\n</url>\n\n";
+    "<url>\n<loc>https://www.ventwithstrangers.com/rules</loc>\n<lastmod>>2022-01-24</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.2</priority>\n</url>\n\n";
   siteMapString +=
-    "<url>\n<loc>https://www.ventwithstrangers.com/site-info</loc>\n<lastmod>>2022-01-24</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.6</priority>\n</url>\n\n";
+    "<url>\n<loc>https://www.ventwithstrangers.com/site-info</loc>\n<lastmod>>2022-01-24</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.2</priority>\n</url>\n\n";
   siteMapString +=
     "<url>\n<loc>https://www.ventwithstrangers.com/vent-to-strangers</loc>\n<lastmod>>2022-01-24</lastmod>\n<changefreq>yearly</changefreq>\n<priority>1</priority>\n</url>\n\n";
   console.log(vents.docs.length);
