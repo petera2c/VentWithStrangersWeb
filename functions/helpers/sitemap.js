@@ -21,7 +21,6 @@ const createProxy = (req, res, next) => {
     accessKeyId: amazonAccessKeyID,
     secretAccessKey: amazonSecretAccessKey,
     overrideCacheControl: "max-age=100000",
-    defaultKey: "sitemapindex.xml",
   })(req, res, next);
 };
 
@@ -82,7 +81,7 @@ const createSitemap = async () => {
 
   const params = {
     Bucket: amazonBucket,
-    Key: "sitemap.xml",
+    Key: "sitemapurls.xml",
     Body: siteMapString,
   };
 
@@ -93,13 +92,13 @@ const createSitemap = async () => {
   const siteMapIndexString =
     '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n<sitemap>\n<loc>https://blog.ventwithstrangers.com/sitemap.xml</loc>\n<lastmod>' +
     new moment().format("YYYY-MM-DD") +
-    "</lastmod>\n\n<sitemap>\n<loc>https://www.ventwithstrangers.com/sitemap.xml</loc>\n<lastmod>" +
+    "</lastmod>\n\n<sitemap>\n<loc>https://www.ventwithstrangers.com/sitemapurls.xml</loc>\n<lastmod>" +
     new moment().format("YYYY-MM-DD") +
     "</lastmod>\n</sitemap>\n\n</sitemapindex>";
 
   const params2 = {
     Bucket: amazonBucket,
-    Key: "sitemapindex.xml",
+    Key: "sitemap.xml",
     Body: siteMapIndexString,
   };
 
