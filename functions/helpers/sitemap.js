@@ -21,7 +21,7 @@ const createProxy = () =>
     accessKeyId: amazonAccessKeyID,
     secretAccessKey: amazonSecretAccessKey,
     overrideCacheControl: "max-age=100000",
-    defaultKey: "sitemap.xml",
+    defaultKey: "sitemapindex.xml",
   });
 
 const createSitemap = async () => {
@@ -31,8 +31,6 @@ const createSitemap = async () => {
 
   let siteMapString =
     '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n';
-  siteMapString +=
-    "<sitemap>\n<loc>https://blog.ventwithstrangers.com/sitemap.xml</loc>\n<lastmod>2022-01-24</lastmod>\n</sitemap>\n\n";
   siteMapString +=
     "<url>\n<loc>https://www.ventwithstrangers.com/</loc>\n<lastmod>>2022-01-24</lastmod>\n<changefreq>monthly</changefreq>\n<priority>1</priority>\n</url>\n\n";
   siteMapString +=
@@ -49,6 +47,7 @@ const createSitemap = async () => {
     "<url>\n<loc>https://www.ventwithstrangers.com/site-info</loc>\n<lastmod>>2022-01-24</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.6</priority>\n</url>\n\n";
   siteMapString +=
     "<url>\n<loc>https://www.ventwithstrangers.com/vent-to-strangers</loc>\n<lastmod>>2022-01-24</lastmod>\n<changefreq>yearly</changefreq>\n<priority>1</priority>\n</url>\n\n";
+  console.log(vents.docs.length);
 
   for (let index in vents.docs) {
     const vent = vents.docs[index].data();
@@ -89,6 +88,20 @@ const createSitemap = async () => {
   s3.putObject(params, (err, data) => {
     if (err) console.log(err);
   });
+
+  const siteMapIndexString =
+    '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n<sitemap>\n<loc>https://blog.ventwithstrangers.com/sitemap.xml</loc>\n<lastmod>2022-01-25</lastmod>\n\n<sitemap>\n<loc>https://www.ventwithstrangers.com/sitemap.xml</loc>\n<lastmod>2022-01-25</lastmod>\n</sitemap>\n\n</sitemapindex>';
+
+  const params2 = {
+    Bucket: amazonBucket,
+    Key: "sitemapindex.xml",
+    Body: siteMapIndexString,
+  };
+
+  s3.putObject(params, (err, data) => {
+    if (err) console.log(err);
+  });
+  console.log("finished");
 };
 
 module.exports = {

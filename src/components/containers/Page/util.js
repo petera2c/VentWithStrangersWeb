@@ -16,7 +16,7 @@ export const getMetaData = (page) => {
   } else if (page === "/chat-with-strangers") {
     description =
       "Chat anonymously with great strangers. Our site is free of bullies, bots and perverts. Everything is 100% free and no credit card is required.";
-    keywords = "anonymously chat,random chat,vent chat,chat rooms";
+    keywords = "anonymously chat,random chat,vent chat,chat rooms,chat with strangers";
     title = "Chat With Strangers";
   } else if (page === "/chat") {
     description = "Your inbox.";

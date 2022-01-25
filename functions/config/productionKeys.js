@@ -4,4 +4,6 @@ module.exports = {
   amazonBucket: "ventwithstrangers",
   stripePlanID: "price_1KHfJRGjCcf2qEJgNsPxQgl2",
   stripeSecretKey: "sk_live_cMaM3AZPpZ389xzAhdo0nFQA",
+  sendGridApiKey:
+    "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",
 };
