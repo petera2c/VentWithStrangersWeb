@@ -15,14 +15,15 @@ const s3 = new AWS.S3({
   secretAccessKey: amazonSecretAccessKey,
 });
 
-const createProxy = () =>
+const createProxy = (req, res, next) => {
   s3Proxy({
     bucket: amazonBucket,
     accessKeyId: amazonAccessKeyID,
     secretAccessKey: amazonSecretAccessKey,
     overrideCacheControl: "max-age=100000",
     defaultKey: "sitemapindex.xml",
-  });
+  })(req, res, next);
+};
 
 const createSitemap = async () => {
   if (process.env.FUNCTIONS_EMULATOR === "true") return;
@@ -101,6 +102,8 @@ const createSitemap = async () => {
     Key: "sitemapindex.xml",
     Body: siteMapIndexString,
   };
+
+  console.log(params2);
 
   s3.putObject(params2, (err, data) => {
     console.log(data);

@@ -144,9 +144,8 @@ const injectMetaData = (req, res) => {
     });
   });
 };
-app.get("/create-sitemap", createSitemap);
 app.post("/subscribe", subscribeToPlan);
-app.get("/sitemap.xml", createProxy());
+app.get("/sitemap.xml", createProxy);
 
 app.get("/", async (req, res) => {
   return injectMetaData(req, res);
