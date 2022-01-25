@@ -90,7 +90,11 @@ const createSitemap = async () => {
   });
 
   const siteMapIndexString =
-    '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n<sitemap>\n<loc>https://blog.ventwithstrangers.com/sitemap.xml</loc>\n<lastmod>2022-01-25</lastmod>\n\n<sitemap>\n<loc>https://www.ventwithstrangers.com/sitemap.xml</loc>\n<lastmod>2022-01-25</lastmod>\n</sitemap>\n\n</sitemapindex>';
+    '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n<sitemap>\n<loc>https://blog.ventwithstrangers.com/sitemap.xml</loc>\n<lastmod>' +
+    new moment().format("YYYY-MM-DD") +
+    "</lastmod>\n\n<sitemap>\n<loc>https://www.ventwithstrangers.com/sitemap.xml</loc>\n<lastmod>" +
+    new moment().format("YYYY-MM-DD") +
+    "</lastmod>\n</sitemap>\n\n</sitemapindex>";
 
   const params2 = {
     Bucket: amazonBucket,
