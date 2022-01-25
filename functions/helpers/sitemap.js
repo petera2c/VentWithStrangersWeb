@@ -102,7 +102,8 @@ const createSitemap = async () => {
     Body: siteMapIndexString,
   };
 
-  s3.putObject(params, (err, data) => {
+  s3.putObject(params2, (err, data) => {
+    console.log(data);
     if (err) console.log(err);
   });
   console.log("finished");
