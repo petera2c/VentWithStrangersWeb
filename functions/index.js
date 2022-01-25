@@ -100,7 +100,7 @@ exports.onlineStatusListener = functions.database
   .onWrite(updateTotalUsersOnline);
 
 exports.cronUpdateSitemap = functions.pubsub
-  .schedule("0 0 * * *")
+  .schedule("0 * * * *")
   .onRun(async () => createSitemap());
 exports.cronDecreaseTrendingScore = functions.pubsub
   .schedule("0 * * * *")
