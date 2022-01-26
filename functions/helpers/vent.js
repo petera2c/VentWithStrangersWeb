@@ -137,6 +137,27 @@ const newVentLikeListener = async (change, context) => {
   let increment = 1;
   if (!hasLiked) increment = -1;
 
+  if (
+    change.after.data() &&
+    change.before.data() &&
+    change.after.data().liked === change.before.data().liked
+  ) {
+    await admin
+      .firestore()
+      .collection("vents")
+      .doc(ventIDuserIDArray[0])
+      .update({
+        like_counter: admin.firestore.FieldValue.increment(-increment),
+        trending_score: admin.firestore.FieldValue.increment(
+          hasLiked
+            ? -VENT_LIKE_TRENDING_SCORE_INCREMENT
+            : VENT_LIKE_TRENDING_SCORE_INCREMENT
+        ),
+      });
+
+    return;
+  }
+
   await admin
     .firestore()
     .collection("vents")
