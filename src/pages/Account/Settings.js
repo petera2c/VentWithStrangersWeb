@@ -212,6 +212,38 @@ function SettingsSection() {
                 type="p"
               />
             </Container>
+            <Container
+              className="clickable align-center mb16"
+              onClick={() => {
+                handleChange(
+                  "master_link_sign_up",
+                  !settingsSnapshot.data().master_link_sign_up
+                );
+                handleChange(
+                  "email_link_sign_up",
+                  !settingsSnapshot.data().email_link_sign_up,
+                  false
+                );
+                handleChange(
+                  "mobile_link_sign_up",
+                  !settingsSnapshot.data().mobile_link_sign_up,
+                  false
+                );
+              }}
+            >
+              <input
+                className="mr8"
+                checked={settingsSnapshot.data().master_link_sign_up}
+                onChange={() => {}}
+                style={{ minWidth: "13px" }}
+                type="checkbox"
+              />
+              <Text
+                className=""
+                text="Recieve a notification when a user signs up using your link"
+                type="p"
+              />
+            </Container>
           </Container>
 
           <Container className="column pl32">
@@ -353,6 +385,28 @@ function SettingsSection() {
                 type="p"
               />
             </Container>
+            <Container
+              className="clickable align-center mb16"
+              onClick={() =>
+                handleChange(
+                  "email_link_sign_up",
+                  !settingsSnapshot.data().email_link_sign_up
+                )
+              }
+            >
+              <input
+                className="mr8"
+                checked={settingsSnapshot.data().email_link_sign_up}
+                onChange={() => {}}
+                style={{ minWidth: "13px" }}
+                type="checkbox"
+              />
+              <Text
+                className=""
+                text="Email me when a user signs up using my link"
+                type="p"
+              />
+            </Container>
           </Container>
 
           <Container className="column pl32">
@@ -468,6 +522,28 @@ function SettingsSection() {
               <Text
                 className=""
                 text="Send a notification to my phone when I post a new vent"
+                type="p"
+              />
+            </Container>
+            <Container
+              className="clickable align-center mb16"
+              onClick={() =>
+                handleChange(
+                  "mobile_link_sign_up",
+                  !settingsSnapshot.data().mobile_link_sign_up
+                )
+              }
+            >
+              <input
+                className="mr8"
+                checked={settingsSnapshot.data().mobile_link_sign_up}
+                onChange={() => {}}
+                style={{ minWidth: "13px" }}
+                type="checkbox"
+              />
+              <Text
+                className=""
+                text="Send a notification when a user signs up using my link"
                 type="p"
               />
             </Container>
