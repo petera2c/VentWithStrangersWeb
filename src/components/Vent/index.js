@@ -540,7 +540,7 @@ function Vent({
 
           {!searchPreviewMode && displayCommentField && (
             <Container
-              className="sticky column x-fill ov-hidden bg-white border-top shadow-2 br8 pa16"
+              className="sticky column x-fill bg-white border-top shadow-2 br8 pa16"
               style={{ bottom: 0 }}
             >
               {isUserAccountNew(userBasicInfo) && (
@@ -551,7 +551,7 @@ function Vent({
                 </Link>
               )}
               <Container className="flex-fill align-center gap8">
-                <Container className="relative column flex-fill ov-hidden">
+                <Container className="relative column flex-fill">
                   <MentionsInput
                     className="mentions"
                     onChange={(e) => {
@@ -580,7 +580,7 @@ function Vent({
                         focused
                       ) => {
                         return (
-                          <Container className="flex-fill align-center wrap ov-hidden pa8 gap8">
+                          <Container className="flex-fill align-center pa8 gap8">
                             <MakeAvatar
                               displayName={entry.displayName}
                               userBasicInfo={entry}

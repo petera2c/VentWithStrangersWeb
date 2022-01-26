@@ -446,7 +446,9 @@
 }
 
 .mentions__suggestions__list {
-  background-color: var(--white-theme-color);
+  position: absolute;
+  bottom: 100%;
+  background-color: var(--white-color);
   box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
 

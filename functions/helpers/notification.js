@@ -7,7 +7,7 @@ sgMail.setApiKey(sendGridApiKey);
 
 const createNotification = async (
   canPushMobileNotification,
-  canSendEmailNotification,
+  emailNotificationInformation,
   link,
   message,
   userID
@@ -22,33 +22,43 @@ const createNotification = async (
     userID,
   });
 
-  /*
-if(canSendEmailNotification){
-const msg = {
-  to: 'test@example.com', // Change to your recipient
-  from: 'test@example.com', // Change to your verified sender
-  subject: 'Sending with SendGrid is Fun',
-  text: 'and easy to do anywhere, even with Node.js',
-  html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-}
-sgMail
-  .send(msg)
-  .then(() => {
-    console.log('Email sent')
-  })
-  .catch((error) => {
-    console.error(error)
-  })
-}
-  */
+  if (emailNotificationInformation) {
+    /*
+    admin
+      .auth()
+      .getUser(userID)
+      .then((user) => {
+        if (user.email) {
+          const {
+            html,
+            subject = "hello world",
+          } = emailNotificationInformation;
+      const msg = {
+        to: user.email,
+        from: "ventwithstrangers@gmail.com",
+        subject,
+        html: "<strong>and easy to do anywhere, even with Node.js</strong>",
+      };
+      sgMail
+        .send(msg)
+        .then(() => {
+          console.log("Email sent");
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+        }
+      });*/
+  }
 
-  admin
-    .database()
-    .ref("status/" + userID)
-    .once("value", (doc) => {
-      if (doc.val().state !== "online" && canPushMobileNotification)
-        sendMobilePushNotifications(message, userID);
-    });
+  if (canPushMobileNotification)
+    admin
+      .database()
+      .ref("status/" + userID)
+      .once("value", (doc) => {
+        if (doc.val().state !== "online")
+          sendMobilePushNotifications(message, userID);
+      });
 };
 
 const sendMobilePushNotifications = async (message, userID) => {
