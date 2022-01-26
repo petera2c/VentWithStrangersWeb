@@ -3,6 +3,8 @@ const moment = require("moment-timezone");
 const { createNotification } = require("./notification");
 const { createRewardsLink } = require("./util");
 
+const link_sign_up = require("./email_templates/link_sign_up");
+
 const createMilestone = async (reward, title, userID) => {
   await admin
     .firestore()
@@ -253,14 +255,26 @@ const userWasInvited = async (doc, context) => {
       { merge: true }
     );
 
+  const userSettingsDoc = await admin
+    .firestore()
+    .collection("users_settings")
+    .doc(userIDThatInvited)
+    .get();
+
   // Make notification
-  createNotification(
-    true,
-    true,
-    "",
-    "Someone signed up from your link! +50 Karma",
-    userIDThatInvited
-  );
+  if (userSettingsDoc.data() && userSettingsDoc.data().master_link_sign_up)
+    createNotification(
+      userSettingsDoc.data().mobile_link_sign_up === true,
+      userSettingsDoc.data().email_link_sign_up === true
+        ? {
+            html: link_sign_up,
+            subject: "Someone signed up from your link! +50 Karma",
+          }
+        : undefined,
+      "",
+      "Someone signed up from your link! +50 Karma",
+      userIDThatInvited
+    );
   return;
 };
 

@@ -7,6 +7,9 @@ const {
   createVentLink,
 } = require("./util");
 
+const vent_new = require("./email_templates/vent_new");
+const vent_like = require("./email_templates/vent_like");
+
 const VENT_LIKE_TRENDING_SCORE_INCREMENT = 24;
 
 const decreaseUserVentCounter = async () => {
@@ -114,7 +117,12 @@ const newVentListener = async (doc, context) => {
   if (userSettingsDoc.data() && userSettingsDoc.data().master_vent_new)
     return createNotification(
       userSettingsDoc.data().mobile_vent_new === true,
-      userSettingsDoc.data().email_vent_new === true,
+      userSettingsDoc.data().email_vent_new === true
+        ? {
+            html: vent_new,
+            subject: "Your new vent is live!",
+          }
+        : undefined,
       createVentLink(vent),
       "Your new vent is live!",
       vent.userID
@@ -192,7 +200,12 @@ const newVentLikeListener = async (change, context) => {
   if (userSettingsDoc.data() && userSettingsDoc.data().master_vent_like)
     createNotification(
       userSettingsDoc.data().mobile_vent_like === true,
-      userSettingsDoc.data().email_vent_like === true,
+      userSettingsDoc.data().email_vent_like === true
+        ? {
+            html: vent_like,
+            subject: "Someone has supported your vent! +2 Karma Points",
+          }
+        : undefined,
       createVentLink(vent),
       "Someone has supported your vent! +2 Karma Points",
       vent.userID

@@ -23,7 +23,6 @@ const createNotification = async (
   });
 
   if (emailNotificationInformation) {
-    /*
     admin
       .auth()
       .getUser(userID)
@@ -33,22 +32,22 @@ const createNotification = async (
             html,
             subject = "hello world",
           } = emailNotificationInformation;
-      const msg = {
-        to: user.email,
-        from: "ventwithstrangers@gmail.com",
-        subject,
-        html: "<strong>and easy to do anywhere, even with Node.js</strong>",
-      };
-      sgMail
-        .send(msg)
-        .then(() => {
-          console.log("Email sent");
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+          const msg = {
+            to: user.email,
+            from: "ventwithstrangers@gmail.com",
+            subject,
+            html,
+          };
+          sgMail
+            .send(msg)
+            .then(() => {
+              console.log("Email sent");
+            })
+            .catch((error) => {
+              console.error(error);
+            });
         }
-      });*/
+      });
   }
 
   if (canPushMobileNotification)

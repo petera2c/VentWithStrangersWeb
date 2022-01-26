@@ -2,6 +2,10 @@ const admin = require("firebase-admin");
 const { createNotification } = require("./notification");
 const { calculateKarmaUserCanStrip, createVentLink } = require("./util");
 
+const comment_like = require("./email_templates/comment_like");
+const comment_on_vent = require("./email_templates/comment_on_vent");
+const comment_tagged = require("./email_templates/comment_tagged");
+
 const COMMENT_LIKE_TRENDING_SCORE_INCREMENT = 24;
 
 const commentDeleteListener = async (doc, context) => {
@@ -110,7 +114,12 @@ const commentLikeListener = async (change, context) => {
     if (ventDoc.exists)
       createNotification(
         userSettingsDoc.data().mobile_comment_like === true,
-        userSettingsDoc.data().email_comment_like === true,
+        userSettingsDoc.data().email_comment_like === true
+          ? {
+              html: comment_like,
+              subject: "Someone has supported your comment! +4 Karma Points",
+            }
+          : undefined,
         createVentLink({ id: ventDoc.id, ...ventDoc.data() }),
         "Someone has supported your comment! +4 Karma Points",
         comment.userID
@@ -140,7 +149,12 @@ const createNewCommentNotification = async (doc, context) => {
   if (userSettingsDoc.data() && userSettingsDoc.data().master_vent_commented) {
     return createNotification(
       userSettingsDoc.data().mobile_vent_commented === true,
-      userSettingsDoc.data().email_vent_commented === true,
+      userSettingsDoc.data().email_vent_commented === true
+        ? {
+            html: comment_on_vent,
+            subject: "Your vent has a new comment!",
+          }
+        : undefined,
       createVentLink(vent),
       "Your vent has a new comment!",
       vent.userID
@@ -195,7 +209,12 @@ const createNotificationsToAnyTaggedUsers = async (doc, context) => {
       ) {
         createNotification(
           userSettingsDoc.data().mobile_comment_tagged === true,
-          userSettingsDoc.data().email_comment_tagged === true,
+          userSettingsDoc.data().email_comment_tagged === true
+            ? {
+                html: comment_tagged,
+                subject: "You have been tagged in a comment!",
+              }
+            : undefined,
           createVentLink(vent),
           "You have been tagged in a comment!",
           listOfTaggedIDs[index]
