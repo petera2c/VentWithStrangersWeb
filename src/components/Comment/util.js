@@ -62,7 +62,7 @@ export const likeOrUnlikeComment = async (comment, hasLiked, user) => {
   await db
     .collection("comment_likes")
     .doc(comment.id + "|||" + user.uid)
-    .set({ liked: !hasLiked, commentID: comment.id });
+    .set({ liked: !hasLiked, commentID: comment.id, userID: user.uid });
 };
 
 export const reportComment = async (option, userID, commentID, ventID) => {

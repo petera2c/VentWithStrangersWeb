@@ -11,6 +11,8 @@ import { message } from "antd";
 
 import { displayNameErrors, getEndAtValueTimestamp } from "../../util";
 
+export const deleteAccountAndAllData = (userID) => {};
+
 export const getUsersVents = async (
   isMounted,
   search,

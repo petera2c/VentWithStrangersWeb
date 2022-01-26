@@ -280,7 +280,7 @@ export const likeOrUnlikeVent = async (
   await db
     .collection("vent_likes")
     .doc(vent.id + "|||" + user.uid)
-    .set({ liked: !hasLiked, ventID: vent.id });
+    .set({ liked: !hasLiked, userID: user.uid, ventID: vent.id });
 };
 
 export const reportVent = async (option, userID, ventID) => {

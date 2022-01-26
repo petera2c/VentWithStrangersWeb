@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import loadable from "@loadable/component";
 import moment from "moment-timezone";
 import TextArea from "react-textarea-autosize";
-import { Button, DatePicker, message } from "antd";
+import { Button, DatePicker, message, Modal } from "antd";
 
 import { faBirthdayCake } from "@fortawesome/pro-duotone-svg-icons/faBirthdayCake";
 import { faEye } from "@fortawesome/pro-solid-svg-icons/faEye";
@@ -23,7 +23,7 @@ import {
   religiousBeliefsList,
 } from "../../PersonalOptions";
 import { calculateKarma, isMobileOrTablet, useIsMounted } from "../../util";
-import { getUser, updateUser } from "./util";
+import { deleteAccountAndAllData, getUser, updateUser } from "./util";
 
 const Container = loadable(() =>
   import("../../components/containers/Container")
@@ -42,6 +42,7 @@ function AccountSection() {
   const [birthDate, setBirthDate] = useState();
   const [canSeePassword, setCanSeePassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [deleteAccountModal, setDeleteAccountModal] = useState(false);
   const [displayName, setDisplayName] = useState(user.displayName);
   const [email, setEmail] = useState(user.email);
   const [gender, setGender] = useState("");
@@ -463,9 +464,39 @@ function AccountSection() {
               Apply
             </Button>
           </Container>
+
+          {false && (
+            <Container className="mt16">
+              <button
+                className="button-1 grey-1"
+                onClick={() => setDeleteAccountModal(true)}
+                size="large"
+                type="text"
+              >
+                Delete Account and All Data
+              </button>
+            </Container>
+          )}
         </Container>
         <SubscribeColumn slot="1200594581" />
       </Container>
+      <Modal
+        cancelText="Cancel"
+        visible={deleteAccountModal}
+        okText="Yes, continue."
+        onCancel={() => setDeleteAccountModal(false)}
+        onOk={() => {
+          setDeleteAccountModal(false);
+          deleteAccountAndAllData(user.uid);
+        }}
+        title="Delete Account"
+      >
+        <p>
+          This will permanently delete every single item we have related your
+          account. None of this information will be recoverable. Are you sure
+          you want to proceed?
+        </p>
+      </Modal>
     </Page>
   );
 }
