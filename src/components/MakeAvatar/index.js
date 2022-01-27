@@ -5,7 +5,6 @@ import { capitolizeFirstChar } from "../../util";
 
 function MakeAvatar({ className, displayName, size, userBasicInfo }) {
   if (!displayName) displayName = "Anonymous";
-  //return <div />;
 
   if (userBasicInfo && userBasicInfo.avatar) {
     if (size === "large")

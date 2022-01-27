@@ -76,6 +76,8 @@ const getMetaInformation = async (url, callback) => {
     title = "Account";
   } else if (url === "/avatar") {
     title = "Avatar";
+  } else if (url === "/birthday-post") {
+    title = "Happy Birthday!";
   } else if (url === "/chat-with-strangers") {
     description =
       "Chat anonymously with great strangers. Our site is free of bullies, bots and perverts. Everything is 100% free and no credit card is required.";
@@ -100,6 +102,8 @@ const getMetaInformation = async (url, callback) => {
     title = "Profile";
   } else if (url === "/privacy-policy") {
     title = "Privacy Policy";
+  } else if (url === "/quote-contest") {
+    title = "Feel Good Quote Contest";
   } else if (url === "/recent") {
     title = "Recent Vents";
   } else if (url === "/rewards") {

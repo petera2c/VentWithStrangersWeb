@@ -6,6 +6,7 @@ import { Space } from "antd";
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
 import { faInfo } from "@fortawesome/pro-duotone-svg-icons/faInfo";
 import { faPrayingHands } from "@fortawesome/pro-duotone-svg-icons/faPrayingHands";
+import { faQuoteLeft } from "@fortawesome/pro-duotone-svg-icons/faQuoteLeft";
 import { faStarShooting } from "@fortawesome/pro-duotone-svg-icons/faStarShooting";
 import { faUserFriends } from "@fortawesome/pro-duotone-svg-icons/faUserFriends";
 import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
@@ -141,6 +142,12 @@ function Sidebar() {
         link="/chat-with-strangers"
         pathname={pathname}
         text="Chat With Strangers"
+      />
+      <SideBarLink
+        icon={faQuoteLeft}
+        link="/daily-quote"
+        pathname={pathname}
+        text="Daily Quote Contest"
       />
       <SideBarLink
         icon={faStarShooting}

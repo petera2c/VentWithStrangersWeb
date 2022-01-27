@@ -43,6 +43,7 @@ const NotificationsPage = React.lazy(() => import("./Notifications"));
 const OnlineUsersPage = React.lazy(() => import("./OnlineUsers"));
 const PrivacyPolicyPage = React.lazy(() => import("./PrivacyPolicy"));
 const ProfilePage = React.lazy(() => import("./Account/Profile"));
+const QuoteContestPage = React.lazy(() => import("./QuoteContest"));
 const RewardsPage = React.lazy(() => import("./Rewards"));
 const RulesPage = React.lazy(() => import("./Rules"));
 const SearchPage = React.lazy(() => import("./Search"));
@@ -170,6 +171,10 @@ function RoutesComp() {
                     <Route
                       path="privacy-policy"
                       element={<PrivacyPolicyPage />}
+                    />
+                    <Route
+                      path="quote-contest"
+                      element={<QuoteContestPage />}
                     />
                     <Route path="vent/:id" element={<VentPage />} />
                     <Route path="vent/:id/:title" element={<VentPage />} />
