@@ -248,6 +248,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
                         );
                       },
                       checks,
+                      isBirthdayPost,
                       {
                         description,
                         tags,

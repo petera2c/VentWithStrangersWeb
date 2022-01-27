@@ -65,7 +65,14 @@ export const getVent = async (setDescription, setTags, setTitle, ventID) => {
   }
 };
 
-export const saveVent = async (callback, checks, ventObject, ventID, user) => {
+export const saveVent = async (
+  callback,
+  checks,
+  isBirthdayPost,
+  ventObject,
+  ventID,
+  user
+) => {
   if (!ventID) {
     ventObject.server_timestamp = firebase.firestore.Timestamp.now().toMillis();
     ventObject.comment_counter = 0;
@@ -73,6 +80,8 @@ export const saveVent = async (callback, checks, ventObject, ventID, user) => {
   }
   ventObject.userID = user.uid;
   ventObject.last_updated = firebase.firestore.Timestamp.now().toMillis();
+
+  if (isBirthdayPost) ventObject.is_birthday_post = isBirthdayPost;
 
   let newVent = ventObject;
   if (ventID) {
