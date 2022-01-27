@@ -9,10 +9,10 @@ service cloud.firestore {
     }
 
     match /block_check/{userIDuserID2} {
-      allow read: if request.auth.uid == userIDuserID2.split('\\|\\|\\|')[0] || request.auth.uid == userIDuserID2.split('\\|\\|\\|')[1];
+      allow read: if resource.data[request.auth.uid] == true || request.auth.uid == userIDuserID2.split('\\|\\|\\|')[0] || request.auth.uid == userIDuserID2.split('\\|\\|\\|')[1];
       allow write: if request.resource.data.keys().hasOnly([request.auth.uid]);
       allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly([request.auth.uid]);
-      allow delete: if false;
+      allow delete: if resource.data[request.auth.uid] == true;
     }
 
     match /chat_queue/{uid} {
@@ -26,10 +26,10 @@ service cloud.firestore {
       allow delete: if request.auth.uid == resource.data.userID || get(/databases/$(database)/documents/vents/$(resource.data.ventID)).data.userID == request.auth.uid;
     }
     match /comment_likes/{commentIDUserID} {
-      allow read, write, update, delete: if request.auth.uid == commentIDUserID.split('\\|\\|\\|')[1];
+      allow read, write, update, delete: if request.auth.uid == resource.data.userID || request.auth.uid == commentIDUserID.split('\\|\\|\\|')[1];
     }
     match /comment_reports/{commentIDUserID} {
-      allow read, write, update, delete: if request.auth.uid == commentIDUserID.split('\\|\\|\\|')[1];
+      allow read, write, update, delete: if request.auth.uid == resource.data.userID || request.auth.uid == commentIDUserID.split('\\|\\|\\|')[1];
     }
 
     match /conversations/{conversationID} {
@@ -48,24 +48,24 @@ service cloud.firestore {
     }
 
     match /invite_uid/{secondUID} {
-      allow read: if resource.data.primary_uid == request.auth.uid;
-      allow write, update, delete: if false;
+      allow read, delete: if resource.data.primary_uid == request.auth.uid;
+      allow write, update: if false;
     }
     match /invited_users/{uid} {
       allow write: if request.auth.uid == uid;
-      allow read, delete: if false;
+      allow read: if false;
     }
 
     match /notifications/{notificationID} {
       allow read: if request.auth.uid == resource.data.userID;
-      allow write, delete: if request.auth.uid == request.resource.data.userID;
+      allow write, delete: if request.auth.uid == resource.data.userID;
       allow update: if request.auth.uid == request.resource.data.userID
         && request.resource.data.userID == resource.data.userID;
     }
 
     match /rewards/{rewardID} {
-      allow read: if request.auth.uid == resource.data.userID;
-      allow write, update, delete: if false;
+      allow read, delete: if request.auth.uid == resource.data.userID;
+      allow write, update: if false;
     }
 
     match /total_users_online/{randomID} {
@@ -78,8 +78,8 @@ service cloud.firestore {
     }
 
     match /user_rewards/{userID} {
-      allow read: if request.auth.uid == userID;
-      allow write, update, delete: if false;
+      allow read, delete: if request.auth.uid == userID;
+      allow write, update: if false;
     }
     match /user_expo_tokens/{userID} {
       allow read, write, update, delete: if request.auth.uid == userID;
@@ -88,8 +88,8 @@ service cloud.firestore {
       allow read, write, update, delete: if true;
     }
     match /user_day_limit_vents/{userID} {
-      allow read: if request.auth.uid == userID;
-      allow write, update, delete: if false;
+      allow read, delete: if request.auth.uid == userID;
+      allow write, update: if false;
     }
     match /user_mobile_app_rating/{userID} {
       allow read, write, update, delete: if request.auth.uid == userID;
@@ -98,8 +98,8 @@ service cloud.firestore {
       allow read, write, update, delete: if request.auth.uid == userID;
     }
     match /user_vent_timeout/{userID} {
-      allow read: if request.auth.uid == userID;
-      allow write, update, delete: if false;
+      allow read, delete: if request.auth.uid == userID;
+      allow write, update: if false;
     }
     match /users/{userID} {
       allow read, write, update, delete: if request.auth.uid == userID;
@@ -137,10 +137,10 @@ service cloud.firestore {
       }
     }
     match /vent_likes/{ventIDUserID} {
-      allow read, write, update, delete: if request.auth.uid == ventIDUserID.split('\\|\\|\\|')[1];
+      allow read, write, update, delete: if request.auth.uid == resource.data.userID || request.auth.uid == ventIDUserID.split('\\|\\|\\|')[1];
     }
     match /vent_reports/{ventIDUserID} {
-      allow read, write, update, delete: if request.auth.uid == ventIDUserID.split('\\|\\|\\|')[1];
+      allow read, write, update, delete: if request.auth.uid == resource.data.userID || request.auth.uid == ventIDUserID.split('\\|\\|\\|')[1];
     }
   }
 }

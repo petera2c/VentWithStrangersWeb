@@ -43,6 +43,7 @@ function AccountSection() {
   const [canSeePassword, setCanSeePassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [deleteAccountModal, setDeleteAccountModal] = useState(false);
+  const [deletingAccount, setDeletingAccount] = useState(false);
   const [displayName, setDisplayName] = useState(user.displayName);
   const [email, setEmail] = useState(user.email);
   const [gender, setGender] = useState("");
@@ -465,18 +466,16 @@ function AccountSection() {
             </Button>
           </Container>
 
-          {false && (
-            <Container className="mt16">
-              <button
-                className="button-1 grey-1"
-                onClick={() => setDeleteAccountModal(true)}
-                size="large"
-                type="text"
-              >
-                Delete Account and All Data
-              </button>
-            </Container>
-          )}
+          <Container className="mt16">
+            <button
+              className="button-1 grey-1"
+              onClick={() => setDeleteAccountModal(true)}
+              size="large"
+              type="text"
+            >
+              Delete Account and All Data
+            </button>
+          </Container>
         </Container>
         <SubscribeColumn slot="1200594581" />
       </Container>
@@ -486,15 +485,15 @@ function AccountSection() {
         okText="Yes, continue."
         onCancel={() => setDeleteAccountModal(false)}
         onOk={() => {
-          setDeleteAccountModal(false);
+          setDeletingAccount(true);
           deleteAccountAndAllData(user.uid);
         }}
         title="Delete Account"
       >
         <p>
-          This will permanently delete every single item we have related your
-          account. None of this information will be recoverable. Are you sure
-          you want to proceed?
+          {deletingAccount
+            ? "We are deleting all account data. Please do not refresh this page."
+            : "This will permanently delete every single item we have related your account. None of this information will be recoverable. Are you sure you want to proceed?"}
         </p>
       </Modal>
     </Page>

@@ -173,7 +173,7 @@ const updateTotalUsersOnline = (change, context) => {
   const changeAfter = change.after;
   const changeBefore = change.before;
 
-  if (!changeAfter.val() && !changeAfter.val()) {
+  if (!changeAfter.val() && !changeBefore.val()) {
     // Do nothing, should never happen
   } else if (!changeBefore.val()) {
     // New doc

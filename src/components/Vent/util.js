@@ -287,7 +287,7 @@ export const reportVent = async (option, userID, ventID) => {
   await db
     .collection("vent_reports")
     .doc(ventID + "|||" + userID)
-    .set({ option, ventID });
+    .set({ option, userID, ventID });
 
   message.success("Report successful :)");
 };

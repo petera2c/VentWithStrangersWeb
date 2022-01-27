@@ -112,7 +112,20 @@ const conversationUpdateListener = async (change, context) => {
   const conversationAfter = change.after.data();
 
   if (conversationAfter && conversationBefore) {
-    if (!arraysEqual(conversationBefore.members, conversationAfter.members)) {
+    if (conversationAfter.members.length === 0) {
+      await admin
+        .firestore()
+        .collection("conversation_extra_data")
+        .doc(conversationID)
+        .delete();
+      await admin
+        .firestore()
+        .collection("conversations")
+        .doc(conversationID)
+        .delete();
+    } else if (
+      !arraysEqual(conversationBefore.members, conversationAfter.members)
+    ) {
       // If user has deleted conversation code
       for (let index in conversationBefore.members) {
         if (

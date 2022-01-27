@@ -1,17 +1,241 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
+import "firebase/compat/database";
 import {
   sendEmailVerification,
   updateEmail,
   updateProfile,
 } from "firebase/auth";
+import { writeBatch, doc } from "firebase/firestore";
+
 import db from "../../config/firebase";
 
 import { message } from "antd";
 
 import { displayNameErrors, getEndAtValueTimestamp } from "../../util";
 
-export const deleteAccountAndAllData = (userID) => {};
+export const deleteAccountAndAllData = async (userID) => {
+  let counter = 0;
+  const batch = writeBatch(db);
+
+  const commentLikesSnapshot = await db
+    .collection("comment_likes")
+    .where("userID", "==", userID)
+    .get();
+
+  for (let index in commentLikesSnapshot.docs) {
+    counter++;
+    if (counter === 500) await batch.commit();
+    const ref = doc(db, "comment_likes", commentLikesSnapshot.docs[index].id);
+    batch.delete(ref);
+  }
+
+  const ventLikesSnapshot = await db
+    .collection("vent_likes")
+    .where("userID", "==", userID)
+    .get();
+  for (let index in ventLikesSnapshot.docs) {
+    counter++;
+    if (counter === 500) await batch.commit();
+    const ref = doc(db, "vent_likes", ventLikesSnapshot.docs[index].id);
+    batch.delete(ref);
+  }
+
+  const ventsSnapshot = await db
+    .collection("vents")
+    .where("userID", "==", userID)
+    .get();
+  for (let index in ventsSnapshot.docs) {
+    counter++;
+    if (counter === 500) await batch.commit();
+    const ref = doc(db, "vents", ventsSnapshot.docs[index].id);
+    batch.delete(ref);
+  }
+
+  const commentReportsSnapshot = await db
+    .collection("comment_reports")
+    .where("userID", "==", userID)
+    .get();
+  for (let index in commentReportsSnapshot.docs) {
+    counter++;
+    if (counter === 500) await batch.commit();
+    const ref = doc(
+      db,
+      "comment_reports",
+      commentReportsSnapshot.docs[index].id
+    );
+    batch.delete(ref);
+  }
+
+  const ventReportsSnapshot = await db
+    .collection("vent_reports")
+    .where("userID", "==", userID)
+    .get();
+  for (let index in ventReportsSnapshot.docs) {
+    counter++;
+    if (counter === 500) await batch.commit();
+    const ref = doc(db, "vent_reports", ventReportsSnapshot.docs[index].id);
+    batch.delete(ref);
+  }
+
+  const commentsSnapshot = await db
+    .collection("comments")
+    .where("userID", "==", userID)
+    .get();
+  for (let index in commentsSnapshot.docs) {
+    counter++;
+    if (counter === 500) await batch.commit();
+    const ref = doc(db, "comments", commentsSnapshot.docs[index].id);
+    batch.delete(ref);
+  }
+
+  const blockedUserSnapshot = await db
+    .collection("block_check")
+    .where(userID, "==", true)
+    .get();
+  for (let index in blockedUserSnapshot.docs) {
+    counter++;
+    if (counter === 500) await batch.commit();
+    const ref = doc(db, "block_check", blockedUserSnapshot.docs[index].id);
+    batch.delete(ref);
+  }
+
+  const conversationsQuerySnapshot = await db
+    .collection("conversations")
+    .where("members", "array-contains", userID)
+    .get();
+  for (let index in conversationsQuerySnapshot.docs) {
+    counter++;
+    if (counter === 500) await batch.commit();
+    const ref = doc(
+      db,
+      "conversations",
+      conversationsQuerySnapshot.docs[index].id
+    );
+    batch.update(ref, {
+      members: firebase.firestore.FieldValue.arrayRemove(userID),
+    });
+  }
+
+  const inviteUIDSnapshot = await db
+    .collection("invite_uid")
+    .where("primary_uid", "==", userID)
+    .get();
+  if (inviteUIDSnapshot.doc && inviteUIDSnapshot.docs[0]) {
+    const invitedUsersSnapshot = await db
+      .collection("invited_users")
+      .where("referral_secondary_uid", "==", inviteUIDSnapshot.docs[0].id)
+      .get();
+    for (let index in invitedUsersSnapshot.docs) {
+      counter++;
+      if (counter === 500) await batch.commit();
+      const ref = doc(db, "invited_users", invitedUsersSnapshot.docs[index].id);
+      batch.update(ref, { referral_secondary_uid: "deleted" });
+    }
+  }
+  for (let index in inviteUIDSnapshot.docs) {
+    counter++;
+    if (counter === 500) await batch.commit();
+    const ref = doc(db, "invite_uid", inviteUIDSnapshot.docs[index].id);
+    batch.delete(ref);
+  }
+
+  const notificationsSnapshot = await db
+    .collection("notifications")
+    .where("userID", "==", userID)
+    .get();
+  for (let index in notificationsSnapshot.docs) {
+    counter++;
+    if (counter === 500) await batch.commit();
+    const ref = doc(db, "notifications", notificationsSnapshot.docs[index].id);
+    batch.delete(ref);
+  }
+
+  const rewardsSnapshot = await db
+    .collection("rewards")
+    .where("userID", "==", userID)
+    .get();
+  for (let index in rewardsSnapshot.docs) {
+    counter++;
+    if (counter === 500) await batch.commit();
+    const ref = doc(db, "rewards", rewardsSnapshot.docs[index].id);
+    batch.delete(ref);
+  }
+
+  const chatQueueSnapshot = await db
+    .collection("chat_queue")
+    .where("userID", "==", userID)
+    .get();
+  for (let index in chatQueueSnapshot.docs) {
+    counter++;
+    if (counter === 500) await batch.commit();
+    const ref = doc(db, "chat_queue", chatQueueSnapshot.docs[index].id);
+    batch.delete(ref);
+  }
+
+  counter++;
+  if (counter === 500) await batch.commit();
+  batch.delete(doc(db, "unread_conversations_count", userID));
+
+  counter++;
+  if (counter === 500) await batch.commit();
+  batch.delete(doc(db, "user_day_limit_vents", userID));
+
+  counter++;
+  if (counter === 500) await batch.commit();
+  batch.delete(doc(db, "user_day_limit_vents", userID));
+
+  counter++;
+  if (counter === 500) await batch.commit();
+  batch.delete(doc(db, "user_expo_tokens", userID));
+
+  counter++;
+  if (counter === 500) await batch.commit();
+  batch.delete(doc(db, "user_matches", userID));
+
+  counter++;
+  if (counter === 500) await batch.commit();
+  batch.delete(doc(db, "user_rewards", userID));
+
+  counter++;
+  if (counter === 500) await batch.commit();
+  batch.delete(doc(db, "user_vent_timeout", userID));
+
+  counter++;
+  if (counter === 500) await batch.commit();
+  batch.delete(doc(db, "users", userID));
+
+  counter++;
+  if (counter === 500) await batch.commit();
+  batch.delete(doc(db, "users_display_name", userID));
+
+  counter++;
+  if (counter === 500) await batch.commit();
+  batch.delete(doc(db, "users_info", userID));
+
+  counter++;
+  if (counter === 500) await batch.commit();
+  batch.delete(doc(db, "users_settings", userID));
+
+  counter++;
+  if (counter === 500) await batch.commit();
+  batch.delete(doc(db, "unread_conversations_count", userID));
+
+  batch.commit();
+
+  await firebase
+    .database()
+    .ref("status/" + userID)
+    .remove();
+
+  await firebase.auth().currentUser.delete();
+
+  window.location.reload();
+
+  console.log("here");
+  console.log(userID);
+  return;
+};
 
 export const getUsersVents = async (
   isMounted,

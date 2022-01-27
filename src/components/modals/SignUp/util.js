@@ -70,7 +70,7 @@ export const signUp = (
         });
         setActiveModal(false);
         navigate("/rules");
-        //window.location.reload();
+        window.location.reload();
       }
     })
     .catch((e) => {

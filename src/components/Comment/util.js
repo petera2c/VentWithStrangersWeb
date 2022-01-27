@@ -69,7 +69,7 @@ export const reportComment = async (option, userID, commentID, ventID) => {
   await db
     .collection("comment_reports")
     .doc(commentID + "|||" + userID)
-    .set({ commentID, option, ventID });
+    .set({ commentID, option, userID, ventID });
 
   message.success("Report successful :)");
 };
