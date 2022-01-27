@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import moment from "moment-timezone";
 import { MentionsInput, Mention } from "react-mentions";
@@ -77,12 +77,13 @@ function Vent({
   ventInit,
 }) {
   const isMounted = useIsMounted();
+  const textInput = useRef(null);
   const { user, userBasicInfo } = useContext(UserContext);
 
   const [activeSort, setActiveSort] = useState("first");
   const [author, setAuthor] = useState({});
   const [blockModal, setBlockModal] = useState(false);
-  const [canLoadMoreComments, setCanLoadMoreComments] = useState(true);
+  const [canLoadMoreComments, setCanLoadMoreComments] = useState(false);
   const [comments, setComments] = useState([]);
   const [commentString, setCommentString] = useState("");
   const [deleteVentConfirm, setDeleteVentConfirm] = useState(false);
@@ -401,8 +402,11 @@ function Vent({
                   }
                 >
                   <FontAwesomeIcon
-                    className="blue"
+                    className="clickable blue"
                     icon={faComments}
+                    onClick={() => {
+                      if (disablePostOnClick) textInput.current.focus();
+                    }}
                     size="2x"
                   />
                   <p className="grey-5">
@@ -575,6 +579,7 @@ function Vent({
                       setCommentString(e.target.value);
                     }}
                     placeholder="Say something nice :)"
+                    inputRef={textInput}
                     value={commentString}
                   >
                     <Mention
