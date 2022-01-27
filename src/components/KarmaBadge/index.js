@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Tooltip } from "antd";
 
-import { faBadgeSheriff } from "@fortawesome/pro-duotone-svg-icons/faBadgeSheriff";
+import { faRocket } from "@fortawesome/pro-duotone-svg-icons/faRocket";
 import { faMedal } from "@fortawesome/pro-solid-svg-icons/faMedal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -40,16 +40,16 @@ function KarmaBadge({ noOnClick, userBasicInfo }) {
   let badgeIcon;
   if (karma >= 10000) {
     badgeColor = "#004FFF";
-    badgeIcon = faBadgeSheriff;
+    badgeIcon = faRocket;
   } else if (karma >= 5000) {
     badgeColor = "#72B01D";
-    badgeIcon = faBadgeSheriff;
+    badgeIcon = faRocket;
   } else if (karma >= 2500) {
     badgeColor = "#DD0426";
-    badgeIcon = faBadgeSheriff;
+    badgeIcon = faRocket;
   } else if (karma >= 1000) {
     badgeColor = "#ff7433";
-    badgeIcon = faBadgeSheriff;
+    badgeIcon = faRocket;
   } else if (karma >= 500) {
     badgeColor = "#9bf6ff";
     badgeIcon = faMedal;

@@ -13,6 +13,7 @@ export const getIsUsersBirthday = async (
   const userInfoDoc = await db.collection("users_info").doc(userID).get();
 
   if (
+    userInfoDoc.data() &&
     userInfoDoc.data().birth_date &&
     new moment(userInfoDoc.data().birth_date).format("MMDD") ===
       new moment().format("MMDD") &&
