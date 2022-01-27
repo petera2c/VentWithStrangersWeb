@@ -250,7 +250,6 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
                       checks,
                       {
                         description,
-                        is_birthday_post: isBirthdayPost,
                         tags,
                         title,
                       },
