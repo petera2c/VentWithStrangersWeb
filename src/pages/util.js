@@ -12,10 +12,16 @@ export const getIsUsersBirthday = async (
 ) => {
   const userInfoDoc = await db.collection("users_info").doc(userID).get();
 
+  console.log(new moment(userInfoDoc.data().birth_date).format("MMDD"));
+  console.log(new moment().format("MMDD"));
+
   if (
-    !userInfoDoc.data().last_birthday ||
-    new moment().diff(new moment(userInfoDoc.data().last_birthday), "days") >=
-      365
+    userInfoDoc.data().birth_date &&
+    new moment(userInfoDoc.data().birth_date).format("MMDD") ===
+      new moment().format("MMDD") &&
+    (!userInfoDoc.data().last_birthday ||
+      new moment().diff(new moment(userInfoDoc.data().last_birthday), "days") >=
+        365)
   ) {
     if (isMounted()) setIsUsersBirthday(true);
     await db
