@@ -64,6 +64,28 @@ const decreaseTrendingScore = async () => {
 const newVentListener = async (doc, context) => {
   const vent = { id: doc.id, ...doc.data() };
 
+  if (vent.is_birthday_post) {
+    const userInfoDoc = await admin
+      .firestore()
+      .collection("users_info")
+      .doc(vent.userID)
+      .get();
+
+    if (
+      userInfoDoc.data().last_birthday_post &&
+      new moment().diff(
+        new moment(userInfoDoc.data().last_birthday_post),
+        "days"
+      ) < 365
+    ) {
+      return await admin.firestore().collection("vents").doc(vent.id).delete();
+    } else {
+      await admin.firestore().collection("users_info").doc(vent.userID).update({
+        last_birthday_post: admin.firestore.Timestamp.now().toMillis(),
+      });
+    }
+  }
+
   if (vent.server_timestamp > admin.firestore.Timestamp.now().toMillis()) {
     vent.server_timestamp = admin.firestore.Timestamp.now().toMillis();
     await admin

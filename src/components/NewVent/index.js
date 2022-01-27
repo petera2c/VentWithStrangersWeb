@@ -22,6 +22,8 @@ import {
 } from "../../util";
 import {
   countdown,
+  createPlaceholderDescription,
+  formatSeconds,
   getUserVentTimeOut,
   getVent,
   saveVent,
@@ -29,7 +31,7 @@ import {
   updateTags,
 } from "./util";
 
-function NewVentComponent({ miniVersion, ventID }) {
+function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
   const isMounted = useIsMounted();
   const navigate = useNavigate();
   const { user, userBasicInfo } = useContext(UserContext);
@@ -72,20 +74,6 @@ function NewVentComponent({ miniVersion, ventID }) {
     return true;
   };
 
-  const formatSeconds = (userVentTimeOut) => {
-    const hours = Math.floor(userVentTimeOut / 3600);
-    const minutes = Math.floor((userVentTimeOut % 3600) / 60);
-    const seconds = (userVentTimeOut % 3600) % 60;
-
-    return (
-      (hours < 10 ? "0" + hours : hours) +
-      ":" +
-      (minutes < 10 ? "0" + minutes : minutes) +
-      ":" +
-      (seconds < 10 ? "0" + seconds : seconds)
-    );
-  };
-
   return (
     <HandleOutsideClick
       className="x-fill column bg-white br8"
@@ -120,11 +108,11 @@ function NewVentComponent({ miniVersion, ventID }) {
               setDescription(event.target.value);
             }}
             onClick={() => setIsMinified(false)}
-            placeholder={
-              (userVentTimeOut > 0
-                ? "You can vent again in " + formatSeconds(userVentTimeOut)
-                : encouragingText) + " :)"
-            }
+            placeholder={createPlaceholderDescription(
+              encouragingText,
+              isBirthdayPost,
+              userVentTimeOut
+            )}
             minRows={isMinified ? 1 : 3}
             value={description}
           />
@@ -262,6 +250,7 @@ function NewVentComponent({ miniVersion, ventID }) {
                       checks,
                       {
                         description,
+                        is_birthday_post: isBirthdayPost,
                         tags,
                         title,
                       },

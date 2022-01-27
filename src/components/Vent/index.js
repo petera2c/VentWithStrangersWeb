@@ -4,6 +4,7 @@ import moment from "moment-timezone";
 import { MentionsInput, Mention } from "react-mentions";
 import { Button, Dropdown } from "antd";
 
+import { faBirthdayCake } from "@fortawesome/pro-duotone-svg-icons/faBirthdayCake";
 import { faClock } from "@fortawesome/pro-regular-svg-icons/faClock";
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
 import { faEdit } from "@fortawesome/pro-light-svg-icons/faEdit";
@@ -197,6 +198,20 @@ function Vent({
                 {isUserOnline && <div className="online-dot mr8" />}
               </Container>
               <KarmaBadge userBasicInfo={author} />
+              {vent.is_birthday_post && (
+                <Container className="align-center gap8">
+                  <FontAwesomeIcon
+                    className="orange"
+                    icon={faBirthdayCake}
+                    size="3x"
+                  />
+                  <FontAwesomeIcon
+                    className="purple"
+                    icon={faBirthdayCake}
+                    size="3x"
+                  />
+                </Container>
+              )}
             </Container>
             <Container className="relative flex-fill align-center justify-end">
               {user && (

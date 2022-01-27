@@ -21,12 +21,8 @@ const combineObjectWithID = (id, object) => {
   return object;
 };
 
-const createProfileLink = (userID) => {
-  let link = "https://www.ventwithstrangers.com/profile?" + userID;
-  if (process.env.FUNCTIONS_EMULATOR)
-    link = "http://localhost:3000/profile?" + userID;
-
-  return link;
+const createBirthdayLink = () => {
+  return "/birthday-post";
 };
 
 const createRewardsLink = () => {
@@ -202,7 +198,7 @@ module.exports = {
   calculateKarma,
   calculateKarmaUserCanStrip,
   combineObjectWithID,
-  createProfileLink,
+  createBirthdayLink,
   createRewardsLink,
   createVentLink,
   getMetaInformation,

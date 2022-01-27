@@ -11,6 +11,31 @@ export const countdown = (isMounted, setUserVentTimeOut, ventTimeout) => {
   }
 };
 
+export const formatSeconds = (userVentTimeOut) => {
+  const hours = Math.floor(userVentTimeOut / 3600);
+  const minutes = Math.floor((userVentTimeOut % 3600) / 60);
+  const seconds = (userVentTimeOut % 3600) % 60;
+
+  return (
+    (hours < 10 ? "0" + hours : hours) +
+    ":" +
+    (minutes < 10 ? "0" + minutes : minutes) +
+    ":" +
+    (seconds < 10 ? "0" + seconds : seconds)
+  );
+};
+
+export const createPlaceholderDescription = (
+  encouragingText,
+  isBirthdayPost,
+  userVentTimeOut
+) => {
+  if (isBirthdayPost) return "Have the best birthday ever!";
+  else if (userVentTimeOut > 0)
+    return "You can vent again in " + formatSeconds(userVentTimeOut);
+  else return encouragingText + " :)";
+};
+
 export const getUserVentTimeOut = async (callback, userID) => {
   const userVentTimeOutDoc = await db
     .collection("user_vent_timeout")

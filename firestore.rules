@@ -120,6 +120,11 @@ service cloud.firestore {
     match /users_info/{userID} {
       allow read: if true;
       allow write, update, delete: if request.auth.uid == userID;
+
+      match /last_birthday_post {
+        allow read: if true;
+        allow write: if false;
+      }
     }
     match /users_settings/{userID} {
       allow read, write, update, delete: if request.auth.uid == userID;

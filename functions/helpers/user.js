@@ -1,9 +1,35 @@
 const admin = require("firebase-admin");
 const moment = require("moment-timezone");
 const { createNotification } = require("./notification");
-const { createRewardsLink } = require("./util");
+const { createBirthdayLink, createRewardsLink } = require("./util");
 
 const link_sign_up = require("./email_templates/link_sign_up");
+
+const checkForBirthdays = async () => {
+  console.log("starting birthday checker");
+  const usersInfoSnapshot = await admin
+    .firestore()
+    .collection("users_info")
+    .orderBy("birth_date")
+    .get();
+
+  for (let index in usersInfoSnapshot.docs) {
+    const userInfoDoc = usersInfoSnapshot.docs[index];
+
+    const usersBirthday = new moment(userInfoDoc.data().birth_date);
+    const today = new moment();
+
+    if (usersBirthday.format("MMDD") === today.format("MMDD")) {
+      createNotification(
+        true,
+        false,
+        createBirthdayLink(),
+        "From your friends at VWS, have an amazing Birthday!!! :)",
+        userInfoDoc.id
+      );
+    }
+  }
+};
 
 const createMilestone = async (reward, title, userID) => {
   await admin
@@ -17,7 +43,7 @@ const createMilestone = async (reward, title, userID) => {
       { merge: true }
     );
 
-  const stringTitle = await admin.firestore().collection("rewards").add({
+  await admin.firestore().collection("rewards").add({
     karma_gained: reward,
     server_timestamp: admin.firestore.Timestamp.now().toMillis(),
     title,
@@ -279,6 +305,7 @@ const userWasInvited = async (doc, context) => {
 };
 
 module.exports = {
+  checkForBirthdays,
   newUserSetup,
   signPeopleOut,
   userRewardsListener,

@@ -25,6 +25,7 @@ const { messagesListener } = require("./helpers/messages");
 const { createProxy, createSitemap } = require("./helpers/sitemap");
 const { subscribeToPlan } = require("./helpers/subscribe");
 const {
+  checkForBirthdays,
   newUserSetup,
   signPeopleOut,
   userRewardsListener,
@@ -98,10 +99,12 @@ exports.ventDeleteListener = functions.firestore
 exports.onlineStatusListener = functions.database
   .ref("/status/{userID}")
   .onWrite(updateTotalUsersOnline);
-
 exports.cronUpdateSitemap = functions.pubsub
   .schedule("0 0 * * *")
   .onRun(async () => createSitemap());
+exports.cronBirthdayNotification = functions.pubsub
+  .schedule("0 4 * * *")
+  .onRun(async () => checkForBirthdays());
 exports.cronDecreaseTrendingScore = functions.pubsub
   .schedule("0 * * * *")
   .onRun(async () => decreaseTrendingScore());

@@ -2,7 +2,28 @@ import firebase from "firebase/compat/app";
 import { serverTimestamp } from "firebase/database";
 import "firebase/compat/auth";
 import "firebase/compat/database";
+import moment from "moment-timezone";
 import db from "../config/firebase";
+
+export const getIsUsersBirthday = async (
+  isMounted,
+  setIsUsersBirthday,
+  userID
+) => {
+  const userInfoDoc = await db.collection("users_info").doc(userID).get();
+
+  if (
+    !userInfoDoc.data().last_birthday ||
+    new moment().diff(new moment(userInfoDoc.data().last_birthday), "days") >=
+      365
+  ) {
+    if (isMounted()) setIsUsersBirthday(true);
+    await db
+      .collection("users_info")
+      .doc(userInfoDoc.id)
+      .update({ last_birthday: firebase.firestore.Timestamp.now().toMillis() });
+  }
+};
 
 export const getIsUserSubscribed = async (setUserSubscription, userID) => {
   const userSubscriptionDoc = await db

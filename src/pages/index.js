@@ -12,12 +12,14 @@ import { OnlineUsersContext, UserContext } from "../context";
 
 import { getUserBasicInfo, isMobileOrTablet, useIsMounted } from "../util";
 import {
+  getIsUsersBirthday,
   getIsUserSubscribed,
   newRewardListener,
   setIsUserOnlineToDatabase,
   setUserOnlineStatus,
 } from "./util";
 
+const BirthdayModal = loadable(() => import("../components/modals/Birthday"));
 const Container = loadable(() => import("../components/containers/Container"));
 const Header = loadable(() => import("../components/Header"));
 const LoadingHeart = loadable(() => import("../components/loaders/Heart"));
@@ -30,6 +32,7 @@ const Sidebar = loadable(() => import("../components/Sidebar"));
 const AboutUsPage = React.lazy(() => import("./AboutUs"));
 const AccountPage = React.lazy(() => import("./Account/Account"));
 const AvatarPage = React.lazy(() => import("./Account/Avatar"));
+const BirthdayPostPage = React.lazy(() => import("./BirthdayPost"));
 const ChatWithStrangersPage = React.lazy(() => import("./ChatWithStrangers"));
 const ConversationsPage = React.lazy(() => import("./Conversations"));
 const FriendsPage = React.lazy(() => import("./Friends"));
@@ -54,10 +57,11 @@ const VerifiedEmailPage = React.lazy(() => import("./EmailAuth/VerifiedEmail"));
 function RoutesComp() {
   const isMounted = useIsMounted();
   const [user, loading] = useAuthState(firebase.auth());
+  const [isUsersBirthday, setIsUsersBirthday] = useState(false);
+  const [newReward, setNewReward] = useState();
   const [totalOnlineUsers, setTotalOnlineUsers] = useState();
   const [userBasicInfo, setUserBasicInfo] = useState({});
   const [userSubscription, setUserSubscription] = useState();
-  const [newReward, setNewReward] = useState();
 
   const handleOnIdle = (event) => {
     if (user && user.uid) setUserOnlineStatus("offline", user.uid);
@@ -94,6 +98,7 @@ function RoutesComp() {
       getUserBasicInfo((newBasicUserInfo) => {
         setUserBasicInfo(newBasicUserInfo);
       }, user.uid);
+      getIsUsersBirthday(isMounted, setIsUsersBirthday, user.uid);
     }
 
     return () => {
@@ -147,6 +152,10 @@ function RoutesComp() {
                     <Route path="" element={<VentsPage />} />
                     <Route path="/*" element={<NotFoundPage />} />
                     <Route
+                      path="/birthday-post"
+                      element={<BirthdayPostPage />}
+                    />
+                    <Route
                       path="chat-with-strangers"
                       element={<ChatWithStrangersPage />}
                     />
@@ -194,6 +203,10 @@ function RoutesComp() {
                 close={() => setNewReward(false)}
                 newReward={newReward}
               />
+            )}
+
+            {isUsersBirthday && (
+              <BirthdayModal close={() => setIsUsersBirthday(false)} />
             )}
           </Container>
         </Router>
