@@ -72,14 +72,14 @@ const newVentListener = async (doc, context) => {
       .get();
 
     if (
-      userInfoDoc.data().birth_date &&
-      new moment(userInfoDoc.data().birth_date).format("MMDD") ===
-        new moment().format("MMDD") &&
-      userInfoDoc.data().last_birthday_post &&
-      new moment().diff(
-        new moment(userInfoDoc.data().last_birthday_post),
-        "days"
-      ) < 365
+      !userInfoDoc.data().birth_date ||
+      new moment(userInfoDoc.data().birth_date).format("MMDD") !==
+        new moment().format("MMDD") ||
+      (userInfoDoc.data().last_birthday_post &&
+        new moment().diff(
+          new moment(userInfoDoc.data().last_birthday_post),
+          "days"
+        ) < 365)
     ) {
       return await admin.firestore().collection("vents").doc(vent.id).delete();
     } else {

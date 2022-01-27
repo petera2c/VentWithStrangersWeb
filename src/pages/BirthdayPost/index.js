@@ -25,7 +25,7 @@ function NewVentPage() {
   const [starterModal, setStarterModal] = useState(!user);
 
   return (
-    <Page className="pa16">
+    <Page className="pa16" title="Happy Birthday!">
       <Container>
         <Container className="column flex-fill gap16">
           <Container className="full-center gap8">

@@ -7,13 +7,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Container from "../../../components/containers/Container";
 
-import { isMobileOrTablet } from "../../../util";
+import { isMobileOrTablet, useIsMounted } from "../../../util";
 
 function BirthdayModal({ close }) {
+  const isMounted = useIsMounted();
+
   const [canClose, setCanClose] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => setCanClose(true), 2000);
+    setTimeout(() => {
+      if (isMounted()) setCanClose(true);
+    }, 2000);
   }, []);
 
   return (
