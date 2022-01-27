@@ -54,7 +54,7 @@ const createSitemap = async () => {
 
     if (
       !vent.description ||
-      (vent.description && vent.description.length < 500)
+      (vent.description && vent.description.length < 1000)
     )
       continue;
 
