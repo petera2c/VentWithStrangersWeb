@@ -34,7 +34,6 @@ const decreaseTrendingScore = async () => {
   const trendingSnapshot = await admin
     .firestore()
     .collection("/vents/")
-    .where("trending_score", ">", 0)
     .orderBy("trending_score", "desc")
     .get();
 
@@ -43,13 +42,22 @@ const decreaseTrendingScore = async () => {
     const trendingVentDocData = trendingVentDoc.data();
     const increment = Math.round(trendingVentDocData.trending_score * 0.05) + 1;
 
-    await admin
-      .firestore()
-      .collection("vents")
-      .doc(trendingVentDoc.id)
-      .update({
-        trending_score: admin.firestore.FieldValue.increment(-increment),
-      });
+    if (trendingVentDoc.data().trending_score > 0)
+      await admin
+        .firestore()
+        .collection("vents")
+        .doc(trendingVentDoc.id)
+        .update({
+          trending_score: admin.firestore.FieldValue.increment(-increment),
+        });
+    else
+      await admin
+        .firestore()
+        .collection("vents")
+        .doc(trendingVentDoc.id)
+        .update({
+          trending_score: admin.firestore.FieldValue.delete(),
+        });
   }
 };
 
