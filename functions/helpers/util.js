@@ -103,7 +103,10 @@ const getMetaInformation = async (url, callback) => {
   } else if (url === "/privacy-policy") {
     title = "Privacy Policy";
   } else if (url === "/quote-contest") {
-    title = "Feel Good Quote Contest";
+    description =
+      "View geel good quotes. We have a daily contest to see who can create the best feel good quote. View past winners and all quotes.";
+    keywords = "feel good quotes";
+    title = "Feel Good Quotes";
   } else if (url === "/recent") {
     title = "Recent Vents";
   } else if (url === "/rewards") {

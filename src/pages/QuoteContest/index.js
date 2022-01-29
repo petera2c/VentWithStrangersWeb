@@ -56,7 +56,7 @@ function QuoteContestPage() {
           <Container className="column flex-fill ov-hidden bg-white br8">
             <Container className="column flex-fill ov-auto gap8 pt8 px16">
               <Container className="column border-bottom gap8 px16 pb16">
-                <h1 className="tac">Daily Feel Good Quote Contest</h1>
+                <h1 className="tac">Feel Good Quote Contest</h1>
                 <p className="tac">
                   Every day we display a feel good quote. The winner from this
                   contest will be show cased for the following day

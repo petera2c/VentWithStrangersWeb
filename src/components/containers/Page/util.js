@@ -38,6 +38,9 @@ export const getMetaData = (page) => {
   } else if (page === "/privacy-policy") {
     title = "Privacy Policy";
   } else if (page === "/quote-contest") {
+    description =
+      "View geel good quotes. We have a daily contest to see who can create the best feel good quote. View past winners and all quotes.";
+    keywords = "feel good quotes";
     title = "Feel Good Quote Contest";
   } else if (page === "/recent") {
     title = "Recent Vents";
