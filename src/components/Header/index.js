@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Button, Dropdown, message, Space } from "antd";
+import { Button, Dropdown, message } from "antd";
 import { sendEmailVerification } from "firebase/auth";
 
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";

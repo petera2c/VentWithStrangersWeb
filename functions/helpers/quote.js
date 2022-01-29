@@ -81,6 +81,10 @@ const newQuoteReportListener = async (doc, context) => {
   });
 };
 
+const notifyQuoteContestWinner = async () => {
+  //
+};
+
 const quoteDeleteListener = async (doc, context) => {};
 
 const quoteLikeListener = async (change, context) => {
@@ -172,6 +176,7 @@ const quoteLikeListener = async (change, context) => {
 module.exports = {
   newQuoteListener,
   newQuoteReportListener,
+  notifyQuoteContestWinner,
   quoteDeleteListener,
   quoteLikeListener,
 };

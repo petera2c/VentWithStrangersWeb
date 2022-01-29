@@ -69,7 +69,23 @@ const checkIfCanCreateMilestone = async (
 ) => {
   let reward;
   let first;
-  if (size === "small") {
+  if (size === "tiny") {
+    if (counter === 250) {
+      reward = 5000;
+    } else if (counter === 100) {
+      reward = 2000;
+    } else if (counter === 50) {
+      reward = 1000;
+    } else if (counter === 20) {
+      reward = 500;
+    } else if (counter === 10) {
+      reward = 250;
+    } else if (counter === 3) {
+      reward = 100;
+    } else if (counter === 1) {
+      reward = 25;
+    }
+  } else if (size === "small") {
     if (counter === 500) {
       reward = 2500;
     } else if (counter === 250) {
@@ -119,6 +135,7 @@ const newUserSetup = async (user) => {
     created_quotes_counter: 0,
     created_vent_supports_counter: 0,
     created_vents_counter: 0,
+    quote_contests_won_counter: 0,
     received_comment_supports_counter: 0,
     received_quote_supports_counter: 0,
     received_vent_supports_counter: 0,
@@ -180,6 +197,17 @@ const userRewardsListener = async (change, context) => {
   const beforeUserRewards = { id: change.before.id, ...change.before.data() };
 
   if (afterUserRewards && beforeUserRewards) {
+    if (
+      afterUserRewards.quote_contests_won_counter !==
+      beforeUserRewards.quote_contests_won_counter
+    )
+      checkIfCanCreateMilestone(
+        afterUserRewards.quote_contests_won_counter,
+        "tiny",
+        (number) => "You have won " + number + " quote contests!",
+        undefined,
+        userID
+      );
     if (
       afterUserRewards.created_comment_supports_counter !==
       beforeUserRewards.created_comment_supports_counter

@@ -18,33 +18,6 @@ const Container = loadable(() =>
 );
 const Page = loadable(() => import("../../components/containers/Page"));
 
-function CounterDisplay({ counter = 0, size, tooltip, title }) {
-  return (
-    <Space className="x-fill" direction="vertical">
-      <Space align="center">
-        <h4>
-          {counter}/{getNextMilestone(counter, size)}
-        </h4>
-        <Tooltip placement="bottom" title={tooltip}>
-          <h6 className="blue">{title}</h6>
-        </Tooltip>
-      </Space>
-      <Progress
-        percent={Math.round((counter / getNextMilestone(counter, size)) * 100)}
-        strokeColor="#2096f2"
-      />
-      <Tooltip
-        placement="bottom"
-        title="The amount of karma you will receive after reaching your next milestone :)"
-      >
-        <p className="flex justify-end" style={{ lineHeight: 1.25 }}>
-          {calculateMilestone(counter, size)} Karma Points
-        </p>
-      </Tooltip>
-    </Space>
-  );
-}
-
 function RewardsPage() {
   const isMounted = useIsMounted();
   const { user } = useContext(UserContext);
@@ -133,6 +106,12 @@ function RewardsPage() {
                   tooltip="The total number of supports received on your quotes :)"
                   title="Quote Supports Received"
                 />
+                <CounterDisplay
+                  counter={userRewards.quote_contests_won_counter}
+                  size="tiny"
+                  tooltip="The total number of quote contests you have won :)"
+                  title="Quote Contests Won"
+                />
               </Space>
             </Container>
           </Container>
@@ -156,6 +135,33 @@ function RewardsPage() {
         </Space>
       </Container>
     </Page>
+  );
+}
+
+function CounterDisplay({ counter = 0, size, tooltip, title }) {
+  return (
+    <Space className="x-fill" direction="vertical">
+      <Space align="center">
+        <h4>
+          {counter}/{getNextMilestone(counter, size)}
+        </h4>
+        <Tooltip placement="bottom" title={tooltip}>
+          <h6 className="blue">{title}</h6>
+        </Tooltip>
+      </Space>
+      <Progress
+        percent={Math.round((counter / getNextMilestone(counter, size)) * 100)}
+        strokeColor="#2096f2"
+      />
+      <Tooltip
+        placement="bottom"
+        title="The amount of karma you will receive after reaching your next milestone :)"
+      >
+        <p className="flex justify-end" style={{ lineHeight: 1.25 }}>
+          {calculateMilestone(counter, size)} Karma Points
+        </p>
+      </Tooltip>
+    </Space>
   );
 }
 

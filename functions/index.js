@@ -24,6 +24,7 @@ const { messagesListener } = require("./helpers/messages");
 const {
   newQuoteListener,
   newQuoteReportListener,
+  notifyQuoteContestWinner,
   quoteDeleteListener,
   quoteLikeListener,
 } = require("./helpers/quote");
@@ -117,9 +118,7 @@ exports.ventDeleteListener = functions.firestore
 exports.onlineStatusListener = functions.database
   .ref("/status/{userID}")
   .onWrite(updateTotalUsersOnline);
-exports.cronUpdateSitemap = functions.pubsub
-  .schedule("0 0 * * *")
-  .onRun(async () => createSitemap());
+
 exports.cronBirthdayNotification = functions.pubsub
   .schedule("0 4 * * *")
   .onRun(async () => checkForBirthdays());
@@ -129,9 +128,15 @@ exports.cronDecreaseTrendingScore = functions.pubsub
 exports.cronDecreaseUserVentCounter = functions.pubsub
   .schedule("0 12 * * *")
   .onRun(async () => decreaseUserVentCounter());
+exports.cronNotifyQuoteContestWinner = functions.pubsub
+  .schedule("0 4 * * *")
+  .onRun(async () => notifyQuoteContestWinner());
 exports.cronSignPeopleOut = functions.pubsub
   .schedule("0 * * * *")
   .onRun(async () => signPeopleOut());
+exports.cronUpdateSitemap = functions.pubsub
+  .schedule("0 0 * * *")
+  .onRun(async () => createSitemap());
 
 const injectMetaData = (req, res) => {
   const filePath = path.resolve(__dirname, "./build/index.html");

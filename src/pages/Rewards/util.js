@@ -1,7 +1,16 @@
 import db from "../../config/firebase";
 
 export const calculateMilestone = (counter, size) => {
-  if (size === "small") {
+  if (size === "tiny") {
+    if (counter >= 250) return 10000;
+    else if (counter >= 100) return 5000;
+    else if (counter >= 50) return 2000;
+    else if (counter >= 20) return 1000;
+    else if (counter >= 10) return 500;
+    else if (counter >= 3) return 250;
+    else if (counter >= 1) return 100;
+    else if (counter >= 0) return 25;
+  } else if (size === "small") {
     if (counter >= 500) return 5000;
     else if (counter >= 250) return 2500;
     else if (counter >= 100) return 1250;
@@ -23,7 +32,16 @@ export const calculateMilestone = (counter, size) => {
   }
 };
 export const getNextMilestone = (counter, size) => {
-  if (size === "small") {
+  if (size === "tiny") {
+    if (counter >= 250) return 500;
+    else if (counter >= 100) return 250;
+    else if (counter >= 50) return 100;
+    else if (counter >= 20) return 50;
+    else if (counter >= 10) return 20;
+    else if (counter >= 3) return 10;
+    else if (counter >= 1) return 3;
+    else if (counter >= 0) return 1;
+  } else if (size === "small") {
     if (counter >= 500) return 1000;
     else if (counter >= 250) return 500;
     else if (counter >= 100) return 250;

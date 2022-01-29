@@ -3,8 +3,7 @@ import { Link } from "react-router-dom";
 import TextArea from "react-textarea-autosize";
 import { Button, message } from "antd";
 
-import { faHeart } from "@fortawesome/pro-regular-svg-icons/faHeart";
-import { faChevronCircleUp as faHeart2 } from "@fortawesome/pro-solid-svg-icons/faChevronCircleUp";
+import { faChevronCircleUp } from "@fortawesome/pro-solid-svg-icons/faChevronCircleUp";
 import { faQuoteLeft } from "@fortawesome/pro-duotone-svg-icons/faQuoteLeft";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -237,7 +236,7 @@ function Quote({
 
           <FontAwesomeIcon
             className={`button-8 ${hasLiked ? "blue" : "grey-5"}`}
-            icon={faHeart2}
+            icon={faChevronCircleUp}
             size="2x"
           />
         </Container>
