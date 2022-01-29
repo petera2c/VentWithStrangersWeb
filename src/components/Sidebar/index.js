@@ -122,7 +122,7 @@ function Sidebar() {
 
   return (
     <Space
-      className="container small column ov-auto bg-white border-top pa16"
+      className="container ad column ov-auto bg-white border-top pt8 px16 pb16"
       direction="vertical"
     >
       <SideBarLink

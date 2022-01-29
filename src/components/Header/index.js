@@ -119,11 +119,8 @@ function Header() {
   return (
     <Container className="column x-fill">
       <Container className="column x-fill justify-center bg-white border-top large active">
-        <Container className="x-fill align-center">
-          <Container
-            className="full-center"
-            style={{ width: "calc(12.5vw - 24px)" }}
-          >
+        <Container className="grid-3 x-fill align-center px32 py8">
+          <Container className="full-center">
             <Link to="/">
               <img
                 alt=""
@@ -134,37 +131,37 @@ function Header() {
             </Link>
           </Container>
 
-          <Container className="flex-fill align-center wrap">
+          <Container className="flex-fill full-center wrap gap32">
             <Link
               className={
-                "full-center flex button-3 mr32 " +
+                "full-center flex button-3 gap4 py4 " +
                 isPageActive("/trending", pathname.substring(0, 9)) +
                 isPageActive("/", pathname)
               }
               to="/trending"
             >
-              <FontAwesomeIcon className="mr8" icon={faAnalytics} />
-              <p className="inherit-color py16">Trending</p>
+              <FontAwesomeIcon icon={faAnalytics} />
+              <p className="inherit-color">Trending</p>
             </Link>
             <Link
               className={
-                "full-center flex button-3 mr32 " +
+                "full-center flex button-3 gap4 py4 " +
                 isPageActive("/recent", pathname.substring(0, 7))
               }
               to="/recent"
             >
-              <FontAwesomeIcon className="mr8" icon={faConciergeBell} />
-              <p className="inherit-color py16">Recent</p>
+              <FontAwesomeIcon icon={faConciergeBell} />
+              <p className="inherit-color">Recent</p>
             </Link>
             <Link
               className={
-                "full-center flex button-3 mr32 " +
+                "full-center flex button-3 gap4 py4 " +
                 isPageActive("/chat", pathname.substring(0, 14))
               }
               to="/chat"
             >
-              <FontAwesomeIcon className="mr8" icon={faComments} />
-              <p className="inherit-color py16">Inbox</p>
+              <FontAwesomeIcon icon={faComments} />
+              <p className="inherit-color">Inbox</p>
 
               {Boolean(unreadConversationsCount) && (
                 <p className="fs-14 bg-red white round ml4 pa4 br4">
@@ -172,7 +169,7 @@ function Header() {
                 </p>
               )}
             </Link>
-            <Container className="full-center bg-grey-4 py4 px8 my16 mr16 br4">
+            <Container className="full-center bg-grey-4 py4 px8 br4">
               <FontAwesomeIcon className="grey-5 mr8" icon={faSearch} />
               <input
                 autoFocus={
@@ -199,7 +196,7 @@ function Header() {
               </Button>
             </Link>
           </Container>
-          <Container className="full-center wrap mx32 my16">
+          <Container className="full-center wrap">
             {!user && (
               <button
                 className="blue fw-300 mx32"
@@ -217,7 +214,7 @@ function Header() {
               </button>
             )}
             {user && (
-              <Space align="center" size="large" wrap>
+              <Container className="align-center ov-hidden gap16">
                 <Dropdown
                   overlay={
                     <div className="bg-white shadow-2 pa8 br8">
@@ -258,16 +255,16 @@ function Header() {
                   placement="bottomRight"
                   trigger={["click"]}
                 >
-                  <div className="flex align-center clickable">
+                  <Container className="flex-fill align-center ov-hidden clickable">
                     <MakeAvatar
                       displayName={user.displayName}
                       userBasicInfo={userBasicInfo}
                     />
-                    <p className="mr8">
-                      {`Hello, ${capitolizeFirstChar(user.displayName)}`}
-                    </p>
+                    <p className="ellipsis">{`Hello, ${capitolizeFirstChar(
+                      user.displayName
+                    )}`}</p>
                     <FontAwesomeIcon icon={faChevronDown} />
-                  </div>
+                  </Container>
                 </Dropdown>
 
                 <Dropdown
@@ -286,7 +283,7 @@ function Header() {
                   }
                   trigger={["click"]}
                 >
-                  <div className="clickable relative">
+                  <Container className="clickable relative">
                     <FontAwesomeIcon className="blue" icon={faBell} size="2x" />
                     {newNotificationCounter(notifications) && (
                       <p
@@ -301,9 +298,9 @@ function Header() {
                         {newNotificationCounter(notifications)}
                       </p>
                     )}
-                  </div>
+                  </Container>
                 </Dropdown>
-              </Space>
+              </Container>
             )}
           </Container>
         </Container>

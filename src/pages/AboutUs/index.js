@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import loadable from "@loadable/component";
-import { Space } from "antd";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons/faInstagram";
@@ -21,8 +20,8 @@ function AboutUsPage() {
   return (
     <Page className="pa16">
       <Container>
-        <Space className="bg-white pa32 br8" direction="vertical" size="large">
-          <Space direction="vertical">
+        <Container className="flex-fill column bg-white br8 gap16 pa32">
+          <Container className="column gap8">
             <h1 className="tac">Constructive. Feedback. Only.</h1>
             <p className="tac fw-400 mb16">
               People care and help is here. Vent and chat anonymously to be a
@@ -30,8 +29,20 @@ function AboutUsPage() {
               This is a website for people that want to be heard and people that
               want to listen. Your mental health is our priority.
             </p>
-          </Space>
-          <Space direction="vertical">
+          </Container>
+
+          <Container className="column gap8">
+            <Link to="/quote-contest">
+              <h4>Daily Feel Good Quote Contest</h4>
+            </Link>
+            <p>
+              Every day we display a feel good quote. The winner from this
+              contest will be show cased for the following day. Submit your
+              quote to potentially win.
+            </p>
+          </Container>
+
+          <Container className="column gap8">
             <h4>What the Heck are Karma Points?</h4>
             <p>
               Karma Points are gained when your vent or comment gets upvoted or
@@ -41,88 +52,88 @@ function AboutUsPage() {
               </Link>
               . Karma points will be lost if you are reported.
             </p>
-          </Space>
+          </Container>
 
-          <Space direction="vertical" size="middle">
+          <Container className="column gap12">
             <h6 className="mb8">With Great Power Comes Great Responsibility</h6>
-            <Container className="column">
-              <Space align="center">
+            <Container className="column gap8">
+              <Container align="center">
                 <KarmaBadge userBasicInfo={{ karma: 50 }} />
                 <p>Basic Orange Badge @ 50 Karma Points</p>
-              </Space>
+              </Container>
               <ul>
                 <li>Can create a vent once every 4 hours</li>
               </ul>
             </Container>
-            <Container className="column">
-              <Space align="center">
+            <Container className="column gap8">
+              <Container align="center">
                 <KarmaBadge userBasicInfo={{ karma: 100 }} />
                 <p>Basic Red Badge @ 100 Karma Points</p>
-              </Space>
+              </Container>
               <ul>
                 <li>Can create a vent once every 3 hours</li>
               </ul>
             </Container>
-            <Container className="column">
-              <Space align="center">
+            <Container className="column gap8">
+              <Container align="center">
                 <KarmaBadge userBasicInfo={{ karma: 250 }} />
                 <p>Basic Green Badge @ 250 Karma Points</p>
-              </Space>
+              </Container>
               <ul>
                 <li>Can create a vent once every 2 hours</li>
               </ul>
             </Container>
-            <Container className="column">
-              <Space align="center">
+            <Container className="column gap8">
+              <Container align="center">
                 <KarmaBadge userBasicInfo={{ karma: 500 }} />
                 <p>Basic Blue Badge @ 500 Karma Points</p>
-              </Space>
+              </Container>
               <ul>
                 <li>Can create a vent once every 1 hour</li>
               </ul>
             </Container>
-            <Container className="column">
-              <Space align="center">
+            <Container className="column gap8">
+              <Container align="center">
                 <KarmaBadge userBasicInfo={{ karma: 1000 }} />
                 <p>Super Orange Badge @ 1000 Karma Points</p>
-              </Space>
+              </Container>
               <ul>
                 <li>Can create a vent once every 1 hour</li>
               </ul>
             </Container>
-            <Container className="column">
-              <Space align="center">
+            <Container className="column gap8">
+              <Container align="center">
                 <KarmaBadge userBasicInfo={{ karma: 2500 }} />
                 <p>Super Red Badge @ 2500 Karma Points</p>
-              </Space>
+              </Container>
               <ul>
                 <li>Can create a vent once every 1 hour</li>
               </ul>
             </Container>
-            <Container className="column">
-              <Space align="center">
+            <Container className="column gap8">
+              <Container align="center">
                 <KarmaBadge userBasicInfo={{ karma: 5000 }} />
                 <p>Super Green Badge @ 5000 Karma Points</p>
-              </Space>
+              </Container>
               <ul>
                 <li>Can create a vent once every 1 hour</li>
               </ul>
             </Container>
-            <Container className="column">
-              <Space align="center">
+            <Container className="column gap8">
+              <Container align="center">
                 <KarmaBadge userBasicInfo={{ karma: 10000 }} />
                 <p>Super Blue Badge @ 10000 Karma Points</p>
-              </Space>
+              </Container>
               <ul>
                 <li>Can create a vent once every 1 hour</li>
               </ul>
             </Container>
-          </Space>
+          </Container>
 
-          <Space direction="vertical">
+          <Container className="column gap8">
             <h4>What Can You Do on VWS?</h4>
             <ul>
-              <Space direction="vertical">
+              <Container className="column gap8">
                 <li>Chat anonymously with strangers</li>
                 <li>
                   <Link
@@ -138,14 +149,14 @@ function AboutUsPage() {
                   username
                 </li>
                 <li>Earn Karma Points</li>
-              </Space>
+              </Container>
             </ul>
-          </Space>
+          </Container>
 
-          <Space direction="vertical">
+          <Container className="column gap8">
             <h4>How Do You Gain Karma Points?</h4>
             <ul>
-              <Space direction="vertical">
+              <Container className="column gap8">
                 <li>
                   <span className="green">+4</span> For an upvote on your
                   comment
@@ -163,11 +174,11 @@ function AboutUsPage() {
                   <span className="red">- 30</span> When you get reported (for a
                   valid reason)
                 </li>
-              </Space>
+              </Container>
             </ul>
-          </Space>
+          </Container>
 
-          <Space direction="vertical">
+          <Container className="column gap8">
             <h4>Where Else Can You Access VWS?</h4>
             <ul>
               <li>
@@ -187,7 +198,7 @@ function AboutUsPage() {
                 </a>
               </li>
             </ul>
-          </Space>
+          </Container>
           <h6 className="bold">Follow Us on Social Media!</h6>
           <Container>
             <a
@@ -233,7 +244,7 @@ function AboutUsPage() {
               />
             </a>
           </Container>
-        </Space>
+        </Container>
         <SubscribeColumn slot="1935732380" />
       </Container>
     </Page>
