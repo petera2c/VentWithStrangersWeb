@@ -99,9 +99,6 @@ const quoteLikeListener = async (change, context) => {
     return;
   }
 
-  console.log(increment);
-  console.log(quoteIDuserIDArray[0]);
-
   await admin
     .firestore()
     .collection("quotes")

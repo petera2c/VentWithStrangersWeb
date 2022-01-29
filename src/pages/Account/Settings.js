@@ -52,198 +52,55 @@ function SettingsSection() {
               text="Master Notifications"
               type="h6"
             />
-            <Container
-              className="clickable align-center mb16"
-              onClick={() => {
-                handleChange(
-                  "master_vent_commented",
-                  !settingsSnapshot.data().master_vent_commented
-                );
-                handleChange(
-                  "email_vent_commented",
-                  !settingsSnapshot.data().master_vent_commented,
-                  false
-                );
-                handleChange(
-                  "mobile_vent_commented",
-                  !settingsSnapshot.data().master_vent_commented,
-                  false
-                );
-              }}
-            >
-              <input
-                className="mr8"
-                checked={settingsSnapshot.data().master_vent_commented}
-                onChange={() => {}}
-                style={{ minWidth: "13px" }}
-                type="checkbox"
-              />
-              <Text
-                className=""
-                text="Recieve a notification when my vent recieves a new comment"
-                type="p"
-              />
-            </Container>
-            <Container
-              className="clickable align-center mb16"
-              onClick={() => {
-                handleChange(
-                  "master_comment_like",
-                  !settingsSnapshot.data().master_comment_like
-                );
-                handleChange(
-                  "email_comment_like",
-                  !settingsSnapshot.data().master_comment_like,
-                  false
-                );
-                handleChange(
-                  "mobile_comment_like",
-                  !settingsSnapshot.data().master_comment_like,
-                  false
-                );
-              }}
-            >
-              <input
-                className="mr8"
-                checked={settingsSnapshot.data().master_comment_like}
-                onChange={() => {}}
-                style={{ minWidth: "13px" }}
-                type="checkbox"
-              />
-              <Text
-                className=""
-                text="Recieve a notification when my comment recieves a new like"
-                type="p"
-              />
-            </Container>
-            <Container
-              className="clickable align-center mb16"
-              onClick={() => {
-                handleChange(
-                  "master_vent_like",
-                  !settingsSnapshot.data().master_vent_like
-                );
-                handleChange(
-                  "email_vent_like",
-                  !settingsSnapshot.data().master_vent_like,
-                  false
-                );
-                handleChange(
-                  "mobile_vent_like",
-                  !settingsSnapshot.data().master_vent_like,
-                  false
-                );
-              }}
-            >
-              <input
-                className="mr8"
-                checked={settingsSnapshot.data().master_vent_like}
-                onChange={() => {}}
-                style={{ minWidth: "13px" }}
-                type="checkbox"
-              />
-              <Text
-                className=""
-                text="Recieve a notification when my vent recieves a new like"
-                type="p"
-              />
-            </Container>
-            <Container
-              className="clickable align-center mb16"
-              onClick={() => {
-                handleChange(
-                  "master_comment_tagged",
-                  !settingsSnapshot.data().master_comment_tagged
-                );
-                handleChange(
-                  "email_comment_tagged",
-                  !settingsSnapshot.data().master_comment_tagged,
-                  false
-                );
-                handleChange(
-                  "mobile_comment_tagged",
-                  !settingsSnapshot.data().master_comment_tagged,
-                  false
-                );
-              }}
-            >
-              <input
-                className="mr8"
-                checked={settingsSnapshot.data().master_comment_tagged}
-                onChange={() => {}}
-                style={{ minWidth: "13px" }}
-                type="checkbox"
-              />
-              <Text
-                className=""
-                text="Recieve a notification when someone tags me in a vent or comment"
-                type="p"
-              />
-            </Container>
-            <Container
-              className="clickable align-center mb16"
-              onClick={() => {
-                handleChange(
-                  "master_vent_new",
-                  !settingsSnapshot.data().master_vent_new
-                );
-                handleChange(
-                  "email_vent_new",
-                  !settingsSnapshot.data().master_vent_new,
-                  false
-                );
-                handleChange(
-                  "mobile_vent_new",
-                  !settingsSnapshot.data().master_vent_new,
-                  false
-                );
-              }}
-            >
-              <input
-                className="mr8"
-                checked={settingsSnapshot.data().master_vent_new}
-                onChange={() => {}}
-                style={{ minWidth: "13px" }}
-                type="checkbox"
-              />
-              <Text
-                className=""
-                text="Recieve a notification I post a new vent"
-                type="p"
-              />
-            </Container>
-            <Container
-              className="clickable align-center mb16"
-              onClick={() => {
-                handleChange(
-                  "master_link_sign_up",
-                  !settingsSnapshot.data().master_link_sign_up
-                );
-                handleChange(
-                  "email_link_sign_up",
-                  !settingsSnapshot.data().email_link_sign_up,
-                  false
-                );
-                handleChange(
-                  "mobile_link_sign_up",
-                  !settingsSnapshot.data().mobile_link_sign_up,
-                  false
-                );
-              }}
-            >
-              <input
-                className="mr8"
-                checked={settingsSnapshot.data().master_link_sign_up}
-                onChange={() => {}}
-                style={{ minWidth: "13px" }}
-                type="checkbox"
-              />
-              <Text
-                className=""
-                text="Recieve a notification when a user signs up using your link"
-                type="p"
-              />
-            </Container>
+            <Setting
+              description="Recieve a notification I post a new vent"
+              handleChange={handleChange}
+              setAll
+              setting="vent_new"
+              settingsSnapshot={settingsSnapshot}
+            />
+            <Setting
+              description="Recieve a notification when my vent recieves a new comment"
+              handleChange={handleChange}
+              setAll
+              setting="vent_commented"
+              settingsSnapshot={settingsSnapshot}
+            />
+            <Setting
+              description="Recieve a notification when my vent recieves a new like"
+              handleChange={handleChange}
+              setAll
+              setting="vent_like"
+              settingsSnapshot={settingsSnapshot}
+            />
+            <Setting
+              description="Recieve a notification when someone tags me in a vent or comment"
+              handleChange={handleChange}
+              setAll
+              setting="comment_tagged"
+              settingsSnapshot={settingsSnapshot}
+            />
+            <Setting
+              description="Recieve a notification when my comment recieves a new like"
+              handleChange={handleChange}
+              setAll
+              setting="comment_like"
+              settingsSnapshot={settingsSnapshot}
+            />
+            <Setting
+              description="Recieve a notification when my quote recieves a new like"
+              handleChange={handleChange}
+              setAll
+              setting="quote_like"
+              settingsSnapshot={settingsSnapshot}
+            />
+            <Setting
+              description="Recieve a notification when a user signs up using my unique link"
+              handleChange={handleChange}
+              setAll
+              setting="link_sign_up"
+              settingsSnapshot={settingsSnapshot}
+            />
           </Container>
 
           <Container className="column pl32">
@@ -252,161 +109,54 @@ function SettingsSection() {
               text="Email Notifications"
               type="h6"
             />
-            <Container
-              className="clickable align-center mb16"
-              onClick={() =>
-                handleChange(
-                  "email_vent_commented",
-                  !settingsSnapshot.data().email_vent_commented
-                )
-              }
-            >
-              <input
-                className="mr8"
-                checked={settingsSnapshot.data().email_vent_commented}
-                onChange={() => {}}
-                style={{ minWidth: "13px" }}
-                type="checkbox"
-              />
-              <Text
-                className=""
-                text="Email me when my vent recieves a new comment"
-                type="p"
-              />
-            </Container>
-            <Container
-              className="clickable align-center mb16"
-              onClick={() =>
-                handleChange(
-                  "email_comment_like",
-                  !settingsSnapshot.data().email_comment_like
-                )
-              }
-            >
-              <input
-                className="mr8"
-                checked={settingsSnapshot.data().email_comment_like}
-                onChange={() => {}}
-                style={{ minWidth: "13px" }}
-                type="checkbox"
-              />
-              <Text
-                className=""
-                text="Email me when my comment recieves a new like"
-                type="p"
-              />
-            </Container>
-            <Container
-              className="clickable align-center mb16"
-              onClick={() =>
-                handleChange(
-                  "email_vent_like",
-                  !settingsSnapshot.data().email_vent_like
-                )
-              }
-            >
-              <input
-                className="mr8"
-                checked={settingsSnapshot.data().email_vent_like}
-                onChange={() => {}}
-                style={{ minWidth: "13px" }}
-                type="checkbox"
-              />
-              <Text
-                className=""
-                text="Email me when my vent recieves a new like"
-                type="p"
-              />
-            </Container>
-
-            <Container
-              className="clickable align-center mb16"
-              onClick={() =>
-                handleChange(
-                  "email_comment_tagged",
-                  !settingsSnapshot.data().email_comment_tagged
-                )
-              }
-            >
-              <input
-                className="mr8"
-                checked={settingsSnapshot.data().email_comment_tagged}
-                onChange={() => {}}
-                style={{ minWidth: "13px" }}
-                type="checkbox"
-              />
-              <Text
-                className=""
-                text="Email me when someone tags me in a vent or comment"
-                type="p"
-              />
-            </Container>
-            <Container
-              className="clickable align-center mb16"
-              onClick={() =>
-                handleChange(
-                  "email_vent_new",
-                  !settingsSnapshot.data().email_vent_new
-                )
-              }
-            >
-              <input
-                className="mr8"
-                checked={settingsSnapshot.data().email_vent_new}
-                onChange={() => {}}
-                style={{ minWidth: "13px" }}
-                type="checkbox"
-              />
-              <Text
-                className=""
-                text="Email me when I post a new vent"
-                type="p"
-              />
-            </Container>
-            <Container
-              className="clickable align-center mb16"
-              onClick={() =>
-                handleChange(
-                  "email_promotions",
-                  !settingsSnapshot.data().email_promotions
-                )
-              }
-            >
-              <input
-                className="mr8"
-                checked={settingsSnapshot.data().email_promotions}
-                onChange={() => {}}
-                style={{ minWidth: "13px" }}
-                type="checkbox"
-              />
-              <Text
-                className=""
-                text="Receive periodic emails on important issues"
-                type="p"
-              />
-            </Container>
-            <Container
-              className="clickable align-center mb16"
-              onClick={() =>
-                handleChange(
-                  "email_link_sign_up",
-                  !settingsSnapshot.data().email_link_sign_up
-                )
-              }
-            >
-              <input
-                className="mr8"
-                checked={settingsSnapshot.data().email_link_sign_up}
-                onChange={() => {}}
-                style={{ minWidth: "13px" }}
-                type="checkbox"
-              />
-              <Text
-                className=""
-                text="Email me when a user signs up using my link"
-                type="p"
-              />
-            </Container>
+            <Setting
+              description="Email me when I post a new vent"
+              handleChange={handleChange}
+              setting="email_vent_new"
+              settingsSnapshot={settingsSnapshot}
+            />
+            <Setting
+              description="Email me when my vent recieves a new comment"
+              handleChange={handleChange}
+              setting="email_vent_commented"
+              settingsSnapshot={settingsSnapshot}
+            />
+            <Setting
+              description="Email me when my vent recieves a new like"
+              handleChange={handleChange}
+              setting="email_vent_like"
+              settingsSnapshot={settingsSnapshot}
+            />
+            <Setting
+              description="Email me when someone tags me in a vent or comment"
+              handleChange={handleChange}
+              setting="email_comment_tagged"
+              settingsSnapshot={settingsSnapshot}
+            />
+            <Setting
+              description="Email me when my comment recieves a new like"
+              handleChange={handleChange}
+              setting="email_comment_like"
+              settingsSnapshot={settingsSnapshot}
+            />
+            <Setting
+              description="Email me when my quote recieves a new like"
+              handleChange={handleChange}
+              setting="email_quote_like"
+              settingsSnapshot={settingsSnapshot}
+            />
+            <Setting
+              description="Email me when a user signs up using my link"
+              handleChange={handleChange}
+              setting="email_link_sign_up"
+              settingsSnapshot={settingsSnapshot}
+            />
+            <Setting
+              description="Receive periodic emails on important issues"
+              handleChange={handleChange}
+              setting="email_promotions"
+              settingsSnapshot={settingsSnapshot}
+            />
           </Container>
 
           <Container className="column pl32">
@@ -415,138 +165,48 @@ function SettingsSection() {
               text="Mobile Push Notifications"
               type="h6"
             />
-            <Container
-              className="clickable align-center mb16"
-              onClick={() =>
-                handleChange(
-                  "mobile_vent_commented",
-                  !settingsSnapshot.data().mobile_vent_commented
-                )
-              }
-            >
-              <input
-                className="mr8"
-                checked={settingsSnapshot.data().mobile_vent_commented}
-                onChange={() => {}}
-                style={{ minWidth: "13px" }}
-                type="checkbox"
-              />
-              <Text
-                className=""
-                text="Send a notification to my phone when my vent recieves a new comment"
-                type="p"
-              />
-            </Container>
-            <Container
-              className="clickable align-center mb16"
-              onClick={() =>
-                handleChange(
-                  "mobile_comment_like",
-                  !settingsSnapshot.data().mobile_comment_like
-                )
-              }
-            >
-              <input
-                className="mr8"
-                checked={settingsSnapshot.data().mobile_comment_like}
-                onChange={() => {}}
-                style={{ minWidth: "13px" }}
-                type="checkbox"
-              />
-              <Text
-                className=""
-                text="Send a notification to my phone when my comment recieves a new like"
-                type="p"
-              />
-            </Container>
-            <Container
-              className="clickable align-center mb16"
-              onClick={() =>
-                handleChange(
-                  "mobile_vent_like",
-                  !settingsSnapshot.data().mobile_vent_like
-                )
-              }
-            >
-              <input
-                className="mr8"
-                checked={settingsSnapshot.data().mobile_vent_like}
-                onChange={() => {}}
-                style={{ minWidth: "13px" }}
-                type="checkbox"
-              />
-              <Text
-                className=""
-                text="Send a notification to my phone when my vent recieves a new like"
-                type="p"
-              />
-            </Container>
-            <Container
-              className="clickable align-center mb16"
-              onClick={() =>
-                handleChange(
-                  "mobile_comment_tagged",
-                  !settingsSnapshot.data().mobile_comment_tagged
-                )
-              }
-            >
-              <input
-                className="mr8"
-                checked={settingsSnapshot.data().mobile_comment_tagged}
-                onChange={() => {}}
-                style={{ minWidth: "13px" }}
-                type="checkbox"
-              />
-              <Text
-                className=""
-                text="Send a notification to my phone when someone tags me in a vent or comment"
-                type="p"
-              />
-            </Container>
-            <Container
-              className="clickable align-center mb16"
-              onClick={() =>
-                handleChange(
-                  "mobile_vent_new",
-                  !settingsSnapshot.data().mobile_vent_new
-                )
-              }
-            >
-              <input
-                className="mr8"
-                checked={settingsSnapshot.data().mobile_vent_new}
-                onChange={() => {}}
-                style={{ minWidth: "13px" }}
-                type="checkbox"
-              />
-              <Text
-                className=""
-                text="Send a notification to my phone when I post a new vent"
-                type="p"
-              />
-            </Container>
-            <Container
-              className="clickable align-center mb16"
-              onClick={() =>
-                handleChange(
-                  "mobile_link_sign_up",
-                  !settingsSnapshot.data().mobile_link_sign_up
-                )
-              }
-            >
-              <input
-                className="mr8"
-                checked={settingsSnapshot.data().mobile_link_sign_up}
-                onChange={() => {}}
-                style={{ minWidth: "13px" }}
-                type="checkbox"
-              />
-              <Text
-                className=""
-                text="Send a notification when a user signs up using my link"
-                type="p"
-              />
-            </Container>
+            <Setting
+              description="Send a notification to my phone when I post a new vent"
+              handleChange={handleChange}
+              setting="mobile_vent_new"
+              settingsSnapshot={settingsSnapshot}
+            />
+            <Setting
+              description="Send a notification to my phone when my vent recieves a new comment"
+              handleChange={handleChange}
+              setting="mobile_vent_commented"
+              settingsSnapshot={settingsSnapshot}
+            />
+            <Setting
+              description="Send a notification to my phone when my vent recieves a new like"
+              handleChange={handleChange}
+              setting="mobile_vent_like"
+              settingsSnapshot={settingsSnapshot}
+            />
+            <Setting
+              description="Send a notification to my phone when someone tags me in a vent or comment"
+              handleChange={handleChange}
+              setting="mobile_comment_tagged"
+              settingsSnapshot={settingsSnapshot}
+            />
+            <Setting
+              description="Send a notification to my phone when my comment recieves a new like"
+              handleChange={handleChange}
+              setting="mobile_comment_like"
+              settingsSnapshot={settingsSnapshot}
+            />
+            <Setting
+              description="Send a notification to my phone when my quote recieves a new like"
+              handleChange={handleChange}
+              setting="mobile_quote_like"
+              settingsSnapshot={settingsSnapshot}
+            />
+            <Setting
+              description="Send a notification when a user signs up using my link"
+              handleChange={handleChange}
+              setting="mobile_link_sign_up"
+              settingsSnapshot={settingsSnapshot}
+            />
           </Container>
           <Text
             className="blue bold mb16"
@@ -584,6 +244,43 @@ function SettingsSection() {
         <SubscribeColumn slot="1120703532" />
       </Container>
     </Page>
+  );
+}
+
+function Setting({
+  description,
+  handleChange,
+  setAll,
+  settingsSnapshot,
+  setting,
+}) {
+  const master = "master_" + setting;
+  const mobile = "mobile_" + setting;
+  const email = "email_" + setting;
+
+  let main = master;
+  if (!setAll) main = setting;
+
+  return (
+    <Container
+      className="clickable align-center mb16"
+      onClick={() => {
+        if (setAll) {
+          handleChange(master, !settingsSnapshot.data()[master]);
+          handleChange(email, !settingsSnapshot.data()[master], false);
+          handleChange(mobile, !settingsSnapshot.data()[master], false);
+        } else handleChange(main, !settingsSnapshot.data()[main]);
+      }}
+    >
+      <input
+        className="mr8"
+        checked={settingsSnapshot.data()[main]}
+        onChange={() => {}}
+        style={{ minWidth: "13px" }}
+        type="checkbox"
+      />
+      <p>{description}</p>
+    </Container>
   );
 }
 

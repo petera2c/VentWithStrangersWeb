@@ -12,6 +12,7 @@ import { faCog } from "@fortawesome/pro-duotone-svg-icons/faCog";
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
 import { faConciergeBell } from "@fortawesome/pro-duotone-svg-icons/faConciergeBell";
 import { faInfo } from "@fortawesome/pro-duotone-svg-icons/faInfo";
+import { faQuoteLeft } from "@fortawesome/pro-duotone-svg-icons/faQuoteLeft";
 import { faSearch } from "@fortawesome/pro-duotone-svg-icons/faSearch";
 import { faStarShooting } from "@fortawesome/pro-duotone-svg-icons/faStarShooting";
 import { faUser } from "@fortawesome/pro-duotone-svg-icons/faUser";
@@ -190,10 +191,11 @@ function Header() {
       {mobileHeaderActive && (
         <Space
           align="center"
-          className="sidebar shadow-2 pa16"
+          className="mobile-header ov-auto shadow-2 pa16"
           direction="vertical"
           onClick={() => setMobileHeaderActive(false)}
           size="large"
+          style={{ maxHeight: "350px" }}
         >
           {user && (
             <Container className="align-center column">
@@ -308,6 +310,16 @@ function Header() {
                   {unreadConversationsCount}
                 </p>
               )}
+            </Link>
+            <Link
+              className={
+                "button-3 flex full-center relative " +
+                isPageActive("/quote-contest", pathname)
+              }
+              to="/quote-contest"
+            >
+              <FontAwesomeIcon className="mr8" icon={faQuoteLeft} />
+              <p className="inherit-color">Daily Quote Contest</p>
             </Link>
             <Link
               className={

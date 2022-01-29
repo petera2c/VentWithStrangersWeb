@@ -70,7 +70,7 @@ export const getQuotes = async (quotes, setQuotes) => {
   const quotesSnapshot = await db
     .collection("quotes")
     .where("formatted_date", "==", todaysFormattedDate)
-    .orderBy("server_timestamp", "desc")
+    .orderBy("like_counter", "desc")
     .startAfter(startAt)
     .limit(10)
     .get();
@@ -98,8 +98,6 @@ export const likeOrUnlikeQuote = async (hasLiked, quote, user) => {
       "You must sign in or register an account to support a comment!"
     );
 
-  console.log("here");
-
   await db
     .collection("quote_likes")
     .doc(quote.id + "|||" + user.uid)
@@ -125,7 +123,6 @@ export const saveQuote = async (
   userID
 ) => {
   if (quoteID) {
-    console.log("here");
     await db.collection("quotes").doc(quoteID).update({ userID, value: quote });
 
     setQuotes((oldQuotes) => {
@@ -135,7 +132,6 @@ export const saveQuote = async (
     });
     message.success("Updated successfully! :)");
   } else if (canUserCreateQuote) {
-    console.log("sending");
     const newQuote = await db.collection("quotes").add({
       userID,
       value: quote,
