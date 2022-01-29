@@ -58,7 +58,7 @@ function UserComponent({
 
   return (
     <Link
-      className="flex container twentyvw ov-hidden column bg-white pa16 mb16 br8"
+      className="button-6 flex column container twentyvw ov-hidden bg-white br8 pa16"
       to={"/profile?" + userID}
     >
       <Container className="column x-fill flex-fill gap8" direction="vertical">
@@ -70,16 +70,18 @@ function UserComponent({
           />
         </Container>
 
-        <Container className="x-fill align-center wrap gap8">
-          <Container className="flex-fill align-center ov-hidden gap8">
-            {isOnline && <div className="online-dot" />}
-            <h1 className="primary ellipsis lh-1">
-              {capitolizeFirstChar(userInfo.displayName)}
-            </h1>
+        <Container className="flex-fill justify-end column gap4">
+          <Container className="x-fill align-center wrap gap8">
+            <Container className="flex-fill align-center ov-hidden gap8">
+              {isOnline && <div className="online-dot" />}
+              <h1 className="primary ellipsis lh-1">
+                {capitolizeFirstChar(userInfo.displayName)}
+              </h1>
+            </Container>
+            <KarmaBadge userBasicInfo={userInfo} />
           </Container>
-          <KarmaBadge userBasicInfo={userInfo} />
+          <p className="lh-1">{calculateKarma(userInfo)} Karma Points</p>
         </Container>
-        <p className="lh-1">{calculateKarma(userInfo)} Karma Points</p>
         {(userInfo.birth_date || userInfo.gender || userInfo.pronouns) && (
           <Container className="gap8">
             {Boolean(
