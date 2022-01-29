@@ -176,13 +176,13 @@ function Quote({
   if (isContentBlocked) return <div />;
 
   return (
-    <Container
-      className={"align-center gap16 py8 " + (isLast ? "" : "border-bottom")}
-    >
-      <FontAwesomeIcon className="blue" icon={faQuoteLeft} size="3x" />
-      <Container className="column flex-fill gap8">
-        <p className="italic tac">{quote.value}</p>
-        <p className="tac">- {capitolizeFirstChar(author.displayName)}</p>
+    <Container className={"py8 " + (isLast ? "" : "border-bottom")}>
+      <Container className="flex-fill align-center gap16">
+        <FontAwesomeIcon className="blue" icon={faQuoteLeft} size="3x" />
+        <Container className="column flex-fill gap8">
+          <p className="italic tac">{quote.value}</p>
+          <p className="tac">- {capitolizeFirstChar(author.displayName)}</p>
+        </Container>
       </Container>
       <Container className="column justify-between align-end">
         {user && (
