@@ -4,7 +4,7 @@ import TextArea from "react-textarea-autosize";
 import { Button, message } from "antd";
 
 import { faHeart } from "@fortawesome/pro-regular-svg-icons/faHeart";
-import { faHeart as faHeart2 } from "@fortawesome/pro-solid-svg-icons/faHeart";
+import { faChevronCircleUp as faHeart2 } from "@fortawesome/pro-solid-svg-icons/faChevronCircleUp";
 import { faQuoteLeft } from "@fortawesome/pro-duotone-svg-icons/faQuoteLeft";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -189,24 +189,15 @@ function Quote({
           </Link>
         </Container>
       </Container>
-      <Container className="column justify-between align-end">
-        {user && (
-          <Options
-            deleteFunction={(quoteID) =>
-              deleteQuote(quoteID, setCanUserCreateQuote, setQuotes)
-            }
-            editFunction={() => {
-              setQuoteID(quote.id);
-              setMyQuote(quote.value);
-            }}
-            objectID={quote.id}
-            objectUserID={quote.userID}
-            reportFunction={(option) => reportQuote(option, quote.id, user.uid)}
-            userID={user.uid}
-          />
-        )}
+      <Container className="gap8">
+        <Container className="align-end">
+          <h4 className="grey-5" style={{ lineHeight: 1.1 }}>
+            {quote.like_counter ? quote.like_counter : 0}
+          </h4>
+        </Container>
+
         <Container
-          className="clickable align-center gap4"
+          className="column clickable justify-between align-center gap4"
           onClick={async () => {
             const userInteractionIssues = userSignUpProgress(user);
 
@@ -223,12 +214,28 @@ function Quote({
             setQuote({ ...quote });
           }}
         >
-          <p className="grey-5">
-            {quote.like_counter ? quote.like_counter : 0}
-          </p>
+          {user && (
+            <Options
+              deleteFunction={(quoteID) =>
+                deleteQuote(quoteID, setCanUserCreateQuote, setQuotes)
+              }
+              editFunction={() => {
+                setQuoteID(quote.id);
+                setMyQuote(quote.value);
+              }}
+              objectID={quote.id}
+              objectUserID={quote.userID}
+              reportFunction={(option) =>
+                reportQuote(option, quote.id, user.uid)
+              }
+              userID={user.uid}
+            />
+          )}
+
           <FontAwesomeIcon
-            className={`heart ${hasLiked ? "red" : "grey-5"}`}
-            icon={hasLiked ? faHeart2 : faHeart}
+            className={`button-8 ${hasLiked ? "blue" : "grey-5"}`}
+            icon={faHeart2}
+            size="2x"
           />
         </Container>
       </Container>
