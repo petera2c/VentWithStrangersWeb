@@ -36,7 +36,7 @@ function OptionsComponent({
                 className="button-8 clickable align-center justify-between gap8"
                 onClick={(e) => {
                   e.preventDefault();
-                  editFunction();
+                  editFunction(objectID);
                 }}
               >
                 <p className="inherit-color">Edit</p>
@@ -48,7 +48,7 @@ function OptionsComponent({
                 className="button-8 clickable align-center justify-between gap8"
                 onClick={(e) => {
                   e.preventDefault();
-                  deleteFunction();
+                  deleteFunction(objectID);
                 }}
               >
                 <p className="inherit-color">Delete</p>

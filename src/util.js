@@ -18,7 +18,7 @@ export const blockUser = async (userID, userIDToBlock) => {
     .set({
       [userID]: true,
     });
-  alert("User has been blocked");
+  message.success("User has been blocked");
   window.location.reload();
 };
 

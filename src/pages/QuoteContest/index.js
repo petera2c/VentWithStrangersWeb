@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import TextArea from "react-textarea-autosize";
-import { Button, Dropdown, message } from "antd";
+import { Button, message } from "antd";
 
 import { faHeart } from "@fortawesome/pro-regular-svg-icons/faHeart";
 import { faHeart as faHeart2 } from "@fortawesome/pro-solid-svg-icons/faHeart";
@@ -25,9 +25,11 @@ import {
   userSignUpProgress,
 } from "../../util";
 import {
+  deleteQuote,
   getCanUserCreateQuote,
   getHasUserLikedQuote,
   getQuotes,
+  reportQuote,
   saveQuote,
 } from "./util";
 
@@ -65,6 +67,9 @@ function QuoteContestPage() {
                     key={index}
                     isLast={index === quotes.length - 1}
                     quote={quote}
+                    setMyQuote={setMyQuote}
+                    setQuoteID={setQuoteID}
+                    setQuotes={setQuotes}
                     user={user}
                   />
                 );
@@ -84,6 +89,7 @@ function QuoteContestPage() {
                       "You need 20 karma points to interact with this :)"
                     );
 
+                  if (!event.target.value && quoteID) setQuoteID(null);
                   setMyQuote(event.target.value);
                 }}
                 placeholder="Change someone's day :)"
@@ -105,6 +111,7 @@ function QuoteContestPage() {
                     myQuote,
                     quoteID,
                     setCanUserCreateQuote,
+                    setQuotes,
                     user.uid
                   );
                 }}
@@ -128,7 +135,7 @@ function QuoteContestPage() {
   );
 }
 
-function Quote({ isLast, quote, user }) {
+function Quote({ isLast, quote, setMyQuote, setQuoteID, setQuotes, user }) {
   const isMounted = useIsMounted();
 
   const [author, setAuthor] = useState({});
@@ -164,11 +171,14 @@ function Quote({ isLast, quote, user }) {
       <Container className="column justify-between">
         {user && (
           <Options
-            deleteFunction={() => {}}
-            editFunction={() => {}}
+            deleteFunction={(quoteID) => deleteQuote(quoteID, setQuotes)}
+            editFunction={() => {
+              setQuoteID(quote.id);
+              setMyQuote(quote.value);
+            }}
             objectID={quote.id}
             objectUserID={quote.userID}
-            reportFunction={() => {}}
+            reportFunction={(option) => reportQuote(option, quote.id, user.uid)}
             userID={user.uid}
           />
         )}

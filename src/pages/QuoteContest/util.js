@@ -1,8 +1,23 @@
 import firebase from "firebase/compat/app";
-import moment from "moment-timezone";
 import db from "../../config/firebase";
+import moment from "moment-timezone";
+import { message } from "antd";
 
 import { getEndAtValueTimestamp } from "../../util";
+
+export const deleteQuote = async (quoteID, setQuotes) => {
+  await db.collection("quotes").doc(quoteID).delete();
+
+  if (setQuotes)
+    setQuotes((quotes) => {
+      quotes.splice(
+        quotes.findIndex((comment) => comment.id === quoteID),
+        1
+      );
+      return [...quotes];
+    });
+  message.success("Quote deleted!");
+};
 
 export const getCanUserCreateQuote = async (
   isMounted,
@@ -72,16 +87,33 @@ export const getQuotes = async (quotes, setQuotes) => {
   } else return setQuotes(newQuotes);
 };
 
+export const reportQuote = async (option, quoteID, userID) => {
+  await db
+    .collection("quote_reports")
+    .doc(quoteID + "|||" + userID)
+    .set({ option, quoteID, userID });
+
+  message.success("Report successful :)");
+};
+
 export const saveQuote = async (
   canUserCreateQuote,
   isMounted,
   quote,
   quoteID,
   setCanUserCreateQuote,
+  setQuotes,
   userID
 ) => {
   if (quoteID) {
-    await db.collection("vents").doc(quoteID).update({ value: quote });
+    await db.collection("quotes").doc(quoteID).update({ userID, value: quote });
+
+    setQuotes((oldQuotes) => {
+      const quoteIndex = oldQuotes.findIndex((quote) => quote.id === quoteID);
+      oldQuotes[quoteIndex].value = quote;
+      return [...oldQuotes];
+    });
+    message.success("Updated successfully! :)");
   } else if (true) {
     console.log("sending");
     await db.collection("quotes").add({
@@ -109,12 +141,4 @@ export const likeOrUnlikeVent = async (
     .doc(vent.id + "|||" + user.uid)
     .set({ liked: !hasLiked, userID: user.uid, ventID: vent.id });
 };
-
-export const reportVent = async (option, userID, ventID) => {
-  await db
-    .collection("vent_reports")
-    .doc(ventID + "|||" + userID)
-    .set({ option, userID, ventID });
-
-  message.success("Report successful :)");
-};*/
+*/

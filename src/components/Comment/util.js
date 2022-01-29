@@ -37,7 +37,7 @@ export const editComment = async (commentID, commentString, setComments) => {
       (comment) => comment.id === commentID
     );
     comments[commentIndex].text = commentString;
-    setComments([...comments]);
+    return [...comments];
   });
 };
 
