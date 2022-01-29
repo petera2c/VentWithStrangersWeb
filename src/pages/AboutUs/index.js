@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import loadable from "@loadable/component";
 
@@ -17,6 +17,8 @@ const SubscribeColumn = loadable(() =>
 );
 
 function AboutUsPage() {
+  const [activeBadge, setActiveBadge] = useState(0);
+
   return (
     <Page className="pa16">
       <Container>
@@ -54,85 +56,60 @@ function AboutUsPage() {
             </p>
           </Container>
 
-          <Container className="column gap12">
-            <h6 className="mb8">With Great Power Comes Great Responsibility</h6>
-            <Container className="column gap8">
-              <Container align="center">
-                <KarmaBadge userBasicInfo={{ karma: 50 }} />
-                <p>Basic Orange Badge @ 50 Karma Points</p>
-              </Container>
-              <ul>
-                <li>Can create a vent once every 4 hours</li>
-              </ul>
+          <Container className="column gap8">
+            <h4 style={{ lineHeight: 1 }}>
+              With Great Power Comes Great Responsibility
+            </h4>
+            <p>Click on a badge to learn more :)</p>
+            <Container className="x-fill full-center gap16 pt16">
+              <KarmaBadge
+                onClick={() => setActiveBadge(0)}
+                userBasicInfo={{ karma: 50 }}
+              />
+              <KarmaBadge
+                onClick={() => setActiveBadge(1)}
+                userBasicInfo={{ karma: 100 }}
+              />
+              <KarmaBadge
+                onClick={() => setActiveBadge(2)}
+                userBasicInfo={{ karma: 250 }}
+              />
+              <KarmaBadge
+                onClick={() => setActiveBadge(3)}
+                userBasicInfo={{ karma: 500 }}
+              />
+              <KarmaBadge
+                onClick={() => setActiveBadge(4)}
+                userBasicInfo={{ karma: 1000 }}
+              />
+              <KarmaBadge
+                onClick={() => setActiveBadge(5)}
+                userBasicInfo={{ karma: 2500 }}
+              />
+              <KarmaBadge
+                onClick={() => setActiveBadge(6)}
+                userBasicInfo={{ karma: 5000 }}
+              />
+              <KarmaBadge
+                onClick={() => setActiveBadge(7)}
+                userBasicInfo={{ karma: 10000 }}
+              />
             </Container>
-            <Container className="column gap8">
-              <Container align="center">
-                <KarmaBadge userBasicInfo={{ karma: 100 }} />
-                <p>Basic Red Badge @ 100 Karma Points</p>
-              </Container>
+            <Container className="column x-fill full-center pb16">
+              <h6>{badgeDescriptions[activeBadge].title}</h6>
               <ul>
-                <li>Can create a vent once every 3 hours</li>
-              </ul>
-            </Container>
-            <Container className="column gap8">
-              <Container align="center">
-                <KarmaBadge userBasicInfo={{ karma: 250 }} />
-                <p>Basic Green Badge @ 250 Karma Points</p>
-              </Container>
-              <ul>
-                <li>Can create a vent once every 2 hours</li>
-              </ul>
-            </Container>
-            <Container className="column gap8">
-              <Container align="center">
-                <KarmaBadge userBasicInfo={{ karma: 500 }} />
-                <p>Basic Blue Badge @ 500 Karma Points</p>
-              </Container>
-              <ul>
-                <li>Can create a vent once every 1 hour</li>
-              </ul>
-            </Container>
-            <Container className="column gap8">
-              <Container align="center">
-                <KarmaBadge userBasicInfo={{ karma: 1000 }} />
-                <p>Super Orange Badge @ 1000 Karma Points</p>
-              </Container>
-              <ul>
-                <li>Can create a vent once every 1 hour</li>
-              </ul>
-            </Container>
-            <Container className="column gap8">
-              <Container align="center">
-                <KarmaBadge userBasicInfo={{ karma: 2500 }} />
-                <p>Super Red Badge @ 2500 Karma Points</p>
-              </Container>
-              <ul>
-                <li>Can create a vent once every 1 hour</li>
-              </ul>
-            </Container>
-            <Container className="column gap8">
-              <Container align="center">
-                <KarmaBadge userBasicInfo={{ karma: 5000 }} />
-                <p>Super Green Badge @ 5000 Karma Points</p>
-              </Container>
-              <ul>
-                <li>Can create a vent once every 1 hour</li>
-              </ul>
-            </Container>
-            <Container className="column gap8">
-              <Container align="center">
-                <KarmaBadge userBasicInfo={{ karma: 10000 }} />
-                <p>Super Blue Badge @ 10000 Karma Points</p>
-              </Container>
-              <ul>
-                <li>Can create a vent once every 1 hour</li>
+                {badgeDescriptions[activeBadge].benefits.map(
+                  (benefit, index) => (
+                    <li key={index}>{benefit}</li>
+                  )
+                )}
               </ul>
             </Container>
           </Container>
 
           <Container className="column gap8">
             <h4>What Can You Do on VWS?</h4>
-            <ul>
+            <ul className="pl64">
               <Container className="column gap8">
                 <li>Chat anonymously with strangers</li>
                 <li>
@@ -155,7 +132,7 @@ function AboutUsPage() {
 
           <Container className="column gap8">
             <h4>How Do You Gain Karma Points?</h4>
-            <ul>
+            <ul className="pl64">
               <Container className="column gap8">
                 <li>
                   <span className="green">+4</span> For an upvote on your
@@ -180,7 +157,7 @@ function AboutUsPage() {
 
           <Container className="column gap8">
             <h4>Where Else Can You Access VWS?</h4>
-            <ul>
+            <ul className="pl64">
               <li>
                 <a
                   className="underline no-bold a-tag-common-link"
@@ -250,5 +227,40 @@ function AboutUsPage() {
     </Page>
   );
 }
+
+const badgeDescriptions = [
+  {
+    benefits: ["Can create a vent once every 4 hours"],
+    title: "Basic Orange Badge",
+  },
+  {
+    benefits: ["Can create a vent once every 3 hours"],
+    title: "Basic Red Badge",
+  },
+  {
+    benefits: ["Can create a vent once every 2 hours"],
+    title: "Basic Green Badge",
+  },
+  {
+    benefits: ["Can create a vent once every 1 hour"],
+    title: "Basic Blue Badge",
+  },
+  {
+    benefits: ["Can create a vent once every 1 hour"],
+    title: "Super Orange Badge",
+  },
+  {
+    benefits: ["Can create a vent once every 1 hour"],
+    title: "Super Red Badge",
+  },
+  {
+    benefits: ["Can create a vent once every 1 hour"],
+    title: "Super Green Badge",
+  },
+  {
+    benefits: ["Can create a vent once every 1 hour"],
+    title: "Super Blue Badge",
+  },
+];
 
 export default AboutUsPage;

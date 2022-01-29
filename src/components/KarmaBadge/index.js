@@ -10,7 +10,7 @@ import Container from "../containers/Container";
 
 import { calculateKarma } from "../../util";
 
-function KarmaBadge({ noOnClick, userBasicInfo }) {
+function KarmaBadge({ noOnClick, onClick, userBasicInfo }) {
   const navigate = useNavigate();
 
   const karma = calculateKarma(userBasicInfo);
@@ -27,7 +27,10 @@ function KarmaBadge({ noOnClick, userBasicInfo }) {
               e.stopPropagation();
               e.preventDefault();
 
-              navigate("/site-info");
+              if (onClick) onClick();
+              else {
+                navigate("/site-info");
+              }
             }}
           >
             <h5 className="bg-blue white fw-400 px8 py4 br8">Moderator</h5>
@@ -39,28 +42,28 @@ function KarmaBadge({ noOnClick, userBasicInfo }) {
   let badgeColor;
   let badgeIcon;
   if (karma >= 10000) {
-    badgeColor = "#004FFF";
+    badgeColor = "#004fff";
     badgeIcon = faRocket;
   } else if (karma >= 5000) {
-    badgeColor = "#72B01D";
+    badgeColor = "#81c520";
     badgeIcon = faRocket;
   } else if (karma >= 2500) {
-    badgeColor = "#DD0426";
+    badgeColor = "#fa052a";
     badgeIcon = faRocket;
   } else if (karma >= 1000) {
-    badgeColor = "#ff7433";
+    badgeColor = "#ff5100";
     badgeIcon = faRocket;
   } else if (karma >= 500) {
-    badgeColor = "#9bf6ff";
+    badgeColor = "#6696ff";
     badgeIcon = faMedal;
   } else if (karma >= 250) {
-    badgeColor = "#caffbf";
+    badgeColor = "#a5e250";
     badgeIcon = faMedal;
   } else if (karma >= 100) {
-    badgeColor = "#ffadad";
+    badgeColor = "#fc697f";
     badgeIcon = faMedal;
   } else if (karma >= 50) {
-    badgeColor = "#ffd6a5";
+    badgeColor = "#ff9666";
     badgeIcon = faMedal;
   }
 
@@ -72,10 +75,13 @@ function KarmaBadge({ noOnClick, userBasicInfo }) {
             className="clickable"
             onClick={(e) => {
               if (noOnClick) return;
-
               e.stopPropagation();
               e.preventDefault();
-              navigate("/site-info");
+
+              if (onClick) onClick();
+              else {
+                navigate("/site-info");
+              }
             }}
           >
             <FontAwesomeIcon icon={badgeIcon} color={badgeColor} size="2x" />
