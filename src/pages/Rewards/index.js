@@ -17,9 +17,6 @@ const Container = loadable(() =>
   import("../../components/containers/Container")
 );
 const Page = loadable(() => import("../../components/containers/Page"));
-const SubscribeColumn = loadable(() =>
-  import("../../components/SubscribeColumn")
-);
 
 function CounterDisplay({ counter = 0, size, tooltip, title }) {
   return (
