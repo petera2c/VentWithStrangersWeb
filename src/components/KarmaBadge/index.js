@@ -42,25 +42,25 @@ function KarmaBadge({ noOnClick, onClick, userBasicInfo }) {
   let badgeColor;
   let badgeIcon;
   if (karma >= 10000) {
-    badgeColor = "#004fff";
+    badgeColor = "#0062ff";
     badgeIcon = faRocket;
   } else if (karma >= 5000) {
-    badgeColor = "#81c520";
+    badgeColor = "#06ac4b";
     badgeIcon = faRocket;
   } else if (karma >= 2500) {
-    badgeColor = "#fa052a";
+    badgeColor = "#FF101F";
     badgeIcon = faRocket;
   } else if (karma >= 1000) {
     badgeColor = "#ff5100";
     badgeIcon = faRocket;
   } else if (karma >= 500) {
-    badgeColor = "#6696ff";
+    badgeColor = "#66a1ff";
     badgeIcon = faMedal;
   } else if (karma >= 250) {
-    badgeColor = "#a5e250";
+    badgeColor = "#07c556";
     badgeIcon = faMedal;
   } else if (karma >= 100) {
-    badgeColor = "#fc697f";
+    badgeColor = "#ff6670";
     badgeIcon = faMedal;
   } else if (karma >= 50) {
     badgeColor = "#ff9666";
