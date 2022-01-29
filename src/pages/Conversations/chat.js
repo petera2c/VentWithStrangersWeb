@@ -31,6 +31,7 @@ function Chat({
   userID,
 }) {
   const isMounted = useIsMounted();
+  const textInput = useRef(null);
   const [value, setValue] = useState(0); // integer state
 
   const checkIsUserTyping = (isTyping) => {
@@ -221,12 +222,14 @@ function Chat({
               }
             }}
             placeholder="Type a helpful message here..."
+            ref={textInput}
             value={messageString}
             rows={1}
           />
           <Emoji
             handleChange={(emoji) => {
               setMessageString(messageString + emoji);
+              textInput.current.focus();
             }}
             top
           />

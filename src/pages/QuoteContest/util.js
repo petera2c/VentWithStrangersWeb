@@ -11,16 +11,15 @@ export const getCanUserCreateQuote = async (
 ) => {
   const todaysFormattedDate = new moment(
     firebase.firestore.Timestamp.now().toMillis()
-  ).format("MM-DD-YYYY");
-  console.log(todaysFormattedDate);
+  )
+    .utcOffset(0)
+    .format("MM-DD-YYYY");
 
   const userQuotesTodaySnapshot = await db
     .collection("quotes")
-    //  .where("userID", "==", userID)
     .where("formatted_date", "==", todaysFormattedDate)
+    .where("userID", "==", userID)
     .get();
-
-  console.log(userQuotesTodaySnapshot.docs);
 
   if (
     userQuotesTodaySnapshot.docs &&
@@ -31,16 +30,26 @@ export const getCanUserCreateQuote = async (
   else if (isMounted()) setCanUserCreateQuote(true);
 };
 
-export const getQuotes = async (quotes) => {
+export const getQuotes = async (quotes, setQuotes) => {
   let startAt = getEndAtValueTimestamp(quotes);
   const todaysFormattedDate = new moment().format("MM-DD-YYYY");
 
   const quotesSnapshot = await db
     .collection("quotes")
     .where("formatted_date", "==", todaysFormattedDate)
+    .orderBy("server_timestamp", "desc")
     .startAfter(startAt)
     .limit(10)
     .get();
+
+  let newQuotes = [];
+  for (let index in quotesSnapshot.docs) {
+    const quoteDoc = quotesSnapshot.docs[index];
+    newQuotes.push({
+      id: quoteDoc.id,
+      ...quoteDoc.data(),
+    });
+  }
 };
 
 export const saveQuote = async (
@@ -51,10 +60,10 @@ export const saveQuote = async (
   setCanUserCreateQuote,
   userID
 ) => {
-  console.log("sending");
   if (quoteID) {
     await db.collection("vents").doc(quoteID).update({ value: quote });
-  } else if (canUserCreateQuote) {
+  } else if (true) {
+    console.log("sending");
     await db.collection("quotes").add({
       userID,
       value: quote,

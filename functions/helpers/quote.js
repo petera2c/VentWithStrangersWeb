@@ -4,7 +4,6 @@ const moment = require("moment-timezone");
 const newQuoteListener = async (doc, context) => {
   const quote = { id: doc.id, ...doc.data() };
 
-  console.log(admin.firestore.Timestamp.now().toMillis());
   const todaysFormattedDate = new moment(
     admin.firestore.Timestamp.now().toMillis()
   ).format("MM-DD-YYYY");
@@ -13,15 +12,15 @@ const newQuoteListener = async (doc, context) => {
     .firestore()
     .collection("quotes")
     .where("userID", "==", quote.userID)
-    .where("formatted_date", "==", todaysFormattedDate);
+    .where("formatted_date", "==", todaysFormattedDate)
+    .get();
 
-  console.log(userQuotesTodaySnapshot.docs);
-
-  if (userQuotesTodaySnapshot.docs && userQuotesTodaySnapshot.docs.length > 1)
+  if (userQuotesTodaySnapshot.docs && userQuotesTodaySnapshot.docs.length > 0)
     return await admin.firestore().collection("quotes").doc(quote.id).delete();
   else {
     await admin.firestore().collection("quotes").doc(quote.id).update({
       formatted_date: todaysFormattedDate,
+      like_counter: 0,
       server_timestamp: admin.firestore.Timestamp.now().toMillis(),
     });
   }

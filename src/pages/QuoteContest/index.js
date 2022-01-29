@@ -16,7 +16,7 @@ import {
   useIsMounted,
   userSignUpProgress,
 } from "../../util";
-import { getCanUserCreateQuote, saveQuote } from "./util";
+import { getCanUserCreateQuote, getQuotes, saveQuote } from "./util";
 
 function QuoteContestPage() {
   const isMounted = useIsMounted();
@@ -25,10 +25,12 @@ function QuoteContestPage() {
   const [canUserCreateQuote, setCanUserCreateQuote] = useState(true);
   const [myQuote, setMyQuote] = useState("");
   const [quoteID, setQuoteID] = useState();
+  const [quotes, setQuotes] = useState([]);
   const [starterModal, setStarterModal] = useState();
 
   useEffect(() => {
     if (user) getCanUserCreateQuote(isMounted, setCanUserCreateQuote, user.uid);
+    getQuotes(quotes, setQuotes);
   }, []);
 
   return (
@@ -44,13 +46,9 @@ function QuoteContestPage() {
           </Container>
           <Container className="column flex-fill bg-white br8 gap16 pa16">
             <Container className="column flex-fill">
-              <p>some content...</p>
-              <p>some content...</p>
-              <p>some content...</p>
-              <p>some content...</p>
-              <p>some content...</p>
-              <p>some content...</p>
-              <p>some content...</p>
+              {quotes.map(() => {
+                return <Quote />;
+              })}
             </Container>
             <Container
               className={
@@ -108,6 +106,10 @@ function QuoteContestPage() {
       )}
     </Page>
   );
+}
+
+function Quote() {
+  return <p>some content...</p>;
 }
 
 export default QuoteContestPage;
