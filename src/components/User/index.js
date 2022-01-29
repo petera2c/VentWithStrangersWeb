@@ -61,8 +61,8 @@ function UserComponent({
       className="flex container twentyvw ov-hidden column bg-white pa16 mb16 br8"
       to={"/profile?" + userID}
     >
-      <Container className="column x-fill flex-fill" direction="vertical">
-        <Container className="x-fill full-center mb16">
+      <Container className="column x-fill flex-fill gap8" direction="vertical">
+        <Container className="x-fill full-center">
           <MakeAvatar
             displayName={userInfo.displayName}
             size="large"
@@ -70,18 +70,18 @@ function UserComponent({
           />
         </Container>
 
-        <Container className="x-fill align-center wrap">
-          <Container className="align-center mr8">
-            {isOnline && <div className="online-dot mr8" />}
-            <h1 className="primary ellipsis">{userInfo.displayName}</h1>
+        <Container className="x-fill align-center wrap gap8">
+          <Container className="flex-fill align-center ov-hidden gap8">
+            {isOnline && <div className="online-dot" />}
+            <h1 className="primary ellipsis lh-1">
+              {capitolizeFirstChar(userInfo.displayName)}
+            </h1>
           </Container>
           <KarmaBadge userBasicInfo={userInfo} />
         </Container>
-        <h6 className="grey-1 fw-400">
-          {calculateKarma(userInfo)} Karma Points
-        </h6>
+        <p className="lh-1">{calculateKarma(userInfo)} Karma Points</p>
         {(userInfo.birth_date || userInfo.gender || userInfo.pronouns) && (
-          <Container>
+          <Container className="gap8">
             {Boolean(
               new moment().year() - new moment(userInfo.birth_date).year()
             ) && (
@@ -93,13 +93,13 @@ function UserComponent({
               </Container>
             )}
             {userInfo.gender && (
-              <Container className="column ml8">
+              <Container className="column">
                 <h6 className="fw-400">Gender</h6>
                 <h6 className="grey-1 fw-400">{userInfo.gender}</h6>
               </Container>
             )}
             {userInfo.pronouns && (
-              <Container className="column ml8">
+              <Container className="column">
                 <h6 className="fw-400">Pronouns</h6>
                 <h6 className="grey-1 fw-400">{userInfo.pronouns}</h6>
               </Container>
@@ -151,8 +151,9 @@ function UserComponent({
             )}
           </Space>
         )}
+
         {showMessageUser && (
-          <Container className="column flex-fill justify-end mt8">
+          <Container className="column flex-fill justify-end gap8">
             {(!user || (user && user.uid !== userID)) && (
               <Button
                 className="x-fill button-2 px16 py8 br8"
@@ -176,7 +177,7 @@ function UserComponent({
               </Button>
             )}
             {lastOnline && (
-              <p className="x-fill mt8">
+              <p className="x-fill lh-1">
                 Last Seen: {moment(lastOnline).fromNow()}
               </p>
             )}
