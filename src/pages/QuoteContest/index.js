@@ -197,24 +197,9 @@ function Quote({
 
         <Container
           className={
-            "column clickable align-center gap4 " +
+            "column align-center gap4 " +
             (user ? "justify-between " : "justify-end")
           }
-          onClick={async () => {
-            const userInteractionIssues = userSignUpProgress(user);
-
-            if (userInteractionIssues) {
-              if (userInteractionIssues === "NSI") setStarterModal(true);
-              return;
-            }
-
-            await likeOrUnlikeQuote(hasLiked, quote, user);
-
-            await getHasUserLikedQuote(quote.id, setHasLiked, user.uid);
-            if (hasLiked) quote.like_counter--;
-            else quote.like_counter++;
-            setQuote({ ...quote });
-          }}
         >
           {user && (
             <Options
@@ -235,8 +220,23 @@ function Quote({
           )}
 
           <FontAwesomeIcon
-            className={`button-8 ${hasLiked ? "blue" : "grey-5"}`}
+            className={`clickable button-8 ${hasLiked ? "blue" : "grey-5"}`}
             icon={faChevronCircleUp}
+            onClick={async () => {
+              const userInteractionIssues = userSignUpProgress(user);
+
+              if (userInteractionIssues) {
+                if (userInteractionIssues === "NSI") setStarterModal(true);
+                return;
+              }
+
+              await likeOrUnlikeQuote(hasLiked, quote, user);
+
+              await getHasUserLikedQuote(quote.id, setHasLiked, user.uid);
+              if (hasLiked) quote.like_counter--;
+              else quote.like_counter++;
+              setQuote({ ...quote });
+            }}
             size="2x"
           />
         </Container>

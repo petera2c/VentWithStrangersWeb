@@ -255,7 +255,7 @@ function Header() {
                   placement="bottomRight"
                   trigger={["click"]}
                 >
-                  <Container className="flex-fill align-center ov-hidden clickable">
+                  <Container className="flex-fill align-center ov-hidden clickable gap4">
                     <MakeAvatar
                       displayName={user.displayName}
                       userBasicInfo={userBasicInfo}
