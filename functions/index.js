@@ -12,7 +12,7 @@ const path = require("path");
 const { blockUserListener } = require("./helpers/block");
 const {
   commentLikeListener,
-  commentCreateListener,
+  newCommentListener,
   commentDeleteListener,
   newCommentReportListener,
 } = require("./helpers/comment");
@@ -21,7 +21,7 @@ const {
   conversationUpdateListener,
 } = require("./helpers/conversation");
 const { messagesListener } = require("./helpers/messages");
-
+const { newQuoteListener } = require("./helpers/quote");
 const { createProxy, createSitemap } = require("./helpers/sitemap");
 const { subscribeToPlan } = require("./helpers/subscribe");
 const {
@@ -62,9 +62,9 @@ exports.chatQueueListener = functions.firestore
 exports.commentLikeListener = functions.firestore
   .document("/comment_likes/{commentIDUserID}")
   .onWrite(commentLikeListener);
-exports.commentCreateListener = functions.firestore
+exports.newCommentListener = functions.firestore
   .document("/comments/{commentID}")
-  .onCreate(commentCreateListener);
+  .onCreate(newCommentListener);
 exports.commentDeleteListener = functions.firestore
   .document("/comments/{commentID}")
   .onDelete(commentDeleteListener);
@@ -78,6 +78,10 @@ exports.messagesListener = functions.firestore
 exports.conversationUpdateListener = functions.firestore
   .document("/conversations/{conversationID}")
   .onWrite(conversationUpdateListener);
+
+exports.newQuoteListener = functions.firestore
+  .document("/quotes/{quoteID}")
+  .onCreate(newQuoteListener);
 
 exports.userRewardsListener = functions.firestore
   .document("/user_rewards/{userID}")

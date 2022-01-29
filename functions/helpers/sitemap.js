@@ -27,7 +27,6 @@ const createProxy = (req, res, next) => {
 const createSitemap = async () => {
   if (process.env.FUNCTIONS_EMULATOR === "true") return;
   console.log("Starting sitemap construction");
-  const vents = await admin.firestore().collection("vents").get();
 
   let siteMapString =
     '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n';
@@ -47,35 +46,6 @@ const createSitemap = async () => {
     "<url>\n<loc>https://www.ventwithstrangers.com/site-info</loc>\n<lastmod>2022-01-24</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.2</priority>\n</url>\n\n";
   siteMapString +=
     "<url>\n<loc>https://www.ventwithstrangers.com/vent-to-strangers</loc>\n<lastmod>2022-01-24</lastmod>\n<changefreq>yearly</changefreq>\n<priority>1</priority>\n</url>\n\n";
-  console.log(vents.docs.length);
-
-  for (let index in vents.docs) {
-    const vent = vents.docs[index].data();
-
-    if (
-      !vent.description ||
-      (vent.description && vent.description.length < 1000)
-    )
-      continue;
-
-    let url =
-      "https://www.ventwithstrangers.com/vent/" +
-      vents.docs[index].id +
-      "/" +
-      vent.title
-        .replace(/[^a-zA-Z ]/g, "")
-        .replace(/ /g, "-")
-        .toLowerCase();
-
-    siteMapString +=
-      "<url>\n<loc>" +
-      url +
-      "</loc>\n<lastmod>" +
-      new moment(
-        vent.last_updated ? vent.last_updated : vent.server_timestamp
-      ).format("YYYY-MM-DD") +
-      "</lastmod>\n<changefreq>yearly</changefreq>\n<priority>0.1</priority>\n</url>\n\n";
-  }
 
   siteMapString += "</urlset>";
 
@@ -101,8 +71,6 @@ const createSitemap = async () => {
     Key: "sitemap.xml",
     Body: siteMapIndexString,
   };
-
-  console.log(params2);
 
   s3.putObject(params2, (err, data) => {
     console.log(data);

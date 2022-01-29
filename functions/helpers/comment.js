@@ -6,7 +6,7 @@ const comment_like = require("./email_templates/comment_like");
 const comment_on_vent = require("./email_templates/comment_on_vent");
 const comment_tagged = require("./email_templates/comment_tagged");
 
-const COMMENT_LIKE_TRENDING_SCORE_INCREMENT = 24;
+const COMMENT_TRENDING_SCORE_INCREMENT = 4;
 
 const commentDeleteListener = async (doc, context) => {
   const commentID = doc.id;
@@ -34,7 +34,7 @@ const commentDeleteListener = async (doc, context) => {
       .update({
         comment_counter: admin.firestore.FieldValue.increment(-1),
         trending_score: admin.firestore.FieldValue.increment(
-          -COMMENT_LIKE_TRENDING_SCORE_INCREMENT
+          -COMMENT_TRENDING_SCORE_INCREMENT
         ),
       });
 };
@@ -232,7 +232,7 @@ const createNotificationsToAnyTaggedUsers = async (doc, context) => {
   }
 };
 
-const commentCreateListener = async (doc, context) => {
+const newCommentListener = async (doc, context) => {
   createNotificationsToAnyTaggedUsers(doc, context);
   createNewCommentNotification(doc, context);
 
@@ -263,7 +263,7 @@ const commentCreateListener = async (doc, context) => {
     .update({
       comment_counter: admin.firestore.FieldValue.increment(1),
       trending_score: admin.firestore.FieldValue.increment(
-        COMMENT_LIKE_TRENDING_SCORE_INCREMENT
+        COMMENT_TRENDING_SCORE_INCREMENT
       ),
     });
 };
@@ -315,7 +315,7 @@ const newCommentReportListener = async (doc, context) => {
 };
 
 module.exports = {
-  commentCreateListener,
+  newCommentListener,
   commentDeleteListener,
   commentLikeListener,
   newCommentReportListener,

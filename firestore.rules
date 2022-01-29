@@ -58,9 +58,23 @@ service cloud.firestore {
 
     match /notifications/{notificationID} {
       allow read: if request.auth.uid == resource.data.userID;
-      allow write, delete: if request.auth.uid == resource.data.userID;
-      allow update: if request.auth.uid == request.resource.data.userID
-        && request.resource.data.userID == resource.data.userID;
+      allow write: if false;
+    }
+
+    match /quotes/{quoteID} {
+      allow read: if true;
+      allow create: if request.auth.uid == request.resource.data.userID;
+      allow update: if request.auth.uid == resource.data.userID && request.auth.uid == request.resource.data.userID;
+      allow delete: if request.auth.uid == resource.data.userID;
+
+      match /formatted_date {
+        allow read: if true;
+        allow write: if false;
+      }
+      match /server_timestamp {
+        allow read: if true;
+        allow write: if false;
+      }
     }
 
     match /rewards/{rewardID} {

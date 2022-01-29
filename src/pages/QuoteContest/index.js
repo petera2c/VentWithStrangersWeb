@@ -1,20 +1,35 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import TextArea from "react-textarea-autosize";
 
 import { Button, message } from "antd";
 
 import Container from "../../components/containers/Container";
 import Page from "../../components/containers/Page";
+import StarterModal from "../../components/modals/Starter";
 import SubscribeColumn from "../../components/SubscribeColumn";
 
 import { UserContext } from "../../context";
 
-import { calculateKarma, isMobileOrTablet } from "../../util";
+import {
+  calculateKarma,
+  isMobileOrTablet,
+  useIsMounted,
+  userSignUpProgress,
+} from "../../util";
+import { getCanUserCreateQuote, saveQuote } from "./util";
 
 function QuoteContestPage() {
+  const isMounted = useIsMounted();
   const { user, userBasicInfo } = useContext(UserContext);
 
+  const [canUserCreateQuote, setCanUserCreateQuote] = useState(true);
   const [myQuote, setMyQuote] = useState("");
+  const [quoteID, setQuoteID] = useState();
+  const [starterModal, setStarterModal] = useState();
+
+  useEffect(() => {
+    if (user) getCanUserCreateQuote(isMounted, setCanUserCreateQuote, user.uid);
+  }, []);
 
   return (
     <Page className="pa16">
@@ -57,7 +72,27 @@ function QuoteContestPage() {
                 minRows={1}
                 value={myQuote}
               />
-              <Button size="large" type="primary">
+              <Button
+                onClick={() => {
+                  const userInteractionIssues = userSignUpProgress(user);
+
+                  if (userInteractionIssues) {
+                    if (userInteractionIssues === "NSI") setStarterModal(true);
+                    return;
+                  }
+
+                  saveQuote(
+                    canUserCreateQuote,
+                    isMounted,
+                    myQuote,
+                    quoteID,
+                    setCanUserCreateQuote,
+                    user.uid
+                  );
+                }}
+                size="large"
+                type="primary"
+              >
                 Submit My Quote
               </Button>
             </Container>
@@ -65,6 +100,12 @@ function QuoteContestPage() {
         </Container>
         <SubscribeColumn />
       </Container>
+      {starterModal && (
+        <StarterModal
+          activeModal={starterModal}
+          setActiveModal={setStarterModal}
+        />
+      )}
     </Page>
   );
 }

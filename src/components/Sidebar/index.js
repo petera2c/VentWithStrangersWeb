@@ -143,12 +143,14 @@ function Sidebar() {
         pathname={pathname}
         text="Chat With Strangers"
       />
-      <SideBarLink
-        icon={faQuoteLeft}
-        link="/daily-quote"
-        pathname={pathname}
-        text="Daily Quote Contest"
-      />
+      {false && (
+        <SideBarLink
+          icon={faQuoteLeft}
+          link="/quote-contest"
+          pathname={pathname}
+          text="Daily Quote Contest"
+        />
+      )}
       <SideBarLink
         icon={faStarShooting}
         link="/rewards"
