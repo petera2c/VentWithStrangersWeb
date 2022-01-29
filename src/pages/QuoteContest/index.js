@@ -52,7 +52,7 @@ function QuoteContestPage() {
 
   return (
     <Page className="pa16">
-      <Container className="gap8">
+      <Container className="gap8" style={{ height: "100%" }}>
         <Container className="column flex-fill">
           <Container className="column gap8 pa16">
             <h1 className="tac">Daily Feel Good Quote Contest</h1>
@@ -61,8 +61,8 @@ function QuoteContestPage() {
               contest will be show cased for the following day
             </p>
           </Container>
-          <Container className="column flex-fill bg-white br8 gap16 pa16">
-            <Container className="column flex-fill gap8 pa16">
+          <Container className="column flex-fill ov-hidden bg-white br8">
+            <Container className="column flex-fill ov-auto gap8 pt8 px16">
               {quotes.map((quote, index) => {
                 return (
                   <Quote
@@ -81,7 +81,7 @@ function QuoteContestPage() {
             </Container>
             <Container
               className={
-                "x-fill gap8 " +
+                "x-fill shadow-2 gap8 pa16 " +
                 (isMobileOrTablet() ? "column" : "align-center")
               }
             >
