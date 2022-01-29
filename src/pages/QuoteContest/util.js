@@ -5,7 +5,11 @@ import { message } from "antd";
 
 import { getEndAtValueTimestamp } from "../../util";
 
-export const deleteQuote = async (quoteID, setQuotes) => {
+export const deleteQuote = async (
+  quoteID,
+  setCanUserCreateQuote,
+  setQuotes
+) => {
   await db.collection("quotes").doc(quoteID).delete();
 
   if (setQuotes)
@@ -16,6 +20,7 @@ export const deleteQuote = async (quoteID, setQuotes) => {
       );
       return [...quotes];
     });
+  setCanUserCreateQuote(true);
   message.success("Quote deleted!");
 };
 
@@ -45,7 +50,7 @@ export const getCanUserCreateQuote = async (
   else if (isMounted()) setCanUserCreateQuote(true);
 };
 
-export const getHasUserLikedQuote = async (setHasLiked, quoteID, userID) => {
+export const getHasUserLikedQuote = async (quoteID, setHasLiked, userID) => {
   const quoteHasLikedDoc = await db
     .collection("quote_likes")
     .doc(quoteID + "|||" + userID)
@@ -87,6 +92,20 @@ export const getQuotes = async (quotes, setQuotes) => {
   } else return setQuotes(newQuotes);
 };
 
+export const likeOrUnlikeQuote = async (hasLiked, quote, user) => {
+  if (!user)
+    return message.info(
+      "You must sign in or register an account to support a comment!"
+    );
+
+  console.log("here");
+
+  await db
+    .collection("quote_likes")
+    .doc(quote.id + "|||" + user.uid)
+    .set({ liked: !hasLiked, quoteID: quote.id, userID: user.uid });
+};
+
 export const reportQuote = async (option, quoteID, userID) => {
   await db
     .collection("quote_reports")
@@ -106,6 +125,7 @@ export const saveQuote = async (
   userID
 ) => {
   if (quoteID) {
+    console.log("here");
     await db.collection("quotes").doc(quoteID).update({ userID, value: quote });
 
     setQuotes((oldQuotes) => {
@@ -114,31 +134,16 @@ export const saveQuote = async (
       return [...oldQuotes];
     });
     message.success("Updated successfully! :)");
-  } else if (true) {
+  } else if (canUserCreateQuote) {
     console.log("sending");
-    await db.collection("quotes").add({
+    const newQuote = await db.collection("quotes").add({
       userID,
       value: quote,
     });
+    setQuotes((oldQuotes) => [
+      { id: newQuote.id, value: quote, userID },
+      ...oldQuotes,
+    ]);
     if (isMounted()) setCanUserCreateQuote(false);
   }
 };
-
-/*
-export const likeOrUnlikeVent = async (
-  hasLiked,
-  setHasLiked,
-  setVent,
-  user,
-  vent
-) => {
-  setHasLiked(!hasLiked);
-
-  setVent(incrementVentCounter("like_counter", !hasLiked, vent));
-
-  await db
-    .collection("vent_likes")
-    .doc(vent.id + "|||" + user.uid)
-    .set({ liked: !hasLiked, userID: user.uid, ventID: vent.id });
-};
-*/

@@ -21,7 +21,7 @@ const SubscribeColumn = loadable(() =>
   import("../../components/SubscribeColumn")
 );
 
-function CounterDisplay({ counter, size, tooltip, title }) {
+function CounterDisplay({ counter = 0, size, tooltip, title }) {
   return (
     <Space className="x-fill" direction="vertical">
       <Space align="center">
@@ -85,19 +85,25 @@ function RewardsPage() {
                   title="Vents Created"
                 />
                 <CounterDisplay
-                  counter={userRewards.created_comments_counter}
-                  size="small"
-                  tooltip="The total number of comments you have created :)"
-                  title="Comments Created"
-                />
-                <CounterDisplay
                   counter={userRewards.created_vent_supports_counter}
                   size="medium"
                   tooltip="The total number of vents you have supported :)"
                   title="Vents You Supported"
                 />
+                <CounterDisplay
+                  counter={userRewards.received_vent_supports_counter}
+                  size="medium"
+                  tooltip="The total number of supports received on your vents :)"
+                  title="Vent Supports Received"
+                />
               </Space>
               <Space className="flex-fill" direction="vertical" size="large">
+                <CounterDisplay
+                  counter={userRewards.created_comments_counter}
+                  size="small"
+                  tooltip="The total number of comments you have created :)"
+                  title="Comments Created"
+                />
                 <CounterDisplay
                   counter={userRewards.created_comment_supports_counter}
                   size="medium"
@@ -110,11 +116,25 @@ function RewardsPage() {
                   tooltip="The total number of supports received on your comments :)"
                   title="Comment Supports Received"
                 />
+              </Space>
+              <Space className="flex-fill" direction="vertical" size="large">
                 <CounterDisplay
-                  counter={userRewards.received_vent_supports_counter}
+                  counter={userRewards.created_quotes_counter}
+                  size="small"
+                  tooltip="The total number of quotes you have created :)"
+                  title="Quotes Created"
+                />
+                <CounterDisplay
+                  counter={userRewards.created_quote_supports_counter}
                   size="medium"
-                  tooltip="The total number of supports received on your vents :)"
-                  title="Vent Supports Received"
+                  tooltip="The total number of quotes you have supported :)"
+                  title="Quotes You Supported"
+                />
+                <CounterDisplay
+                  counter={userRewards.received_quote_supports_counter}
+                  size="medium"
+                  tooltip="The total number of supports received on your quotes :)"
+                  title="Quote Supports Received"
                 />
               </Space>
             </Container>
@@ -137,7 +157,6 @@ function RewardsPage() {
             ))}
           </Container>
         </Space>
-        <SubscribeColumn uniqueShareLink slot="1420086439" />
       </Container>
     </Page>
   );

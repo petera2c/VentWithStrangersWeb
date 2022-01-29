@@ -29,6 +29,7 @@ import {
   getCanUserCreateQuote,
   getHasUserLikedQuote,
   getQuotes,
+  likeOrUnlikeQuote,
   reportQuote,
   saveQuote,
 } from "./util";
@@ -64,12 +65,14 @@ function QuoteContestPage() {
               {quotes.map((quote, index) => {
                 return (
                   <Quote
-                    key={index}
                     isLast={index === quotes.length - 1}
-                    quote={quote}
+                    key={quote.id}
+                    quote1={quote}
+                    setCanUserCreateQuote={setCanUserCreateQuote}
                     setMyQuote={setMyQuote}
                     setQuoteID={setQuoteID}
                     setQuotes={setQuotes}
+                    setStarterModal={setStarterModal}
                     user={user}
                   />
                 );
@@ -135,12 +138,22 @@ function QuoteContestPage() {
   );
 }
 
-function Quote({ isLast, quote, setMyQuote, setQuoteID, setQuotes, user }) {
+function Quote({
+  isLast,
+  quote1,
+  setCanUserCreateQuote,
+  setMyQuote,
+  setQuoteID,
+  setQuotes,
+  setStarterModal,
+  user,
+}) {
   const isMounted = useIsMounted();
 
   const [author, setAuthor] = useState({});
   const [hasLiked, setHasLiked] = useState();
   const [isContentBlocked, setIsContentBlocked] = useState();
+  const [quote, setQuote] = useState(quote1);
 
   useEffect(() => {
     getUserBasicInfo((author) => {
@@ -168,10 +181,12 @@ function Quote({ isLast, quote, setMyQuote, setQuoteID, setQuotes, user }) {
         <p className="x-fill italic">{quote.value}</p>
         <p>- {capitolizeFirstChar(author.displayName)}</p>
       </Container>
-      <Container className="column justify-between">
+      <Container className="column justify-between align-end">
         {user && (
           <Options
-            deleteFunction={(quoteID) => deleteQuote(quoteID, setQuotes)}
+            deleteFunction={(quoteID) =>
+              deleteQuote(quoteID, setCanUserCreateQuote, setQuotes)
+            }
             editFunction={() => {
               setQuoteID(quote.id);
               setMyQuote(quote.value);
@@ -182,10 +197,30 @@ function Quote({ isLast, quote, setMyQuote, setQuoteID, setQuotes, user }) {
             userID={user.uid}
           />
         )}
-        <FontAwesomeIcon
-          className={`heart ${hasLiked ? "red" : "grey-5"}`}
-          icon={hasLiked ? faHeart2 : faHeart}
-        />
+        <Container className="align-center gap4">
+          <p className="grey-5">
+            {quote.like_counter ? quote.like_counter : 0}
+          </p>
+          <FontAwesomeIcon
+            className={`clickable heart ${hasLiked ? "red" : "grey-5"}`}
+            icon={hasLiked ? faHeart2 : faHeart}
+            onClick={async () => {
+              const userInteractionIssues = userSignUpProgress(user);
+
+              if (userInteractionIssues) {
+                if (userInteractionIssues === "NSI") setStarterModal(true);
+                return;
+              }
+
+              await likeOrUnlikeQuote(hasLiked, quote, user);
+
+              await getHasUserLikedQuote(quote.id, setHasLiked, user.uid);
+              if (hasLiked) quote.like_counter--;
+              else quote.like_counter++;
+              setQuote({ ...quote });
+            }}
+          />
+        </Container>
       </Container>
     </Container>
   );

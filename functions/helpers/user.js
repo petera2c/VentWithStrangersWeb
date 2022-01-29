@@ -115,9 +115,12 @@ const newUserSetup = async (user) => {
   await admin.firestore().collection("user_rewards").doc(user.uid).set({
     created_comment_supports_counter: 0,
     created_comments_counter: 0,
+    created_quote_supports_counter: 0,
+    created_quotes_counter: 0,
     created_vent_supports_counter: 0,
     created_vents_counter: 0,
     received_comment_supports_counter: 0,
+    received_quote_supports_counter: 0,
     received_vent_supports_counter: 0,
   });
 
@@ -241,6 +244,40 @@ const userRewardsListener = async (change, context) => {
         "medium",
         (number) => "Your vents have received " + number + " supports!",
         undefined,
+        userID
+      );
+    if (
+      afterUserRewards.created_quotes_counter !==
+      beforeUserRewards.created_quotes_counter
+    )
+      checkIfCanCreateMilestone(
+        afterUserRewards.created_quotes_counter,
+        "small",
+        (number) => "You have created " + number + " quotes!",
+        "You have created your first quote!!!",
+        userID
+      );
+
+    if (
+      afterUserRewards.received_quote_supports_counter !==
+      beforeUserRewards.received_quote_supports_counter
+    )
+      checkIfCanCreateMilestone(
+        afterUserRewards.received_quote_supports_counter,
+        "medium",
+        (number) => "Your quotes have received " + number + " supports!",
+        undefined,
+        userID
+      );
+    if (
+      afterUserRewards.created_quotes_counter !==
+      beforeUserRewards.created_quotes_counter
+    )
+      checkIfCanCreateMilestone(
+        afterUserRewards.created_quotes_counter,
+        "small",
+        (number) => "You have created " + number + " quotes!",
+        "You have created your first quote!!!",
         userID
       );
   }

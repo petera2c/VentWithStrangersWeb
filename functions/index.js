@@ -21,7 +21,12 @@ const {
   conversationUpdateListener,
 } = require("./helpers/conversation");
 const { messagesListener } = require("./helpers/messages");
-const { newQuoteListener, newQuoteReportListener } = require("./helpers/quote");
+const {
+  newQuoteListener,
+  newQuoteReportListener,
+  quoteDeleteListener,
+  quoteLikeListener,
+} = require("./helpers/quote");
 const { createProxy, createSitemap } = require("./helpers/sitemap");
 const { subscribeToPlan } = require("./helpers/subscribe");
 const {
@@ -83,8 +88,14 @@ exports.newQuoteListener = functions.firestore
   .document("/quotes/{quoteID}")
   .onCreate(newQuoteListener);
 exports.newQuoteReportListener = functions.firestore
-  .document("/quote_reports/{quoteIDUserID}")
+  .document("/quote_reports/{quoteIDuserID}")
   .onCreate(newQuoteReportListener);
+exports.quoteDeleteListener = functions.firestore
+  .document("/quotes/{quoteID}")
+  .onDelete(quoteDeleteListener);
+exports.quoteLikeListener = functions.firestore
+  .document("/quote_likes/{quoteIDuserID}")
+  .onWrite(quoteLikeListener);
 
 exports.userRewardsListener = functions.firestore
   .document("/user_rewards/{userID}")
