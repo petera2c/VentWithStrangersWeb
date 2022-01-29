@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import TextArea from "react-textarea-autosize";
 import { Button, message } from "antd";
 
@@ -181,7 +182,9 @@ function Quote({
         <FontAwesomeIcon className="blue" icon={faQuoteLeft} size="3x" />
         <Container className="column flex-fill gap8">
           <p className="italic tac">{quote.value}</p>
-          <p className="tac">- {capitolizeFirstChar(author.displayName)}</p>
+          <Link to={"/profile?" + quote.userID}>
+            <p className="tac">- {capitolizeFirstChar(author.displayName)}</p>
+          </Link>
         </Container>
       </Container>
       <Container className="column justify-between align-end">
@@ -200,28 +203,30 @@ function Quote({
             userID={user.uid}
           />
         )}
-        <Container className="align-center gap4">
+        <Container
+          className="clickable align-center gap4"
+          onClick={async () => {
+            const userInteractionIssues = userSignUpProgress(user);
+
+            if (userInteractionIssues) {
+              if (userInteractionIssues === "NSI") setStarterModal(true);
+              return;
+            }
+
+            await likeOrUnlikeQuote(hasLiked, quote, user);
+
+            await getHasUserLikedQuote(quote.id, setHasLiked, user.uid);
+            if (hasLiked) quote.like_counter--;
+            else quote.like_counter++;
+            setQuote({ ...quote });
+          }}
+        >
           <p className="grey-5">
             {quote.like_counter ? quote.like_counter : 0}
           </p>
           <FontAwesomeIcon
-            className={`clickable heart ${hasLiked ? "red" : "grey-5"}`}
+            className={`heart ${hasLiked ? "red" : "grey-5"}`}
             icon={hasLiked ? faHeart2 : faHeart}
-            onClick={async () => {
-              const userInteractionIssues = userSignUpProgress(user);
-
-              if (userInteractionIssues) {
-                if (userInteractionIssues === "NSI") setStarterModal(true);
-                return;
-              }
-
-              await likeOrUnlikeQuote(hasLiked, quote, user);
-
-              await getHasUserLikedQuote(quote.id, setHasLiked, user.uid);
-              if (hasLiked) quote.like_counter--;
-              else quote.like_counter++;
-              setQuote({ ...quote });
-            }}
           />
         </Container>
       </Container>

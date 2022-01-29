@@ -1,7 +1,7 @@
 const admin = require("firebase-admin");
 const moment = require("moment-timezone");
 
-const { calculateKarmaUserCanStrip } = require("./util");
+const { calculateKarmaUserCanStrip, createNotification } = require("./util");
 
 const newQuoteListener = async (doc, context) => {
   const quote = { id: doc.id, ...doc.data() };
