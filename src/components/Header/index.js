@@ -214,7 +214,7 @@ function Header() {
               </button>
             )}
             {user && (
-              <Container className="align-center ov-hidden gap16">
+              <Container className="align-center gap16">
                 <Dropdown
                   overlay={
                     <div className="bg-white shadow-2 pa8 br8">
