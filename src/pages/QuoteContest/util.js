@@ -119,27 +119,40 @@ export const saveQuote = async (
   quote,
   quoteID,
   setCanUserCreateQuote,
+  setMyQuote,
   setQuotes,
   userID
 ) => {
+  if (quote.length > 150)
+    return message.error(
+      "Your quote has too many characters. There is a max of 150 characters."
+    );
   if (quoteID) {
     await db.collection("quotes").doc(quoteID).update({ userID, value: quote });
 
-    setQuotes((oldQuotes) => {
-      const quoteIndex = oldQuotes.findIndex((quote) => quote.id === quoteID);
-      oldQuotes[quoteIndex].value = quote;
-      return [...oldQuotes];
-    });
+    if (isMounted()) {
+      setQuotes((oldQuotes) => {
+        const quoteIndex = oldQuotes.findIndex((quote) => quote.id === quoteID);
+        oldQuotes[quoteIndex].value = quote;
+        return [...oldQuotes];
+      });
+      setMyQuote("");
+    }
     message.success("Updated successfully! :)");
   } else if (canUserCreateQuote) {
     const newQuote = await db.collection("quotes").add({
       userID,
       value: quote,
     });
-    setQuotes((oldQuotes) => [
-      { id: newQuote.id, value: quote, userID },
-      ...oldQuotes,
-    ]);
-    if (isMounted()) setCanUserCreateQuote(false);
+    if (isMounted()) {
+      setQuotes((oldQuotes) => [
+        { id: newQuote.id, value: quote, userID },
+        ...oldQuotes,
+      ]);
+      setCanUserCreateQuote(false);
+      setMyQuote("");
+    }
+  } else {
+    message.error("You can only create one quote per day");
   }
 };

@@ -127,6 +127,20 @@
       ]
     },
     {
+      "collectionGroup": "quotes",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "formatted_date",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "like_counter",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "rewards",
       "queryScope": "COLLECTION",
       "fields": [

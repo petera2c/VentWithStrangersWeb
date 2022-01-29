@@ -114,6 +114,7 @@ function QuoteContestPage() {
                     myQuote,
                     quoteID,
                     setCanUserCreateQuote,
+                    setMyQuote,
                     setQuotes,
                     user.uid
                   );
