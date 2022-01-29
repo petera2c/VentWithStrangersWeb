@@ -180,10 +180,12 @@ function Quote({
     <Container className={"py8 " + (isLast ? "" : "border-bottom")}>
       <Container className="flex-fill align-center gap16">
         <FontAwesomeIcon className="blue" icon={faQuoteLeft} size="3x" />
-        <Container className="column flex-fill gap8">
+        <Container className="column flex-fill align-center gap8">
           <p className="italic tac">{quote.value}</p>
           <Link to={"/profile?" + quote.userID}>
-            <p className="tac">- {capitolizeFirstChar(author.displayName)}</p>
+            <p className="button-8 tac">
+              - {capitolizeFirstChar(author.displayName)}
+            </p>
           </Link>
         </Container>
       </Container>
