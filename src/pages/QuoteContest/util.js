@@ -30,9 +30,22 @@ export const getCanUserCreateQuote = async (
   else if (isMounted()) setCanUserCreateQuote(true);
 };
 
+export const getHasUserLikedQuote = async (setHasLiked, quoteID, userID) => {
+  const quoteHasLikedDoc = await db
+    .collection("quote_likes")
+    .doc(quoteID + "|||" + userID)
+    .get();
+
+  if (!quoteHasLikedDoc.exists) return;
+  let value = quoteHasLikedDoc.data();
+  if (value) value = value.liked;
+
+  setHasLiked(Boolean(value));
+};
+
 export const getQuotes = async (quotes, setQuotes) => {
   let startAt = getEndAtValueTimestamp(quotes);
-  const todaysFormattedDate = new moment().format("MM-DD-YYYY");
+  const todaysFormattedDate = new moment().utcOffset(0).format("MM-DD-YYYY");
 
   const quotesSnapshot = await db
     .collection("quotes")
@@ -50,6 +63,13 @@ export const getQuotes = async (quotes, setQuotes) => {
       ...quoteDoc.data(),
     });
   }
+
+  if (quotes) {
+    return setQuotes((oldQuotes) => {
+      if (oldQuotes) return [...oldQuotes, ...newQuotes];
+      else return newQuotes;
+    });
+  } else return setQuotes(newQuotes);
 };
 
 export const saveQuote = async (
@@ -71,3 +91,30 @@ export const saveQuote = async (
     if (isMounted()) setCanUserCreateQuote(false);
   }
 };
+
+/*
+export const likeOrUnlikeVent = async (
+  hasLiked,
+  setHasLiked,
+  setVent,
+  user,
+  vent
+) => {
+  setHasLiked(!hasLiked);
+
+  setVent(incrementVentCounter("like_counter", !hasLiked, vent));
+
+  await db
+    .collection("vent_likes")
+    .doc(vent.id + "|||" + user.uid)
+    .set({ liked: !hasLiked, userID: user.uid, ventID: vent.id });
+};
+
+export const reportVent = async (option, userID, ventID) => {
+  await db
+    .collection("vent_reports")
+    .doc(ventID + "|||" + userID)
+    .set({ option, userID, ventID });
+
+  message.success("Report successful :)");
+};*/

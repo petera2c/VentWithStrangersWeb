@@ -1162,6 +1162,9 @@ body {
 .underline {
   text-decoration: underline;
 }
+.italic {
+  font-style: italic;
+}
 .fs-10 {
   font-size: var(--ten-font-size);
 }
