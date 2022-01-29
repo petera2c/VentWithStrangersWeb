@@ -85,7 +85,22 @@ const notifyQuoteContestWinner = async () => {
   //
 };
 
-const quoteDeleteListener = async (doc, context) => {};
+const quoteDeleteListener = async (doc, context) => {
+  const quoteLikesSnapshot = await admin
+    .firestore()
+    .collection("quote_likes")
+    .where("quoteID", "==", doc.id)
+    .get();
+
+  if (quoteLikesSnapshot.docs)
+    for (let index in quoteLikesSnapshot.docs) {
+      admin
+        .firestore()
+        .collection("quote_likes")
+        .doc(quoteLikesSnapshot.docs[index].id)
+        .delete();
+    }
+};
 
 const quoteLikeListener = async (change, context) => {
   const { quoteIDuserID } = context.params;
@@ -161,12 +176,7 @@ const quoteLikeListener = async (change, context) => {
   if (userSettingsDoc.data() && userSettingsDoc.data().master_quote_like)
     createNotification(
       userSettingsDoc.data().mobile_quote_like === true,
-      userSettingsDoc.data().email_quote_like === true
-        ? {
-            html: quote_like,
-            subject: "Someone has supported your quote! +2 Karma Points",
-          }
-        : undefined,
+      false,
       createVentLink(quote),
       "Someone has supported your quote! +2 Karma Points",
       quote.userID

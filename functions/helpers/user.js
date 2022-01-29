@@ -121,7 +121,6 @@ const checkIfCanCreateMilestone = async (
       reward = 5;
     }
   }
-  console.log(reward);
 
   if (reward) {
     createMilestone(reward, first ? secondTitle : title(counter), userID);
