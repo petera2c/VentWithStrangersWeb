@@ -183,7 +183,7 @@ function Quote({
         <Container className="column flex-fill align-center gap8">
           <p className="italic tac">{quote.value}</p>
           <Link to={"/profile?" + quote.userID}>
-            <p className="button-8 tac">
+            <p className="blue tac">
               - {capitolizeFirstChar(author.displayName)}
             </p>
           </Link>
@@ -197,7 +197,10 @@ function Quote({
         </Container>
 
         <Container
-          className="column clickable justify-between align-center gap4"
+          className={
+            "column clickable align-center gap4 " +
+            (user ? "justify-between " : "justify-end")
+          }
           onClick={async () => {
             const userInteractionIssues = userSignUpProgress(user);
 
