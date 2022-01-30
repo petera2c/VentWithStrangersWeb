@@ -15,6 +15,7 @@ import MakeAvatar from "../../components/MakeAvatar";
 import StarterModal from "../modals/Starter";
 
 import {
+  capitolizeFirstChar,
   canUserPost,
   countdown,
   formatSeconds,
@@ -24,6 +25,7 @@ import {
 } from "../../util";
 import {
   createPlaceholderDescription,
+  getQuote,
   getUserVentTimeOut,
   getVent,
   saveVent,
@@ -39,6 +41,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
   const [isMinified, setIsMinified] = useState(miniVersion);
   const [description, setDescription] = useState("");
   const [encouragingText] = useState(selectEncouragingMessage());
+  const [quote, setQuote] = useState();
   const [saving, setSaving] = useState(false);
   const [starterModal, setStarterModal] = useState(false);
   const [tags, setTags] = useState([]);
@@ -58,6 +61,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
           );
         }
       }, user.uid);
+    getQuote(isMounted, setQuote);
   }, [isMounted, user, ventID]);
 
   const checks = () => {
@@ -263,6 +267,16 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
                 Submit
               </button>
             )}
+          </Container>
+        )}
+        {quote && (
+          <Container className="column flex-fill align-center">
+            <p className="italic tac">{quote.value}</p>
+            <Link to={"/profile?" + quote.userID}>
+              <p className="blue tac lh-1">
+                - {capitolizeFirstChar(quote.displayName)}
+              </p>
+            </Link>
           </Container>
         )}
       </Space>

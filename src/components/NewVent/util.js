@@ -15,6 +15,41 @@ export const createPlaceholderDescription = (
   else return encouragingText + " :)";
 };
 
+export const getQuote = async (isMounted, setQuote) => {
+  const yesterdaysFormattedDate = new moment(
+    firebase.firestore.Timestamp.now().toMillis()
+  )
+    .utcOffset(0)
+    .subtract(1, "days")
+    .format("MM-DD-YYYY");
+
+  const quotesSnapshot = await db
+    .collection("quotes")
+    .where("formatted_date", "==", yesterdaysFormattedDate)
+    .orderBy("like_counter", "desc")
+    .limit(1)
+    .get();
+
+  if (
+    quotesSnapshot.docs &&
+    quotesSnapshot.docs[0] &&
+    quotesSnapshot.docs[0].data() &&
+    isMounted()
+  ) {
+    const author = await db
+      .collection("users_display_name")
+      .doc(quotesSnapshot.docs[0].data().userID)
+      .get();
+
+    const displayName = author.data() ? author.data().displayName : "Anonymous";
+    setQuote({
+      displayName,
+      id: quotesSnapshot.docs[0].id,
+      ...quotesSnapshot.docs[0].data(),
+    });
+  }
+};
+
 export const getUserVentTimeOut = async (callback, userID) => {
   const userVentTimeOutDoc = await db
     .collection("user_vent_timeout")
