@@ -320,7 +320,8 @@ function Vent({
             disablePostOnClick={disablePostOnClick}
             to={vent && vent.title && vent.id ? getVentPartialLink(vent) : ""}
           >
-            <Text className="fs-20 primary mb8" text={vent.title} type="h1" />
+            {setTitle && <h1 className="fs-20 primary mb8">{vent.title}</h1>}
+            {!setTitle && <h2 className="fs-20 primary mb8">{vent.title}</h2>}
 
             <p
               className="fw-400 grey-1 description"

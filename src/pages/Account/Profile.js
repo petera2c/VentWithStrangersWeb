@@ -116,7 +116,7 @@ function ProfileSection() {
       id="scrollable-div"
       title={
         userBasicInfo
-          ? capitolizeFirstChar(userBasicInfo.displayName)
+          ? capitolizeFirstChar(userBasicInfo.displayName)'s Profile and Recent Activity
           : "Profile"
       }
     >
@@ -334,7 +334,7 @@ function ProfileSection() {
             </Container>
           )}
 
-          <h1 className="fs-26">Activity</h1>
+          <h2 className="primary bold fs-26">Activity</h2>
           <Container className="ov-hidden column bg-white br8">
             <Container>
               <Container

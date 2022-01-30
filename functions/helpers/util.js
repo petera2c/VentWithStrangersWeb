@@ -76,7 +76,7 @@ const getMetaInformation = async (url, callback) => {
       .get();
 
     if (userDoc && userDoc.data() && userDoc.data().displayName) {
-      title = userDoc.data().displayName;
+      title = userDoc.data().displayName + "'s Profile and Recent Activity";
     }
   }
 

@@ -55,6 +55,7 @@ function Sidebar() {
 
     return () => {
       if (onlineUsersUnsubscribe) onlineUsersUnsubscribe.off("value");
+      if (chatQueueListenerUnsubscribe) chatQueueListenerUnsubscribe();
     };
   }, [isMounted, setTotalOnlineUsers]);
 
