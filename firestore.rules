@@ -40,7 +40,7 @@ service cloud.firestore {
     match /conversation_extra_data/{conversationID} {
       match /messages/{messagesID} {
         allow read: if true;
-        allow write: if request.auth.uid == request.resource.data.userID;
+        allow write: if request.auth.uid == request.resource.data.userID && (!(get(/databases/$(database)/documents/users_display_name/$(request.auth.uid)).data.keys().hasAny(['karma'])) || get(/databases/$(database)/documents/users_display_name/$(request.auth.uid)).data.karma > -50);
         allow update: if request.auth.uid == resource.data.userID
           && request.auth.uid == request.resource.data.userID;
         allow delete: if request.auth.uid == resource.data.userID;

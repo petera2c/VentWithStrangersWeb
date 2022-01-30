@@ -45,6 +45,8 @@ function VentPage() {
   let ventID;
   if (regexMatch) ventID = regexMatch;
 
+  if (ventFromMeta && ventFromMeta.id !== ventID) ventFromMeta = null;
+
   return (
     <Page className="px16 pt16" description={description} title={title}>
       <Container>
@@ -62,7 +64,7 @@ function VentPage() {
               setTitle={setTitle}
               setVentFound={setVentFound}
               ventID={ventID}
-              ventInit={{ ...ventFromMeta, id: ventID }}
+              ventInit={ventFromMeta}
             />
           </Container>
         )}
