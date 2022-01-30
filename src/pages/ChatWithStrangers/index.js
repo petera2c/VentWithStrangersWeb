@@ -1,5 +1,4 @@
-import React, { useContext, useEffect } from "react";
-import useState from "react-usestateref";
+import React, { useContext, useEffect, useState } from "react";
 import loadable from "@loadable/component";
 
 import { useNavigate } from "react-router-dom";
@@ -31,7 +30,6 @@ function ChatWithStrangersPage() {
   const isMounted = useIsMounted();
   const navigate = useNavigate();
 
-  const [queue, setQueue, queueRef] = useState([]);
   const [starterModal, setStarterModal] = useState();
 
   return (

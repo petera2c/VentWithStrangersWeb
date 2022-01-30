@@ -1,7 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Button, message, Space } from "antd";
+import useState from "react-usestateref";
 import { sendEmailVerification } from "firebase/auth";
+import { Button, message, Space } from "antd";
 
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
 import { faBars } from "@fortawesome/pro-duotone-svg-icons/faBars";
@@ -58,7 +59,7 @@ function Header() {
   const { user, userBasicInfo } = useContext(UserContext);
 
   const [accountSectionActive, setAccountSectionActive] = useState(false);
-  const [isUserInQueue, setIsUserInQueue] = useState();
+  const [isUserInQueue, setIsUserInQueue, isUserInQueueRef] = useState();
   const [mobileHeaderActive, setMobileHeaderActive] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [showNotificationDropdown, setShowNotificationDropdown] = useState(
@@ -107,7 +108,7 @@ function Header() {
 
     const cleanup = () => {
       if (conversationsUnsubscribe) conversationsUnsubscribe();
-      if (user && isUserInQueue) leaveQueue(user.uid);
+      if (user && isUserInQueueRef.current) leaveQueue(user.uid);
 
       window.removeEventListener("beforeunload", cleanup);
     };

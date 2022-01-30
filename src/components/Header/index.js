@@ -1,7 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Button, Dropdown, message } from "antd";
+import useState from "react-usestateref";
 import { sendEmailVerification } from "firebase/auth";
+import { Button, Dropdown, message } from "antd";
 
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
 import { faBell } from "@fortawesome/pro-duotone-svg-icons/faBell";
@@ -49,7 +50,7 @@ function Header() {
   const { user, userBasicInfo } = useContext(UserContext);
 
   const [activeModal, setActiveModal] = useState("");
-  const [isUserInQueue, setIsUserInQueue] = useState();
+  const [isUserInQueue, setIsUserInQueue, isUserInQueueRef] = useState();
   const [notifications, setNotifications] = useState([]);
   const [unreadConversationsCount, setUnreadConversationsCount] = useState();
 
@@ -87,7 +88,7 @@ function Header() {
 
     const cleanup = () => {
       if (conversationsUnsubscribe) conversationsUnsubscribe();
-      if (user && isUserInQueue) leaveQueue(user.uid);
+      if (user && isUserInQueueRef.current) leaveQueue(user.uid);
 
       window.removeEventListener("beforeunload", cleanup);
     };
