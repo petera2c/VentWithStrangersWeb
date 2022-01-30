@@ -24,7 +24,7 @@ function AboutUsPage() {
       <Container>
         <Container className="flex-fill column bg-white br8 gap16 pa32">
           <Container className="column gap8">
-            <h1 className="tac">Constructive. Feedback. Only.</h1>
+            <h1 className="tac">Vent online with people who care</h1>
             <p className="tac fw-400 mb16">
               People care and help is here. Vent and chat anonymously to be a
               part of a community committed to making the world a better place.

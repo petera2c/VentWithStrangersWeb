@@ -18,8 +18,107 @@ import MakeAvatar from "../MakeAvatar";
 
 import { OnlineUsersContext, UserContext } from "../../context";
 
-import { getTotalOnlineUsers, isPageActive, useIsMounted } from "../../util";
+import {
+  chatQueueEmptyListener,
+  getTotalOnlineUsers,
+  isPageActive,
+  useIsMounted,
+} from "../../util";
 import { getUserAvatars } from "./util";
+
+function Sidebar() {
+  const isMounted = useIsMounted();
+  const { pathname } = useLocation();
+
+  const { userSubscription } = useContext(UserContext);
+  const { totalOnlineUsers, setTotalOnlineUsers } = useContext(
+    OnlineUsersContext
+  );
+
+  const [firstOnlineUsers, setFirstOnlineUsers] = useState();
+  const [isQueueEmpty, setIsQueueEmpty] = useState(true);
+
+  useEffect(() => {
+    let onlineUsersUnsubscribe;
+    let chatQueueListenerUnsubscribe;
+
+    chatQueueListenerUnsubscribe = chatQueueEmptyListener(
+      isMounted,
+      setIsQueueEmpty
+    );
+    onlineUsersUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) => {
+      if (isMounted()) {
+        getUserAvatars(setFirstOnlineUsers, totalOnlineUsers);
+        setTotalOnlineUsers(totalOnlineUsers);
+      }
+    });
+
+    return () => {
+      if (onlineUsersUnsubscribe) onlineUsersUnsubscribe.off("value");
+    };
+  }, [isMounted, setTotalOnlineUsers]);
+
+  return (
+    <Space
+      className="container ad column ov-auto bg-white border-top pt8 px16 pb16"
+      direction="vertical"
+    >
+      <SideBarLink
+        icon={faUserFriends}
+        link="/people-online"
+        pathname={pathname}
+        firstOnlineUsers={firstOnlineUsers}
+        text={
+          (totalOnlineUsers ? totalOnlineUsers : "0") +
+          (totalOnlineUsers === 1 ? " Person" : " People") +
+          " Online"
+        }
+        totalOnlineUsers={totalOnlineUsers}
+      />
+      <SideBarLink
+        icon={faComments}
+        link="/chat-with-strangers"
+        pathname={pathname}
+        text={"Chat With Strangers" + (isQueueEmpty ? "" : " (1)")}
+      />
+      <SideBarLink
+        icon={faQuoteLeft}
+        link="/quote-contest"
+        pathname={pathname}
+        text="Daily Quote Contest"
+      />
+      <SideBarLink
+        icon={faStarShooting}
+        link="/rewards"
+        pathname={pathname}
+        text="Rewards"
+      />
+      <SideBarLink
+        icon={faPrayingHands}
+        link="/rules"
+        pathname={pathname}
+        text="Rules"
+      />
+      <SideBarLink
+        icon={faInfo}
+        link="/site-info"
+        pathname={pathname}
+        text="VWS Info"
+      />
+      <SideBarLink
+        icon={faUsers}
+        link="/make-friends"
+        pathname={pathname}
+        text="Make Friends"
+      />
+      <MakeAd
+        className="mt16"
+        slot="4732645487"
+        userSubscription={userSubscription}
+      />
+    </Space>
+  );
+}
 
 function SideBarLink({
   icon,
@@ -92,94 +191,6 @@ function SideBarLink({
         <h5 className="grey-1 inherit-color">{text}</h5>
       </Container>
     );
-}
-
-function Sidebar() {
-  const isMounted = useIsMounted();
-  const { pathname } = useLocation();
-
-  const { userSubscription } = useContext(UserContext);
-  const { totalOnlineUsers, setTotalOnlineUsers } = useContext(
-    OnlineUsersContext
-  );
-
-  const [firstOnlineUsers, setFirstOnlineUsers] = useState();
-
-  useEffect(() => {
-    let onlineUsersUnsubscribe;
-
-    onlineUsersUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) => {
-      if (isMounted()) {
-        getUserAvatars(setFirstOnlineUsers, totalOnlineUsers);
-        setTotalOnlineUsers(totalOnlineUsers);
-      }
-    });
-
-    return () => {
-      if (onlineUsersUnsubscribe) onlineUsersUnsubscribe.off("value");
-    };
-  }, [isMounted, setTotalOnlineUsers]);
-
-  return (
-    <Space
-      className="container ad column ov-auto bg-white border-top pt8 px16 pb16"
-      direction="vertical"
-    >
-      <SideBarLink
-        icon={faUserFriends}
-        link="/people-online"
-        pathname={pathname}
-        firstOnlineUsers={firstOnlineUsers}
-        text={
-          (totalOnlineUsers ? totalOnlineUsers : "0") +
-          (totalOnlineUsers === 1 ? " Person" : " People") +
-          " Online"
-        }
-        totalOnlineUsers={totalOnlineUsers}
-      />
-      <SideBarLink
-        icon={faComments}
-        link="/chat-with-strangers"
-        pathname={pathname}
-        text="Chat With Strangers"
-      />
-      <SideBarLink
-        icon={faQuoteLeft}
-        link="/quote-contest"
-        pathname={pathname}
-        text="Daily Quote Contest"
-      />
-      <SideBarLink
-        icon={faStarShooting}
-        link="/rewards"
-        pathname={pathname}
-        text="Rewards"
-      />
-      <SideBarLink
-        icon={faPrayingHands}
-        link="/rules"
-        pathname={pathname}
-        text="Rules"
-      />
-      <SideBarLink
-        icon={faInfo}
-        link="/site-info"
-        pathname={pathname}
-        text="VWS Info"
-      />
-      <SideBarLink
-        icon={faUsers}
-        link="/make-friends"
-        pathname={pathname}
-        text="Make Friends"
-      />
-      <MakeAd
-        className="mt16"
-        slot="4732645487"
-        userSubscription={userSubscription}
-      />
-    </Space>
-  );
 }
 
 export default Sidebar;

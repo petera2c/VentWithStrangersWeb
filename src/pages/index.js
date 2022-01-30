@@ -151,8 +151,8 @@ function RoutesComp() {
                     {user && (
                       <Route path="settings" element={<SettingsPage />} />
                     )}
-                    <Route path="" element={<VentsPage />} />
-                    <Route path="/*" element={<NotFoundPage />} />
+                    <Route path="/" element={<VentsPage />} />
+                    <Route path="*" element={<NotFoundPage />} />
                     <Route
                       path="/birthday-post"
                       element={<BirthdayPostPage />}

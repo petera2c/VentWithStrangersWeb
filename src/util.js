@@ -42,6 +42,18 @@ export const capitolizeFirstChar = (string) => {
   else return;
 };
 
+export const chatQueueEmptyListener = (isMounted, setIsQueueEmpty) => {
+  const unsubscribe = db
+    .collection("chat_queue")
+    .limit(1)
+    .onSnapshot((snapshot) => {
+      if (snapshot.docs && snapshot.docs.length > 0) setIsQueueEmpty(false);
+      else setIsQueueEmpty(true);
+    });
+
+  return unsubscribe;
+};
+
 export const combineObjectWithID = (id, object) => {
   object.id = id;
   return object;
