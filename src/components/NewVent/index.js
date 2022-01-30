@@ -85,7 +85,9 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
         if (miniVersion) setIsMinified(true);
       }}
     >
-      <Space className="pa32 br4" direction="vertical" size="large">
+      <Container
+        className={"column br4 pa32 " + (isMinified ? "gap2" : "gap16")}
+      >
         {!miniVersion && userVentTimeOut > 0 && !ventID && (
           <Space direction="vertical">
             <p className="tac">
@@ -269,7 +271,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
             )}
           </Container>
         )}
-        {quote && (
+        {isMinified && quote && (
           <Container className="column flex-fill align-center">
             <p className="italic tac">{quote.value}</p>
             <Link to={"/profile?" + quote.userID}>
@@ -279,7 +281,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
             </Link>
           </Container>
         )}
-      </Space>
+      </Container>
       {!miniVersion && (
         <Container
           className="column pa32"
