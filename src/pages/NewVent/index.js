@@ -24,7 +24,7 @@ function NewVentPage() {
   return (
     <Page className="pa16">
       <Container>
-        <Container className="flex-fill ">
+        <Container className="flex-fill">
           <NewVentComponent ventID={search ? search.substring(1) : null} />
         </Container>
         <SubscribeColumn slot="3872937497" />

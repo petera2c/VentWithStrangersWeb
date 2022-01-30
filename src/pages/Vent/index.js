@@ -31,7 +31,6 @@ function VentPage() {
   const location = useLocation();
   const { pathname } = location;
 
-  const [description, setDescription] = useState("");
   const [title, setTitle] = useState("");
 
   const objectFromMetaData = getMeta("vent-data");
@@ -48,7 +47,7 @@ function VentPage() {
   if (ventFromMeta && ventFromMeta.id !== ventID) ventFromMeta = null;
 
   return (
-    <Page className="px16 pt16" description={description} title={title}>
+    <Page className="px16 pt16" title={title}>
       <Container>
         {ventFound === false && <h4>Vent Not Found</h4>}
         {ventFound === undefined && ventID && (
@@ -60,7 +59,6 @@ function VentPage() {
               disablePostOnClick={true}
               displayCommentField
               isOnSingleVentPage={true}
-              setDescription={setDescription}
               setTitle={setTitle}
               setVentFound={setVentFound}
               ventID={ventID}

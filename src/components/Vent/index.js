@@ -71,7 +71,6 @@ function Vent({
   isOnSingleVentPage,
   previewMode,
   searchPreviewMode,
-  setDescription,
   setTitle,
   ventID,
   ventInit,
@@ -103,9 +102,6 @@ function Vent({
     const ventSetUp = (newVent) => {
       if (setTitle && newVent && newVent.title && isMounted())
         setTitle(newVent.title);
-
-      if (setDescription && newVent && newVent.description && isMounted())
-        setDescription(newVent.description);
 
       getUserBasicInfo((author) => {
         if (isMounted()) setAuthor(author);

@@ -1,8 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import loadable from "@loadable/component";
 
-import { useNavigate } from "react-router-dom";
-import { faWalkieTalkie } from "@fortawesome/pro-duotone-svg-icons/faWalkieTalkie";
 import { faHandsHelping } from "@fortawesome/pro-duotone-svg-icons/faHandsHelping";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -10,25 +8,17 @@ import SubscribeColumn from "../../components/SubscribeColumn";
 
 import { UserContext } from "../../context";
 
-import { startConversation } from "../../components/Vent/util";
-import { isMobileOrTablet, useIsMounted, userSignUpProgress } from "../../util";
-import {
-  conversationsListener,
-  countHelpersOrVenters,
-  joinQueue,
-} from "./util";
+import { isMobileOrTablet, userSignUpProgress } from "../../util";
+import { joinQueue } from "./util";
 
 const Container = loadable(() =>
   import("../../components/containers/Container")
 );
 const Page = loadable(() => import("../../components/containers/Page"));
 const StarterModal = loadable(() => import("../../components/modals/Starter"));
-const Text = loadable(() => import("../../components/views/Text"));
 
 function ChatWithStrangersPage() {
   const { user } = useContext(UserContext);
-  const isMounted = useIsMounted();
-  const navigate = useNavigate();
 
   const [starterModal, setStarterModal] = useState();
 
