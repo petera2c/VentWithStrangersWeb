@@ -105,7 +105,11 @@ function VentsPage() {
                         size="middle"
                         key={vent.id}
                       >
-                        <Vent previewMode={true} ventInit={vent} />
+                        <Vent
+                          previewMode={true}
+                          ventID={vent.id}
+                          ventInit={vent}
+                        />
                         {index % 3 === 0 && (
                           <MakeAd
                             banner
