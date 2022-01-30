@@ -177,9 +177,16 @@ function AboutUsPage() {
             </ul>
           </Container>
           <h6 className="bold">Follow Us on Social Media!</h6>
-          <Container>
+          <Container className="gap16">
             <a
-              className="mr16 "
+              className="button-4 fs-20 pb4"
+              href="https://blog.ventwithstrangers.com"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              VWS Blog
+            </a>
+            <a
               href="https://www.instagram.com/ventwithstrangers/"
               rel="noopener noreferrer"
               target="_blank"
@@ -193,7 +200,6 @@ function AboutUsPage() {
               />
             </a>
             <a
-              className="mr16 "
               href="https://www.facebook.com/ventwithstrangers"
               rel="noopener noreferrer"
               target="_blank"
@@ -207,7 +213,6 @@ function AboutUsPage() {
               />
             </a>
             <a
-              className="mr16 "
               href="https://www.linkedin.com/company/vent-with-strangers/"
               rel="noopener noreferrer"
               target="_blank"

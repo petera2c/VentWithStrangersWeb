@@ -1307,7 +1307,7 @@ body {
 .button-4 {
   cursor: pointer;
   color: var(--grey-color-1);
-  border-bottom: 1px solid var(--grey-color-7);
+  border-bottom: 2px solid var(--grey-color-7);
 }
 .button-4:hover,
 .button-4.active {

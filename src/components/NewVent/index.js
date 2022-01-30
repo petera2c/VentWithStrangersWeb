@@ -89,7 +89,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
       <Container
         className={"column br4 pa32 " + (isMinified ? "gap8" : "gap16")}
       >
-        {!miniVersion && (
+        {!miniVersion && quote && (
           <Container className="column flex-fill align-center">
             <h1 className="container medium fs-22 italic tac">
               "{quote.value}"
