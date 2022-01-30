@@ -42,6 +42,7 @@ function MobileConversations() {
 
     if (user) {
       getConversations(
+        activeConversation,
         conversations,
         isMounted,
         setActiveConversation,
@@ -103,6 +104,7 @@ function MobileConversations() {
             className="button-2 pa8 my8 br4"
             onClick={() => {
               getConversations(
+                activeConversation,
                 conversations,
                 isMounted,
                 setActiveConversation,
