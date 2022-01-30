@@ -86,7 +86,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
       }}
     >
       <Container
-        className={"column br4 pa32 " + (isMinified ? "gap2" : "gap16")}
+        className={"column br4 pa32 " + (isMinified ? "gap8" : "gap16")}
       >
         {!miniVersion && userVentTimeOut > 0 && !ventID && (
           <Space direction="vertical">
