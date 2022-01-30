@@ -66,7 +66,7 @@ function VentPage() {
             />
           </Container>
         )}
-        <SubscribeColumn uniqueShareLink slot="3336443960" />
+        <SubscribeColumn slot="3336443960" />
       </Container>
     </Page>
   );

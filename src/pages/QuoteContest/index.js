@@ -147,7 +147,7 @@ function QuoteContestPage() {
             </Container>
           </Container>
         </Container>
-        <SubscribeColumn />
+        <SubscribeColumn slot="1425588771" />
       </Container>
       {starterModal && (
         <StarterModal

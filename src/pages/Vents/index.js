@@ -29,7 +29,7 @@ function VentsPage() {
   const [waitingVents, setWaitingVents] = useState([]);
   const location = useLocation();
   const { pathname, search } = location;
-  const { metaDescription, metaTitle } = getMetaInformation(pathname);
+  const { metaTitle } = getMetaInformation(pathname);
   const [canLoadMore, setCanLoadMore] = useState(true);
 
   useEffect(() => {

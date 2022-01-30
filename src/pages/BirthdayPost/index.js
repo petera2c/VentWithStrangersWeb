@@ -37,7 +37,7 @@ function NewVentPage() {
             ventID={search ? search.substring(1) : null}
           />
         </Container>
-        <SubscribeColumn slot="3872937497" />
+        <SubscribeColumn slot="3226323822" />
       </Container>
       {starterModal && (
         <StarterModal
