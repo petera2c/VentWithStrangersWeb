@@ -395,6 +395,7 @@ function ProfileSection() {
                       key={index}
                       navigate={navigate}
                       previewMode={true}
+                      ventID={vent.id}
                       ventInit={vent}
                     />
                   ))}

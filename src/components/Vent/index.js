@@ -147,7 +147,6 @@ function Vent({
       );
     }
 
-    console.log(ventID);
     if (user && !searchPreviewMode)
       ventHasLiked(
         (newHasLiked) => {

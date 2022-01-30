@@ -121,6 +121,7 @@ function SearchPage() {
                     key={vent.objectID}
                     previewMode={true}
                     showVentHeader={false}
+                    ventID={vent.objectID}
                     ventIndex={index}
                     ventInit={{ ...vent, id: vent.objectID }}
                     searchPreviewMode={true}
