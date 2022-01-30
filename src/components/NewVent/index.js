@@ -16,14 +16,14 @@ import StarterModal from "../modals/Starter";
 
 import {
   canUserPost,
+  countdown,
+  formatSeconds,
   isMobileOrTablet,
   useIsMounted,
   userSignUpProgress,
 } from "../../util";
 import {
-  countdown,
   createPlaceholderDescription,
-  formatSeconds,
   getUserVentTimeOut,
   getVent,
   saveVent,
@@ -51,9 +51,9 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
     if (user)
       getUserVentTimeOut((res) => {
         if (res) {
-          countdown(isMounted, setUserVentTimeOut, res);
+          countdown(isMounted, res, setUserVentTimeOut);
           setInterval(
-            () => countdown(isMounted, setUserVentTimeOut, res),
+            () => countdown(isMounted, res, setUserVentTimeOut),
             1000
           );
         }

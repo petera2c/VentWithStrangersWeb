@@ -2,28 +2,7 @@ import firebase from "firebase/compat/app";
 import moment from "moment-timezone";
 import db from "../../config/firebase";
 
-export const countdown = (isMounted, setUserVentTimeOut, ventTimeout) => {
-  if (isMounted()) {
-    setUserVentTimeOut((oldUserVentTimeOut) => {
-      if (oldUserVentTimeOut) return oldUserVentTimeOut - 1;
-      else return Math.round(new moment(ventTimeout).diff(new moment()) / 1000);
-    });
-  }
-};
-
-export const formatSeconds = (userVentTimeOut) => {
-  const hours = Math.floor(userVentTimeOut / 3600);
-  const minutes = Math.floor((userVentTimeOut % 3600) / 60);
-  const seconds = (userVentTimeOut % 3600) % 60;
-
-  return (
-    (hours < 10 ? "0" + hours : hours) +
-    ":" +
-    (minutes < 10 ? "0" + minutes : minutes) +
-    ":" +
-    (seconds < 10 ? "0" + seconds : seconds)
-  );
-};
+import { formatSeconds } from "../../util";
 
 export const createPlaceholderDescription = (
   encouragingText,

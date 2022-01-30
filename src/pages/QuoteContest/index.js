@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import TextArea from "react-textarea-autosize";
+import moment from "moment-timezone";
 import { Button, message } from "antd";
 
 import { faChevronCircleUp } from "@fortawesome/pro-solid-svg-icons/faChevronCircleUp";
@@ -18,6 +19,8 @@ import { UserContext } from "../../context";
 import {
   calculateKarma,
   capitolizeFirstChar,
+  countdown,
+  formatSeconds,
   getUserBasicInfo,
   hasUserBlockedUser,
   isMobileOrTablet,
@@ -44,9 +47,21 @@ function QuoteContestPage() {
   const [quotes, setQuotes] = useState([]);
   const [starterModal, setStarterModal] = useState();
 
+  const [contestTimeLeft, setContestTimeLeft] = useState();
+
   useEffect(() => {
     if (user) getCanUserCreateQuote(isMounted, setCanUserCreateQuote, user.uid);
     getQuotes(undefined, setQuotes);
+    const timeLeftMoment = new moment()
+      .utcOffset(0)
+      .add(1, "days")
+      .set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
+
+    countdown(isMounted, timeLeftMoment, setContestTimeLeft);
+    setInterval(
+      () => countdown(isMounted, timeLeftMoment, setContestTimeLeft),
+      1000
+    );
   }, []);
 
   return (
@@ -57,10 +72,15 @@ function QuoteContestPage() {
             <Container className="column flex-fill ov-auto gap8 pt8 px16">
               <Container className="column border-bottom gap8 px16 pb16">
                 <h1 className="tac">Feel Good Quote Contest</h1>
-                <p className="tac">
-                  Every day we display a feel good quote. The winner from this
-                  contest will be show cased for the following day
-                </p>
+                <Container className="column gap4">
+                  <p className="tac">
+                    Every day we display a feel good quote. The winner from this
+                    contest will be show cased for the following day
+                  </p>
+                  <p className="tac lh-1">
+                    Time left in contest: {formatSeconds(contestTimeLeft)}
+                  </p>
+                </Container>
               </Container>
               {quotes.map((quote, index) => {
                 return (

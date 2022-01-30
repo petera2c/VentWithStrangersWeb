@@ -47,6 +47,16 @@ export const combineObjectWithID = (id, object) => {
   return object;
 };
 
+export const countdown = (isMounted, momentTimeout, setTimeout) => {
+  if (isMounted()) {
+    setTimeout((oldUserVentTimeOut) => {
+      if (oldUserVentTimeOut) return oldUserVentTimeOut - 1;
+      else
+        return Math.round(new moment(momentTimeout).diff(new moment()) / 1000);
+    });
+  }
+};
+
 export const displayNameErrors = (displayName) => {
   if (getInvalidCharacters(displayName)) {
     return message.error(
@@ -56,6 +66,20 @@ export const displayNameErrors = (displayName) => {
   } else if (displayName.length > 15)
     return message.error("Display name is too long :'(");
   else return false;
+};
+
+export const formatSeconds = (userVentTimeOut) => {
+  const hours = Math.floor(userVentTimeOut / 3600);
+  const minutes = Math.floor((userVentTimeOut % 3600) / 60);
+  const seconds = (userVentTimeOut % 3600) % 60;
+
+  return (
+    (hours < 10 ? "0" + hours : hours) +
+    ":" +
+    (minutes < 10 ? "0" + minutes : minutes) +
+    ":" +
+    (seconds < 10 ? "0" + seconds : seconds)
+  );
 };
 
 export const getEndAtValueTimestamp = (array) => {
