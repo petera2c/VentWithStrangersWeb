@@ -37,7 +37,7 @@ import {
   resetUnreadConversationCount,
 } from "./util";
 
-function SideBarLink({ icon, link, onClick, pathname, text }) {
+function AccountLink({ icon, link, onClick, pathname, text }) {
   if (link)
     return (
       <Link
@@ -218,31 +218,31 @@ function Header() {
                 <Dropdown
                   overlay={
                     <div className="bg-white shadow-2 pa8 br8">
-                      <SideBarLink
+                      <AccountLink
                         icon={faChartNetwork}
                         link="/profile"
                         pathname={pathname}
                         text="My Public Profile"
                       />
-                      <SideBarLink
+                      <AccountLink
                         icon={faUser}
                         link="/account"
                         pathname={pathname}
                         text="Account"
                       />
-                      <SideBarLink
+                      <AccountLink
                         icon={faUserAstronaut}
                         link="/avatar"
                         pathname={pathname}
                         text="Avatar"
                       />
-                      <SideBarLink
+                      <AccountLink
                         icon={faCog}
                         link="/settings"
                         pathname={pathname}
                         text="Notification Settings"
                       />
-                      <SideBarLink
+                      <AccountLink
                         icon={faSignOut}
                         onClick={() => {
                           signOut(user.uid);

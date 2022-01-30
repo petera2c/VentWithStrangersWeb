@@ -1,7 +1,8 @@
 const admin = require("firebase-admin");
 const moment = require("moment-timezone");
 
-const { calculateKarmaUserCanStrip, createNotification } = require("./util");
+const { calculateKarmaUserCanStrip } = require("./util");
+const { createNotification } = require("./notification");
 
 const newQuoteListener = async (doc, context) => {
   const quote = { id: doc.id, ...doc.data() };
@@ -82,7 +83,65 @@ const newQuoteReportListener = async (doc, context) => {
 };
 
 const notifyQuoteContestWinner = async () => {
-  //
+  const yesterdaysFormattedDate = new moment(
+    admin.firestore.Timestamp.now().toMillis()
+  )
+    .utcOffset(0)
+    .subtract(1, "days")
+    .format("MM-DD-YYYY");
+
+  const quotesSnapshot = await admin
+    .firestore()
+    .collection("quotes")
+    .where("formatted_date", "==", yesterdaysFormattedDate)
+    .orderBy("like_counter", "desc")
+    .limit(1)
+    .get();
+
+  if (
+    quotesSnapshot.docs &&
+    quotesSnapshot.docs[0] &&
+    quotesSnapshot.docs[0].data()
+  ) {
+    const winnerDoc = {
+      id: quotesSnapshot.docs[0].id,
+      ...quotesSnapshot.docs[0].data(),
+    };
+
+    await admin
+      .firestore()
+      .collection("users_display_name")
+      .doc(winnerDoc.userID)
+      .update({
+        karma: admin.firestore.FieldValue.increment(50),
+      });
+
+    await admin
+      .firestore()
+      .collection("user_rewards")
+      .doc(winnerDoc.userID)
+      .update({
+        quote_contests_won_counter: admin.firestore.FieldValue.increment(1),
+      });
+
+    const userSettingsDoc = await admin
+      .firestore()
+      .collection("users_settings")
+      .doc(winnerDoc.userID)
+      .get();
+
+    /*  if (
+      userSettingsDoc.data() &&
+      userSettingsDoc.data().master_quote_contest_won
+    )*/
+    createNotification(
+      userSettingsDoc.data().mobile_quote_contest_won === true,
+      false,
+      "/quote-contest",
+      "You have won a Quote Contest! +50 Karma Points",
+      winnerDoc.userID
+    );
+  }
 };
 
 const quoteDeleteListener = async (doc, context) => {
@@ -177,7 +236,7 @@ const quoteLikeListener = async (change, context) => {
     createNotification(
       userSettingsDoc.data().mobile_quote_like === true,
       false,
-      createVentLink(quote),
+      "/quote-contest",
       "Someone has supported your quote! +2 Karma Points",
       quote.userID
     );
