@@ -115,7 +115,7 @@ function Header() {
           <Container className="full-center">
             <Link to="/">
               <img
-                alt=""
+                alt="Go Home"
                 className="clickable"
                 src="/svgs/icon.svg"
                 style={{ height: "50px" }}

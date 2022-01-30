@@ -38,17 +38,17 @@ function Page({
       <Helmet defer={false}>
         <meta charSet="utf-8" />
         <title>{title ? title : title2}</title>
-        <meta name="title" content={title ? title : title2} />
-        <meta name="og:title" content={title ? title : title2} />
+        <meta content={title ? title : title2} name="title" />
+        <meta content={title ? title : title2} name="og:title" />
         <meta
+          content={description ? description : description2}
           name="description"
-          content={description ? description : description2}
         />
         <meta
-          name="og:description"
           content={description ? description : description2}
+          name="og:description"
         />
-        <meta name="keywords" content={keywords ? keywords : keywords2} />
+        <meta content={keywords ? keywords : keywords2} name="keywords" />
       </Helmet>
 
       {children}

@@ -137,7 +137,7 @@ function Header() {
       <Container className="x-fill align-center justify-between border-bottom py8 px16">
         <Link to="/">
           <img
-            alt=""
+            alt="Go Home"
             className="clickable"
             onClick={() => setMobileHeaderActive(false)}
             src="/svgs/icon.svg"
