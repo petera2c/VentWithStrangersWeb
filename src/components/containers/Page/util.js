@@ -27,12 +27,12 @@ export const getMetaData = (page) => {
     description =
       "Making friends online has never been easier. After filling out your profile we will match you with like minded people! :)";
     keywords = "make friends online,make friends,make friends app";
-    title = "Make Friends";
+    title = "Make Friends Online";
   } else if (page === "/people-online") {
     description =
       "The help you have been looking for is here. These are people online right now. Start chatting with real and kind people. ";
     keywords = "";
-    title = "People Online";
+    title = "Current People Online On Vent With Strangers";
   } else if (page === "/profile") {
     title = "Profile";
   } else if (page === "/privacy-policy") {
@@ -46,27 +46,28 @@ export const getMetaData = (page) => {
     title = "Recent Vents";
   } else if (page === "/rewards") {
     description =
-      "You can earn rewards on Vent With Strangers. Interact and help people to gain Karma Points :)";
+      "Earning rewards is lots of fun on Vent With Strangers. View this page to know how far away your milestones are! :)";
     keywords = "";
     title = "Your Rewards";
   } else if (page === "/rules") {
     description =
-      "Our rules are very easy to follow :) Be nice and you will be totally fine!";
+      "Vent With Strangers is a safe and secure place. Our rules are very easy to follow :) Be nice and you will be totally fine!";
     keywords = "";
-    title = "VWS Rules";
+    title = "Vent With Strangers Rules";
   } else if (page === "/search") {
     title = "Search";
   } else if (page === "/settings") {
     title = "Notification Settings";
   } else if (page === "/site-info") {
-    description = "Read about how our website works.";
-    keywords = "vent with strangers";
-    title = "VWS Info";
+    description =
+      "Our site is awesome. You can, chat with strangers, create anonymous vents, create an avatar and more :) Read about it here!";
+    keywords = "vent with strangers, chat anonymously, chat online";
+    title = "Vent With Strangers Rules Info";
   } else if (page === "/trending") {
     title = "Trending Vents";
   } else if (page === "/vent-to-strangers") {
     description =
-      "Vent to strangers. You aren’t alone, and you should never feel alone. If you are feeling down, anonymously post your issue here. There is an entire community of people that want to help you.";
+      "You are not alone. If you are feeling down, anonymously post your issue here. There is an entire community of people that want to help you.";
     keywords = "vent to strangers,vent to someone,chat with strangers";
     title = "Vent To Strangers";
   }

@@ -97,7 +97,7 @@ const getMetaInformation = async (url, callback) => {
     description =
       "The help you have been looking for is here. These are people online right now. Start chatting with real and kind people.";
     keywords = "";
-    title = "People Online";
+    title = "Current People Online On Vent With Strangers";
   } else if (url === "/profile") {
     title = "Profile";
   } else if (url === "/privacy-policy") {
@@ -111,12 +111,12 @@ const getMetaInformation = async (url, callback) => {
     title = "Recent Vents";
   } else if (url === "/rewards") {
     description =
-      "You can earn rewards on Vent With Strangers. Interact and help people to gain Karma Points :)";
+      "Earning rewards is lots of fun on Vent With Strangers. View this page to know how far away your milestones are! :)";
     keywords = "";
     title = "Your Rewards";
   } else if (url === "/rules") {
     description =
-      "Our rules are very easy to follow :) Be nice and you will be totally fine!";
+      "Vent With Strangers is a safe and secure place. Our rules are very easy to follow :) Be nice and you will be totally fine!";
     keywords = "";
     title = "VWS Rules";
   } else if (url === "/search") {
@@ -124,14 +124,15 @@ const getMetaInformation = async (url, callback) => {
   } else if (url === "/settings") {
     title = "Settings";
   } else if (url === "/site-info") {
-    description = "Read about how our website works.";
-    keywords = "vent with strangers";
-    title = "VWS Info";
+    description =
+      "Our site is awesome. You can, chat with strangers, create anonymous vents, create an avatar and more :) Read about it here!";
+    keywords = "vent with strangers, chat anonymously, chat online";
+    title = "Vent With Strangers Rules Info";
   } else if (url === "/trending") {
     title = "Trending Vents";
   } else if (url === "/vent-to-strangers") {
     description =
-      "Vent to strangers. You aren’t alone, and you should never feel alone. If you are feeling down, anonymously post your issue here. There is an entire community of people that want to help you.";
+      "You are not alone. If you are feeling down, anonymously post your issue here. There is an entire community of people that want to help you.";
     keywords = "vent to strangers,vent to someone,chat with strangers";
     title = "Vent To Strangers";
   }
