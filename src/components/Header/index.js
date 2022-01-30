@@ -103,7 +103,7 @@ function Header() {
       if (newNotificationsListenerUnsubscribe)
         newNotificationsListenerUnsubscribe();
     };
-  }, [isMounted, pathname, user]);
+  }, [isMounted, user]);
 
   if (pathname === "/chat" && user && unreadConversationsCount > 0)
     resetUnreadConversationCount(user.uid);
