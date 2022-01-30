@@ -30,15 +30,17 @@ import Text from "../views/Text";
 
 import {
   capitolizeFirstChar,
-  getUserBasicInfo,
   isPageActive,
   signOut,
   getTotalOnlineUsers,
   useIsMounted,
 } from "../../util";
 import {
+  conversationsListener,
   getNotifications,
   getUnreadConversations,
+  isUserInQueueListener,
+  leaveQueue,
   newNotificationCounter,
   readNotifications,
   resetUnreadConversationCount,
@@ -50,20 +52,20 @@ function Header() {
   const navigate = useNavigate();
   const { pathname, search } = location;
 
-  const { user } = useContext(UserContext);
-
   const { totalOnlineUsers, setTotalOnlineUsers } = useContext(
     OnlineUsersContext
   );
-  const [starterModal, setStarterModal] = useState(false);
-  const [mobileHeaderActive, setMobileHeaderActive] = useState(false);
+  const { user, userBasicInfo } = useContext(UserContext);
+
   const [accountSectionActive, setAccountSectionActive] = useState(false);
+  const [isUserInQueue, setIsUserInQueue] = useState();
+  const [mobileHeaderActive, setMobileHeaderActive] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [showNotificationDropdown, setShowNotificationDropdown] = useState(
     false
   );
+  const [starterModal, setStarterModal] = useState(false);
   const [unreadConversationsCount, setUnreadConversationsCount] = useState();
-  const [userBasicInfo, setUserBasicInfo] = useState({});
 
   const [ventSearchString, setVentSearchString] = useState(
     pathname.substring(0, 7) === "/search"
@@ -72,8 +74,10 @@ function Header() {
   );
 
   useEffect(() => {
-    let newNotificationsListenerUnsubscribe;
+    let conversationsUnsubscribe;
+    let isUserInQueueUnsubscribe;
     let newConversationsListenerUnsubscribe;
+    let newNotificationsListenerUnsubscribe;
     let onlineUsersUnsubscribe;
 
     onlineUsersUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) => {
@@ -81,15 +85,19 @@ function Header() {
     });
 
     if (user) {
+      conversationsUnsubscribe = conversationsListener(navigate, user.uid);
+      isUserInQueueUnsubscribe = isUserInQueueListener(
+        isMounted,
+        setIsUserInQueue,
+        user.uid
+      );
+
       newConversationsListenerUnsubscribe = getUnreadConversations(
         isMounted,
         pathname.substring(0, 7) === "/search",
         setUnreadConversationsCount,
         user.uid
       );
-      getUserBasicInfo((newBasicUserInfo) => {
-        if (isMounted()) setUserBasicInfo(newBasicUserInfo);
-      }, user.uid);
       newNotificationsListenerUnsubscribe = getNotifications(
         isMounted,
         setNotifications,
@@ -97,7 +105,18 @@ function Header() {
       );
     }
 
+    const cleanup = () => {
+      if (conversationsUnsubscribe) conversationsUnsubscribe();
+      if (user && isUserInQueue) leaveQueue(user.uid);
+
+      window.removeEventListener("beforeunload", cleanup);
+    };
+
+    window.addEventListener("beforeunload", cleanup);
+
     return () => {
+      cleanup();
+      if (isUserInQueueUnsubscribe) isUserInQueueUnsubscribe();
       if (newNotificationsListenerUnsubscribe)
         newNotificationsListenerUnsubscribe();
       if (newConversationsListenerUnsubscribe)
@@ -385,6 +404,18 @@ function Header() {
             </Space>
           )}
         </Space>
+      )}
+      {user && isUserInQueue && (
+        <Container className="x-fill full-center bg-white border-top gap8 py8 px16">
+          <p>You are in queue to chat with a stranger</p>
+          <Button
+            onClick={() => leaveQueue(user.uid)}
+            size="large"
+            type="primary"
+          >
+            Leave Queue
+          </Button>
+        </Container>
       )}
       {user && !user.emailVerified && (
         <Container className="x-fill full-center bg-grey-2">
