@@ -30,43 +30,15 @@ import {
   useIsMounted,
 } from "../../util";
 import {
+  conversationsListener,
   getNotifications,
   getUnreadConversations,
+  isUserInQueueListener,
+  leaveQueue,
   newNotificationCounter,
   readNotifications,
   resetUnreadConversationCount,
 } from "./util";
-
-function AccountLink({ icon, link, onClick, pathname, text }) {
-  if (link)
-    return (
-      <Link
-        className={
-          "x-fill align-center grid-1 button-4 clickable py8 " +
-          isPageActive(link, pathname)
-        }
-        to={link}
-      >
-        <Container className="flex blue x-fill full-center">
-          <FontAwesomeIcon icon={icon} style={{ fontSize: "1.25rem" }} />
-        </Container>
-        <h5 className="grey-1 inherit-color">{text}</h5>
-      </Link>
-    );
-
-  if (onClick)
-    return (
-      <div
-        className="x-fill align-center grid-1 button-4 clickable py8"
-        onClick={onClick}
-      >
-        <Container className="full-center">
-          <FontAwesomeIcon icon={icon} style={{ fontSize: "1.25rem" }} />
-        </Container>
-        <h5 className="grey-1 inherit-color">{text}</h5>
-      </div>
-    );
-}
 
 function Header() {
   const isMounted = useIsMounted();
@@ -77,6 +49,7 @@ function Header() {
   const { user, userBasicInfo } = useContext(UserContext);
 
   const [activeModal, setActiveModal] = useState("");
+  const [isUserInQueue, setIsUserInQueue] = useState();
   const [notifications, setNotifications] = useState([]);
   const [unreadConversationsCount, setUnreadConversationsCount] = useState();
 
@@ -87,17 +60,24 @@ function Header() {
   );
 
   useEffect(() => {
-    let newNotificationsListenerUnsubscribe;
+    let conversationsUnsubscribe;
+    let isUserInQueueUnsubscribe;
     let newConversationsListenerUnsubscribe;
+    let newNotificationsListenerUnsubscribe;
 
     if (user) {
+      conversationsUnsubscribe = conversationsListener(navigate, user.uid);
+      isUserInQueueUnsubscribe = isUserInQueueListener(
+        isMounted,
+        setIsUserInQueue,
+        user.uid
+      );
       newConversationsListenerUnsubscribe = getUnreadConversations(
         isMounted,
         pathname.substring(0, 7) === "/search",
         setUnreadConversationsCount,
         user.uid
       );
-
       newNotificationsListenerUnsubscribe = getNotifications(
         isMounted,
         setNotifications,
@@ -105,11 +85,22 @@ function Header() {
       );
     }
 
+    const cleanup = () => {
+      if (conversationsUnsubscribe) conversationsUnsubscribe();
+      if (user && isUserInQueue) leaveQueue(user.uid);
+
+      window.removeEventListener("beforeunload", cleanup);
+    };
+
+    window.addEventListener("beforeunload", cleanup);
+
     return () => {
-      if (newNotificationsListenerUnsubscribe)
-        newNotificationsListenerUnsubscribe();
+      cleanup();
+      if (isUserInQueueUnsubscribe) isUserInQueueUnsubscribe();
       if (newConversationsListenerUnsubscribe)
         newConversationsListenerUnsubscribe();
+      if (newNotificationsListenerUnsubscribe)
+        newNotificationsListenerUnsubscribe();
     };
   }, [isMounted, pathname, user]);
 
@@ -310,6 +301,14 @@ function Header() {
           setActiveModal={setActiveModal}
         />
       </Container>
+      {user && isUserInQueue && (
+        <Container className="x-fill full-center bg-white border-top gap8 py8">
+          <p>You are in queue to chat with a stranger</p>
+          <Button onClick={() => leaveQueue(user.uid)} size="large" type="link">
+            Leave Queue
+          </Button>
+        </Container>
+      )}
       {user && !user.emailVerified && (
         <Container className="x-fill full-center bg-grey-2">
           <h4 className="tac mr16">Please verify your email address!</h4>
@@ -331,6 +330,37 @@ function Header() {
       )}
     </Container>
   );
+}
+
+function AccountLink({ icon, link, onClick, pathname, text }) {
+  if (link)
+    return (
+      <Link
+        className={
+          "x-fill align-center grid-1 button-4 clickable py8 " +
+          isPageActive(link, pathname)
+        }
+        to={link}
+      >
+        <Container className="flex blue x-fill full-center">
+          <FontAwesomeIcon icon={icon} style={{ fontSize: "1.25rem" }} />
+        </Container>
+        <h5 className="grey-1 inherit-color">{text}</h5>
+      </Link>
+    );
+
+  if (onClick)
+    return (
+      <div
+        className="x-fill align-center grid-1 button-4 clickable py8"
+        onClick={onClick}
+      >
+        <Container className="full-center">
+          <FontAwesomeIcon icon={icon} style={{ fontSize: "1.25rem" }} />
+        </Container>
+        <h5 className="grey-1 inherit-color">{text}</h5>
+      </div>
+    );
 }
 
 export default Header;

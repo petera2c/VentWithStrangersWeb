@@ -16,11 +16,9 @@ const chatQueueListener = async (change, context) => {
   const doc = change.after.data();
 
   if (doc) {
-    const lookingFor = doc.venter ? "helper" : "venter";
     const partnerSnapshot = await admin
       .firestore()
       .collection("chat_queue")
-      .where(lookingFor, "==", true)
       .orderBy("server_timestamp", "asc")
       .limit(1)
       .get();

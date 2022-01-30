@@ -58,6 +58,7 @@ const VerifiedEmailPage = React.lazy(() => import("./EmailAuth/VerifiedEmail"));
 function RoutesComp() {
   const isMounted = useIsMounted();
   const [user, loading] = useAuthState(firebase.auth());
+
   const [isUsersBirthday, setIsUsersBirthday] = useState(false);
   const [newReward, setNewReward] = useState();
   const [totalOnlineUsers, setTotalOnlineUsers] = useState();

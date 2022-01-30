@@ -1,6 +1,22 @@
 import db from "../../config/firebase";
 import { soundNotify } from "../../util";
 
+export const conversationsListener = (navigate, userID) => {
+  const unsubscribe = db
+    .collection("conversations")
+    .where("members", "array-contains", userID)
+    .orderBy("last_updated", "desc")
+    .limit(1)
+    .onSnapshot((snapshot) => {
+      if (snapshot.docs && snapshot.docs[0]) {
+        const doc = snapshot.docs[0];
+        if (doc.data().go_to_inbox) navigate("/chat?" + doc.id);
+      }
+    });
+
+  return unsubscribe;
+};
+
 export const getNotifications = (
   isMounted,
   setNotifications,
@@ -80,6 +96,23 @@ export const howCompleteIsUserProfile = (
   if (userBasicInfo.avatar) percentage += 0.125;
 
   setMissingAccountPercentage(percentage);
+};
+
+export const isUserInQueueListener = (isMounted, setIsUserInQueue, userID) => {
+  const unsubscribe = db
+    .collection("chat_queue")
+    .doc(userID)
+    .onSnapshot("value", (doc) => {
+      if (doc.data() && doc.data().userID === userID && isMounted())
+        setIsUserInQueue(true);
+      else if (isMounted()) setIsUserInQueue(false);
+    });
+
+  return unsubscribe;
+};
+
+export const leaveQueue = async (userID) => {
+  await db.collection("chat_queue").doc(userID).delete();
 };
 
 export const newNotificationCounter = (notifications) => {

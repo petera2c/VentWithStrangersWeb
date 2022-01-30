@@ -7,6 +7,8 @@ import { faWalkieTalkie } from "@fortawesome/pro-duotone-svg-icons/faWalkieTalki
 import { faHandsHelping } from "@fortawesome/pro-duotone-svg-icons/faHandsHelping";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import SubscribeColumn from "../../components/SubscribeColumn";
+
 import { UserContext } from "../../context";
 
 import { startConversation } from "../../components/Vent/util";
@@ -14,10 +16,7 @@ import { isMobileOrTablet, useIsMounted, userSignUpProgress } from "../../util";
 import {
   conversationsListener,
   countHelpersOrVenters,
-  isUserInQueue,
   joinQueue,
-  leaveQueue,
-  queueListener,
 } from "./util";
 
 const Container = loadable(() =>
@@ -35,170 +34,49 @@ function ChatWithStrangersPage() {
   const [queue, setQueue, queueRef] = useState([]);
   const [starterModal, setStarterModal] = useState();
 
-  useEffect(() => {
-    const queueUnsubscribe = queueListener(isMounted, setQueue);
-
-    let conversationsUnsubscribe;
-    if (user)
-      conversationsUnsubscribe = conversationsListener(navigate, user.uid);
-
-    const cleanup = () => {
-      if (conversationsUnsubscribe) conversationsUnsubscribe();
-      if (queueUnsubscribe) queueUnsubscribe();
-      if (user && isUserInQueue(queueRef.current, user.uid))
-        leaveQueue(user.uid);
-
-      window.removeEventListener("beforeunload", cleanup);
-    };
-
-    window.addEventListener("beforeunload", cleanup);
-
-    return cleanup;
-  }, [isMounted, navigate, user]);
-
   return (
     <Page className="pa16">
-      <Container
-        className={
-          "column align-center gap32 " + (isMobileOrTablet() ? "pt16" : "pt64")
-        }
-      >
-        <Container className="container medium column">
-          <h1 className="tac">Chat With Strangers</h1>
-          {user && (
-            <p className="tac py16">
-              Hello :) This is a <b className="primary">new page</b>. If you see
-              any issues please message{" "}
-              <b
-                className="clickable blue"
-                onClick={() => {
-                  const userInteractionIssues = userSignUpProgress(user);
+      <Container className="">
+        <Container className="column flex-fill full-center gap32">
+          <Container className="container medium column align-center">
+            <h1 className="tac lh-1">Chat With Strangers</h1>
+          </Container>
+          <Container
+            className="container medium column button-6 bg-white border-all2 br8"
+            onClick={() => {
+              const userInteractionIssues = userSignUpProgress(user);
 
-                  if (userInteractionIssues) {
-                    if (userInteractionIssues === "NSI") setStarterModal(true);
-                    return;
-                  }
+              if (userInteractionIssues) {
+                if (userInteractionIssues === "NSI") setStarterModal(true);
+                return;
+              }
 
-                  startConversation(navigate, user, "5e33869b7c945900156e75e2");
-                }}
-              >
-                @First
-              </b>
-            </p>
-          )}
-          {user && isUserInQueue(queue, user.uid) && (
-            <p className="tac">
-              You are in queue! :) Stay on this page to remain in the queue
-            </p>
-          )}
-        </Container>
-        {true && (
-          <Container className="wrap full-center gap16">
+              joinQueue(user.uid);
+            }}
+          >
             <Container
-              className="container small column button-6 bg-white border-all2 br8"
-              onClick={() => {
-                const userInteractionIssues = userSignUpProgress(user);
-
-                if (userInteractionIssues) {
-                  if (userInteractionIssues === "NSI") setStarterModal(true);
-                  return;
-                }
-
-                joinQueue("helper", user.uid);
-              }}
+              className={
+                "column x-fill flex-fill full-center " +
+                (isMobileOrTablet() ? "py32" : "py64")
+              }
             >
-              <Container
-                className={
-                  "column x-fill flex-fill full-center border-bottom " +
-                  (isMobileOrTablet() ? "py32" : "py64")
-                }
-              >
-                <FontAwesomeIcon
-                  className="blue mb8"
-                  icon={faHandsHelping}
-                  size="2x"
-                />
-                <Text
-                  className="grey-11 fw-300 tac"
-                  text="Help a Stranger"
-                  type="h3"
-                />
-              </Container>
-              <Container className="column x-fill full-center py16">
-                <Text
-                  className="grey-3 fw-300 tac"
-                  text="Listeners Waiting"
-                  type="h5"
-                />
-                <Text
-                  className="grey-5 tac"
-                  text={
-                    countHelpersOrVenters(queue, "helper") +
-                    (countHelpersOrVenters(queue, "helper") === 1
-                      ? " Person"
-                      : " People")
-                  }
-                  type="p"
-                />
-              </Container>
-            </Container>
-            <Container
-              className="container small column button-6 bg-white border-all2 br8"
-              onClick={() => {
-                const userInteractionIssues = userSignUpProgress(user);
-
-                if (userInteractionIssues) {
-                  if (userInteractionIssues === "NSI") setStarterModal(true);
-                  return;
-                }
-
-                joinQueue("venter", user.uid);
-              }}
-            >
-              <Container
-                className={
-                  "column x-fill flex-fill full-center border-bottom " +
-                  (isMobileOrTablet() ? "py32" : "py64")
-                }
-              >
-                <FontAwesomeIcon
-                  className="blue mb8"
-                  icon={faWalkieTalkie}
-                  size="2x"
-                />
-                <Text
-                  className="grey-11 fw-300 tac"
-                  text="Vent to a Stranger"
-                  type="h3"
-                />
-              </Container>
-              <Container className="column x-fill full-center py16">
-                <Text
-                  className="grey-3 fw-300 tac"
-                  text="Venters Waiting"
-                  type="h5"
-                />
-                <Text
-                  className="grey-5 tac"
-                  text={
-                    countHelpersOrVenters(queue, "venter") +
-                    (countHelpersOrVenters(queue, "venter") === 1
-                      ? " Person"
-                      : " People")
-                  }
-                  type="p"
-                />
-              </Container>
+              <FontAwesomeIcon
+                className="blue mb8"
+                icon={faHandsHelping}
+                size="2x"
+              />
+              <h4 className="grey-11 fw-300 tac">Start Chatting</h4>
             </Container>
           </Container>
-        )}
+        </Container>
+        <SubscribeColumn slot="1591936277" />
       </Container>
       {starterModal && (
         <StarterModal
           activeModal={starterModal}
           setActiveModal={setStarterModal}
         />
-      )}{" "}
+      )}
     </Page>
   );
 }

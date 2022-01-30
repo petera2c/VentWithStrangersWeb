@@ -2,8 +2,8 @@ import firebase from "firebase/compat/app";
 import { serverTimestamp } from "firebase/database";
 import "firebase/compat/auth";
 import "firebase/compat/database";
-import moment from "moment-timezone";
 import db from "../config/firebase";
+import moment from "moment-timezone";
 
 export const getIsUsersBirthday = async (
   isMounted,
