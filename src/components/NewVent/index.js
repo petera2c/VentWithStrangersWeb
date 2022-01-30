@@ -91,9 +91,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
       >
         {!miniVersion && quote && (
           <Container className="column flex-fill align-center">
-            <h1 className="container medium fs-22 italic tac">
-              "{quote.value}"
-            </h1>
+            <h1 className="fs-22 italic tac">"{quote.value}"</h1>
             <Link to={"/profile?" + quote.userID}>
               <p className="button-8 tac lh-1">
                 - {capitolizeFirstChar(quote.displayName)}
