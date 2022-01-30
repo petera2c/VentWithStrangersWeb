@@ -116,7 +116,8 @@ function ProfileSection() {
       id="scrollable-div"
       title={
         userBasicInfo
-          ? capitolizeFirstChar(userBasicInfo.displayName)'s Profile and Recent Activity
+          ? capitolizeFirstChar(userBasicInfo.displayName) +
+            "'s Profile and Recent Activity"
           : "Profile"
       }
     >
