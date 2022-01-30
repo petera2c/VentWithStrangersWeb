@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import { message, Space } from "antd";
-import TextArea from "react-textarea-autosize";
 import { Link, useNavigate } from "react-router-dom";
+import TextArea from "react-textarea-autosize";
+import { message, Space, Tooltip } from "antd";
 
+import { faQuestionCircle } from "@fortawesome/pro-duotone-svg-icons/faQuestionCircle";
 import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -272,13 +273,23 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
           </Container>
         )}
         {isMinified && quote && (
-          <Container className="column flex-fill align-center">
-            <p className="italic tac">{quote.value}</p>
-            <Link to={"/profile?" + quote.userID}>
-              <p className="blue tac lh-1">
-                - {capitolizeFirstChar(quote.displayName)}
-              </p>
-            </Link>
+          <Container className="flex-fill full-center">
+            <Container className="column flex-fill">
+              <p className="italic tac">{quote.value}</p>
+              <Link to={"/profile?" + quote.userID}>
+                <p className="blue tac lh-1">
+                  - {capitolizeFirstChar(quote.displayName)}
+                </p>
+              </Link>
+            </Container>
+            <Tooltip
+              placement="bottom"
+              title="Win the Feel Good Quote Contest to have your quote featured here :)"
+            >
+              <Link to="/quote-contest">
+                <FontAwesomeIcon icon={faQuestionCircle} />
+              </Link>
+            </Tooltip>
           </Container>
         )}
       </Container>
