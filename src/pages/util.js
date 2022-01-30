@@ -74,14 +74,15 @@ export const setUserOnlineStatus = async (status, uid) => {
       .database()
       .ref("status/" + uid)
       .set({
-        state: status,
         last_online: serverTimestamp(),
+        state: status,
       });
   else
     await firebase
       .database()
       .ref("status/" + uid)
       .update({
+        last_online: serverTimestamp(),
         state: status,
       });
   return;
@@ -94,12 +95,13 @@ export const setIsUserOnlineToDatabase = (user) => {
   var userStatusDatabaseRef = firebase.database().ref("status/" + uid);
 
   var isOfflineForDatabase = {
+    last_online: serverTimestamp(),
     state: "offline",
   };
 
   var isOnlineForDatabase = {
-    state: "online",
     last_online: serverTimestamp(),
+    state: "online",
   };
 
   firebase

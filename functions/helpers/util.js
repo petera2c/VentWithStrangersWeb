@@ -70,7 +70,7 @@ const getMetaInformation = async (url, callback) => {
     description =
       "Vent online with strangers. VWS is a site where you can make friends and get help on your specific situation all for free. Our site is 100% anonymous.";
     keywords =
-      "vent to someone,vent app,I need to vent,anonymous chat,talk to strangers, chat rooms, chat with strangers";
+      "vent online,vent to someone,vent app,I need to vent,anonymous chat,talk to strangers, chat rooms, chat with strangers";
     title = "Vent and Chat Anonymously With Strangers";
   } else if (url === "/account") {
     title = "Account";
