@@ -30,7 +30,7 @@ function IndividualTag() {
           <Link className="button-1 fs-22 tac" to="/tags">
             View All Tags
           </Link>
-          <Container className="gap8">
+          <Container className="column gap8">
             {vents.map((vent, index) => (
               <Vent
                 key={vent.id}
