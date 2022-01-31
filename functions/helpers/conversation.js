@@ -104,7 +104,6 @@ const startConversation = async (partnerID, userID) => {
 };
 
 const conversationUpdateListener = async (change, context) => {
-  console.log("hree");
   const { conversationID } = context.params;
 
   const conversationBefore = change.before.data();

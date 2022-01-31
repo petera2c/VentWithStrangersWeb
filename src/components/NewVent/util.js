@@ -111,7 +111,7 @@ export const saveVent = async (
 
   ventObject.new_tags = tagIDs.sort();
 
-  if (ventObject.new_tags && ventObject.new_tags.length >= 3)
+  if (ventObject.new_tags && ventObject.new_tags.length >= 4)
     return message.info("You can not set more than 3 tags in a vent!");
 
   if (isBirthdayPost) ventObject.is_birthday_post = isBirthdayPost;
