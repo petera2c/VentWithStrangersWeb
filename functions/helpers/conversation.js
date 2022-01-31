@@ -141,21 +141,21 @@ const conversationUpdateListener = async (change, context) => {
       !arraysEqual(conversationBefore.members, conversationAfter.members)
     ) {
       // If user has deleted conversation code
-      for (let index in conversationBefore.members) {
-        if (
-          conversationBefore.members[index] !== conversationAfter.members[index]
-        ) {
-          const snapshot = await admin
-            .firestore()
-            .collection("conversation_extra_data")
-            .doc(conversationID)
-            .collection("messages")
-            .add({
-              body: "User has left chat.",
-              server_timestamp: admin.firestore.Timestamp.now().toMillis(),
-              user_left_chat: true,
-            });
-        }
+      let membersDifference = conversationBefore.members.filter(
+        (x) => !conversationAfter.members.includes(x)
+      );
+
+      for (let index in membersDifference) {
+        const snapshot = await admin
+          .firestore()
+          .collection("conversation_extra_data")
+          .doc(conversationID)
+          .collection("messages")
+          .add({
+            body: "User has left chat.",
+            server_timestamp: admin.firestore.Timestamp.now().toMillis(),
+            user_left_chat: true,
+          });
       }
     }
   } else if (conversationAfter) {
