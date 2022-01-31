@@ -7,21 +7,15 @@ import { Button, Dropdown } from "antd";
 import { faBirthdayCake } from "@fortawesome/pro-duotone-svg-icons/faBirthdayCake";
 import { faClock } from "@fortawesome/pro-regular-svg-icons/faClock";
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
-import { faEdit } from "@fortawesome/pro-light-svg-icons/faEdit";
-import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
-import { faExclamationTriangle } from "@fortawesome/pro-light-svg-icons/faExclamationTriangle";
-import { faTrash } from "@fortawesome/pro-duotone-svg-icons/faTrash";
-import { faUserLock } from "@fortawesome/pro-duotone-svg-icons/faUserLock";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Comment from "../Comment";
 import ConfirmAlertModal from "../modals/ConfirmAlert";
 import Container from "../containers/Container";
-import HandleOutsideClick from "../containers/HandleOutsideClick";
 import KarmaBadge from "../KarmaBadge";
 import LoadingHeart from "../loaders/Heart";
 import MakeAvatar from "../MakeAvatar";
-import ReportModal from "../modals/Report";
+import Options from "../Options";
 import StarterModal from "../modals/Starter";
 import Text from "../views/Text";
 
@@ -51,6 +45,7 @@ import {
   reportVent,
   startConversation,
   ventHasLiked,
+  viewTag,
 } from "./util";
 
 const SmartLink = ({ children, className, disablePostOnClick, to }) => {
@@ -85,12 +80,9 @@ function Vent({
   const [canLoadMoreComments, setCanLoadMoreComments] = useState(false);
   const [comments, setComments] = useState([]);
   const [commentString, setCommentString] = useState("");
-  const [deleteVentConfirm, setDeleteVentConfirm] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
   const [isContentBlocked, setIsContentBlocked] = useState(user ? true : false);
   const [isUserOnline, setIsUserOnline] = useState(false);
-  const [postOptions, setPostOptions] = useState(false);
-  const [reportModal, setReportModal] = useState(false);
   const [starterModal, setStarterModal] = useState(false);
   const [vent, setVent] = useState(ventInit);
 
@@ -170,148 +162,78 @@ function Vent({
     <Container className="x-fill">
       {vent && (
         <Container className="x-fill column bg-white pt16 br8">
-          <SmartLink
-            className={
-              "main-container x-fill justify-between border-bottom py16 px32 " +
-              (disablePostOnClick ? "" : "clickable")
-            }
-            disablePostOnClick={disablePostOnClick}
-            to={vent && vent.title && vent.id ? getVentPartialLink(vent) : ""}
-          >
-            <Container className="align-center wrap gap8">
-              <MakeAvatar
-                displayName={author.displayName}
-                userBasicInfo={author}
-              />
-              <Container className="flex-fill full-center ov-hidden">
-                <Text
-                  className="button-1 ellipsis fw-400 mr8"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (author.id) navigate("/profile?" + author.id);
-                  }}
-                  text={capitolizeFirstChar(author.displayName)}
-                  type="h5"
+          <Container className="column border-bottom gap8 py16 px32">
+            <SmartLink
+              className={
+                "x-fill justify-between align-center gap16 " +
+                (disablePostOnClick ? "" : "clickable")
+              }
+              disablePostOnClick={disablePostOnClick}
+              to={vent && vent.title && vent.id ? getVentPartialLink(vent) : ""}
+            >
+              <Container className="flex-fill ov-hidden align-center wrap gap8">
+                <MakeAvatar
+                  displayName={author.displayName}
+                  userBasicInfo={author}
                 />
-                {isUserOnline && <div className="online-dot mr8" />}
-              </Container>
-              <KarmaBadge userBasicInfo={author} />
-              {vent.is_birthday_post && (
-                <Container className="align-center gap8">
-                  <FontAwesomeIcon
-                    className="orange"
-                    icon={faBirthdayCake}
-                    size="3x"
-                  />
-                  <FontAwesomeIcon
-                    className="purple"
-                    icon={faBirthdayCake}
-                    size="3x"
-                  />
-                </Container>
-              )}
-            </Container>
-            <Container className="relative flex-fill align-center justify-end">
-              {user && (
-                <HandleOutsideClick close={() => setPostOptions(false)}>
-                  <FontAwesomeIcon
-                    className="clickable grey-9"
-                    icon={faEllipsisV}
+                <Container className="flex-fill full-center ov-hidden">
+                  <Text
+                    className="button-1 ellipsis fw-400 mr8"
                     onClick={(e) => {
                       e.preventDefault();
-
-                      setPostOptions(!postOptions);
+                      if (author.id) navigate("/profile?" + author.id);
                     }}
-                    style={{ width: 20 }}
+                    text={capitolizeFirstChar(author.displayName)}
+                    type="h5"
                   />
-                  {postOptions && (
-                    <div
-                      className="absolute flex right-0"
-                      style={{
-                        top: "calc(100% + 8px)",
-                        whiteSpace: "nowrap",
-                        zIndex: 10,
-                      }}
-                    >
-                      <Container className="column x-fill bg-white border-all px16 py8 br8">
-                        {vent.userID === user.uid && (
-                          <Container
-                            className="button-8 clickable align-center mb8"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              navigate("/vent-to-strangers?" + vent.id);
-                            }}
-                          >
-                            <Text
-                              className="fw-400 flex-fill"
-                              text="Edit Vent"
-                              type="p"
-                            />
-                            <FontAwesomeIcon className="ml8" icon={faEdit} />
-                          </Container>
-                        )}
-                        {vent.userID === user.uid && (
-                          <Container
-                            className="button-8 clickable align-center"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setDeleteVentConfirm(true);
-                              setPostOptions(false);
-                            }}
-                          >
-                            <Text
-                              className="fw-400 flex-fill"
-                              text="Delete Vent"
-                              type="p"
-                            />
-                            <FontAwesomeIcon className="ml8" icon={faTrash} />
-                          </Container>
-                        )}
-                        {vent.userID !== user.uid && (
-                          <Container
-                            className="button-8 clickable align-center mb8"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setReportModal(!reportModal);
-                            }}
-                          >
-                            <Text
-                              className="fw-400 flex-fill"
-                              text="Report Vent"
-                              type="p"
-                            />
-                            <FontAwesomeIcon
-                              className="ml8"
-                              icon={faExclamationTriangle}
-                            />
-                          </Container>
-                        )}
-                        {vent.userID !== user.uid && (
-                          <Container
-                            className="button-8 clickable align-center"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setBlockModal(!blockModal);
-                            }}
-                          >
-                            <Text
-                              className="fw-400 flex-fill"
-                              text="Block User"
-                              type="p"
-                            />
-                            <FontAwesomeIcon
-                              className="ml8"
-                              icon={faUserLock}
-                            />
-                          </Container>
-                        )}
-                      </Container>
-                    </div>
-                  )}
-                </HandleOutsideClick>
+                  {isUserOnline && <div className="online-dot mr8" />}
+                </Container>
+                <KarmaBadge userBasicInfo={author} />
+                {vent.is_birthday_post && (
+                  <Container className="align-center gap8">
+                    <FontAwesomeIcon
+                      className="orange"
+                      icon={faBirthdayCake}
+                      size="3x"
+                    />
+                    <FontAwesomeIcon
+                      className="purple"
+                      icon={faBirthdayCake}
+                      size="3x"
+                    />
+                  </Container>
+                )}
+              </Container>
+              {user && (
+                <Options
+                  deleteFunction={(ventID) => deleteVent(navigate, ventID)}
+                  editFunction={() => {
+                    navigate("/vent-to-strangers?" + vent.id);
+                  }}
+                  objectID={vent.id}
+                  objectUserID={vent.userID}
+                  reportFunction={(option) =>
+                    reportVent(option, vent.id, user.uid)
+                  }
+                  userID={user.uid}
+                />
               )}
-            </Container>
-          </SmartLink>
+            </SmartLink>
+
+            {vent.newTags && vent.newTags.length > 0 && (
+              <Container className="wrap gap8">
+                {vent.newTags.map((tag, index) => (
+                  <Link
+                    className="button-4 fs-16"
+                    key={tag}
+                    to={"/tags/" + tag}
+                  >
+                    {viewTag(tag)}
+                  </Link>
+                ))}
+              </Container>
+            )}
+          </Container>
           <SmartLink
             className={
               "main-container column border-bottom py16 px32 " +
@@ -642,21 +564,6 @@ function Vent({
         </Container>
       )}
 
-      {deleteVentConfirm && (
-        <ConfirmAlertModal
-          close={() => setDeleteVentConfirm(false)}
-          message="Are you sure you would like to delete this vent?"
-          submit={() => deleteVent(navigate, vent.id)}
-          title="Delete Vent"
-        />
-      )}
-
-      {reportModal && (
-        <ReportModal
-          close={() => setReportModal(false)}
-          submit={(option) => reportVent(option, user.uid, vent.id)}
-        />
-      )}
       {blockModal && (
         <ConfirmAlertModal
           close={() => setBlockModal(false)}

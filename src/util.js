@@ -42,6 +42,12 @@ export const capitolizeFirstChar = (string) => {
   else return;
 };
 
+export const capitolizeFirstLetterOfEachWord = (string) => {
+  return string
+    .toLowerCase()
+    .replace(/(^\w{1})|(\s{1}\w{1})/g, (match) => match.toUpperCase());
+};
+
 export const chatQueueEmptyListener = (isMounted, setIsQueueEmpty) => {
   const unsubscribe = db
     .collection("chat_queue")

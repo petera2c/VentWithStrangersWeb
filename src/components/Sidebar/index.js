@@ -143,7 +143,7 @@ function SideBarLink({
         <Container className="blue x-fill full-center">
           <FontAwesomeIcon icon={icon} style={{ fontSize: "1.25rem" }} />
         </Container>
-        <h5 className="grey-1 inherit-color">{text}</h5>
+        <h5 className="inherit-color">{text}</h5>
         {firstOnlineUsers && (
           <Container className="flex-fill align-end">
             {firstOnlineUsers.map((userBasicInfo, index) => (

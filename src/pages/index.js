@@ -154,7 +154,7 @@ function RoutesComp() {
                     <Route path="/" element={<VentsPage />} />
                     <Route path="*" element={<NotFoundPage />} />
                     <Route
-                      path="/birthday-post"
+                      path="birthday-post"
                       element={<BirthdayPostPage />}
                     />
                     <Route

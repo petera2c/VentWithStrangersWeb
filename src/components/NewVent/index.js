@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import TextArea from "react-textarea-autosize";
+import algoliasearch from "algoliasearch";
 import { message, Space, Tooltip } from "antd";
 
 import { faQuestionCircle } from "@fortawesome/pro-duotone-svg-icons/faQuestionCircle";
@@ -34,6 +35,12 @@ import {
   updateTags,
 } from "./util";
 
+const searchClient = algoliasearch(
+  "N7KIA5G22X",
+  "a2fa8c0a85b2020696d2da1780d7dfdb"
+);
+const tagsIndex = searchClient.initIndex("vent_tags");
+
 function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
   const isMounted = useIsMounted();
   const navigate = useNavigate();
@@ -49,8 +56,16 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
   const [tagText, setTagText] = useState("");
   const [title, setTitle] = useState("");
   const [userVentTimeOut, setUserVentTimeOut] = useState(false);
+  const [ventTags, setVentTags] = useState([]);
 
   useEffect(() => {
+    tagsIndex
+      .search("", {
+        hitsPerPage: 10,
+      })
+      .then(({ hits }) => {
+        setVentTags(hits);
+      });
     if (ventID) getVent(setDescription, setTags, setTitle, ventID);
     if (user)
       getUserVentTimeOut((res) => {
@@ -173,64 +188,60 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
               onChange={(e) => {
                 if (!checks()) return;
 
-                updateTags(
-                  checks,
-                  e.target.value,
-                  setSaving,
-                  setStarterModal,
-                  setTags,
-                  setTagText,
-                  tags,
-                  user
-                );
+                tagsIndex
+                  .search(e.target.value, {
+                    hitsPerPage: 10,
+                  })
+                  .then(({ hits }) => {
+                    setVentTags(hits);
+                  });
+
+                setTagText(e.target.value);
               }}
-              placeholder="depression, relationships, bullying, school, parents"
+              placeholder="Search tags"
               type="text"
               value={tagText}
             />
+            {ventTags && ventTags.length > 0 && (
+              <Container className="gap8">
+                {ventTags.map((tagHit, index) => (
+                  <button
+                    className="button-10 br4 px8 py4"
+                    key={tagHit.objectID}
+                    onClick={() => {
+                      if (!checks) return;
+
+                      updateTags(setTags, tagHit);
+                    }}
+                  >
+                    {tagHit.display}
+                  </button>
+                ))}
+              </Container>
+            )}
           </Space>
         )}
-        {!isMinified && (
-          <Space className="x-fill" wrap>
-            {tags.map((tag, index) => {
-              let text = tag;
-              if (tag.name) text = tag.name;
-
-              return (
+        {!isMinified && tags && tags.length > 0 && (
+          <Container className="column gap8">
+            <h5>Slected Tags</h5>
+            <Container className="x-fill wrap gap8">
+              {tags.map((tag, index) => (
                 <Container
-                  key={index}
-                  className="clickable"
+                  key={tag.objectID}
+                  className="button-2 br4 gap8 pa8"
                   onClick={() => {
                     let temp = [...tags];
                     temp.splice(index, 1);
-
-                    setSaving(false);
                     setTags(temp);
                   }}
                 >
-                  <p
-                    className="flex-fill tac fw-300 border-all blue active large px16 py8"
-                    style={{
-                      marginRight: "1px",
-                      borderTopLeftRadius: "4px",
-                      borderBottomLeftRadius: "4px",
-                    }}
-                  >
-                    {text}
-                  </p>
-                  <Container
-                    className="full-center border-all px16"
-                    style={{
-                      borderTopRightRadius: "4px",
-                      borderBottomRightRadius: "4px",
-                    }}
-                  >
-                    <FontAwesomeIcon className="" icon={faTimes} />
-                  </Container>
+                  <p className="inherit-color flex-fill">{tag.display}</p>
+
+                  <FontAwesomeIcon icon={faTimes} />
                 </Container>
-              );
-            })}
-          </Space>
+              ))}
+            </Container>
+          </Container>
         )}
 
         {!isMinified && (
@@ -266,9 +277,9 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
                       },
                       checks,
                       isBirthdayPost,
+                      tags,
                       {
                         description,
-                        tags,
                         title,
                       },
                       ventID,

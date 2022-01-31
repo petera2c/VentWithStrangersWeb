@@ -1345,7 +1345,6 @@ body {
 .button-8:hover {
   color: var(--main-color);
 }
-
 .button-9 {
   cursor: pointer;
   color: var(--grey-color-1);
@@ -1353,6 +1352,17 @@ body {
 .button-9:hover {
   color: var(--red-color);
 }
+
+.button-10 {
+  cursor: pointer;
+  color: var(--grey-color-1);
+  border: 1px solid var(--grey-color-1);
+}
+.button-10:hover {
+  color: var(--main-color);
+  border-color: var(--main-color);
+}
+
 .heart:hover {
   color: var(--red-color);
 }

@@ -178,5 +178,9 @@ service cloud.firestore {
     match /vent_reports/{ventIDUserID} {
       allow read, write, update, delete: if request.auth.uid == resource.data.userID || request.auth.uid == ventIDUserID.split('\\|\\|\\|')[1];
     }
+    match /vent_tags/{tagID} {
+      allow read: if true;
+      allow write, update, delete: if false;
+    }
   }
 }

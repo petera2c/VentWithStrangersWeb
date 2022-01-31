@@ -2,6 +2,8 @@ import firebase from "firebase/compat/app";
 import moment from "moment-timezone";
 import db from "../../config/firebase";
 
+import { message } from "antd";
+
 import { formatSeconds } from "../../util";
 
 export const createPlaceholderDescription = (
@@ -83,6 +85,7 @@ export const saveVent = async (
   callback,
   checks,
   isBirthdayPost,
+  tags,
   ventObject,
   ventID,
   user
@@ -94,6 +97,12 @@ export const saveVent = async (
   }
   ventObject.userID = user.uid;
   ventObject.last_updated = firebase.firestore.Timestamp.now().toMillis();
+
+  let tagIDs = [];
+  for (let index in tags) {
+    tagIDs.push(tags[index].objectID);
+  }
+  ventObject.newTags = tagIDs;
 
   if (isBirthdayPost) ventObject.is_birthday_post = isBirthdayPost;
 
@@ -117,26 +126,11 @@ export const selectEncouragingMessage = () => {
   ];
 };
 
-export const updateTags = (
-  checks,
-  inputText,
-  setSaving,
-  setStarterModal,
-  setTags,
-  setTagText,
-  tags,
-  user
-) => {
-  if (!checks) return;
-
-  let word = "";
-  for (let index in inputText) {
-    if (inputText[index] === " " || inputText[index] === ",") {
-      if (word) tags.push(word);
-      word = "";
-    } else word += inputText[index];
-  }
-  setTags(tags);
-  setTagText(word);
-  setSaving(false);
+export const updateTags = (setTags, tag) => {
+  setTags((oldTags) => {
+    if (oldTags.findIndex((oldTag) => oldTag.objectID === tag.objectID) >= 0) {
+      message.info("Tag is already added :)");
+      return oldTags;
+    } else return [tag, ...oldTags];
+  });
 };

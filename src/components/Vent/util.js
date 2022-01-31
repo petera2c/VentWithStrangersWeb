@@ -3,9 +3,10 @@ import { message } from "antd";
 import db from "../../config/firebase";
 
 import {
-  userSignUpProgress,
+  capitolizeFirstLetterOfEachWord,
   getEndAtValueTimestamp,
   getEndAtValueTimestampAsc,
+  userSignUpProgress,
 } from "../../util";
 
 const incrementVentCounter = (attributeToIncrement, shouldIncrease, vent) => {
@@ -40,7 +41,7 @@ export const commentVent = async (
 
 export const deleteVent = async (navigate, ventID) => {
   await db.collection("vents").doc(ventID).delete();
-  alert("Vent deleted!");
+  message.success("Vent deleted!");
   navigate("/");
 };
 
@@ -348,4 +349,8 @@ export const startConversation = async (navigate, user, ventUserID) => {
     });
     goToPage(conversationDocNew.id);
   }
+};
+
+export const viewTag = (tag) => {
+  return capitolizeFirstLetterOfEachWord(tag);
 };
