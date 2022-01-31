@@ -102,7 +102,8 @@ export const saveVent = async (
   for (let index in tags) {
     tagIDs.push(tags[index].objectID);
   }
-  ventObject.new_tags = tagIDs;
+
+  ventObject.new_tags = tagIDs.sort();
 
   if (isBirthdayPost) ventObject.is_birthday_post = isBirthdayPost;
 

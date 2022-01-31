@@ -22,7 +22,7 @@ function AllTags() {
       <Container>
         <Container className="column flex-fill gap16">
           <h1 className="tac">All Tags</h1>
-          <Container className="full-center gap16">
+          <Container className="full-center wrap gap16">
             {tags.map((tag, index) => (
               <Tag key={tag.id} tag={tag} />
             ))}

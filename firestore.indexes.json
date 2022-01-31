@@ -159,6 +159,48 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
+          "fieldPath": "new_tags",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "like_counter",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "vents",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "new_tags",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "server_timestamp",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "vents",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "new_tags",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "server_timestamp",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "vents",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
           "fieldPath": "like_counter",
           "order": "DESCENDING"
         },
@@ -174,7 +216,7 @@
       "fields": [
         {
           "fieldPath": "userID",
-          "order": "ASCENDING"
+          "arrayConfig": "CONTAINS"
         },
         {
           "fieldPath": "server_timestamp",
