@@ -264,7 +264,6 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
                     return;
                   }
 
-                  if (tagText) tags.push(tagText);
                   if (description && title) {
                     setTagText("");
                     setSaving(true);

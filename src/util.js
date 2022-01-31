@@ -280,5 +280,6 @@ export const userSignUpProgress = (user, noAlert) => {
 };
 
 export const viewTag = (tag) => {
-  return capitolizeFirstLetterOfEachWord(tag.replace(/_/g, " "));
+  if (!tag) return;
+  else return capitolizeFirstLetterOfEachWord(tag.replace(/_/g, " "));
 };
