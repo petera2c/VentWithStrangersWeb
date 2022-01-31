@@ -27,7 +27,12 @@ function OptionsComponent({
   const [reportModal, setReportModal] = useState();
 
   return (
-    <Container>
+    <Container
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+    >
       <Dropdown
         overlay={
           <Container className="column bg-white shadow-2 br8 gap8 pa16">
@@ -84,13 +89,9 @@ function OptionsComponent({
         placement="bottomRight"
         trigger={["click"]}
       >
-        <FontAwesomeIcon
-          className="clickable grey-9"
-          icon={faEllipsisV}
-          onClick={(e) => {
-            e.preventDefault();
-          }}
-        />
+        <Container className="clickable pa16">
+          <FontAwesomeIcon className="grey-9" icon={faEllipsisV} />
+        </Container>
       </Dropdown>
 
       {reportModal && (
