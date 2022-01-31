@@ -63,7 +63,12 @@ export const getHasUserLikedQuote = async (quoteID, setHasLiked, userID) => {
   setHasLiked(Boolean(value));
 };
 
-export const getQuotes = async (quotes, setQuotes) => {
+export const getQuotes = async (
+  isMounted,
+  quotes,
+  setCanLoadMoreQuotes,
+  setQuotes
+) => {
   let startAt = getEndAtValueTimestamp(quotes);
   const todaysFormattedDate = new moment().utcOffset(0).format("MM-DD-YYYY");
 
@@ -75,21 +80,28 @@ export const getQuotes = async (quotes, setQuotes) => {
     .limit(10)
     .get();
 
-  let newQuotes = [];
-  for (let index in quotesSnapshot.docs) {
-    const quoteDoc = quotesSnapshot.docs[index];
-    newQuotes.push({
-      id: quoteDoc.id,
-      ...quoteDoc.data(),
-    });
-  }
+  if (!isMounted()) return;
 
-  if (quotes) {
-    return setQuotes((oldQuotes) => {
-      if (oldQuotes) return [...oldQuotes, ...newQuotes];
-      else return newQuotes;
-    });
-  } else return setQuotes(newQuotes);
+  let newQuotes = [];
+
+  if (quotesSnapshot.docs && quotesSnapshot.docs.length > 0) {
+    for (let index in quotesSnapshot.docs) {
+      const quoteDoc = quotesSnapshot.docs[index];
+      newQuotes.push({
+        id: quoteDoc.id,
+        doc: quoteDoc,
+        ...quoteDoc.data(),
+      });
+    }
+
+    if (newQuotes.length < 10) setCanLoadMoreQuotes(false);
+    if (quotes) {
+      return setQuotes((oldQuotes) => {
+        if (oldQuotes) return [...oldQuotes, ...newQuotes];
+        else return newQuotes;
+      });
+    } else return setQuotes(newQuotes);
+  } else setCanLoadMoreQuotes(false);
 };
 
 export const likeOrUnlikeQuote = async (hasLiked, quote, user) => {

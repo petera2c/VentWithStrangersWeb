@@ -32,7 +32,6 @@ import {
   getIsUserOnline,
   getUserBasicInfo,
   hasUserBlockedUser,
-  isMobileOrTablet,
   useIsMounted,
 } from "../../util";
 import {
@@ -173,9 +172,7 @@ function Comment({
                             setCommentOptions(false);
                           }}
                         >
-                          <p className="flex-fill ic">
-                            Delete Comment
-                          </p>
+                          <p className="flex-fill ic">Delete Comment</p>
                           <FontAwesomeIcon className="ml8" icon={faTrash} />
                         </Container>
                       )}
@@ -187,9 +184,7 @@ function Comment({
                           setReportModal(!reportModal);
                         }}
                       >
-                        <p className="flex-fill ic">
-                          Report Comment
-                        </p>
+                        <p className="flex-fill ic">Report Comment</p>
                         <FontAwesomeIcon
                           className="ml8"
                           icon={faExclamationTriangle}

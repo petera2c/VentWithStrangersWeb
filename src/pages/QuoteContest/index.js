@@ -41,6 +41,7 @@ function QuoteContestPage() {
   const isMounted = useIsMounted();
   const { user, userBasicInfo } = useContext(UserContext);
 
+  const [canLoadMoreQuotes, setCanLoadMoreQuotes] = useState(true);
   const [canUserCreateQuote, setCanUserCreateQuote] = useState(true);
   const [myQuote, setMyQuote] = useState("");
   const [quoteID, setQuoteID] = useState();
@@ -51,7 +52,7 @@ function QuoteContestPage() {
 
   useEffect(() => {
     if (user) getCanUserCreateQuote(isMounted, setCanUserCreateQuote, user.uid);
-    getQuotes(undefined, setQuotes);
+    getQuotes(isMounted, undefined, setCanLoadMoreQuotes, setQuotes);
     const timeLeftMoment = new moment()
       .utcOffset(0)
       .add(1, "days")
@@ -97,7 +98,23 @@ function QuoteContestPage() {
                   />
                 );
               })}
+              {canLoadMoreQuotes && (
+                <Button
+                  onClick={() =>
+                    getQuotes(
+                      isMounted,
+                      quotes,
+                      setCanLoadMoreQuotes,
+                      setQuotes
+                    )
+                  }
+                  type="primary"
+                >
+                  Load More Quotes
+                </Button>
+              )}
             </Container>
+
             <Container
               className={
                 "x-fill shadow-2 gap8 pa16 " +

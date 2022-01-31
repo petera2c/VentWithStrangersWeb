@@ -1,5 +1,5 @@
 const admin = require("firebase-admin");
-import { writeBatch, doc } from "firebase/firestore";
+const { writeBatch, doc } = require("firebase/firestore");
 const moment = require("moment-timezone");
 const { createNotification } = require("./notification");
 const { createBirthdayLink, createRewardsLink } = require("./util");
