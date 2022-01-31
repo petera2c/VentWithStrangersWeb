@@ -36,7 +36,7 @@ function Sidebar() {
   );
 
   const [firstOnlineUsers, setFirstOnlineUsers] = useState();
-  const [isQueueEmpty, setIsQueueEmpty] = useState(true);
+  const [queueLength, setQueueLength] = useState(true);
 
   useEffect(() => {
     let onlineUsersUnsubscribe;
@@ -44,7 +44,7 @@ function Sidebar() {
 
     chatQueueListenerUnsubscribe = chatQueueEmptyListener(
       isMounted,
-      setIsQueueEmpty
+      setQueueLength
     );
     onlineUsersUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) => {
       if (isMounted()) {
@@ -80,7 +80,10 @@ function Sidebar() {
         icon={faComments}
         link="/chat-with-strangers"
         pathname={pathname}
-        text={"Chat With Strangers" + (isQueueEmpty ? "" : " (1)")}
+        text={
+          "Chat With Strangers" +
+          (queueLength === -1 ? "" : ` (${queueLength})`)
+        }
       />
       <SideBarLink
         icon={faQuoteLeft}

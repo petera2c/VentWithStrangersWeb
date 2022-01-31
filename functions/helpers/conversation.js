@@ -28,6 +28,19 @@ const chatQueueListener = async (change, context) => {
 
     if (partnerDoc.id === userID) return;
 
+    const sortedMemberIDs = [partnerDoc.id, userID].sort();
+    const conversationQuerySnapshot = await admin
+      .firestore()
+      .collection("conversations")
+      .where("members", "==", sortedMemberIDs)
+      .get();
+
+    if (
+      conversationQuerySnapshot.docs &&
+      conversationQuerySnapshot.docs.length > 0
+    )
+      return;
+
     const partnerDocRef = admin
       .firestore()
       .collection("chat_queue")

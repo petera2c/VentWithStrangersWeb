@@ -48,13 +48,14 @@ export const capitolizeFirstLetterOfEachWord = (string) => {
     .replace(/(^\w{1})|(\s{1}\w{1})/g, (match) => match.toUpperCase());
 };
 
-export const chatQueueEmptyListener = (isMounted, setIsQueueEmpty) => {
+export const chatQueueEmptyListener = (isMounted, setQueueLength) => {
   const unsubscribe = db
     .collection("chat_queue")
-    .limit(1)
+    .limit(10)
     .onSnapshot((snapshot) => {
-      if (snapshot.docs && snapshot.docs.length > 0) setIsQueueEmpty(false);
-      else setIsQueueEmpty(true);
+      if (snapshot.docs && snapshot.docs.length > 0)
+        setQueueLength(snapshot.docs.length);
+      else setQueueLength(-1);
     });
 
   return unsubscribe;
