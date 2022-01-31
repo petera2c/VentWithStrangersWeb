@@ -56,54 +56,54 @@ function AboutUsPage() {
             </p>
           </Container>
 
-          <Container className="column gap8">
-            <h4 style={{ lineHeight: 1 }}>
-              With Great Power Comes Great Responsibility
-            </h4>
-            <p>Click on a badge to learn more :)</p>
-            <Container className="x-fill full-center gap16 pt16">
-              <KarmaBadge
-                onClick={() => setActiveBadge(0)}
-                userBasicInfo={{ karma: 50 }}
-              />
-              <KarmaBadge
-                onClick={() => setActiveBadge(1)}
-                userBasicInfo={{ karma: 100 }}
-              />
-              <KarmaBadge
-                onClick={() => setActiveBadge(2)}
-                userBasicInfo={{ karma: 250 }}
-              />
-              <KarmaBadge
-                onClick={() => setActiveBadge(3)}
-                userBasicInfo={{ karma: 500 }}
-              />
-              <KarmaBadge
-                onClick={() => setActiveBadge(4)}
-                userBasicInfo={{ karma: 1000 }}
-              />
-              <KarmaBadge
-                onClick={() => setActiveBadge(5)}
-                userBasicInfo={{ karma: 2500 }}
-              />
-              <KarmaBadge
-                onClick={() => setActiveBadge(6)}
-                userBasicInfo={{ karma: 5000 }}
-              />
-              <KarmaBadge
-                onClick={() => setActiveBadge(7)}
-                userBasicInfo={{ karma: 10000 }}
-              />
-            </Container>
-            <Container className="column x-fill full-center pb16">
-              <h6>{badgeDescriptions[activeBadge].title}</h6>
-              <ul>
-                {badgeDescriptions[activeBadge].benefits.map(
-                  (benefit, index) => (
-                    <li key={index}>{benefit}</li>
-                  )
-                )}
-              </ul>
+          <Container className="column">
+            <h4 className="tac">With Great Power Comes Great Responsibility</h4>
+            <Container className="column gap8">
+              <p className="tac">Click on a badge to learn more :)</p>
+              <Container className="x-fill full-center gap16">
+                <KarmaBadge
+                  onClick={() => setActiveBadge(0)}
+                  userBasicInfo={{ karma: 50 }}
+                />
+                <KarmaBadge
+                  onClick={() => setActiveBadge(1)}
+                  userBasicInfo={{ karma: 100 }}
+                />
+                <KarmaBadge
+                  onClick={() => setActiveBadge(2)}
+                  userBasicInfo={{ karma: 250 }}
+                />
+                <KarmaBadge
+                  onClick={() => setActiveBadge(3)}
+                  userBasicInfo={{ karma: 500 }}
+                />
+                <KarmaBadge
+                  onClick={() => setActiveBadge(4)}
+                  userBasicInfo={{ karma: 1000 }}
+                />
+                <KarmaBadge
+                  onClick={() => setActiveBadge(5)}
+                  userBasicInfo={{ karma: 2500 }}
+                />
+                <KarmaBadge
+                  onClick={() => setActiveBadge(6)}
+                  userBasicInfo={{ karma: 5000 }}
+                />
+                <KarmaBadge
+                  onClick={() => setActiveBadge(7)}
+                  userBasicInfo={{ karma: 10000 }}
+                />
+              </Container>
+              <Container className="column x-fill full-center pb16">
+                <h6>{badgeDescriptions[activeBadge].title}</h6>
+                <ul>
+                  {badgeDescriptions[activeBadge].benefits.map(
+                    (benefit, index) => (
+                      <li key={index}>{benefit}</li>
+                    )
+                  )}
+                </ul>
+              </Container>
             </Container>
           </Container>
 
