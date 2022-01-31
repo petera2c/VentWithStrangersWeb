@@ -24,6 +24,7 @@ import {
   isMobileOrTablet,
   useIsMounted,
   userSignUpProgress,
+  viewTag,
 } from "../../util";
 import {
   createPlaceholderDescription,
@@ -220,7 +221,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
                       updateTags(setTags, tagHit);
                     }}
                   >
-                    {tagHit.display}
+                    {viewTag(tagHit.objectID)}
                   </button>
                 ))}
               </Container>
@@ -241,7 +242,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
                     setTags(temp);
                   }}
                 >
-                  <p className="ic flex-fill">{tag.display}</p>
+                  <p className="ic flex-fill">{viewTag(tag.objectID)}</p>
 
                   <FontAwesomeIcon icon={faTimes} />
                 </Container>

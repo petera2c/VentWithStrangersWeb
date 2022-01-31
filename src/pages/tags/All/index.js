@@ -5,7 +5,7 @@ import Container from "../../../components/containers/Container";
 import Page from "../../../components/containers/Page";
 import SubscribeColumn from "../../../components/SubscribeColumn";
 
-import { useIsMounted, viewTag } from "../../../util";
+import { useIsMounted } from "../../../util";
 import { getTags } from "./util";
 
 function AllTags() {

@@ -3,7 +3,6 @@ import { message } from "antd";
 import db from "../../config/firebase";
 
 import {
-  capitolizeFirstLetterOfEachWord,
   getEndAtValueTimestamp,
   getEndAtValueTimestampAsc,
   userSignUpProgress,

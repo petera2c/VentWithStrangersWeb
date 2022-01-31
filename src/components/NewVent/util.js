@@ -76,7 +76,13 @@ export const getVent = async (setDescription, setTags, setTitle, ventID) => {
 
   if (vent) {
     setDescription(vent.description);
-    setTags(vent.tags);
+    setTags(
+      vent.new_tags
+        ? vent.new_tags.map((tag, index) => {
+            return { objectID: tag };
+          })
+        : []
+    );
     setTitle(vent.title);
   }
 };
@@ -129,9 +135,18 @@ export const selectEncouragingMessage = () => {
 
 export const updateTags = (setTags, tag) => {
   setTags((oldTags) => {
-    if (oldTags.findIndex((oldTag) => oldTag.objectID === tag.objectID) >= 0) {
+    if (
+      oldTags &&
+      oldTags.findIndex((oldTag) => oldTag.objectID === tag.objectID) >= 0
+    ) {
       message.info("Tag is already added :)");
       return oldTags;
-    } else return [tag, ...oldTags];
+    } else if (!oldTags) return [tag];
+    else
+      return [tag, ...oldTags].sort((a, b) => {
+        if (a.objectID < b.objectID) return -1;
+        if (a.objectID > b.objectID) return 1;
+        return 0;
+      });
   });
 };
