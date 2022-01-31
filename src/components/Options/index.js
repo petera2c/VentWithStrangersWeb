@@ -39,7 +39,7 @@ function OptionsComponent({
                   editFunction(objectID);
                 }}
               >
-                <p className="inherit-color">Edit</p>
+                <p className="ic">Edit</p>
                 <FontAwesomeIcon icon={faEdit} />
               </Container>
             )}
@@ -51,7 +51,7 @@ function OptionsComponent({
                   deleteFunction(objectID);
                 }}
               >
-                <p className="inherit-color">Delete</p>
+                <p className="ic">Delete</p>
                 <FontAwesomeIcon icon={faTrash} />
               </Container>
             )}
@@ -63,7 +63,7 @@ function OptionsComponent({
                   setReportModal(!reportModal);
                 }}
               >
-                <p className="inherit-color">Report</p>
+                <p className="ic">Report</p>
                 <FontAwesomeIcon icon={faExclamationTriangle} />
               </Container>
             )}
@@ -75,7 +75,7 @@ function OptionsComponent({
                   setBlockModal(!blockModal);
                 }}
               >
-                <p className="inherit-color">Block User</p>
+                <p className="ic">Block User</p>
                 <FontAwesomeIcon icon={faUserLock} />
               </Container>
             )}

@@ -268,7 +268,7 @@ function ProfileSection() {
                           }}
                         >
                           <FontAwesomeIcon className="mr8" icon={faComments} />
-                          <p className="inherit-color ellipsis">
+                          <p className="ic ellipsis">
                             Message{" "}
                             {capitolizeFirstChar(userBasicInfo.displayName)}
                           </p>
@@ -345,7 +345,7 @@ function ProfileSection() {
                 }
                 onClick={() => setPostsSection(true)}
               >
-                <h5 className="tac inherit-color">Posts</h5>
+                <h5 className="tac ic">Posts</h5>
               </Container>
               <Container
                 className={
@@ -356,7 +356,7 @@ function ProfileSection() {
                   setPostsSection(false);
                 }}
               >
-                <h5 className="tac inherit-color">Comments</h5>
+                <h5 className="tac ic">Comments</h5>
               </Container>
             </Container>
           </Container>

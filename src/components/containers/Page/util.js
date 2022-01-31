@@ -63,6 +63,8 @@ export const getMetaData = (page) => {
       "Our site is awesome. You can, chat with strangers, create anonymous vents, create an avatar and more :) Read about it here!";
     keywords = "vent with strangers, chat anonymously, chat online";
     title = "Vent With Strangers Rules Info";
+  } else if (page === "/tags") {
+    title = "View Vents Based on Tag";
   } else if (page === "/trending") {
     title = "Trending Vents";
   } else if (page === "/vent-to-strangers") {

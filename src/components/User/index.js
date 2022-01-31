@@ -173,7 +173,7 @@ function UserComponent({
                 }}
               >
                 <FontAwesomeIcon className="mr8" icon={faComments} />
-                <p className="inherit-color ellipsis">
+                <p className="ic ellipsis">
                   Message {capitolizeFirstChar(userInfo.displayName)}
                 </p>
               </Button>

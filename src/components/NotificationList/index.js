@@ -18,7 +18,7 @@ function NotificationList({ notifications }) {
             to={notification.link}
           >
             <h6>{notification.message}</h6>
-            <p className="grey-1 inherit-color">
+            <p className="grey-1 ic">
               {moment(notification.server_timestamp).fromNow()}
             </p>
           </Link>

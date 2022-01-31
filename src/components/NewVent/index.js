@@ -235,7 +235,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
                     setTags(temp);
                   }}
                 >
-                  <p className="inherit-color flex-fill">{tag.display}</p>
+                  <p className="ic flex-fill">{tag.display}</p>
 
                   <FontAwesomeIcon icon={faTimes} />
                 </Container>

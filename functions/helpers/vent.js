@@ -64,6 +64,16 @@ const decreaseTrendingScore = async () => {
 const newVentListener = async (doc, context) => {
   const vent = { id: doc.id, ...doc.data() };
 
+  for (let index in vent.new_tags) {
+    await admin
+      .firestore()
+      .collection("vent_tags")
+      .doc(vent.new_tags[index])
+      .update({
+        uses: admin.firestore.FieldValue.increment(1),
+      });
+  }
+
   if (vent.is_birthday_post) {
     const userInfoDoc = await admin
       .firestore()

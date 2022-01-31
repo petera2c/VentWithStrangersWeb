@@ -158,7 +158,7 @@ function Comment({
                           setEditingComment(true);
                         }}
                       >
-                        <p className="flex-fill inherit-color">Edit Comment</p>
+                        <p className="flex-fill ic">Edit Comment</p>
                         <FontAwesomeIcon className="ml8" icon={faEdit} />
                       </Container>
                     )}
@@ -173,7 +173,7 @@ function Comment({
                             setCommentOptions(false);
                           }}
                         >
-                          <p className="flex-fill inherit-color">
+                          <p className="flex-fill ic">
                             Delete Comment
                           </p>
                           <FontAwesomeIcon className="ml8" icon={faTrash} />
@@ -187,7 +187,7 @@ function Comment({
                           setReportModal(!reportModal);
                         }}
                       >
-                        <p className="flex-fill inherit-color">
+                        <p className="flex-fill ic">
                           Report Comment
                         </p>
                         <FontAwesomeIcon
@@ -204,7 +204,7 @@ function Comment({
                           setBlockModal(!blockModal);
                         }}
                       >
-                        <p className="flex-fill inherit-color">Block User</p>
+                        <p className="flex-fill ic">Block User</p>
                         <FontAwesomeIcon
                           className="ml8"
                           icon={faExclamationTriangle}

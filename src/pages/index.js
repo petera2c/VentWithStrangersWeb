@@ -46,6 +46,8 @@ const ProfilePage = React.lazy(() => import("./Account/Profile"));
 const QuoteContestPage = React.lazy(() => import("./QuoteContest"));
 const RewardsPage = React.lazy(() => import("./Rewards"));
 const RulesPage = React.lazy(() => import("./Rules"));
+const TagsIndividualPage = React.lazy(() => import("./tags/Individual"));
+const TagsPage = React.lazy(() => import("./tags/All"));
 const SearchPage = React.lazy(() => import("./Search"));
 const SettingsPage = React.lazy(() => import("./Account/Settings"));
 const SignUpPage = React.lazy(() => import("./SignUp"));
@@ -142,17 +144,17 @@ function RoutesComp() {
                 >
                   <Routes>
                     {!user && <Route path="account" element={<SignUpPage />} />}
+                    {user && <Route path="account" element={<AccountPage />} />}
                     {!user && <Route path="avatar" element={<SignUpPage />} />}
+                    {user && <Route path="avatar" element={<AvatarPage />} />}
                     {!user && (
                       <Route path="settings" element={<SignUpPage />} />
                     )}
-                    {user && <Route path="account" element={<AccountPage />} />}
-                    {user && <Route path="avatar" element={<AvatarPage />} />}
                     {user && (
                       <Route path="settings" element={<SettingsPage />} />
                     )}
-                    <Route path="/" element={<VentsPage />} />
                     <Route path="*" element={<NotFoundPage />} />
+                    <Route path="/" element={<VentsPage />} />
                     <Route
                       path="birthday-post"
                       element={<BirthdayPostPage />}
@@ -173,13 +175,11 @@ function RoutesComp() {
                       path="privacy-policy"
                       element={<PrivacyPolicyPage />}
                     />
+                    <Route path="profile" element={<ProfilePage />} />
                     <Route
                       path="quote-contest"
                       element={<QuoteContestPage />}
                     />
-                    <Route path="vent/:id" element={<VentPage />} />
-                    <Route path="vent/:id/:title" element={<VentPage />} />
-                    <Route path="profile" element={<ProfilePage />} />
                     <Route path="recent" element={<VentsPage />} />
                     <Route path="rewards" element={<RewardsPage />} />
                     <Route path="rules" element={<RulesPage />} />
@@ -190,12 +190,20 @@ function RoutesComp() {
                       path="subscription-successful"
                       element={<SubSuccessPage />}
                     />
+                    <Route path="tags" element={<TagsPage />} />
+                    <Route
+                      path="tags/:tagID"
+                      element={<TagsIndividualPage />}
+                    />
+
                     <Route path="trending" element={<VentsPage />} />
                     <Route path="vent-to-strangers" element={<NewVentPage />} />
                     <Route
                       path="vent-to-strangers/:id"
                       element={<NewVentPage />}
                     />
+                    <Route path="vent/:id" element={<VentPage />} />
+                    <Route path="vent/:id/:title" element={<VentPage />} />
                     <Route
                       path="verified-email"
                       element={<VerifiedEmailPage />}

@@ -255,7 +255,7 @@ function Header() {
                     to="/profile"
                   >
                     <FontAwesomeIcon className="mx8" icon={faChartNetwork} />
-                    <p className="inherit-color">Profile</p>
+                    <p className="ic">Profile</p>
                   </Link>
 
                   <Link
@@ -266,7 +266,7 @@ function Header() {
                     to="/account"
                   >
                     <FontAwesomeIcon className="mx8" icon={faUser} />
-                    <p className="inherit-color">Account</p>
+                    <p className="ic">Account</p>
                   </Link>
                   <Link
                     className={
@@ -276,7 +276,7 @@ function Header() {
                     to="/avatar"
                   >
                     <FontAwesomeIcon className="mx8" icon={faUserAstronaut} />
-                    <p className="inherit-color">Avatar</p>
+                    <p className="ic">Avatar</p>
                   </Link>
 
                   <Link
@@ -287,7 +287,7 @@ function Header() {
                     to="/settings"
                   >
                     <FontAwesomeIcon className="mx8" icon={faCog} />
-                    <p className="inherit-color">Settings</p>
+                    <p className="ic">Settings</p>
                   </Link>
                 </Space>
               )}
@@ -304,7 +304,7 @@ function Header() {
               to="/trending"
             >
               <FontAwesomeIcon className="mr8" icon={faAnalytics} />
-              <p className="inherit-color">Trending</p>
+              <p className="ic">Trending</p>
             </Link>
             <Link
               className={
@@ -313,7 +313,7 @@ function Header() {
               to="/recent"
             >
               <FontAwesomeIcon className="mr8" icon={faConciergeBell} />
-              <p className="inherit-color">Recent</p>
+              <p className="ic">Recent</p>
             </Link>
             <Link
               className={
@@ -323,7 +323,7 @@ function Header() {
               to="/chat"
             >
               <FontAwesomeIcon className="mr8" icon={faComments} />
-              <p className="inherit-color">Inbox</p>
+              <p className="ic">Inbox</p>
 
               {Boolean(unreadConversationsCount) && (
                 <p className="fs-14 bg-red white round ml4 pa4 br4">
@@ -339,7 +339,7 @@ function Header() {
               to="/quote-contest"
             >
               <FontAwesomeIcon className="mr8" icon={faQuoteLeft} />
-              <p className="inherit-color">Daily Quote Contest</p>
+              <p className="ic">Daily Quote Contest</p>
             </Link>
             <Link
               className={
@@ -349,7 +349,7 @@ function Header() {
               to="/site-info"
             >
               <FontAwesomeIcon className="mr8" icon={faInfo} />
-              <p className="inherit-color">Site Info</p>
+              <p className="ic">Site Info</p>
             </Link>
             <Link
               className={
@@ -359,7 +359,7 @@ function Header() {
               to="/make-friends"
             >
               <FontAwesomeIcon className="mr8" icon={faUsers} />
-              <p className="inherit-color">Make Friends</p>
+              <p className="ic">Make Friends</p>
             </Link>
             <Link
               className={
@@ -369,7 +369,7 @@ function Header() {
               to="/vent-to-strangers"
             >
               <FontAwesomeIcon className="mr8" icon={faConciergeBell} />
-              <p className="inherit-color">Post a Vent</p>
+              <p className="ic">Post a Vent</p>
             </Link>
             <Link
               className={
@@ -379,7 +379,7 @@ function Header() {
               to="/rewards"
             >
               <FontAwesomeIcon className="mr8" icon={faStarShooting} />
-              <p className="inherit-color">Rewards</p>
+              <p className="ic">Rewards</p>
             </Link>
             <Link
               className={
@@ -389,7 +389,7 @@ function Header() {
               to="/people-online"
             >
               <FontAwesomeIcon className="mr8" icon={faUserFriends} />
-              <p className="inherit-color">
+              <p className="ic">
                 {totalOnlineUsers}{" "}
                 {totalOnlineUsers === 1 ? "Person" : "People"} Online
               </p>

@@ -350,7 +350,3 @@ export const startConversation = async (navigate, user, ventUserID) => {
     goToPage(conversationDocNew.id);
   }
 };
-
-export const viewTag = (tag) => {
-  return capitolizeFirstLetterOfEachWord(tag);
-};

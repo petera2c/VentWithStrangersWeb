@@ -31,6 +31,7 @@ import {
   isUserAccountNew,
   useIsMounted,
   userSignUpProgress,
+  viewTag,
 } from "../../util";
 import {
   commentVent,
@@ -45,7 +46,6 @@ import {
   reportVent,
   startConversation,
   ventHasLiked,
-  viewTag,
 } from "./util";
 
 const SmartLink = ({ children, className, disablePostOnClick, to }) => {
@@ -165,45 +165,43 @@ function Vent({
           <Container className="column border-bottom gap8 py16 px32">
             <SmartLink
               className={
-                "x-fill justify-between align-center gap16 " +
+                "flex x-fill align-center gap16 " +
                 (disablePostOnClick ? "" : "clickable")
               }
               disablePostOnClick={disablePostOnClick}
               to={vent && vent.title && vent.id ? getVentPartialLink(vent) : ""}
             >
-              <Container className="flex-fill ov-hidden align-center wrap gap8">
-                <MakeAvatar
-                  displayName={author.displayName}
-                  userBasicInfo={author}
+              <MakeAvatar
+                displayName={author.displayName}
+                userBasicInfo={author}
+              />
+              <Container className="flex-fill align-center ov-hidden">
+                <Text
+                  className="button-1 ellipsis fw-400 mr8"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (author.id) navigate("/profile?" + author.id);
+                  }}
+                  text={capitolizeFirstChar(author.displayName)}
+                  type="h5"
                 />
-                <Container className="flex-fill full-center ov-hidden">
-                  <Text
-                    className="button-1 ellipsis fw-400 mr8"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (author.id) navigate("/profile?" + author.id);
-                    }}
-                    text={capitolizeFirstChar(author.displayName)}
-                    type="h5"
-                  />
-                  {isUserOnline && <div className="online-dot mr8" />}
-                </Container>
+                {isUserOnline && <div className="online-dot mr8" />}
                 <KarmaBadge userBasicInfo={author} />
-                {vent.is_birthday_post && (
-                  <Container className="align-center gap8">
-                    <FontAwesomeIcon
-                      className="orange"
-                      icon={faBirthdayCake}
-                      size="3x"
-                    />
-                    <FontAwesomeIcon
-                      className="purple"
-                      icon={faBirthdayCake}
-                      size="3x"
-                    />
-                  </Container>
-                )}
               </Container>
+              {vent.is_birthday_post && (
+                <Container className="align-center gap8">
+                  <FontAwesomeIcon
+                    className="orange"
+                    icon={faBirthdayCake}
+                    size="3x"
+                  />
+                  <FontAwesomeIcon
+                    className="purple"
+                    icon={faBirthdayCake}
+                    size="3x"
+                  />
+                </Container>
+              )}
               {user && (
                 <Options
                   deleteFunction={(ventID) => deleteVent(navigate, ventID)}
@@ -220,9 +218,9 @@ function Vent({
               )}
             </SmartLink>
 
-            {vent.newTags && vent.newTags.length > 0 && (
+            {vent.new_tags && vent.new_tags.length > 0 && (
               <Container className="wrap gap8">
-                {vent.newTags.map((tag, index) => (
+                {vent.new_tags.map((tag, index) => (
                   <Link
                     className="button-4 fs-16"
                     key={tag}
@@ -351,7 +349,7 @@ function Vent({
                   }}
                 >
                   <FontAwesomeIcon className="mr8" icon={faComments} />
-                  <p className="inherit-color ellipsis">
+                  <p className="ic ellipsis">
                     Message {capitolizeFirstChar(author.displayName)}
                   </p>
                 </Container>

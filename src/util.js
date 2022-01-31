@@ -278,3 +278,7 @@ export const userSignUpProgress = (user, noAlert) => {
     return "NVE";
   } else return false;
 };
+
+export const viewTag = (tag) => {
+  return capitolizeFirstLetterOfEachWord(tag.replace(/_/g, " "));
+};

@@ -133,7 +133,7 @@ function Header() {
               to="/trending"
             >
               <FontAwesomeIcon icon={faAnalytics} />
-              <p className="inherit-color">Trending</p>
+              <p className="ic">Trending</p>
             </Link>
             <Link
               className={
@@ -143,7 +143,7 @@ function Header() {
               to="/recent"
             >
               <FontAwesomeIcon icon={faConciergeBell} />
-              <p className="inherit-color">Recent</p>
+              <p className="ic">Recent</p>
             </Link>
             <Link
               className={
@@ -153,7 +153,7 @@ function Header() {
               to="/chat"
             >
               <FontAwesomeIcon icon={faComments} />
-              <p className="inherit-color">Inbox</p>
+              <p className="ic">Inbox</p>
 
               {Boolean(unreadConversationsCount) && (
                 <p className="fs-14 bg-red white round ml4 pa4 br4">
@@ -346,7 +346,7 @@ function AccountLink({ icon, link, onClick, pathname, text }) {
         <Container className="flex blue x-fill full-center">
           <FontAwesomeIcon icon={icon} style={{ fontSize: "1.25rem" }} />
         </Container>
-        <h5 className="grey-1 inherit-color">{text}</h5>
+        <h5 className="grey-1 ic">{text}</h5>
       </Link>
     );
 
@@ -359,7 +359,7 @@ function AccountLink({ icon, link, onClick, pathname, text }) {
         <Container className="full-center">
           <FontAwesomeIcon icon={icon} style={{ fontSize: "1.25rem" }} />
         </Container>
-        <h5 className="grey-1 inherit-color">{text}</h5>
+        <h5 className="grey-1 ic">{text}</h5>
       </div>
     );
 }
