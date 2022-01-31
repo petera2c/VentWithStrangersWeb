@@ -1,4 +1,5 @@
 const admin = require("firebase-admin");
+import { writeBatch, doc } from "firebase/firestore";
 const moment = require("moment-timezone");
 const { createNotification } = require("./notification");
 const { createBirthdayLink, createRewardsLink } = require("./util");
@@ -191,6 +192,320 @@ const signPeopleOut = () => {
     });
 };
 
+const userDelete = async (user) => {
+  console.log(user);
+
+  let counter = 0;
+  const batch = writeBatch(admin.firestore());
+
+  const blockedUserSnapshot = await admin
+    .firestore()
+    .collection("block_check")
+    .where(userID, "==", true)
+    .get();
+  for (let index in blockedUserSnapshot.docs) {
+    counter++;
+    if (counter === 500) await batch.commit();
+    const ref = doc(
+      admin.firestore(),
+      "block_check",
+      blockedUserSnapshot.docs[index].id
+    );
+    batch.delete(ref);
+  }
+
+  const chatQueueSnapshot = await admin
+    .firestore()
+    .collection("chat_queue")
+    .where("userID", "==", user.uid)
+    .get();
+  for (let index in chatQueueSnapshot.docs) {
+    counter++;
+    if (counter === 500) await batch.commit();
+    const ref = doc(
+      admin.firestore(),
+      "chat_queue",
+      chatQueueSnapshot.docs[index].id
+    );
+    batch.delete(ref);
+  }
+
+  const conversationsQuerySnapshot = await admin
+    .firestore()
+    .collection("conversations")
+    .where("members", "array-contains", user.uid)
+    .get();
+  for (let index in conversationsQuerySnapshot.docs) {
+    counter++;
+    if (counter === 500) await batch.commit();
+    const ref = doc(
+      admin.firestore(),
+      "conversations",
+      conversationsQuerySnapshot.docs[index].id
+    );
+    batch.update(ref, {
+      members: firebase.firestore.FieldValue.arrayRemove(user.uid),
+    });
+  }
+
+  const commentLikesSnapshot = await admin
+    .firestore()
+    .collection("comment_likes")
+    .where("userID", "==", user.uid)
+    .get();
+
+  for (let index in commentLikesSnapshot.docs) {
+    counter++;
+    if (counter === 500) await batch.commit();
+    const ref = doc(
+      admin.firestore(),
+      "comment_likes",
+      commentLikesSnapshot.docs[index].id
+    );
+    batch.delete(ref);
+  }
+
+  const quoteLikesSnapshot = await admin
+    .firestore()
+    .collection("quote_likes")
+    .where("userID", "==", user.uid)
+    .get();
+  for (let index in quoteLikesSnapshot.docs) {
+    counter++;
+    if (counter === 500) await batch.commit();
+    const ref = doc(
+      admin.firestore(),
+      "quote_likes",
+      quoteLikesSnapshot.docs[index].id
+    );
+    batch.delete(ref);
+  }
+
+  const ventLikesSnapshot = await admin
+    .firestore()
+    .collection("vent_likes")
+    .where("userID", "==", user.uid)
+    .get();
+  for (let index in ventLikesSnapshot.docs) {
+    counter++;
+    if (counter === 500) await batch.commit();
+    const ref = doc(
+      admin.firestore(),
+      "vent_likes",
+      ventLikesSnapshot.docs[index].id
+    );
+    batch.delete(ref);
+  }
+
+  const commentReportsSnapshot = await admin
+    .firestore()
+    .collection("comment_reports")
+    .where("userID", "==", user.uid)
+    .get();
+  for (let index in commentReportsSnapshot.docs) {
+    counter++;
+    if (counter === 500) await batch.commit();
+    const ref = doc(
+      admin.firestore(),
+      "comment_reports",
+      commentReportsSnapshot.docs[index].id
+    );
+    batch.delete(ref);
+  }
+
+  const quoteReportsSnapshot = await admin
+    .firestore()
+    .collection("quote_reports")
+    .where("userID", "==", user.uid)
+    .get();
+  for (let index in quoteReportsSnapshot.docs) {
+    counter++;
+    if (counter === 500) await batch.commit();
+    const ref = doc(
+      admin.firestore(),
+      "quote_reports",
+      quoteReportsSnapshot.docs[index].id
+    );
+    batch.delete(ref);
+  }
+
+  const ventReportsSnapshot = await admin
+    .firestore()
+    .collection("vent_reports")
+    .where("userID", "==", user.uid)
+    .get();
+  for (let index in ventReportsSnapshot.docs) {
+    counter++;
+    if (counter === 500) await batch.commit();
+    const ref = doc(
+      admin.firestore(),
+      "vent_reports",
+      ventReportsSnapshot.docs[index].id
+    );
+    batch.delete(ref);
+  }
+
+  const commentsSnapshot = await admin
+    .firestore()
+    .collection("comments")
+    .where("userID", "==", user.uid)
+    .get();
+  for (let index in commentsSnapshot.docs) {
+    counter++;
+    if (counter === 500) await batch.commit();
+    const ref = doc(
+      admin.firestore(),
+      "comments",
+      commentsSnapshot.docs[index].id
+    );
+    batch.delete(ref);
+  }
+
+  const quotesSnapshot = await admin
+    .firestore()
+    .collection("quotes")
+    .where("userID", "==", user.uid)
+    .get();
+  for (let index in quotesSnapshot.docs) {
+    counter++;
+    if (counter === 500) await batch.commit();
+    const ref = doc(
+      admin.firestore(),
+      "comments",
+      quotesSnapshot.docs[index].id
+    );
+    batch.delete(ref);
+  }
+
+  const ventsSnapshot = await admin
+    .firestore()
+    .collection("vents")
+    .where("userID", "==", user.uid)
+    .get();
+  for (let index in ventsSnapshot.docs) {
+    counter++;
+    if (counter === 500) await batch.commit();
+    const ref = doc(admin.firestore(), "vents", ventsSnapshot.docs[index].id);
+    batch.delete(ref);
+  }
+
+  const inviteUIDSnapshot = await admin
+    .firestore()
+    .collection("invite_uid")
+    .where("primary_uid", "==", user.uid)
+    .get();
+  if (inviteUIDSnapshot.doc && inviteUIDSnapshot.docs[0]) {
+    const invitedUsersSnapshot = await admin
+      .firestore()
+      .collection("invited_users")
+      .where("referral_secondary_uid", "==", inviteUIDSnapshot.docs[0].id)
+      .get();
+    for (let index in invitedUsersSnapshot.docs) {
+      counter++;
+      if (counter === 500) await batch.commit();
+      const ref = doc(
+        admin.firestore(),
+        "invited_users",
+        invitedUsersSnapshot.docs[index].id
+      );
+      batch.update(ref, { referral_secondary_uid: "deleted" });
+    }
+  }
+  for (let index in inviteUIDSnapshot.docs) {
+    counter++;
+    if (counter === 500) await batch.commit();
+    const ref = doc(
+      admin.firestore(),
+      "invite_uid",
+      inviteUIDSnapshot.docs[index].id
+    );
+    batch.delete(ref);
+  }
+
+  const notificationsSnapshot = await admin
+    .firestore()
+    .collection("notifications")
+    .where("userID", "==", user.uid)
+    .get();
+  for (let index in notificationsSnapshot.docs) {
+    counter++;
+    if (counter === 500) await batch.commit();
+    const ref = doc(
+      admin.firestore(),
+      "notifications",
+      notificationsSnapshot.docs[index].id
+    );
+    batch.delete(ref);
+  }
+
+  const rewardsSnapshot = await admin
+    .firestore()
+    .collection("rewards")
+    .where("userID", "==", user.uid)
+    .get();
+  for (let index in rewardsSnapshot.docs) {
+    counter++;
+    if (counter === 500) await batch.commit();
+    const ref = doc(
+      admin.firestore(),
+      "rewards",
+      rewardsSnapshot.docs[index].id
+    );
+    batch.delete(ref);
+  }
+
+  counter++;
+  if (counter === 500) await batch.commit();
+  batch.delete(doc(admin.firestore(), "unread_conversations_count", user.uid));
+
+  counter++;
+  if (counter === 500) await batch.commit();
+  batch.delete(doc(admin.firestore(), "user_day_limit_vents", user.uid));
+
+  counter++;
+  if (counter === 500) await batch.commit();
+  batch.delete(doc(admin.firestore(), "user_expo_tokens", user.uid));
+
+  counter++;
+  if (counter === 500) await batch.commit();
+  batch.delete(doc(admin.firestore(), "user_matches", user.uid));
+
+  counter++;
+  if (counter === 500) await batch.commit();
+  batch.delete(doc(admin.firestore(), "user_mobile_app_rating", user.uid));
+
+  counter++;
+  if (counter === 500) await batch.commit();
+  batch.delete(doc(admin.firestore(), "user_rewards", user.uid));
+
+  counter++;
+  if (counter === 500) await batch.commit();
+  batch.delete(doc(admin.firestore(), "user_vent_timeout", user.uid));
+
+  counter++;
+  if (counter === 500) await batch.commit();
+  batch.delete(doc(admin.firestore(), "users", user.uid));
+
+  counter++;
+  if (counter === 500) await batch.commit();
+  batch.delete(doc(admin.firestore(), "users_display_name", user.uid));
+
+  counter++;
+  if (counter === 500) await batch.commit();
+  batch.delete(doc(admin.firestore(), "users_info", user.uid));
+
+  counter++;
+  if (counter === 500) await batch.commit();
+  batch.delete(doc(admin.firestore(), "users_settings", user.uid));
+
+  batch.commit();
+
+  await firebase
+    .database()
+    .ref("status/" + user.uid)
+    .remove();
+};
+
 const userRewardsListener = async (change, context) => {
   const { userID } = context.params;
   const afterUserRewards = { id: change.after.id, ...change.after.data() };
@@ -373,6 +688,7 @@ module.exports = {
   checkForBirthdays,
   newUserSetup,
   signPeopleOut,
+  userDelete,
   userRewardsListener,
   userWasInvited,
 };

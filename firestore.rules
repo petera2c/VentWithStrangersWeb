@@ -9,10 +9,10 @@ service cloud.firestore {
     }
 
     match /block_check/{userIDuserID2} {
-      allow read: if resource.data[request.auth.uid] == true || request.auth.uid == userIDuserID2.split('\\|\\|\\|')[0] || request.auth.uid == userIDuserID2.split('\\|\\|\\|')[1];
+      allow read: if  request.auth.uid == userIDuserID2.split('\\|\\|\\|')[0] || request.auth.uid == userIDuserID2.split('\\|\\|\\|')[1];
       allow write: if request.resource.data.keys().hasOnly([request.auth.uid]);
       allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly([request.auth.uid]);
-      allow delete: if resource.data[request.auth.uid] == true;
+      allow delete: if false;
     }
 
     match /chat_queue/{uid} {
@@ -39,7 +39,7 @@ service cloud.firestore {
     }
     match /conversation_extra_data/{conversationID} {
       match /messages/{messagesID} {
-        allow read: if true;
+        allow read: if request.auth.uid in resource.data.members;
         allow write: if request.auth.uid == request.resource.data.userID && (!(get(/databases/$(database)/documents/users_display_name/$(request.auth.uid)).data.keys().hasAny(['karma'])) || get(/databases/$(database)/documents/users_display_name/$(request.auth.uid)).data.karma > -50);
         allow update: if request.auth.uid == resource.data.userID
           && request.auth.uid == request.resource.data.userID;
@@ -48,8 +48,8 @@ service cloud.firestore {
     }
 
     match /invite_uid/{secondUID} {
-      allow read, delete: if resource.data.primary_uid == request.auth.uid;
-      allow write, update: if false;
+      allow read: if resource.data.primary_uid == request.auth.uid;
+      allow write: if false;
     }
     match /invited_users/{uid} {
       allow write: if request.auth.uid == uid;
@@ -58,8 +58,7 @@ service cloud.firestore {
 
     match /notifications/{notificationID} {
       allow read: if request.auth.uid == resource.data.userID;
-      allow create: if false;
-      allow delete: if false;
+      allow create, delete: if false;
       allow update: if request.auth.uid == resource.data.userID && request.auth.uid == request.resource.data.userID;
     }
 
@@ -93,15 +92,14 @@ service cloud.firestore {
       }
     }
 
-
     match /rewards/{rewardID} {
       allow read, delete: if request.auth.uid == resource.data.userID;
-      allow write, update: if false;
+      allow write: if false;
     }
 
     match /total_users_online/{randomID} {
       allow read: if true;
-      allow write, update, delete: if false;
+      allow write: if false;
     }
 
     match /unread_conversations_count/{userID} {
@@ -109,48 +107,48 @@ service cloud.firestore {
     }
 
     match /user_rewards/{userID} {
-      allow read, delete: if request.auth.uid == userID;
-      allow write, update: if false;
+      allow read: if request.auth.uid == userID;
+      allow write: if false;
     }
     match /user_expo_tokens/{userID} {
-      allow read, write, update, delete: if request.auth.uid == userID;
+      allow read, write: if request.auth.uid == userID;
     }
     match /user_matches/{userID} {
-      allow read, write, update, delete: if true;
+      allow read, write: if request.auth.uid == userID;
     }
     match /user_day_limit_vents/{userID} {
-      allow read, delete: if request.auth.uid == userID;
-      allow write, update: if false;
+      allow read: if request.auth.uid == userID;
+      allow write: if false;
     }
     match /user_mobile_app_rating/{userID} {
-      allow read, write, update, delete: if request.auth.uid == userID;
+      allow read, write: if request.auth.uid == userID;
     }
     match /user_subscription/{userID} {
-      allow read, write, update, delete: if request.auth.uid == userID;
+      allow read, write: if request.auth.uid == userID;
     }
     match /user_vent_timeout/{userID} {
-      allow read, delete: if request.auth.uid == userID;
-      allow write, update: if false;
+      allow read: if request.auth.uid == userID;
+      allow write: if false;
     }
     match /users/{userID} {
-      allow read, write, update, delete: if request.auth.uid == userID;
+      allow read, write: if request.auth.uid == userID;
     }
     match /users_display_name/{userID} {
       allow read: if true;
-      allow write, update, delete: if request.auth.uid == userID;
+      allow write: if request.auth.uid == userID;
 
       match /is_admin {
         allow read: if true;
-        allow write, update, delete: if false;
+        allow write: if false;
       }
       match /karma {
         allow read: if true;
-        allow write, update, delete: if false;
+        allow write: if false;
       }
     }
     match /users_info/{userID} {
       allow read: if true;
-      allow write, update, delete: if request.auth.uid == userID;
+      allow write: if request.auth.uid == userID;
 
       match /last_birthday_post {
         allow read: if true;
@@ -158,29 +156,29 @@ service cloud.firestore {
       }
     }
     match /users_settings/{userID} {
-      allow read, write, update, delete: if request.auth.uid == userID;
+      allow read, write: if request.auth.uid == userID;
     }
 
 
     match /vents/{ventID} {
       allow read: if true;
-      allow write, update: if request.auth.uid == request.resource.data.userID && (!(get(/databases/$(database)/documents/users_display_name/$(request.auth.uid)).data.keys().hasAny(['karma'])) || get(/databases/$(database)/documents/users_display_name/$(request.auth.uid)).data.karma > -50);
+      allow write: if request.auth.uid == request.resource.data.userID && (!(get(/databases/$(database)/documents/users_display_name/$(request.auth.uid)).data.keys().hasAny(['karma'])) || get(/databases/$(database)/documents/users_display_name/$(request.auth.uid)).data.karma > -50);
       allow delete: if request.auth.uid == resource.data.userID;
 
       match /trending_score {
         allow read: if true;
-        allow write, update, delete: if false;
+        allow write: if false;
       }
     }
     match /vent_likes/{ventIDUserID} {
-      allow read, write, update, delete: if request.auth.uid == resource.data.userID || request.auth.uid == ventIDUserID.split('\\|\\|\\|')[1];
+      allow read, write: if request.auth.uid == resource.data.userID || request.auth.uid == ventIDUserID.split('\\|\\|\\|')[1];
     }
     match /vent_reports/{ventIDUserID} {
-      allow read, write, update, delete: if request.auth.uid == resource.data.userID || request.auth.uid == ventIDUserID.split('\\|\\|\\|')[1];
+      allow read, write: if request.auth.uid == resource.data.userID || request.auth.uid == ventIDUserID.split('\\|\\|\\|')[1];
     }
     match /vent_tags/{tagID} {
       allow read: if true;
-      allow write, update, delete: if false;
+      allow write: if false;
     }
   }
 }

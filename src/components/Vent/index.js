@@ -163,29 +163,22 @@ function Vent({
       {vent && (
         <Container className="x-fill column bg-white pt16 br8">
           <Container className="column border-bottom gap8 py16 px32">
-            <SmartLink
-              className={
-                "flex x-fill align-center gap16 " +
-                (disablePostOnClick ? "" : "clickable")
-              }
-              disablePostOnClick={disablePostOnClick}
-              to={vent && vent.title && vent.id ? getVentPartialLink(vent) : ""}
-            >
+            <Container className="flex x-fill align-center">
               <MakeAvatar
                 displayName={author.displayName}
                 userBasicInfo={author}
               />
-              <Container className="flex-fill align-center ov-hidden">
-                <Text
-                  className="button-1 ellipsis fw-400 mr8"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (author.id) navigate("/profile?" + author.id);
-                  }}
-                  text={capitolizeFirstChar(author.displayName)}
+              <Container className="flex-fill align-center ov-hidden gap8">
+                <Link
+                  className="ov-hidden"
+                  to={"/profile?" + author.id}
                   type="h5"
-                />
-                {isUserOnline && <div className="online-dot mr8" />}
+                >
+                  <h5 className="button-1 grey-11 ellipsis">
+                    {capitolizeFirstChar(author.displayName)}
+                  </h5>
+                </Link>
+                {isUserOnline && <div className="online-dot" />}
                 <KarmaBadge userBasicInfo={author} />
               </Container>
               {vent.is_birthday_post && (
@@ -216,7 +209,7 @@ function Vent({
                   userID={user.uid}
                 />
               )}
-            </SmartLink>
+            </Container>
 
             {vent.new_tags && vent.new_tags.length > 0 && (
               <Container className="wrap gap8">
@@ -300,7 +293,7 @@ function Vent({
                         ? "/svgs/support-active.svg"
                         : "/svgs/support.svg"
                     }
-                    style={{ height: "32px" }}
+                    style={{ height: "32px", width: "32px" }}
                     title="Give Support :)"
                   />
                   <Text

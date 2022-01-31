@@ -118,7 +118,7 @@ function Header() {
                 alt="Go Home"
                 className="clickable"
                 src="/svgs/icon.svg"
-                style={{ height: "50px" }}
+                style={{ height: "50px", width: "50px" }}
               />
             </Link>
           </Container>

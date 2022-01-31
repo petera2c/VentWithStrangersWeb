@@ -34,6 +34,7 @@ const {
   checkForBirthdays,
   newUserSetup,
   signPeopleOut,
+  userDelete,
   userRewardsListener,
   userWasInvited,
 } = require("./helpers/user");
@@ -53,6 +54,7 @@ const {
 process.setMaxListeners(0);
 
 exports.newUserSetup = functions.auth.user().onCreate(newUserSetup);
+exports.userDelete = functions.auth.user().onDelete(userDelete);
 exports.userWasInvited = functions.firestore
   .document("/invited_users/{secondUID}")
   .onCreate(userWasInvited);

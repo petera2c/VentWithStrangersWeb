@@ -141,7 +141,7 @@ function Header() {
             className="clickable"
             onClick={() => setMobileHeaderActive(false)}
             src="/svgs/icon.svg"
-            style={{ height: "50px" }}
+            style={{ height: "50px", width: "50px" }}
           />
         </Link>
         <Container>
