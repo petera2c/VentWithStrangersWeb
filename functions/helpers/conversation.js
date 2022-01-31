@@ -104,6 +104,7 @@ const startConversation = async (partnerID, userID) => {
 };
 
 const conversationUpdateListener = async (change, context) => {
+  console.log("hree");
   const { conversationID } = context.params;
 
   const conversationBefore = change.before.data();
@@ -111,11 +112,27 @@ const conversationUpdateListener = async (change, context) => {
 
   if (conversationAfter && conversationBefore) {
     if (conversationAfter.members.length === 0) {
+      const messagesSnapshot = await admin
+        .firestore()
+        .collection("conversation_extra_data")
+        .doc(conversationID)
+        .collection("messages")
+        .get();
+      for (let index in messagesSnapshot.docs)
+        await admin
+          .firestore()
+          .collection("conversation_extra_data")
+          .doc(conversationID)
+          .collection("messages")
+          .doc(messagesSnapshot.docs[index].id)
+          .delete();
+
       await admin
         .firestore()
         .collection("conversation_extra_data")
         .doc(conversationID)
         .delete();
+
       await admin
         .firestore()
         .collection("conversations")
@@ -134,18 +151,11 @@ const conversationUpdateListener = async (change, context) => {
             .collection("conversation_extra_data")
             .doc(conversationID)
             .collection("messages")
-            .where("userID", "==", conversationBefore.members[index])
-            .get();
-          if (snapshot && snapshot.docs)
-            for (let index in snapshot.docs) {
-              await admin
-                .firestore()
-                .collection("conversation_extra_data")
-                .doc(conversationID)
-                .collection("messages")
-                .doc(snapshot.docs[index].id)
-                .delete();
-            }
+            .add({
+              body: "User has left chat.",
+              server_timestamp: admin.firestore.Timestamp.now().toMillis(),
+              user_left_chat: true,
+            });
         }
       }
     }

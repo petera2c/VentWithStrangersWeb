@@ -11,6 +11,7 @@ import {
 
 export const deleteConversation = async (
   conversationID,
+  navigate,
   setConversations,
   userID
 ) => {
@@ -26,8 +27,10 @@ export const deleteConversation = async (
     .collection("conversations")
     .doc(conversationID)
     .update({
+      [userID]: firebase.firestore.FieldValue.delete(),
       members: firebase.firestore.FieldValue.arrayRemove(userID),
     });
+  navigate("/chat");
 
   message.success("Conversation deleted!");
 };

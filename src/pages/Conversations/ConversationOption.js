@@ -171,9 +171,14 @@ function ConversationOption({
       {deleteConversationConfirm && (
         <ConfirmAlertModal
           close={() => setDeleteConversationConfirm(false)}
-          message="Deleting this conversation will be permanent and there will be no way to recover these messages once you have taken this action. Are you sure you would like to delete this conversation and all of your messages associated with it?"
+          message="Deleting this conversation will be permanent. Are you sure you would like to delete this conversation?"
           submit={() =>
-            deleteConversation(conversation.id, setConversations, userID)
+            deleteConversation(
+              conversation.id,
+              navigate,
+              setConversations,
+              userID
+            )
           }
           title="Delete Conversation"
         />

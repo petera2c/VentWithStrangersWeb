@@ -111,6 +111,9 @@ export const saveVent = async (
 
   ventObject.new_tags = tagIDs.sort();
 
+  if (ventObject.new_tags && ventObject.new_tags.length >= 3)
+    return message.info("You can not set more than 3 tags in a vent!");
+
   if (isBirthdayPost) ventObject.is_birthday_post = isBirthdayPost;
 
   let newVent = ventObject;
@@ -135,6 +138,10 @@ export const selectEncouragingMessage = () => {
 
 export const updateTags = (setTags, tag) => {
   setTags((oldTags) => {
+    if (oldTags && oldTags.length >= 3) {
+      message.info("You can not set more than 3 tags in a vent!");
+      return oldTags;
+    }
     if (
       oldTags &&
       oldTags.findIndex((oldTag) => oldTag.objectID === tag.objectID) >= 0
