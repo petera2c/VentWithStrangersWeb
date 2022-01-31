@@ -64,7 +64,13 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
         hitsPerPage: 10,
       })
       .then(({ hits }) => {
-        setVentTags(hits);
+        setVentTags(
+          hits.sort((a, b) => {
+            if (a.display < b.display) return -1;
+            if (a.display > b.display) return 1;
+            return 0;
+          })
+        );
       });
     if (ventID) getVent(setDescription, setTags, setTitle, ventID);
     if (user)
@@ -203,7 +209,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
               value={tagText}
             />
             {ventTags && ventTags.length > 0 && (
-              <Container className="gap8">
+              <Container className="wrap gap8">
                 {ventTags.map((tagHit, index) => (
                   <button
                     className="button-10 br4 px8 py4"
