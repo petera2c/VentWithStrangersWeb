@@ -241,7 +241,12 @@ function Quote({
           {user && (
             <Options
               deleteFunction={(quoteID) =>
-                deleteQuote(quoteID, setCanUserCreateQuote, setQuotes)
+                deleteQuote(
+                  quoteID,
+                  setCanUserCreateQuote,
+                  setQuoteID,
+                  setQuotes
+                )
               }
               editFunction={() => {
                 setQuoteID(quote.id);
@@ -270,8 +275,11 @@ function Quote({
               await likeOrUnlikeQuote(hasLiked, quote, user);
 
               await getHasUserLikedQuote(quote.id, setHasLiked, user.uid);
+
+              if (!quote.like_counter) quote.like_counter = 0;
               if (hasLiked) quote.like_counter--;
               else quote.like_counter++;
+
               setQuote({ ...quote });
             }}
             size="2x"

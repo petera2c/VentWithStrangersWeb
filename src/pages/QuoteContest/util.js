@@ -8,6 +8,7 @@ import { getEndAtValueTimestamp } from "../../util";
 export const deleteQuote = async (
   quoteID,
   setCanUserCreateQuote,
+  setQuoteID,
   setQuotes
 ) => {
   await db.collection("quotes").doc(quoteID).delete();
@@ -21,6 +22,7 @@ export const deleteQuote = async (
       return [...quotes];
     });
   setCanUserCreateQuote(true);
+  setQuoteID(null);
   message.success("Quote deleted!");
 };
 
@@ -156,9 +158,11 @@ export const saveQuote = async (
       userID,
       value: quote,
     });
+    const newQuoteDoc = await newQuote.get();
+
     if (isMounted()) {
       setQuotes((oldQuotes) => [
-        { id: newQuote.id, value: quote, userID },
+        { id: newQuote.id, doc: newQuoteDoc, ...newQuoteDoc.data() },
         ...oldQuotes,
       ]);
       setCanUserCreateQuote(false);

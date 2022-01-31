@@ -169,14 +169,10 @@ function Vent({
                 userBasicInfo={author}
               />
               <Container className="flex-fill align-center ov-hidden gap8">
-                <Link
-                  className="ov-hidden"
-                  to={"/profile?" + author.id}
-                  type="h5"
-                >
-                  <h5 className="button-1 grey-11 ellipsis">
+                <Link className="ov-hidden" to={"/profile?" + author.id}>
+                  <h3 className="button-1 fs-20 grey-11 ellipsis">
                     {capitolizeFirstChar(author.displayName)}
-                  </h5>
+                  </h3>
                 </Link>
                 {isUserOnline && <div className="online-dot" />}
                 <KarmaBadge userBasicInfo={author} />
@@ -234,7 +230,7 @@ function Vent({
             to={vent && vent.title && vent.id ? getVentPartialLink(vent) : ""}
           >
             {setTitle && <h1 className="fs-20 primary mb8">{vent.title}</h1>}
-            {!setTitle && <h2 className="fs-20 primary mb8">{vent.title}</h2>}
+            {!setTitle && <h6 className="fs-20 primary mb8">{vent.title}</h6>}
 
             <p
               className="fw-400 grey-1 description"

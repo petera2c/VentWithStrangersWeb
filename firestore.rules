@@ -174,7 +174,7 @@ service cloud.firestore {
       allow read, write: if request.auth.uid == resource.data.userID || request.auth.uid == ventIDUserID.split('\\|\\|\\|')[1];
     }
     match /vent_reports/{ventIDUserID} {
-      allow read, write: if request.auth.uid == request.resource.data || request.auth.uid == ventIDUserID.split('\\|\\|\\|')[1];
+      allow read, write: if request.auth.uid == request.resource.data.userID || request.auth.uid == ventIDUserID.split('\\|\\|\\|')[1];
     }
     match /vent_tags/{tagID} {
       allow read: if true;
