@@ -138,10 +138,6 @@ export const selectEncouragingMessage = () => {
 
 export const updateTags = (setTags, tag) => {
   setTags((oldTags) => {
-    if (oldTags && oldTags.length >= 3) {
-      message.info("You can not set more than 3 tags in a vent!");
-      return oldTags;
-    }
     if (
       oldTags &&
       oldTags.findIndex((oldTag) => oldTag.objectID === tag.objectID) >= 0

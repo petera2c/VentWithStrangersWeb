@@ -217,7 +217,12 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
                     key={tagHit.objectID}
                     onClick={() => {
                       if (!checks) return;
-
+                      if (tags && tags.length >= 3) {
+                        message.info(
+                          "You can not set more than 3 tags in a vent!"
+                        );
+                        return tags;
+                      }
                       updateTags(setTags, tagHit);
                     }}
                   >
