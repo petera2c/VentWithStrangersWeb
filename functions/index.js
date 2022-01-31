@@ -137,7 +137,7 @@ exports.cronSignPeopleOut = functions.pubsub
   .schedule("0 * * * *")
   .onRun(async () => signPeopleOut());
 exports.cronUpdateSitemap = functions.pubsub
-  .schedule("0 0 * * *")
+  .schedule("1 16 * * *")
   .onRun(async () => createSitemap());
 
 const injectMetaData = (req, res) => {
