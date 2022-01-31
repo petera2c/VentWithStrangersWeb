@@ -162,14 +162,25 @@ function Vent({
     <Container className="x-fill">
       {vent && (
         <Container className="x-fill column bg-white pt16 br8">
-          <Container className="column border-bottom gap8 py16 px32">
+          <Container
+            className={`column border-bottom gap8 py16 px32 ${
+              disablePostOnClick ? "" : "clickable"
+            }`}
+            onClick={() => {
+              if (!disablePostOnClick) navigate("/vent/" + vent.id);
+            }}
+          >
             <Container className="flex x-fill align-center">
               <MakeAvatar
                 displayName={author.displayName}
                 userBasicInfo={author}
               />
               <Container className="flex-fill align-center ov-hidden gap8">
-                <Link className="ov-hidden" to={"/profile?" + author.id}>
+                <Link
+                  className="ov-hidden"
+                  onClick={(e) => e.stopPropagation()}
+                  to={"/profile?" + author.id}
+                >
                   <h3 className="button-1 fs-20 grey-11 ellipsis">
                     {capitolizeFirstChar(author.displayName)}
                   </h3>
@@ -213,6 +224,7 @@ function Vent({
                   <Link
                     className="button-4 fs-16"
                     key={tag}
+                    onClick={(e) => e.stopPropagation()}
                     to={"/tags/" + tag}
                   >
                     {viewTag(tag)}
