@@ -50,7 +50,7 @@ class ReportModal extends Component {
       <Container className="modal-container full-center" style={{ zIndex: 10 }}>
         <Container className="modal container medium column ov-auto bg-white br4">
           <Container className="x-fill justify-center bg-grey-10 py16">
-            <Text className="grey-11 tac" text="Report Vent" type="h4" />
+            <Text className="grey-11 tac" text="Report" type="h4" />
           </Container>
           <Container className="column x-fill pa16">
             <Text

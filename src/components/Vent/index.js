@@ -204,7 +204,7 @@ function Vent({
                   objectID={vent.id}
                   objectUserID={vent.userID}
                   reportFunction={(option) =>
-                    reportVent(option, vent.id, user.uid)
+                    reportVent(option, user.uid, vent.id)
                   }
                   userID={user.uid}
                 />

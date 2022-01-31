@@ -310,7 +310,7 @@ function Comment({
         <ReportModal
           close={() => setReportModal(false)}
           submit={(option) =>
-            reportComment(option, user.uid, comment.id, comment.ventID)
+            reportComment(option, comment.id, user.uid, comment.ventID)
           }
         />
       )}
