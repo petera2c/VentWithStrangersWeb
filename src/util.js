@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React from "react";
 import reactStringReplace from "react-string-replace";
 import firebase from "firebase/compat/app";
 import "firebase/compat/database";
@@ -195,8 +195,7 @@ export const hasUserBlockedUser = async (userID, userID2, callback) => {
   else return callback(false);
 };
 
-export const isMobileOrTablet = () => window.screen.width < 940;
-export const isMobileOrTabletGet = () => window.screen.width < 940;
+export const getIsMobileOrTablet = () => window.screen.width < 940;
 
 export const isPageActive = (page, pathname) => {
   if (page === pathname) return " active ";

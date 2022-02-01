@@ -5,7 +5,6 @@ import { Progress, Space, Tooltip } from "antd";
 
 import { UserContext } from "../../context";
 
-import { isMobileOrTablet, useIsMounted } from "../../util";
 import {
   calculateMilestone,
   getNextMilestone,
@@ -22,11 +21,16 @@ function RewardsPage() {
   const isMounted = useRef(false);
   const { user } = useContext(UserContext);
 
-  const [userRewards, setUserRewards] = useState({});
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
   const [recentRewards, setRecentRewards] = useState([]);
+  const [userRewards, setUserRewards] = useState({});
 
   useEffect(() => {
     isMounted.current = true;
+    import("../../util").then((functions) => {
+      setIsMobileOrTablet(functions.getIsMobileOrTablet());
+    });
+
     if (user) {
       getUserRecentRewards(isMounted, setRecentRewards, user.uid);
       getUserRewardsProgress(isMounted, setUserRewards, user.uid);
@@ -48,7 +52,7 @@ function RewardsPage() {
             <h1 className="tac mb32">Your Upcoming Rewards</h1>
             <Container
               className="gap32"
-              direction={isMobileOrTablet() ? "vertical" : "horizontal"}
+              direction={isMobileOrTablet ? "vertical" : "horizontal"}
               size="large"
             >
               <Space className="flex-fill" direction="vertical" size="large">

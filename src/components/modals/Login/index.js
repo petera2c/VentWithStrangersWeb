@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,20 +7,26 @@ import { faEye } from "@fortawesome/pro-solid-svg-icons/faEye";
 import Container from "../../containers/Container";
 import Button from "../../views/Button";
 
-import { isMobileOrTablet } from "../../../util";
-
 import { login } from "./util";
 
 function LoginModal({ setActiveModal }) {
   const { register, handleSubmit } = useForm();
+
   const [canSeePassword, setCanSeePassword] = useState(false);
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
+
+  useEffect(() => {
+    import("../../../util").then((functions) => {
+      setIsMobileOrTablet(functions.getIsMobileOrTablet());
+    });
+  });
 
   return (
     <Container className="modal-container">
       <Container
         className={
           "modal column align-center ov-auto bg-white br4 " +
-          (isMobileOrTablet() ? "mx8" : "container medium")
+          (isMobileOrTablet ? "mx8" : "container medium")
         }
       >
         <Container className="x-fill justify-center bg-blue py16">

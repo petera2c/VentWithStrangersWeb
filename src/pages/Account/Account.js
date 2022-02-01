@@ -22,7 +22,7 @@ import {
   politicalBeliefsList,
   religiousBeliefsList,
 } from "../../PersonalOptions";
-import { calculateKarma, isMobileOrTablet, useIsMounted } from "../../util";
+import { calculateKarma } from "../../util";
 import { deleteAccountAndAllData, getUser, updateUser } from "./util";
 
 const Container = loadable(() =>
@@ -47,6 +47,7 @@ function AccountSection() {
   const [displayName, setDisplayName] = useState(user.displayName);
   const [email, setEmail] = useState(user.email);
   const [gender, setGender] = useState("");
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [pronouns, setPronouns] = useState("");
   const [userInfo, setUserInfo] = useState({});
@@ -71,6 +72,9 @@ function AccountSection() {
 
   useEffect(() => {
     isMounted.current = true;
+    import("../../util").then((functions) => {
+      setIsMobileOrTablet(functions.getIsMobileOrTablet());
+    });
 
     getUser((userInfo) => {
       if (isMounted.current) setAccountInfo(userInfo);
@@ -97,7 +101,7 @@ function AccountSection() {
             <Container className="wrap">
               <Container
                 className={
-                  "column pr8 mb16 " + (isMobileOrTablet() ? "x-100" : "x-50")
+                  "column pr8 mb16 " + (isMobileOrTablet ? "x-100" : "x-50")
                 }
               >
                 <Text className="mb8" text="Display Name" type="p" />
@@ -114,7 +118,7 @@ function AccountSection() {
               </Container>
               <Container
                 className={
-                  "column pr8 mb16 " + (isMobileOrTablet() ? "x-100" : "x-50")
+                  "column pr8 mb16 " + (isMobileOrTablet ? "x-100" : "x-50")
                 }
               >
                 <Text className="mb8 " text="Email" type="p" />
@@ -135,7 +139,7 @@ function AccountSection() {
             <Container className="wrap">
               <Container
                 className={
-                  "column pr8 mb16 " + (isMobileOrTablet() ? "x-100" : "x-50")
+                  "column pr8 mb16 " + (isMobileOrTablet ? "x-100" : "x-50")
                 }
               >
                 <Text className="mb8" text="Gender" type="p" />
@@ -163,7 +167,7 @@ function AccountSection() {
               </Container>
               <Container
                 className={
-                  "column pr8 mb16 " + (isMobileOrTablet() ? "x-100" : "x-50")
+                  "column pr8 mb16 " + (isMobileOrTablet ? "x-100" : "x-50")
                 }
               >
                 <Text className="mb8 " text="Pronouns" type="p" />
@@ -381,7 +385,7 @@ function AccountSection() {
             <Container className="wrap">
               <Container
                 className={
-                  "column pr8 mb16 " + (isMobileOrTablet() ? "x-100" : "x-50")
+                  "column pr8 mb16 " + (isMobileOrTablet ? "x-100" : "x-50")
                 }
               >
                 <Text className="mb8 " text="New Password" type="p" />
@@ -401,7 +405,7 @@ function AccountSection() {
               </Container>
               <Container
                 className={
-                  "column mb16 " + (isMobileOrTablet() ? "x-100" : "x-50")
+                  "column mb16 " + (isMobileOrTablet ? "x-100" : "x-50")
                 }
               >
                 <Text className="mb8 " text="Confirm Password" type="p" />

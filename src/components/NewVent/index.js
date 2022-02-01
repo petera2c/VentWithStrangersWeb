@@ -21,7 +21,6 @@ import {
   canUserPost,
   countdown,
   formatSeconds,
-  isMobileOrTablet,
   userSignUpProgress,
   viewTag,
 } from "../../util";
@@ -46,9 +45,10 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
   const navigate = useNavigate();
   const { user, userBasicInfo } = useContext(UserContext);
 
-  const [isMinified, setIsMinified] = useState(miniVersion);
   const [description, setDescription] = useState("");
   const [encouragingText] = useState(selectEncouragingMessage());
+  const [isMinified, setIsMinified] = useState(miniVersion);
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
   const [quote, setQuote] = useState();
   const [saving, setSaving] = useState(false);
   const [starterModal, setStarterModal] = useState(false);
@@ -60,6 +60,9 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
 
   useEffect(() => {
     isMounted.current = true;
+    import("../../util").then((functions) => {
+      setIsMobileOrTablet(functions.getIsMobileOrTablet());
+    });
 
     tagsIndex
       .search("", {
@@ -136,7 +139,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
           </Space>
         )}
         <Container className="align-center">
-          {(!isMobileOrTablet() || (isMobileOrTablet() && isMinified)) && (
+          {(!isMobileOrTablet || (isMobileOrTablet && isMinified)) && (
             <Link to="/avatar">
               <MakeAvatar
                 displayName={userBasicInfo.displayName}
@@ -160,7 +163,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
             minRows={isMinified ? 1 : 3}
             value={description}
           />
-          {!isMobileOrTablet() && (
+          {!isMobileOrTablet && (
             <Emoji
               handleChange={(emoji) => {
                 const userInteractionIssues = userSignUpProgress(user);

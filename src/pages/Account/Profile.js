@@ -30,7 +30,6 @@ import {
   capitolizeFirstChar,
   getIsUserOnline,
   getUserBasicInfo,
-  isMobileOrTablet,
   userSignUpProgress,
 } from "../../util";
 import { getUser, getUsersComments, getUsersVents } from "./util";
@@ -65,9 +64,10 @@ function ProfileSection() {
   const [blockModal, setBlockModal] = useState(false);
   const [canLoadMoreComments, setCanLoadMoreComments] = useState(true);
   const [canLoadMoreVents, setCanLoadMoreVents] = useState(true);
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
+  const [isUserOnline, setIsUserOnline] = useState(false);
   const [postOptions, setPostOptions] = useState(false);
   const [postsSection, setPostsSection] = useState(true);
-  const [isUserOnline, setIsUserOnline] = useState(false);
   const [starterModal, setStarterModal] = useState(false);
   const [userBasicInfo, setUserBasicInfo] = useState({});
   const [userInfo, setUserInfo] = useState({});
@@ -85,6 +85,9 @@ function ProfileSection() {
 
   useEffect(() => {
     isMounted.current = true;
+    import("../../util").then((functions) => {
+      setIsMobileOrTablet(functions.getIsMobileOrTablet());
+    });
 
     setVents([]);
     setComments([]);
@@ -129,7 +132,7 @@ function ProfileSection() {
         <Container
           className="column flex-fill gap16"
           style={{
-            maxWidth: isMobileOrTablet() ? "" : "calc(100% - 316px)",
+            maxWidth: isMobileOrTablet ? "" : "calc(100% - 316px)",
           }}
         >
           {search && (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
@@ -9,20 +9,27 @@ import Container from "../../containers/Container";
 import Text from "../../views/Text";
 import Button from "../../views/Button";
 
-import { isMobileOrTablet } from "../../../util";
 import { signUp } from "./util";
 
 function SignUpModal({ setActiveModal }) {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
+
   const [canSeePassword, setCanSeePassword] = useState(false);
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
+
+  useEffect(() => {
+    import("../../../util").then((functions) => {
+      setIsMobileOrTablet(functions.getIsMobileOrTablet());
+    });
+  });
 
   return (
     <Container className="modal-container full-center">
       <Container
         className={
           "modal column align-center ov-auto bg-white br4 " +
-          (isMobileOrTablet() ? "mx8" : "container medium")
+          (isMobileOrTablet ? "mx8" : "container medium")
         }
       >
         <Container className="x-fill justify-center bg-blue py16">
@@ -63,7 +70,7 @@ function SignUpModal({ setActiveModal }) {
               <Container className="x-fill wrap">
                 <Container
                   className={
-                    "column " + (isMobileOrTablet() ? "x-100" : "x-50 pr8")
+                    "column " + (isMobileOrTablet ? "x-100" : "x-50 pr8")
                   }
                 >
                   <input
@@ -78,7 +85,7 @@ function SignUpModal({ setActiveModal }) {
                 </Container>
                 <Container
                   className={
-                    "column " + (isMobileOrTablet() ? "x-100" : "x-50 pl8")
+                    "column " + (isMobileOrTablet ? "x-100" : "x-50 pl8")
                   }
                 >
                   <Container className="x-fill full-center">

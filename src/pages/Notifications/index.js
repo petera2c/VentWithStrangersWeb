@@ -4,7 +4,6 @@ import loadable from "@loadable/component";
 import { UserContext } from "../../context";
 
 import { getNotifications } from "../../components/Header/util";
-import { isMobileOrTablet, useIsMounted } from "../../util";
 
 const Container = loadable(() =>
   import("../../components/containers/Container")
@@ -18,10 +17,15 @@ function NotificationsPage() {
   const isMounted = useRef(false);
   const { user } = useContext(UserContext);
 
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
     isMounted.current = true;
+    import("../../util").then((functions) => {
+      setIsMobileOrTablet(functions.getIsMobileOrTablet());
+    });
+
     let newNotificationsListenerUnsubscribe;
 
     newNotificationsListenerUnsubscribe = getNotifications(
@@ -49,7 +53,7 @@ function NotificationsPage() {
       <Container
         className={
           "ov-visible column py32 pa16 " +
-          (isMobileOrTablet() ? "container mobile-full" : "container large")
+          (isMobileOrTablet ? "container mobile-full" : "container large")
         }
       >
         <h4 className="fw-600 mb16">Notifications</h4>

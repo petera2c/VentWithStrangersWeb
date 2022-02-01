@@ -4,7 +4,7 @@ import loadable from "@loadable/component";
 import algoliasearch from "algoliasearch";
 import { Space } from "antd";
 
-import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
+import { capitolizeFirstChar } from "../../util";
 
 const Container = loadable(() =>
   import("../../components/containers/Container")
@@ -27,11 +27,16 @@ function SearchPage() {
     ? decodeURI(location.search.substring(1, location.search.length))
     : "";
 
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
+  const [isUsers, setIsUsers] = useState(true);
   const [users, setUsers] = useState([]);
   const [vents, setVents] = useState([]);
-  const [isUsers, setIsUsers] = useState(true);
 
   useEffect(() => {
+    import("../../util").then((functions) => {
+      setIsMobileOrTablet(functions.getIsMobileOrTablet());
+    });
+
     if (isUsers) {
       usersIndex
         .search(search, {
@@ -77,7 +82,7 @@ function SearchPage() {
         <Container
           className={
             "wrap full-center gap32 " +
-            (isMobileOrTablet()
+            (isMobileOrTablet
               ? "container mobile-full px16"
               : "container large px16")
           }
@@ -108,7 +113,7 @@ function SearchPage() {
         <Container
           className={
             "column align-center py32 " +
-            (isMobileOrTablet()
+            (isMobileOrTablet
               ? "container mobile-full px16"
               : "container large px16")
           }

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import loadable from "@loadable/component";
 
 import { faHandsHelping } from "@fortawesome/pro-duotone-svg-icons/faHandsHelping";
@@ -8,7 +8,7 @@ import SubscribeColumn from "../../components/SubscribeColumn";
 
 import { UserContext } from "../../context";
 
-import { isMobileOrTablet, userSignUpProgress } from "../../util";
+import { userSignUpProgress } from "../../util";
 import { joinQueue } from "./util";
 
 const Container = loadable(() =>
@@ -20,7 +20,14 @@ const StarterModal = loadable(() => import("../../components/modals/Starter"));
 function ChatWithStrangersPage() {
   const { user } = useContext(UserContext);
 
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
   const [starterModal, setStarterModal] = useState();
+
+  useEffect(() => {
+    import("../../util").then((functions) => {
+      setIsMobileOrTablet(functions.getIsMobileOrTablet());
+    });
+  }, []);
 
   return (
     <Page className="pa16">
@@ -45,7 +52,7 @@ function ChatWithStrangersPage() {
             <Container
               className={
                 "column x-fill flex-fill full-center " +
-                (isMobileOrTablet() ? "py32" : "py64")
+                (isMobileOrTablet ? "py32" : "py64")
               }
             >
               <FontAwesomeIcon

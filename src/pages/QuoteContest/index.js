@@ -23,7 +23,6 @@ import {
   formatSeconds,
   getUserBasicInfo,
   hasUserBlockedUser,
-  isMobileOrTablet,
   userSignUpProgress,
 } from "../../util";
 import {
@@ -42,15 +41,18 @@ function QuoteContestPage() {
 
   const [canLoadMoreQuotes, setCanLoadMoreQuotes] = useState(true);
   const [canUserCreateQuote, setCanUserCreateQuote] = useState(true);
+  const [contestTimeLeft, setContestTimeLeft] = useState();
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
   const [myQuote, setMyQuote] = useState("");
   const [quoteID, setQuoteID] = useState();
   const [quotes, setQuotes] = useState([]);
   const [starterModal, setStarterModal] = useState();
 
-  const [contestTimeLeft, setContestTimeLeft] = useState();
-
   useEffect(() => {
     isMounted.current = true;
+    import("../../util").then((functions) => {
+      setIsMobileOrTablet(functions.getIsMobileOrTablet());
+    });
 
     if (user) getCanUserCreateQuote(isMounted, setCanUserCreateQuote, user.uid);
     getQuotes(isMounted, undefined, setCanLoadMoreQuotes, setQuotes);
@@ -123,7 +125,7 @@ function QuoteContestPage() {
             <Container
               className={
                 "x-fill shadow-2 gap8 pa16 " +
-                (isMobileOrTablet() ? "column" : "align-center")
+                (isMobileOrTablet ? "column" : "align-center")
               }
             >
               <TextArea

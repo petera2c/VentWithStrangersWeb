@@ -1,11 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDocument } from "react-firebase-hooks/firestore";
 import loadable from "@loadable/component";
 import { message } from "antd";
 import db from "../../config/firebase";
 
 import { UserContext } from "../../context";
-import { isMobileOrTablet } from "../../util";
 
 const Container = loadable(() =>
   import("../../components/containers/Container")
@@ -20,6 +19,8 @@ const Text = loadable(() => import("../../components/views/Text"));
 function SettingsSection() {
   const { user } = useContext(UserContext);
 
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
+
   const settingsRef = db.collection("users_settings").doc(user.uid);
   const [settingsSnapshot] = useDocument(settingsRef, {
     idField: "id",
@@ -30,12 +31,18 @@ function SettingsSection() {
     if (notify) message.success("Setting updated!");
   };
 
+  useEffect(() => {
+    import("../../util").then((functions) => {
+      setIsMobileOrTablet(functions.getIsMobileOrTablet());
+    });
+  }, []);
+
   if (!settingsSnapshot || !settingsSnapshot.data())
     return (
       <Container
         className={
           "align-center container column px16 " +
-          (isMobileOrTablet() ? "mobile-full" : "large")
+          (isMobileOrTablet ? "mobile-full" : "large")
         }
       >
         <LoadingHeart />

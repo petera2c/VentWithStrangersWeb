@@ -1,22 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import Container from "../../containers/Container";
 import Text from "../../views/Text";
 import Button from "../../views/Button";
 
-import { isMobileOrTablet } from "../../../util";
 import { sendPasswordReset } from "./util";
 
 function ForgotPasswordModal({ setActiveModal }) {
   const { register, handleSubmit } = useForm();
+
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
+
+  useEffect(() => {
+    import("../../../util").then((functions) => {
+      setIsMobileOrTablet(functions.getIsMobileOrTablet());
+    });
+  });
 
   return (
     <Container className="modal-container full-center">
       <Container
         className={
           "modal column align-center ov-auto bg-white br4 " +
-          (isMobileOrTablet() ? "mx8" : "container medium")
+          (isMobileOrTablet ? "mx8" : "container medium")
         }
       >
         <Container className="x-fill justify-center bg-blue py16">

@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import loadable from "@loadable/component";
 
-import { isMobileOrTablet } from "../../util";
 import { getMeta } from "./util";
 
 const Container = loadable(() =>
@@ -32,19 +31,25 @@ function VentPage() {
   const { pathname } = location;
 
   const [title, setTitle] = useState("");
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
+  const [ventFound, setVentFound] = useState();
 
   const objectFromMetaData = getMeta("vent-data");
   let ventFromMeta;
   if (objectFromMetaData && objectFromMetaData !== "vent-data-example")
     ventFromMeta = JSON.parse(objectFromMetaData);
 
-  const [ventFound, setVentFound] = useState();
-
   const regexMatch = getVentIdFromURL(pathname);
   let ventID;
   if (regexMatch) ventID = regexMatch;
 
   if (ventFromMeta && ventFromMeta.id !== ventID) ventFromMeta = null;
+
+  useEffect(() => {
+    import("../../util").then((functions) => {
+      setIsMobileOrTablet(functions.getIsMobileOrTablet());
+    });
+  }, []);
 
   return (
     <Page className="px16 pt16" title={title}>
@@ -53,7 +58,7 @@ function VentPage() {
         {ventFound === undefined && ventID && (
           <Container
             className="column flex-fill"
-            style={{ maxWidth: isMobileOrTablet() ? "" : "calc(100% - 316px)" }}
+            style={{ maxWidth: isMobileOrTablet ? "" : "calc(100% - 316px)" }}
           >
             <Vent
               disablePostOnClick={true}

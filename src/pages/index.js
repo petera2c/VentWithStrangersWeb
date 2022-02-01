@@ -52,12 +52,12 @@ function RoutesComp() {
   const isMounted = useRef(false);
   const [user, loading] = useAuthState(firebase.auth());
 
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
   const [isUsersBirthday, setIsUsersBirthday] = useState(false);
   const [newReward, setNewReward] = useState();
   const [totalOnlineUsers, setTotalOnlineUsers] = useState();
   const [userBasicInfo, setUserBasicInfo] = useState({});
   const [userSubscription, setUserSubscription] = useState();
-  const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
 
   const handleOnIdle = (event) => {
     if (user && user.uid)
@@ -90,6 +90,10 @@ function RoutesComp() {
 
   useEffect(() => {
     let newRewardListenerUnsubscribe;
+    import("../util").then((functions) => {
+      setIsMobileOrTablet(functions.getIsMobileOrTablet());
+    });
+
     if (user) {
       import("./util").then((functions) => {
         newRewardListenerUnsubscribe = functions.newRewardListener(
@@ -106,7 +110,6 @@ function RoutesComp() {
         functions.getUserBasicInfo((newBasicUserInfo) => {
           setUserBasicInfo(newBasicUserInfo);
         }, user.uid);
-        setIsMobileOrTablet(functions.isMobileOrTabletGet());
       });
     }
 

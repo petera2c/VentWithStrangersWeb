@@ -6,7 +6,7 @@ import StarterModal from "../../components/modals/Starter";
 
 import { UserContext } from "../../context";
 
-import { isMobileOrTablet, userSignUpProgress } from "../../util";
+import { userSignUpProgress } from "../../util";
 
 import { getConversations, mostRecentConversationListener } from "./util";
 
@@ -22,19 +22,20 @@ function Conversations() {
   const isMounted = useRef(false);
   const { user } = useContext(UserContext);
 
-  const [conversations, setConversations] = useState([]);
-
   const location = useLocation();
   const { search } = location;
+
   const [activeConversation, setActiveConversation] = useState(
     search ? search.substring(1) : ""
   );
-  const [conversationsBasicDatas, setConversationsBasicDatas] = useState({});
   const [canLoadMore, setCanLoadMore] = useState(true);
+  const [conversations, setConversations] = useState([]);
+  const [conversationsBasicDatas, setConversationsBasicDatas] = useState({});
   const [starterModal, setStarterModal] = useState(!user);
 
   useEffect(() => {
     isMounted.current = true;
+
     /*
       if (pathname === "/chat" && user && unreadConversationsCount > 0)
         resetUnreadConversationCount(user.uid);
@@ -195,8 +196,11 @@ function Conversations() {
 }
 
 let temp;
-
-if (!isMobileOrTablet()) temp = Conversations;
+/*
+!import("../../util").then((functions) => {
+  return functions.getIsMobileOrTablet();
+})*/
+if (true) temp = Conversations;
 else temp = MobileIndex;
 
 export default temp;

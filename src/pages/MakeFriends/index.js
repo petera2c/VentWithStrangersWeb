@@ -4,7 +4,6 @@ import loadable from "@loadable/component";
 
 import { UserContext } from "../../context";
 
-import { isMobileOrTablet } from "../../util";
 import { getUserInfo, getUserMatches, hasUserCompletedProfile } from "./util";
 
 const Container = loadable(() =>
@@ -16,11 +15,17 @@ const UserComp = loadable(() => import("../../components/User"));
 
 function MakeFriendsPage() {
   const { user } = useContext(UserContext);
-  const [userInfo, setUserInfo] = useState({});
+
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
   const [matches, setMatches] = useState([]);
   const [starterModal, setStarterModal] = useState(!user);
+  const [userInfo, setUserInfo] = useState({});
 
   useEffect(() => {
+    import("../../util").then((functions) => {
+      setIsMobileOrTablet(functions.getIsMobileOrTablet());
+    });
+
     if (user)
       getUserInfo((newUserInfo) => {
         setUserInfo(newUserInfo);
@@ -39,7 +44,7 @@ function MakeFriendsPage() {
         <Container
           className={
             "column full-center bg-white pa16 br8 " +
-            (isMobileOrTablet() ? "mx8" : "container large ")
+            (isMobileOrTablet ? "mx8" : "container large ")
           }
         >
           <h6 className="clickable tac" onClick={() => setStarterModal(true)}>
@@ -53,7 +58,7 @@ function MakeFriendsPage() {
         <Container
           className={
             "column full-center bg-white pa16 mt16 br8 " +
-            (isMobileOrTablet() ? "mx8" : "container large ")
+            (isMobileOrTablet ? "mx8" : "container large ")
           }
         >
           <Link to="/account">
@@ -69,7 +74,7 @@ function MakeFriendsPage() {
       <Container
         className={
           "column full-center bg-white pa16 mt16 br8 " +
-          (isMobileOrTablet() ? "mx8" : "container large ")
+          (isMobileOrTablet ? "mx8" : "container large ")
         }
       >
         <h1 className="primary tac mb16">Make Friends Online</h1>

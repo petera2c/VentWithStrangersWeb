@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, Space } from "antd";
 
@@ -8,11 +8,18 @@ import UniqueShareLink from "../UniqueShareLink";
 
 import { UserContext } from "../../context";
 
-import { isMobileOrTablet } from "../../util";
-
 function SubscribeColumn({ slot, uniqueShareLink = true }) {
   const { user, userSubscription } = useContext(UserContext);
-  if (!userSubscription && !isMobileOrTablet())
+
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
+
+  useEffect(() => {
+    import("../../util").then((functions) => {
+      setIsMobileOrTablet(functions.getIsMobileOrTablet());
+    });
+  }, []);
+
+  if (!userSubscription && !isMobileOrTablet)
     return (
       <Container className="container ad column pl16">
         <Container className="sticky top-0 column x-fill">

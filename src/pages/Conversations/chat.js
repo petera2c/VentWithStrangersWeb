@@ -9,7 +9,7 @@ import KarmaBadge from "../../components/KarmaBadge";
 import MakeAvatar from "../../components/MakeAvatar";
 import Message from "./message";
 
-import { capitolizeFirstChar, isMobileOrTablet } from "../../util";
+import { capitolizeFirstChar } from "../../util";
 import {
   getMessages,
   messageListener,
@@ -28,6 +28,8 @@ function Chat({
 }) {
   const isMounted = useRef(false);
   const textInput = useRef(null);
+
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
   const [value, setValue] = useState(0); // integer state
 
   const checkIsUserTyping = (isTyping) => {
@@ -68,6 +70,10 @@ function Chat({
 
   useEffect(() => {
     let messageListenerUnsubscribe;
+    import("../../util").then((functions) => {
+      setIsMobileOrTablet(functions.getIsMobileOrTablet());
+    });
+
     setCanLoadMore(true);
 
     getMessages(
@@ -125,7 +131,7 @@ function Chat({
             <KarmaBadge noOnClick userBasicInfo={conversationPartnerData} />
           </Link>
         )}
-        {isMobileOrTablet() && (
+        {isMobileOrTablet && (
           <Button onClick={() => setActiveConversation(false)}>Go Back</Button>
         )}
       </Container>
@@ -192,7 +198,7 @@ function Chat({
         <Container
           className={
             "x-fill border-top  " +
-            (isMobileOrTablet() ? "" : "align-center pr16")
+            (isMobileOrTablet ? "" : "align-center pr16")
           }
         >
           <textarea
@@ -233,7 +239,7 @@ function Chat({
           />
           <button
             className={
-              "button-2 " + (isMobileOrTablet() ? "px8 py4" : "px32 py8 br4")
+              "button-2 " + (isMobileOrTablet ? "px8 py4" : "px32 py8 br4")
             }
             onClick={() => {
               if (!messageString) return;

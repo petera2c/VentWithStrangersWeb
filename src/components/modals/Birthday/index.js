@@ -7,15 +7,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Container from "../../../components/containers/Container";
 
-import { isMobileOrTablet, useIsMounted } from "../../../util";
-
 function BirthdayModal({ close }) {
   const isMounted = useRef(false);
 
   const [canClose, setCanClose] = useState(false);
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
 
   useEffect(() => {
     isMounted.current = true;
+    import("../../../util").then((functions) => {
+      setIsMobileOrTablet(functions.getIsMobileOrTablet());
+    });
+
     setTimeout(() => {
       if (isMounted.current) setCanClose(true);
     }, 2000);
@@ -35,7 +38,7 @@ function BirthdayModal({ close }) {
       <Container
         className={
           "modal column align-center ov-auto bg-white pa32 br8 " +
-          (isMobileOrTablet() ? "mx8" : "container medium")
+          (isMobileOrTablet ? "mx8" : "container medium")
         }
       >
         <Space className="column x-fill" size="large">

@@ -8,12 +8,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Container from "../../../components/containers/Container";
 
-import { isMobileOrTablet } from "../../../util";
-
 function NewRewardModal({ close, newReward }) {
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
   const [canClose, setCanClose] = useState(false);
 
   useEffect(() => {
+    import("../../../util").then((functions) => {
+      setIsMobileOrTablet(functions.getIsMobileOrTablet());
+    });
+
     setTimeout(() => setCanClose(true), 2000);
   }, []);
 
@@ -27,7 +30,7 @@ function NewRewardModal({ close, newReward }) {
       <Container
         className={
           "modal column align-center ov-auto bg-white pa32 br8 " +
-          (isMobileOrTablet() ? "mx8" : "container medium")
+          (isMobileOrTablet ? "mx8" : "container medium")
         }
       >
         <Space className="column x-fill" size="large">
