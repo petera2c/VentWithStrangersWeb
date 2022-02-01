@@ -86,6 +86,7 @@ function Comment({
     getIsUserOnline((isUserOnline) => {
       if (isMounted.current) setIsUserOnline(isUserOnline.state);
     }, comment2.userID);
+
     return () => {
       isMounted.current = false;
     };

@@ -80,6 +80,7 @@ function AccountSection() {
       if (isMounted.current) setAccountInfo(userInfo);
       if (userInfo && isMounted.current) setUserInfo(userInfo);
     }, user.uid);
+
     return () => {
       isMounted.current = false;
     };

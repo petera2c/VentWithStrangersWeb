@@ -201,6 +201,8 @@ function Quote({
   const [quote, setQuote] = useState(quote1);
 
   useEffect(() => {
+    isMounted.current = true;
+
     getUserBasicInfo((author) => {
       if (isMounted.current) setAuthor(author);
     }, quote.userID);
@@ -215,6 +217,9 @@ function Quote({
         user.uid
       );
     }
+    return () => {
+      isMounted.current = false;
+    };
   }, []);
 
   if (isContentBlocked) return <div />;

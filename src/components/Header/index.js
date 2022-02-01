@@ -55,6 +55,13 @@ function Header() {
 
     if (user) {
       import("./util").then((functions) => {
+        if (pathname === "/chat")
+          functions.resetUnreadConversationCount(
+            isMounted,
+            setUnreadConversationsCount,
+            user.uid
+          );
+
         conversationsUnsubscribe = functions.conversationsListener(
           navigate,
           user.uid
@@ -67,6 +74,7 @@ function Header() {
         newConversationsListenerUnsubscribe = functions.getUnreadConversations(
           isMounted,
           pathname.substring(0, 7) === "/search",
+          pathname,
           setUnreadConversationsCount,
           user.uid
         );
@@ -99,10 +107,7 @@ function Header() {
       if (newNotificationsListenerUnsubscribe)
         newNotificationsListenerUnsubscribe();
     };
-  }, [isMounted, user]);
-
-  if (pathname === "/chat" && user && unreadConversationsCount > 0)
-    resetUnreadConversationCount(user.uid);
+  }, [isMounted, pathname, user]);
 
   return (
     <Container className="column x-fill">

@@ -36,10 +36,6 @@ function Conversations() {
   useEffect(() => {
     isMounted.current = true;
 
-    /*
-      if (pathname === "/chat" && user && unreadConversationsCount > 0)
-        resetUnreadConversationCount(user.uid);
-*/
     let newMessageListenerUnsubscribe;
 
     if (user) {

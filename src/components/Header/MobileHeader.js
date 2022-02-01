@@ -76,7 +76,14 @@ function Header() {
       );
     });
     if (user) {
-      import("../../util").then((functions) => {
+      import("./util").then((functions) => {
+        if (pathname === "/chat")
+          functions.resetUnreadConversationCount(
+            isMounted,
+            setUnreadConversationsCount,
+            user.uid
+          );
+
         conversationsUnsubscribe = functions.conversationsListener(
           navigate,
           user.uid
@@ -90,6 +97,7 @@ function Header() {
         newConversationsListenerUnsubscribe = functions.getUnreadConversations(
           isMounted,
           pathname.substring(0, 7) === "/search",
+          pathname,
           setUnreadConversationsCount,
           user.uid
         );
@@ -123,7 +131,13 @@ function Header() {
         newConversationsListenerUnsubscribe();
       if (onlineUsersUnsubscribe) onlineUsersUnsubscribe.off("value");
     };
-  }, [isMounted, setTotalOnlineUsers, user]);
+  }, [
+    isMounted,
+    pathname,
+    setTotalOnlineUsers,
+    unreadConversationsCount,
+    user,
+  ]);
 
   return (
     <Container

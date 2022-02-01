@@ -60,6 +60,7 @@ export const getNotifications = (
 export const getUnreadConversations = (
   isMounted,
   isOnSearchPage,
+  pathname,
   setUnreadConversations,
   userID,
   first = true
@@ -69,8 +70,16 @@ export const getUnreadConversations = (
     .doc(userID)
     .onSnapshot("value", (doc) => {
       if (doc.data() && doc.data().count) {
-        if (isMounted.current) setUnreadConversations(doc.data().count);
         if (!first && !isOnSearchPage) soundNotify();
+        if (pathname === "/chat" && doc.data().count > 0) {
+          return resetUnreadConversationCount(
+            isMounted,
+            setUnreadConversations,
+            userID
+          );
+        }
+
+        if (isMounted.current) setUnreadConversations(doc.data().count);
       } else {
         if (isMounted.current) setUnreadConversations(0);
       }
@@ -137,6 +146,12 @@ export const readNotifications = (notifications) => {
   }
 };
 
-export const resetUnreadConversationCount = (userID) => {
-  db.collection("unread_conversations_count").doc(userID).set({ count: 0 });
+export const resetUnreadConversationCount = (
+  isMounted,
+  setUnreadConversationsCount,
+  userID
+) => {
+  if (isMounted.current)
+    db.collection("unread_conversations_count").doc(userID).set({ count: 0 });
+  if (isMounted.current) setUnreadConversationsCount(0);
 };

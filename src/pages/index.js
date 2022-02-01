@@ -89,6 +89,8 @@ function RoutesComp() {
   });
 
   useEffect(() => {
+    isMounted.current = true;
+
     let newRewardListenerUnsubscribe;
     import("../util").then((functions) => {
       setIsMobileOrTablet(functions.getIsMobileOrTablet());
@@ -114,6 +116,7 @@ function RoutesComp() {
     }
 
     return () => {
+      isMounted.current = false;
       if (newRewardListenerUnsubscribe) newRewardListenerUnsubscribe();
       if (user)
         import("./util").then((functions) => {

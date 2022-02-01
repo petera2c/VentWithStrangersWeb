@@ -69,6 +69,7 @@ function Chat({
   const [isUserCurrentlyTyping, setIsUserCurrentlyTyping] = useState(false);
 
   useEffect(() => {
+    isMounted.current = true;
     let messageListenerUnsubscribe;
     import("../../util").then((functions) => {
       setIsMobileOrTablet(functions.getIsMobileOrTablet());
