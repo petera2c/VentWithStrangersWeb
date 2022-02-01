@@ -80,6 +80,11 @@ function Vent({
     let newCommentListenerUnsubscribe;
 
     const ventSetUp = (newVent) => {
+      import("./util").then((functions) => {
+        setPartialLink(functions.getVentPartialLink(newVent));
+        setVentPreview(functions.getVentDescription(previewMode, newVent));
+      });
+
       if (setTitle && newVent && newVent.title && isMounted.current)
         setTitle(newVent.title);
 
@@ -144,10 +149,6 @@ function Vent({
           user.uid,
           ventID
         );
-
-      setPartialLink(functions.getVentPartialLink(vent));
-
-      setVentPreview(functions.getVentDescription(previewMode, vent));
     });
 
     return () => {

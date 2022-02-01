@@ -48,10 +48,9 @@ export const getNotifications = (
             if (!newNotifications[index].hasSeen) counter2++;
           if (counter2 > counter1 && !firstLoad) soundNotify();
 
+          console.log();
           setNotificationCounter(counter2 + counter1);
-          setNotifications((oldNotifications) => {
-            return [...newNotifications, ...oldNotifications];
-          });
+          setNotifications(newNotifications);
         }
       } else {
         if (isMounted.current) setNotifications([]);

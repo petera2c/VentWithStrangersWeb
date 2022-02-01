@@ -275,7 +275,6 @@ function Header() {
                     </Container>
                   }
                   onVisibleChange={(isVisible) => {
-                    setNotificationCounter(0);
                     import("./util").then((functions) => {
                       functions.readNotifications(notifications);
                     });
