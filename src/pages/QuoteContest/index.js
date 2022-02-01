@@ -152,16 +152,17 @@ function QuoteContestPage() {
                     return;
                   }
 
-                  saveQuote(
-                    canUserCreateQuote,
-                    isMounted,
-                    myQuote,
-                    quoteID,
-                    setCanUserCreateQuote,
-                    setMyQuote,
-                    setQuotes,
-                    user.uid
-                  );
+                  if (myQuote)
+                    saveQuote(
+                      canUserCreateQuote,
+                      isMounted,
+                      myQuote,
+                      quoteID,
+                      setCanUserCreateQuote,
+                      setMyQuote,
+                      setQuotes,
+                      user.uid
+                    );
                 }}
                 size="large"
                 type="primary"
