@@ -15,7 +15,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { UserContext } from "../../context";
 
-const Button = loadable(() => import("../views/Button"));
 const ConfirmAlertModal = loadable(() => import("../containers/Container"));
 const Container = loadable(() => import("../containers/Container"));
 const DisplayName = loadable(() => import("../views/DisplayName"));
@@ -176,12 +175,13 @@ function Comment({
             </MentionsInput>
           </Container>
           <Container className="mt8">
-            <Button
+            <button
               className="button-5 px32 py8 mr8 br4"
-              text="Cancel"
               onClick={() => setEditingComment(false)}
-            />
-            <Button
+            >
+              Cancel
+            </button>
+            <button
               className="button-2 px32 py8 br4"
               onClick={() => {
                 import("./util").then((functions) => {
@@ -190,8 +190,9 @@ function Comment({
 
                 setEditingComment(false);
               }}
-              text="Save"
-            />
+            >
+              Save
+            </button>
           </Container>
         </Container>
       )}

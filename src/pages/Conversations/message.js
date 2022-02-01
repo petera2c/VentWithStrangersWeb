@@ -8,8 +8,6 @@ import { faTrash } from "@fortawesome/pro-solid-svg-icons/faTrash";
 import ConfirmAlertModal from "../../components/modals/ConfirmAlert";
 import Container from "../../components/containers/Container";
 
-import Text from "../../components/views/Text";
-
 import { urlify } from "../../util";
 import { deleteMessage } from "./util";
 
@@ -72,15 +70,11 @@ function Message({ conversationID, message, setMessages, userID }) {
                     }
                   }}
                 >
-                  <Text
-                    className="flex-fill"
-                    text={
-                      message.userID === userID
-                        ? "Delete Message"
-                        : "Report Message"
-                    }
-                    type="p"
-                  />
+                  <p className="flex-fill">
+                    {message.userID === userID
+                      ? "Delete Message"
+                      : "Report Message"}
+                  </p>
                   <FontAwesomeIcon
                     className="ml8"
                     icon={

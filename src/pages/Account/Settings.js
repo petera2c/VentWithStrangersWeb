@@ -14,7 +14,6 @@ const Page = loadable(() => import("../../components/containers/Page"));
 const SubscribeColumn = loadable(() =>
   import("../../components/SubscribeColumn")
 );
-const Text = loadable(() => import("../../components/views/Text"));
 
 function SettingsSection() {
   const { user } = useContext(UserContext);
@@ -54,11 +53,7 @@ function SettingsSection() {
       <Container>
         <Container className="column flex-fill bg-white pa16 mb2 br8">
           <Container className="column">
-            <Text
-              className="blue bold mb16"
-              text="Master Notifications"
-              type="h6"
-            />
+            <h6 className="blue bold mb16">Master Notifications</h6>
             <Setting
               description="Recieve a notification I post a new vent"
               handleChange={handleChange}
@@ -111,11 +106,7 @@ function SettingsSection() {
           </Container>
 
           <Container className="column pl32">
-            <Text
-              className="blue bold mb16"
-              text="Email Notifications"
-              type="h6"
-            />
+            <h6 className="blue bold mb16">Email Notifications</h6>
             <Setting
               description="Email me when I post a new vent"
               handleChange={handleChange}
@@ -167,11 +158,7 @@ function SettingsSection() {
           </Container>
 
           <Container className="column pl32">
-            <Text
-              className="blue bold mb16"
-              text="Mobile Push Notifications"
-              type="h6"
-            />
+            <h6 className="blue bold mb16">Mobile Push Notifications</h6>
             <Setting
               description="Send a notification to my phone when I post a new vent"
               handleChange={handleChange}
@@ -215,11 +202,7 @@ function SettingsSection() {
               settingsSnapshot={settingsSnapshot}
             />
           </Container>
-          <Text
-            className="blue bold mb16"
-            text="Privacy and Content Preferences"
-            type="h6"
-          />
+          <h6 className="blue bold mb16">Privacy and Content Preferences</h6>
           <Container
             className="clickable align-center mb16"
             onClick={() =>
@@ -236,17 +219,11 @@ function SettingsSection() {
               style={{ minWidth: "13px" }}
               type="checkbox"
             />
-            <Text
-              className=""
-              text="View sensitive/offensive content"
-              type="p"
-            />
+            <p>View sensitive/offensive content</p>
           </Container>
-          <Text
-            className="mb16"
-            text="Your private information will never be shared with anyone. Ever."
-            type="p"
-          />
+          <p className="mb16">
+            Your private information will never be shared with anyone. Ever.
+          </p>
         </Container>
         <SubscribeColumn slot="1120703532" />
       </Container>

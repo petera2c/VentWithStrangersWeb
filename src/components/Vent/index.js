@@ -17,7 +17,6 @@ import LoadingHeart from "../loaders/Heart";
 import MakeAvatar from "../MakeAvatar";
 import Options from "../Options";
 import StarterModal from "../modals/Starter";
-import Text from "../views/Text";
 
 import { UserContext } from "../../context";
 
@@ -261,11 +260,9 @@ function Vent({
             </p>
             <Container className="x-fill align-center justify-end">
               <FontAwesomeIcon className="grey-5 mr8" icon={faClock} />
-              <Text
-                className="grey-5 fs-16"
-                text={moment(vent.server_timestamp).fromNow()}
-                type="p"
-              />
+              <p className="grey-5 fs-16">
+                {moment(vent.server_timestamp).fromNow()}
+              </p>
             </Container>
           </SmartLink>
 
@@ -310,11 +307,9 @@ function Vent({
                     style={{ height: "32px", width: "32px" }}
                     title="Give Support :)"
                   />
-                  <Text
-                    className="grey-5"
-                    text={vent.like_counter ? vent.like_counter : 0}
-                    type="p"
-                  />
+                  <p className="grey-5">
+                    {vent.like_counter ? vent.like_counter : 0}
+                  </p>
                 </Container>
 
                 <SmartLink

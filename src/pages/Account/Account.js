@@ -32,7 +32,6 @@ const Page = loadable(() => import("../../components/containers/Page"));
 const SubscribeColumn = loadable(() =>
   import("../../components/SubscribeColumn")
 );
-const Text = loadable(() => import("../../components/views/Text"));
 
 function AccountSection() {
   const isMounted = useRef(false);
@@ -94,18 +93,14 @@ function AccountSection() {
             className="flex-fill column bg-white pa16 mb2 br8"
             onSubmit={() => {}}
           >
-            <Text
-              className="blue bold mb16"
-              text="Personal Information"
-              type="h6"
-            />
+            <h6 className="blue bold mb16">Personal Information</h6>
             <Container className="wrap">
               <Container
                 className={
                   "column pr8 mb16 " + (isMobileOrTablet ? "x-100" : "x-50")
                 }
               >
-                <Text className="mb8" text="Display Name" type="p" />
+                <p className="mb8">Display Name</p>
                 <Container className="full-center bg-grey-4 py4 px8 br4">
                   <FontAwesomeIcon className="grey-5 mr8" icon={faMonument} />
                   <input
@@ -122,7 +117,7 @@ function AccountSection() {
                   "column pr8 mb16 " + (isMobileOrTablet ? "x-100" : "x-50")
                 }
               >
-                <Text className="mb8 " text="Email" type="p" />
+                <p className="mb8">Email</p>
                 <Container className="full-center bg-grey-4 py4 px8 br4">
                   <FontAwesomeIcon className="grey-5 mr8" icon={faPaperPlane} />
                   <input
@@ -143,7 +138,7 @@ function AccountSection() {
                   "column pr8 mb16 " + (isMobileOrTablet ? "x-100" : "x-50")
                 }
               >
-                <Text className="mb8" text="Gender" type="p" />
+                <p className="mb8">Gender</p>
                 <Container className="full-center bg-grey-4 py4 px8 br4">
                   <FontAwesomeIcon className="grey-5 mr8" icon={faVenusMars} />
                   <FontAwesomeIcon
@@ -171,7 +166,7 @@ function AccountSection() {
                   "column pr8 mb16 " + (isMobileOrTablet ? "x-100" : "x-50")
                 }
               >
-                <Text className="mb8 " text="Pronouns" type="p" />
+                <p className="mb8">Pronouns</p>
                 <Container className="full-center bg-grey-4 py4 px8 br4">
                   <FontAwesomeIcon className="grey-5 mr8" icon={faVenusMars} />
                   <FontAwesomeIcon
@@ -377,11 +372,7 @@ function AccountSection() {
               </Container>
             </Container>
 
-            <Text
-              className="blue bold mb16"
-              text="Change your Password"
-              type="h6"
-            />
+            <h6 className="blue bold mb16">Change your Password</h6>
 
             <Container className="wrap">
               <Container
@@ -389,7 +380,7 @@ function AccountSection() {
                   "column pr8 mb16 " + (isMobileOrTablet ? "x-100" : "x-50")
                 }
               >
-                <Text className="mb8 " text="New Password" type="p" />
+                <p className="mb8">New Password</p>
                 <Container className="full-center bg-grey-4 py4 px8 br4">
                   <FontAwesomeIcon className="grey-5 mr8" icon={faLockAlt} />
 
@@ -409,7 +400,7 @@ function AccountSection() {
                   "column mb16 " + (isMobileOrTablet ? "x-100" : "x-50")
                 }
               >
-                <Text className="mb8 " text="Confirm Password" type="p" />
+                <p className="mb8">Confirm Password</p>
                 <Container className="align-center">
                   <Container className="flex-fill full-center bg-grey-4 py4 px8 br4">
                     <FontAwesomeIcon className="grey-5 mr8" icon={faLockAlt} />

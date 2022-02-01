@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import loadable from "@loadable/component";
-import moment from "moment-timezone";
 import { Space } from "antd";
 
 import { faBaby } from "@fortawesome/pro-solid-svg-icons/faBaby";
@@ -94,16 +93,25 @@ function UserComponent({
         </Container>
         {(userInfo.birth_date || userInfo.gender || userInfo.pronouns) && (
           <Container className="gap8">
-            {Boolean(
-              new moment().year() - new moment(userInfo.birth_date).year()
-            ) && (
-              <Container className="column">
-                <h6 className="fw-400">Age</h6>
-                <h6 className="grey-1 fw-400">
-                  {new moment().year() - new moment(userInfo.birth_date).year()}
-                </h6>
-              </Container>
-            )}
+            <Moment>
+              {({ default: moment }) => {
+                if (
+                  Boolean(
+                    new moment().year() - new moment(userInfo.birth_date).year()
+                  )
+                )
+                  return (
+                    <Container className="column">
+                      <h6 className="fw-400">Age</h6>
+                      <h6 className="grey-1 fw-400">
+                        new moment().year() - new
+                        moment(userInfo.birth_date).year()
+                      </h6>
+                    </Container>
+                  );
+                else return <div style={{ display: "none" }} />;
+              }}
+            </Moment>
             {userInfo.gender && (
               <Container className="column">
                 <h6 className="fw-400">Gender</h6>
