@@ -29,7 +29,7 @@ function Chat({
   const isMounted = useRef(false);
   const textInput = useRef(null);
 
-  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState();
   const [value, setValue] = useState(0); // integer state
 
   const checkIsUserTyping = (isTyping) => {

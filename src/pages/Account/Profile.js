@@ -64,7 +64,7 @@ function ProfileSection() {
   const [blockModal, setBlockModal] = useState(false);
   const [canLoadMoreComments, setCanLoadMoreComments] = useState(true);
   const [canLoadMoreVents, setCanLoadMoreVents] = useState(true);
-  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState();
   const [isUserOnline, setIsUserOnline] = useState(false);
   const [postOptions, setPostOptions] = useState(false);
   const [postsSection, setPostsSection] = useState(true);

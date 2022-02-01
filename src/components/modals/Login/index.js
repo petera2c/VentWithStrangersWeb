@@ -13,7 +13,7 @@ function LoginModal({ setActiveModal }) {
   const { register, handleSubmit } = useForm();
 
   const [canSeePassword, setCanSeePassword] = useState(false);
-  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState();
 
   useEffect(() => {
     import("../../../util").then((functions) => {

@@ -25,7 +25,7 @@ import StarterModal from "../modals/Starter";
 import { UserContext } from "../../context";
 
 import { capitolizeFirstChar, isPageActive } from "../../util";
-import { newNotificationCounter, resetUnreadConversationCount } from "./util";
+import { newNotificationCounter } from "./util";
 
 function Header() {
   const isMounted = useRef(false);

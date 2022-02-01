@@ -41,7 +41,12 @@ export const editComment = async (commentID, commentString, setComments) => {
   });
 };
 
-export const getCommentHasLiked = async (commentID, setHasLiked, userID) => {
+export const getCommentHasLiked = async (
+  commentID,
+  isMounted,
+  setHasLiked,
+  userID
+) => {
   const snapshot = await db
     .collection("comment_likes")
     .doc(commentID + "|||" + userID)
@@ -50,7 +55,7 @@ export const getCommentHasLiked = async (commentID, setHasLiked, userID) => {
   if (!snapshot || !snapshot.data()) return;
   let value = snapshot.data();
   value = value.liked;
-  setHasLiked(Boolean(value));
+  if (isMounted.current) setHasLiked(Boolean(value));
 };
 
 export const likeOrUnlikeComment = async (comment, hasLiked, user) => {

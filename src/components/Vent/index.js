@@ -107,9 +107,12 @@ function Vent({
       if (isMounted.current) setVent(newVent);
 
       if (user)
-        hasUserBlockedUser(user.uid, newVent.userID, (isBlocked) => {
-          if (isMounted.current) setIsContentBlocked(isBlocked);
-        });
+        hasUserBlockedUser(
+          isMounted,
+          user.uid,
+          newVent.userID,
+          setIsContentBlocked
+        );
     };
 
     if (!vent) getVent(ventSetUp, ventID);

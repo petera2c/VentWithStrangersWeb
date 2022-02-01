@@ -20,7 +20,7 @@ const StarterModal = loadable(() => import("../../components/modals/Starter"));
 function ChatWithStrangersPage() {
   const { user } = useContext(UserContext);
 
-  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState();
   const [starterModal, setStarterModal] = useState();
 
   useEffect(() => {

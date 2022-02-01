@@ -47,7 +47,7 @@ function AccountSection() {
   const [displayName, setDisplayName] = useState(user.displayName);
   const [email, setEmail] = useState(user.email);
   const [gender, setGender] = useState("");
-  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState();
   const [newPassword, setNewPassword] = useState("");
   const [pronouns, setPronouns] = useState("");
   const [userInfo, setUserInfo] = useState({});

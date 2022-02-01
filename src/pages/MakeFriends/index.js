@@ -16,7 +16,7 @@ const UserComp = loadable(() => import("../../components/User"));
 function MakeFriendsPage() {
   const { user } = useContext(UserContext);
 
-  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState();
   const [matches, setMatches] = useState([]);
   const [starterModal, setStarterModal] = useState(!user);
   const [userInfo, setUserInfo] = useState({});

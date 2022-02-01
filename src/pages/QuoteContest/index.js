@@ -42,7 +42,7 @@ function QuoteContestPage() {
   const [canLoadMoreQuotes, setCanLoadMoreQuotes] = useState(true);
   const [canUserCreateQuote, setCanUserCreateQuote] = useState(true);
   const [contestTimeLeft, setContestTimeLeft] = useState();
-  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState();
   const [myQuote, setMyQuote] = useState("");
   const [quoteID, setQuoteID] = useState();
   const [quotes, setQuotes] = useState([]);
@@ -209,7 +209,12 @@ function Quote({
     }, quote.userID);
 
     if (user) {
-      hasUserBlockedUser(user.uid, quote.userID, setIsContentBlocked);
+      hasUserBlockedUser(
+        isMounted,
+        user.uid,
+        quote.userID,
+        setIsContentBlocked
+      );
       getHasUserLikedQuote(
         quote.id,
         (hasLiked) => {

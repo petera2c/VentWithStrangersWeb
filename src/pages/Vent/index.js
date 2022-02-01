@@ -31,7 +31,7 @@ function VentPage() {
   const { pathname } = location;
 
   const [title, setTitle] = useState("");
-  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState();
   const [ventFound, setVentFound] = useState();
 
   const objectFromMetaData = getMeta("vent-data");

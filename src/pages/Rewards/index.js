@@ -21,7 +21,7 @@ function RewardsPage() {
   const isMounted = useRef(false);
   const { user } = useContext(UserContext);
 
-  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState();
   const [recentRewards, setRecentRewards] = useState([]);
   const [userRewards, setUserRewards] = useState({});
 

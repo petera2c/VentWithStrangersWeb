@@ -17,7 +17,7 @@ function NotificationsPage() {
   const isMounted = useRef(false);
   const { user } = useContext(UserContext);
 
-  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState();
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {

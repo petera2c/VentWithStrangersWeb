@@ -48,7 +48,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
   const [description, setDescription] = useState("");
   const [encouragingText] = useState(selectEncouragingMessage());
   const [isMinified, setIsMinified] = useState(miniVersion);
-  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState();
   const [quote, setQuote] = useState();
   const [saving, setSaving] = useState(false);
   const [starterModal, setStarterModal] = useState(false);

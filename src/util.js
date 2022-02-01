@@ -184,12 +184,19 @@ export const getUserBasicInfo = async (callback, userID) => {
   callback(authorDoc.exists ? { ...authorDoc.data(), id: authorDoc.id } : {});
 };
 
-export const hasUserBlockedUser = async (userID, userID2, callback) => {
+export const hasUserBlockedUser = async (
+  isMounted,
+  userID,
+  userID2,
+  callback
+) => {
   const sortedUserArray = [userID, userID2].sort();
   const blockCheck = await db
     .collection("block_check")
     .doc(sortedUserArray[0] + "|||" + sortedUserArray[1])
     .get();
+
+  if (!isMounted.current) return;
 
   if (blockCheck.exists) return callback(true);
   else return callback(false);

@@ -19,7 +19,7 @@ const Text = loadable(() => import("../../components/views/Text"));
 function SettingsSection() {
   const { user } = useContext(UserContext);
 
-  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState();
 
   const settingsRef = db.collection("users_settings").doc(user.uid);
   const [settingsSnapshot] = useDocument(settingsRef, {

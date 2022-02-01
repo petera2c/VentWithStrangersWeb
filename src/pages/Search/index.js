@@ -27,7 +27,7 @@ function SearchPage() {
     ? decodeURI(location.search.substring(1, location.search.length))
     : "";
 
-  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState();
   const [isUsers, setIsUsers] = useState(true);
   const [users, setUsers] = useState([]);
   const [vents, setVents] = useState([]);

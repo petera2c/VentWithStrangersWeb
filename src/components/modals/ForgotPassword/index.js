@@ -10,7 +10,7 @@ import { sendPasswordReset } from "./util";
 function ForgotPasswordModal({ setActiveModal }) {
   const { register, handleSubmit } = useForm();
 
-  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState();
 
   useEffect(() => {
     import("../../../util").then((functions) => {

@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Container from "../../../components/containers/Container";
 
 function NewRewardModal({ close, newReward }) {
-  const [isMobileOrTablet, setIsMobileOrTablet] = useState("");
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState();
   const [canClose, setCanClose] = useState(false);
 
   useEffect(() => {
