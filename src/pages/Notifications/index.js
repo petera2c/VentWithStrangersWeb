@@ -3,8 +3,6 @@ import loadable from "@loadable/component";
 
 import { UserContext } from "../../context";
 
-import { getNotifications } from "../../components/Header/util";
-
 const Container = loadable(() =>
   import("../../components/containers/Container")
 );
@@ -28,13 +26,16 @@ function NotificationsPage() {
 
     let newNotificationsListenerUnsubscribe;
 
-    newNotificationsListenerUnsubscribe = getNotifications(
-      isMounted,
-      setNotifications,
-      user
-    );
-
-    //readNotifications(notifications);
+    import("../../components/Header/util").then((functions) => {
+      newNotificationsListenerUnsubscribe = functions.getNotifications(
+        isMounted,
+        notifications,
+        () => {},
+        setNotifications,
+        user
+      );
+      functions.readNotifications(notifications);
+    });
 
     return () => {
       isMounted.current = false;

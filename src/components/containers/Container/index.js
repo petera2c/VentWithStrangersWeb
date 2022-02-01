@@ -3,7 +3,7 @@ import React from "react";
 function Container({
   children,
   className,
-  forwardedRef,
+  forwardedRef2,
   id,
   onClick,
   onScroll,
@@ -18,7 +18,7 @@ function Container({
       id={id}
       onClick={onClick}
       onScroll={onScroll}
-      ref={forwardedRef}
+      ref={forwardedRef2}
       style={style}
     >
       {children}

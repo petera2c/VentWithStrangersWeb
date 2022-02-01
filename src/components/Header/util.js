@@ -19,6 +19,8 @@ export const conversationsListener = (navigate, userID) => {
 
 export const getNotifications = (
   isMounted,
+  notifications,
+  setNotificationCounter,
   setNotifications,
   user,
   firstLoad = true
@@ -30,24 +32,27 @@ export const getNotifications = (
     .limitToLast(10)
     .onSnapshot("value", (snapshot) => {
       if (snapshot.docs) {
-        if (isMounted.current)
+        if (isMounted.current) {
+          const newNotifications = snapshot.docs
+            .map((item, i) => {
+              return { id: item.id, ...item.data(), doc: item };
+            })
+            .reverse();
+
+          let counter1 = 0;
+          for (let index in notifications)
+            if (!notifications[index].hasSeen) counter1++;
+
+          let counter2 = 0;
+          for (let index in newNotifications)
+            if (!newNotifications[index].hasSeen) counter2++;
+          if (counter2 > counter1 && !firstLoad) soundNotify();
+
+          setNotificationCounter(counter2 + counter1);
           setNotifications((oldNotifications) => {
-            const newNotifications = snapshot.docs
-              .map((item, i) => {
-                return { id: item.id, ...item.data(), doc: item };
-              })
-              .reverse();
-            let counter1 = 0;
-            for (let index in oldNotifications)
-              if (!oldNotifications[index].hasSeen) counter1++;
-
-            let counter2 = 0;
-            for (let index in newNotifications)
-              if (!newNotifications[index].hasSeen) counter2++;
-            if (counter2 > counter1 && !firstLoad) soundNotify();
-
-            return newNotifications;
+            return [...newNotifications, ...oldNotifications];
           });
+        }
       } else {
         if (isMounted.current) setNotifications([]);
       }
@@ -122,17 +127,6 @@ export const isUserInQueueListener = (isMounted, setIsUserInQueue, userID) => {
 
 export const leaveQueue = async (userID) => {
   await db.collection("chat_queue").doc(userID).delete();
-};
-
-export const newNotificationCounter = (notifications) => {
-  let counter = 0;
-
-  for (let index in notifications) {
-    if (!notifications[index].hasSeen) counter++;
-  }
-
-  if (!counter) return false;
-  else return counter;
 };
 
 export const readNotifications = (notifications) => {

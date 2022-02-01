@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import moment from "moment-timezone";
 import { MentionsInput, Mention } from "react-mentions";
 import { useNavigate } from "react-router-dom";
 import loadable from "@loadable/component";
+import moment from "moment-timezone";
 
 import { faClock } from "@fortawesome/pro-regular-svg-icons/faClock";
 import { faEdit } from "@fortawesome/pro-light-svg-icons/faEdit";
@@ -14,9 +14,6 @@ import { faTrash } from "@fortawesome/pro-duotone-svg-icons/faTrash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { UserContext } from "../../context";
-
-import { swapTags } from "./util";
-import { findPossibleUsersToTag } from "../Vent/util";
 
 const Button = loadable(() => import("../views/Button"));
 const ConfirmAlertModal = loadable(() => import("../containers/Container"));
@@ -36,7 +33,9 @@ function Comment({
   const isMounted = useRef(false);
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
+
   const [comment, setComment] = useState(comment2);
+  const [commentDisplay, setCommentDisplay] = useState("");
   const [commentOptions, setCommentOptions] = useState(false);
   const [commentString, setCommentString] = useState("");
   const [deleteCommentConfirm, setDeleteCommentConfirm] = useState(false);
@@ -49,6 +48,10 @@ function Comment({
 
   useEffect(() => {
     isMounted.current = true;
+
+    import("./util").then((functions) => {
+      setCommentDisplay(functions.swapTags(comment.text));
+    });
 
     if (user)
       import("./util").then((functions) => {
@@ -72,16 +75,16 @@ function Comment({
         );
       functions.getUserBasicInfo((newBasicUserInfo) => {
         if (isMounted.current) setUserBasicInfo(newBasicUserInfo);
-      }, comment2.userID);
+      }, comment.userID);
       functions.getIsUserOnline((isUserOnline) => {
         if (isMounted.current) setIsUserOnline(isUserOnline.state);
-      }, comment2.userID);
+      }, comment.userID);
     });
 
     return () => {
       isMounted.current = false;
     };
-  }, [commentID, comment2.userID, comment.userID, isMounted, user]);
+  }, [commentID, comment.text, comment.userID, isMounted, user]);
 
   if (isContentBlocked) return <div />;
 
@@ -132,7 +135,7 @@ function Comment({
           )}
         </Container>
       </Container>
-      {!editingComment && <p>{swapTags(comment.text)}</p>}
+      {!editingComment && <p>{commentDisplay}</p>}
       {editingComment && (
         <Container className="column x-fill align-end br8">
           <Container className="relative x-fill">
@@ -146,11 +149,13 @@ function Comment({
               <Mention
                 className="mentions__mention"
                 data={(currentTypingTag, callback) => {
-                  findPossibleUsersToTag(
-                    currentTypingTag,
-                    comment.ventID,
-                    callback
-                  );
+                  import("../Vent/util").then((functions) => {
+                    functions.findPossibleUsersToTag(
+                      currentTypingTag,
+                      comment.ventID,
+                      callback
+                    );
+                  });
                 }}
                 markup="@{{[[[__id__]]]||[[[__display__]]]}}"
                 renderSuggestion={(

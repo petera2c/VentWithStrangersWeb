@@ -1,35 +1,29 @@
-import React, { Component } from "react";
+import React, { useEffect, useRef } from "react";
+import loadable from "@loadable/component";
 
-import Container from "../Container";
+const Container = loadable(() => import("../Container"));
 
-class HandleOutsideClickContainer extends Component {
-  componentDidMount() {
-    document.addEventListener("mousedown", this.handleClickOutside);
-  }
+function HandleOutsideClickContainer(props) {
+  const { children, close } = props;
+  const someRef = useRef(null);
 
-  componentWillUnmount() {
-    document.removeEventListener("mousedown", this.handleClickOutside);
-  }
-
-  handleClickOutside = event => {
-    const { close } = this.props;
-    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
-      close();
-    }
+  const handleClickOutside = (event) => {
+    if (someRef && !someRef.current.contains(event.target)) close();
   };
 
-  setWrapperRef = node => {
-    this.wrapperRef = node;
-  };
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
 
-  render() {
-    const { children } = this.props;
-    return (
-      <Container forwardedRef={this.setWrapperRef} {...this.props}>
-        {children}
-      </Container>
-    );
-  }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  return (
+    <Container forwardedRef2={someRef} {...props}>
+      {children}
+    </Container>
+  );
 }
 
 export default HandleOutsideClickContainer;

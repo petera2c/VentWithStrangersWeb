@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useState from "react-usestateref";
 import { sendEmailVerification } from "firebase/auth";
+import loadable from "@loadable/component";
 import { Button, Dropdown, message } from "antd";
 
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
@@ -18,14 +19,14 @@ import { faUserAstronaut } from "@fortawesome/pro-duotone-svg-icons/faUserAstron
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Container from "../containers/Container";
-import MakeAvatar from "../MakeAvatar";
-import NotificationList from "../NotificationList";
-import StarterModal from "../modals/Starter";
 
 import { UserContext } from "../../context";
 
-import { capitolizeFirstChar, isPageActive } from "../../util";
-import { newNotificationCounter } from "./util";
+import { isPageActive } from "../../util";
+
+const DisplayName = loadable(() => import("../views/DisplayName"));
+const NotificationList = loadable(() => import("../NotificationList"));
+const StarterModal = loadable(() => import("../modals/Starter"));
 
 function Header() {
   const isMounted = useRef(false);
@@ -37,6 +38,7 @@ function Header() {
 
   const [activeModal, setActiveModal] = useState("");
   const [isUserInQueue, setIsUserInQueue, isUserInQueueRef] = useState();
+  const [notificationCounter, setNotificationCounter] = useState(0);
   const [notifications, setNotifications] = useState([]);
   const [unreadConversationsCount, setUnreadConversationsCount] = useState();
 
@@ -80,6 +82,8 @@ function Header() {
         );
         newNotificationsListenerUnsubscribe = functions.getNotifications(
           isMounted,
+          notifications,
+          setNotificationCounter,
           setNotifications,
           user
         );
@@ -250,14 +254,13 @@ function Header() {
                   placement="bottomRight"
                   trigger={["click"]}
                 >
-                  <Container className="flex-fill align-center ov-hidden clickable gap4">
-                    <MakeAvatar
+                  <Container className="flex-fill align-center ov-hidden clickable gap8">
+                    <DisplayName
                       displayName={user.displayName}
+                      isLink={false}
+                      noBadgeOnClick
                       userBasicInfo={userBasicInfo}
                     />
-                    <p className="ellipsis">{`Hello, ${capitolizeFirstChar(
-                      user.displayName
-                    )}`}</p>
                     <FontAwesomeIcon icon={faChevronDown} />
                   </Container>
                 </Dropdown>
@@ -282,7 +285,7 @@ function Header() {
                 >
                   <Container className="clickable relative">
                     <FontAwesomeIcon className="blue" icon={faBell} size="2x" />
-                    {newNotificationCounter(notifications) && (
+                    {notificationCounter > 0 && (
                       <p
                         className="fs-14 bg-red white pa4 br8"
                         style={{
@@ -292,7 +295,7 @@ function Header() {
                           pointerEvents: "none",
                         }}
                       >
-                        {newNotificationCounter(notifications)}
+                        {notificationCounter}
                       </p>
                     )}
                   </Container>

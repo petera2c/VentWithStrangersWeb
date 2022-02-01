@@ -1,12 +1,13 @@
 import React, { useState } from "react";
+import loadable from "@loadable/component";
 import { Picker } from "emoji-mart";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSmileBeam } from "@fortawesome/pro-regular-svg-icons/faSmileBeam";
 
-import HandleOutsideClick from "../containers/HandleOutsideClick";
-
-import Button from "../views/Button";
+const HandleOutsideClick = loadable(() =>
+  import("../containers/HandleOutsideClick")
+);
 
 function Emoji({ handleChange, top }) {
   const [displayEmojiDropdown, setDisplayEmojiDropdown] = useState(false);
@@ -32,9 +33,9 @@ function Emoji({ handleChange, top }) {
       className="column relative pa8 mx8"
       close={setDisplayEmojiDropdown}
     >
-      <Button onClick={() => setDisplayEmojiDropdown(!displayEmojiDropdown)}>
+      <button onClick={() => setDisplayEmojiDropdown(!displayEmojiDropdown)}>
         <FontAwesomeIcon className="grey-5" icon={faSmileBeam} />
-      </Button>
+      </button>
       <div style={style}>
         <Picker
           onSelect={(emojiObject) => {

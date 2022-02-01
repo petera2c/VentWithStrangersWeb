@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ReactGA from "react-ga";
 import { Helmet } from "react-helmet";
+import loadable from "@loadable/component";
 
-import Container from "../Container";
-
-import { getMetaData } from "./util";
+const Container = loadable(() => import("../Container"));
 
 function Page({
   children,
@@ -18,16 +17,25 @@ function Page({
 }) {
   const { pathname } = useLocation();
 
+  const [description2, setDescription2] = useState("");
+  const [keywords2, setkeywords2] = useState("");
+  const [title2, settitle2] = useState("");
+
   useEffect(() => {
     if (process.env.NODE_ENV !== "development") {
       ReactGA.initialize("UA-140815372-2");
       ReactGA.pageview(pathname);
     }
 
+    import("./util").then((functions) => {
+      const { description, keywords, title } = functions.getMetaData(pathname);
+      setDescription2(description);
+      setkeywords2(keywords);
+      settitle2(title);
+    });
+
     window.scrollTo(0, 0);
   }, [pathname]);
-
-  const { description2, keywords2, title2 } = getMetaData(pathname); // Variables
 
   return (
     <Container

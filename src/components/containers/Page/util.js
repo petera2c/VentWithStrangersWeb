@@ -74,5 +74,5 @@ export const getMetaData = (page) => {
     title = "Vent To Strangers";
   }
 
-  return { description2: description, keywords2: keywords, title2: title };
+  return { description, keywords, title };
 };

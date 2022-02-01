@@ -25,10 +25,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { UserContext, OnlineUsersContext } from "../../context";
 
-import { capitolizeFirstChar, isPageActive } from "../../util";
-import { newNotificationCounter } from "./util";
+import { isPageActive } from "../../util";
 
 const Container = loadable(() => import("../containers/Container"));
+const DisplayName = loadable(() => import("../views/DisplayName"));
 const MakeAvatar = loadable(() => import("../MakeAvatar"));
 const StarterModal = loadable(() => import("../modals/Starter"));
 
@@ -46,6 +46,7 @@ function Header() {
   const [accountSectionActive, setAccountSectionActive] = useState(false);
   const [isUserInQueue, setIsUserInQueue, isUserInQueueRef] = useState();
   const [mobileHeaderActive, setMobileHeaderActive] = useState(false);
+  const [notificationCounter, setNotificationCounter] = useState(0);
   const [notifications, setNotifications] = useState([]);
   const [showNotificationDropdown, setShowNotificationDropdown] = useState(
     false
@@ -103,6 +104,8 @@ function Header() {
         );
         newNotificationsListenerUnsubscribe = functions.getNotifications(
           isMounted,
+          notifications,
+          setNotificationCounter,
           setNotifications,
           user
         );
@@ -169,21 +172,20 @@ function Header() {
                 }}
                 size="2x"
               />
-              {newNotificationCounter(notifications) &&
-                !showNotificationDropdown && (
-                  <p
-                    className="fs-14 bg-red white pa4 br8"
-                    style={{
-                      position: "absolute",
-                      top: "-12px",
-                      right: "-12px",
-                      pointerEvents: "none",
-                      zIndex: 1,
-                    }}
-                  >
-                    {newNotificationCounter(notifications)}
-                  </p>
-                )}
+              {notificationCounter > 0 && !showNotificationDropdown && (
+                <p
+                  className="fs-14 bg-red white pa4 br8"
+                  style={{
+                    position: "absolute",
+                    top: "-12px",
+                    right: "-12px",
+                    pointerEvents: "none",
+                    zIndex: 1,
+                  }}
+                >
+                  {notificationCounter}
+                </p>
+              )}
             </Link>
           )}
 
@@ -237,14 +239,12 @@ function Header() {
                   setAccountSectionActive(!accountSectionActive);
                 }}
               >
-                <MakeAvatar
+                <DisplayName
                   displayName={user.displayName}
+                  isLink={false}
+                  noBadgeOnClick
                   userBasicInfo={userBasicInfo}
                 />
-
-                <p className="mr8">{`Hello, ${capitolizeFirstChar(
-                  user.displayName
-                )}`}</p>
                 <FontAwesomeIcon icon={faChevronDown} />
               </Space>
               {accountSectionActive && (
