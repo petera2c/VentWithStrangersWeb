@@ -25,14 +25,8 @@ export const calculateKarma = (usereBasicInfo) => {
 };
 
 export const canUserPost = (userBasicInfo) => {
-  if (calculateKarma(userBasicInfo) <= -50) {
-    message.error(
-      "Your karma is currently " +
-        calculateKarma(userBasicInfo) +
-        ". This indicates you have not been following our rules and are now forbidden to comment or post."
-    );
-    return false;
-  } else return true;
+  if (calculateKarma(userBasicInfo) <= -50) return false;
+  else return true;
 };
 
 export const capitolizeFirstChar = (string) => {
@@ -66,9 +60,17 @@ export const combineObjectWithID = (id, object) => {
   return object;
 };
 
-export const countdown = (isMounted, momentTimeout, setTimeout) => {
+export const countdown = (
+  isMounted,
+  momentTimeout,
+  setTimeout,
+  setTimeOutFormatted
+) => {
   if (isMounted.current) {
     setTimeout((oldUserVentTimeOut) => {
+      if (setTimeOutFormatted) {
+        setTimeOutFormatted(formatSeconds(oldUserVentTimeOut));
+      }
       if (oldUserVentTimeOut) return oldUserVentTimeOut - 1;
       else
         return Math.round(new moment(momentTimeout).diff(new moment()) / 1000);

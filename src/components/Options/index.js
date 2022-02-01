@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import loadable from "@loadable/component";
 import { Dropdown } from "antd";
 
 import { faEdit } from "@fortawesome/pro-solid-svg-icons/faEdit";
@@ -9,11 +10,8 @@ import { faUserLock } from "@fortawesome/pro-solid-svg-icons/faUserLock";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Container from "../containers/Container";
-
-import ConfirmAlertModal from "../modals/ConfirmAlert";
-import ReportModal from "../modals/Report";
-
-import { blockUser } from "../../util";
+const ConfirmAlertModal = loadable(() => import("../modals/ConfirmAlert"));
+const ReportModal = loadable(() => import("../modals/Report"));
 
 function OptionsComponent({
   deleteFunction,
@@ -104,7 +102,11 @@ function OptionsComponent({
         <ConfirmAlertModal
           close={() => setBlockModal(false)}
           message="Blocking this user will remove you from all conversations with this user and you will no longer see any of their content. Are you sure you would like to block this user?"
-          submit={() => blockUser(userID, objectUserID)}
+          submit={() => {
+            import("../../util").then((functions) => {
+              functions.blockUser(userID, objectUserID);
+            });
+          }}
           title="Block User"
         />
       )}

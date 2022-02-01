@@ -1,8 +1,9 @@
 import React from "react";
-import moment from "moment-timezone";
 import { Link } from "react-router-dom";
+import loadable from "@loadable/component";
 
-import Container from "../containers/Container";
+const Moment = loadable.lib(() => import("moment-timezone"));
+const Container = loadable(() => import("../containers/Container"));
 
 function NotificationList({ notifications }) {
   return (
@@ -19,7 +20,11 @@ function NotificationList({ notifications }) {
           >
             <h6>{notification.message}</h6>
             <p className="grey-1 ic">
-              {moment(notification.server_timestamp).fromNow()}
+              <Moment>
+                {({ default: moment }) =>
+                  moment(notification.server_timestamp).fromNow()
+                }
+              </Moment>
             </p>
           </Link>
         );

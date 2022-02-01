@@ -29,7 +29,6 @@ import { isPageActive } from "../../util";
 
 const Container = loadable(() => import("../containers/Container"));
 const DisplayName = loadable(() => import("../views/DisplayName"));
-const MakeAvatar = loadable(() => import("../MakeAvatar"));
 const StarterModal = loadable(() => import("../modals/Starter"));
 
 function Header() {

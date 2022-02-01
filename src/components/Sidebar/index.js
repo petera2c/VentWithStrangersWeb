@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-
+import loadable from "@loadable/component";
 import { Space } from "antd";
 
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
@@ -12,13 +12,11 @@ import { faUserFriends } from "@fortawesome/pro-duotone-svg-icons/faUserFriends"
 import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Container from "../containers/Container";
-import MakeAd from "../MakeAd";
-import MakeAvatar from "../MakeAvatar";
-
 import { OnlineUsersContext, UserContext } from "../../context";
 
-import { isPageActive } from "../../util";
+const Container = loadable(() => import("../containers/Container"));
+const MakeAd = loadable(() => import("../MakeAd"));
+const MakeAvatar = loadable(() => import("../MakeAvatar"));
 
 function Sidebar() {
   const isMounted = useRef(false);
@@ -133,12 +131,20 @@ function SideBarLink({
   text,
   totalOnlineUsers,
 }) {
+  const [isPageActive, setIsPageActive] = useState(false);
+
+  useEffect(() => {
+    import("../../util").then((functions) => {
+      setIsPageActive(functions.isPageActive(link, pathname));
+    });
+  }, [link, pathname]);
+
   if (link)
     return (
       <Link
         className={
           "align-center button-4 clickable py8 " +
-          isPageActive(link, pathname) +
+          isPageActive +
           (firstOnlineUsers ? " grid-2" : " grid-1")
         }
         to={link}

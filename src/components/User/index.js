@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import loadable from "@loadable/component";
 import moment from "moment-timezone";
 import { Space } from "antd";
 
@@ -11,27 +12,21 @@ import { faPray } from "@fortawesome/pro-solid-svg-icons/faPray";
 import { faSchool } from "@fortawesome/pro-solid-svg-icons/faSchool";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Button from "../views/Button";
-import Container from "../containers/Container";
-import KarmaBadge from "../KarmaBadge";
-import StarterModal from "../modals/Starter";
-import MakeAvatar from "../MakeAvatar";
-
 import { UserContext } from "../../context";
 
-import { startConversation } from "../../components/Vent/util";
 import {
   educationList,
   kidsList,
   partyingList,
   politicalBeliefsList,
 } from "../../PersonalOptions";
-import {
-  calculateKarma,
-  capitolizeFirstChar,
-  getUserBasicInfo,
-  userSignUpProgress,
-} from "../../util";
+
+const Moment = loadable.lib(() => import("moment-timezone"));
+
+const Container = loadable(() => import("../containers/Container"));
+const DisplayName = loadable(() => import("../views/DisplayName"));
+const StarterModal = loadable(() => import("../modals/Starter"));
+const MakeAvatar = loadable(() => import("../MakeAvatar"));
 
 function UserComponent({
   additionalUserInfo,
@@ -49,12 +44,21 @@ function UserComponent({
   const [userInfo, setUserInfo] = useState({ displayName });
   const [starterModal, setStarterModal] = useState(false);
 
+  const [karmaPoints, setKarmaPoints] = useState(0);
+  const [capitolizedDisplayName, setCapitolizedDisplayName] = useState(
+    displayName
+  );
   useEffect(() => {
     isMounted.current = true;
 
-    getUserBasicInfo((newUserInfo) => {
-      if (isMounted) setUserInfo(newUserInfo);
-    }, userID);
+    import("../../util").then((functions) => {
+      functions.getUserBasicInfo((newUserInfo) => {
+        if (isMounted) setUserInfo(newUserInfo);
+      }, userID);
+
+      setKarmaPoints(functions.calculateKarma(userInfo));
+      setCapitolizedDisplayName(functions.capitolizeFirstChar(displayName));
+    });
 
     return () => {
       isMounted.current = false;
@@ -66,7 +70,7 @@ function UserComponent({
       className="button-6 flex column container twentyvw ov-hidden bg-white br8 pa16"
       to={"/profile?" + userID}
     >
-      <Container className="column x-fill flex-fill gap8" direction="vertical">
+      <Container className="column x-fill flex-fill gap8">
         <Container className="x-fill full-center">
           <MakeAvatar
             displayName={userInfo.displayName}
@@ -77,15 +81,16 @@ function UserComponent({
 
         <Container className="flex-fill justify-end column gap4">
           <Container className="x-fill align-center wrap gap8">
-            <Container className="flex-fill align-center ov-hidden gap8">
-              {isOnline && <div className="online-dot" />}
-              <h1 className="primary ellipsis lh-1">
-                {capitolizeFirstChar(userInfo.displayName)}
-              </h1>
-            </Container>
-            <KarmaBadge userBasicInfo={userInfo} />
+            <DisplayName
+              big
+              displayName={userInfo.displayName}
+              isLink={false}
+              isUserOnline
+              noAvatar
+              userBasicInfo={userInfo}
+            />
           </Container>
-          <p className="lh-1">{calculateKarma(userInfo)} Karma Points</p>
+          <p className="lh-1">{karmaPoints} Karma Points</p>
         </Container>
         {(userInfo.birth_date || userInfo.gender || userInfo.pronouns) && (
           <Container className="gap8">
@@ -162,30 +167,37 @@ function UserComponent({
         {showMessageUser && (
           <Container className="column flex-fill justify-end gap8">
             {(!user || (user && user.uid !== userID)) && (
-              <Button
+              <button
                 className="x-fill button-2 px16 py8 br8"
-                onClick={(e) => {
+                onClick={async (e) => {
                   e.preventDefault();
 
-                  const userInteractionIssues = userSignUpProgress(user);
+                  const userInteractionIssues = await import("../../util").then(
+                    (functions) => {
+                      return functions.userSignUpProgress(user);
+                    }
+                  );
 
                   if (userInteractionIssues) {
                     if (userInteractionIssues === "NSI") setStarterModal(true);
                     return;
                   }
 
-                  startConversation(navigate, user, userID);
+                  import("../../components/Vent/util").then((functions) => {
+                    functions.startConversation(navigate, user, userID);
+                  });
                 }}
               >
                 <FontAwesomeIcon className="mr8" icon={faComments} />
-                <p className="ic ellipsis">
-                  Message {capitolizeFirstChar(userInfo.displayName)}
-                </p>
-              </Button>
+                <p className="ic ellipsis">Message {capitolizedDisplayName}</p>
+              </button>
             )}
             {lastOnline && (
               <p className="x-fill lh-1">
-                Last Seen: {moment(lastOnline).fromNow()}
+                Last Seen:
+                <Moment>
+                  {({ default: moment }) => moment(lastOnline).fromNow()}
+                </Moment>
               </p>
             )}
           </Container>

@@ -1,7 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import loadable from "@loadable/component";
-import { Button, Space } from "antd";
 
 import { UserContext } from "../../context";
 
@@ -23,10 +21,10 @@ function SubscribeColumn({ slot, uniqueShareLink = true }) {
   if (!userSubscription && !isMobileOrTablet)
     return (
       <Container className="container ad column pl16">
-        <Container className="sticky top-0 column x-fill">
+        <Container className="sticky top-0 column x-fill gap16">
           {uniqueShareLink && <UniqueShareLink user={user} />}
           <MakeAd
-            className="mt16"
+            className=""
             slot={slot}
             userSubscription={userSubscription}
           />

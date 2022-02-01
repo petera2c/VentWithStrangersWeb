@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { Button, message, Space } from "antd";
+import loadable from "@loadable/component";
+import { Button, message } from "antd";
 
-import { createShareLink, getSecondUID } from "./util";
+const Container = loadable(() => import("../containers/Container"));
 
 function UniqueShareLink({ user }) {
   const [secondUID, setSecondUID] = useState("");
 
   useEffect(() => {
-    if (user) getSecondUID(setSecondUID, user.uid);
+    if (user) {
+      import("./util").then((functions) => {
+        functions.getSecondUID(setSecondUID, user.uid);
+      });
+    }
   }, [user]);
 
   return (
-    <Space align="start" className="x-fill">
-      <Space
-        align="center"
-        className="column bg-white pa16 br8"
-        direction="vertical"
-      >
+    <Container className="x-fill align-start gap8">
+      <Container className="column align-center bg-white br8 gap8 pa16">
         <h4 className="tac">Gain 50 karma points!</h4>
         <p className="tac">
           Share our site! No one will know your profile or username from your
@@ -25,7 +26,11 @@ function UniqueShareLink({ user }) {
         </p>
         <Button
           onClick={() => {
-            navigator.clipboard.writeText(createShareLink(secondUID));
+            import("./util").then((functions) => {
+              navigator.clipboard.writeText(
+                functions.createShareLink(secondUID)
+              );
+            });
             message.success("Copied Successfully :)");
           }}
           size="large"
@@ -33,8 +38,8 @@ function UniqueShareLink({ user }) {
         >
           Get Share Link!
         </Button>
-      </Space>
-    </Space>
+      </Container>
+    </Container>
   );
 }
 

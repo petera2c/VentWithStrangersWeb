@@ -4,17 +4,38 @@ import db from "../../config/firebase";
 
 import { message } from "antd";
 
-import { formatSeconds } from "../../util";
+import { calculateKarma } from "../../util";
 
-export const createPlaceholderDescription = (
-  encouragingText,
-  isBirthdayPost,
+export const checks = async (
+  canUserPost,
+  setStarterModal,
+  user,
+  userBasicInfo,
+  ventID,
   userVentTimeOut
 ) => {
-  if (isBirthdayPost) return "Have the best birthday ever!";
-  else if (userVentTimeOut > 0)
-    return "You can vent again in " + formatSeconds(userVentTimeOut);
-  else return encouragingText + " :)";
+  if (userVentTimeOut && !ventID)
+    return message.info("You need to wait to vent again");
+
+  const userInteractionIssues = await import("../../util").then((functions) => {
+    return functions.userSignUpProgress(user);
+  });
+
+  if (userInteractionIssues) {
+    if (userInteractionIssues === "NSI") setStarterModal(true);
+    return false;
+  }
+
+  if (!canUserPost) {
+    message.error(
+      "Your karma is currently " +
+        calculateKarma(userBasicInfo) +
+        ". This indicates you have not been following our rules and are now forbidden to comment or post."
+    );
+    return false;
+  }
+
+  return true;
 };
 
 export const getQuote = async (isMounted, setQuote) => {
@@ -89,7 +110,6 @@ export const getVent = async (setDescription, setTags, setTitle, ventID) => {
 
 export const saveVent = async (
   callback,
-  checks,
   isBirthdayPost,
   tags,
   ventObject,
@@ -144,12 +164,13 @@ export const updateTags = (setTags, tag) => {
     ) {
       message.info("Tag is already added :)");
       return oldTags;
-    } else if (!oldTags) return [tag];
-    else
+      return [tag];
+    } else {
       return [tag, ...oldTags].sort((a, b) => {
         if (a.objectID < b.objectID) return -1;
         if (a.objectID > b.objectID) return 1;
         return 0;
       });
+    }
   });
 };
