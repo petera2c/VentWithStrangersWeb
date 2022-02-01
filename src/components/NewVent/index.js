@@ -11,6 +11,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { UserContext } from "../../context";
 
+import { checks } from "./util";
+
 const Container = loadable(() => import("../containers/Container"));
 const Emoji = loadable(() => import("../Emoji"));
 const HandleOutsideClick = loadable(() =>
@@ -43,9 +45,9 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
   const [userVentTimeOutFormatted, setUserVentTimeOutFormatted] = useState("");
   const [ventTags, setVentTags] = useState([]);
 
-  const [canUserPost, setCanUserPost] = useState(false);
   const [placeholderText, setPlaceholderText] = useState("");
   const [quoteDisplayName, setQuoteDisplayName] = useState("Anonymous");
+  const [postingDisableFunction, setPostingDisableFunction] = useState();
 
   useEffect(() => {
     isMounted.current = true;
@@ -75,16 +77,22 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
       functions.getQuote(isMounted, setQuote);
       setPlaceholderText(functions.selectEncouragingMessage());
 
-      if (user)
+      if (user) {
         functions.getUserVentTimeOut((res) => {
+          import("../../util").then(async (functions2) => {
+            const temp = await functions.checks(
+              functions2.isUserKarmaSufficient(userBasicInfo),
+              setStarterModal,
+              user,
+              userBasicInfo,
+              ventID,
+              res
+            );
+            setPostingDisableFunction(temp);
+          });
+
           if (res) {
             import("../../util").then((functions) => {
-              functions.countdown(
-                isMounted,
-                res,
-                setUserVentTimeOut,
-                setUserVentTimeOutFormatted
-              );
               setInterval(
                 () =>
                   functions.countdown(
@@ -98,10 +106,19 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
             });
           }
         }, user.uid);
-    });
-
-    import("../../util").then((functions) => {
-      setCanUserPost(functions.canUserPost(userBasicInfo));
+      } else {
+        import("../../util").then(async (functions2) => {
+          const temp = await functions.checks(
+            true,
+            setStarterModal,
+            user,
+            userBasicInfo,
+            ventID,
+            false
+          );
+          setPostingDisableFunction(temp);
+        });
+      }
     });
 
     return () => {
@@ -147,20 +164,8 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
           )}
           <TextArea
             className="x-fill py8 px16 br4"
-            onChange={async (event) => {
-              if (
-                !(await import("./util").then((functions) => {
-                  return functions.checks(
-                    canUserPost,
-                    setStarterModal,
-                    user,
-                    userBasicInfo,
-                    ventID,
-                    userVentTimeOut
-                  );
-                }))
-              )
-                return;
+            onChange={(event) => {
+              if (postingDisableFunction) return postingDisableFunction();
 
               setDescription(event.target.value);
             }}
@@ -177,20 +182,8 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
           />
           {!isMobileOrTablet && (
             <Emoji
-              handleChange={async (emoji) => {
-                if (
-                  !(await import("./util").then((functions) => {
-                    return functions.checks(
-                      canUserPost,
-                      setStarterModal,
-                      user,
-                      userBasicInfo,
-                      ventID,
-                      userVentTimeOut
-                    );
-                  }))
-                )
-                  return;
+              handleChange={(emoji) => {
+                if (postingDisableFunction) return postingDisableFunction();
 
                 setDescription(description + emoji);
               }}
@@ -202,20 +195,8 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
             <h5 className="fw-400">Title</h5>
             <input
               className="x-fill py8 px16 br4"
-              onChange={async (e) => {
-                if (
-                  !(await import("./util").then((functions) => {
-                    return functions.checks(
-                      canUserPost,
-                      setStarterModal,
-                      user,
-                      userBasicInfo,
-                      ventID,
-                      userVentTimeOut
-                    );
-                  }))
-                )
-                  return;
+              onChange={(e) => {
+                if (postingDisableFunction) return postingDisableFunction();
 
                 setTitle(e.target.value);
                 setSaving(false);
@@ -232,20 +213,8 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
 
             <input
               className="x-fill py8 px16 br4"
-              onChange={async (e) => {
-                if (
-                  !(await import("./util").then((functions) => {
-                    return functions.checks(
-                      canUserPost,
-                      setStarterModal,
-                      user,
-                      userBasicInfo,
-                      ventID,
-                      userVentTimeOut
-                    );
-                  }))
-                )
-                  return;
+              onChange={(e) => {
+                if (postingDisableFunction) return postingDisableFunction();
 
                 tagsIndex
                   .search(e.target.value, {
@@ -265,16 +234,11 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
               <Container className="wrap gap8">
                 {ventTags.map((tagHit, index) => (
                   <Tag
-                    canUserPost={canUserPost}
                     key={tagHit.objectID}
-                    setStarterModal={setStarterModal}
+                    postingDisableFunction={postingDisableFunction}
                     setTags={setTags}
                     tagHit={tagHit}
                     tags={tags}
-                    user={user}
-                    userBasicInfo={userBasicInfo}
-                    userVentTimeOut={userVentTimeOut}
-                    ventID={ventID}
                   />
                 ))}
               </Container>
@@ -287,17 +251,12 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
             <Container className="x-fill wrap gap8">
               {tags.map((tag, index) => (
                 <SelectedTag
-                  canUserPost={canUserPost}
+                  postingDisableFunction={postingDisableFunction}
                   index={index}
                   key={tag.objectID}
-                  setStarterModal={setStarterModal}
                   setTags={setTags}
                   tag={tag}
                   tags={tags}
-                  user={user}
-                  userBasicInfo={userBasicInfo}
-                  userVentTimeOut={userVentTimeOut}
-                  ventID={ventID}
                 />
               ))}
             </Container>
@@ -309,20 +268,8 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
             {!saving && (
               <button
                 className="bg-blue white px64 py8 br4"
-                onClick={async () => {
-                  if (
-                    !(await import("./util").then((functions) => {
-                      return functions.checks(
-                        canUserPost,
-                        setStarterModal,
-                        user,
-                        userBasicInfo,
-                        ventID,
-                        userVentTimeOut
-                      );
-                    }))
-                  )
-                    return;
+                onClick={() => {
+                  if (postingDisableFunction) return postingDisableFunction();
 
                   if (description && title) {
                     setTagText("");
@@ -400,17 +347,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
   );
 }
 
-function Tag({
-  canUserPost,
-  setStarterModal,
-  setTags,
-  tagHit,
-  tags,
-  user,
-  userBasicInfo,
-  userVentTimeOut,
-  ventID,
-}) {
+function Tag({ postingDisableFunction, setTags, tagHit, tags }) {
   const [viewTag, setViewTag] = useState("");
 
   useEffect(() => {
@@ -422,23 +359,8 @@ function Tag({
   return (
     <button
       className="button-10 br4 px8 py4"
-      onClick={async () => {
-        const test = await import("./util").then(async (functions) => {
-          const something = await functions.checks(
-            canUserPost,
-            setStarterModal,
-            user,
-            userBasicInfo,
-            ventID,
-            userVentTimeOut
-          );
-
-          return something;
-        });
-
-        if (!test) {
-          return;
-        }
+      onClick={() => {
+        if (postingDisableFunction) return postingDisableFunction();
 
         if (tags && tags.length >= 3) {
           return message.info("You can not set more than 3 tags in a vent!");
@@ -453,18 +375,7 @@ function Tag({
   );
 }
 
-function SelectedTag({
-  canUserPost,
-  index,
-  setStarterModal,
-  setTags,
-  tag,
-  tags,
-  user,
-  userBasicInfo,
-  userVentTimeOut,
-  ventID,
-}) {
+function SelectedTag({ index, postingDisableFunction, setTags, tag, tags }) {
   const [viewTag, setViewTag] = useState("");
 
   useEffect(() => {
@@ -476,20 +387,8 @@ function SelectedTag({
   return (
     <Container
       className="button-2 br4 gap8 pa8"
-      onClick={async () => {
-        if (
-          !(await import("./util").then((functions) => {
-            return functions.checks(
-              canUserPost,
-              setStarterModal,
-              user,
-              userBasicInfo,
-              ventID,
-              userVentTimeOut
-            );
-          }))
-        )
-          return;
+      onClick={() => {
+        if (postingDisableFunction) return postingDisableFunction();
 
         let temp = [...tags];
         temp.splice(index, 1);

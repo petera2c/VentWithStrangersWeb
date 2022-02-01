@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import loadable from "@loadable/component";
 import moment from "moment-timezone";
 import { MentionsInput, Mention } from "react-mentions";
 import { Button, Dropdown } from "antd";
@@ -9,42 +10,19 @@ import { faClock } from "@fortawesome/pro-regular-svg-icons/faClock";
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Comment from "../Comment";
-import ConfirmAlertModal from "../modals/ConfirmAlert";
 import Container from "../containers/Container";
-import KarmaBadge from "../KarmaBadge";
-import LoadingHeart from "../loaders/Heart";
-import MakeAvatar from "../MakeAvatar";
-import Options from "../Options";
-import StarterModal from "../modals/Starter";
 
 import { UserContext } from "../../context";
 
-import {
-  blockUser,
-  canUserPost,
-  capitolizeFirstChar,
-  getIsUserOnline,
-  getUserBasicInfo,
-  hasUserBlockedUser,
-  isUserAccountNew,
-  userSignUpProgress,
-  viewTag,
-} from "../../util";
-import {
-  commentVent,
-  deleteVent,
-  findPossibleUsersToTag,
-  getVent,
-  getVentComments,
-  getVentDescription,
-  getVentPartialLink,
-  likeOrUnlikeVent,
-  newVentCommentListener,
-  reportVent,
-  startConversation,
-  ventHasLiked,
-} from "./util";
+import { capitolizeFirstChar } from "../../util";
+
+const Comment = loadable(() => import("../Comment"));
+const ConfirmAlertModal = loadable(() => import("../modals/ConfirmAlert"));
+const KarmaBadge = loadable(() => import("../KarmaBadge"));
+const LoadingHeart = loadable(() => import("../loaders/Heart"));
+const MakeAvatar = loadable(() => import("../MakeAvatar"));
+const Options = loadable(() => import("../Options"));
+const StarterModal = loadable(() => import("../modals/Starter"));
 
 const SmartLink = ({ children, className, disablePostOnClick, to }) => {
   if (disablePostOnClick || !to) {
@@ -72,7 +50,7 @@ function Vent({
   const textInput = useRef(null);
   const { user, userBasicInfo } = useContext(UserContext);
 
-  const [activeSort, setActiveSort] = useState("first");
+  const [activeSort, setActiveSort] = useState("First");
   const [author, setAuthor] = useState({});
   const [blockModal, setBlockModal] = useState(false);
   const [canLoadMoreComments, setCanLoadMoreComments] = useState(false);
@@ -86,6 +64,16 @@ function Vent({
 
   const navigate = useNavigate();
 
+  const [isUserAccountNew, setIsUserAccountNew] = useState();
+  const [signUpProgressFunction, setSignUpProgressFunction] = useState();
+  const [partialLink, setPartialLink] = useState("");
+  const [ventPreview, setVentPreview] = useState("");
+
+  const [
+    isUserKarmaSufficientFunction,
+    setIsUserKarmaSufficientFunction,
+  ] = useState();
+
   useEffect(() => {
     isMounted.current = true;
 
@@ -95,57 +83,72 @@ function Vent({
       if (setTitle && newVent && newVent.title && isMounted.current)
         setTitle(newVent.title);
 
-      getUserBasicInfo((author) => {
-        if (isMounted.current) setAuthor(author);
-      }, newVent.userID);
+      import("../../util").then((functions) => {
+        functions.getIsUserOnline((isUserOnline) => {
+          if (isMounted.current) setIsUserOnline(isUserOnline.state);
+        }, newVent.userID);
 
-      getIsUserOnline((isUserOnline) => {
-        if (isMounted.current) setIsUserOnline(isUserOnline.state);
-      }, newVent.userID);
+        functions.getUserBasicInfo((author) => {
+          if (isMounted.current) setAuthor(author);
+        }, newVent.userID);
+
+        if (user)
+          functions.hasUserBlockedUser(
+            isMounted,
+            user.uid,
+            newVent.userID,
+            setIsContentBlocked
+          );
+
+        setIsUserAccountNew(functions.isUserAccountNew(userBasicInfo));
+
+        setSignUpProgressFunction(
+          functions.userSignUpProgressFunction(setStarterModal, user)
+        );
+      });
 
       if (isMounted.current) setVent(newVent);
-
-      if (user)
-        hasUserBlockedUser(
-          isMounted,
-          user.uid,
-          newVent.userID,
-          setIsContentBlocked
-        );
     };
 
-    if (!vent) getVent(ventSetUp, ventID);
-    else ventSetUp(vent);
+    import("./util").then((functions) => {
+      if (!vent) {
+        functions.getVent(ventSetUp, ventID);
+      } else ventSetUp(vent);
 
-    if (!searchPreviewMode && displayCommentField)
-      newCommentListenerUnsubscribe = newVentCommentListener(
-        isMounted,
-        setCanLoadMoreComments,
-        setComments,
-        user ? user.uid : "",
-        ventID
-      );
+      if (!searchPreviewMode && displayCommentField)
+        newCommentListenerUnsubscribe = functions.newVentCommentListener(
+          isMounted,
+          setCanLoadMoreComments,
+          setComments,
+          user ? user.uid : "",
+          ventID
+        );
 
-    if (!searchPreviewMode && !previewMode) {
-      getVentComments(
-        activeSort,
-        comments,
-        isMounted,
-        setCanLoadMoreComments,
-        setComments,
-        false,
-        ventID
-      );
-    }
+      if (!searchPreviewMode && !previewMode) {
+        functions.getVentComments(
+          activeSort,
+          comments,
+          isMounted,
+          setCanLoadMoreComments,
+          setComments,
+          false,
+          ventID
+        );
+      }
 
-    if (user && !searchPreviewMode)
-      ventHasLiked(
-        (newHasLiked) => {
-          if (isMounted.current) setHasLiked(newHasLiked);
-        },
-        user.uid,
-        ventID
-      );
+      if (user && !searchPreviewMode)
+        functions.ventHasLiked(
+          (newHasLiked) => {
+            if (isMounted.current) setHasLiked(newHasLiked);
+          },
+          user.uid,
+          ventID
+        );
+
+      setPartialLink(functions.getVentPartialLink(vent));
+
+      setVentPreview(functions.getVentDescription(previewMode, vent));
+    });
 
     return () => {
       isMounted.current = false;
@@ -209,15 +212,21 @@ function Vent({
               )}
               {user && (
                 <Options
-                  deleteFunction={(ventID) => deleteVent(navigate, ventID)}
+                  deleteFunction={(ventID) => {
+                    import("./util").then((functions) => {
+                      functions.deleteVent(navigate, ventID);
+                    });
+                  }}
                   editFunction={() => {
                     navigate("/vent-to-strangers?" + vent.id);
                   }}
                   objectID={vent.id}
                   objectUserID={vent.userID}
-                  reportFunction={(option) =>
-                    reportVent(option, user.uid, vent.id)
-                  }
+                  reportFunction={(option) => {
+                    import("./util").then((functions) => {
+                      functions.reportVent(option, user.uid, vent.id);
+                    });
+                  }}
                   userID={user.uid}
                 />
               )}
@@ -226,14 +235,7 @@ function Vent({
             {vent.new_tags && vent.new_tags.length > 0 && (
               <Container className="wrap gap8">
                 {vent.new_tags.map((tag, index) => (
-                  <Link
-                    className="button-4 fs-16"
-                    key={tag}
-                    onClick={(e) => e.stopPropagation()}
-                    to={"/tags/" + tag}
-                  >
-                    {viewTag(tag)}
-                  </Link>
+                  <Tag key={index} tag={tag} />
                 ))}
               </Container>
             )}
@@ -244,7 +246,7 @@ function Vent({
               (disablePostOnClick ? "" : "clickable")
             }
             disablePostOnClick={disablePostOnClick}
-            to={vent && vent.title && vent.id ? getVentPartialLink(vent) : ""}
+            to={vent && vent.title && vent.id ? partialLink : ""}
           >
             {setTitle && <h1 className="fs-20 primary mb8">{vent.title}</h1>}
             {!setTitle && <h6 className="fs-20 primary mb8">{vent.title}</h6>}
@@ -256,7 +258,7 @@ function Vent({
                 lineClamp: displayCommentField ? 150 : 3,
               }}
             >
-              {getVentDescription(previewMode, vent)}
+              {ventPreview}
             </p>
             <Container className="x-fill align-center justify-end">
               <FontAwesomeIcon className="grey-5 mr8" icon={faClock} />
@@ -283,21 +285,16 @@ function Vent({
                     onClick={(e) => {
                       e.preventDefault();
 
-                      const userInteractionIssues = userSignUpProgress(user);
-
-                      if (userInteractionIssues) {
-                        if (userInteractionIssues === "NSI")
-                          setStarterModal(true);
-                        return;
-                      }
-
-                      likeOrUnlikeVent(
-                        hasLiked,
-                        setHasLiked,
-                        setVent,
-                        user,
-                        vent
-                      );
+                      if (signUpProgressFunction) signUpProgressFunction();
+                      import("./util").then((functions) => {
+                        functions.likeOrUnlikeVent(
+                          hasLiked,
+                          setHasLiked,
+                          setVent,
+                          user,
+                          vent
+                        );
+                      });
                     }}
                     src={
                       hasLiked
@@ -315,11 +312,7 @@ function Vent({
                 <SmartLink
                   className="flex align-center gap4"
                   disablePostOnClick={disablePostOnClick}
-                  to={
-                    vent && vent.title && vent.id
-                      ? getVentPartialLink(vent)
-                      : ""
-                  }
+                  to={vent && vent.title && vent.id ? partialLink : ""}
                 >
                   <FontAwesomeIcon
                     className="clickable blue"
@@ -339,15 +332,11 @@ function Vent({
                 <Container
                   className="button-2 wrap px16 py8 br8"
                   onClick={() => {
-                    const userInteractionIssues = userSignUpProgress(user);
+                    if (signUpProgressFunction) signUpProgressFunction();
 
-                    if (userInteractionIssues) {
-                      if (userInteractionIssues === "NSI")
-                        setStarterModal(true);
-                      return;
-                    }
-
-                    startConversation(navigate, user, vent.userID);
+                    import("./util").then((functions) => {
+                      functions.startConversation(navigate, user, vent.userID);
+                    });
                   }}
                 >
                   <FontAwesomeIcon className="mr8" icon={faComments} />
@@ -369,16 +358,19 @@ function Vent({
                         <p
                           className="button-4 py8"
                           onClick={() => {
-                            setActiveSort("first");
-                            getVentComments(
-                              "first",
-                              [],
-                              isMounted,
-                              setCanLoadMoreComments,
-                              setComments,
-                              false,
-                              ventID ? ventID : vent.id
-                            );
+                            setActiveSort("First");
+
+                            import("./util").then((functions) => {
+                              functions.getVentComments(
+                                "First",
+                                [],
+                                isMounted,
+                                setCanLoadMoreComments,
+                                setComments,
+                                false,
+                                ventID ? ventID : vent.id
+                              );
+                            });
                           }}
                         >
                           First
@@ -386,16 +378,19 @@ function Vent({
                         <p
                           className="button-4 py8"
                           onClick={() => {
-                            setActiveSort("best");
-                            getVentComments(
-                              "best",
-                              [],
-                              isMounted,
-                              setCanLoadMoreComments,
-                              setComments,
-                              false,
-                              ventID ? ventID : vent.id
-                            );
+                            setActiveSort("Best");
+
+                            import("./util").then((functions) => {
+                              functions.getVentComments(
+                                "Best",
+                                [],
+                                isMounted,
+                                setCanLoadMoreComments,
+                                setComments,
+                                false,
+                                ventID ? ventID : vent.id
+                              );
+                            });
                           }}
                         >
                           Best
@@ -403,16 +398,19 @@ function Vent({
                         <p
                           className="button-4 py8"
                           onClick={() => {
-                            setActiveSort("last");
-                            getVentComments(
-                              "last",
-                              [],
-                              isMounted,
-                              setCanLoadMoreComments,
-                              setComments,
-                              false,
-                              ventID ? ventID : vent.id
-                            );
+                            setActiveSort("Last");
+
+                            import("./util").then((functions) => {
+                              functions.getVentComments(
+                                "Last",
+                                [],
+                                isMounted,
+                                setCanLoadMoreComments,
+                                setComments,
+                                false,
+                                ventID ? ventID : vent.id
+                              );
+                            });
                           }}
                         >
                           Last
@@ -421,9 +419,7 @@ function Vent({
                     }
                     trigger={["click"]}
                   >
-                    <button className="blue">
-                      Sort By: {capitolizeFirstChar(activeSort)}
-                    </button>
+                    <button className="blue">Sort By: {activeSort}</button>
                   </Dropdown>
                 </Container>
               )}
@@ -446,15 +442,17 @@ function Vent({
                     <button
                       className="blue underline"
                       onClick={() => {
-                        getVentComments(
-                          activeSort,
-                          comments,
-                          isMounted,
-                          setCanLoadMoreComments,
-                          setComments,
-                          true,
-                          vent.id
-                        );
+                        import("./util").then((functions) => {
+                          functions.getVentComments(
+                            activeSort,
+                            comments,
+                            isMounted,
+                            setCanLoadMoreComments,
+                            setComments,
+                            true,
+                            vent.id
+                          );
+                        });
                       }}
                       key={comments.length}
                     >
@@ -482,7 +480,7 @@ function Vent({
               className="sticky column x-fill bg-white border-top shadow-2 br8 pa16"
               style={{ bottom: 0 }}
             >
-              {isUserAccountNew(userBasicInfo) && (
+              {isUserAccountNew && (
                 <Link to="/rules">
                   <button className="blue ml8 mb8" size="large" type="link">
                     Read Our VWS Rules
@@ -494,7 +492,8 @@ function Vent({
                   <MentionsInput
                     className="mentions"
                     onChange={(e) => {
-                      if (!canUserPost(userBasicInfo)) return;
+                      if (isUserKarmaSufficientFunction)
+                        return isUserKarmaSufficientFunction();
 
                       setCommentString(e.target.value);
                     }}
@@ -505,11 +504,13 @@ function Vent({
                     <Mention
                       className="mentions__mention"
                       data={(currentTypingTag, callback) => {
-                        findPossibleUsersToTag(
-                          currentTypingTag,
-                          vent.id,
-                          callback
-                        );
+                        import("./util").then((functions) => {
+                          functions.findPossibleUsersToTag(
+                            currentTypingTag,
+                            vent.id,
+                            callback
+                          );
+                        });
                       }}
                       markup="@[__display__](__id__)"
                       renderSuggestion={(
@@ -540,16 +541,18 @@ function Vent({
                 </Container>
                 <Button
                   onClick={async () => {
-                    const userInteractionIssues = userSignUpProgress(user);
-
-                    if (userInteractionIssues) {
-                      if (userInteractionIssues === "NSI")
-                        setStarterModal(true);
-                      return;
-                    }
+                    if (signUpProgressFunction) signUpProgressFunction();
 
                     if (!commentString) return;
-                    commentVent(commentString, setVent, user, vent, vent.id);
+                    import("./util").then((functions) => {
+                      functions.commentVent(
+                        commentString,
+                        setVent,
+                        user,
+                        vent,
+                        vent.id
+                      );
+                    });
 
                     setCommentString("");
                   }}
@@ -568,7 +571,11 @@ function Vent({
         <ConfirmAlertModal
           close={() => setBlockModal(false)}
           message="Blocking this user will remove you from all conversations with this user and you will no longer see any of their vents or comments. Are you sure you would like to block this user?"
-          submit={() => blockUser(user.uid, vent.userID)}
+          submit={() => {
+            import("../../util").then((functions) => {
+              functions.blockUser(user.uid, vent.userID);
+            });
+          }}
           title="Block User"
         />
       )}
@@ -582,4 +589,23 @@ function Vent({
   );
 }
 
+function Tag({ tag }) {
+  const [viewTag, setViewTag] = useState();
+
+  useEffect(() => {
+    import("../../util").then((functions) => {
+      setViewTag(functions.viewTag(tag));
+    });
+  });
+  return (
+    <Link
+      className="button-4 fs-16"
+      key={tag}
+      onClick={(e) => e.stopPropagation()}
+      to={"/tags/" + tag}
+    >
+      {viewTag}
+    </Link>
+  );
+}
 export default Vent;

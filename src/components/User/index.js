@@ -52,10 +52,12 @@ function UserComponent({
 
     import("../../util").then((functions) => {
       functions.getUserBasicInfo((newUserInfo) => {
-        if (isMounted) setUserInfo(newUserInfo);
+        if (isMounted) {
+          setUserInfo(newUserInfo);
+          setKarmaPoints(functions.calculateKarma(newUserInfo));
+        }
       }, userID);
 
-      setKarmaPoints(functions.calculateKarma(userInfo));
       setCapitolizedDisplayName(functions.capitolizeFirstChar(displayName));
     });
 

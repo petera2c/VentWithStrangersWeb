@@ -22,16 +22,17 @@ const createNotification = async (
     userID,
   });
 
-  if (emailNotificationInformation) {
+  if (
+    emailNotificationInformation &&
+    process.env.FUNCTIONS_EMULATOR !== "true"
+  ) {
     admin
       .auth()
       .getUser(userID)
       .then((user) => {
         if (user.email) {
-          const {
-            html,
-            subject = "hello world",
-          } = emailNotificationInformation;
+          const { html, subject } = emailNotificationInformation;
+
           const msg = {
             to: user.email,
             from: "ventwithstrangers@gmail.com",

@@ -24,7 +24,7 @@ export const calculateKarma = (usereBasicInfo) => {
   return usereBasicInfo.karma ? usereBasicInfo.karma : 0;
 };
 
-export const canUserPost = (userBasicInfo) => {
+export const isUserKarmaSufficient = (userBasicInfo) => {
   if (calculateKarma(userBasicInfo) <= -50) return false;
   else return true;
 };
@@ -282,6 +282,29 @@ export const userSignUpProgress = (user, noAlert) => {
         });
     }
     return "NVE";
+  } else return false;
+};
+
+export const userSignUpProgressFunction = (setStarterModal, user) => {
+  if (!user) {
+    return () => () => setStarterModal();
+  } else if (!user.emailVerified) {
+    return sendEmailVerification(user)
+      .then(() => {
+        return () => () =>
+          Modal.info({
+            title: "Verify Email",
+            centered: true,
+            content: "We have re-sent you a verification email :)",
+          });
+      })
+      .catch((err) => {
+        return () => () =>
+          Modal.error({
+            title: "Verify Email",
+            content: err,
+          });
+      });
   } else return false;
 };
 

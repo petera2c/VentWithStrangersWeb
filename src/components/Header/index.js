@@ -18,12 +18,10 @@ import { faUser } from "@fortawesome/pro-duotone-svg-icons/faUser";
 import { faUserAstronaut } from "@fortawesome/pro-duotone-svg-icons/faUserAstronaut";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Container from "../containers/Container";
-
 import { UserContext } from "../../context";
-
 import { isPageActive } from "../../util";
 
+import Container from "../containers/Container";
 const DisplayName = loadable(() => import("../views/DisplayName"));
 const NotificationList = loadable(() => import("../NotificationList"));
 const StarterModal = loadable(() => import("../modals/Starter"));
@@ -276,11 +274,12 @@ function Header() {
                       <NotificationList notifications={notifications} />
                     </Container>
                   }
-                  onVisibleChange={(isVisible) =>
+                  onVisibleChange={(isVisible) => {
+                    setNotificationCounter(0);
                     import("./util").then((functions) => {
                       functions.readNotifications(notifications);
-                    })
-                  }
+                    });
+                  }}
                   trigger={["click"]}
                 >
                   <Container className="clickable relative">

@@ -4,38 +4,38 @@ import db from "../../config/firebase";
 
 import { message } from "antd";
 
-import { calculateKarma } from "../../util";
+import { calculateKarma, userSignUpProgress } from "../../util";
 
 export const checks = async (
-  canUserPost,
+  isUserKarmaSufficient,
   setStarterModal,
   user,
   userBasicInfo,
   ventID,
   userVentTimeOut
 ) => {
-  if (userVentTimeOut && !ventID)
-    return message.info("You need to wait to vent again");
+  if (userVentTimeOut && !ventID) {
+    return () => () => message.info("You need to wait to vent again");
+  }
 
-  const userInteractionIssues = await import("../../util").then((functions) => {
-    return functions.userSignUpProgress(user);
-  });
+  const userInteractionIssues = userSignUpProgress(user, true);
 
   if (userInteractionIssues) {
-    if (userInteractionIssues === "NSI") setStarterModal(true);
-    return false;
+    if (userInteractionIssues === "NSI")
+      return () => () => setStarterModal(true);
+    else return () => () => userSignUpProgress(user);
   }
 
-  if (!canUserPost) {
-    message.error(
-      "Your karma is currently " +
-        calculateKarma(userBasicInfo) +
-        ". This indicates you have not been following our rules and are now forbidden to comment or post."
-    );
-    return false;
+  if (!isUserKarmaSufficient) {
+    return () => () =>
+      message.error(
+        "Your karma is currently " +
+          calculateKarma(userBasicInfo) +
+          ". This indicates you have not been following our rules and are now forbidden to comment or post."
+      );
   }
 
-  return true;
+  return false;
 };
 
 export const getQuote = async (isMounted, setQuote) => {

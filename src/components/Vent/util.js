@@ -175,7 +175,7 @@ export const getVentComments = async (
   ventID
 ) => {
   let snapshot;
-  if (activeSort === "first") {
+  if (activeSort === "First") {
     snapshot = await db
       .collection("comments")
       .where("ventID", "==", ventID)
@@ -183,7 +183,7 @@ export const getVentComments = async (
       .startAfter(getEndAtValueTimestampAsc(comments))
       .limit(10)
       .get();
-  } else if (activeSort === "best") {
+  } else if (activeSort === "Best") {
     snapshot = await db
       .collection("comments")
       .where("ventID", "==", ventID)
@@ -191,7 +191,7 @@ export const getVentComments = async (
       .startAfter(getEndAtValueTimestamp(comments))
       .limit(10)
       .get();
-  } else if (activeSort === "last") {
+  } else if (activeSort === "Last") {
     snapshot = await db
       .collection("comments")
       .where("ventID", "==", ventID)
