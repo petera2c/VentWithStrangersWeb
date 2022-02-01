@@ -1,21 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import Container from "../../../components/containers/Container";
 import Page from "../../../components/containers/Page";
 import SubscribeColumn from "../../../components/SubscribeColumn";
 
-import { useIsMounted } from "../../../util";
 import { getTags } from "./util";
 
 function AllTags() {
-  const isMounted = useIsMounted();
+  const isMounted = useRef(false);
 
   const [tags, setTags] = useState([]);
 
   useEffect(() => {
+    isMounted.current = true;
     getTags(isMounted, setTags, tags);
-  }, []);
+
+    return () => {
+      isMounted.current = false;
+    };
+  }, [isMounted]);
 
   return (
     <Page className="br-grey-2 pt32 px16 pb16">

@@ -13,7 +13,7 @@ export const getTagVents = async (isMounted, setVents, tagID, vents) => {
     .limit(10)
     .get();
 
-  if (!isMounted()) return;
+  if (!isMounted.current) return;
 
   let newVents = [];
 

@@ -36,7 +36,7 @@ export const getQuote = async (isMounted, setQuote) => {
     quotesSnapshot.docs &&
     quotesSnapshot.docs[0] &&
     quotesSnapshot.docs[0].data() &&
-    isMounted()
+    isMounted.current
   ) {
     const author = await db
       .collection("users_display_name")

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { UserContext } from "../../context";
@@ -11,12 +11,12 @@ import Container from "../../components/containers/Container";
 import ConversationOption from "./ConversationOption";
 import Chat from "./chat";
 
-import { useIsMounted, userSignUpProgress } from "../../util";
+import { userSignUpProgress } from "../../util";
 
 import { getConversations, mostRecentConversationListener } from "./util";
 
 function MobileConversations() {
-  const isMounted = useIsMounted();
+  const isMounted = useRef(false);
   const { user } = useContext(UserContext);
 
   const [conversations, setConversations] = useState([]);
@@ -31,6 +31,7 @@ function MobileConversations() {
   const [starterModal, setStarterModal] = useState(!user);
 
   useEffect(() => {
+    isMounted.current = true;
     let newMessageListenerUnsubscribe;
 
     if (user)
@@ -67,6 +68,7 @@ function MobileConversations() {
     }
 
     return () => {
+      isMounted.current = false;
       if (newMessageListenerUnsubscribe) newMessageListenerUnsubscribe();
     };
   }, []);

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import moment from "moment-timezone";
 import { MentionsInput, Mention } from "react-mentions";
 import { useNavigate } from "react-router-dom";
@@ -32,7 +32,6 @@ import {
   getIsUserOnline,
   getUserBasicInfo,
   hasUserBlockedUser,
-  useIsMounted,
 } from "../../util";
 import {
   deleteComment,
@@ -52,7 +51,7 @@ function Comment({
   setComments,
   ventUserID,
 }) {
-  const isMounted = useIsMounted();
+  const isMounted = useRef(false);
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const [blockModal, setBlockModal] = useState(false);
@@ -69,23 +68,27 @@ function Comment({
   const [userBasicInfo, setUserBasicInfo] = useState({});
 
   useEffect(() => {
+    isMounted.current = true;
     if (user) {
       hasUserBlockedUser(user.uid, comment.userID, setIsContentBlocked);
       getCommentHasLiked(
         commentID,
         (hasLiked) => {
-          if (isMounted()) setHasLiked(hasLiked);
+          if (isMounted.current) setHasLiked(hasLiked);
         },
         user.uid
       );
     }
 
     getUserBasicInfo((newBasicUserInfo) => {
-      if (isMounted()) setUserBasicInfo(newBasicUserInfo);
+      if (isMounted.current) setUserBasicInfo(newBasicUserInfo);
     }, comment2.userID);
     getIsUserOnline((isUserOnline) => {
-      if (isMounted()) setIsUserOnline(isUserOnline.state);
+      if (isMounted.current) setIsUserOnline(isUserOnline.state);
     }, comment2.userID);
+    return () => {
+      isMounted.current = false;
+    };
   }, [commentID, comment2.userID, comment.userID, isMounted, user]);
 
   if (isContentBlocked) return <div />;

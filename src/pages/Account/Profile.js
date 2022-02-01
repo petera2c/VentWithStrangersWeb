@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import loadable from "@loadable/component";
 import moment from "moment-timezone";
@@ -31,7 +31,6 @@ import {
   getIsUserOnline,
   getUserBasicInfo,
   isMobileOrTablet,
-  useIsMounted,
   userSignUpProgress,
 } from "../../util";
 import { getUser, getUsersComments, getUsersVents } from "./util";
@@ -57,7 +56,7 @@ const SubscribeColumn = loadable(() =>
 const Vent = loadable(() => import("../../components/Vent"));
 
 function ProfileSection() {
-  const isMounted = useIsMounted();
+  const isMounted = useRef(false);
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const location = useLocation();
@@ -85,18 +84,20 @@ function ProfileSection() {
   };
 
   useEffect(() => {
+    isMounted.current = true;
+
     setVents([]);
     setComments([]);
 
     if (search) {
       getIsUserOnline((isUserOnline) => {
-        if (isMounted()) setIsUserOnline(isUserOnline);
+        if (isMounted.current) setIsUserOnline(isUserOnline);
       }, search);
       getUserBasicInfo((userBasicInfo) => {
-        if (isMounted()) setUserBasicInfo(userBasicInfo);
+        if (isMounted.current) setUserBasicInfo(userBasicInfo);
       }, search);
       getUser((userInfo) => {
-        if (isMounted()) setUserInfo(userInfo);
+        if (isMounted.current) setUserInfo(userInfo);
       }, search);
     } else navigate("/");
 
@@ -108,6 +109,9 @@ function ProfileSection() {
       setComments,
       []
     );
+    return () => {
+      isMounted.current = false;
+    };
   }, [isMounted, navigate, search]);
 
   return (

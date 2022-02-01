@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import loadable from "@loadable/component";
 import moment from "moment-timezone";
 import TextArea from "react-textarea-autosize";
@@ -35,7 +35,7 @@ const SubscribeColumn = loadable(() =>
 const Text = loadable(() => import("../../components/views/Text"));
 
 function AccountSection() {
-  const isMounted = useIsMounted();
+  const isMounted = useRef(false);
   const { user, userBasicInfo, setUserBasicInfo } = useContext(UserContext);
 
   const [bio, setBio] = useState("");
@@ -70,10 +70,15 @@ function AccountSection() {
   };
 
   useEffect(() => {
+    isMounted.current = true;
+
     getUser((userInfo) => {
-      if (isMounted()) setAccountInfo(userInfo);
-      if (userInfo && isMounted()) setUserInfo(userInfo);
+      if (isMounted.current) setAccountInfo(userInfo);
+      if (userInfo && isMounted.current) setUserInfo(userInfo);
     }, user.uid);
+    return () => {
+      isMounted.current = false;
+    };
   }, [isMounted, user]);
 
   return (

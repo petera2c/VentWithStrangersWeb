@@ -109,7 +109,7 @@ export const messageListener = (
             querySnapshot.docChanges()[0].type === "added" ||
             querySnapshot.docChanges()[0].type === "removed"
           ) {
-            if (isMounted())
+            if (isMounted.current)
               setMessages((oldMessages) => [
                 ...oldMessages,
                 {
@@ -186,7 +186,7 @@ export const getConversations = async (
       });
   }
 
-  if (isMounted())
+  if (isMounted.current)
     setConversations(newConversations, isActiveConversationInNewConversations);
 };
 
@@ -211,7 +211,7 @@ export const getMessages = async (
     .limit(10)
     .get();
 
-  if (!isMounted()) return;
+  if (!isMounted.current) return;
 
   if (snapshot.docs && snapshot.docs.length > 0) {
     let newMessages = [];
@@ -254,7 +254,7 @@ export const mostRecentConversationListener = (
 
       if (first) {
         first = false;
-      } else if (conversationDoc && isMounted()) {
+      } else if (conversationDoc && isMounted.current) {
         setConversations((oldConversations) => {
           const isConversationAlreadyListening = oldConversations.some(
             (obj) => obj.id === conversationDoc.id

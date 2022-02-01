@@ -29,7 +29,6 @@ import {
   getUserBasicInfo,
   hasUserBlockedUser,
   isUserAccountNew,
-  useIsMounted,
   userSignUpProgress,
   viewTag,
 } from "../../util";
@@ -70,7 +69,7 @@ function Vent({
   ventID,
   ventInit,
 }) {
-  const isMounted = useIsMounted();
+  const isMounted = useRef(false);
   const textInput = useRef(null);
   const { user, userBasicInfo } = useContext(UserContext);
 
@@ -89,25 +88,27 @@ function Vent({
   const navigate = useNavigate();
 
   useEffect(() => {
+    isMounted.current = true;
+
     let newCommentListenerUnsubscribe;
 
     const ventSetUp = (newVent) => {
-      if (setTitle && newVent && newVent.title && isMounted())
+      if (setTitle && newVent && newVent.title && isMounted.current)
         setTitle(newVent.title);
 
       getUserBasicInfo((author) => {
-        if (isMounted()) setAuthor(author);
+        if (isMounted.current) setAuthor(author);
       }, newVent.userID);
 
       getIsUserOnline((isUserOnline) => {
-        if (isMounted()) setIsUserOnline(isUserOnline.state);
+        if (isMounted.current) setIsUserOnline(isUserOnline.state);
       }, newVent.userID);
 
-      if (isMounted()) setVent(newVent);
+      if (isMounted.current) setVent(newVent);
 
       if (user)
         hasUserBlockedUser(user.uid, newVent.userID, (isBlocked) => {
-          if (isMounted()) setIsContentBlocked(isBlocked);
+          if (isMounted.current) setIsContentBlocked(isBlocked);
         });
     };
 
@@ -138,13 +139,15 @@ function Vent({
     if (user && !searchPreviewMode)
       ventHasLiked(
         (newHasLiked) => {
-          if (isMounted()) setHasLiked(newHasLiked);
+          if (isMounted.current) setHasLiked(newHasLiked);
         },
         user.uid,
         ventID
       );
 
     return () => {
+      isMounted.current = false;
+
       if (newCommentListenerUnsubscribe) newCommentListenerUnsubscribe();
     };
   }, [isMounted, user, ventID]);

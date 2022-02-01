@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, Space } from "antd";
 
@@ -10,14 +10,19 @@ import Container from "../../../components/containers/Container";
 import { isMobileOrTablet, useIsMounted } from "../../../util";
 
 function BirthdayModal({ close }) {
-  const isMounted = useIsMounted();
+  const isMounted = useRef(false);
 
   const [canClose, setCanClose] = useState(false);
 
   useEffect(() => {
+    isMounted.current = true;
     setTimeout(() => {
-      if (isMounted()) setCanClose(true);
+      if (isMounted.current) setCanClose(true);
     }, 2000);
+
+    return () => {
+      isMounted.current = false;
+    };
   }, []);
 
   return (

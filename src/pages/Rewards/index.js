@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import loadable from "@loadable/component";
 import moment from "moment-timezone";
 import { Progress, Space, Tooltip } from "antd";
@@ -19,17 +19,21 @@ const Container = loadable(() =>
 const Page = loadable(() => import("../../components/containers/Page"));
 
 function RewardsPage() {
-  const isMounted = useIsMounted();
+  const isMounted = useRef(false);
   const { user } = useContext(UserContext);
 
   const [userRewards, setUserRewards] = useState({});
   const [recentRewards, setRecentRewards] = useState([]);
 
   useEffect(() => {
+    isMounted.current = true;
     if (user) {
       getUserRecentRewards(isMounted, setRecentRewards, user.uid);
       getUserRewardsProgress(isMounted, setUserRewards, user.uid);
     }
+    return () => {
+      isMounted.current = false;
+    };
   }, [isMounted, user]);
 
   return (

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import loadable from "@loadable/component";
 
 import { UserContext } from "../../context";
@@ -15,12 +15,13 @@ const NotificationList = loadable(() =>
 const Page = loadable(() => import("../../components/containers/Page"));
 
 function NotificationsPage() {
-  const isMounted = useIsMounted();
+  const isMounted = useRef(false);
   const { user } = useContext(UserContext);
 
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
+    isMounted.current = true;
     let newNotificationsListenerUnsubscribe;
 
     newNotificationsListenerUnsubscribe = getNotifications(
@@ -32,6 +33,7 @@ function NotificationsPage() {
     //readNotifications(notifications);
 
     return () => {
+      isMounted.current = false;
       if (newNotificationsListenerUnsubscribe)
         newNotificationsListenerUnsubscribe();
     };

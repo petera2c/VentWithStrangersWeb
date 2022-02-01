@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import TextArea from "react-textarea-autosize";
 import algoliasearch from "algoliasearch";
@@ -22,7 +22,6 @@ import {
   countdown,
   formatSeconds,
   isMobileOrTablet,
-  useIsMounted,
   userSignUpProgress,
   viewTag,
 } from "../../util";
@@ -43,7 +42,7 @@ const searchClient = algoliasearch(
 const tagsIndex = searchClient.initIndex("vent_tags");
 
 function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
-  const isMounted = useIsMounted();
+  const isMounted = useRef(false);
   const navigate = useNavigate();
   const { user, userBasicInfo } = useContext(UserContext);
 
@@ -60,6 +59,8 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
   const [ventTags, setVentTags] = useState([]);
 
   useEffect(() => {
+    isMounted.current = true;
+
     tagsIndex
       .search("", {
         hitsPerPage: 10,
@@ -85,6 +86,10 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
         }
       }, user.uid);
     getQuote(isMounted, setQuote);
+
+    return () => {
+      isMounted.current = false;
+    };
   }, [isMounted, user, ventID]);
 
   const checks = () => {

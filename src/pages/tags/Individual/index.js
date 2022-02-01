@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import Container from "../../../components/containers/Container";
@@ -6,17 +6,23 @@ import Page from "../../../components/containers/Page";
 import SubscribeColumn from "../../../components/SubscribeColumn";
 import Vent from "../../../components/Vent";
 
-import { useIsMounted, viewTag } from "../../../util";
+import { viewTag } from "../../../util";
 import { getTagVents } from "./util";
 
 function IndividualTag() {
   const { tagID } = useParams();
-  const isMounted = useIsMounted();
+  const isMounted = useRef(false);
 
   const [vents, setVents] = useState([]);
 
   useEffect(() => {
+    isMounted.current = true;
+
     getTagVents(isMounted, setVents, tagID, vents);
+
+    return () => {
+      isMounted.current = false;
+    };
   }, []);
 
   return (

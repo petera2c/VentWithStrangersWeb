@@ -46,10 +46,10 @@ export const getCanUserCreateQuote = async (
   if (
     userQuotesTodaySnapshot.docs &&
     userQuotesTodaySnapshot.docs.length > 0 &&
-    isMounted()
+    isMounted.current
   )
     setCanUserCreateQuote(false);
-  else if (isMounted()) setCanUserCreateQuote(true);
+  else if (isMounted.current) setCanUserCreateQuote(true);
 };
 
 export const getHasUserLikedQuote = async (quoteID, setHasLiked, userID) => {
@@ -82,7 +82,7 @@ export const getQuotes = async (
     .limit(10)
     .get();
 
-  if (!isMounted()) return;
+  if (!isMounted.current) return;
 
   let newQuotes = [];
 
@@ -144,7 +144,7 @@ export const saveQuote = async (
   if (quoteID) {
     await db.collection("quotes").doc(quoteID).update({ userID, value: quote });
 
-    if (isMounted()) {
+    if (isMounted.current) {
       setQuotes((oldQuotes) => {
         const quoteIndex = oldQuotes.findIndex((quote) => quote.id === quoteID);
         oldQuotes[quoteIndex].value = quote;
@@ -160,7 +160,7 @@ export const saveQuote = async (
     });
     const newQuoteDoc = await newQuote.get();
 
-    if (isMounted()) {
+    if (isMounted.current) {
       setQuotes((oldQuotes) => [
         { id: newQuote.id, doc: newQuoteDoc, ...newQuoteDoc.data() },
         ...oldQuotes,

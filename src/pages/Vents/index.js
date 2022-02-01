@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import loadable from "@loadable/component";
 import Cookies from "universal-cookie";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Button, Space } from "antd";
 
-import { useIsMounted } from "../../util";
 import { getMetaInformation, getVents, newVentListener } from "./util";
 
 const Container = loadable(() =>
@@ -23,7 +22,7 @@ const Vent = loadable(() => import("../../components/Vent"));
 const cookies = new Cookies();
 
 function VentsPage() {
-  const isMounted = useIsMounted();
+  const isMounted = useRef(false);
 
   const [vents, setVents] = useState([]);
   const [waitingVents, setWaitingVents] = useState([]);
@@ -33,6 +32,7 @@ function VentsPage() {
   const [canLoadMore, setCanLoadMore] = useState(true);
 
   useEffect(() => {
+    isMounted.current = true;
     if (search) {
       const referral = /referral=([^&]+)/.exec(search)[1];
       if (referral) cookies.set("referral", referral);
@@ -50,6 +50,7 @@ function VentsPage() {
     );
 
     return () => {
+      isMounted.current = false;
       if (newVentListenerUnsubscribe) return newVentListenerUnsubscribe();
     };
   }, [isMounted, pathname, search]);

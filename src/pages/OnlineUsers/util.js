@@ -25,6 +25,6 @@ export const getOnlineUsers = (isMounted, callback, totalOnlineUsers) => {
           if (a.lastOnline > b.lastOnline || !b.lastOnline) return -1;
           return 0;
         });
-        if (isMounted()) callback(usersArray);
+        if (isMounted.current) callback(usersArray);
       });
 };

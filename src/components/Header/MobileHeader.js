@@ -71,7 +71,7 @@ function Header() {
     import("../../util").then((functions) => {
       onlineUsersUnsubscribe = functions.getTotalOnlineUsers(
         (totalOnlineUsers) => {
-          if (isMounted()) setTotalOnlineUsers(totalOnlineUsers);
+          if (isMounted.current) setTotalOnlineUsers(totalOnlineUsers);
         }
       );
     });

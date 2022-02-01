@@ -12,7 +12,7 @@ export const getTags = async (isMounted, setTags, tags) => {
     .limit(10)
     .get();
 
-  if (!isMounted()) return;
+  if (!isMounted.current) return;
 
   let newTags = [];
 

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import moment from "moment-timezone";
 import { Space } from "antd";
@@ -30,7 +30,6 @@ import {
   calculateKarma,
   capitolizeFirstChar,
   getUserBasicInfo,
-  useIsMounted,
   userSignUpProgress,
 } from "../../util";
 
@@ -43,7 +42,7 @@ function UserComponent({
   showMessageUser,
   userID,
 }) {
-  const isMounted = useIsMounted();
+  const isMounted = useRef(false);
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -51,9 +50,15 @@ function UserComponent({
   const [starterModal, setStarterModal] = useState(false);
 
   useEffect(() => {
+    isMounted.current = true;
+
     getUserBasicInfo((newUserInfo) => {
       if (isMounted) setUserInfo(newUserInfo);
     }, userID);
+
+    return () => {
+      isMounted.current = false;
+    };
   }, [isMounted, userID]);
 
   return (

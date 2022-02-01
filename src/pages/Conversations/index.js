@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import loadable from "@loadable/component";
 
@@ -6,7 +6,7 @@ import StarterModal from "../../components/modals/Starter";
 
 import { UserContext } from "../../context";
 
-import { isMobileOrTablet, useIsMounted, userSignUpProgress } from "../../util";
+import { isMobileOrTablet, userSignUpProgress } from "../../util";
 
 import { getConversations, mostRecentConversationListener } from "./util";
 
@@ -19,7 +19,7 @@ const MobileIndex = loadable(() => import("./MobileIndex"));
 const Page = loadable(() => import("../../components/containers/Page"));
 
 function Conversations() {
-  const isMounted = useIsMounted();
+  const isMounted = useRef(false);
   const { user } = useContext(UserContext);
 
   const [conversations, setConversations] = useState([]);
@@ -34,6 +34,7 @@ function Conversations() {
   const [starterModal, setStarterModal] = useState(!user);
 
   useEffect(() => {
+    isMounted.current = true;
     /*
       if (pathname === "/chat" && user && unreadConversationsCount > 0)
         resetUnreadConversationCount(user.uid);
@@ -53,7 +54,7 @@ function Conversations() {
         isMounted,
         setActiveConversation,
         (newConversations) => {
-          if (!isMounted()) return;
+          if (!isMounted.current) return;
 
           if (newConversations.length < 5) setCanLoadMore(false);
 
@@ -71,6 +72,8 @@ function Conversations() {
     }
 
     return () => {
+      isMounted.current = false;
+
       if (newMessageListenerUnsubscribe) newMessageListenerUnsubscribe();
     };
   }, [isMounted, user]);

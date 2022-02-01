@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import loadable from "@loadable/component";
 
 import { OnlineUsersContext } from "../../context";
 
-import { useIsMounted } from "../../util";
+
 import { getOnlineUsers } from "./util";
 
 const Container = loadable(() =>
@@ -13,13 +13,18 @@ const Page = loadable(() => import("../../components/containers/Page"));
 const UserComp = loadable(() => import("../../components/User"));
 
 function OnlineUsers() {
-  const isMounted = useIsMounted();
+  const isMounted = useRef(false);
   const [onlineUsers, setOnlineUsers] = useState([]);
 
   const { totalOnlineUsers } = useContext(OnlineUsersContext);
 
   useEffect(() => {
+    isMounted.current = true;
     getOnlineUsers(isMounted, setOnlineUsers, totalOnlineUsers);
+
+    return () => {
+      isMounted.current = false;
+    };
   }, [isMounted, setOnlineUsers, totalOnlineUsers]);
 
   return (

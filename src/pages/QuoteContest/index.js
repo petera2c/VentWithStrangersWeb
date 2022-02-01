@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import TextArea from "react-textarea-autosize";
 import moment from "moment-timezone";
@@ -24,7 +24,6 @@ import {
   getUserBasicInfo,
   hasUserBlockedUser,
   isMobileOrTablet,
-  useIsMounted,
   userSignUpProgress,
 } from "../../util";
 import {
@@ -38,7 +37,7 @@ import {
 } from "./util";
 
 function QuoteContestPage() {
-  const isMounted = useIsMounted();
+  const isMounted = useRef(false);
   const { user, userBasicInfo } = useContext(UserContext);
 
   const [canLoadMoreQuotes, setCanLoadMoreQuotes] = useState(true);
@@ -51,6 +50,8 @@ function QuoteContestPage() {
   const [contestTimeLeft, setContestTimeLeft] = useState();
 
   useEffect(() => {
+    isMounted.current = true;
+
     if (user) getCanUserCreateQuote(isMounted, setCanUserCreateQuote, user.uid);
     getQuotes(isMounted, undefined, setCanLoadMoreQuotes, setQuotes);
     const timeLeftMoment = new moment()
@@ -63,6 +64,10 @@ function QuoteContestPage() {
       () => countdown(isMounted, timeLeftMoment, setContestTimeLeft),
       1000
     );
+
+    return () => {
+      isMounted.current = false;
+    };
   }, []);
 
   return (
@@ -186,7 +191,7 @@ function Quote({
   setStarterModal,
   user,
 }) {
-  const isMounted = useIsMounted();
+  const isMounted = useRef(false);
 
   const [author, setAuthor] = useState({});
   const [hasLiked, setHasLiked] = useState();
@@ -195,7 +200,7 @@ function Quote({
 
   useEffect(() => {
     getUserBasicInfo((author) => {
-      if (isMounted()) setAuthor(author);
+      if (isMounted.current) setAuthor(author);
     }, quote.userID);
 
     if (user) {
@@ -203,7 +208,7 @@ function Quote({
       getHasUserLikedQuote(
         quote.id,
         (hasLiked) => {
-          if (isMounted()) setHasLiked(hasLiked);
+          if (isMounted.current) setHasLiked(hasLiked);
         },
         user.uid
       );

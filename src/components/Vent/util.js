@@ -144,7 +144,7 @@ export const newVentCommentListener = (
             querySnapshot.docChanges()[0].type === "added" ||
             querySnapshot.docChanges()[0].type === "removed"
           ) {
-            if (isMounted()) {
+            if (isMounted.current) {
               if (querySnapshot.docs[0].data().userID === userID)
                 setComments((oldComments) => [
                   {
