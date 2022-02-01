@@ -1,7 +1,8 @@
 import React from "react";
 import AdSense from "react-adsense";
+import loadable from "@loadable/component";
 
-import Container from "../containers/Container";
+const Container = loadable(() => import("../containers/Container"));
 
 function MakeAd({ banner, className, layoutKey, slot, userSubscription }) {
   if (banner) {

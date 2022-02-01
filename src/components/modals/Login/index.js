@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import loadable from "@loadable/component";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/pro-solid-svg-icons/faEye";
 
-import Container from "../../containers/Container";
-import Button from "../../views/Button";
-
-import { login } from "./util";
+const Container = loadable(() => import("../../containers/Container"));
 
 function LoginModal({ setActiveModal }) {
   const { register, handleSubmit } = useForm();
@@ -35,9 +33,11 @@ function LoginModal({ setActiveModal }) {
         <Container className="x-fill column">
           <form
             className="x-fill column"
-            onSubmit={handleSubmit((formData) =>
-              login(formData, setActiveModal)
-            )}
+            onSubmit={handleSubmit((formData) => {
+              import("./util").then((functions) => {
+                functions.login(formData, setActiveModal);
+              });
+            })}
           >
             <Container className="x-fill column px32 py16">
               <input
@@ -78,11 +78,9 @@ function LoginModal({ setActiveModal }) {
             </Container>
 
             <Container className="column x-fill full-center border-top px32 py16">
-              <Button
-                className="x-fill bg-blue white py8 br4"
-                text="Sign In"
-                type="submit"
-              />
+              <button className="x-fill bg-blue white py8 br4" type="submit">
+                Sign In
+              </button>
 
               <p className="x-fill tac mt8">
                 Don't have an account?&nbsp;{" "}

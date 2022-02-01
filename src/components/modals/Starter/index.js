@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
+import loadable from "@loadable/component";
 
-import LoginModal from "../Login";
-import SignUpModal from "../SignUp";
-import ForgotPasswordModal from "../ForgotPassword";
+const LoginModal = loadable(() => import("../Login"));
+const SignUpModal = loadable(() => import("../SignUp"));
+const ForgotPasswordModal = loadable(() => import("../ForgotPassword"));
 
 function Header({ activeModal = "", setActiveModal }) {
   const [localActiveModal, setLocalActiveModal] = useState(activeModal);

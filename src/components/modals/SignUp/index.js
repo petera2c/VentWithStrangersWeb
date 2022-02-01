@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import loadable from "@loadable/component";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/pro-solid-svg-icons/faEye";
 
-import Container from "../../containers/Container";
-import Text from "../../views/Text";
-import Button from "../../views/Button";
-
-import { signUp } from "./util";
+const Container = loadable(() => import("../../containers/Container"));
 
 function SignUpModal({ setActiveModal }) {
   const navigate = useNavigate();
@@ -33,15 +30,17 @@ function SignUpModal({ setActiveModal }) {
         }
       >
         <Container className="x-fill justify-center bg-blue py16">
-          <Text className="tac white" text="Create an Account" type="h4" />
+          <h4 className="tac white">Create an Account</h4>
         </Container>
 
         <Container className="x-fill column">
           <form
             className="x-fill column"
-            onSubmit={handleSubmit((data) =>
-              signUp(data, navigate, setActiveModal)
-            )}
+            onSubmit={handleSubmit((data) => {
+              import("./util").then((functions) => {
+                functions.signUp(data, navigate, setActiveModal);
+              });
+            })}
           >
             <Container className="x-fill column px32 py16">
               <input
@@ -62,11 +61,9 @@ function SignUpModal({ setActiveModal }) {
                   required: "Required",
                 })}
               />
-              <Text
-                className="fw-400 mb8"
-                text="(Your email address will never be shown to anyone.)"
-                type="p"
-              />
+              <p className="fw-400 mb8">
+                (Your email address will never be shown to anyone.)
+              </p>
               <Container className="x-fill wrap">
                 <Container
                   className={
@@ -110,11 +107,9 @@ function SignUpModal({ setActiveModal }) {
               </Container>
             </Container>
             <Container className="column x-fill full-center border-top px32 py16">
-              <Button
-                className="x-fill bg-blue white py8 br4"
-                text="Create Account"
-                type="submit"
-              />
+              <button className="x-fill bg-blue white py8 br4" type="submit">
+                Create Account
+              </button>
 
               <p className="x-fill tac mt8">
                 Already have an account?&nbsp;

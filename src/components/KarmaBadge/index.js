@@ -1,20 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import loadable from "@loadable/component";
 import { Tooltip } from "antd";
 
 import { faRocket } from "@fortawesome/pro-duotone-svg-icons/faRocket";
 import { faMedal } from "@fortawesome/pro-solid-svg-icons/faMedal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Container from "../containers/Container";
-
-import { calculateKarma } from "../../util";
+const Container = loadable(() => import("../containers/Container"));
 
 function KarmaBadge({ noOnClick, onClick, userBasicInfo }) {
   const navigate = useNavigate();
 
-  const karma = calculateKarma(userBasicInfo);
-  const isAdmin = userBasicInfo ? userBasicInfo.is_admin : false;
+  const [karma, setKarma] = useState(0);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    import("../../util").then((functions) => {
+      setKarma(functions.calculateKarma(userBasicInfo));
+    });
+    setIsAdmin(userBasicInfo ? userBasicInfo.is_admin : false);
+  }, [userBasicInfo, userBasicInfo.is_admin]);
 
   if (isAdmin)
     return (

@@ -1,8 +1,7 @@
 import React, { Component } from "react";
+import loadable from "@loadable/component";
 
-import Container from "../../containers/Container";
-import Text from "../../views/Text";
-import Button from "../../views/Button";
+const Container = loadable(() => import("../../containers/Container"));
 
 class ReportModal extends Component {
   state = {
@@ -50,16 +49,12 @@ class ReportModal extends Component {
       <Container className="modal-container full-center" style={{ zIndex: 10 }}>
         <Container className="modal container medium column ov-auto bg-white br4">
           <Container className="x-fill justify-center bg-grey-10 py16">
-            <Text className="grey-11 tac" text="Report" type="h4" />
+            <h4 className="grey-11 tac">Report</h4>
           </Container>
           <Container className="column x-fill pa16">
-            <Text
-              className="blue bold mb16"
-              text="Reasons for the report"
-              type="h6"
-            />
+            <h6 className="blue bold mb16">Reasons for the report</h6>
             <Container
-              className="clickable mb16"
+              className="clickable align-center mb16"
               onClick={() =>
                 this.handleChange({
                   option: 1,
@@ -74,14 +69,10 @@ class ReportModal extends Component {
                 style={{ minWidth: "13px" }}
                 type="checkbox"
               />
-              <Text
-                className=""
-                text="Threatening or explicit violence"
-                type="p"
-              />
+              <p>Threatening or explicit violence</p>
             </Container>
             <Container
-              className="clickable mb16"
+              className="clickable align-center mb16"
               onClick={() =>
                 this.handleChange({
                   abuse: !abuse,
@@ -96,10 +87,10 @@ class ReportModal extends Component {
                 style={{ minWidth: "13px" }}
                 type="checkbox"
               />
-              <Text className="" text="Commits abuse or is harmful" type="p" />
+              <p>Commits abuse or is harmful</p>
             </Container>
             <Container
-              className="clickable mb16"
+              className="clickable align-center mb16"
               onClick={() =>
                 this.handleChange({
                   option: 3,
@@ -114,14 +105,10 @@ class ReportModal extends Component {
                 style={{ minWidth: "13px" }}
                 type="checkbox"
               />
-              <Text
-                className=""
-                text="Private and personal information"
-                type="p"
-              />
+              <p>Private and personal information</p>
             </Container>
             <Container
-              className="clickable mb16"
+              className="clickable align-center mb16"
               onClick={() =>
                 this.handleChange({
                   illegal: !illegal,
@@ -136,10 +123,10 @@ class ReportModal extends Component {
                 style={{ minWidth: "13px" }}
                 type="checkbox"
               />
-              <Text className="" text="Illegal activities" type="p" />
+              <p>Illegal activities</p>
             </Container>
             <Container
-              className="clickable mb16"
+              className="clickable align-center mb16"
               onClick={() =>
                 this.handleChange({
                   malicious: !malicious,
@@ -154,23 +141,20 @@ class ReportModal extends Component {
                 style={{ minWidth: "13px" }}
                 type="checkbox"
               />
-              <Text
-                className=""
-                text="Malicious (Phishing, Scam, Spam)"
-                type="p"
-              />
+              <p>Malicious (Phishing, Scam, Spam)</p>
             </Container>
           </Container>
           {somethingChanged && (
             <Container className="full-center border-top pa16">
-              <Button
+              <button
                 className="button-2 py8 px32 mx4 br4"
-                text="Submit"
                 onClick={() => {
                   submit(option);
                   close();
                 }}
-              />
+              >
+                Submit
+              </button>
             </Container>
           )}
         </Container>

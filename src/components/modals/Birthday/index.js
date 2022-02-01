@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import loadable from "@loadable/component";
 import { Button, Space } from "antd";
 
 import { faBirthdayCake } from "@fortawesome/pro-duotone-svg-icons/faBirthdayCake";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Container from "../../../components/containers/Container";
+const Container = loadable(() => import("../../containers/Container"));
 
 function BirthdayModal({ close }) {
   const isMounted = useRef(false);

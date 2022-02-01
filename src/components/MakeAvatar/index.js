@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Avatar from "avataaars";
 
-import { capitolizeFirstChar } from "../../util";
-
 function MakeAvatar({ className, displayName, size, userBasicInfo }) {
-  if (!displayName) displayName = "Anonymous";
+  const [capitolizedDisplayName, setCapitolizedDisplayName] = useState("");
+
+  useEffect(() => {
+    import("../../util").then((functions) => {
+      setCapitolizedDisplayName(
+        functions.capitolizeFirstChar(
+          displayName ? displayName : "Anonymous"
+        )[0]
+      );
+    });
+  }, [displayName]);
 
   if (userBasicInfo && userBasicInfo.avatar) {
     if (size === "large")
@@ -68,19 +76,19 @@ function MakeAvatar({ className, displayName, size, userBasicInfo }) {
           className={"avatar semi-large bg-blue white " + className}
           style={{ fontSize: "48px" }}
         >
-          {capitolizeFirstChar(displayName[0])}
+          {capitolizedDisplayName}
         </h1>
       );
     else if (size === "small")
       return (
         <h6 className={"avatar very-small bg-blue white mr8 " + className}>
-          {capitolizeFirstChar(displayName[0])}
+          {capitolizedDisplayName}
         </h6>
       );
     else
       return (
         <h6 className={"avatar small bg-blue white mr8 " + className}>
-          {capitolizeFirstChar(displayName[0])}
+          {capitolizedDisplayName}
         </h6>
       );
   }

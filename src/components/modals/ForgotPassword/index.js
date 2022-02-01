@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import loadable from "@loadable/component";
 
-import Container from "../../containers/Container";
-import Text from "../../views/Text";
-import Button from "../../views/Button";
-
-import { sendPasswordReset } from "./util";
+const Container = loadable(() => import("../../containers/Container"));
 
 function ForgotPasswordModal({ setActiveModal }) {
   const { register, handleSubmit } = useForm();
@@ -27,26 +24,29 @@ function ForgotPasswordModal({ setActiveModal }) {
         }
       >
         <Container className="x-fill justify-center bg-blue py16">
-          <Text className="tac white" text="Password Reset" type="h4" />
+          <h4 className="tac white">Password Reset</h4>
         </Container>
 
         <Container className="x-fill column">
           <Container className="x-fill full-center px32">
-            <Text className="x-fill tac border-bottom py16" type="p">
+            <p className="x-fill tac border-bottom py16">
               Already have an account?&nbsp;
-              <Text
+              <span
                 className="clickable blue"
                 onClick={() => setActiveModal("login")}
-                type="span"
               >
                 Login
-              </Text>
-            </Text>
+              </span>
+            </p>
           </Container>
 
           <form
             className="x-fill column"
-            onSubmit={handleSubmit((data) => sendPasswordReset(data))}
+            onSubmit={handleSubmit((data) => {
+              import("./util").then((functions) => {
+                functions.sendPasswordReset(data);
+              });
+            })}
           >
             <Container className="x-fill column px32 py16">
               <input
@@ -60,11 +60,9 @@ function ForgotPasswordModal({ setActiveModal }) {
               />
             </Container>
             <Container className="x-fill full-center border-top px32 py16">
-              <Button
-                className="x-fill bg-blue white py8 br4"
-                text="Send Email Password Reset Link"
-                type="submit"
-              />
+              <button className="x-fill bg-blue white py8 br4" type="submit">
+                Send Email Password Reset Link
+              </button>
             </Container>
           </form>
         </Container>
