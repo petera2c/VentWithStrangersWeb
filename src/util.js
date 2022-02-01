@@ -8,8 +8,6 @@ import { message, Modal } from "antd";
 
 import db from "./config/firebase";
 
-import { setUserOnlineStatus } from "./pages/util";
-
 export const blockUser = async (userID, userIDToBlock) => {
   const sortedUserArray = [userID, userIDToBlock].sort();
   await db
@@ -53,6 +51,8 @@ export const chatQueueEmptyListener = (isMounted, setQueueLength) => {
     .collection("chat_queue")
     .limit(10)
     .onSnapshot((snapshot) => {
+      if (!isMounted.current) return;
+
       if (snapshot.docs && snapshot.docs.length > 0)
         setQueueLength(snapshot.docs.length);
       else setQueueLength(-1);
@@ -67,7 +67,7 @@ export const combineObjectWithID = (id, object) => {
 };
 
 export const countdown = (isMounted, momentTimeout, setTimeout) => {
-  if (isMounted()) {
+  if (isMounted.current) {
     setTimeout((oldUserVentTimeOut) => {
       if (oldUserVentTimeOut) return oldUserVentTimeOut - 1;
       else
@@ -196,8 +196,14 @@ export const hasUserBlockedUser = async (userID, userID2, callback) => {
 };
 
 export const isMobileOrTablet = () => window.screen.width < 940;
+export const isMobileOrTabletGet = () => window.screen.width < 940;
 
 export const isPageActive = (page, pathname) => {
+  if (page === pathname) return " active ";
+  else return "";
+};
+
+export const getIsPageActive = (page, pathname) => {
   if (page === pathname) return " active ";
   else return "";
 };
@@ -215,15 +221,17 @@ export const isUserAccountNew = (userBasicInfo) => {
   else return true;
 };
 
-export const signOut = async (userID) => {
-  await setUserOnlineStatus("offline", userID);
+export const signOut = (userID) => {
+  import("./pages/util").then(async (functions) => {
+    await functions.setUserOnlineStatus("offline", userID);
 
-  firebase
-    .auth()
-    .signOut()
-    .then(() => {
-      window.location.reload();
-    });
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        window.location.reload();
+      });
+  });
 };
 
 export const soundNotify = (sound = "bing") => {

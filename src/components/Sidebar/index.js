@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { Space } from "antd";
@@ -18,42 +18,42 @@ import MakeAvatar from "../MakeAvatar";
 
 import { OnlineUsersContext, UserContext } from "../../context";
 
-import {
-  chatQueueEmptyListener,
-  getTotalOnlineUsers,
-  isPageActive,
-  useIsMounted,
-} from "../../util";
-import { getUserAvatars } from "./util";
+import { isPageActive } from "../../util";
 
 function Sidebar() {
-  const isMounted = useIsMounted();
+  const isMounted = useRef(false);
   const { pathname } = useLocation();
 
-  const { userSubscription } = useContext(UserContext);
   const { totalOnlineUsers, setTotalOnlineUsers } = useContext(
     OnlineUsersContext
   );
+  const { userSubscription } = useContext(UserContext);
 
   const [firstOnlineUsers, setFirstOnlineUsers] = useState();
-  const [queueLength, setQueueLength] = useState(true);
+  const [queueLength, setQueueLength] = useState();
 
   useEffect(() => {
+    isMounted.current = true;
     let onlineUsersUnsubscribe;
     let chatQueueListenerUnsubscribe;
 
-    chatQueueListenerUnsubscribe = chatQueueEmptyListener(
-      isMounted,
-      setQueueLength
-    );
-    onlineUsersUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) => {
-      if (isMounted()) {
-        getUserAvatars(setFirstOnlineUsers, totalOnlineUsers);
-        setTotalOnlineUsers(totalOnlineUsers);
-      }
+    import("../../util").then((functions) => {
+      chatQueueListenerUnsubscribe = functions.chatQueueEmptyListener(
+        isMounted,
+        setQueueLength
+      );
+      onlineUsersUnsubscribe = functions.getTotalOnlineUsers(
+        (totalOnlineUsers) => {
+          import("./util").then((functions) => {
+            functions.getUserAvatars(setFirstOnlineUsers, totalOnlineUsers);
+          });
+          setTotalOnlineUsers(totalOnlineUsers);
+        }
+      );
     });
 
     return () => {
+      isMounted.current = false;
       if (onlineUsersUnsubscribe) onlineUsersUnsubscribe.off("value");
       if (chatQueueListenerUnsubscribe) chatQueueListenerUnsubscribe();
     };

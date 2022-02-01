@@ -30,7 +30,7 @@ export const getNotifications = (
     .limitToLast(10)
     .onSnapshot("value", (snapshot) => {
       if (snapshot.docs) {
-        if (isMounted())
+        if (isMounted.current)
           setNotifications((oldNotifications) => {
             const newNotifications = snapshot.docs
               .map((item, i) => {
@@ -49,7 +49,7 @@ export const getNotifications = (
             return newNotifications;
           });
       } else {
-        if (isMounted()) setNotifications([]);
+        if (isMounted.current) setNotifications([]);
       }
       firstLoad = false;
     });
@@ -69,10 +69,10 @@ export const getUnreadConversations = (
     .doc(userID)
     .onSnapshot("value", (doc) => {
       if (doc.data() && doc.data().count) {
-        if (isMounted()) setUnreadConversations(doc.data().count);
+        if (isMounted.current) setUnreadConversations(doc.data().count);
         if (!first && !isOnSearchPage) soundNotify();
       } else {
-        if (isMounted()) setUnreadConversations(0);
+        if (isMounted.current) setUnreadConversations(0);
       }
       first = false;
     });
@@ -103,9 +103,9 @@ export const isUserInQueueListener = (isMounted, setIsUserInQueue, userID) => {
     .collection("chat_queue")
     .doc(userID)
     .onSnapshot("value", (doc) => {
-      if (doc.data() && doc.data().userID === userID && isMounted())
+      if (doc.data() && doc.data().userID === userID && isMounted.current)
         setIsUserInQueue(true);
-      else if (isMounted()) setIsUserInQueue(false);
+      else if (isMounted.current) setIsUserInQueue(false);
     });
 
   return unsubscribe;

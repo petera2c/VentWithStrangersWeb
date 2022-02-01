@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useState from "react-usestateref";
 import { sendEmailVerification } from "firebase/auth";
@@ -24,25 +24,11 @@ import StarterModal from "../modals/Starter";
 
 import { UserContext } from "../../context";
 
-import {
-  capitolizeFirstChar,
-  isPageActive,
-  signOut,
-  useIsMounted,
-} from "../../util";
-import {
-  conversationsListener,
-  getNotifications,
-  getUnreadConversations,
-  isUserInQueueListener,
-  leaveQueue,
-  newNotificationCounter,
-  readNotifications,
-  resetUnreadConversationCount,
-} from "./util";
+import { capitolizeFirstChar, isPageActive } from "../../util";
+import { newNotificationCounter, resetUnreadConversationCount } from "./util";
 
 function Header() {
-  const isMounted = useIsMounted();
+  const isMounted = useRef(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { pathname, search } = location;
@@ -61,34 +47,43 @@ function Header() {
   );
 
   useEffect(() => {
+    isMounted.current = true;
     let conversationsUnsubscribe;
     let isUserInQueueUnsubscribe;
     let newConversationsListenerUnsubscribe;
     let newNotificationsListenerUnsubscribe;
 
     if (user) {
-      conversationsUnsubscribe = conversationsListener(navigate, user.uid);
-      isUserInQueueUnsubscribe = isUserInQueueListener(
-        isMounted,
-        setIsUserInQueue,
-        user.uid
-      );
-      newConversationsListenerUnsubscribe = getUnreadConversations(
-        isMounted,
-        pathname.substring(0, 7) === "/search",
-        setUnreadConversationsCount,
-        user.uid
-      );
-      newNotificationsListenerUnsubscribe = getNotifications(
-        isMounted,
-        setNotifications,
-        user
-      );
+      import("./util").then((functions) => {
+        conversationsUnsubscribe = functions.conversationsListener(
+          navigate,
+          user.uid
+        );
+        isUserInQueueUnsubscribe = functions.isUserInQueueListener(
+          isMounted,
+          setIsUserInQueue,
+          user.uid
+        );
+        newConversationsListenerUnsubscribe = functions.getUnreadConversations(
+          isMounted,
+          pathname.substring(0, 7) === "/search",
+          setUnreadConversationsCount,
+          user.uid
+        );
+        newNotificationsListenerUnsubscribe = functions.getNotifications(
+          isMounted,
+          setNotifications,
+          user
+        );
+      });
     }
 
     const cleanup = () => {
       if (conversationsUnsubscribe) conversationsUnsubscribe();
-      if (user && isUserInQueueRef.current) leaveQueue(user.uid);
+      if (user && isUserInQueueRef.current)
+        import("./util").then((functions) => {
+          functions.leaveQueue(user.uid);
+        });
 
       window.removeEventListener("beforeunload", cleanup);
     };
@@ -96,6 +91,7 @@ function Header() {
     window.addEventListener("beforeunload", cleanup);
 
     return () => {
+      isMounted.current = false;
       cleanup();
       if (isUserInQueueUnsubscribe) isUserInQueueUnsubscribe();
       if (newConversationsListenerUnsubscribe)
@@ -237,7 +233,9 @@ function Header() {
                       <AccountLink
                         icon={faSignOut}
                         onClick={() => {
-                          signOut(user.uid);
+                          import("../../util").then((functions) =>
+                            functions.signOut(user.uid)
+                          );
                         }}
                         pathname={pathname}
                         text="Sign Out"
@@ -271,7 +269,9 @@ function Header() {
                     </Container>
                   }
                   onVisibleChange={(isVisible) =>
-                    readNotifications(notifications)
+                    import("./util").then((functions) => {
+                      functions.readNotifications(notifications);
+                    })
                   }
                   trigger={["click"]}
                 >
@@ -305,7 +305,15 @@ function Header() {
       {user && isUserInQueue && (
         <Container className="x-fill full-center bg-white border-top gap8 py8">
           <p>You are in queue to chat with a stranger</p>
-          <Button onClick={() => leaveQueue(user.uid)} size="large" type="link">
+          <Button
+            onClick={() =>
+              import("./util").then((functions) => {
+                functions.leaveQueue(user.uid);
+              })
+            }
+            size="large"
+            type="link"
+          >
             Leave Queue
           </Button>
         </Container>

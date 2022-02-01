@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import loadable from "@loadable/component";
 import { useIdleTimer } from "react-idle-timer";
@@ -9,15 +9,6 @@ import "firebase/compat/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import { OnlineUsersContext, UserContext } from "../context";
-
-import { getUserBasicInfo, isMobileOrTablet, useIsMounted } from "../util";
-import {
-  getIsUsersBirthday,
-  getIsUserSubscribed,
-  newRewardListener,
-  setIsUserOnlineToDatabase,
-  setUserOnlineStatus,
-} from "./util";
 
 const BirthdayModal = loadable(() => import("../components/modals/Birthday"));
 const Container = loadable(() => import("../components/containers/Container"));
@@ -58,7 +49,7 @@ const VentsPage = React.lazy(() => import("./Vents"));
 const VerifiedEmailPage = React.lazy(() => import("./EmailAuth/VerifiedEmail"));
 
 function RoutesComp() {
-  const isMounted = useIsMounted();
+  const isMounted = useRef(false);
   const [user, loading] = useAuthState(firebase.auth());
 
   const [isUsersBirthday, setIsUsersBirthday] = useState(false);
@@ -66,17 +57,27 @@ function RoutesComp() {
   const [totalOnlineUsers, setTotalOnlineUsers] = useState();
   const [userBasicInfo, setUserBasicInfo] = useState({});
   const [userSubscription, setUserSubscription] = useState();
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
 
   const handleOnIdle = (event) => {
-    if (user && user.uid) setUserOnlineStatus("offline", user.uid);
+    if (user && user.uid)
+      import("./util").then((functions) => {
+        functions.setUserOnlineStatus("offline", user.uid);
+      });
   };
 
   const handleOnActive = (event) => {
-    if (user && user.uid) setUserOnlineStatus("online", user.uid);
+    if (user && user.uid)
+      import("./util").then((functions) => {
+        functions.setUserOnlineStatus("online", user.uid);
+      });
   };
 
   const handleOnAction = (event) => {
-    if (user && user.uid) setUserOnlineStatus("online", user.uid);
+    if (user && user.uid)
+      import("./util").then((functions) => {
+        functions.setUserOnlineStatus("online", user.uid);
+      });
   };
 
   useIdleTimer({
@@ -90,24 +91,31 @@ function RoutesComp() {
   useEffect(() => {
     let newRewardListenerUnsubscribe;
     if (user) {
-      newRewardListenerUnsubscribe = newRewardListener(
-        isMounted,
-        setNewReward,
-        user.uid
-      );
+      import("./util").then((functions) => {
+        newRewardListenerUnsubscribe = functions.newRewardListener(
+          isMounted,
+          setNewReward,
+          user.uid
+        );
+        functions.getIsUsersBirthday(isMounted, setIsUsersBirthday, user.uid);
+        functions.getIsUserSubscribed(setUserSubscription, user.uid);
+        functions.setIsUserOnlineToDatabase(user);
+      });
 
-      setIsUserOnlineToDatabase(user);
-      getIsUserSubscribed(setUserSubscription, user.uid);
-
-      getUserBasicInfo((newBasicUserInfo) => {
-        setUserBasicInfo(newBasicUserInfo);
-      }, user.uid);
-      getIsUsersBirthday(isMounted, setIsUsersBirthday, user.uid);
+      import("../util").then((functions) => {
+        functions.getUserBasicInfo((newBasicUserInfo) => {
+          setUserBasicInfo(newBasicUserInfo);
+        }, user.uid);
+        setIsMobileOrTablet(functions.isMobileOrTabletGet());
+      });
     }
 
     return () => {
       if (newRewardListenerUnsubscribe) newRewardListenerUnsubscribe();
-      if (user) setUserOnlineStatus("offline", user.uid);
+      if (user)
+        import("./util").then((functions) => {
+          functions.setUserOnlineStatus("offline", user.uid);
+        });
     };
   }, [isMounted, user]);
 
@@ -129,11 +137,11 @@ function RoutesComp() {
       >
         <Router>
           <Container className="screen-container column">
-            {!isMobileOrTablet() && <Header />}
-            {isMobileOrTablet() && <MobileHeader />}
+            {!isMobileOrTablet && <Header />}
+            {isMobileOrTablet && <MobileHeader />}
 
             <Container className="flex-fill ov-hidden">
-              {!isMobileOrTablet() && <Sidebar />}
+              {!isMobileOrTablet && <Sidebar />}
               {!loading && (
                 <Suspense
                   fallback={

@@ -1,6 +1,7 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useState from "react-usestateref";
+import loadable from "@loadable/component";
 import { sendEmailVerification } from "firebase/auth";
 import { Button, message, Space } from "antd";
 
@@ -24,31 +25,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { UserContext, OnlineUsersContext } from "../../context";
 
-import Container from "../containers/Container";
-import MakeAvatar from "../MakeAvatar";
-import StarterModal from "../modals/Starter";
-import Text from "../views/Text";
+import { capitolizeFirstChar, isPageActive } from "../../util";
+import { newNotificationCounter } from "./util";
 
-import {
-  capitolizeFirstChar,
-  isPageActive,
-  signOut,
-  getTotalOnlineUsers,
-  useIsMounted,
-} from "../../util";
-import {
-  conversationsListener,
-  getNotifications,
-  getUnreadConversations,
-  isUserInQueueListener,
-  leaveQueue,
-  newNotificationCounter,
-  readNotifications,
-  resetUnreadConversationCount,
-} from "./util";
+const Container = loadable(() => import("../containers/Container"));
+const MakeAvatar = loadable(() => import("../MakeAvatar"));
+const StarterModal = loadable(() => import("../modals/Starter"));
 
 function Header() {
-  const isMounted = useIsMounted();
+  const isMounted = useRef(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { pathname, search } = location;
@@ -75,40 +60,53 @@ function Header() {
   );
 
   useEffect(() => {
+    isMounted.current = true;
+
     let conversationsUnsubscribe;
     let isUserInQueueUnsubscribe;
     let newConversationsListenerUnsubscribe;
     let newNotificationsListenerUnsubscribe;
     let onlineUsersUnsubscribe;
 
-    onlineUsersUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) => {
-      if (isMounted()) setTotalOnlineUsers(totalOnlineUsers);
+    import("../../util").then((functions) => {
+      onlineUsersUnsubscribe = functions.getTotalOnlineUsers(
+        (totalOnlineUsers) => {
+          if (isMounted()) setTotalOnlineUsers(totalOnlineUsers);
+        }
+      );
     });
-
     if (user) {
-      conversationsUnsubscribe = conversationsListener(navigate, user.uid);
-      isUserInQueueUnsubscribe = isUserInQueueListener(
-        isMounted,
-        setIsUserInQueue,
-        user.uid
-      );
+      import("../../util").then((functions) => {
+        conversationsUnsubscribe = functions.conversationsListener(
+          navigate,
+          user.uid
+        );
+        isUserInQueueUnsubscribe = functions.isUserInQueueListener(
+          isMounted,
+          setIsUserInQueue,
+          user.uid
+        );
 
-      newConversationsListenerUnsubscribe = getUnreadConversations(
-        isMounted,
-        pathname.substring(0, 7) === "/search",
-        setUnreadConversationsCount,
-        user.uid
-      );
-      newNotificationsListenerUnsubscribe = getNotifications(
-        isMounted,
-        setNotifications,
-        user
-      );
+        newConversationsListenerUnsubscribe = functions.getUnreadConversations(
+          isMounted,
+          pathname.substring(0, 7) === "/search",
+          setUnreadConversationsCount,
+          user.uid
+        );
+        newNotificationsListenerUnsubscribe = functions.getNotifications(
+          isMounted,
+          setNotifications,
+          user
+        );
+      });
     }
 
     const cleanup = () => {
       if (conversationsUnsubscribe) conversationsUnsubscribe();
-      if (user && isUserInQueueRef.current) leaveQueue(user.uid);
+      if (user && isUserInQueueRef.current)
+        import("../../util").then((functions) => {
+          functions.leaveQueue(user.uid);
+        });
 
       window.removeEventListener("beforeunload", cleanup);
     };
@@ -116,6 +114,7 @@ function Header() {
     window.addEventListener("beforeunload", cleanup);
 
     return () => {
+      isMounted.current = false;
       cleanup();
       if (isUserInQueueUnsubscribe) isUserInQueueUnsubscribe();
       if (newNotificationsListenerUnsubscribe)
@@ -125,9 +124,6 @@ function Header() {
       if (onlineUsersUnsubscribe) onlineUsersUnsubscribe.off("value");
     };
   }, [isMounted, setTotalOnlineUsers, user]);
-
-  if (pathname === "/chat" && user && unreadConversationsCount > 0)
-    resetUnreadConversationCount(user.uid);
 
   return (
     <Container
@@ -153,13 +149,15 @@ function Header() {
                 onClick={() => {
                   setShowNotificationDropdown(!showNotificationDropdown);
 
-                  readNotifications(notifications);
+                  import("../../util").then((functions) => {
+                    functions.readNotifications(notifications);
+                  });
                 }}
                 size="2x"
               />
               {newNotificationCounter(notifications) &&
                 !showNotificationDropdown && (
-                  <Text
+                  <p
                     className="fs-14 bg-red white pa4 br8"
                     style={{
                       position: "absolute",
@@ -168,10 +166,9 @@ function Header() {
                       pointerEvents: "none",
                       zIndex: 1,
                     }}
-                    type="p"
                   >
                     {newNotificationCounter(notifications)}
-                  </Text>
+                  </p>
                 )}
             </Link>
           )}
@@ -231,18 +228,20 @@ function Header() {
                   userBasicInfo={userBasicInfo}
                 />
 
-                <Text
-                  className="mr8"
-                  text={`Hello, ${capitolizeFirstChar(user.displayName)}`}
-                  type="p"
-                />
+                <p className="mr8">{`Hello, ${capitolizeFirstChar(
+                  user.displayName
+                )}`}</p>
                 <FontAwesomeIcon icon={faChevronDown} />
               </Space>
               {accountSectionActive && (
                 <Space align="center" direction="vertical" size="middle">
                   <p
                     className="tac fs-14"
-                    onClick={() => signOut(user.uid)}
+                    onClick={() => {
+                      import("../../util").then((functions) => {
+                        functions.signOut(user.uid);
+                      });
+                    }}
                     type="link"
                   >
                     Sign Out
@@ -410,7 +409,11 @@ function Header() {
         <Container className="x-fill full-center bg-white border-top gap8 py8 px16">
           <p>You are in queue to chat with a stranger</p>
           <Button
-            onClick={() => leaveQueue(user.uid)}
+            onClick={() =>
+              import("../../util").then((functions) => {
+                functions.leaveQueue(user.uid);
+              })
+            }
             size="large"
             type="primary"
           >

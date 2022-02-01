@@ -34,6 +34,10 @@ function Conversations() {
   const [starterModal, setStarterModal] = useState(!user);
 
   useEffect(() => {
+    /*
+      if (pathname === "/chat" && user && unreadConversationsCount > 0)
+        resetUnreadConversationCount(user.uid);
+*/
     let newMessageListenerUnsubscribe;
 
     if (user) {
