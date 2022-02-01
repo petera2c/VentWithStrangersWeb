@@ -21,6 +21,7 @@ const Page = loadable(() => import("../../components/containers/Page"));
 
 const CheckoutForm = () => {
   const { user } = useContext(UserContext);
+
   const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();

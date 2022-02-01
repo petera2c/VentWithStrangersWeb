@@ -16,6 +16,7 @@ const SubscribeColumn = loadable(() =>
 
 function NewVentPage() {
   const location = useLocation();
+
   const { user } = useContext(UserContext);
 
   const { search } = location;
