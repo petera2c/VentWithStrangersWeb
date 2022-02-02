@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useState from "react-usestateref";
+import { off } from "firebase/database";
 import loadable from "@loadable/component";
 import { sendEmailVerification } from "firebase/auth";
 import { Button, message, Space } from "antd";
@@ -131,7 +132,7 @@ function Header() {
         newNotificationsListenerUnsubscribe();
       if (newConversationsListenerUnsubscribe)
         newConversationsListenerUnsubscribe();
-      if (onlineUsersUnsubscribe) onlineUsersUnsubscribe.off("value");
+      if (onlineUsersUnsubscribe) off(onlineUsersUnsubscribe);
     };
   }, [
     isMounted,

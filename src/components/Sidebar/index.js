@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { off } from "firebase/database";
 import loadable from "@loadable/component";
 import { Space } from "antd";
 
@@ -52,7 +53,7 @@ function Sidebar() {
 
     return () => {
       isMounted.current = false;
-      if (onlineUsersUnsubscribe) onlineUsersUnsubscribe.off("value");
+      if (onlineUsersUnsubscribe) off(onlineUsersUnsubscribe);
       if (chatQueueListenerUnsubscribe) chatQueueListenerUnsubscribe();
     };
   }, [isMounted, setTotalOnlineUsers]);

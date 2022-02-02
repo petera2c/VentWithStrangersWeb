@@ -1,4 +1,4 @@
-import { collection, doc, getDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { get, limitToLast, orderByChild, ref } from "firebase/database";
 
 import { db, db2 } from "../../config/localhost_init";
@@ -35,8 +35,7 @@ export const getUserAvatars = (setFirstOnlineUsers, totalOnlineUsers) => {
         i++
       ) {
         const userBasicInfoDoc = await getDoc(
-          collection(db, "users_display_name"),
-          doc(usersOnline[i].userID)
+          doc(db, "users_display_name", usersOnline[i].userID)
         );
 
         if (userBasicInfoDoc.data())
