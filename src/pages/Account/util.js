@@ -1,20 +1,31 @@
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
-import "firebase/compat/database";
 import {
+  collection,
+  deleteField,
+  doc,
+  getDoc,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  startAfter,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import {
+  getAuth,
   sendEmailVerification,
   updateEmail,
   updateProfile,
 } from "firebase/auth";
 
-import { db }from "../../config/localhost_init";
+import { db } from "../../config/db_init";
 
 import { message } from "antd";
 
 import { displayNameErrors, getEndAtValueTimestamp } from "../../util";
 
 export const deleteAccountAndAllData = async (userID) => {
-  await firebase.auth().currentUser.delete();
+  await getAuth().currentUser.delete();
 
   window.location.reload();
 };
@@ -28,13 +39,16 @@ export const getUsersVents = async (
 ) => {
   let startAt = getEndAtValueTimestamp(vents);
 
-  const snapshot = await db
-    .collection("/vents/")
-    .where("userID", "==", search)
-    .orderBy("server_timestamp", "desc")
-    .startAfter(startAt)
-    .limit(10)
-    .get();
+  const snapshot = await getDocs(
+    query(
+      collection(db, "vents"),
+      where("userID", "==", search),
+      orderBy("server_timestamp", "desc"),
+      startAfter(startAt),
+      limit(10)
+    )
+  );
+
   if (!isMounted.current) return;
 
   if (snapshot.docs && snapshot.docs.length > 0) {
@@ -65,13 +79,15 @@ export const getUsersComments = async (
 ) => {
   let startAt = getEndAtValueTimestamp(comments);
 
-  const snapshot = await db
-    .collection("/comments/")
-    .where("userID", "==", search)
-    .orderBy("server_timestamp", "desc")
-    .startAfter(startAt)
-    .limit(10)
-    .get();
+  const snapshot = await getDocs(
+    query(
+      collection(db, "comments"),
+      where("userID", "==", search),
+      orderBy("server_timestamp", "desc"),
+      startAfter(startAt),
+      limit(10)
+    )
+  );
 
   if (!isMounted.current) return;
 
@@ -100,7 +116,7 @@ export const getUser = async (callback, userID) => {
     return {};
   }
 
-  const authorDoc = await db.collection("users_info").doc(userID).get();
+  const authorDoc = await getDoc(doc(db, "users_info", userID));
 
   callback(authorDoc.exists ? { ...authorDoc.data(), id: authorDoc.id } : {});
 };
@@ -150,32 +166,27 @@ export const updateUser = async (
 
     changesFound = true;
 
-    if (education === undefined) deleteField("education", user.uid);
-    if (kids === undefined) deleteField("kids", user.uid);
-    if (partying === undefined) deleteField("partying", user.uid);
-    if (politics === undefined) deleteField("politics", user.uid);
-    if (religion === undefined) deleteField("religion", user.uid);
+    if (education === undefined) deleteAccountField("education", user.uid);
+    if (kids === undefined) deleteAccountField("kids", user.uid);
+    if (partying === undefined) deleteAccountField("partying", user.uid);
+    if (politics === undefined) deleteAccountField("politics", user.uid);
+    if (religion === undefined) deleteAccountField("religion", user.uid);
 
-    await db
-      .collection("users_info")
-      .doc(user.uid)
-      .set(
-        {
-          bio,
-          birth_date: birthDate ? birthDate.valueOf() : null,
-          gender,
-          pronouns,
-          ...whatInformationHasChanged(
-            education,
-            kids,
-            partying,
-            politics,
-            religion,
-            userInfo
-          ),
-        },
-        { merge: true }
-      );
+    updateDoc(doc(db, "users_info", user.uid), {
+      bio,
+      birth_date: birthDate ? birthDate.valueOf() : null,
+      gender,
+      pronouns,
+      ...whatInformationHasChanged(
+        education,
+        kids,
+        partying,
+        politics,
+        religion,
+        userInfo
+      ),
+    });
+
     message.success("Your account information has been changed");
   }
 
@@ -188,10 +199,9 @@ export const updateUser = async (
       displayName,
     })
       .then(async () => {
-        await db
-          .collection("users_display_name")
-          .doc(user.uid)
-          .update({ displayName });
+        await updateDoc(doc(db, "users_display_name", user.uid), {
+          displayName,
+        });
 
         setUserBasicInfo((oldInfo) => {
           let temp = { ...oldInfo };
@@ -239,16 +249,10 @@ export const updateUser = async (
   if (!changesFound) message.info("No changes!");
 };
 
-const deleteField = async (field, userID) => {
-  await db
-    .collection("users_info")
-    .doc(userID)
-    .set(
-      {
-        [field]: firebase.firestore.FieldValue.delete(),
-      },
-      { merge: true }
-    );
+const deleteAccountField = async (field, userID) => {
+  await updateDoc(doc(db, "users_info", userID), {
+    [field]: deleteField(),
+  });
 };
 
 const whatInformationHasChanged = (

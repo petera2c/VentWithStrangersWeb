@@ -1,9 +1,9 @@
-import firebase from "firebase/compat/app";
-import { db }from "../../config/localhost_init";
+import { doc, setDoc, Timestamp } from "firebase/firestore";
+import { db } from "../../config/db_init";
 
 export const joinQueue = async (userID) => {
-  await db.collection("chat_queue").doc(userID).set({
-    server_timestamp: firebase.firestore.Timestamp.now().toMillis(),
+  await setDoc(doc(db, "chat_queue", userID), {
+    server_timestamp: Timestamp.now().toMillis(),
     userID,
   });
 };

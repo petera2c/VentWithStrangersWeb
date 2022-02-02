@@ -1,7 +1,7 @@
 import React from "react";
 import firebase from "firebase/compat/app";
 import { message } from "antd";
-import { db }from "../../config/localhost_init";
+import { db }from "../../config/db_init";
 
 export const getComment = async (commentID, setComment, ventID) => {
   const doc = await db.collection("comments").doc(commentID).get();

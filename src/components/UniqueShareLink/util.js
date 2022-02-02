@@ -1,4 +1,4 @@
-import { db }from "../../config/localhost_init";
+import { db }from "../../config/db_init";
 
 export const createShareLink = (secondUID) => {
   let link = "https://www.ventwithstrangers.com?referral=" + secondUID;

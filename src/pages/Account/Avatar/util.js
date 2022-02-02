@@ -1,5 +1,6 @@
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../../../config/db_init";
 import { message } from "antd";
-import { db }from "../../../config/localhost_init";
 
 export const getActiveSection = (activeSection) => {
   if (activeSection === 0) return "topType";
@@ -14,10 +15,7 @@ export const getActiveSection = (activeSection) => {
 };
 
 export const saveAvatar = async (avatar, setUserBasicInfo, userID) => {
-  await db
-    .collection("users_display_name")
-    .doc(userID)
-    .set({ avatar }, { merge: true });
+  await updateDoc(doc(db, "users_display_name", userID), { avatar });
 
   setUserBasicInfo((oldInfo) => {
     let temp = { ...oldInfo };

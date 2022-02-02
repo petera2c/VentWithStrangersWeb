@@ -1,5 +1,5 @@
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../config/localhost_init";
+import { db } from "../../config/db_init";
 
 export const getUserInfo = async (callback, userID) => {
   const authorDoc = await getDoc(doc(db, "users_info", userID));

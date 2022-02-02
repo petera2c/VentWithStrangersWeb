@@ -11,7 +11,7 @@ import {
   where,
 } from "firebase/firestore";
 import { onValue, ref, serverTimestamp, set } from "firebase/database";
-import { db, db2 } from "../config/localhost_init";
+import { db, db2 } from "../config/db_init";
 import moment from "moment-timezone";
 
 export const getIsUsersBirthday = async (

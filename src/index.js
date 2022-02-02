@@ -10,7 +10,7 @@ import "antd/dist/antd.min.css";
 import "./theme.css";
 
 if (window.location.hostname === "localhost") {
-  loadable(() => import("./config/localhost_init"));
+  loadable(() => import("./config/db_init"));
 }
 
 const rootElement = document.getElementById("root");

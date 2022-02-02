@@ -1,7 +1,7 @@
 import { doc, getDoc } from "firebase/firestore";
 import { get, limitToLast, orderByChild, ref } from "firebase/database";
 
-import { db, db2 } from "../../config/localhost_init";
+import { db, db2 } from "../../config/db_init";
 
 export const getUserAvatars = (setFirstOnlineUsers, totalOnlineUsers) => {
   if (totalOnlineUsers > 0)

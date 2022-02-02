@@ -15,7 +15,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { db } from "../../config/localhost_init";
+import { db } from "../../config/db_init";
 
 import { message } from "antd";
 

@@ -1,5 +1,5 @@
 import { get, limitToLast, orderByChild, ref } from "firebase/database";
-import { db2 } from "../../config/localhost_init";
+import { db2 } from "../../config/db_init";
 
 export const getOnlineUsers = (isMounted, callback, totalOnlineUsers) => {
   if (totalOnlineUsers > 0)

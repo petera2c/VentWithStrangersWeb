@@ -8,7 +8,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { db } from "../../config/localhost_init";
+import { db } from "../../config/db_init";
 
 export const calculateMilestone = (counter, size) => {
   if (size === "tiny") {

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useDocument } from "react-firebase-hooks/firestore";
 import loadable from "@loadable/component";
 import { message } from "antd";
-import { db }from "../../config/localhost_init";
+import { db }from "../../config/db_init";
 
 import { UserContext } from "../../context";
 

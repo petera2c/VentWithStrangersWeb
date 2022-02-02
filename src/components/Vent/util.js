@@ -1,6 +1,6 @@
 import firebase from "firebase/compat/app";
 import { message } from "antd";
-import { db }from "../../config/localhost_init";
+import { db }from "../../config/db_init";
 
 import {
   getEndAtValueTimestamp,
