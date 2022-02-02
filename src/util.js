@@ -1,5 +1,4 @@
 import React from "react";
-
 import {
   collection,
   doc,
@@ -9,10 +8,8 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { onValue, ref } from "firebase/database";
-
 import { getAuth, sendEmailVerification, signOut } from "firebase/auth";
 import { db, db2 } from "./config/localhost_init";
-
 import reactStringReplace from "react-string-replace";
 import moment from "moment-timezone";
 import { message, Modal } from "antd";

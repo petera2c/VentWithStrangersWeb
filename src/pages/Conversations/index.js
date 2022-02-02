@@ -2,12 +2,9 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import loadable from "@loadable/component";
 
-import StarterModal from "../../components/modals/Starter";
-
 import { UserContext } from "../../context";
 
 import { userSignUpProgress } from "../../util";
-
 import { getConversations, mostRecentConversationListener } from "./util";
 
 const Chat = loadable(() => import("./chat"));
@@ -17,6 +14,7 @@ const Container = loadable(() =>
 const ConversationOption = loadable(() => import("./ConversationOption"));
 const MobileIndex = loadable(() => import("./MobileIndex"));
 const Page = loadable(() => import("../../components/containers/Page"));
+const StarterModal = loadable(() => import("../../components/modals/Starter"));
 
 function Conversations() {
   const isMounted = useRef(false);

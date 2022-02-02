@@ -1,24 +1,14 @@
-import { db }from "../../config/localhost_init";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../config/localhost_init";
 
 export const getUserInfo = async (callback, userID) => {
-  if (!userID) {
-    alert("Reload the page please. An unexpected error has occurred.");
-    return {};
-  }
-
-  const authorDoc = await db
-    .collection("users_info")
-    .doc(userID)
-    .get();
+  const authorDoc = await getDoc(doc(db, "users_info", userID));
 
   callback(authorDoc.exists ? { ...authorDoc.data(), id: authorDoc.id } : {});
 };
 
 export const getUserMatches = async (callback, userID) => {
-  const authorDoc = await db
-    .collection("user_matches")
-    .doc(userID)
-    .get();
+  const authorDoc = await getDoc(doc(db, "user_matches", userID));
 
   if (!authorDoc.exists) return;
 
@@ -27,32 +17,31 @@ export const getUserMatches = async (callback, userID) => {
 
   for (let index in authorDoc.data().matches) {
     counter++;
-    db.collection("users_info")
-      .doc(authorDoc.data().matches[index])
-      .get()
-      .then(infoDoc => {
-        db.collection("users_display_name")
-          .doc(authorDoc.data().matches[index])
-          .get()
-          .then(displayDoc => {
-            counter--;
 
-            let userWithAllInfo = {};
+    getDoc(doc(db, "users_info", authorDoc.data().matches[index])).then(
+      (infoDoc) => {
+        getDoc(
+          doc(db, "users_display_name", authorDoc.data().matches[index])
+        ).then((displayDoc) => {
+          counter--;
 
-            if (infoDoc.exists)
-              userWithAllInfo = { ...infoDoc.data(), userID: displayDoc.id };
-            if (displayDoc.exists)
-              userWithAllInfo = { ...userWithAllInfo, ...displayDoc.data() };
+          let userWithAllInfo = {};
 
-            userMatchesWithInfo.push(userWithAllInfo);
+          if (infoDoc.exists)
+            userWithAllInfo = { ...infoDoc.data(), userID: displayDoc.id };
+          if (displayDoc.exists)
+            userWithAllInfo = { ...userWithAllInfo, ...displayDoc.data() };
 
-            if (counter === 0) callback(userMatchesWithInfo);
-          });
-      });
+          userMatchesWithInfo.push(userWithAllInfo);
+
+          if (counter === 0) callback(userMatchesWithInfo);
+        });
+      }
+    );
   }
 };
 
-export const hasUserCompletedProfile = userInfo => {
+export const hasUserCompletedProfile = (userInfo) => {
   return Boolean(
     userInfo &&
       userInfo.education !== undefined &&

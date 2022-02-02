@@ -1,11 +1,12 @@
+import { getAuth } from "firebase/auth";
+
 export const handleVerifyEmail = (
-  auth,
   navigate,
   oobCode,
   setErrorMessage,
   setVerifiedSuccess
 ) => {
-  auth
+  getAuth()
     .applyActionCode(oobCode)
     .then((resp) => {
       setVerifiedSuccess(true);

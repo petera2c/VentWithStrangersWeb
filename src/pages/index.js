@@ -23,7 +23,6 @@ const AccountPage = React.lazy(() => import("./Account/Account"));
 const BirthdayPostPage = React.lazy(() => import("./BirthdayPost"));
 const ChatWithStrangersPage = React.lazy(() => import("./ChatWithStrangers"));
 const ConversationsPage = React.lazy(() => import("./Conversations"));
-const FriendsPage = React.lazy(() => import("./Friends"));
 const MakeFriendsPage = React.lazy(() => import("./MakeFriends"));
 const NewVentPage = React.lazy(() => import("./NewVent"));
 const NotFoundPage = React.lazy(() => import("./NotFound"));
@@ -183,7 +182,6 @@ function RoutesComp() {
                       element={<ChatWithStrangersPage />}
                     />
                     <Route path="chat" element={<ConversationsPage />} />
-                    <Route path="friends" element={<FriendsPage />} />
                     <Route path="make-friends" element={<MakeFriendsPage />} />
                     <Route
                       path="notifications"

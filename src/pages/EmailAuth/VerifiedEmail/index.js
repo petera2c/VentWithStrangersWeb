@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { getAuth } from "firebase/auth";
 import { useLocation, useNavigate } from "react-router-dom";
 import loadable from "@loadable/component";
 import { Button, Space } from "antd";
@@ -20,13 +19,7 @@ function VerifiedEmail() {
     if (!search) return;
     const oobCode = /oobCode=([^&]+)/.exec(search)[1];
 
-    handleVerifyEmail(
-      getAuth(),
-      navigate,
-      oobCode,
-      setErrorMessage,
-      setVerifiedSuccessly
-    );
+    handleVerifyEmail(navigate, oobCode, setErrorMessage, setVerifiedSuccessly);
   }, [navigate, search]);
 
   return (

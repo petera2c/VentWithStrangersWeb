@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Timestamp } from "firebase/firestore";
 import { Link } from "react-router-dom";
-import firebase from "firebase/compat/app";
 import { Button } from "antd";
 
 import Container from "../../components/containers/Container";
@@ -37,10 +37,7 @@ function Chat({
     if (isTyping) {
       for (let memberID in isTyping) {
         if (memberID !== userID) {
-          if (
-            firebase.firestore.Timestamp.now().toMillis() - isTyping[memberID] <
-            4000
-          ) {
+          if (Timestamp.now().toMillis() - isTyping[memberID] < 4000) {
             typingTimer2 = setTimeout(() => {
               setValue((value) => value + 1);
             }, 4000);

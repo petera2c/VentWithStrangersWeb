@@ -1,5 +1,21 @@
-import firebase from "firebase/compat/app";
-import { db }from "../../config/localhost_init";
+import {
+  arrayRemove,
+  collection,
+  deleteDoc,
+  deleteField,
+  doc,
+  getDoc,
+  getDocs,
+  limit,
+  onSnapshot,
+  orderBy,
+  query,
+  startAfter,
+  Timestamp,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import { db } from "../../config/localhost_init";
 
 import { message } from "antd";
 
@@ -23,25 +39,20 @@ export const deleteConversation = async (
     return [...oldConversations];
   });
 
-  await db
-    .collection("conversations")
-    .doc(conversationID)
-    .update({
-      [userID]: firebase.firestore.FieldValue.delete(),
-      members: firebase.firestore.FieldValue.arrayRemove(userID),
-    });
+  await updateDoc(doc(db, "conversations", conversationID), {
+    [userID]: deleteField(),
+    members: arrayRemove(userID),
+  });
+
   navigate("/chat");
 
   message.success("Conversation deleted!");
 };
 
 export const deleteMessage = async (conversationID, messageID, setMessages) => {
-  await db
-    .collection("conversation_extra_data")
-    .doc(conversationID)
-    .collection("messages")
-    .doc(messageID)
-    .delete();
+  await deleteDoc(
+    doc(db, "conversation_extra_data", conversationID, "messages", messageID)
+  );
 
   setMessages((messages) => {
     messages.splice(
@@ -64,10 +75,10 @@ export const getConversationBasicData = async (
       conversationFriendUserID = conversation.members[index];
   }
   if (!conversationFriendUserID) return;
-  const userBasicInfo = await db
-    .collection("users_display_name")
-    .doc(conversationFriendUserID)
-    .get();
+
+  const userBasicInfo = await getDoc(
+    doc(db, "users_display_name", conversationFriendUserID)
+  );
 
   if (userBasicInfo.data() && userBasicInfo.data().displayName) {
     getIsUserOnline((isUserOnline) => {
@@ -89,43 +100,38 @@ export const messageListener = (
   setMessages,
   first = true
 ) => {
-  const unsubscribe = db
-    .collection("conversation_extra_data")
-    .doc(conversationID)
-    .collection("messages")
-    .where(
-      "server_timestamp",
-      ">=",
-      firebase.firestore.Timestamp.now().toMillis()
-    )
-    .orderBy("server_timestamp", "desc")
-    .limit(1)
-    .onSnapshot(
-      (querySnapshot) => {
-        if (first) {
-          first = false;
-        } else if (querySnapshot.docs && querySnapshot.docs[0]) {
-          if (
-            querySnapshot.docChanges()[0].type === "added" ||
-            querySnapshot.docChanges()[0].type === "removed"
-          ) {
-            if (isMounted.current)
-              setMessages((oldMessages) => [
-                ...oldMessages,
-                {
-                  id: querySnapshot.docs[0].id,
-                  ...querySnapshot.docs[0].data(),
-                  doc: querySnapshot.docs[0],
-                },
-              ]);
-            setTimeout(() => {
-              scrollToBottom();
-            }, 200);
-          }
+  const unsubscribe = onSnapshot(
+    query(
+      collection(db, "conversation_extra_data", conversationID, "messages"),
+      where("server_timestamp", ">=", Timestamp.now().toMillis()),
+      orderBy("server_timestamp", "desc"),
+      limit(1)
+    ),
+    (querySnapshot) => {
+      if (first) {
+        first = false;
+      } else if (querySnapshot.docs && querySnapshot.docs[0]) {
+        if (
+          querySnapshot.docChanges()[0].type === "added" ||
+          querySnapshot.docChanges()[0].type === "removed"
+        ) {
+          if (isMounted.current)
+            setMessages((oldMessages) => [
+              ...oldMessages,
+              {
+                id: querySnapshot.docs[0].id,
+                ...querySnapshot.docs[0].data(),
+                doc: querySnapshot.docs[0],
+              },
+            ]);
+          setTimeout(() => {
+            scrollToBottom();
+          }, 200);
         }
-      },
-      (err) => {}
-    );
+      }
+    }
+  );
+
   return unsubscribe;
 };
 
@@ -139,13 +145,15 @@ export const getConversations = async (
 ) => {
   const startAt = getEndAtValueTimestamp(conversations);
 
-  const conversationsQuerySnapshot = await db
-    .collection("conversations")
-    .where("members", "array-contains", userID)
-    .orderBy("last_updated", "desc")
-    .startAfter(startAt)
-    .limit(5)
-    .get();
+  const conversationsQuerySnapshot = await getDocs(
+    query(
+      collection(db, "conversations"),
+      where("members", "array-contains", userID),
+      orderBy("last_updated", "desc"),
+      startAfter(startAt),
+      limit(5)
+    )
+  );
 
   let isActiveConversationInNewConversations = 0;
   let newConversations = [];
@@ -172,16 +180,15 @@ export const getConversations = async (
       (conversation) => conversation.id === activeConversation
     )
   ) {
-    const conversationDoc = await db
-      .collection("conversations")
-      .doc(activeConversation)
-      .get();
+    const conversationDoc = await getDoc(
+      doc(db, "conversations", activeConversation)
+    );
 
     if (conversationDoc.exists)
       newConversations.push({
         id: conversationDoc.id,
-        ...conversationDoc.data(),
         doc: conversationDoc,
+        ...conversationDoc.data(),
         useToPaginate: false,
       });
   }
@@ -202,14 +209,12 @@ export const getMessages = async (
   let startAt = getEndAtValueTimestampFirst(messages);
   if (first) startAt = getEndAtValueTimestampFirst([]);
 
-  const snapshot = await db
-    .collection("conversation_extra_data")
-    .doc(conversationID)
-    .collection("messages")
-    .orderBy("server_timestamp", "desc")
-    .startAfter(startAt)
-    .limit(10)
-    .get();
+  const snapshot = await getDocs(
+    query(db, "conversation_extra_data", conversationID, "messages"),
+    orderBy("server_timestamp", "desc"),
+    startAfter(startAt),
+    limit(10)
+  );
 
   if (!isMounted.current) return;
 
@@ -243,13 +248,15 @@ export const mostRecentConversationListener = (
   userID,
   first = true
 ) => {
-  const unsubscribe = db
-    .collection("conversations")
-    .where("members", "array-contains", userID)
-    .where("last_updated", ">=", firebase.firestore.Timestamp.now().toMillis())
-    .orderBy("last_updated", "desc")
-    .limit(1)
-    .onSnapshot((querySnapshot) => {
+  const unsubscribe = onSnapshot(
+    query(
+      collection(db, "conversations"),
+      where("members", "array-contains", userID),
+      where("last_updated", ">=", Timestamp.now().toMillis()),
+      orderBy("last_updated", "desc"),
+      limit(1)
+    ),
+    (querySnapshot) => {
       const conversationDoc = querySnapshot.docs[0];
 
       if (first) {
@@ -272,7 +279,9 @@ export const mostRecentConversationListener = (
           else return oldConversations;
         });
       }
-    });
+    }
+  );
+
   return unsubscribe;
 };
 
@@ -290,7 +299,7 @@ export const sendMessage = async (conversationID, message, userID) => {
     .collection("messages")
     .add({
       body: message,
-      server_timestamp: firebase.firestore.Timestamp.now().toMillis(),
+      server_timestamp: Timestamp.now().toMillis(),
       userID,
     });
 };
@@ -302,7 +311,7 @@ export const setConversationIsTyping = async (conversationID, userID) => {
     .set(
       {
         isTyping: {
-          [userID]: firebase.firestore.Timestamp.now().toMillis(),
+          [userID]: Timestamp.now().toMillis(),
         },
       },
       { merge: true }
