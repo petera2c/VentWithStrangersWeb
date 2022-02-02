@@ -1,4 +1,14 @@
-import { db }from "../../config/localhost_init";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
+import { db } from "../../config/localhost_init";
 
 export const calculateMilestone = (counter, size) => {
   if (size === "tiny") {
@@ -68,12 +78,14 @@ export const getUserRecentRewards = async (
   setRecentRewards,
   userID
 ) => {
-  const recentRewardsSnapshot = await db
-    .collection("rewards")
-    .where("userID", "==", userID)
-    .orderBy("server_timestamp", "desc")
-    .limit(5)
-    .get();
+  const recentRewardsSnapshot = await getDocs(
+    query(
+      collection(db, "rewards"),
+      where("userID", "==", userID),
+      orderBy("server_timestamp", "desc"),
+      limit(5)
+    )
+  );
 
   let recentRewards = [];
   if (recentRewardsSnapshot.docs)
@@ -93,7 +105,7 @@ export const getUserRewardsProgress = async (
   setUserRewards,
   userID
 ) => {
-  const userRewardsDoc = await db.collection("user_rewards").doc(userID).get();
+  const userRewardsDoc = await getDoc(doc(db, "user_rewards", userID));
 
   if (userRewardsDoc.exists && userRewardsDoc.data())
     setUserRewards(userRewardsDoc.data());

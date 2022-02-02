@@ -1,5 +1,20 @@
-import firebase from "firebase/compat/app";
-import { db }from "../../config/localhost_init";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  setDoc,
+  startAfter,
+  Timestamp,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import { db } from "../../config/localhost_init";
 import moment from "moment-timezone";
 import { message } from "antd";
 
@@ -11,7 +26,7 @@ export const deleteQuote = async (
   setQuoteID,
   setQuotes
 ) => {
-  await db.collection("quotes").doc(quoteID).delete();
+  await deleteDoc(doc(db, "quotes", quoteID));
 
   if (setQuotes)
     setQuotes((quotes) => {
@@ -31,17 +46,18 @@ export const getCanUserCreateQuote = async (
   setCanUserCreateQuote,
   userID
 ) => {
-  const todaysFormattedDate = new moment(
-    firebase.firestore.Timestamp.now().toMillis()
-  )
+  const todaysFormattedDate = new moment(Timestamp.now().toMillis())
     .utcOffset(0)
     .format("MM-DD-YYYY");
 
-  const userQuotesTodaySnapshot = await db
-    .collection("quotes")
-    .where("formatted_date", "==", todaysFormattedDate)
-    .where("userID", "==", userID)
-    .get();
+  const userQuotesTodaySnapshot = await getDocs(
+    query(
+      collection(db, "quotes"),
+      where("formatted_date", "==", todaysFormattedDate),
+      where("userID", "==", userID),
+      limit(1)
+    )
+  );
 
   if (
     userQuotesTodaySnapshot.docs &&
@@ -53,10 +69,9 @@ export const getCanUserCreateQuote = async (
 };
 
 export const getHasUserLikedQuote = async (quoteID, setHasLiked, userID) => {
-  const quoteHasLikedDoc = await db
-    .collection("quote_likes")
-    .doc(quoteID + "|||" + userID)
-    .get();
+  const quoteHasLikedDoc = await getDoc(
+    doc(db, "quote_likes", quoteID + "|||" + userID)
+  );
 
   if (!quoteHasLikedDoc.exists) return;
   let value = quoteHasLikedDoc.data();
@@ -74,13 +89,15 @@ export const getQuotes = async (
   let startAt = getEndAtValueTimestamp(quotes);
   const todaysFormattedDate = new moment().utcOffset(0).format("MM-DD-YYYY");
 
-  const quotesSnapshot = await db
-    .collection("quotes")
-    .where("formatted_date", "==", todaysFormattedDate)
-    .orderBy("like_counter", "desc")
-    .startAfter(startAt)
-    .limit(10)
-    .get();
+  const quotesSnapshot = await getDocs(
+    query(
+      collection(db, "quotes"),
+      where("formatted_date", "==", todaysFormattedDate),
+      orderBy("like_counter", "desc"),
+      startAfter(startAt),
+      limit(10)
+    )
+  );
 
   if (!isMounted.current) return;
 
@@ -106,23 +123,25 @@ export const getQuotes = async (
   } else setCanLoadMoreQuotes(false);
 };
 
-export const likeOrUnlikeQuote = async (hasLiked, quote, user) => {
+export const likeOrUnlikeQuote = (hasLiked, quote, user) => {
   if (!user)
     return message.info(
       "You must sign in or register an account to support a comment!"
     );
 
-  await db
-    .collection("quote_likes")
-    .doc(quote.id + "|||" + user.uid)
-    .set({ liked: !hasLiked, quoteID: quote.id, userID: user.uid });
+  setDoc(doc(db, "quote_likes", quote.id + "|||" + user.uid), {
+    liked: !hasLiked,
+    quoteID: quote.id,
+    userID: user.uid,
+  });
 };
 
-export const reportQuote = async (option, quoteID, userID) => {
-  await db
-    .collection("quote_reports")
-    .doc(quoteID + "|||" + userID)
-    .set({ option, quoteID, userID });
+export const reportQuote = (option, quoteID, userID) => {
+  setDoc(doc(db, "quote_reports", quoteID + "|||" + userID), {
+    option,
+    quoteID,
+    userID,
+  });
 
   message.success("Report successful :)");
 };
@@ -142,7 +161,7 @@ export const saveQuote = async (
       "Your quote has too many characters. There is a max of 150 characters."
     );
   if (quoteID) {
-    await db.collection("quotes").doc(quoteID).update({ userID, value: quote });
+    await updateDoc(doc(db, "quotes", quoteID), { userID, value: quote });
 
     if (isMounted.current) {
       setQuotes((oldQuotes) => {
@@ -154,11 +173,13 @@ export const saveQuote = async (
     }
     message.success("Updated successfully! :)");
   } else if (canUserCreateQuote) {
-    const newQuote = await db.collection("quotes").add({
+    const newQuote = await addDoc(collection(db, "quotes"), {
       userID,
       value: quote,
     });
     const newQuoteDoc = await newQuote.get();
+
+    message.success("Quote saved!");
 
     if (isMounted.current) {
       setQuotes((oldQuotes) => [

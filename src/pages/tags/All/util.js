@@ -1,16 +1,26 @@
-import { db }from "../../../config/localhost_init";
+import {
+  collection,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  startAfter,
+} from "firebase/firestore";
+import { db } from "../../../config/localhost_init";
 
 import { getEndAtValueTimestamp } from "../../../util";
 
 export const getTags = async (isMounted, setTags, tags) => {
   let startAt = getEndAtValueTimestamp(tags);
 
-  const tagsSnapshot = await db
-    .collection("vent_tags")
-    .orderBy("display")
-    .startAfter(startAt)
-    .limit(10)
-    .get();
+  const tagsSnapshot = await getDocs(
+    query(
+      collection(db, "vent_tags"),
+      orderBy("display"),
+      startAfter(startAt),
+      limit(10)
+    )
+  );
 
   if (!isMounted.current) return;
 

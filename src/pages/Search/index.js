@@ -44,8 +44,7 @@ function SearchPage() {
         })
         .then(({ hits }) => {
           setUsers(hits);
-        })
-        .catch((err) => {});
+        });
     } else {
       ventsIndex
         .search(search, {
@@ -53,8 +52,7 @@ function SearchPage() {
         })
         .then(({ hits }) => {
           setVents(hits);
-        })
-        .catch((err) => {});
+        });
     }
   }, [search, isUsers]);
 

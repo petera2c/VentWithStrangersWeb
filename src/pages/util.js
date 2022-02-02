@@ -1,9 +1,18 @@
-import { serverTimestamp } from "firebase/database";
-import moment from "moment-timezone";
-
-import { doc, getDoc, Timestamp } from "firebase/firestore";
-import { onValue, ref, set } from "firebase/database";
+import {
+  collection,
+  doc,
+  getDoc,
+  limit,
+  onSnapshot,
+  orderBy,
+  query,
+  Timestamp,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import { onValue, ref, serverTimestamp, set } from "firebase/database";
 import { db, db2 } from "../config/localhost_init";
+import moment from "moment-timezone";
 
 export const getIsUsersBirthday = async (
   isMounted,
@@ -22,18 +31,16 @@ export const getIsUsersBirthday = async (
         365)
   ) {
     if (isMounted.current) setIsUsersBirthday(true);
-    await db
-      .collection("users_info")
-      .doc(userInfoDoc.id)
-      .update({ last_birthday: Timestamp.now().toMillis() });
+    await updateDoc(doc(db, "users_info", userInfoDoc.id), {
+      last_birthday: Timestamp.now().toMillis(),
+    });
   }
 };
 
 export const getIsUserSubscribed = async (setUserSubscription, userID) => {
-  const userSubscriptionDoc = await db
-    .collection("user_subscription")
-    .doc(userID)
-    .get();
+  const userSubscriptionDoc = await getDoc(
+    doc(db, "user_subscription", userID)
+  );
 
   if (userSubscriptionDoc.exists && userSubscriptionDoc.data())
     setUserSubscription(userSubscriptionDoc.data());
@@ -45,30 +52,31 @@ export const newRewardListener = (
   userID,
   first = true
 ) => {
-  const unsubscribe = db
-    .collection("rewards")
-    .where("userID", "==", userID)
-    .orderBy("server_timestamp", "desc")
-    .limit(1)
-    .onSnapshot(
-      (querySnapshot) => {
-        if (first) {
-          first = false;
-        } else if (
-          querySnapshot.docs &&
-          querySnapshot.docs[0] &&
-          isMounted.current
-        ) {
-          setNewReward(() => {
-            return {
-              id: querySnapshot.docs[0].id,
-              ...querySnapshot.docs[0].data(),
-            };
-          });
-        }
-      },
-      (err) => {}
-    );
+  const unsubscribe = onSnapshot(
+    query(
+      collection(db, "rewards"),
+      where("userID", "==", userID),
+      orderBy("server_timestamp", "desc"),
+      limit(1)
+    ),
+    (querySnapshot) => {
+      if (first) {
+        first = false;
+      } else if (
+        querySnapshot.docs &&
+        querySnapshot.docs[0] &&
+        isMounted.current
+      ) {
+        setNewReward(() => {
+          return {
+            id: querySnapshot.docs[0].id,
+            ...querySnapshot.docs[0].data(),
+          };
+        });
+      }
+    }
+  );
+
   return unsubscribe;
 };
 
