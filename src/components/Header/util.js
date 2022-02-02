@@ -1,18 +1,34 @@
-import db from "../../config/firebase";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  limit,
+  limitToLast,
+  onSnapshot,
+  orderBy,
+  query,
+  setDoc,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import { db } from "../../config/localhost_init";
 import { soundNotify } from "../../util";
 
 export const conversationsListener = (navigate, userID) => {
-  const unsubscribe = db
-    .collection("conversations")
-    .where("members", "array-contains", userID)
-    .orderBy("last_updated", "desc")
-    .limit(1)
-    .onSnapshot((snapshot) => {
+  const unsubscribe = onSnapshot(
+    query(
+      collection(db, "conversations"),
+      where("members", "array-contains", userID),
+      orderBy("last_updated", "desc"),
+      limit(1)
+    ),
+    (snapshot) => {
       if (snapshot.docs && snapshot.docs[0]) {
         const doc = snapshot.docs[0];
         if (doc.data().go_to_inbox) navigate("/chat?" + doc.id);
       }
-    });
+    }
+  );
 
   return unsubscribe;
 };
@@ -25,12 +41,14 @@ export const getNotifications = (
   user,
   firstLoad = true
 ) => {
-  const unsubscribe = db
-    .collection("notifications")
-    .orderBy("server_timestamp")
-    .where("userID", "==", user.uid)
-    .limitToLast(10)
-    .onSnapshot("value", (snapshot) => {
+  const unsubscribe = onSnapshot(
+    query(
+      collection(db, "notifications"),
+      orderBy("server_timestamp"),
+      where("userID", "==", user.uid),
+      limitToLast(10)
+    ),
+    (snapshot) => {
       if (snapshot.docs) {
         if (isMounted.current) {
           const newNotifications = snapshot.docs
@@ -56,8 +74,8 @@ export const getNotifications = (
         if (isMounted.current) setNotifications([]);
       }
       firstLoad = false;
-    });
-
+    }
+  );
   return unsubscribe;
 };
 
@@ -125,14 +143,14 @@ export const isUserInQueueListener = (isMounted, setIsUserInQueue, userID) => {
 };
 
 export const leaveQueue = async (userID) => {
-  await db.collection("chat_queue").doc(userID).delete();
+  await deleteDoc(doc(db, "chat_queue", userID));
 };
 
 export const readNotifications = (notifications) => {
   for (let index in notifications) {
     const notification = notifications[index];
     if (!notification.hasSeen) {
-      db.collection("notifications").doc(notification.id).update({
+      updateDoc(doc(db, "notifications", notification.id), {
         hasSeen: true,
       });
     }
@@ -145,6 +163,6 @@ export const resetUnreadConversationCount = (
   userID
 ) => {
   if (isMounted.current)
-    db.collection("unread_conversations_count").doc(userID).set({ count: 0 });
+    setDoc(doc(db, "unread_conversations_count", userID), { count: 0 });
   if (isMounted.current) setUnreadConversationsCount(0);
 };

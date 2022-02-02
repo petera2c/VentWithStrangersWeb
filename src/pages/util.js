@@ -1,16 +1,16 @@
-import firebase from "firebase/compat/app";
 import { serverTimestamp } from "firebase/database";
-import "firebase/compat/auth";
-import "firebase/compat/database";
-import db from "../config/firebase";
 import moment from "moment-timezone";
+
+import { doc, getDoc, Timestamp } from "firebase/firestore";
+import { onValue, ref, set } from "firebase/database";
+import { db, db2 } from "../config/localhost_init";
 
 export const getIsUsersBirthday = async (
   isMounted,
   setIsUsersBirthday,
   userID
 ) => {
-  const userInfoDoc = await db.collection("users_info").doc(userID).get();
+  const userInfoDoc = await getDoc(doc(db, "users_info", userID));
 
   if (
     userInfoDoc.data() &&
@@ -25,7 +25,7 @@ export const getIsUsersBirthday = async (
     await db
       .collection("users_info")
       .doc(userInfoDoc.id)
-      .update({ last_birthday: firebase.firestore.Timestamp.now().toMillis() });
+      .update({ last_birthday: Timestamp.now().toMillis() });
   }
 };
 
@@ -74,21 +74,16 @@ export const newRewardListener = (
 
 export const setUserOnlineStatus = async (status, uid) => {
   if (status === "online")
-    await firebase
-      .database()
-      .ref("status/" + uid)
-      .set({
-        last_online: serverTimestamp(),
-        state: status,
-      });
+    await set(ref(db2, "status/" + uid), {
+      last_online: serverTimestamp(),
+      state: status,
+    });
   else
-    await firebase
-      .database()
-      .ref("status/" + uid)
-      .update({
-        last_online: serverTimestamp(),
-        state: status,
-      });
+    await set(ref(db2, "status/" + uid), {
+      last_online: serverTimestamp(),
+      state: status,
+    });
+
   return;
 };
 
@@ -96,7 +91,7 @@ export const setIsUserOnlineToDatabase = (user) => {
   if (!user) return;
   var uid = user.uid;
 
-  var userStatusDatabaseRef = firebase.database().ref("status/" + uid);
+  var userStatusDatabaseRef = ref(db2, "status/", uid);
 
   var isOfflineForDatabase = {
     last_online: serverTimestamp(),
@@ -108,19 +103,16 @@ export const setIsUserOnlineToDatabase = (user) => {
     state: "online",
   };
 
-  firebase
-    .database()
-    .ref(".info/connected")
-    .on("value", (snapshot) => {
-      if (!snapshot.val()) {
-        return;
-      }
+  onValue(ref(db2, ".info/connected"), (snapshot) => {
+    if (!snapshot.val()) {
+      return;
+    }
 
-      userStatusDatabaseRef
-        .onDisconnect()
-        .update(isOfflineForDatabase)
-        .then(() => {
-          userStatusDatabaseRef.update(isOnlineForDatabase);
-        });
-    });
+    userStatusDatabaseRef
+      .onDisconnect()
+      .update(isOfflineForDatabase)
+      .then(() => {
+        userStatusDatabaseRef.update(isOnlineForDatabase);
+      });
+  });
 };

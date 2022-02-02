@@ -1,4 +1,4 @@
-import db from "../../../config/firebase";
+import { db }from "../../../config/localhost_init";
 
 import { getEndAtValueTimestamp } from "../../../util";
 

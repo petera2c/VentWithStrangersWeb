@@ -3,7 +3,7 @@ import "firebase/compat/auth";
 import Cookies from "universal-cookie";
 import { message } from "antd";
 import moment from "moment-timezone";
-import db from "../../../config/firebase";
+import { db }from "../../../config/localhost_init";
 
 import { displayNameErrors } from "../../../util";
 

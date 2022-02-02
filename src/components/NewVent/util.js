@@ -1,6 +1,14 @@
-import firebase from "firebase/compat/app";
+import {
+  collection,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  Timestamp,
+  where,
+} from "firebase/firestore";
 import moment from "moment-timezone";
-import db from "../../config/firebase";
+import { db } from "../../config/localhost_init";
 
 import { message } from "antd";
 
@@ -39,19 +47,19 @@ export const checks = async (
 };
 
 export const getQuote = async (isMounted, setQuote) => {
-  const yesterdaysFormattedDate = new moment(
-    firebase.firestore.Timestamp.now().toMillis()
-  )
+  const yesterdaysFormattedDate = new moment(Timestamp.now().toMillis())
     .utcOffset(0)
     .subtract(1, "days")
     .format("MM-DD-YYYY");
 
-  const quotesSnapshot = await db
-    .collection("quotes")
-    .where("formatted_date", "==", yesterdaysFormattedDate)
-    .orderBy("like_counter", "desc")
-    .limit(1)
-    .get();
+  const quotesSnapshot = await getDocs(
+    query(
+      collection(db, "quotes"),
+      where("formatted_date", "==", yesterdaysFormattedDate),
+      orderBy("like_counter", "desc"),
+      limit(1)
+    )
+  );
 
   if (
     quotesSnapshot.docs &&
@@ -117,12 +125,12 @@ export const saveVent = async (
   user
 ) => {
   if (!ventID) {
-    ventObject.server_timestamp = firebase.firestore.Timestamp.now().toMillis();
+    ventObject.server_timestamp = Timestamp.now().toMillis();
     ventObject.comment_counter = 0;
     ventObject.like_counter = 0;
   }
   ventObject.userID = user.uid;
-  ventObject.last_updated = firebase.firestore.Timestamp.now().toMillis();
+  ventObject.last_updated = Timestamp.now().toMillis();
 
   let tagIDs = [];
   for (let index in tags) {
@@ -168,8 +176,7 @@ export const updateTags = (setTags, tag) => {
     } else {
       return [tag, ...oldTags].sort((a, b) => {
         if (a.objectID < b.objectID) return -1;
-        if (a.objectID > b.objectID) return 1;
-        return 0;
+        else return 1;
       });
     }
   });

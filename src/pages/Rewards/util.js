@@ -1,4 +1,4 @@
-import db from "../../config/firebase";
+import { db }from "../../config/localhost_init";
 
 export const calculateMilestone = (counter, size) => {
   if (size === "tiny") {

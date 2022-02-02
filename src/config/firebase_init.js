@@ -1,7 +1,4 @@
-import firebase from "firebase/compat/app";
-import "firebase/compat/analytics";
-import "firebase/compat/firestore";
-import "firebase/compat/auth";
+import { initializeApp } from "firebase/app";
 
 var firebaseConfig = {
   apiKey: "AIzaSyCk8EfNyqarIzBAQSCFgU8634o-e0iA_Os",
@@ -15,6 +12,8 @@ var firebaseConfig = {
 };
 
 //window.location.hostname === "localhost"
+
+/*
 if (window.location.hostname === "localhost")
   firebaseConfig = {
     apiKey: "AIzaSyCk8EfNyqarIzBAQSCFgU8634o-e0iA_Os",
@@ -25,16 +24,8 @@ if (window.location.hostname === "localhost")
     messagingSenderId: "440569980458",
     projectId: "vent-with-strangers-2acc6",
     storageBucket: "vent-with-strangers-2acc6.appspot.com",
-  };
+  };*/
 
-export const firebaseApp = firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
-let db = firebase.firestore();
-
-if (window.location.hostname === "localhost") {
-  db.useEmulator("localhost", 8080);
-
-  firebase.auth().useEmulator("http://localhost:9099");
-}
-
-export default db;
+export default app;

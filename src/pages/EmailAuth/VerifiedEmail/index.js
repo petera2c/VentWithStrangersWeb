@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { getAuth } from "firebase/auth";
 import { useLocation, useNavigate } from "react-router-dom";
 import loadable from "@loadable/component";
 import { Button, Space } from "antd";
-
-import { firebaseApp } from "../../../config/firebase";
 
 import { handleVerifyEmail } from "./util";
 
@@ -22,7 +21,7 @@ function VerifiedEmail() {
     const oobCode = /oobCode=([^&]+)/.exec(search)[1];
 
     handleVerifyEmail(
-      firebaseApp.auth(),
+      getAuth(),
       navigate,
       oobCode,
       setErrorMessage,

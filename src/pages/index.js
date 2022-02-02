@@ -3,10 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import loadable from "@loadable/component";
 import { useIdleTimer } from "react-idle-timer";
 
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
-import "firebase/compat/firestore";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import { OnlineUsersContext, UserContext } from "../context";
 
@@ -22,7 +19,7 @@ const Sidebar = loadable(() => import("../components/Sidebar"));
 
 const AboutUsPage = React.lazy(() => import("./AboutUs"));
 const AccountPage = React.lazy(() => import("./Account/Account"));
-const AvatarPage = React.lazy(() => import("./Account/Avatar"));
+//const AvatarPage = React.lazy(() => import("./Account/Avatar"));
 const BirthdayPostPage = React.lazy(() => import("./BirthdayPost"));
 const ChatWithStrangersPage = React.lazy(() => import("./ChatWithStrangers"));
 const ConversationsPage = React.lazy(() => import("./Conversations"));
@@ -50,7 +47,6 @@ const VerifiedEmailPage = React.lazy(() => import("./EmailAuth/VerifiedEmail"));
 
 function RoutesComp() {
   const isMounted = useRef(false);
-  const [user, loading] = useAuthState(firebase.auth());
 
   const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
   const [isUsersBirthday, setIsUsersBirthday] = useState(false);
@@ -58,6 +54,16 @@ function RoutesComp() {
   const [totalOnlineUsers, setTotalOnlineUsers] = useState();
   const [userBasicInfo, setUserBasicInfo] = useState({});
   const [userSubscription, setUserSubscription] = useState();
+  const [user, setUser] = useState();
+  const [loading, setLoading] = useState();
+
+  onAuthStateChanged(getAuth(), (user) => {
+    setLoading(false);
+    if (user) setUser(user);
+    else {
+      setUser(false);
+    }
+  });
 
   const handleOnIdle = (event) => {
     if (user && user.uid)
@@ -145,9 +151,9 @@ function RoutesComp() {
           <Container className="screen-container column">
             {!isMobileOrTablet && <Header />}
             {isMobileOrTablet && <MobileHeader />}
-
             <Container className="flex-fill ov-hidden">
               {!isMobileOrTablet && <Sidebar />}
+
               {!loading && (
                 <Suspense
                   fallback={
@@ -160,7 +166,6 @@ function RoutesComp() {
                     {!user && <Route path="account" element={<SignUpPage />} />}
                     {user && <Route path="account" element={<AccountPage />} />}
                     {!user && <Route path="avatar" element={<SignUpPage />} />}
-                    {user && <Route path="avatar" element={<AvatarPage />} />}
                     {!user && (
                       <Route path="settings" element={<SignUpPage />} />
                     )}
@@ -232,7 +237,6 @@ function RoutesComp() {
                 newReward={newReward}
               />
             )}
-
             {isUsersBirthday && (
               <BirthdayModal close={() => setIsUsersBirthday(false)} />
             )}

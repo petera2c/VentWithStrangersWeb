@@ -1,5 +1,5 @@
 import { message } from "antd";
-import db from "../../../config/firebase";
+import { db }from "../../../config/localhost_init";
 
 export const getActiveSection = (activeSection) => {
   if (activeSection === 0) return "topType";

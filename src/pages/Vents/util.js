@@ -1,5 +1,14 @@
+import {
+  collection,
+  getDocs,
+  limit,
+  onSnapshot,
+  orderBy,
+  query,
+  startAfter,
+} from "firebase/firestore";
+import { db } from "../../config/localhost_init";
 import moment from "moment-timezone";
-import db from "../../config/firebase";
 import { getEndAtValueTimestamp } from "../../util";
 
 export const getMetaInformation = (pathname) => {
@@ -34,21 +43,25 @@ export const getVents = async (
 
   let snapshot;
   if (pathname === "/recent") {
-    snapshot = await db
-      .collection("/vents/")
-      .orderBy("server_timestamp", "desc")
-      .startAfter(startAt)
-      .limit(10)
-      .get();
+    snapshot = await getDocs(
+      query(
+        collection(db, "vents"),
+        orderBy("server_timestamp", "desc"),
+        startAfter(startAt),
+        limit(10)
+      )
+    );
   } else {
     let startDate = moment();
     startDate.subtract(3, "days");
-    snapshot = await db
-      .collection("/vents/")
-      .orderBy("trending_score", "desc")
-      .startAfter(startAt)
-      .limit(10)
-      .get();
+    snapshot = await getDocs(
+      query(
+        collection(db, "vents"),
+        orderBy("trending_score", "desc"),
+        startAfter(startAt),
+        limit(10)
+      )
+    );
   }
   if (!isMounted.current) return;
 
@@ -79,11 +92,13 @@ export const newVentListener = (
 ) => {
   if (pathname !== "/recent") return;
 
-  const unsubscribe = db
-    .collection("vents")
-    .orderBy("server_timestamp", "desc")
-    .limit(1)
-    .onSnapshot((querySnapshot) => {
+  const unsubscribe = onSnapshot(
+    query(
+      collection(db, "vents"),
+      orderBy("server_timestamp", "desc"),
+      limit(1)
+    ),
+    (querySnapshot) => {
       if (first) {
         first = false;
       } else if (querySnapshot.docs && querySnapshot.docs[0]) {
@@ -102,7 +117,8 @@ export const newVentListener = (
             ]);
         }
       }
-    });
+    }
+  );
 
   return unsubscribe;
 };

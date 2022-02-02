@@ -7,7 +7,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 
-import db from "../../config/firebase";
+import { db }from "../../config/localhost_init";
 
 import { message } from "antd";
 

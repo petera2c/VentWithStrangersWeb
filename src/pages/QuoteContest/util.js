@@ -1,5 +1,5 @@
 import firebase from "firebase/compat/app";
-import db from "../../config/firebase";
+import { db }from "../../config/localhost_init";
 import moment from "moment-timezone";
 import { message } from "antd";
 

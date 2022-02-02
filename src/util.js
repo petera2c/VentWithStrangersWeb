@@ -1,21 +1,30 @@
 import React from "react";
+
+import {
+  collection,
+  doc,
+  limit,
+  onSnapshot,
+  query,
+  setDoc,
+} from "firebase/firestore";
+import { onValue, ref } from "firebase/database";
+
+import { getAuth, sendEmailVerification, signOut } from "firebase/auth";
+import { db, db2 } from "./config/localhost_init";
+
 import reactStringReplace from "react-string-replace";
-import firebase from "firebase/compat/app";
-import "firebase/compat/database";
-import { sendEmailVerification } from "firebase/auth";
 import moment from "moment-timezone";
 import { message, Modal } from "antd";
 
-import db from "./config/firebase";
-
 export const blockUser = async (userID, userIDToBlock) => {
   const sortedUserArray = [userID, userIDToBlock].sort();
-  await db
-    .collection("block_check")
-    .doc(sortedUserArray[0] + "|||" + sortedUserArray[1])
-    .set({
+  await setDoc(
+    doc(db, "block_check", sortedUserArray[0] + "|||" + sortedUserArray[1]),
+    {
       [userID]: true,
-    });
+    }
+  );
   message.success("User has been blocked");
   window.location.reload();
 };
@@ -41,16 +50,16 @@ export const capitolizeFirstLetterOfEachWord = (string) => {
 };
 
 export const chatQueueEmptyListener = (isMounted, setQueueLength) => {
-  const unsubscribe = db
-    .collection("chat_queue")
-    .limit(10)
-    .onSnapshot((snapshot) => {
+  const unsubscribe = onSnapshot(
+    query(collection(db, "chat_queue"), limit()),
+    (snapshot) => {
       if (!isMounted.current) return;
 
       if (snapshot.docs && snapshot.docs.length > 0)
         setQueueLength(snapshot.docs.length);
       else setQueueLength(-1);
-    });
+    }
+  );
 
   return unsubscribe;
 };
@@ -159,23 +168,25 @@ const getInvalidCharacters = (displayName) => {
 };
 
 export const getIsUserOnline = (setIsUserOnline, userID) => {
-  const ref = firebase.database().ref("status/" + userID);
+  const dbRef = ref(db2, "status/" + userID);
 
-  ref.on("value", (snapshot) => {
+  onValue(dbRef, (snapshot) => {
     if (snapshot.val() && snapshot.val().state === "online")
       setIsUserOnline(snapshot.val());
     else setIsUserOnline({ state: false });
   });
+
+  return dbRef;
 };
 
 export const getTotalOnlineUsers = (callback) => {
-  const ref = firebase.database().ref("total_online_users");
+  const dbRef = ref(db2, "total_online_users");
 
-  ref.on("value", (doc) => {
+  onValue(dbRef, (doc) => {
     callback(doc.val());
   });
 
-  return ref;
+  return dbRef;
 };
 
 export const getUserBasicInfo = async (callback, userID) => {
@@ -229,16 +240,13 @@ export const isUserAccountNew = (userBasicInfo) => {
   else return true;
 };
 
-export const signOut = (userID) => {
+export const signOut2 = (userID) => {
   import("./pages/util").then(async (functions) => {
     await functions.setUserOnlineStatus("offline", userID);
 
-    firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        window.location.reload();
-      });
+    signOut(getAuth()).then(() => {
+      window.location.reload();
+    });
   });
 };
 
