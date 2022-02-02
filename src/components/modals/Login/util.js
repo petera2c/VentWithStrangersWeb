@@ -1,13 +1,11 @@
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
+import { getAuth } from "firebase/auth";
 
 export const login = ({ email, password }, setActiveModal) => {
-  firebase
-    .auth()
+  getAuth()
     .signInWithEmailAndPassword(email, password)
     .then((res) => {
       setActiveModal();
-      //window.location.reload();
+      window.location.reload();
     })
     .catch((error) => {
       alert(error);

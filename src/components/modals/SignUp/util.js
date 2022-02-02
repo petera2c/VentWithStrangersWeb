@@ -1,9 +1,9 @@
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
-import Cookies from "universal-cookie";
-import { message } from "antd";
+import { getAuth } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../../../config/db_init";
 import moment from "moment-timezone";
-import { db }from "../../../config/db_init";
+import { message } from "antd";
+import Cookies from "universal-cookie";
 
 import { displayNameErrors } from "../../../util";
 
@@ -21,19 +21,18 @@ export const signUp = (
 
   const referral = cookies.get("referral");
 
-  firebase
-    .auth()
+  getAuth()
     .createUserWithEmailAndPassword(email, password)
     .then(async (res) => {
       if (res.user) {
         res.user.sendEmailVerification();
 
         if (referral)
-          db.collection("invited_users").doc(res.user.uid).set({
+          await setDoc(doc(db, "invited_users", res.user.uid), {
             referral_secondary_uid: referral,
           });
 
-        await db.collection("users_settings").doc(res.user.uid).set({
+        await setDoc(doc(db, "users_settings", res.user.uid), {
           email_comment_like: true,
           email_comment_tagged: true,
           email_link_sign_up: true,
@@ -59,18 +58,13 @@ export const signUp = (
           offensive_content: true,
         });
 
-        await db
-          .collection("users_display_name")
-          .doc(res.user.uid)
-          .set({
-            server_timestamp: new moment(
-              res.user.metadata.creationTime
-            ).valueOf(),
-            displayName,
-          });
-        await res.user.updateProfile({
+        await setDoc(doc(db, "users_display_name", res.user.uid), {
+          server_timestamp: new moment(
+            res.user.metadata.creationTime
+          ).valueOf(),
           displayName,
         });
+
         setActiveModal(false);
         navigate("/rules");
         window.location.reload();

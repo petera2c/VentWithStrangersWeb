@@ -1,16 +1,23 @@
 import React from "react";
-import firebase from "firebase/compat/app";
+import {
+  deleteDoc,
+  doc,
+  getDoc,
+  setDoc,
+  Timestamp,
+  updateDoc,
+} from "firebase/firestore";
+import { db } from "../../config/db_init";
 import { message } from "antd";
-import { db }from "../../config/db_init";
 
 export const getComment = async (commentID, setComment, ventID) => {
-  const doc = await db.collection("comments").doc(commentID).get();
-  const comment = doc.data();
+  const commentDoc = await getDoc(doc(db, "comments", commentID));
+  const comment = commentDoc.data();
 
-  if (comment) setComment({ id: doc.id, ...comment });
+  if (comment) setComment({ id: commentDoc.id, ...comment });
 };
 export const deleteComment = async (commentID, setComments) => {
-  await db.collection("comments").doc(commentID).delete();
+  await deleteDoc(doc(db, "comments", commentID));
 
   if (setComments)
     setComments((comments) => {
@@ -24,13 +31,10 @@ export const deleteComment = async (commentID, setComments) => {
 };
 
 export const editComment = async (commentID, commentString, setComments) => {
-  await db.collection("comments").doc(commentID).set(
-    {
-      text: commentString,
-      last_updated: firebase.firestore.Timestamp.now().toMillis(),
-    },
-    { merge: true }
-  );
+  updateDoc(doc(db, "comments", commentID), {
+    text: commentString,
+    last_updated: Timestamp.now().toMillis(),
+  });
 
   setComments((comments) => {
     const commentIndex = comments.findIndex(
@@ -47,10 +51,9 @@ export const getCommentHasLiked = async (
   setHasLiked,
   userID
 ) => {
-  const snapshot = await db
-    .collection("comment_likes")
-    .doc(commentID + "|||" + userID)
-    .get();
+  const snapshot = await getDoc(
+    doc(db, "comment_likes", commentID + "|||" + userID)
+  );
 
   if (!snapshot || !snapshot.data()) return;
   let value = snapshot.data();
@@ -64,17 +67,20 @@ export const likeOrUnlikeComment = async (comment, hasLiked, user) => {
       "You must sign in or register an account to support a comment!"
     );
 
-  await db
-    .collection("comment_likes")
-    .doc(comment.id + "|||" + user.uid)
-    .set({ liked: !hasLiked, commentID: comment.id, userID: user.uid });
+  await setDoc(doc(db, "comment_likes", comment.id + "|||" + user.uid), {
+    liked: !hasLiked,
+    commentID: comment.id,
+    userID: user.uid,
+  });
 };
 
 export const reportComment = async (commentID, option, userID, ventID) => {
-  await db
-    .collection("comment_reports")
-    .doc(commentID + "|||" + userID)
-    .set({ commentID, option, userID, ventID });
+  await setDoc(doc(db, "comment_reports", commentID + "|||" + userID), {
+    commentID,
+    option,
+    userID,
+    ventID,
+  });
 
   message.success("Report successful :)");
 };

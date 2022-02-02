@@ -1,12 +1,9 @@
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
+import { getAuth } from "firebase/auth";
 
 import { message } from "antd";
 
 export const sendPasswordReset = ({ email }) => {
-  const auth = firebase.auth();
-
-  auth
+  getAuth()
     .sendPasswordResetEmail(email)
     .then(() => {
       // Email sent.

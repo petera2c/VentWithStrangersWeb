@@ -1,6 +1,21 @@
-import firebase from "firebase/compat/app";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  limit,
+  onSnapshot,
+  orderBy,
+  query,
+  setDoc,
+  startAfter,
+  Timestamp,
+  where,
+} from "firebase/firestore";
+import { db } from "../../config/db_init";
 import { message } from "antd";
-import { db }from "../../config/db_init";
 
 import {
   getEndAtValueTimestamp,
@@ -25,7 +40,7 @@ export const commentVent = async (
 ) => {
   let commentObj = {
     like_counter: 0,
-    server_timestamp: firebase.firestore.Timestamp.now().toMillis(),
+    server_timestamp: Timestamp.now().toMillis(),
     text: commentString,
     userID: user.uid,
     ventID,
@@ -33,13 +48,13 @@ export const commentVent = async (
 
   setVent(incrementVentCounter("comment_counter", true, vent));
 
-  await db.collection("comments").add(commentObj);
+  await addDoc(collection(db, "comments"), commentObj);
 
   return true;
 };
 
 export const deleteVent = async (navigate, ventID) => {
-  await db.collection("vents").doc(ventID).delete();
+  await deleteDoc(collection(db, "vents", ventID));
   message.success("Vent deleted!");
   navigate("/");
 };
@@ -50,12 +65,14 @@ export const findPossibleUsersToTag = async (
   callback
 ) => {
   if (currentTypingWord) {
-    const snapshot = await db
-      .collection("users_display_name")
-      .where("displayName", ">=", currentTypingWord)
-      .where("displayName", "<=", currentTypingWord + "\uf8ff")
-      .limit(10)
-      .get();
+    const snapshot = await getDocs(
+      query(
+        collection(db, "users_display_name"),
+        where("displayName", ">=", currentTypingWord),
+        where("displayName", "<=", currentTypingWord + "\uf8ff"),
+        limit(10)
+      )
+    );
     let users;
 
     if (snapshot && snapshot.docs && snapshot.docs.length > 0)
@@ -75,7 +92,7 @@ export const findPossibleUsersToTag = async (
 };
 
 export const getVent = async (setVent, ventID) => {
-  const ventDoc = await db.collection("vents").doc(ventID).get();
+  const ventDoc = await getDoc(doc(db, "vents", ventID));
 
   if (!ventDoc.exists) return;
   const newVent = ventDoc.data();
@@ -125,43 +142,40 @@ export const newVentCommentListener = (
   ventID,
   first = true
 ) => {
-  const unsubscribe = db
-    .collection("comments")
-    .where("ventID", "==", ventID)
-    .where(
-      "server_timestamp",
-      ">=",
-      firebase.firestore.Timestamp.now().toMillis()
-    )
-    .orderBy("server_timestamp", "desc")
-    .limit(1)
-    .onSnapshot(
-      (querySnapshot) => {
-        if (first) {
-          first = false;
-        } else if (querySnapshot.docs && querySnapshot.docs[0]) {
-          if (
-            querySnapshot.docChanges()[0].type === "added" ||
-            querySnapshot.docChanges()[0].type === "removed"
-          ) {
-            if (isMounted.current) {
-              if (querySnapshot.docs[0].data().userID === userID)
-                setComments((oldComments) => [
-                  {
-                    ...querySnapshot.docs[0].data(),
-                    id: querySnapshot.docs[0].id,
-                    doc: querySnapshot.docs[0],
-                    useToPaginate: false,
-                  },
-                  ...oldComments,
-                ]);
-              else setCanLoadMoreComments(true);
-            }
+  const unsubscribe = onSnapshot(
+    query(
+      collection(db, "comments"),
+      where("ventID", "==", ventID),
+      where("server_timestamp", ">=", Timestamp.now().toMillis()),
+      orderBy("server_timestamp", "desc"),
+      limit(1)
+    ),
+    (querySnapshot) => {
+      if (first) {
+        first = false;
+      } else if (querySnapshot.docs && querySnapshot.docs[0]) {
+        if (
+          querySnapshot.docChanges()[0].type === "added" ||
+          querySnapshot.docChanges()[0].type === "removed"
+        ) {
+          if (isMounted.current) {
+            if (querySnapshot.docs[0].data().userID === userID)
+              setComments((oldComments) => [
+                {
+                  ...querySnapshot.docs[0].data(),
+                  id: querySnapshot.docs[0].id,
+                  doc: querySnapshot.docs[0],
+                  useToPaginate: false,
+                },
+                ...oldComments,
+              ]);
+            else setCanLoadMoreComments(true);
           }
         }
-      },
-      (err) => {}
-    );
+      }
+    }
+  );
+
   return unsubscribe;
 };
 
@@ -176,29 +190,35 @@ export const getVentComments = async (
 ) => {
   let snapshot;
   if (activeSort === "First") {
-    snapshot = await db
-      .collection("comments")
-      .where("ventID", "==", ventID)
-      .orderBy("server_timestamp")
-      .startAfter(getEndAtValueTimestampAsc(comments))
-      .limit(10)
-      .get();
+    snapshot = await getDocs(
+      query(
+        collection(db, "comments"),
+        where("ventID", "==", ventID),
+        orderBy("server_timestamp"),
+        startAfter(getEndAtValueTimestampAsc(comments)),
+        limit(10)
+      )
+    );
   } else if (activeSort === "Best") {
-    snapshot = await db
-      .collection("comments")
-      .where("ventID", "==", ventID)
-      .orderBy("like_counter", "desc")
-      .startAfter(getEndAtValueTimestamp(comments))
-      .limit(10)
-      .get();
+    snapshot = await getDocs(
+      query(
+        collection(db, "comments"),
+        where("ventID", "==", ventID),
+        orderBy("like_counter", "desc"),
+        startAfter(getEndAtValueTimestamp(comments)),
+        limit(10)
+      )
+    );
   } else if (activeSort === "Last") {
-    snapshot = await db
-      .collection("comments")
-      .where("ventID", "==", ventID)
-      .orderBy("server_timestamp", "desc")
-      .startAfter(getEndAtValueTimestamp(comments))
-      .limit(10)
-      .get();
+    snapshot = await getDocs(
+      query(
+        collection(db, "comments"),
+        where("ventID", "==", ventID),
+        orderBy("server_timestamp", "desc"),
+        startAfter(getEndAtValueTimestamp(comments)),
+        limit(10)
+      )
+    );
   }
 
   if (snapshot.docs && snapshot.docs.length > 0) {
@@ -254,10 +274,9 @@ export const getVentComments = async (
 };
 
 export const ventHasLiked = async (setHasLiked, userID, ventID) => {
-  const ventHasLikedDoc = await db
-    .collection("vent_likes")
-    .doc(ventID + "|||" + userID)
-    .get();
+  const ventHasLikedDoc = await getDoc(
+    doc(db, "vent_likes", ventID + "|||" + userID)
+  );
 
   if (!ventHasLikedDoc.exists) return;
   let value = ventHasLikedDoc.data();
@@ -277,17 +296,19 @@ export const likeOrUnlikeVent = async (
 
   setVent(incrementVentCounter("like_counter", !hasLiked, vent));
 
-  await db
-    .collection("vent_likes")
-    .doc(vent.id + "|||" + user.uid)
-    .set({ liked: !hasLiked, userID: user.uid, ventID: vent.id });
+  await setDoc(doc(db, "vent_likes", vent.id + "|||" + user.uid), {
+    liked: !hasLiked,
+    userID: user.uid,
+    ventID: vent.id,
+  });
 };
 
 export const reportVent = async (option, userID, ventID) => {
-  await db
-    .collection("vent_reports")
-    .doc(ventID + "|||" + userID)
-    .set({ option, userID, ventID });
+  await setDoc(doc(db, "vent_reports", ventID + "|||" + userID), {
+    option,
+    userID,
+    ventID,
+  });
 
   message.success("Report successful :)");
 };
@@ -320,11 +341,13 @@ export const startConversation = async (navigate, user, ventUserID) => {
   if (userInteractionIssues) return false;
 
   const sortedMemberIDs = [user.uid, ventUserID].sort();
-  const conversationQuerySnapshot = await db
-    .collection("conversations")
-    .where("members", "==", sortedMemberIDs)
-    .limit(1)
-    .get();
+  const conversationQuerySnapshot = await getDocs(
+    query(
+      collection(db, "conversations"),
+      where("members", "==", sortedMemberIDs),
+      limit(1)
+    )
+  );
 
   const goToPage = (conversationID) => {
     navigate("/chat?" + conversationID);
@@ -340,10 +363,10 @@ export const startConversation = async (navigate, user, ventUserID) => {
       tempHasSeenObject[sortedMemberIDs[index]] = false;
     }
 
-    const conversationDocNew = await db.collection("conversations").add({
-      last_updated: firebase.firestore.Timestamp.now().toMillis(),
+    const conversationDocNew = await addDoc(collection(db, "conversations"), {
+      last_updated: Timestamp.now().toMillis(),
       members: sortedMemberIDs,
-      server_timestamp: firebase.firestore.Timestamp.now().toMillis(),
+      server_timestamp: Timestamp.now().toMillis(),
       ...tempHasSeenObject,
     });
     goToPage(conversationDocNew.id);

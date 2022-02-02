@@ -1,12 +1,17 @@
 import {
+  addDoc,
   collection,
+  doc,
+  getDoc,
   getDocs,
   limit,
   orderBy,
   query,
   Timestamp,
+  updateDoc,
   where,
 } from "firebase/firestore";
+
 import moment from "moment-timezone";
 import { db } from "../../config/db_init";
 
@@ -67,10 +72,9 @@ export const getQuote = async (isMounted, setQuote) => {
     quotesSnapshot.docs[0].data() &&
     isMounted.current
   ) {
-    const author = await db
-      .collection("users_display_name")
-      .doc(quotesSnapshot.docs[0].data().userID)
-      .get();
+    const author = await getDoc(
+      doc(db, "users_display_name", quotesSnapshot.docs[0].data().userID)
+    );
 
     const displayName = author.data() ? author.data().displayName : "Anonymous";
     setQuote({
@@ -82,10 +86,7 @@ export const getQuote = async (isMounted, setQuote) => {
 };
 
 export const getUserVentTimeOut = async (callback, userID) => {
-  const userVentTimeOutDoc = await db
-    .collection("user_vent_timeout")
-    .doc(userID)
-    .get();
+  const userVentTimeOutDoc = await getDoc(doc(db, "user_vent_timeout", userID));
 
   let timeOutDate;
   const currentDate = new moment();
@@ -99,7 +100,7 @@ export const getUserVentTimeOut = async (callback, userID) => {
 };
 
 export const getVent = async (setDescription, setTags, setTitle, ventID) => {
-  const ventDoc = await db.collection("vents").doc(ventID).get();
+  const ventDoc = await getDoc(doc(db, "vents", ventID));
 
   const vent = ventDoc.data();
 
@@ -146,8 +147,8 @@ export const saveVent = async (
 
   let newVent = ventObject;
   if (ventID) {
-    await db.collection("vents").doc(ventID).update(ventObject);
-  } else newVent = await db.collection("vents").add(ventObject);
+    await updateDoc(doc(db, "vents", ventID), ventObject);
+  } else newVent = await addDoc(collection(db, "vents"), ventObject);
   callback({ id: newVent.id ? newVent.id : ventID, title: ventObject.title });
 };
 
@@ -172,7 +173,6 @@ export const updateTags = (setTags, tag) => {
     ) {
       message.info("Tag is already added :)");
       return oldTags;
-      return [tag];
     } else {
       return [tag, ...oldTags].sort((a, b) => {
         if (a.objectID < b.objectID) return -1;
