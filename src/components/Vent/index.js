@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import moment from "moment-timezone";
 import { MentionsInput, Mention } from "react-mentions";
-import { Button, Dropdown } from "antd";
+import { Button, Dropdown, message } from "antd";
 
 import { faBirthdayCake } from "@fortawesome/pro-duotone-svg-icons/faBirthdayCake";
 import { faClock } from "@fortawesome/pro-regular-svg-icons/faClock";
@@ -20,21 +20,29 @@ import StarterModal from "../modals/Starter";
 
 import { UserContext } from "../../context";
 import {
+  blockUser,
   capitolizeFirstChar,
   getIsUserOnline,
   getUserBasicInfo,
   hasUserBlockedUser,
   isUserAccountNew,
+  isUserKarmaSufficient,
   useIsMounted,
   userSignUpProgressFunction,
+  viewTagFunction,
 } from "../../util";
 import {
   commentVent,
+  deleteVent,
+  findPossibleUsersToTag,
   getVent,
   getVentComments,
   getVentDescription,
   getVentPartialLink,
+  likeOrUnlikeVent,
   newVentCommentListener,
+  reportVent,
+  startConversation,
   ventHasLiked,
 } from "./util";
 
@@ -82,11 +90,6 @@ function Vent({
   const [signUpProgressFunction, setSignUpProgressFunction] = useState();
   const [partialLink, setPartialLink] = useState("");
   const [ventPreview, setVentPreview] = useState("");
-
-  const [
-    isUserKarmaSufficientFunction,
-    setIsUserKarmaSufficientFunction,
-  ] = useState();
 
   useEffect(() => {
     let newCommentListenerUnsubscribe;
@@ -218,9 +221,7 @@ function Vent({
               {user && (
                 <Options
                   deleteFunction={(ventID) => {
-                    import("./util").then((functions) => {
-                      functions.deleteVent(navigate, ventID);
-                    });
+                    deleteVent(navigate, ventID);
                   }}
                   editFunction={() => {
                     navigate("/vent-to-strangers?" + vent.id);
@@ -228,9 +229,7 @@ function Vent({
                   objectID={vent.id}
                   objectUserID={vent.userID}
                   reportFunction={(option) => {
-                    import("./util").then((functions) => {
-                      functions.reportVent(option, user.uid, vent.id);
-                    });
+                    reportVent(option, user.uid, vent.id);
                   }}
                   userID={user.uid}
                 />
@@ -290,16 +289,16 @@ function Vent({
                     onClick={(e) => {
                       e.preventDefault();
 
-                      if (signUpProgressFunction) signUpProgressFunction();
-                      import("./util").then((functions) => {
-                        functions.likeOrUnlikeVent(
-                          hasLiked,
-                          setHasLiked,
-                          setVent,
-                          user,
-                          vent
-                        );
-                      });
+                      if (signUpProgressFunction)
+                        return signUpProgressFunction();
+
+                      likeOrUnlikeVent(
+                        hasLiked,
+                        setHasLiked,
+                        setVent,
+                        user,
+                        vent
+                      );
                     }}
                     src={
                       hasLiked
@@ -339,9 +338,7 @@ function Vent({
                   onClick={() => {
                     if (signUpProgressFunction) signUpProgressFunction();
 
-                    import("./util").then((functions) => {
-                      functions.startConversation(navigate, user, vent.userID);
-                    });
+                    startConversation(navigate, user, vent.userID);
                   }}
                 >
                   <FontAwesomeIcon className="mr8" icon={faComments} />
@@ -365,17 +362,15 @@ function Vent({
                           onClick={() => {
                             setActiveSort("First");
 
-                            import("./util").then((functions) => {
-                              functions.getVentComments(
-                                "First",
-                                [],
-                                isMounted,
-                                setCanLoadMoreComments,
-                                setComments,
-                                false,
-                                ventID ? ventID : vent.id
-                              );
-                            });
+                            getVentComments(
+                              "First",
+                              [],
+                              isMounted,
+                              setCanLoadMoreComments,
+                              setComments,
+                              false,
+                              ventID ? ventID : vent.id
+                            );
                           }}
                         >
                           First
@@ -385,17 +380,15 @@ function Vent({
                           onClick={() => {
                             setActiveSort("Best");
 
-                            import("./util").then((functions) => {
-                              functions.getVentComments(
-                                "Best",
-                                [],
-                                isMounted,
-                                setCanLoadMoreComments,
-                                setComments,
-                                false,
-                                ventID ? ventID : vent.id
-                              );
-                            });
+                            getVentComments(
+                              "Best",
+                              [],
+                              isMounted,
+                              setCanLoadMoreComments,
+                              setComments,
+                              false,
+                              ventID ? ventID : vent.id
+                            );
                           }}
                         >
                           Best
@@ -405,17 +398,15 @@ function Vent({
                           onClick={() => {
                             setActiveSort("Last");
 
-                            import("./util").then((functions) => {
-                              functions.getVentComments(
-                                "Last",
-                                [],
-                                isMounted,
-                                setCanLoadMoreComments,
-                                setComments,
-                                false,
-                                ventID ? ventID : vent.id
-                              );
-                            });
+                            getVentComments(
+                              "Last",
+                              [],
+                              isMounted,
+                              setCanLoadMoreComments,
+                              setComments,
+                              false,
+                              ventID ? ventID : vent.id
+                            );
                           }}
                         >
                           Last
@@ -447,17 +438,15 @@ function Vent({
                     <button
                       className="blue underline"
                       onClick={() => {
-                        import("./util").then((functions) => {
-                          functions.getVentComments(
-                            activeSort,
-                            comments,
-                            isMounted,
-                            setCanLoadMoreComments,
-                            setComments,
-                            true,
-                            vent.id
-                          );
-                        });
+                        getVentComments(
+                          activeSort,
+                          comments,
+                          isMounted,
+                          setCanLoadMoreComments,
+                          setComments,
+                          true,
+                          vent.id
+                        );
                       }}
                       key={comments.length}
                     >
@@ -497,8 +486,10 @@ function Vent({
                   <MentionsInput
                     className="mentions"
                     onChange={(e) => {
-                      if (isUserKarmaSufficientFunction)
-                        return isUserKarmaSufficientFunction();
+                      if (!isUserKarmaSufficient(userBasicInfo))
+                        return message.error(
+                          "Your karma is too low to interact with this"
+                        );
 
                       setCommentString(e.target.value);
                     }}
@@ -509,13 +500,11 @@ function Vent({
                     <Mention
                       className="mentions__mention"
                       data={(currentTypingTag, callback) => {
-                        import("./util").then((functions) => {
-                          functions.findPossibleUsersToTag(
-                            currentTypingTag,
-                            vent.id,
-                            callback
-                          );
-                        });
+                        findPossibleUsersToTag(
+                          currentTypingTag,
+                          vent.id,
+                          callback
+                        );
                       }}
                       markup="@[__display__](__id__)"
                       renderSuggestion={(
@@ -569,9 +558,7 @@ function Vent({
           close={() => setBlockModal(false)}
           message="Blocking this user will remove you from all conversations with this user and you will no longer see any of their vents or comments. Are you sure you would like to block this user?"
           submit={() => {
-            import("../../util").then((functions) => {
-              functions.blockUser(user.uid, vent.userID);
-            });
+            blockUser(user.uid, vent.userID);
           }}
           title="Block User"
         />
@@ -590,9 +577,7 @@ function Tag({ tag }) {
   const [viewTag, setViewTag] = useState();
 
   useEffect(() => {
-    import("../../util").then((functions) => {
-      setViewTag(functions.viewTag(tag));
-    });
+    setViewTag(viewTagFunction(tag));
   });
   return (
     <Link

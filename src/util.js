@@ -324,7 +324,7 @@ export const userSignUpProgressFunction = (setStarterModal, user) => {
   } else return false;
 };
 
-export const viewTag = (tag) => {
+export const viewTagFunction = (tag) => {
   if (!tag) return;
   else return capitolizeFirstLetterOfEachWord(tag.replace(/_/g, " "));
 };

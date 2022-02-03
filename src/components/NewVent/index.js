@@ -8,13 +8,13 @@ import { faQuestionCircle } from "@fortawesome/pro-duotone-svg-icons/faQuestionC
 import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { UserContext } from "../../context";
-
 import Container from "../containers/Container";
 import Emoji from "../Emoji";
 import HandleOutsideClick from "../containers/HandleOutsideClick";
 import MakeAvatar from "../views/MakeAvatar";
 import StarterModal from "../modals/Starter";
+
+import { UserContext } from "../../context";
 
 import {
   capitolizeFirstChar,
@@ -22,6 +22,7 @@ import {
   getIsMobileOrTablet,
   isUserKarmaSufficient,
   useIsMounted,
+  viewTagFunction,
 } from "../../util";
 import {
   getQuote,
@@ -114,9 +115,10 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
         ventID,
         false
       );
+
       setPostingDisableFunction(temp);
     }
-  }, [isMounted, user, ventID]);
+  }, [isMounted, user, userBasicInfo, ventID]);
 
   return (
     <HandleOutsideClick
@@ -347,9 +349,7 @@ function Tag({ postingDisableFunction, setTags, tagHit, tags }) {
   const [viewTag, setViewTag] = useState("");
 
   useEffect(() => {
-    import("../../util").then((functions) => {
-      setViewTag(functions.viewTag(tagHit.objectID));
-    });
+    setViewTag(viewTagFunction(tagHit.objectID));
   }, []);
 
   return (
@@ -375,9 +375,7 @@ function SelectedTag({ index, postingDisableFunction, setTags, tag, tags }) {
   const [viewTag, setViewTag] = useState("");
 
   useEffect(() => {
-    import("../../util").then((functions) => {
-      setViewTag(functions.viewTag(tag.objectID));
-    });
+    setViewTag(viewTagFunction(tag.objectID));
   }, []);
 
   return (

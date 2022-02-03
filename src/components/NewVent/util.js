@@ -19,7 +19,7 @@ import { message } from "antd";
 
 import { calculateKarma, userSignUpProgress } from "../../util";
 
-export const checks = async (
+export const checks = (
   isUserKarmaSufficient,
   setStarterModal,
   user,

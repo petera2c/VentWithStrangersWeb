@@ -84,6 +84,7 @@ const checkIfCanCreateMilestone = async (
       reward = 100;
     } else if (counter === 1) {
       reward = 25;
+      first = true;
     }
   } else if (size === "small") {
     if (counter === 500) {
@@ -521,7 +522,7 @@ const userRewardsListener = async (change, context) => {
         afterUserRewards.quote_contests_won_counter,
         "tiny",
         (number) => "You have won " + number + " quote contests!",
-        undefined,
+        "You have won your first quote contest! You are amazing!!!",
         userID
       );
     if (
@@ -598,7 +599,7 @@ const userRewardsListener = async (change, context) => {
         afterUserRewards.created_quotes_counter,
         "small",
         (number) => "You have created " + number + " quotes!",
-        undefined,
+        "You have created your first quote!",
         userID
       );
 
@@ -621,7 +622,7 @@ const userRewardsListener = async (change, context) => {
         afterUserRewards.created_quote_supports_counter,
         "medium",
         (number) => "You have supported " + number + " quotes!",
-        "You have created your first quote!!!",
+        undefined,
         userID
       );
   }

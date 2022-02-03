@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import Container from "../../../components/containers/Container";
@@ -6,7 +6,7 @@ import Page from "../../../components/containers/Page";
 import SubscribeColumn from "../../../components/SubscribeColumn";
 import Vent from "../../../components/Vent";
 
-import { useIsMounted, viewTag } from "../../../util";
+import { useIsMounted, viewTagFunction } from "../../../util";
 import { getTagVents } from "./util";
 
 function IndividualTag() {
@@ -22,11 +22,13 @@ function IndividualTag() {
   return (
     <Page
       className="br-grey-2 pt32 px16 pb16"
-      title={`Vents About ${viewTag(tagID)}`}
+      title={`Vents About ${viewTagFunction(tagID)}`}
     >
       <Container>
         <Container className="column flex-fill gap16">
-          <h1 className="tac">{`Trending Vents About ${viewTag(tagID)}`}</h1>
+          <h1 className="tac">{`Trending Vents About ${viewTagFunction(
+            tagID
+          )}`}</h1>
           <Link className="button-1 fs-22 tac" to="/tags">
             View All Tags
           </Link>
