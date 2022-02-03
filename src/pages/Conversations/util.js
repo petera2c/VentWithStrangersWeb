@@ -211,10 +211,12 @@ export const getMessages = async (
   if (first) startAt = getEndAtValueTimestampFirst([]);
 
   const snapshot = await getDocs(
-    query(db, "conversation_extra_data", conversationID, "messages"),
-    orderBy("server_timestamp", "desc"),
-    startAfter(startAt),
-    limit(10)
+    query(
+      collection(db, "conversation_extra_data", conversationID, "messages"),
+      orderBy("server_timestamp", "desc"),
+      startAfter(startAt),
+      limit(10)
+    )
   );
 
   if (!isMounted.current) return;

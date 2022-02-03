@@ -177,7 +177,8 @@ export const saveQuote = async (
       userID,
       value: quote,
     });
-    const newQuoteDoc = await newQuote.get();
+
+    const newQuoteDoc = await getDoc(newQuote);
 
     message.success("Quote saved!");
 

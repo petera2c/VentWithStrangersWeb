@@ -37,6 +37,7 @@ function Conversations() {
     let newMessageListenerUnsubscribe;
 
     if (user) {
+      setStarterModal(false);
       newMessageListenerUnsubscribe = mostRecentConversationListener(
         isMounted,
         setConversations,
