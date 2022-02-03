@@ -1,4 +1,5 @@
 import {
+  addDoc,
   arrayRemove,
   collection,
   deleteDoc,
@@ -286,43 +287,35 @@ export const mostRecentConversationListener = (
 };
 
 export const readConversation = async (conversation, userID) => {
-  await db
-    .collection("conversations")
-    .doc(conversation.id)
-    .set({ [userID]: true, go_to_inbox: false }, { merge: true });
+  await updateDoc(doc(db, "conversations", conversation.id), {
+    [userID]: true,
+    go_to_inbox: false,
+  });
 };
 
 export const sendMessage = async (conversationID, message, userID) => {
-  await db
-    .collection("conversation_extra_data")
-    .doc(conversationID)
-    .collection("messages")
-    .add({
+  await addDoc(
+    collection(db, "conversation_extra_data", conversationID, "messages"),
+    {
       body: message,
       server_timestamp: Timestamp.now().toMillis(),
       userID,
-    });
+    }
+  );
 };
 
 export const setConversationIsTyping = async (conversationID, userID) => {
-  await db
-    .collection("conversations")
-    .doc(conversationID)
-    .set(
-      {
-        isTyping: {
-          [userID]: Timestamp.now().toMillis(),
-        },
-      },
-      { merge: true }
-    );
+  await updateDoc(doc(db, "conversations", conversationID), {
+    isTyping: {
+      [userID]: Timestamp.now().toMillis(),
+    },
+  });
 };
 
 export const conversationListener = (currentConversation, setConversations) => {
-  const unsubscribe = db
-    .collection("conversations")
-    .doc(currentConversation.id)
-    .onSnapshot((doc) => {
+  const unsubscribe = onSnapshot(
+    doc(db, "conversations", currentConversation.id),
+    (doc) => {
       const updatedConversation = { id: doc.id, ...doc.data() };
 
       setConversations((oldConversations) => {
@@ -341,7 +334,8 @@ export const conversationListener = (currentConversation, setConversations) => {
 
         return [...oldConversations];
       });
-    });
+    }
+  );
 
   return unsubscribe;
 };

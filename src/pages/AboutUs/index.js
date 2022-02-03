@@ -10,7 +10,7 @@ import { faLinkedin } from "@fortawesome/free-brands-svg-icons/faLinkedin";
 const Container = loadable(() =>
   import("../../components/containers/Container")
 );
-const KarmaBadge = loadable(() => import("../../components/KarmaBadge"));
+const KarmaBadge = loadable(() => import("../../components/views/KarmaBadge"));
 const Page = loadable(() => import("../../components/containers/Page"));
 const SubscribeColumn = loadable(() =>
   import("../../components/SubscribeColumn")

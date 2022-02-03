@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import loadable from "@loadable/component";
 
 const Container = loadable(() => import("../../containers/Container"));
-const KarmaBadge = loadable(() => import("../../KarmaBadge"));
-const MakeAvatar = loadable(() => import("../../MakeAvatar"));
+const KarmaBadge = loadable(() => import("../../views/KarmaBadge"));
+const MakeAvatar = loadable(() => import("../../views/MakeAvatar"));
 
 function DisplayName({
   big,
@@ -13,6 +13,7 @@ function DisplayName({
   isUserOnline,
   noAvatar,
   noBadgeOnClick,
+  noTooltip,
   userBasicInfo,
   userID,
 }) {
@@ -53,6 +54,7 @@ function DisplayName({
         {userBasicInfo && (
           <KarmaBadge
             noOnClick={noBadgeOnClick}
+            noTooltip={noTooltip}
             userBasicInfo={userBasicInfo}
           />
         )}

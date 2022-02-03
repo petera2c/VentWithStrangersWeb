@@ -5,7 +5,7 @@ import { UserContext } from "../../context";
 
 const Container = loadable(() => import("../containers/Container"));
 const MakeAd = loadable(() => import("../MakeAd"));
-const UniqueShareLink = loadable(() => import("../UniqueShareLink"));
+const UniqueShareLink = loadable(() => import("../views/UniqueShareLink"));
 
 function SubscribeColumn({ slot, uniqueShareLink = true }) {
   const { user, userSubscription } = useContext(UserContext);

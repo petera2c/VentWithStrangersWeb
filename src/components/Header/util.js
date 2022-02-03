@@ -87,10 +87,9 @@ export const getUnreadConversations = (
   userID,
   first = true
 ) => {
-  const unsubscribe = db
-    .collection("unread_conversations_count")
-    .doc(userID)
-    .onSnapshot("value", (doc) => {
+  const unsubscribe = onSnapshot(
+    doc(db, "unread_conversations_count", userID),
+    (doc) => {
       if (doc.data() && doc.data().count) {
         if (!first && !isOnSearchPage) soundNotify();
         if (pathname === "/chat" && doc.data().count > 0) {
@@ -106,7 +105,8 @@ export const getUnreadConversations = (
         if (isMounted.current) setUnreadConversations(0);
       }
       first = false;
-    });
+    }
+  );
 
   return unsubscribe;
 };
@@ -130,14 +130,11 @@ export const howCompleteIsUserProfile = (
 };
 
 export const isUserInQueueListener = (isMounted, setIsUserInQueue, userID) => {
-  const unsubscribe = db
-    .collection("chat_queue")
-    .doc(userID)
-    .onSnapshot("value", (doc) => {
-      if (doc.data() && doc.data().userID === userID && isMounted.current)
-        setIsUserInQueue(true);
-      else if (isMounted.current) setIsUserInQueue(false);
-    });
+  const unsubscribe = onSnapshot(doc(db, "chat_queue", userID), (doc) => {
+    if (doc.data() && doc.data().userID === userID && isMounted.current)
+      setIsUserInQueue(true);
+    else if (isMounted.current) setIsUserInQueue(false);
+  });
 
   return unsubscribe;
 };

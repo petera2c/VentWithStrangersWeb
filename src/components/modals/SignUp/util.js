@@ -1,4 +1,8 @@
-import { getAuth } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  sendEmailVerification,
+} from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../../config/db_init";
 import moment from "moment-timezone";
@@ -21,11 +25,10 @@ export const signUp = (
 
   const referral = cookies.get("referral");
 
-  getAuth()
-    .createUserWithEmailAndPassword(email, password)
+  createUserWithEmailAndPassword(getAuth(), email, password)
     .then(async (res) => {
       if (res.user) {
-        res.user.sendEmailVerification();
+        sendEmailVerification(res.user);
 
         if (referral)
           await setDoc(doc(db, "invited_users", res.user.uid), {

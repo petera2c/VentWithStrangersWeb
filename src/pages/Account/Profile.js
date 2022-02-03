@@ -44,9 +44,9 @@ const Container = loadable(() =>
 const HandleOutsideClick = loadable(() =>
   import("../../components/containers/HandleOutsideClick")
 );
-const KarmaBadge = loadable(() => import("../../components/KarmaBadge"));
-const LoadingHeart = loadable(() => import("../../components/loaders/Heart"));
-const MakeAvatar = loadable(() => import("../../components/MakeAvatar"));
+const KarmaBadge = loadable(() => import("../../components/views/KarmaBadge"));
+const LoadingHeart = loadable(() => import("../../components/views/loaders/Heart"));
+const MakeAvatar = loadable(() => import("../../components/views/MakeAvatar"));
 const Page = loadable(() => import("../../components/containers/Page"));
 const StarterModal = loadable(() => import("../../components/modals/Starter"));
 const SubscribeColumn = loadable(() =>

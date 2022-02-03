@@ -7,7 +7,7 @@ import { faRocket } from "@fortawesome/pro-duotone-svg-icons/faRocket";
 import { faMedal } from "@fortawesome/pro-solid-svg-icons/faMedal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Container = loadable(() => import("../containers/Container"));
+const Container = loadable(() => import("../../containers/Container"));
 
 function KarmaBadge({ noOnClick, onClick, userBasicInfo }) {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ function KarmaBadge({ noOnClick, onClick, userBasicInfo }) {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    import("../../util").then((functions) => {
+    import("../../../util").then((functions) => {
       setKarma(functions.calculateKarma(userBasicInfo));
     });
     setIsAdmin(userBasicInfo ? userBasicInfo.is_admin : false);

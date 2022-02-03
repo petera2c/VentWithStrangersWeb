@@ -18,9 +18,9 @@ import { capitolizeFirstChar } from "../../util";
 
 const Comment = loadable(() => import("../Comment"));
 const ConfirmAlertModal = loadable(() => import("../modals/ConfirmAlert"));
-const KarmaBadge = loadable(() => import("../KarmaBadge"));
-const LoadingHeart = loadable(() => import("../loaders/Heart"));
-const MakeAvatar = loadable(() => import("../MakeAvatar"));
+const KarmaBadge = loadable(() => import("../views/KarmaBadge"));
+const LoadingHeart = loadable(() => import("../views/loaders/Heart"));
+const MakeAvatar = loadable(() => import("../views/MakeAvatar"));
 const Options = loadable(() => import("../Options"));
 const StarterModal = loadable(() => import("../modals/Starter"));
 

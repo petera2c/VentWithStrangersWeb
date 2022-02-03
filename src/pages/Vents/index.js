@@ -10,7 +10,7 @@ import { getMetaInformation, getVents, newVentListener } from "./util";
 const Container = loadable(() =>
   import("../../components/containers/Container")
 );
-const LoadingHeart = loadable(() => import("../../components/loaders/Heart"));
+const LoadingHeart = loadable(() => import("../../components/views/loaders/Heart"));
 const MakeAd = loadable(() => import("../../components/MakeAd"));
 const NewVentComponent = loadable(() => import("../../components/NewVent"));
 const Page = loadable(() => import("../../components/containers/Page"));

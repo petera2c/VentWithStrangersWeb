@@ -1,15 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
+import { doc } from "firebase/firestore";
+import { db } from "../../config/db_init";
 import { useDocument } from "react-firebase-hooks/firestore";
 import loadable from "@loadable/component";
 import { message } from "antd";
-import { db }from "../../config/db_init";
 
 import { UserContext } from "../../context";
 
 const Container = loadable(() =>
   import("../../components/containers/Container")
 );
-const LoadingHeart = loadable(() => import("../../components/loaders/Heart"));
+const LoadingHeart = loadable(() => import("../../components/views/loaders/Heart"));
 const Page = loadable(() => import("../../components/containers/Page"));
 const SubscribeColumn = loadable(() =>
   import("../../components/SubscribeColumn")
@@ -20,7 +21,7 @@ function SettingsSection() {
 
   const [isMobileOrTablet, setIsMobileOrTablet] = useState();
 
-  const settingsRef = db.collection("users_settings").doc(user.uid);
+  const settingsRef = doc(db, "users_settings", user.uid);
   const [settingsSnapshot] = useDocument(settingsRef, {
     idField: "id",
   });

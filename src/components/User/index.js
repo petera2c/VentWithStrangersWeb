@@ -25,7 +25,7 @@ const Moment = loadable.lib(() => import("moment-timezone"));
 const Container = loadable(() => import("../containers/Container"));
 const DisplayName = loadable(() => import("../views/DisplayName"));
 const StarterModal = loadable(() => import("../modals/Starter"));
-const MakeAvatar = loadable(() => import("../MakeAvatar"));
+const MakeAvatar = loadable(() => import("../views/MakeAvatar"));
 
 function UserComponent({
   additionalUserInfo,

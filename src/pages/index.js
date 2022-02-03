@@ -10,7 +10,7 @@ import { OnlineUsersContext, UserContext } from "../context";
 const BirthdayModal = loadable(() => import("../components/modals/Birthday"));
 const Container = loadable(() => import("../components/containers/Container"));
 const Header = loadable(() => import("../components/Header"));
-const LoadingHeart = loadable(() => import("../components/loaders/Heart"));
+const LoadingHeart = loadable(() => import("../components/views/loaders/Heart"));
 const MobileHeader = loadable(() =>
   import("../components/Header/MobileHeader")
 );
@@ -110,7 +110,7 @@ function RoutesComp() {
         );
         functions.getIsUsersBirthday(isMounted, setIsUsersBirthday, user.uid);
         functions.getIsUserSubscribed(setUserSubscription, user.uid);
-        functions.setIsUserOnlineToDatabase(user);
+        functions.setIsUserOnlineToDatabase(user.uid);
       });
 
       import("../util").then((functions) => {

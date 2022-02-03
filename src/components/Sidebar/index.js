@@ -17,7 +17,7 @@ import { OnlineUsersContext, UserContext } from "../../context";
 
 const Container = loadable(() => import("../containers/Container"));
 const MakeAd = loadable(() => import("../MakeAd"));
-const MakeAvatar = loadable(() => import("../MakeAvatar"));
+const MakeAvatar = loadable(() => import("../views/MakeAvatar"));
 
 function Sidebar() {
   const isMounted = useRef(false);

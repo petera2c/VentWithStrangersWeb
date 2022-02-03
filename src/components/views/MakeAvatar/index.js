@@ -4,7 +4,7 @@ function MakeAvatar({ className, displayName, size, userBasicInfo }) {
   const [capitolizedDisplayName, setCapitolizedDisplayName] = useState("");
 
   useEffect(() => {
-    import("../../util").then((functions) => {
+    import("../../../util").then((functions) => {
       setCapitolizedDisplayName(
         functions.capitolizeFirstChar(
           displayName ? displayName : "Anonymous"

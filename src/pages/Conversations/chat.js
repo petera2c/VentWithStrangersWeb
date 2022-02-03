@@ -5,8 +5,8 @@ import { Button } from "antd";
 
 import Container from "../../components/containers/Container";
 import Emoji from "../../components/Emoji";
-import KarmaBadge from "../../components/KarmaBadge";
-import MakeAvatar from "../../components/MakeAvatar";
+import KarmaBadge from "../../components/views/KarmaBadge";
+import MakeAvatar from "../../components/views/MakeAvatar";
 import Message from "./message";
 
 import { capitolizeFirstChar } from "../../util";

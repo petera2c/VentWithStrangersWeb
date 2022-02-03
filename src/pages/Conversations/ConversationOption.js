@@ -10,8 +10,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ConfirmAlertModal from "../../components/modals/ConfirmAlert";
 import Container from "../../components/containers/Container";
 import HandleOutsideClick from "../../components/containers/HandleOutsideClick";
-import KarmaBadge from "../../components/KarmaBadge";
-import MakeAvatar from "../../components/MakeAvatar";
+import KarmaBadge from "../../components/views/KarmaBadge";
+import MakeAvatar from "../../components/views/MakeAvatar";
 
 import { blockUser, capitolizeFirstChar } from "../../util";
 import {

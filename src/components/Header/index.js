@@ -254,9 +254,10 @@ function Header() {
                 >
                   <Container className="flex-fill align-center ov-hidden clickable gap8">
                     <DisplayName
-                      displayName={user.displayName}
+                      displayName={userBasicInfo.displayName}
                       isLink={false}
                       noBadgeOnClick
+                      noTooltip
                       userBasicInfo={userBasicInfo}
                     />
                     <FontAwesomeIcon icon={faChevronDown} />

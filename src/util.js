@@ -2,6 +2,7 @@ import React from "react";
 import {
   collection,
   doc,
+  getDoc,
   limit,
   onSnapshot,
   query,
@@ -48,7 +49,7 @@ export const capitolizeFirstLetterOfEachWord = (string) => {
 
 export const chatQueueEmptyListener = (isMounted, setQueueLength) => {
   const unsubscribe = onSnapshot(
-    query(collection(db, "chat_queue"), limit()),
+    query(collection(db, "chat_queue"), limit(10)),
     (snapshot) => {
       if (!isMounted.current) return;
 
@@ -189,7 +190,7 @@ export const getTotalOnlineUsers = (callback) => {
 export const getUserBasicInfo = async (callback, userID) => {
   if (!userID) return {};
 
-  const authorDoc = await db.collection("users_display_name").doc(userID).get();
+  const authorDoc = await getDoc(doc(db, "users_display_name", userID));
 
   callback(authorDoc.exists ? { ...authorDoc.data(), id: authorDoc.id } : {});
 };
@@ -201,10 +202,10 @@ export const hasUserBlockedUser = async (
   callback
 ) => {
   const sortedUserArray = [userID, userID2].sort();
-  const blockCheck = await db
-    .collection("block_check")
-    .doc(sortedUserArray[0] + "|||" + sortedUserArray[1])
-    .get();
+
+  const blockCheck = await getDoc(
+    doc(db, "block_check", sortedUserArray[0] + "|||" + sortedUserArray[1])
+  );
 
   if (!isMounted.current) return;
 

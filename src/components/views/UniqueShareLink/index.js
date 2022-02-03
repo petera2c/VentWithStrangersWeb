@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import loadable from "@loadable/component";
 import { Button, message } from "antd";
 
-const Container = loadable(() => import("../containers/Container"));
+const Container = loadable(() => import("../../containers/Container"));
 
 function UniqueShareLink({ user }) {
   const [secondUID, setSecondUID] = useState("");

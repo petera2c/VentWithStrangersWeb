@@ -9,7 +9,7 @@ import { capitolizeFirstChar } from "../../util";
 const Container = loadable(() =>
   import("../../components/containers/Container")
 );
-const LoadingHeart = loadable(() => import("../../components/loaders/Heart"));
+const LoadingHeart = loadable(() => import("../../components/views/loaders/Heart"));
 const Page = loadable(() => import("../../components/containers/Page"));
 const User = loadable(() => import("../../components/User"));
 const Vent = loadable(() => import("../../components/Vent"));

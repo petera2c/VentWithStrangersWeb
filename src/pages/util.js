@@ -10,7 +10,13 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { onValue, ref, serverTimestamp, set } from "firebase/database";
+import {
+  onValue,
+  ref,
+  serverTimestamp,
+  set,
+  onDisconnect,
+} from "firebase/database";
 import { db, db2 } from "../config/db_init";
 import moment from "moment-timezone";
 
@@ -95,32 +101,23 @@ export const setUserOnlineStatus = async (status, uid) => {
   return;
 };
 
-export const setIsUserOnlineToDatabase = (user) => {
-  if (!user) return;
-  var uid = user.uid;
+export const setIsUserOnlineToDatabase = (uid) => {
+  if (!uid) return;
 
-  var userStatusDatabaseRef = ref(db2, "status/", uid);
+  const connectedRef = ref(db2, ".info/connected");
 
-  var isOfflineForDatabase = {
-    last_online: serverTimestamp(),
-    state: "offline",
-  };
+  onValue(connectedRef, (snap) => {
+    const userStatusDatabaseRef = ref(db2, "status/" + uid);
 
-  var isOnlineForDatabase = {
-    last_online: serverTimestamp(),
-    state: "online",
-  };
-
-  onValue(ref(db2, ".info/connected"), (snapshot) => {
-    if (!snapshot.val()) {
-      return;
-    }
-
-    userStatusDatabaseRef
-      .onDisconnect()
-      .update(isOfflineForDatabase)
-      .then(() => {
-        userStatusDatabaseRef.update(isOnlineForDatabase);
+    if (snap.val() === true)
+      set(userStatusDatabaseRef, {
+        last_online: serverTimestamp(),
+        state: "online",
+      });
+    else
+      set(userStatusDatabaseRef, {
+        last_online: serverTimestamp(),
+        state: "offline",
       });
   });
 };

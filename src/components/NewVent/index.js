@@ -18,7 +18,7 @@ const Emoji = loadable(() => import("../Emoji"));
 const HandleOutsideClick = loadable(() =>
   import("../containers/HandleOutsideClick")
 );
-const MakeAvatar = loadable(() => import("../MakeAvatar"));
+const MakeAvatar = loadable(() => import("../views/MakeAvatar"));
 const StarterModal = loadable(() => import("../modals/Starter"));
 
 const searchClient = algoliasearch(
