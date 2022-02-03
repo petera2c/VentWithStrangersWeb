@@ -303,7 +303,7 @@ export const userSignUpProgress = (user, noAlert) => {
 
 export const userSignUpProgressFunction = (setStarterModal, user) => {
   if (!user) {
-    return () => () => setStarterModal();
+    return () => () => setStarterModal(true);
   } else if (!user.emailVerified) {
     return sendEmailVerification(user)
       .then(() => {

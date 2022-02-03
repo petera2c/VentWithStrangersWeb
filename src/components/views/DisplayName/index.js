@@ -32,7 +32,6 @@ function DisplayName({
         <Link
           className="flex clickable align-center ov-hidden"
           onClick={(e) => {
-            e.preventDefault();
             e.stopPropagation();
           }}
           to={"/profile?" + userID}

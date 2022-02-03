@@ -336,7 +336,7 @@ function Vent({
                 <Container
                   className="button-2 wrap px16 py8 br8"
                   onClick={() => {
-                    if (signUpProgressFunction) signUpProgressFunction();
+                    if (signUpProgressFunction) return signUpProgressFunction();
 
                     startConversation(navigate, user, vent.userID);
                   }}
@@ -486,6 +486,9 @@ function Vent({
                   <MentionsInput
                     className="mentions"
                     onChange={(e) => {
+                      if (signUpProgressFunction)
+                        return signUpProgressFunction();
+
                       if (!isUserKarmaSufficient(userBasicInfo))
                         return message.error(
                           "Your karma is too low to interact with this"
@@ -535,7 +538,7 @@ function Vent({
                 </Container>
                 <Button
                   onClick={async () => {
-                    if (signUpProgressFunction) signUpProgressFunction();
+                    if (signUpProgressFunction) return signUpProgressFunction();
 
                     if (!commentString) return;
                     commentVent(commentString, setVent, user, vent, vent.id);
