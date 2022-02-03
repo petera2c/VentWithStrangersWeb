@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import Container from "../../../components/containers/Container";
@@ -15,7 +15,7 @@ function AllTags() {
 
   useEffect(() => {
     getTags(isMounted, setTags, tags);
-  }, [isMounted]);
+  }, []);
 
   return (
     <Page className="br-grey-2 pt32 px16 pb16">

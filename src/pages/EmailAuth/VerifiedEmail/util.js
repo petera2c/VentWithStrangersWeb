@@ -1,4 +1,9 @@
-import { getAuth } from "firebase/auth";
+import {
+  applyActionCode,
+  checkActionCode,
+  getAuth,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 
 export const handleVerifyEmail = (
   navigate,
@@ -6,8 +11,7 @@ export const handleVerifyEmail = (
   setErrorMessage,
   setVerifiedSuccess
 ) => {
-  getAuth()
-    .applyActionCode(oobCode)
+  applyActionCode(getAuth(), oobCode)
     .then((resp) => {
       setVerifiedSuccess(true);
       setTimeout(() => {
