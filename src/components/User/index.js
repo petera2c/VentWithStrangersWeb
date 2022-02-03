@@ -97,7 +97,7 @@ function UserComponent({
               <Container className="column">
                 <h6 className="fw-400">Age</h6>
                 <h6 className="grey-1 fw-400">
-                  new moment().year() - new moment(userInfo.birth_date).year()
+                  {new moment().year() - new moment(userInfo.birth_date).year()}
                 </h6>
               </Container>
             )}
