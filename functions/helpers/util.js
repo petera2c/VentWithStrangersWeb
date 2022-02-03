@@ -58,12 +58,18 @@ const getMetaInformation = async (url, callback) => {
     url.length - 1
   );
   const slashID = url.substring(url.lastIndexOf("/") + 1, url.length);
+  const ventID = url
+    .substring(1, url.length)
+    .substring(
+      url.substring(1, url.length).indexOf("/") + 1,
+      url.substring(1, url.length).lastIndexOf("/")
+    );
 
-  if (url.substring(0, 5) === "/vent" && slashID) {
+  if (url.substring(0, 5) === "/vent" && ventID) {
     const ventDoc = await admin
       .firestore()
       .collection("vents")
-      .doc(slashID)
+      .doc(ventID)
       .get();
     vent = ventDoc.data();
 

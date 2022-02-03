@@ -1,4 +1,4 @@
-import { get, limitToLast, orderByChild, query, ref } from "firebase/database";
+import { get, orderByChild, query, ref } from "firebase/database";
 import { db2 } from "../../config/db_init";
 
 export const getOnlineUsers = (isMounted, callback, fetchUsersCount) => {
