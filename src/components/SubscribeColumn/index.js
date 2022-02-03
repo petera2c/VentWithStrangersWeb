@@ -9,7 +9,7 @@ import { UserContext } from "../../context";
 import { getIsMobileOrTablet } from "../../util";
 
 function SubscribeColumn({ slot, uniqueShareLink = true }) {
-  const { user, userSubscription } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const [isMobileOrTablet, setIsMobileOrTablet] = useState();
 
@@ -17,12 +17,12 @@ function SubscribeColumn({ slot, uniqueShareLink = true }) {
     setIsMobileOrTablet(getIsMobileOrTablet());
   }, []);
 
-  if (!userSubscription && !isMobileOrTablet)
+  if (!isMobileOrTablet)
     return (
       <Container className="container ad column pl16">
         <Container className="sticky top-0 column x-fill gap16">
           {uniqueShareLink && <UniqueShareLink user={user} />}
-          {false && <MakeAd slot={slot} userSubscription={userSubscription} />}
+          <MakeAd slot={slot} />
         </Container>
       </Container>
     );

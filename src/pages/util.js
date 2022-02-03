@@ -52,11 +52,7 @@ export const getIsUserSubscribed = async (
     doc(db, "user_subscription", userID)
   );
 
-  if (
-    userSubscriptionDoc.exists() &&
-    userSubscriptionDoc.data() &&
-    isMounted.current
-  )
+  if (userSubscriptionDoc.data() && isMounted.current)
     setUserSubscription(userSubscriptionDoc.data());
 };
 

@@ -16,8 +16,14 @@ import Container from "../containers/Container";
 import MakeAd from "../MakeAd";
 import MakeAvatar from "../views/MakeAvatar";
 
-import { OnlineUsersContext, UserContext } from "../../context";
-import { useIsMounted } from "../../util";
+import { OnlineUsersContext } from "../../context";
+import {
+  chatQueueEmptyListener,
+  getTotalOnlineUsers,
+  isPageActive,
+  useIsMounted,
+} from "../../util";
+import { getUserAvatars } from "./util";
 
 function Sidebar() {
   const isMounted = useIsMounted();
@@ -26,7 +32,6 @@ function Sidebar() {
   const { totalOnlineUsers, setTotalOnlineUsers } = useContext(
     OnlineUsersContext
   );
-  const { userSubscription } = useContext(UserContext);
 
   const [firstOnlineUsers, setFirstOnlineUsers] = useState();
   const [queueLength, setQueueLength] = useState();
@@ -35,19 +40,13 @@ function Sidebar() {
     let onlineUsersUnsubscribe;
     let chatQueueListenerUnsubscribe;
 
-    import("../../util").then((functions) => {
-      chatQueueListenerUnsubscribe = functions.chatQueueEmptyListener(
-        isMounted,
-        setQueueLength
-      );
-      onlineUsersUnsubscribe = functions.getTotalOnlineUsers(
-        (totalOnlineUsers) => {
-          import("./util").then((functions) => {
-            functions.getUserAvatars(setFirstOnlineUsers, totalOnlineUsers);
-          });
-          setTotalOnlineUsers(totalOnlineUsers);
-        }
-      );
+    chatQueueListenerUnsubscribe = chatQueueEmptyListener(
+      isMounted,
+      setQueueLength
+    );
+    onlineUsersUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) => {
+      getUserAvatars(isMounted, setFirstOnlineUsers, totalOnlineUsers);
+      if (isMounted()) setTotalOnlineUsers(totalOnlineUsers);
     });
 
     return () => {
@@ -112,11 +111,7 @@ function Sidebar() {
         pathname={pathname}
         text="Make Friends"
       />
-      <MakeAd
-        className="mt16"
-        slot="4732645487"
-        userSubscription={userSubscription}
-      />
+      <MakeAd className="mt16" slot="4732645487" />
     </Space>
   );
 }
@@ -130,20 +125,12 @@ function SideBarLink({
   text,
   totalOnlineUsers,
 }) {
-  const [isPageActive, setIsPageActive] = useState(false);
-
-  useEffect(() => {
-    import("../../util").then((functions) => {
-      setIsPageActive(functions.isPageActive(link, pathname));
-    });
-  }, [link, pathname]);
-
   if (link)
     return (
       <Link
         className={
           "align-center button-4 clickable py8 " +
-          isPageActive +
+          isPageActive(link, pathname) +
           (firstOnlineUsers ? " grid-2" : " grid-1")
         }
         to={link}

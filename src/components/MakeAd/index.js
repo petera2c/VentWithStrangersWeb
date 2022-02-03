@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import AdSense from "react-adsense";
+
+import { UserContext } from "../../context";
 
 import Container from "../containers/Container";
 
-function MakeAd({ banner, className, layoutKey, slot, userSubscription }) {
+function MakeAd({ banner, className, layoutKey, slot }) {
+  const { userSubscription } = useContext(UserContext);
+
   if (banner) {
     if (!userSubscription && process.env.NODE_ENV === "production")
       return (

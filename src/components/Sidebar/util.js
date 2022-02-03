@@ -3,7 +3,11 @@ import { get, limitToLast, orderByChild, ref } from "firebase/database";
 
 import { db, db2 } from "../../config/db_init";
 
-export const getUserAvatars = (setFirstOnlineUsers, totalOnlineUsers) => {
+export const getUserAvatars = (
+  isMounted,
+  setFirstOnlineUsers,
+  totalOnlineUsers
+) => {
   if (totalOnlineUsers > 0)
     get(
       ref(db2, "status"),
@@ -45,6 +49,6 @@ export const getUserAvatars = (setFirstOnlineUsers, totalOnlineUsers) => {
           });
       }
 
-      setFirstOnlineUsers(onlineUsersAvatars);
+      if (isMounted()) setFirstOnlineUsers(onlineUsersAvatars);
     });
 };
