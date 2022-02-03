@@ -36,7 +36,7 @@ export const getIsUsersBirthday = async (
       new moment().diff(new moment(userInfoDoc.data().last_birthday), "days") >=
         365)
   ) {
-    if (isMounted()) setIsUsersBirthday(true);
+    if (isMounted.current) setIsUsersBirthday(true);
     await updateDoc(doc(db, "users_info", userInfoDoc.id), {
       last_birthday: Timestamp.now().toMillis(),
     });
@@ -68,7 +68,11 @@ export const newRewardListener = (
     (querySnapshot) => {
       if (first) {
         first = false;
-      } else if (querySnapshot.docs && querySnapshot.docs[0] && isMounted()) {
+      } else if (
+        querySnapshot.docs &&
+        querySnapshot.docs[0] &&
+        isMounted.current
+      ) {
         setNewReward(() => {
           return {
             id: querySnapshot.docs[0].id,
