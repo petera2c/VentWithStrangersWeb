@@ -49,7 +49,7 @@ export const getUsersVents = async (
     )
   );
 
-  if (!isMounted.current) return;
+  if (!isMounted()) return;
 
   if (snapshot.docs && snapshot.docs.length > 0) {
     let newVents = snapshot.docs.map((doc, index) => ({
@@ -89,7 +89,7 @@ export const getUsersComments = async (
     )
   );
 
-  if (!isMounted.current) return;
+  if (!isMounted()) return;
 
   if (snapshot.docs && snapshot.docs.length > 0) {
     let newComments = snapshot.docs.map((doc, index) => ({

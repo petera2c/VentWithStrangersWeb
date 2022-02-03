@@ -22,7 +22,7 @@ export const getTags = async (isMounted, setTags, tags) => {
     )
   );
 
-  if (!isMounted.current) return;
+  if (!isMounted()) return;
 
   let newTags = [];
 

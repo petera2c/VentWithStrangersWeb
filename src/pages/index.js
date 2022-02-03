@@ -6,6 +6,7 @@ import { useIdleTimer } from "react-idle-timer";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import { OnlineUsersContext, UserContext } from "../context";
+import { useIsMounted } from "../util";
 
 const BirthdayModal = loadable(() => import("../components/modals/Birthday"));
 const Container = loadable(() => import("../components/containers/Container"));
@@ -47,7 +48,7 @@ const VentsPage = React.lazy(() => import("./Vents"));
 const VerifiedEmailPage = React.lazy(() => import("./EmailAuth/VerifiedEmail"));
 
 function RoutesComp() {
-  const isMounted = useRef(false);
+  const isMounted = useIsMounted();
 
   const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
   const [isUsersBirthday, setIsUsersBirthday] = useState(false);
@@ -96,8 +97,6 @@ function RoutesComp() {
   });
 
   useEffect(() => {
-    isMounted.current = true;
-
     let newRewardListenerUnsubscribe;
     import("../util").then((functions) => {
       setIsMobileOrTablet(functions.getIsMobileOrTablet());
@@ -123,7 +122,6 @@ function RoutesComp() {
     }
 
     return () => {
-      isMounted.current = false;
       if (newRewardListenerUnsubscribe) newRewardListenerUnsubscribe();
       if (user)
         import("./util").then((functions) => {

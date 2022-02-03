@@ -5,20 +5,18 @@ import Container from "../../../components/containers/Container";
 import Page from "../../../components/containers/Page";
 import SubscribeColumn from "../../../components/SubscribeColumn";
 
+import { useIsMounted } from "../../../util";
 import { getTags } from "./util";
 
 function AllTags() {
-  const isMounted = useRef(false);
+  const isMounted = useIsMounted();
 
   const [tags, setTags] = useState([]);
 
   useEffect(() => {
-    isMounted.current = true;
     getTags(isMounted, setTags, tags);
 
-    return () => {
-      isMounted.current = false;
-    };
+    
   }, [isMounted]);
 
   return (

@@ -5,12 +5,15 @@ import Cookies from "universal-cookie";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Button, Space } from "antd";
 
+import { useIsMounted } from "../../util";
 import { getMetaInformation, getVents, newVentListener } from "./util";
 
 const Container = loadable(() =>
   import("../../components/containers/Container")
 );
-const LoadingHeart = loadable(() => import("../../components/views/loaders/Heart"));
+const LoadingHeart = loadable(() =>
+  import("../../components/views/loaders/Heart")
+);
 const MakeAd = loadable(() => import("../../components/MakeAd"));
 const NewVentComponent = loadable(() => import("../../components/NewVent"));
 const Page = loadable(() => import("../../components/containers/Page"));
@@ -22,7 +25,7 @@ const Vent = loadable(() => import("../../components/Vent"));
 const cookies = new Cookies();
 
 function VentsPage() {
-  const isMounted = useRef(false);
+  const isMounted = useIsMounted();
 
   const [vents, setVents] = useState([]);
   const [waitingVents, setWaitingVents] = useState([]);
@@ -32,7 +35,6 @@ function VentsPage() {
   const [canLoadMore, setCanLoadMore] = useState(true);
 
   useEffect(() => {
-    isMounted.current = true;
     if (search) {
       const referral = /referral=([^&]+)/.exec(search)[1];
       if (referral) cookies.set("referral", referral);
@@ -50,7 +52,6 @@ function VentsPage() {
     );
 
     return () => {
-      isMounted.current = false;
       if (newVentListenerUnsubscribe) return newVentListenerUnsubscribe();
     };
   }, [isMounted, pathname, search]);

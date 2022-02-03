@@ -63,7 +63,7 @@ export const getVents = async (
       )
     );
   }
-  if (!isMounted.current) return;
+  if (!isMounted()) return;
 
   if (snapshot.docs && snapshot.docs.length > 0) {
     let newVents = snapshot.docs.map((doc, index) => ({
@@ -106,7 +106,7 @@ export const newVentListener = (
           querySnapshot.docChanges()[0].type === "added" ||
           querySnapshot.docChanges()[0].type === "removed"
         ) {
-          if (isMounted.current)
+          if (isMounted())
             setWaitingVents((vents) => [
               {
                 doc: querySnapshot.docs[0],

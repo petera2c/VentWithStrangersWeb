@@ -5,6 +5,7 @@ import { Progress, Space, Tooltip } from "antd";
 
 import { UserContext } from "../../context";
 
+import { useIsMounted } from "../../util";
 import {
   calculateMilestone,
   getNextMilestone,
@@ -18,7 +19,7 @@ const Container = loadable(() =>
 const Page = loadable(() => import("../../components/containers/Page"));
 
 function RewardsPage() {
-  const isMounted = useRef(false);
+  const isMounted = useIsMounted();
   const { user } = useContext(UserContext);
 
   const [isMobileOrTablet, setIsMobileOrTablet] = useState();
@@ -26,7 +27,6 @@ function RewardsPage() {
   const [userRewards, setUserRewards] = useState({});
 
   useEffect(() => {
-    isMounted.current = true;
     import("../../util").then((functions) => {
       setIsMobileOrTablet(functions.getIsMobileOrTablet());
     });
@@ -35,9 +35,7 @@ function RewardsPage() {
       getUserRecentRewards(isMounted, setRecentRewards, user.uid);
       getUserRewardsProgress(isMounted, setUserRewards, user.uid);
     }
-    return () => {
-      isMounted.current = false;
-    };
+    
   }, [isMounted, user]);
 
   return (

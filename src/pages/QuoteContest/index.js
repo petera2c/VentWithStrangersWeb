@@ -23,6 +23,7 @@ import {
   formatSeconds,
   getUserBasicInfo,
   hasUserBlockedUser,
+  useIsMounted,
   userSignUpProgress,
 } from "../../util";
 import {
@@ -36,7 +37,7 @@ import {
 } from "./util";
 
 function QuoteContestPage() {
-  const isMounted = useRef(false);
+  const isMounted = useIsMounted();
   const { user, userBasicInfo } = useContext(UserContext);
 
   const [canLoadMoreQuotes, setCanLoadMoreQuotes] = useState(true);
@@ -49,7 +50,6 @@ function QuoteContestPage() {
   const [starterModal, setStarterModal] = useState();
 
   useEffect(() => {
-    isMounted.current = true;
     import("../../util").then((functions) => {
       setIsMobileOrTablet(functions.getIsMobileOrTablet());
     });
@@ -67,9 +67,7 @@ function QuoteContestPage() {
       1000
     );
 
-    return () => {
-      isMounted.current = false;
-    };
+    
   }, []);
 
   return (
@@ -194,7 +192,7 @@ function Quote({
   setStarterModal,
   user,
 }) {
-  const isMounted = useRef(false);
+  const isMounted = useIsMounted();
 
   const [author, setAuthor] = useState({});
   const [hasLiked, setHasLiked] = useState();
@@ -202,10 +200,8 @@ function Quote({
   const [quote, setQuote] = useState(quote1);
 
   useEffect(() => {
-    isMounted.current = true;
-
     getUserBasicInfo((author) => {
-      if (isMounted.current) setAuthor(author);
+      if (isMounted()) setAuthor(author);
     }, quote.userID);
 
     if (user) {
@@ -218,14 +214,12 @@ function Quote({
       getHasUserLikedQuote(
         quote.id,
         (hasLiked) => {
-          if (isMounted.current) setHasLiked(hasLiked);
+          if (isMounted()) setHasLiked(hasLiked);
         },
         user.uid
       );
     }
-    return () => {
-      isMounted.current = false;
-    };
+    
   }, []);
 
   if (isContentBlocked) return <div />;

@@ -6,23 +6,17 @@ import Page from "../../../components/containers/Page";
 import SubscribeColumn from "../../../components/SubscribeColumn";
 import Vent from "../../../components/Vent";
 
-import { viewTag } from "../../../util";
+import { useIsMounted, viewTag } from "../../../util";
 import { getTagVents } from "./util";
 
 function IndividualTag() {
   const { tagID } = useParams();
-  const isMounted = useRef(false);
+  const isMounted = useIsMounted();
 
   const [vents, setVents] = useState([]);
 
   useEffect(() => {
-    isMounted.current = true;
-
     getTagVents(isMounted, setVents, tagID, vents);
-
-    return () => {
-      isMounted.current = false;
-    };
   }, []);
 
   return (

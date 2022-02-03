@@ -3,6 +3,8 @@ import loadable from "@loadable/component";
 
 import { UserContext } from "../../context";
 
+import { useIsMounted } from "../../util";
+
 const Container = loadable(() =>
   import("../../components/containers/Container")
 );
@@ -12,14 +14,13 @@ const NotificationList = loadable(() =>
 const Page = loadable(() => import("../../components/containers/Page"));
 
 function NotificationsPage() {
-  const isMounted = useRef(false);
+  const isMounted = useIsMounted();
   const { user } = useContext(UserContext);
 
   const [isMobileOrTablet, setIsMobileOrTablet] = useState();
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
-    isMounted.current = true;
     import("../../util").then((functions) => {
       setIsMobileOrTablet(functions.getIsMobileOrTablet());
     });
@@ -38,7 +39,6 @@ function NotificationsPage() {
     });
 
     return () => {
-      isMounted.current = false;
       if (newNotificationsListenerUnsubscribe)
         newNotificationsListenerUnsubscribe();
     };

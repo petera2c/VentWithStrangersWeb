@@ -9,7 +9,7 @@ import KarmaBadge from "../../components/views/KarmaBadge";
 import MakeAvatar from "../../components/views/MakeAvatar";
 import Message from "./message";
 
-import { capitolizeFirstChar } from "../../util";
+import { capitolizeFirstChar, useIsMounted } from "../../util";
 import {
   getMessages,
   messageListener,
@@ -26,7 +26,7 @@ function Chat({
   setActiveConversation,
   userID,
 }) {
-  const isMounted = useRef(false);
+  const isMounted = useIsMounted();
   const textInput = useRef(null);
 
   const [isMobileOrTablet, setIsMobileOrTablet] = useState();
@@ -66,7 +66,6 @@ function Chat({
   const [isUserCurrentlyTyping, setIsUserCurrentlyTyping] = useState(false);
 
   useEffect(() => {
-    isMounted.current = true;
     let messageListenerUnsubscribe;
     import("../../util").then((functions) => {
       setIsMobileOrTablet(functions.getIsMobileOrTablet());
@@ -92,8 +91,6 @@ function Chat({
     if (isMounted) setConversationID(conversation.id);
 
     return () => {
-      isMounted.current = false;
-
       if (messageListenerUnsubscribe) messageListenerUnsubscribe();
     };
   }, [conversation.id]);

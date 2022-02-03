@@ -24,6 +24,7 @@ import {
   getEndAtValueTimestamp,
   getEndAtValueTimestampFirst,
   getIsUserOnline,
+  useIsMounted,
 } from "../../util";
 
 export const deleteConversation = async (
@@ -116,7 +117,7 @@ export const messageListener = (
           querySnapshot.docChanges()[0].type === "added" ||
           querySnapshot.docChanges()[0].type === "removed"
         ) {
-          if (isMounted.current)
+          if (isMounted())
             setMessages((oldMessages) => [
               ...oldMessages,
               {
@@ -194,7 +195,7 @@ export const getConversations = async (
       });
   }
 
-  if (isMounted.current)
+  if (isMounted())
     setConversations(newConversations, isActiveConversationInNewConversations);
 };
 
@@ -219,7 +220,7 @@ export const getMessages = async (
     )
   );
 
-  if (!isMounted.current) return;
+  if (!isMounted()) return;
 
   if (snapshot.docs && snapshot.docs.length > 0) {
     let newMessages = [];
@@ -264,7 +265,7 @@ export const mostRecentConversationListener = (
 
       if (first) {
         first = false;
-      } else if (conversationDoc && isMounted.current) {
+      } else if (conversationDoc && isMounted()) {
         setConversations((oldConversations) => {
           const isConversationAlreadyListening = oldConversations.some(
             (obj) => obj.id === conversationDoc.id

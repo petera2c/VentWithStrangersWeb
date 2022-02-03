@@ -22,7 +22,7 @@ import {
   politicalBeliefsList,
   religiousBeliefsList,
 } from "../../PersonalOptions";
-import { calculateKarma } from "../../util";
+import { calculateKarma, useIsMounted } from "../../util";
 import { deleteAccountAndAllData, getUser, updateUser } from "./util";
 
 const Container = loadable(() =>
@@ -34,7 +34,7 @@ const SubscribeColumn = loadable(() =>
 );
 
 function AccountSection() {
-  const isMounted = useRef(false);
+  const isMounted = useIsMounted();
   const { user, userBasicInfo, setUserBasicInfo } = useContext(UserContext);
 
   const [bio, setBio] = useState("");
@@ -70,19 +70,16 @@ function AccountSection() {
   };
 
   useEffect(() => {
-    isMounted.current = true;
     import("../../util").then((functions) => {
       setIsMobileOrTablet(functions.getIsMobileOrTablet());
     });
 
     getUser((userInfo) => {
-      if (isMounted.current) setAccountInfo(userInfo);
-      if (userInfo && isMounted.current) setUserInfo(userInfo);
+      if (isMounted()) setAccountInfo(userInfo);
+      if (userInfo && isMounted()) setUserInfo(userInfo);
     }, user.uid);
 
-    return () => {
-      isMounted.current = false;
-    };
+    
   }, [isMounted, user]);
 
   return (

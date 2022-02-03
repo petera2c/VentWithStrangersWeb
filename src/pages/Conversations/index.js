@@ -4,7 +4,7 @@ import loadable from "@loadable/component";
 
 import { UserContext } from "../../context";
 
-import { userSignUpProgress } from "../../util";
+import { useIsMounted, userSignUpProgress } from "../../util";
 import { getConversations, mostRecentConversationListener } from "./util";
 
 const Chat = loadable(() => import("./chat"));
@@ -17,7 +17,7 @@ const Page = loadable(() => import("../../components/containers/Page"));
 const StarterModal = loadable(() => import("../../components/modals/Starter"));
 
 function Conversations() {
-  const isMounted = useRef(false);
+  const isMounted = useIsMounted();
   const { user } = useContext(UserContext);
 
   const location = useLocation();
@@ -32,8 +32,6 @@ function Conversations() {
   const [starterModal, setStarterModal] = useState(!user);
 
   useEffect(() => {
-    isMounted.current = true;
-
     let newMessageListenerUnsubscribe;
 
     if (user) {
@@ -50,7 +48,7 @@ function Conversations() {
         isMounted,
         setActiveConversation,
         (newConversations) => {
-          if (!isMounted.current) return;
+          if (!isMounted()) return;
 
           if (newConversations.length < 5) setCanLoadMore(false);
 
@@ -68,8 +66,6 @@ function Conversations() {
     }
 
     return () => {
-      isMounted.current = false;
-
       if (newMessageListenerUnsubscribe) newMessageListenerUnsubscribe();
     };
   }, [isMounted, user]);

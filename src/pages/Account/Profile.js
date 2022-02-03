@@ -30,6 +30,7 @@ import {
   capitolizeFirstChar,
   getIsUserOnline,
   getUserBasicInfo,
+  useIsMounted,
   userSignUpProgress,
 } from "../../util";
 import { getUser, getUsersComments, getUsersVents } from "./util";
@@ -45,7 +46,9 @@ const HandleOutsideClick = loadable(() =>
   import("../../components/containers/HandleOutsideClick")
 );
 const KarmaBadge = loadable(() => import("../../components/views/KarmaBadge"));
-const LoadingHeart = loadable(() => import("../../components/views/loaders/Heart"));
+const LoadingHeart = loadable(() =>
+  import("../../components/views/loaders/Heart")
+);
 const MakeAvatar = loadable(() => import("../../components/views/MakeAvatar"));
 const Page = loadable(() => import("../../components/containers/Page"));
 const StarterModal = loadable(() => import("../../components/modals/Starter"));
@@ -55,7 +58,7 @@ const SubscribeColumn = loadable(() =>
 const Vent = loadable(() => import("../../components/Vent"));
 
 function ProfileSection() {
-  const isMounted = useRef(false);
+  const isMounted = useIsMounted();
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const location = useLocation();
@@ -84,7 +87,6 @@ function ProfileSection() {
   };
 
   useEffect(() => {
-    isMounted.current = true;
     import("../../util").then((functions) => {
       setIsMobileOrTablet(functions.getIsMobileOrTablet());
     });
@@ -94,13 +96,13 @@ function ProfileSection() {
 
     if (search) {
       getIsUserOnline((isUserOnline) => {
-        if (isMounted.current) setIsUserOnline(isUserOnline);
+        if (isMounted()) setIsUserOnline(isUserOnline);
       }, search);
       getUserBasicInfo((userBasicInfo) => {
-        if (isMounted.current) setUserBasicInfo(userBasicInfo);
+        if (isMounted()) setUserBasicInfo(userBasicInfo);
       }, search);
       getUser((userInfo) => {
-        if (isMounted.current) setUserInfo(userInfo);
+        if (isMounted()) setUserInfo(userInfo);
       }, search);
     } else navigate("/");
 
@@ -112,9 +114,7 @@ function ProfileSection() {
       setComments,
       []
     );
-    return () => {
-      isMounted.current = false;
-    };
+    
   }, [isMounted, navigate, search]);
 
   return (
