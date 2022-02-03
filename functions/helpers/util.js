@@ -103,12 +103,9 @@ const getMetaInformation = async (url, callback) => {
       keywords = ventTagDoc.data().display.toLowerCase();
       title = "Vents About " + ventTagDoc.data().display;
     }
-  } else if (url.substring(0, 5) === "/tags" && !slashID) {
-    description =
-      "Read vents on any of our tags. Vent With Strangers is a safe place where people can talk about their problems and receive positive constructive feedback.";
-    keywords = "anxiety,bullying,depression,family,school";
-    title = "View Vents Based on Anxiety, Bullying, Depression and More";
-  } else if (url === "/") {
+  }
+
+  if (url === "/") {
     description =
       "Vent online with strangers. VWS is a site where you can make friends and get help on your specific situation all for free. Our site is 100% anonymous.";
     keywords =
@@ -177,7 +174,13 @@ const getMetaInformation = async (url, callback) => {
       "You are not alone. If you are feeling down, anonymously post your issue here. There is an entire community of people that want to help you.";
     keywords = "vent to strangers,vent to someone,chat with strangers";
     title = "Vent To Strangers";
+  } else if (url.substring(0, 5) === "/tags" && !slashID) {
+    description =
+      "Read vents on any of our tags. Vent With Strangers is a safe place where people can talk about their problems and receive positive constructive feedback.";
+    keywords = "anxiety,bullying,depression,family,school";
+    title = "View Vents Based on Anxiety, Bullying, Depression and More";
   }
+
   return callback(
     {
       description,
