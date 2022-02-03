@@ -51,11 +51,7 @@ const getMetaInformation = async (url, callback) => {
   let keywords = "";
   let title = "";
 
-  const checkIsVent = url.match(/(?<=\/vent\/\s*).*?(?=\s*\/)/gs);
-
-  let ventID;
   let vent;
-  if (checkIsVent) ventID = checkIsVent[0];
 
   const questionMarkID = url.substring(
     url.lastIndexOf("?") + 1,
@@ -63,17 +59,17 @@ const getMetaInformation = async (url, callback) => {
   );
   const slashID = url.substring(url.lastIndexOf("/") + 1, url.length);
 
-  if (checkIsVent && ventID) {
+  if (url.substring(0, 5) === "/vent" && slashID) {
     const ventDoc = await admin
       .firestore()
       .collection("vents")
-      .doc(ventID)
+      .doc(slashID)
       .get();
     vent = ventDoc.data();
 
     if (vent) {
-      description = vent.description ? vent.description.substring(0, 200) : "";
-      title = vent.title ? vent.title.substring(0, 140) : "";
+      description = vent.description ? vent.description.substring(0, 140) : "";
+      title = vent.title ? vent.title.substring(0, 60) : "";
       vent = { id: ventDoc.id, ...vent };
     }
   } else if (url.substring(0, 9) === "/profile?" && questionMarkID) {
