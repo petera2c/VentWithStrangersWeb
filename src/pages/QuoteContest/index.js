@@ -126,6 +126,13 @@ function QuoteContestPage() {
               <TextArea
                 className="flex-fill py8 px16 br4"
                 onChange={(event) => {
+                  const userInteractionIssues = userSignUpProgress(user);
+
+                  if (userInteractionIssues) {
+                    if (userInteractionIssues === "NSI")
+                      return setStarterModal(true);
+                  }
+
                   if (calculateKarma(userBasicInfo) < 20)
                     return message.info(
                       "You need 20 karma points to interact with this :)"
@@ -143,8 +150,8 @@ function QuoteContestPage() {
                   const userInteractionIssues = userSignUpProgress(user);
 
                   if (userInteractionIssues) {
-                    if (userInteractionIssues === "NSI") setStarterModal(true);
-                    return;
+                    if (userInteractionIssues === "NSI")
+                      return setStarterModal(true);
                   }
 
                   if (myQuote)

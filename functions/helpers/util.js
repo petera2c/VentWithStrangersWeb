@@ -52,7 +52,6 @@ const getMetaInformation = async (url, callback) => {
   let vent;
   if (checkIsVent) ventID = checkIsVent[0];
 
-  const checkIsProfile = url.substring(0, 9) === "/profile?";
   const id = url.substring(url.lastIndexOf("?") + 1, url.length - 1);
 
   if (checkIsVent && ventID) {
@@ -68,7 +67,7 @@ const getMetaInformation = async (url, callback) => {
       title = vent.title ? vent.title.substring(0, 140) : "";
       vent = { id: ventDoc.id, ...vent };
     }
-  } else if (checkIsProfile && id) {
+  } else if (url.substring(0, 9) === "/profile?" && id) {
     const userDoc = await admin
       .firestore()
       .collection("users_display_name")
@@ -78,9 +77,8 @@ const getMetaInformation = async (url, callback) => {
     if (userDoc && userDoc.data() && userDoc.data().displayName) {
       title = userDoc.data().displayName + "'s Profile and Recent Activity";
     }
-  }
-
-  if (url === "/") {
+  } else if (false) {
+  } else if (url === "/") {
     description =
       "Vent online with strangers. VWS is a site where you can make friends and get help on your specific situation all for free. Our site is 100% anonymous.";
     keywords =
