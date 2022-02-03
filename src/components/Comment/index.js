@@ -1,26 +1,25 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { MentionsInput, Mention } from "react-mentions";
-import { useNavigate } from "react-router-dom";
-import loadable from "@loadable/component";
 import moment from "moment-timezone";
 
 import { faClock } from "@fortawesome/pro-regular-svg-icons/faClock";
-import { faEdit } from "@fortawesome/pro-light-svg-icons/faEdit";
-import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
-import { faExclamationTriangle } from "@fortawesome/pro-light-svg-icons/faExclamationTriangle";
 import { faHeart } from "@fortawesome/pro-regular-svg-icons/faHeart";
 import { faHeart as faHeart2 } from "@fortawesome/pro-solid-svg-icons/faHeart";
-import { faTrash } from "@fortawesome/pro-duotone-svg-icons/faTrash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { UserContext } from "../../context";
-import { useIsMounted } from "../../util";
+import Container from "../containers/Container";
+import DisplayName from "../views/DisplayName";
+import Options from "../Options";
+import StarterModal from "../modals/Starter";
 
-const ConfirmAlertModal = loadable(() => import("../containers/Container"));
-const Container = loadable(() => import("../containers/Container"));
-const DisplayName = loadable(() => import("../views/DisplayName"));
-const Options = loadable(() => import("../Options"));
-const StarterModal = loadable(() => import("../modals/Starter"));
+import { UserContext } from "../../context";
+import {
+  getIsUserOnline,
+  getUserBasicInfo,
+  hasUserBlockedUser,
+  useIsMounted,
+} from "../../util";
+import { getCommentHasLiked, swapTags } from "./util";
 
 function Comment({
   arrayLength,
@@ -31,14 +30,10 @@ function Comment({
   ventUserID,
 }) {
   const isMounted = useIsMounted();
-  const navigate = useNavigate();
   const { user } = useContext(UserContext);
 
   const [comment, setComment] = useState(comment2);
-  const [commentDisplay, setCommentDisplay] = useState("");
-  const [commentOptions, setCommentOptions] = useState(false);
   const [commentString, setCommentString] = useState("");
-  const [deleteCommentConfirm, setDeleteCommentConfirm] = useState(false);
   const [editingComment, setEditingComment] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
   const [isContentBlocked, setIsContentBlocked] = useState(user ? true : false);
@@ -47,37 +42,29 @@ function Comment({
   const [userBasicInfo, setUserBasicInfo] = useState({});
 
   useEffect(() => {
-    import("./util").then((functions) => {
-      setCommentDisplay(functions.swapTags(comment.text));
-    });
+    if (user)
+      getCommentHasLiked(
+        commentID,
+        isMounted,
+        (hasLiked) => {
+          if (isMounted()) setHasLiked(hasLiked);
+        },
+        user.uid
+      );
 
     if (user)
-      import("./util").then((functions) => {
-        functions.getCommentHasLiked(
-          commentID,
-          isMounted,
-          (hasLiked) => {
-            if (isMounted()) setHasLiked(hasLiked);
-          },
-          user.uid
-        );
-      });
-
-    import("../../util").then((functions) => {
-      if (user)
-        functions.hasUserBlockedUser(
-          isMounted,
-          user.uid,
-          comment.userID,
-          setIsContentBlocked
-        );
-      functions.getUserBasicInfo((newBasicUserInfo) => {
-        if (isMounted()) setUserBasicInfo(newBasicUserInfo);
-      }, comment.userID);
-      functions.getIsUserOnline((isUserOnline) => {
-        if (isMounted()) setIsUserOnline(isUserOnline.state);
-      }, comment.userID);
-    });
+      hasUserBlockedUser(
+        isMounted,
+        user.uid,
+        comment.userID,
+        setIsContentBlocked
+      );
+    getUserBasicInfo((newBasicUserInfo) => {
+      if (isMounted()) setUserBasicInfo(newBasicUserInfo);
+    }, comment.userID);
+    getIsUserOnline((isUserOnline) => {
+      if (isMounted()) setIsUserOnline(isUserOnline.state);
+    }, comment.userID);
 
     return () => {};
   }, [commentID, comment.text, comment.userID, isMounted, user]);
@@ -97,7 +84,7 @@ function Comment({
       <Container className="justify-between py16">
         <DisplayName
           displayName={userBasicInfo.displayName}
-          isUserOnline
+          isUserOnline={isUserOnline}
           userBasicInfo={userBasicInfo}
           userID={comment.userID}
         />
@@ -131,7 +118,7 @@ function Comment({
           )}
         </Container>
       </Container>
-      {!editingComment && <p>{commentDisplay}</p>}
+      {!editingComment && <p>{swapTags(comment.text)}</p>}
       {editingComment && (
         <Container className="column x-fill align-end br8">
           <Container className="relative x-fill">

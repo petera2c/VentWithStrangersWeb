@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useState from "react-usestateref";
-import { off } from "firebase/database";
-import loadable from "@loadable/component";
 import { sendEmailVerification } from "firebase/auth";
+import { off } from "firebase/database";
 import { Button, message, Space } from "antd";
 
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
@@ -26,11 +25,25 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { UserContext, OnlineUsersContext } from "../../context";
 
-import { isPageActive, useIsMounted } from "../../util";
+import {
+  getTotalOnlineUsers,
+  isPageActive,
+  signOut2,
+  useIsMounted,
+} from "../../util";
+import {
+  conversationsListener,
+  getNotifications,
+  getUnreadConversations,
+  isUserInQueueListener,
+  leaveQueue,
+  readNotifications,
+  resetUnreadConversationCount,
+} from "./util";
 
-const Container = loadable(() => import("../containers/Container"));
-const DisplayName = loadable(() => import("../views/DisplayName"));
-const StarterModal = loadable(() => import("../modals/Starter"));
+import Container from "../containers/Container";
+import DisplayName from "../views/DisplayName";
+import StarterModal from "../modals/Starter";
 
 function Header() {
   const isMounted = useIsMounted();
@@ -67,55 +80,43 @@ function Header() {
     let newNotificationsListenerUnsubscribe;
     let onlineUsersUnsubscribe;
 
-    import("../../util").then((functions) => {
-      onlineUsersUnsubscribe = functions.getTotalOnlineUsers(
-        (totalOnlineUsers) => {
-          if (isMounted()) setTotalOnlineUsers(totalOnlineUsers);
-        }
-      );
+    onlineUsersUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) => {
+      if (isMounted()) setTotalOnlineUsers(totalOnlineUsers);
     });
     if (user) {
-      import("./util").then((functions) => {
-        if (pathname === "/chat")
-          functions.resetUnreadConversationCount(
-            isMounted,
-            setUnreadConversationsCount,
-            user.uid
-          );
-
-        conversationsUnsubscribe = functions.conversationsListener(
-          navigate,
-          user.uid
-        );
-        isUserInQueueUnsubscribe = functions.isUserInQueueListener(
+      if (pathname === "/chat")
+        resetUnreadConversationCount(
           isMounted,
-          setIsUserInQueue,
-          user.uid
-        );
-
-        newConversationsListenerUnsubscribe = functions.getUnreadConversations(
-          isMounted,
-          pathname.substring(0, 7) === "/search",
-          pathname,
           setUnreadConversationsCount,
           user.uid
         );
-        newNotificationsListenerUnsubscribe = functions.getNotifications(
-          isMounted,
-          notifications,
-          setNotificationCounter,
-          setNotifications,
-          user
-        );
-      });
+
+      conversationsUnsubscribe = conversationsListener(navigate, user.uid);
+      isUserInQueueUnsubscribe = isUserInQueueListener(
+        isMounted,
+        setIsUserInQueue,
+        user.uid
+      );
+
+      newConversationsListenerUnsubscribe = getUnreadConversations(
+        isMounted,
+        pathname.substring(0, 7) === "/search",
+        pathname,
+        setUnreadConversationsCount,
+        user.uid
+      );
+      newNotificationsListenerUnsubscribe = getNotifications(
+        isMounted,
+        notifications,
+        setNotificationCounter,
+        setNotifications,
+        user
+      );
     }
 
     const cleanup = () => {
       if (conversationsUnsubscribe) conversationsUnsubscribe();
-      if (user && isUserInQueueRef.current)
-        import("../../util").then((functions) => {
-          functions.leaveQueue(user.uid);
-        });
+      if (user && isUserInQueueRef.current) leaveQueue(user.uid);
 
       window.removeEventListener("beforeunload", cleanup);
     };
@@ -163,9 +164,7 @@ function Header() {
                 onClick={() => {
                   setShowNotificationDropdown(!showNotificationDropdown);
 
-                  import("../../util").then((functions) => {
-                    functions.readNotifications(notifications);
-                  });
+                  readNotifications(notifications);
                 }}
                 size="2x"
               />
@@ -249,9 +248,7 @@ function Header() {
                   <p
                     className="tac fs-14"
                     onClick={() => {
-                      import("../../util").then((functions) => {
-                        functions.signOut2(user.uid);
-                      });
+                      signOut2(user.uid);
                     }}
                     type="link"
                   >
@@ -420,11 +417,7 @@ function Header() {
         <Container className="x-fill full-center bg-white border-top gap8 py8 px16">
           <p>You are in queue to chat with a stranger</p>
           <Button
-            onClick={() =>
-              import("../../util").then((functions) => {
-                functions.leaveQueue(user.uid);
-              })
-            }
+            onClick={() => leaveQueue(user.uid)}
             size="large"
             type="primary"
           >

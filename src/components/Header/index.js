@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useState from "react-usestateref";
 import { sendEmailVerification } from "firebase/auth";
-import loadable from "@loadable/component";
 import { Button, Dropdown, message } from "antd";
 
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
@@ -19,12 +18,21 @@ import { faUserAstronaut } from "@fortawesome/pro-duotone-svg-icons/faUserAstron
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { UserContext } from "../../context";
-import { isPageActive, useIsMounted } from "../../util";
+import { isPageActive, useIsMounted, signOut2 } from "../../util";
+import {
+  conversationsListener,
+  getNotifications,
+  getUnreadConversations,
+  isUserInQueueListener,
+  leaveQueue,
+  readNotifications,
+  resetUnreadConversationCount,
+} from "./util";
 
 import Container from "../containers/Container";
-const DisplayName = loadable(() => import("../views/DisplayName"));
-const NotificationList = loadable(() => import("../NotificationList"));
-const StarterModal = loadable(() => import("../modals/Starter"));
+import DisplayName from "../views/DisplayName";
+import NotificationList from "../NotificationList";
+import StarterModal from "../modals/Starter";
 
 function Header() {
   const isMounted = useIsMounted();
@@ -53,46 +61,38 @@ function Header() {
     let newNotificationsListenerUnsubscribe;
 
     if (user) {
-      import("./util").then((functions) => {
-        if (pathname === "/chat")
-          functions.resetUnreadConversationCount(
-            isMounted,
-            setUnreadConversationsCount,
-            user.uid
-          );
-
-        conversationsUnsubscribe = functions.conversationsListener(
-          navigate,
-          user.uid
-        );
-        isUserInQueueUnsubscribe = functions.isUserInQueueListener(
+      if (pathname === "/chat")
+        resetUnreadConversationCount(
           isMounted,
-          setIsUserInQueue,
-          user.uid
-        );
-        newConversationsListenerUnsubscribe = functions.getUnreadConversations(
-          isMounted,
-          pathname.substring(0, 7) === "/search",
-          pathname,
           setUnreadConversationsCount,
           user.uid
         );
-        newNotificationsListenerUnsubscribe = functions.getNotifications(
-          isMounted,
-          notifications,
-          setNotificationCounter,
-          setNotifications,
-          user
-        );
-      });
+
+      conversationsUnsubscribe = conversationsListener(navigate, user.uid);
+      isUserInQueueUnsubscribe = isUserInQueueListener(
+        isMounted,
+        setIsUserInQueue,
+        user.uid
+      );
+      newConversationsListenerUnsubscribe = getUnreadConversations(
+        isMounted,
+        pathname.substring(0, 7) === "/search",
+        pathname,
+        setUnreadConversationsCount,
+        user.uid
+      );
+      newNotificationsListenerUnsubscribe = getNotifications(
+        isMounted,
+        notifications,
+        setNotificationCounter,
+        setNotifications,
+        user
+      );
     }
 
     const cleanup = () => {
       if (conversationsUnsubscribe) conversationsUnsubscribe();
-      if (user && isUserInQueueRef.current)
-        import("./util").then((functions) => {
-          functions.leaveQueue(user.uid);
-        });
+      if (user && isUserInQueueRef.current) leaveQueue(user.uid);
 
       window.removeEventListener("beforeunload", cleanup);
     };
@@ -239,7 +239,7 @@ function Header() {
                         icon={faSignOut}
                         onClick={() => {
                           import("../../util").then((functions) =>
-                            functions.signOut2(user.uid)
+                            signOut2(user.uid)
                           );
                         }}
                         pathname={pathname}
@@ -275,7 +275,7 @@ function Header() {
                   }
                   onVisibleChange={(isVisible) => {
                     import("./util").then((functions) => {
-                      functions.readNotifications(notifications);
+                      readNotifications(notifications);
                     });
                   }}
                   trigger={["click"]}
@@ -310,15 +310,7 @@ function Header() {
       {user && isUserInQueue && (
         <Container className="x-fill full-center bg-white border-top gap8 py8">
           <p>You are in queue to chat with a stranger</p>
-          <Button
-            onClick={() =>
-              import("./util").then((functions) => {
-                functions.leaveQueue(user.uid);
-              })
-            }
-            size="large"
-            type="link"
-          >
+          <Button onClick={() => leaveQueue(user.uid)} size="large" type="link">
             Leave Queue
           </Button>
         </Container>

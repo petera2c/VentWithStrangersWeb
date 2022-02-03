@@ -11,11 +11,9 @@ import { UserContext } from "../../context";
 import { userSignUpProgress } from "../../util";
 import { joinQueue } from "./util";
 
-const Container = loadable(() =>
-  import("../../components/containers/Container")
-);
-const Page = loadable(() => import("../../components/containers/Page"));
-const StarterModal = loadable(() => import("../../components/modals/Starter"));
+import Container from "../../components/containers/Container";
+import Page from "../../components/containers/Page";
+import StarterModal from "../../components/modals/Starter";
 
 function ChatWithStrangersPage() {
   const { user } = useContext(UserContext);
@@ -35,6 +33,7 @@ function ChatWithStrangersPage() {
         <Container className="column flex-fill full-center gap32">
           <Container className="container medium column align-center">
             <h1 className="tac lh-1">Chat With Strangers</h1>
+            <p>hello world</p>
           </Container>
           <Container
             className="container medium column button-6 bg-white border-all2 br8"

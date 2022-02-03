@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
-import loadable from "@loadable/component";
 
-const Container = loadable(() => import("../Container"));
+import Container from "../Container";
 
 function HandleOutsideClickContainer(props) {
   const { children, close } = props;

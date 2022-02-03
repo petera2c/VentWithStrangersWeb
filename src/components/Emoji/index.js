@@ -5,9 +5,7 @@ import { Picker } from "emoji-mart";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSmileBeam } from "@fortawesome/pro-regular-svg-icons/faSmileBeam";
 
-const HandleOutsideClick = loadable(() =>
-  import("../containers/HandleOutsideClick")
-);
+import HandleOutsideClick from "../containers/HandleOutsideClick";
 
 function Emoji({ handleChange, top }) {
   const [displayEmojiDropdown, setDisplayEmojiDropdown] = useState(false);
