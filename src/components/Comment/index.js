@@ -13,13 +13,23 @@ import Options from "../Options";
 import StarterModal from "../modals/Starter";
 
 import { UserContext } from "../../context";
+
 import {
   getIsUserOnline,
   getUserBasicInfo,
   hasUserBlockedUser,
   useIsMounted,
+  userSignUpProgress,
 } from "../../util";
-import { getCommentHasLiked, swapTags } from "./util";
+import { findPossibleUsersToTag } from "../Vent/util";
+import {
+  deleteComment,
+  editComment,
+  getCommentHasLiked,
+  likeOrUnlikeComment,
+  reportComment,
+  swapTags,
+} from "./util";
 
 function Comment({
   arrayLength,
@@ -92,10 +102,20 @@ function Comment({
         <Container className="relative column full-center">
           {user && (
             <Options
+              canUserInteractFunction={
+                userSignUpProgress(user, true)
+                  ? () => {
+                      const userInteractionIssues = userSignUpProgress(user);
+
+                      if (userInteractionIssues) {
+                        if (userInteractionIssues === "NSI")
+                          return setStarterModal(true);
+                      }
+                    }
+                  : false
+              }
               deleteFunction={(commentID) => {
-                import("./util").then((functions) => {
-                  functions.deleteComment(comment.id, setComments);
-                });
+                deleteComment(comment.id, setComments);
               }}
               editFunction={() => {
                 setCommentString(comment.text);
@@ -103,16 +123,9 @@ function Comment({
               }}
               objectID={comment.id}
               objectUserID={comment.userID}
-              reportFunction={(option) =>
-                import("./util").then((functions) => {
-                  functions.reportComment(
-                    option,
-                    comment.id,
-                    user.uid,
-                    comment.ventID
-                  );
-                })
-              }
+              reportFunction={(option) => {
+                reportComment(option, comment.id, user.uid, comment.ventID);
+              }}
               userID={user.uid}
             />
           )}
@@ -132,13 +145,11 @@ function Comment({
               <Mention
                 className="mentions__mention"
                 data={(currentTypingTag, callback) => {
-                  import("../Vent/util").then((functions) => {
-                    functions.findPossibleUsersToTag(
-                      currentTypingTag,
-                      comment.ventID,
-                      callback
-                    );
-                  });
+                  findPossibleUsersToTag(
+                    currentTypingTag,
+                    comment.ventID,
+                    callback
+                  );
                 }}
                 markup="@{{[[[__id__]]]||[[[__display__]]]}}"
                 renderSuggestion={(
@@ -168,9 +179,7 @@ function Comment({
             <button
               className="button-2 px32 py8 br4"
               onClick={() => {
-                import("./util").then((functions) => {
-                  functions.editComment(comment.id, commentString, setComments);
-                });
+                editComment(comment.id, commentString, setComments);
 
                 setEditingComment(false);
               }}
@@ -186,24 +195,20 @@ function Comment({
           onClick={async (e) => {
             e.preventDefault();
 
-            const userInteractionIssues = await import(
-              "../../util"
-            ).then((functions) => functions.userSignUpProgress(user));
+            const userInteractionIssues = userSignUpProgress(user);
 
             if (userInteractionIssues) {
               if (userInteractionIssues === "NSI") setStarterModal(true);
               return;
             }
 
-            import("./util").then(async (functions) => {
-              await functions.likeOrUnlikeComment(comment, hasLiked, user);
-              await functions.getCommentHasLiked(
-                commentID,
-                isMounted,
-                setHasLiked,
-                user.uid
-              );
-            });
+            await likeOrUnlikeComment(comment, hasLiked, user);
+            await getCommentHasLiked(
+              commentID,
+              isMounted,
+              setHasLiked,
+              user.uid
+            );
 
             if (hasLiked) comment.like_counter--;
             else comment.like_counter++;

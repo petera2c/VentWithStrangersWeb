@@ -61,26 +61,30 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
 
   useEffect(() => {
     let interval;
-    setIsMobileOrTablet(getIsMobileOrTablet());
+
+    if (isMounted()) {
+      setPlaceholderText(selectEncouragingMessage());
+      setIsMobileOrTablet(getIsMobileOrTablet());
+    }
 
     tagsIndex
       .search("", {
         hitsPerPage: 10,
       })
       .then(({ hits }) => {
-        setVentTags(
-          hits.sort((a, b) => {
-            if (a.display < b.display) return -1;
-            if (a.display > b.display) return 1;
-            return 0;
-          })
-        );
+        if (isMounted())
+          setVentTags(
+            hits.sort((a, b) => {
+              if (a.display < b.display) return -1;
+              if (a.display > b.display) return 1;
+              return 0;
+            })
+          );
       });
 
-    if (ventID) getVent(setDescription, setTags, setTitle, ventID);
+    if (ventID) getVent(isMounted, setDescription, setTags, setTitle, ventID);
 
     getQuote(isMounted, setQuote);
-    setPlaceholderText(selectEncouragingMessage());
 
     if (user) {
       getUserVentTimeOut((res) => {
@@ -92,7 +96,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
           ventID,
           res
         );
-        setPostingDisableFunction(temp);
+        if (isMounted()) setPostingDisableFunction(temp);
 
         if (res) {
           interval = setInterval(
@@ -116,8 +120,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
         ventID,
         false
       );
-
-      setPostingDisableFunction(temp);
+      if (isMounted()) setPostingDisableFunction(temp);
     }
     return () => {
       if (interval) clearInterval(interval);

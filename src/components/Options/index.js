@@ -12,7 +12,10 @@ import Container from "../containers/Container";
 import ConfirmAlertModal from "../modals/ConfirmAlert";
 import ReportModal from "../modals/Report";
 
+import { blockUser } from "../../util";
+
 function OptionsComponent({
+  canUserInteractFunction,
   deleteFunction,
   editFunction,
   objectID,
@@ -62,6 +65,8 @@ function OptionsComponent({
                 className="button-8 clickable align-center justify-between gap8"
                 onClick={(e) => {
                   e.preventDefault();
+                  if (canUserInteractFunction) return canUserInteractFunction();
+
                   setReportModal(!reportModal);
                 }}
               >
@@ -74,6 +79,8 @@ function OptionsComponent({
                 className="button-8 clickable align-center justify-between gap8"
                 onClick={(e) => {
                   e.preventDefault();
+                  if (canUserInteractFunction) return canUserInteractFunction();
+
                   setBlockModal(!blockModal);
                 }}
               >
@@ -94,7 +101,11 @@ function OptionsComponent({
       {reportModal && (
         <ReportModal
           close={() => setReportModal(false)}
-          submit={(option) => reportFunction(option)}
+          submit={(option) => {
+            if (canUserInteractFunction) return canUserInteractFunction();
+
+            reportFunction(option);
+          }}
         />
       )}
       {blockModal && (
@@ -102,9 +113,9 @@ function OptionsComponent({
           close={() => setBlockModal(false)}
           message="Blocking this user will remove you from all conversations with this user and you will no longer see any of their content. Are you sure you would like to block this user?"
           submit={() => {
-            import("../../util").then((functions) => {
-              functions.blockUser(userID, objectUserID);
-            });
+            if (canUserInteractFunction) return canUserInteractFunction();
+
+            blockUser(userID, objectUserID);
           }}
           title="Block User"
         />

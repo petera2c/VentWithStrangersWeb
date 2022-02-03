@@ -61,10 +61,14 @@ function QuoteContestPage() {
       .set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
 
     countdown(isMounted, timeLeftMoment, setContestTimeLeft);
-    setInterval(
+    let interval = setInterval(
       () => countdown(isMounted, timeLeftMoment, setContestTimeLeft),
       1000
     );
+
+    return () => {
+      clearInterval(interval);
+    };
   }, [isMounted, user]);
 
   return (
@@ -132,6 +136,7 @@ function QuoteContestPage() {
                     if (userInteractionIssues === "NSI")
                       return setStarterModal(true);
                   }
+                  if (userInteractionIssues) return;
 
                   if (calculateKarma(userBasicInfo) < 20)
                     return message.info(
@@ -255,6 +260,18 @@ function Quote({
         >
           {user && (
             <Options
+              canUserInteractFunction={
+                userSignUpProgress(user, true)
+                  ? () => {
+                      const userInteractionIssues = userSignUpProgress(user);
+
+                      if (userInteractionIssues) {
+                        if (userInteractionIssues === "NSI")
+                          return setStarterModal(true);
+                      }
+                    }
+                  : false
+              }
               deleteFunction={(quoteID) =>
                 deleteQuote(
                   quoteID,
@@ -269,9 +286,9 @@ function Quote({
               }}
               objectID={quote.id}
               objectUserID={quote.userID}
-              reportFunction={(option) =>
-                reportQuote(option, quote.id, user.uid)
-              }
+              reportFunction={(option) => {
+                reportQuote(option, quote.id, user.uid);
+              }}
               userID={user.uid}
             />
           )}

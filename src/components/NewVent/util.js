@@ -99,10 +99,18 @@ export const getUserVentTimeOut = async (callback, userID) => {
   else callback(false);
 };
 
-export const getVent = async (setDescription, setTags, setTitle, ventID) => {
+export const getVent = async (
+  isMounted,
+  setDescription,
+  setTags,
+  setTitle,
+  ventID
+) => {
   const ventDoc = await getDoc(doc(db, "vents", ventID));
 
   const vent = ventDoc.data();
+
+  if (!isMounted()) return;
 
   if (vent) {
     setDescription(vent.description);

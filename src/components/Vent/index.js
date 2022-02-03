@@ -230,6 +230,9 @@ function Vent({
               )}
               {user && (
                 <Options
+                  canUserInteractFunction={
+                    signUpProgressFunction ? signUpProgressFunction : false
+                  }
                   deleteFunction={(ventID) => {
                     deleteVent(navigate, ventID);
                   }}
@@ -239,6 +242,8 @@ function Vent({
                   objectID={vent.id}
                   objectUserID={vent.userID}
                   reportFunction={(option) => {
+                    if (signUpProgressFunction) return signUpProgressFunction();
+
                     reportVent(option, user.uid, vent.id);
                   }}
                   userID={user.uid}

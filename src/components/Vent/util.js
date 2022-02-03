@@ -224,7 +224,7 @@ export const getVentComments = async (
   if (snapshot.docs && snapshot.docs.length > 0) {
     let newComments = [];
     snapshot.docs.forEach((doc, index) => {
-      if (comments.find((comment) => comment.id === doc.id)) return;
+      if (comments && comments.find((comment) => comment.id === doc.id)) return;
       else
         newComments.push({
           ...doc.data(),
