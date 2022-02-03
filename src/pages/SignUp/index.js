@@ -1,14 +1,9 @@
 import React, { useState } from "react";
-import loadable from "@loadable/component";
 
-const Container = loadable(() =>
-  import("../../components/containers/Container")
-);
-const Page = loadable(() => import("../../components/containers/Page"));
-const StarterModal = loadable(() => import("../../components/modals/Starter"));
-const SubscribeColumn = loadable(() =>
-  import("../../components/SubscribeColumn")
-);
+import Container from "../../components/containers/Container";
+import Page from "../../components/containers/Page";
+import StarterModal from "../../components/modals/Starter";
+import SubscribeColumn from "../../components/SubscribeColumn";
 
 function SignUpPage() {
   const [starterModal, setStarterModal] = useState(true);

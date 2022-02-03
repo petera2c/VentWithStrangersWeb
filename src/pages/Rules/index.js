@@ -1,14 +1,9 @@
 import React from "react";
-import loadable from "@loadable/component";
 import { Space } from "antd";
 
-const Container = loadable(() =>
-  import("../../components/containers/Container")
-);
-const Page = loadable(() => import("../../components/containers/Page"));
-const SubscribeColumn = loadable(() =>
-  import("../../components/SubscribeColumn")
-);
+import Container from "../../components/containers/Container";
+import Page from "../../components/containers/Page";
+import SubscribeColumn from "../../components/SubscribeColumn";
 
 function RulesPage() {
   return (

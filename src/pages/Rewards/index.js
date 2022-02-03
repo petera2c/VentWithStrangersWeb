@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import loadable from "@loadable/component";
+import React, { useContext, useEffect, useState } from "react";
 import moment from "moment-timezone";
 import { Progress, Space, Tooltip } from "antd";
 
 import { UserContext } from "../../context";
 
-import { useIsMounted } from "../../util";
+import { getIsMobileOrTablet, useIsMounted } from "../../util";
 import {
   calculateMilestone,
   getNextMilestone,
@@ -13,10 +12,8 @@ import {
   getUserRewardsProgress,
 } from "./util";
 
-const Container = loadable(() =>
-  import("../../components/containers/Container")
-);
-const Page = loadable(() => import("../../components/containers/Page"));
+import Container from "../../components/containers/Container";
+import Page from "../../components/containers/Page";
 
 function RewardsPage() {
   const isMounted = useIsMounted();
@@ -27,15 +24,12 @@ function RewardsPage() {
   const [userRewards, setUserRewards] = useState({});
 
   useEffect(() => {
-    import("../../util").then((functions) => {
-      setIsMobileOrTablet(functions.getIsMobileOrTablet());
-    });
+    setIsMobileOrTablet(getIsMobileOrTablet());
 
     if (user) {
       getUserRecentRewards(isMounted, setRecentRewards, user.uid);
       getUserRewardsProgress(isMounted, setUserRewards, user.uid);
     }
-    
   }, [isMounted, user]);
 
   return (

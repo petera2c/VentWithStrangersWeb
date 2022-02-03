@@ -1,26 +1,19 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import loadable from "@loadable/component";
 import Cookies from "universal-cookie";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Button, Space } from "antd";
 
+import Container from "../../components/containers/Container";
+import LoadingHeart from "../../components/views/loaders/Heart";
+import MakeAd from "../../components/MakeAd";
+import NewVentComponent from "../../components/NewVent";
+import Page from "../../components/containers/Page";
+import SubscribeColumn from "../../components/SubscribeColumn";
+import Vent from "../../components/Vent";
+
 import { useIsMounted } from "../../util";
 import { getMetaInformation, getVents, newVentListener } from "./util";
-
-const Container = loadable(() =>
-  import("../../components/containers/Container")
-);
-const LoadingHeart = loadable(() =>
-  import("../../components/views/loaders/Heart")
-);
-const MakeAd = loadable(() => import("../../components/MakeAd"));
-const NewVentComponent = loadable(() => import("../../components/NewVent"));
-const Page = loadable(() => import("../../components/containers/Page"));
-const SubscribeColumn = loadable(() =>
-  import("../../components/SubscribeColumn")
-);
-const Vent = loadable(() => import("../../components/Vent"));
 
 const cookies = new Cookies();
 

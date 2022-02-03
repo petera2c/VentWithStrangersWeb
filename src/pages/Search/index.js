@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import loadable from "@loadable/component";
 import algoliasearch from "algoliasearch";
 import { Space } from "antd";
 
-import { capitolizeFirstChar } from "../../util";
+import Container from "../../components/containers/Container";
+import LoadingHeart from "../../components/views/loaders/Heart";
+import Page from "../../components/containers/Page";
+import User from "../../components/User";
+import Vent from "../../components/Vent";
 
-const Container = loadable(() =>
-  import("../../components/containers/Container")
-);
-const LoadingHeart = loadable(() => import("../../components/views/loaders/Heart"));
-const Page = loadable(() => import("../../components/containers/Page"));
-const User = loadable(() => import("../../components/User"));
-const Vent = loadable(() => import("../../components/Vent"));
+import { capitolizeFirstChar } from "../../util";
 
 const searchClient = algoliasearch(
   "N7KIA5G22X",

@@ -1,13 +1,11 @@
 import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button, Space } from "antd";
-import loadable from "@loadable/component";
+
+import Page from "../../components/containers/Page";
 
 import { UserContext } from "../../context";
-
 import { getIsUserSubscribed } from "../util";
-
-const Page = loadable(() => import("../../components/containers/Page"));
 
 function SubscriptionSuccessPage() {
   const { user, setUserSubscription } = useContext(UserContext);
