@@ -305,22 +305,21 @@ export const userSignUpProgressFunction = (setStarterModal, user) => {
   if (!user) {
     return () => () => setStarterModal(true);
   } else if (!user.emailVerified) {
-    return sendEmailVerification(user)
-      .then(() => {
-        return () => () =>
-          Modal.info({
+    return () => () =>
+      sendEmailVerification(user)
+        .then(() => {
+          return Modal.info({
             title: "Verify Email",
             centered: true,
             content: "We have re-sent you a verification email :)",
           });
-      })
-      .catch((err) => {
-        return () => () =>
-          Modal.error({
+        })
+        .catch((err) => {
+          return Modal.error({
             title: "Verify Email",
             content: err,
           });
-      });
+        });
   } else return false;
 };
 

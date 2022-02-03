@@ -1,9 +1,4 @@
-import {
-  applyActionCode,
-  checkActionCode,
-  getAuth,
-  sendPasswordResetEmail,
-} from "firebase/auth";
+import { applyActionCode, getAuth } from "firebase/auth";
 
 export const handleVerifyEmail = (
   navigate,
