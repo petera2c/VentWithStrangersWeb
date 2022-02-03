@@ -329,7 +329,7 @@ const ventDeleteListener = async (doc, context) => {
 
   if (commentsOfVentSnapshot.docs) {
     for (let index in commentsOfVentSnapshot.docs) {
-      admin
+      await admin
         .firestore()
         .collection("comments")
         .doc(commentsOfVentSnapshot.docs[index].id)

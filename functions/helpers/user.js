@@ -128,7 +128,7 @@ const checkIfCanCreateMilestone = async (
   }
 };
 
-const newUserSetup = async (user) => {
+const newUserSetup2 = async (user) => {
   await admin.firestore().collection("user_rewards").doc(user.uid).set({
     created_comment_supports_counter: 0,
     created_comments_counter: 0,
@@ -192,7 +192,7 @@ const signPeopleOut = () => {
     });
 };
 
-const userDelete = async (user) => {
+const userDelete2 = async (user) => {
   let counter = 0;
   const batch = admin.firestore().batch();
 
@@ -688,9 +688,9 @@ const userWasInvited = async (doc, context) => {
 
 module.exports = {
   checkForBirthdays,
-  newUserSetup,
+  newUserSetup2,
   signPeopleOut,
-  userDelete,
+  userDelete2,
   userRewardsListener,
   userWasInvited,
 };
