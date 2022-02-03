@@ -353,12 +353,6 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
 }
 
 function Tag({ postingDisableFunction, setTags, tagHit, tags }) {
-  const [viewTag, setViewTag] = useState("");
-
-  useEffect(() => {
-    setViewTag(viewTagFunction(tagHit.objectID));
-  }, []);
-
   return (
     <button
       className="button-10 br4 px8 py4"
@@ -373,18 +367,12 @@ function Tag({ postingDisableFunction, setTags, tagHit, tags }) {
         });
       }}
     >
-      {viewTag}
+      {viewTagFunction(tagHit.objectID)}
     </button>
   );
 }
 
 function SelectedTag({ index, postingDisableFunction, setTags, tag, tags }) {
-  const [viewTag, setViewTag] = useState("");
-
-  useEffect(() => {
-    setViewTag(viewTagFunction(tag.objectID));
-  }, []);
-
   return (
     <Container
       className="button-2 br4 gap8 pa8"
@@ -396,7 +384,7 @@ function SelectedTag({ index, postingDisableFunction, setTags, tag, tags }) {
         setTags(temp);
       }}
     >
-      <p className="ic flex-fill">{viewTag}</p>
+      <p className="ic flex-fill">{viewTagFunction(tag.objectID)}</p>
 
       <FontAwesomeIcon icon={faTimes} />
     </Container>

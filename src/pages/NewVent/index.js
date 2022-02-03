@@ -21,7 +21,7 @@ function NewVentPage() {
     if (!user) {
       setStarterModal(true);
     } else setStarterModal(false);
-  }, [user]);
+  }, [setStarterModal, user]);
 
   return (
     <Page className="pa16">
