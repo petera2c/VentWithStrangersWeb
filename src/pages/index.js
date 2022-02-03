@@ -10,7 +10,9 @@ import { OnlineUsersContext, UserContext } from "../context";
 const BirthdayModal = loadable(() => import("../components/modals/Birthday"));
 const Container = loadable(() => import("../components/containers/Container"));
 const Header = loadable(() => import("../components/Header"));
-const LoadingHeart = loadable(() => import("../components/views/loaders/Heart"));
+const LoadingHeart = loadable(() =>
+  import("../components/views/loaders/Heart")
+);
 const MobileHeader = loadable(() =>
   import("../components/Header/MobileHeader")
 );
@@ -19,7 +21,7 @@ const Sidebar = loadable(() => import("../components/Sidebar"));
 
 const AboutUsPage = React.lazy(() => import("./AboutUs"));
 const AccountPage = React.lazy(() => import("./Account/Account"));
-//const AvatarPage = React.lazy(() => import("./Account/Avatar"));
+const AvatarPage = React.lazy(() => import("./Account/Avatar"));
 const BirthdayPostPage = React.lazy(() => import("./BirthdayPost"));
 const ChatWithStrangersPage = React.lazy(() => import("./ChatWithStrangers"));
 const ConversationsPage = React.lazy(() => import("./Conversations"));
@@ -173,6 +175,7 @@ function RoutesComp() {
                     )}
                     <Route path="*" element={<NotFoundPage />} />
                     <Route path="/" element={<VentsPage />} />
+                    <Route path="avatar" element={<AvatarPage />} />
                     <Route
                       path="birthday-post"
                       element={<BirthdayPostPage />}

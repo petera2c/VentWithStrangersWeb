@@ -83,6 +83,7 @@ function DisplayName({
               {userBasicInfo && (
                 <KarmaBadge
                   noOnClick={noBadgeOnClick}
+                  noTooltip={noTooltip}
                   userBasicInfo={userBasicInfo}
                 />
               )}

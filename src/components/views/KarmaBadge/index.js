@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Container = loadable(() => import("../../containers/Container"));
 
-function KarmaBadge({ noOnClick, onClick, userBasicInfo }) {
+function KarmaBadge({ noOnClick, onClick, noTooltip, userBasicInfo }) {
   const navigate = useNavigate();
 
   const [karma, setKarma] = useState(0);
@@ -24,7 +24,10 @@ function KarmaBadge({ noOnClick, onClick, userBasicInfo }) {
 
   if (isAdmin)
     return (
-      <Tooltip placement="bottom" title={karma + " Karma Points"}>
+      <Tooltip
+        placement="bottom"
+        title={noTooltip ? "" : karma + " Karma Points"}
+      >
         <span>
           <Container
             className="clickable"
@@ -75,7 +78,10 @@ function KarmaBadge({ noOnClick, onClick, userBasicInfo }) {
 
   if (badgeColor && badgeIcon)
     return (
-      <Tooltip placement="bottom" title={karma + " Karma Points"}>
+      <Tooltip
+        placement="bottom"
+        title={noTooltip ? "" : karma + " Karma Points"}
+      >
         <span>
           <Container
             className="clickable"

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Avatar from "avataaars";
 
 function MakeAvatar({ className, displayName, size, userBasicInfo }) {
   const [capitolizedDisplayName, setCapitolizedDisplayName] = useState("");
@@ -15,10 +16,59 @@ function MakeAvatar({ className, displayName, size, userBasicInfo }) {
 
   if (userBasicInfo && userBasicInfo.avatar) {
     if (size === "large")
-      return <div className={"avatar large " + className}></div>;
+      return (
+        <div className={"avatar large " + className}>
+          <Avatar
+            avatarStyle={"Circle"}
+            topType={userBasicInfo.avatar.topType}
+            accessoriesType={userBasicInfo.avatar.accessoriesType}
+            hairColor={userBasicInfo.avatar.hairColor}
+            facialHairType={userBasicInfo.avatar.facialHairType}
+            clotheType={userBasicInfo.avatar.clotheType}
+            eyeType={userBasicInfo.avatar.eyeType}
+            eyebrowType={userBasicInfo.avatar.eyebrowType}
+            mouthType={userBasicInfo.avatar.mouthType}
+            skinColor={userBasicInfo.avatar.skinColor}
+            style={{ height: "100%" }}
+          />
+        </div>
+      );
     else if (size === "small")
-      return <div className={"avatar small mr8 " + className}></div>;
-    else return <div className={"avatar mr8 " + className}></div>;
+      return (
+        <div className={"avatar small mr8 " + className}>
+          <Avatar
+            avatarStyle={"Circle"}
+            topType={userBasicInfo.avatar.topType}
+            accessoriesType={userBasicInfo.avatar.accessoriesType}
+            hairColor={userBasicInfo.avatar.hairColor}
+            facialHairType={userBasicInfo.avatar.facialHairType}
+            clotheType={userBasicInfo.avatar.clotheType}
+            eyeType={userBasicInfo.avatar.eyeType}
+            eyebrowType={userBasicInfo.avatar.eyebrowType}
+            mouthType={userBasicInfo.avatar.mouthType}
+            skinColor={userBasicInfo.avatar.skinColor}
+            style={{ height: "100%" }}
+          />
+        </div>
+      );
+    else
+      return (
+        <div className={"avatar mr8 " + className}>
+          <Avatar
+            avatarStyle={"Circle"}
+            topType={userBasicInfo.avatar.topType}
+            accessoriesType={userBasicInfo.avatar.accessoriesType}
+            hairColor={userBasicInfo.avatar.hairColor}
+            facialHairType={userBasicInfo.avatar.facialHairType}
+            clotheType={userBasicInfo.avatar.clotheType}
+            eyeType={userBasicInfo.avatar.eyeType}
+            eyebrowType={userBasicInfo.avatar.eyebrowType}
+            mouthType={userBasicInfo.avatar.mouthType}
+            skinColor={userBasicInfo.avatar.skinColor}
+            style={{ height: "100%" }}
+          />
+        </div>
+      );
   } else {
     if (size === "large")
       return (
