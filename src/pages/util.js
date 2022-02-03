@@ -43,12 +43,20 @@ export const getIsUsersBirthday = async (
   }
 };
 
-export const getIsUserSubscribed = async (setUserSubscription, userID) => {
+export const getIsUserSubscribed = async (
+  isMounted,
+  setUserSubscription,
+  userID
+) => {
   const userSubscriptionDoc = await getDoc(
     doc(db, "user_subscription", userID)
   );
 
-  if (userSubscriptionDoc.exists() && userSubscriptionDoc.data())
+  if (
+    userSubscriptionDoc.exists() &&
+    userSubscriptionDoc.data() &&
+    isMounted.current
+  )
     setUserSubscription(userSubscriptionDoc.data());
 };
 

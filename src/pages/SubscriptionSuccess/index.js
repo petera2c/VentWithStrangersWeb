@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Button, Space } from "antd";
 
@@ -8,11 +8,17 @@ import { UserContext } from "../../context";
 import { getIsUserSubscribed } from "../util";
 
 function SubscriptionSuccessPage() {
+  const isMounted = useRef(false);
+
   const { user, setUserSubscription } = useContext(UserContext);
 
   useEffect(() => {
-    getIsUserSubscribed(setUserSubscription, user.uid);
-  }, []);
+    isMounted.current = true;
+    if (user) getIsUserSubscribed(isMounted, setUserSubscription, user.uid);
+    return () => {
+      isMounted.current = false;
+    };
+  }, [setUserSubscription, user]);
 
   return (
     <Page className="bg-grey-2 align-center" title="Success">

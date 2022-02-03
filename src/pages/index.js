@@ -55,13 +55,16 @@ function RoutesComp() {
   const [userBasicInfo, setUserBasicInfo] = useState({});
   const [userSubscription, setUserSubscription] = useState();
   const [user, setUser] = useState();
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(true);
 
   onAuthStateChanged(getAuth(), (user) => {
-    setLoading(false);
-    if (user) setUser(user);
-    else {
-      setUser(false);
+    if (!isMounted.current) return;
+
+    if (user) {
+      setUser(user);
+      setLoading(false);
+    } else {
+      setLoading(false);
     }
   });
 
@@ -99,7 +102,8 @@ function RoutesComp() {
 
     let newRewardListenerUnsubscribe;
     import("../util").then((functions) => {
-      setIsMobileOrTablet(functions.getIsMobileOrTablet());
+      if (isMounted.current)
+        setIsMobileOrTablet(functions.getIsMobileOrTablet());
     });
 
     if (user) {
@@ -110,13 +114,13 @@ function RoutesComp() {
           user.uid
         );
         functions.getIsUsersBirthday(isMounted, setIsUsersBirthday, user.uid);
-        functions.getIsUserSubscribed(setUserSubscription, user.uid);
+        functions.getIsUserSubscribed(isMounted, setUserSubscription, user.uid);
         functions.setIsUserOnlineToDatabase(user.uid);
       });
 
       import("../util").then((functions) => {
         functions.getUserBasicInfo((newBasicUserInfo) => {
-          setUserBasicInfo(newBasicUserInfo);
+          if (isMounted.current) setUserBasicInfo(newBasicUserInfo);
         }, user.uid);
       });
     }

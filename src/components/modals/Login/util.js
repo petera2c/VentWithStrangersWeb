@@ -4,7 +4,6 @@ export const login = ({ email, password }, setActiveModal) => {
   signInWithEmailAndPassword(getAuth(), email, password)
     .then((res) => {
       setActiveModal();
-      window.location.reload();
     })
     .catch((error) => {
       alert(error);
