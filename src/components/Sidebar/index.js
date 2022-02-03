@@ -14,13 +14,14 @@ import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { OnlineUsersContext, UserContext } from "../../context";
+import { useIsMounted } from "../../util";
 
 const Container = loadable(() => import("../containers/Container"));
 const MakeAd = loadable(() => import("../MakeAd"));
 const MakeAvatar = loadable(() => import("../views/MakeAvatar"));
 
 function Sidebar() {
-  const isMounted = useRef(false);
+  const isMounted = useIsMounted();
   const { pathname } = useLocation();
 
   const { totalOnlineUsers, setTotalOnlineUsers } = useContext(
@@ -32,7 +33,6 @@ function Sidebar() {
   const [queueLength, setQueueLength] = useState();
 
   useEffect(() => {
-    isMounted.current = true;
     let onlineUsersUnsubscribe;
     let chatQueueListenerUnsubscribe;
 
@@ -52,7 +52,6 @@ function Sidebar() {
     });
 
     return () => {
-      isMounted.current = false;
       if (onlineUsersUnsubscribe) off(onlineUsersUnsubscribe);
       if (chatQueueListenerUnsubscribe) chatQueueListenerUnsubscribe();
     };

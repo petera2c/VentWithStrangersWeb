@@ -14,7 +14,7 @@ import Container from "../containers/Container";
 
 import { UserContext } from "../../context";
 
-import { capitolizeFirstChar } from "../../util";
+import { capitolizeFirstChar, useIsMounted } from "../../util";
 
 const Comment = loadable(() => import("../Comment"));
 const ConfirmAlertModal = loadable(() => import("../modals/ConfirmAlert"));
@@ -46,7 +46,7 @@ function Vent({
   ventID,
   ventInit,
 }) {
-  const isMounted = useRef(false);
+  const isMounted = useIsMounted();
   const textInput = useRef(null);
   const { user, userBasicInfo } = useContext(UserContext);
 
@@ -75,8 +75,6 @@ function Vent({
   ] = useState();
 
   useEffect(() => {
-    isMounted.current = true;
-
     let newCommentListenerUnsubscribe;
 
     const ventSetUp = (newVent) => {
@@ -85,16 +83,16 @@ function Vent({
         setVentPreview(functions.getVentDescription(previewMode, newVent));
       });
 
-      if (setTitle && newVent && newVent.title && isMounted.current)
+      if (setTitle && newVent && newVent.title && isMounted())
         setTitle(newVent.title);
 
       import("../../util").then((functions) => {
         functions.getIsUserOnline((isUserOnline) => {
-          if (isMounted.current) setIsUserOnline(isUserOnline.state);
+          if (isMounted()) setIsUserOnline(isUserOnline.state);
         }, newVent.userID);
 
         functions.getUserBasicInfo((author) => {
-          if (isMounted.current) setAuthor(author);
+          if (isMounted()) setAuthor(author);
         }, newVent.userID);
 
         if (user)
@@ -112,7 +110,7 @@ function Vent({
         );
       });
 
-      if (isMounted.current) setVent(newVent);
+      if (isMounted()) setVent(newVent);
     };
 
     import("./util").then((functions) => {
@@ -144,7 +142,7 @@ function Vent({
       if (user && !searchPreviewMode)
         functions.ventHasLiked(
           (newHasLiked) => {
-            if (isMounted.current) setHasLiked(newHasLiked);
+            if (isMounted()) setHasLiked(newHasLiked);
           },
           user.uid,
           ventID
@@ -152,8 +150,6 @@ function Vent({
     });
 
     return () => {
-      isMounted.current = false;
-
       if (newCommentListenerUnsubscribe) newCommentListenerUnsubscribe();
     };
   }, [isMounted, user, ventID]);

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import loadable from "@loadable/component";
 import { Button, Space } from "antd";
@@ -6,27 +6,26 @@ import { Button, Space } from "antd";
 import { faBirthdayCake } from "@fortawesome/pro-duotone-svg-icons/faBirthdayCake";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import { useIsMounted } from "../../../util";
+
 const Container = loadable(() => import("../../containers/Container"));
 
 function BirthdayModal({ close }) {
-  const isMounted = useRef(false);
+  const isMounted = useIsMounted();
 
   const [canClose, setCanClose] = useState(false);
   const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
 
   useEffect(() => {
-    isMounted.current = true;
     import("../../../util").then((functions) => {
       setIsMobileOrTablet(functions.getIsMobileOrTablet());
     });
 
     setTimeout(() => {
-      if (isMounted.current) setCanClose(true);
+      if (isMounted()) setCanClose(true);
     }, 2000);
 
-    return () => {
-      isMounted.current = false;
-    };
+    return () => {};
   }, []);
 
   return (

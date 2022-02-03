@@ -19,7 +19,7 @@ import { faUserAstronaut } from "@fortawesome/pro-duotone-svg-icons/faUserAstron
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { UserContext } from "../../context";
-import { isPageActive } from "../../util";
+import { isPageActive, useIsMounted } from "../../util";
 
 import Container from "../containers/Container";
 const DisplayName = loadable(() => import("../views/DisplayName"));
@@ -27,7 +27,7 @@ const NotificationList = loadable(() => import("../NotificationList"));
 const StarterModal = loadable(() => import("../modals/Starter"));
 
 function Header() {
-  const isMounted = useRef(false);
+  const isMounted = useIsMounted();
   const navigate = useNavigate();
   const location = useLocation();
   const { pathname, search } = location;
@@ -47,7 +47,6 @@ function Header() {
   );
 
   useEffect(() => {
-    isMounted.current = true;
     let conversationsUnsubscribe;
     let isUserInQueueUnsubscribe;
     let newConversationsListenerUnsubscribe;
@@ -101,7 +100,6 @@ function Header() {
     window.addEventListener("beforeunload", cleanup);
 
     return () => {
-      isMounted.current = false;
       cleanup();
       if (isUserInQueueUnsubscribe) isUserInQueueUnsubscribe();
       if (newConversationsListenerUnsubscribe)

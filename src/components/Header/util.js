@@ -50,7 +50,7 @@ export const getNotifications = (
     ),
     (snapshot) => {
       if (snapshot.docs) {
-        if (isMounted.current) {
+        if (isMounted()) {
           const newNotifications = snapshot.docs
             .map((item, i) => {
               return { id: item.id, ...item.data(), doc: item };
@@ -70,7 +70,7 @@ export const getNotifications = (
           setNotifications(newNotifications);
         }
       } else {
-        if (isMounted.current) setNotifications([]);
+        if (isMounted()) setNotifications([]);
       }
       firstLoad = false;
     }
@@ -99,9 +99,9 @@ export const getUnreadConversations = (
           );
         }
 
-        if (isMounted.current) setUnreadConversations(doc.data().count);
+        if (isMounted()) setUnreadConversations(doc.data().count);
       } else {
-        if (isMounted.current) setUnreadConversations(0);
+        if (isMounted()) setUnreadConversations(0);
       }
       first = false;
     }
@@ -130,9 +130,9 @@ export const howCompleteIsUserProfile = (
 
 export const isUserInQueueListener = (isMounted, setIsUserInQueue, userID) => {
   const unsubscribe = onSnapshot(doc(db, "chat_queue", userID), (doc) => {
-    if (doc.data() && doc.data().userID === userID && isMounted.current)
+    if (doc.data() && doc.data().userID === userID && isMounted())
       setIsUserInQueue(true);
-    else if (isMounted.current) setIsUserInQueue(false);
+    else if (isMounted()) setIsUserInQueue(false);
   });
 
   return unsubscribe;
@@ -158,7 +158,7 @@ export const resetUnreadConversationCount = (
   setUnreadConversationsCount,
   userID
 ) => {
-  if (isMounted.current)
+  if (isMounted())
     setDoc(doc(db, "unread_conversations_count", userID), { count: 0 });
-  if (isMounted.current) setUnreadConversationsCount(0);
+  if (isMounted()) setUnreadConversationsCount(0);
 };

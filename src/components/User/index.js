@@ -12,6 +12,7 @@ import { faSchool } from "@fortawesome/pro-solid-svg-icons/faSchool";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { UserContext } from "../../context";
+import { useIsMounted } from "../../util";
 
 import {
   educationList,
@@ -36,7 +37,7 @@ function UserComponent({
   showMessageUser,
   userID,
 }) {
-  const isMounted = useRef(false);
+  const isMounted = useIsMounted();
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -48,8 +49,6 @@ function UserComponent({
     displayName
   );
   useEffect(() => {
-    isMounted.current = true;
-
     import("../../util").then((functions) => {
       functions.getUserBasicInfo((newUserInfo) => {
         if (isMounted) {
@@ -61,9 +60,7 @@ function UserComponent({
       setCapitolizedDisplayName(functions.capitolizeFirstChar(displayName));
     });
 
-    return () => {
-      isMounted.current = false;
-    };
+    return () => {};
   }, [isMounted, userID]);
 
   return (

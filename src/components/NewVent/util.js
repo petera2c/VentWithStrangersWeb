@@ -70,7 +70,7 @@ export const getQuote = async (isMounted, setQuote) => {
     quotesSnapshot.docs &&
     quotesSnapshot.docs[0] &&
     quotesSnapshot.docs[0].data() &&
-    isMounted.current
+    isMounted()
   ) {
     const author = await getDoc(
       doc(db, "users_display_name", quotesSnapshot.docs[0].data().userID)

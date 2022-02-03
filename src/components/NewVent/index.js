@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { UserContext } from "../../context";
 
+import { capitolizeFirstChar, useIsMounted } from "../../util";
 import { checks } from "./util";
 
 const Container = loadable(() => import("../containers/Container"));
@@ -28,7 +29,7 @@ const searchClient = algoliasearch(
 const tagsIndex = searchClient.initIndex("vent_tags");
 
 function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
-  const isMounted = useRef(false);
+  const isMounted = useIsMounted();
   const navigate = useNavigate();
   const { user, userBasicInfo } = useContext(UserContext);
 
@@ -46,15 +47,11 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
   const [ventTags, setVentTags] = useState([]);
 
   const [placeholderText, setPlaceholderText] = useState("");
-  const [quoteDisplayName, setQuoteDisplayName] = useState("Anonymous");
   const [postingDisableFunction, setPostingDisableFunction] = useState();
 
   useEffect(() => {
-    isMounted.current = true;
     import("../../util").then((functions) => {
       setIsMobileOrTablet(functions.getIsMobileOrTablet());
-      if (quote && quote.displayName)
-        setQuoteDisplayName(functions.capitolizeFirstChar(quote.displayName));
     });
 
     tagsIndex
@@ -120,10 +117,6 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
         });
       }
     });
-
-    return () => {
-      isMounted.current = false;
-    };
   }, [isMounted, user, ventID]);
 
   return (
@@ -140,7 +133,9 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
           <Container className="column flex-fill align-center">
             <h1 className="fs-22 italic tac">"{quote.value}"</h1>
             <Link to={"/profile?" + quote.userID}>
-              <p className="button-8 tac lh-1">- {quoteDisplayName}</p>
+              <p className="button-8 tac lh-1">
+                - {capitolizeFirstChar(quote.displayName)}
+              </p>
             </Link>
           </Container>
         )}
@@ -312,7 +307,9 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
             <Container className="column flex-fill align-center">
               <p className="container medium italic tac">{quote.value}</p>
               <Link to={"/profile?" + quote.userID}>
-                <p className="blue tac lh-1">- {quoteDisplayName}</p>
+                <p className="blue tac lh-1">
+                  - {capitolizeFirstChar(quote.displayName)}
+                </p>
               </Link>
             </Container>
             <Tooltip

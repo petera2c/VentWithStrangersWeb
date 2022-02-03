@@ -58,7 +58,7 @@ export const getCommentHasLiked = async (
   if (!snapshot || !snapshot.data()) return;
   let value = snapshot.data();
   value = value.liked;
-  if (isMounted.current) setHasLiked(Boolean(value));
+  if (isMounted()) setHasLiked(Boolean(value));
 };
 
 export const likeOrUnlikeComment = async (comment, hasLiked, user) => {

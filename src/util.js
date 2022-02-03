@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import {
   collection,
   doc,
@@ -51,7 +51,7 @@ export const chatQueueEmptyListener = (isMounted, setQueueLength) => {
   const unsubscribe = onSnapshot(
     query(collection(db, "chat_queue"), limit(10)),
     (snapshot) => {
-      if (!isMounted.current) return;
+      if (!isMounted()) return;
 
       if (snapshot.docs && snapshot.docs.length > 0)
         setQueueLength(snapshot.docs.length);
@@ -73,7 +73,7 @@ export const countdown = (
   setTimeout,
   setTimeOutFormatted
 ) => {
-  if (isMounted.current) {
+  if (isMounted()) {
     setTimeout((oldUserVentTimeOut) => {
       if (setTimeOutFormatted) {
         setTimeOutFormatted(formatSeconds(oldUserVentTimeOut));
@@ -207,7 +207,7 @@ export const hasUserBlockedUser = async (
     doc(db, "block_check", sortedUserArray[0] + "|||" + sortedUserArray[1])
   );
 
-  if (!isMounted.current) return;
+  if (!isMounted()) return;
 
   if (blockCheck.exists()) return callback(true);
   else return callback(false);
@@ -254,7 +254,6 @@ export const soundNotify = (sound = "bing") => {
   audio.play();
 };
 
-//https://stackoverflow.com/a/1500501/7332319
 export const urlify = (text) =>
   reactStringReplace(text, /(https?:\/\/[^\s]+)/g, (match, i) => (
     <a
@@ -266,6 +265,17 @@ export const urlify = (text) =>
       {match}
     </a>
   ));
+
+export const useIsMounted = () => {
+  const isMountedRef = useRef(true);
+  const isMounted = useCallback(() => isMountedRef.current, []);
+
+  useEffect(() => {
+    return () => void (isMountedRef.current = false);
+  }, []);
+
+  return isMounted;
+};
 
 export const userSignUpProgress = (user, noAlert) => {
   if (!user) {

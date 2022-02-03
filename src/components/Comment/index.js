@@ -14,6 +14,7 @@ import { faTrash } from "@fortawesome/pro-duotone-svg-icons/faTrash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { UserContext } from "../../context";
+import { useIsMounted } from "../../util";
 
 const ConfirmAlertModal = loadable(() => import("../containers/Container"));
 const Container = loadable(() => import("../containers/Container"));
@@ -29,7 +30,7 @@ function Comment({
   setComments,
   ventUserID,
 }) {
-  const isMounted = useRef(false);
+  const isMounted = useIsMounted();
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
 
@@ -46,8 +47,6 @@ function Comment({
   const [userBasicInfo, setUserBasicInfo] = useState({});
 
   useEffect(() => {
-    isMounted.current = true;
-
     import("./util").then((functions) => {
       setCommentDisplay(functions.swapTags(comment.text));
     });
@@ -58,7 +57,7 @@ function Comment({
           commentID,
           isMounted,
           (hasLiked) => {
-            if (isMounted.current) setHasLiked(hasLiked);
+            if (isMounted()) setHasLiked(hasLiked);
           },
           user.uid
         );
@@ -73,16 +72,14 @@ function Comment({
           setIsContentBlocked
         );
       functions.getUserBasicInfo((newBasicUserInfo) => {
-        if (isMounted.current) setUserBasicInfo(newBasicUserInfo);
+        if (isMounted()) setUserBasicInfo(newBasicUserInfo);
       }, comment.userID);
       functions.getIsUserOnline((isUserOnline) => {
-        if (isMounted.current) setIsUserOnline(isUserOnline.state);
+        if (isMounted()) setIsUserOnline(isUserOnline.state);
       }, comment.userID);
     });
 
-    return () => {
-      isMounted.current = false;
-    };
+    return () => {};
   }, [commentID, comment.text, comment.userID, isMounted, user]);
 
   if (isContentBlocked) return <div />;

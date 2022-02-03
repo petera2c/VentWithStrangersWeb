@@ -26,14 +26,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { UserContext, OnlineUsersContext } from "../../context";
 
-import { isPageActive } from "../../util";
+import { isPageActive, useIsMounted } from "../../util";
 
 const Container = loadable(() => import("../containers/Container"));
 const DisplayName = loadable(() => import("../views/DisplayName"));
 const StarterModal = loadable(() => import("../modals/Starter"));
 
 function Header() {
-  const isMounted = useRef(false);
+  const isMounted = useIsMounted();
   const location = useLocation();
   const navigate = useNavigate();
   const { pathname, search } = location;
@@ -61,8 +61,6 @@ function Header() {
   );
 
   useEffect(() => {
-    isMounted.current = true;
-
     let conversationsUnsubscribe;
     let isUserInQueueUnsubscribe;
     let newConversationsListenerUnsubscribe;
@@ -72,7 +70,7 @@ function Header() {
     import("../../util").then((functions) => {
       onlineUsersUnsubscribe = functions.getTotalOnlineUsers(
         (totalOnlineUsers) => {
-          if (isMounted.current) setTotalOnlineUsers(totalOnlineUsers);
+          if (isMounted()) setTotalOnlineUsers(totalOnlineUsers);
         }
       );
     });
@@ -125,7 +123,6 @@ function Header() {
     window.addEventListener("beforeunload", cleanup);
 
     return () => {
-      isMounted.current = false;
       cleanup();
       if (isUserInQueueUnsubscribe) isUserInQueueUnsubscribe();
       if (newNotificationsListenerUnsubscribe)
