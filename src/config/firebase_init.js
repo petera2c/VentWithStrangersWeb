@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+import { initializeAnalytics } from "firebase/analytics";
 
 var firebaseConfig = {
   apiKey: "AIzaSyCk8EfNyqarIzBAQSCFgU8634o-e0iA_Os",
@@ -25,5 +26,6 @@ if (window.location.hostname === "localhost")
   };
 
 const app = initializeApp(firebaseConfig);
+if (window.location.hostname !== "localhost") initializeAnalytics(app);
 
 export default app;
