@@ -193,7 +193,7 @@ function Vent({
               disablePostOnClick ? "" : "clickable"
             }`}
             onClick={() => {
-              if (!disablePostOnClick) navigate("/vent/" + vent.id);
+              if (!disablePostOnClick) navigate(partialLink);
             }}
           >
             <Container className="flex x-fill align-center">
