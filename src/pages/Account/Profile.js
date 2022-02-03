@@ -109,10 +109,10 @@ function ProfileSection() {
       className="pa16"
       id="scrollable-div"
       title={
-        userBasicInfo
+        userBasicInfo && userBasicInfo.displayName
           ? capitolizeFirstChar(userBasicInfo.displayName) +
             "'s Profile and Recent Activity"
-          : "Profile"
+          : null
       }
     >
       <Container className="flex-fill x-fill">

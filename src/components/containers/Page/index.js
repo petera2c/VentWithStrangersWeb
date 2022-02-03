@@ -15,7 +15,7 @@ function Page({
   style,
   title,
 }) {
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
 
   const [description2, setDescription2] = useState("");
   const [keywords2, setkeywords2] = useState("");
@@ -28,10 +28,13 @@ function Page({
     }
 
     import("./util").then((functions) => {
-      const { description, keywords, title } = functions.getMetaData(pathname);
-      setDescription2(description);
-      setkeywords2(keywords);
-      settitle2(title);
+      const { description, keywords, title } = functions.getMetaData(
+        pathname,
+        search
+      );
+      if (description) setDescription2(description);
+      if (keywords) setkeywords2(keywords);
+      if (title) settitle2(title);
     });
 
     window.scrollTo(0, 0);
@@ -45,18 +48,28 @@ function Page({
     >
       <Helmet defer={false}>
         <meta charSet="utf-8" />
-        <title>{title ? title : title2}</title>
-        <meta content={title ? title : title2} name="title" />
-        <meta content={title ? title : title2} name="og:title" />
-        <meta
-          content={description ? description : description2}
-          name="description"
-        />
-        <meta
-          content={description ? description : description2}
-          name="og:description"
-        />
-        <meta content={keywords ? keywords : keywords2} name="keywords" />
+        {(title || title2) && <title>{title ? title : title2}</title>}}
+        {(title || title2) && (
+          <meta content={title ? title : title2} name="title" />
+        )}
+        {(title || title2) && (
+          <meta content={title ? title : title2} name="og:title" />
+        )}
+        {(description || description2) && (
+          <meta
+            content={description ? description : description2}
+            name="description"
+          />
+        )}
+        {(description || description2) && (
+          <meta
+            content={description ? description : description2}
+            name="og:description"
+          />
+        )}
+        {(keywords || keywords2) && (
+          <meta content={keywords ? keywords : keywords2} name="keywords" />
+        )}
       </Helmet>
 
       {children}

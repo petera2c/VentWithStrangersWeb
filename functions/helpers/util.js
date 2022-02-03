@@ -16,6 +16,11 @@ const calculateKarmaUserCanStrip = (usereBasicInfo) => {
   else if (usereBasicInfo.karma > 0) return 5;
 };
 
+const capitolizeFirstChar = (string) => {
+  if (string) return string.charAt(0).toUpperCase() + string.slice(1);
+  else return;
+};
+
 const combineObjectWithID = (id, object) => {
   object.id = id;
   return object;
@@ -52,7 +57,11 @@ const getMetaInformation = async (url, callback) => {
   let vent;
   if (checkIsVent) ventID = checkIsVent[0];
 
-  const id = url.substring(url.lastIndexOf("?") + 1, url.length - 1);
+  const questionMarkID = url.substring(
+    url.lastIndexOf("?") + 1,
+    url.length - 1
+  );
+  const slashID = url.substring(url.lastIndexOf("/") + 1, url.length);
 
   if (checkIsVent && ventID) {
     const ventDoc = await admin
@@ -67,17 +76,38 @@ const getMetaInformation = async (url, callback) => {
       title = vent.title ? vent.title.substring(0, 140) : "";
       vent = { id: ventDoc.id, ...vent };
     }
-  } else if (url.substring(0, 9) === "/profile?" && id) {
+  } else if (url.substring(0, 9) === "/profile?" && questionMarkID) {
     const userDoc = await admin
       .firestore()
       .collection("users_display_name")
-      .doc(id)
+      .doc(questionMarkID)
       .get();
 
     if (userDoc && userDoc.data() && userDoc.data().displayName) {
-      title = userDoc.data().displayName + "'s Profile and Recent Activity";
+      title =
+        capitolizeFirstChar(userDoc.data().displayName) +
+        "'s Profile and Recent Activity";
     }
-  } else if (false) {
+  } else if (url.substring(0, 5) === "/tags" && slashID) {
+    const ventTagDoc = await admin
+      .firestore()
+      .collection("vent_tags")
+      .doc(slashID)
+      .get();
+
+    if (ventTagDoc.data()) {
+      description =
+        "Read vents about " +
+        ventTagDoc.data().display.toLowerCase() +
+        ". Vent With Strangers is a safe place where people can talk about their problems and receive positive constructive feedback.";
+      keywords = ventTagDoc.data().display.toLowerCase();
+      title = "Vents About " + ventTagDoc.data().display;
+    }
+  } else if (url.substring(0, 5) === "/tags" && !slashID) {
+    description =
+      "Read vents on any of our tags. Vent With Strangers is a safe place where people can talk about their problems and receive positive constructive feedback.";
+    keywords = "anxiety,bullying,depression,family,school";
+    title = "View Vents Based on Anxiety, Bullying, Depression and More";
   } else if (url === "/") {
     description =
       "Vent online with strangers. VWS is a site where you can make friends and get help on your specific situation all for free. Our site is 100% anonymous.";

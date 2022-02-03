@@ -22,6 +22,12 @@ function IndividualTag() {
   return (
     <Page
       className="br-grey-2 pt32 px16 pb16"
+      description={
+        "Read vents about " +
+        viewTagFunction(tagID) +
+        ". Vent With Strangers is a safe place where people can talk about their problems and receive positive constructive feedback."
+      }
+      keywords={viewTagFunction(tagID)}
       title={`Vents About ${viewTagFunction(tagID)}`}
     >
       <Container>

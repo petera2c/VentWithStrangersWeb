@@ -1,4 +1,4 @@
-export const getMetaData = (page) => {
+export const getMetaData = (page, search) => {
   let description = "";
   let keywords = "";
   let title = "";
@@ -33,7 +33,7 @@ export const getMetaData = (page) => {
       "The help you have been looking for is here. These are people online right now. Start chatting with real and kind people. ";
     keywords = "";
     title = "Current People Online On Vent With Strangers";
-  } else if (page === "/profile") {
+  } else if (page === "/profile" && !search) {
     title = "Profile";
   } else if (page === "/privacy-policy") {
     title = "Privacy Policy";
@@ -63,8 +63,11 @@ export const getMetaData = (page) => {
       "Our site is awesome. You can, chat with strangers, create anonymous vents, create an avatar and more :) Read about it here!";
     keywords = "vent with strangers, chat anonymously, chat online";
     title = "Vent With Strangers Rules Info";
-  } else if (page === "/tags") {
-    title = "View Vents Based on Tag";
+  } else if (page.substring(0, 5) === "/tags") {
+    description =
+      "Read vents on any of our tags. Vent With Strangers is a safe place where people can talk about their problems and receive positive constructive feedback.";
+    keywords = "anxiety,bullying,depression,family,school";
+    title = "View Vents Based on Anxiety, Bullying, Depression and More";
   } else if (page === "/trending") {
     title = "Trending Vents";
   } else if (page === "/vent-to-strangers") {
