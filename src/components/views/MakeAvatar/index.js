@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Avatar from "avataaars";
 
+import { capitolizeFirstChar } from "../../../util";
+
 function MakeAvatar({ className, displayName, size, userBasicInfo }) {
   const [capitolizedDisplayName, setCapitolizedDisplayName] = useState("");
 
   useEffect(() => {
-    import("../../../util").then((functions) => {
-      setCapitolizedDisplayName(
-        functions.capitolizeFirstChar(
-          displayName ? displayName : "Anonymous"
-        )[0]
-      );
-    });
+    setCapitolizedDisplayName(
+      capitolizeFirstChar(displayName ? displayName : "Anonymous")[0]
+    );
   }, [displayName]);
 
   if (userBasicInfo && userBasicInfo.avatar) {

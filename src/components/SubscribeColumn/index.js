@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import loadable from "@loadable/component";
+
+import Container from "../containers/Container";
+import MakeAd from "../MakeAd";
+import UniqueShareLink from "../views/UniqueShareLink";
 
 import { UserContext } from "../../context";
 
-const Container = loadable(() => import("../containers/Container"));
-const MakeAd = loadable(() => import("../MakeAd"));
-const UniqueShareLink = loadable(() => import("../views/UniqueShareLink"));
+import { getIsMobileOrTablet } from "../../util";
 
 function SubscribeColumn({ slot, uniqueShareLink = true }) {
   const { user, userSubscription } = useContext(UserContext);
@@ -13,9 +14,7 @@ function SubscribeColumn({ slot, uniqueShareLink = true }) {
   const [isMobileOrTablet, setIsMobileOrTablet] = useState();
 
   useEffect(() => {
-    import("../../util").then((functions) => {
-      setIsMobileOrTablet(functions.getIsMobileOrTablet());
-    });
+    setIsMobileOrTablet(getIsMobileOrTablet());
   }, []);
 
   if (!userSubscription && !isMobileOrTablet)

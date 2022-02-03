@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import loadable from "@loadable/component";
 import { Dropdown } from "antd";
 
 import { faEdit } from "@fortawesome/pro-solid-svg-icons/faEdit";
@@ -10,8 +9,8 @@ import { faUserLock } from "@fortawesome/pro-solid-svg-icons/faUserLock";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Container from "../containers/Container";
-const ConfirmAlertModal = loadable(() => import("../modals/ConfirmAlert"));
-const ReportModal = loadable(() => import("../modals/Report"));
+import ConfirmAlertModal from "../modals/ConfirmAlert";
+import ReportModal from "../modals/Report";
 
 function OptionsComponent({
   deleteFunction,

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import loadable from "@loadable/component";
 
-const Container = loadable(() => import("../../containers/Container"));
+import Container from "../../containers/Container";
 
 class ReportModal extends Component {
   state = {

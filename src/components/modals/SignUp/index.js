@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import loadable from "@loadable/component";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/pro-solid-svg-icons/faEye";
 
-const Container = loadable(() => import("../../containers/Container"));
+import Container from "../../containers/Container";
+import { getIsMobileOrTablet } from "../../../util";
+import { signUp } from "./util";
 
 function SignUpModal({ setActiveModal }) {
   const navigate = useNavigate();
@@ -16,9 +17,7 @@ function SignUpModal({ setActiveModal }) {
   const [isMobileOrTablet, setIsMobileOrTablet] = useState();
 
   useEffect(() => {
-    import("../../../util").then((functions) => {
-      setIsMobileOrTablet(functions.getIsMobileOrTablet());
-    });
+    setIsMobileOrTablet(getIsMobileOrTablet());
   });
 
   return (
@@ -37,9 +36,7 @@ function SignUpModal({ setActiveModal }) {
           <form
             className="x-fill column"
             onSubmit={handleSubmit((data) => {
-              import("./util").then((functions) => {
-                functions.signUp(data, navigate, setActiveModal);
-              });
+              signUp(data, navigate, setActiveModal);
             })}
           >
             <Container className="x-fill column px32 py16">

@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import loadable from "@loadable/component";
 import { Tooltip } from "antd";
 
 import { faRocket } from "@fortawesome/pro-duotone-svg-icons/faRocket";
 import { faMedal } from "@fortawesome/pro-solid-svg-icons/faMedal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Container = loadable(() => import("../../containers/Container"));
+import Container from "../../containers/Container";
 
 function KarmaBadge({ noOnClick, onClick, noTooltip, userBasicInfo }) {
   const navigate = useNavigate();

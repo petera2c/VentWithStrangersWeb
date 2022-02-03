@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import loadable from "@loadable/component";
 
-const Container = loadable(() => import("../../containers/Container"));
-const KarmaBadge = loadable(() => import("../../views/KarmaBadge"));
-const MakeAvatar = loadable(() => import("../../views/MakeAvatar"));
+import Container from "../../containers/Container";
+import KarmaBadge from "../../views/KarmaBadge";
+import MakeAvatar from "../../views/MakeAvatar";
+
+import { capitolizeFirstChar } from "../../../util";
 
 function DisplayName({
   big,
@@ -22,9 +23,7 @@ function DisplayName({
   );
 
   useEffect(() => {
-    import("../../../util").then((functions) => {
-      setCapitolizedDisplayName(functions.capitolizeFirstChar(displayName));
-    });
+    setCapitolizedDisplayName(capitolizeFirstChar(displayName));
   }, [displayName]);
 
   if (isLink)

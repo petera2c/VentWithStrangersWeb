@@ -1,19 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
-import loadable from "@loadable/component";
 
 import { faHandsHelping } from "@fortawesome/pro-duotone-svg-icons/faHandsHelping";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import Container from "../../components/containers/Container";
+import Page from "../../components/containers/Page";
+import StarterModal from "../../components/modals/Starter";
 import SubscribeColumn from "../../components/SubscribeColumn";
 
 import { UserContext } from "../../context";
 
-import { userSignUpProgress } from "../../util";
+import { getIsMobileOrTablet, userSignUpProgress } from "../../util";
 import { joinQueue } from "./util";
-
-import Container from "../../components/containers/Container";
-import Page from "../../components/containers/Page";
-import StarterModal from "../../components/modals/Starter";
 
 function ChatWithStrangersPage() {
   const { user } = useContext(UserContext);
@@ -22,9 +20,7 @@ function ChatWithStrangersPage() {
   const [starterModal, setStarterModal] = useState();
 
   useEffect(() => {
-    import("../../util").then((functions) => {
-      setIsMobileOrTablet(functions.getIsMobileOrTablet());
-    });
+    setIsMobileOrTablet(getIsMobileOrTablet());
   }, []);
 
   return (

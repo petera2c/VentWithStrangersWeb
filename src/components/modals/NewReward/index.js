@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Space } from "antd";
-import loadable from "@loadable/component";
 
 import { faComet } from "@fortawesome/pro-duotone-svg-icons/faComet";
 import { faMeteor } from "@fortawesome/pro-duotone-svg-icons/faMeteor";
 import { faStarShooting } from "@fortawesome/pro-duotone-svg-icons/faStarShooting";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Container = loadable(() => import("../../containers/Container"));
+import Container from "../../containers/Container";
+import { getIsMobileOrTablet } from "../../../util";
 
 function NewRewardModal({ close, newReward }) {
   const [isMobileOrTablet, setIsMobileOrTablet] = useState();
   const [canClose, setCanClose] = useState(false);
 
   useEffect(() => {
-    import("../../../util").then((functions) => {
-      setIsMobileOrTablet(functions.getIsMobileOrTablet());
-    });
+    setIsMobileOrTablet(getIsMobileOrTablet());
 
     setTimeout(() => setCanClose(true), 2000);
   }, []);

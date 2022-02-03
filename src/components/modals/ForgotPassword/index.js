@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import loadable from "@loadable/component";
 
-const Container = loadable(() => import("../../containers/Container"));
+import Container from "../../containers/Container";
+
+import { getIsMobileOrTablet } from "../../../util";
 
 function ForgotPasswordModal({ setActiveModal }) {
   const { register, handleSubmit } = useForm();
@@ -10,9 +11,7 @@ function ForgotPasswordModal({ setActiveModal }) {
   const [isMobileOrTablet, setIsMobileOrTablet] = useState();
 
   useEffect(() => {
-    import("../../../util").then((functions) => {
-      setIsMobileOrTablet(functions.getIsMobileOrTablet());
-    });
+    setIsMobileOrTablet(getIsMobileOrTablet());
   });
 
   return (

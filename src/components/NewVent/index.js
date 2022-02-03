@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import loadable from "@loadable/component";
 import TextArea from "react-textarea-autosize";
 import algoliasearch from "algoliasearch";
 import { message, Space, Tooltip } from "antd";
@@ -11,16 +10,26 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { UserContext } from "../../context";
 
-import { capitolizeFirstChar, useIsMounted } from "../../util";
-import { checks } from "./util";
+import Container from "../containers/Container";
+import Emoji from "../Emoji";
+import HandleOutsideClick from "../containers/HandleOutsideClick";
+import MakeAvatar from "../views/MakeAvatar";
+import StarterModal from "../modals/Starter";
 
-const Container = loadable(() => import("../containers/Container"));
-const Emoji = loadable(() => import("../Emoji"));
-const HandleOutsideClick = loadable(() =>
-  import("../containers/HandleOutsideClick")
-);
-const MakeAvatar = loadable(() => import("../views/MakeAvatar"));
-const StarterModal = loadable(() => import("../modals/Starter"));
+import {
+  capitolizeFirstChar,
+  countdown,
+  getIsMobileOrTablet,
+  isUserKarmaSufficient,
+  useIsMounted,
+} from "../../util";
+import {
+  getQuote,
+  getUserVentTimeOut,
+  getVent,
+  selectEncouragingMessage,
+} from "./util";
+import { checks } from "./util";
 
 const searchClient = algoliasearch(
   "N7KIA5G22X",
@@ -50,9 +59,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
   const [postingDisableFunction, setPostingDisableFunction] = useState();
 
   useEffect(() => {
-    import("../../util").then((functions) => {
-      setIsMobileOrTablet(functions.getIsMobileOrTablet());
-    });
+    setIsMobileOrTablet(getIsMobileOrTablet());
 
     tagsIndex
       .search("", {
@@ -68,55 +75,47 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
         );
       });
 
-    import("./util").then((functions) => {
-      if (ventID) functions.getVent(setDescription, setTags, setTitle, ventID);
+    if (ventID) getVent(setDescription, setTags, setTitle, ventID);
 
-      functions.getQuote(isMounted, setQuote);
-      setPlaceholderText(functions.selectEncouragingMessage());
+    getQuote(isMounted, setQuote);
+    setPlaceholderText(selectEncouragingMessage());
 
-      if (user) {
-        functions.getUserVentTimeOut((res) => {
-          import("../../util").then(async (functions2) => {
-            const temp = await functions.checks(
-              functions2.isUserKarmaSufficient(userBasicInfo),
-              setStarterModal,
-              user,
-              userBasicInfo,
-              ventID,
-              res
-            );
-            setPostingDisableFunction(temp);
-          });
+    if (user) {
+      getUserVentTimeOut((res) => {
+        const temp = checks(
+          isUserKarmaSufficient(userBasicInfo),
+          setStarterModal,
+          user,
+          userBasicInfo,
+          ventID,
+          res
+        );
+        setPostingDisableFunction(temp);
 
-          if (res) {
-            import("../../util").then((functions) => {
-              setInterval(
-                () =>
-                  functions.countdown(
-                    isMounted,
-                    res,
-                    setUserVentTimeOut,
-                    setUserVentTimeOutFormatted
-                  ),
-                1000
-              );
-            });
-          }
-        }, user.uid);
-      } else {
-        import("../../util").then(async (functions2) => {
-          const temp = await functions.checks(
-            true,
-            setStarterModal,
-            user,
-            userBasicInfo,
-            ventID,
-            false
+        if (res) {
+          setInterval(
+            () =>
+              countdown(
+                isMounted,
+                res,
+                setUserVentTimeOut,
+                setUserVentTimeOutFormatted
+              ),
+            1000
           );
-          setPostingDisableFunction(temp);
-        });
-      }
-    });
+        }
+      }, user.uid);
+    } else {
+      const temp = checks(
+        true,
+        setStarterModal,
+        user,
+        userBasicInfo,
+        ventID,
+        false
+      );
+      setPostingDisableFunction(temp);
+    }
   }, [isMounted, user, ventID]);
 
   return (

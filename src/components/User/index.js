@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import loadable from "@loadable/component";
 import moment from "moment-timezone";
 import { Space } from "antd";
 
@@ -12,20 +11,27 @@ import { faPray } from "@fortawesome/pro-solid-svg-icons/faPray";
 import { faSchool } from "@fortawesome/pro-solid-svg-icons/faSchool";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { UserContext } from "../../context";
-import { useIsMounted } from "../../util";
+import Container from "../containers/Container";
+import DisplayName from "../views/DisplayName";
+import StarterModal from "../modals/Starter";
+import MakeAvatar from "../views/MakeAvatar";
 
+import { UserContext } from "../../context";
+
+import { startConversation } from "../../components/Vent/util";
 import {
   educationList,
   kidsList,
   partyingList,
   politicalBeliefsList,
 } from "../../PersonalOptions";
-
-const Container = loadable(() => import("../containers/Container"));
-const DisplayName = loadable(() => import("../views/DisplayName"));
-const StarterModal = loadable(() => import("../modals/Starter"));
-const MakeAvatar = loadable(() => import("../views/MakeAvatar"));
+import {
+  calculateKarma,
+  capitolizeFirstChar,
+  getUserBasicInfo,
+  useIsMounted,
+  userSignUpProgress,
+} from "../../util";
 
 function UserComponent({
   additionalUserInfo,
@@ -48,16 +54,14 @@ function UserComponent({
     displayName
   );
   useEffect(() => {
-    import("../../util").then((functions) => {
-      functions.getUserBasicInfo((newUserInfo) => {
-        if (isMounted) {
-          setUserInfo(newUserInfo);
-          setKarmaPoints(functions.calculateKarma(newUserInfo));
-        }
-      }, userID);
+    getUserBasicInfo((newUserInfo) => {
+      if (isMounted) {
+        setUserInfo(newUserInfo);
+        setKarmaPoints(calculateKarma(newUserInfo));
+      }
+    }, userID);
 
-      setCapitolizedDisplayName(functions.capitolizeFirstChar(displayName));
-    });
+    setCapitolizedDisplayName(capitolizeFirstChar(displayName));
 
     return () => {};
   }, [isMounted, userID]);
@@ -167,23 +171,17 @@ function UserComponent({
             {(!user || (user && user.uid !== userID)) && (
               <button
                 className="x-fill button-2 px16 py8 br8"
-                onClick={async (e) => {
+                onClick={(e) => {
                   e.preventDefault();
 
-                  const userInteractionIssues = await import("../../util").then(
-                    (functions) => {
-                      return functions.userSignUpProgress(user);
-                    }
-                  );
+                  const userInteractionIssues = userSignUpProgress(user);
 
                   if (userInteractionIssues) {
                     if (userInteractionIssues === "NSI") setStarterModal(true);
                     return;
                   }
 
-                  import("../../components/Vent/util").then((functions) => {
-                    functions.startConversation(navigate, user, userID);
-                  });
+                  startConversation(navigate, user, userID);
                 }}
               >
                 <FontAwesomeIcon className="mr8" icon={faComments} />

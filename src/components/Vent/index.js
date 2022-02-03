@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import loadable from "@loadable/component";
 import moment from "moment-timezone";
 import { MentionsInput, Mention } from "react-mentions";
 import { Button, Dropdown } from "antd";
@@ -10,19 +9,34 @@ import { faClock } from "@fortawesome/pro-regular-svg-icons/faClock";
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import Comment from "../Comment";
 import Container from "../containers/Container";
+import ConfirmAlertModal from "../modals/ConfirmAlert";
+import KarmaBadge from "../views/KarmaBadge";
+import LoadingHeart from "../views/loaders/Heart";
+import MakeAvatar from "../views/MakeAvatar";
+import Options from "../Options";
+import StarterModal from "../modals/Starter";
 
 import { UserContext } from "../../context";
-
-import { capitolizeFirstChar, useIsMounted } from "../../util";
-
-const Comment = loadable(() => import("../Comment"));
-const ConfirmAlertModal = loadable(() => import("../modals/ConfirmAlert"));
-const KarmaBadge = loadable(() => import("../views/KarmaBadge"));
-const LoadingHeart = loadable(() => import("../views/loaders/Heart"));
-const MakeAvatar = loadable(() => import("../views/MakeAvatar"));
-const Options = loadable(() => import("../Options"));
-const StarterModal = loadable(() => import("../modals/Starter"));
+import {
+  capitolizeFirstChar,
+  getIsUserOnline,
+  getUserBasicInfo,
+  hasUserBlockedUser,
+  isUserAccountNew,
+  useIsMounted,
+  userSignUpProgressFunction,
+} from "../../util";
+import {
+  commentVent,
+  getVent,
+  getVentComments,
+  getVentDescription,
+  getVentPartialLink,
+  newVentCommentListener,
+  ventHasLiked,
+} from "./util";
 
 const SmartLink = ({ children, className, disablePostOnClick, to }) => {
   if (disablePostOnClick || !to) {
@@ -64,7 +78,7 @@ function Vent({
 
   const navigate = useNavigate();
 
-  const [isUserAccountNew, setIsUserAccountNew] = useState();
+  const [isUserAccountNewLocal, setIsUserAccountNewLocal] = useState();
   const [signUpProgressFunction, setSignUpProgressFunction] = useState();
   const [partialLink, setPartialLink] = useState("");
   const [ventPreview, setVentPreview] = useState("");
@@ -78,76 +92,70 @@ function Vent({
     let newCommentListenerUnsubscribe;
 
     const ventSetUp = (newVent) => {
-      import("./util").then((functions) => {
-        setPartialLink(functions.getVentPartialLink(newVent));
-        setVentPreview(functions.getVentDescription(previewMode, newVent));
-      });
+      setPartialLink(getVentPartialLink(newVent));
+      setVentPreview(getVentDescription(previewMode, newVent));
 
       if (setTitle && newVent && newVent.title && isMounted())
         setTitle(newVent.title);
 
-      import("../../util").then((functions) => {
-        functions.getIsUserOnline((isUserOnline) => {
-          if (isMounted()) setIsUserOnline(isUserOnline.state);
-        }, newVent.userID);
+      getIsUserOnline((isUserOnline) => {
+        if (isMounted()) setIsUserOnline(isUserOnline.state);
+      }, newVent.userID);
 
-        functions.getUserBasicInfo((author) => {
-          if (isMounted()) setAuthor(author);
-        }, newVent.userID);
+      getUserBasicInfo((author) => {
+        if (isMounted()) setAuthor(author);
+      }, newVent.userID);
 
-        if (user)
-          functions.hasUserBlockedUser(
-            isMounted,
-            user.uid,
-            newVent.userID,
-            setIsContentBlocked
-          );
-
-        setIsUserAccountNew(functions.isUserAccountNew(userBasicInfo));
-
-        setSignUpProgressFunction(
-          functions.userSignUpProgressFunction(setStarterModal, user)
+      if (user)
+        hasUserBlockedUser(
+          isMounted,
+          user.uid,
+          newVent.userID,
+          setIsContentBlocked
         );
-      });
+
+      setIsUserAccountNewLocal(isUserAccountNew(userBasicInfo));
+
+      setSignUpProgressFunction(
+        userSignUpProgressFunction(setStarterModal, user)
+      );
 
       if (isMounted()) setVent(newVent);
     };
 
-    import("./util").then((functions) => {
-      if (!vent) {
-        functions.getVent(ventSetUp, ventID);
-      } else ventSetUp(vent);
+    if (!vent) {
+      getVent(ventSetUp, ventID);
+    } else ventSetUp(vent);
 
-      if (!searchPreviewMode && displayCommentField)
-        newCommentListenerUnsubscribe = functions.newVentCommentListener(
-          isMounted,
-          setCanLoadMoreComments,
-          setComments,
-          user ? user.uid : "",
-          ventID
-        );
+    if (!searchPreviewMode && displayCommentField)
+      newCommentListenerUnsubscribe = newVentCommentListener(
+        isMounted,
+        setCanLoadMoreComments,
+        setComments,
+        user ? user.uid : "",
+        ventID
+      );
 
-      if (!searchPreviewMode && !previewMode) {
-        functions.getVentComments(
-          activeSort,
-          comments,
-          isMounted,
-          setCanLoadMoreComments,
-          setComments,
-          false,
-          ventID
-        );
-      }
+    if (!searchPreviewMode && !previewMode) {
+      getVentComments(
+        activeSort,
+        comments,
+        isMounted,
+        setCanLoadMoreComments,
+        setComments,
+        false,
+        ventID
+      );
+    }
 
-      if (user && !searchPreviewMode)
-        functions.ventHasLiked(
-          (newHasLiked) => {
-            if (isMounted()) setHasLiked(newHasLiked);
-          },
-          user.uid,
-          ventID
-        );
-    });
+    if (user && !searchPreviewMode)
+      ventHasLiked(
+        (newHasLiked) => {
+          if (isMounted()) setHasLiked(newHasLiked);
+        },
+        user.uid,
+        ventID
+      );
 
     return () => {
       if (newCommentListenerUnsubscribe) newCommentListenerUnsubscribe();
@@ -477,7 +485,7 @@ function Vent({
               className="sticky column x-fill bg-white border-top shadow-2 br8 pa16"
               style={{ bottom: 0 }}
             >
-              {isUserAccountNew && (
+              {isUserAccountNewLocal && (
                 <Link to="/rules">
                   <button className="blue ml8 mb8" size="large" type="link">
                     Read Our VWS Rules
@@ -541,15 +549,7 @@ function Vent({
                     if (signUpProgressFunction) signUpProgressFunction();
 
                     if (!commentString) return;
-                    import("./util").then((functions) => {
-                      functions.commentVent(
-                        commentString,
-                        setVent,
-                        user,
-                        vent,
-                        vent.id
-                      );
-                    });
+                    commentVent(commentString, setVent, user, vent, vent.id);
 
                     setCommentString("");
                   }}
