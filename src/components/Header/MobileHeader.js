@@ -253,7 +253,7 @@ function Header() {
                     className="tac fs-14"
                     onClick={() => {
                       import("../../util").then((functions) => {
-                        functions.signOut(user.uid);
+                        functions.signOut2(user.uid);
                       });
                     }}
                     type="link"

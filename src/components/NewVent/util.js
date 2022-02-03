@@ -91,7 +91,7 @@ export const getUserVentTimeOut = async (callback, userID) => {
   let timeOutDate;
   const currentDate = new moment();
 
-  if (userVentTimeOutDoc.exists) {
+  if (userVentTimeOutDoc.exists()) {
     timeOutDate = new moment(userVentTimeOutDoc.data().value);
   }
 

@@ -94,7 +94,7 @@ export const findPossibleUsersToTag = async (
 export const getVent = async (setVent, ventID) => {
   const ventDoc = await getDoc(doc(db, "vents", ventID));
 
-  if (!ventDoc.exists) return;
+  if (!ventDoc.exists()) return;
   const newVent = ventDoc.data();
 
   setVent({
@@ -278,7 +278,7 @@ export const ventHasLiked = async (setHasLiked, userID, ventID) => {
     doc(db, "vent_likes", ventID + "|||" + userID)
   );
 
-  if (!ventHasLikedDoc.exists) return;
+  if (!ventHasLikedDoc.exists()) return;
   let value = ventHasLikedDoc.data();
   if (value) value = value.liked;
 

@@ -107,6 +107,6 @@ export const getUserRewardsProgress = async (
 ) => {
   const userRewardsDoc = await getDoc(doc(db, "user_rewards", userID));
 
-  if (userRewardsDoc.exists && userRewardsDoc.data())
+  if (userRewardsDoc.exists() && userRewardsDoc.data())
     setUserRewards(userRewardsDoc.data());
 };

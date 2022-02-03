@@ -241,7 +241,7 @@ function Header() {
                         icon={faSignOut}
                         onClick={() => {
                           import("../../util").then((functions) =>
-                            functions.signOut(user.uid)
+                            functions.signOut2(user.uid)
                           );
                         }}
                         pathname={pathname}

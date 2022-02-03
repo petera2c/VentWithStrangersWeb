@@ -192,7 +192,7 @@ export const getUserBasicInfo = async (callback, userID) => {
 
   const authorDoc = await getDoc(doc(db, "users_display_name", userID));
 
-  callback(authorDoc.exists ? { ...authorDoc.data(), id: authorDoc.id } : {});
+  callback(authorDoc.exists() ? { ...authorDoc.data(), id: authorDoc.id } : {});
 };
 
 export const hasUserBlockedUser = async (
@@ -209,7 +209,7 @@ export const hasUserBlockedUser = async (
 
   if (!isMounted.current) return;
 
-  if (blockCheck.exists) return callback(true);
+  if (blockCheck.exists()) return callback(true);
   else return callback(false);
 };
 

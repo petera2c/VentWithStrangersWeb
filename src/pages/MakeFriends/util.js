@@ -4,13 +4,13 @@ import { db } from "../../config/db_init";
 export const getUserInfo = async (callback, userID) => {
   const authorDoc = await getDoc(doc(db, "users_info", userID));
 
-  callback(authorDoc.exists ? { ...authorDoc.data(), id: authorDoc.id } : {});
+  callback(authorDoc.exists() ? { ...authorDoc.data(), id: authorDoc.id } : {});
 };
 
 export const getUserMatches = async (callback, userID) => {
   const authorDoc = await getDoc(doc(db, "user_matches", userID));
 
-  if (!authorDoc.exists) return;
+  if (!authorDoc.exists()) return;
 
   let counter = 0;
   let userMatchesWithInfo = [];
@@ -27,9 +27,9 @@ export const getUserMatches = async (callback, userID) => {
 
           let userWithAllInfo = {};
 
-          if (infoDoc.exists)
+          if (infoDoc.exists())
             userWithAllInfo = { ...infoDoc.data(), userID: displayDoc.id };
-          if (displayDoc.exists)
+          if (displayDoc.exists())
             userWithAllInfo = { ...userWithAllInfo, ...displayDoc.data() };
 
           userMatchesWithInfo.push(userWithAllInfo);

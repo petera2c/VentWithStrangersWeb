@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import loadable from "@loadable/component";
 
@@ -20,7 +20,13 @@ function NewVentPage() {
   const { user } = useContext(UserContext);
 
   const { search } = location;
-  const [starterModal, setStarterModal] = useState(!user);
+  const [starterModal, setStarterModal] = useState(false);
+
+  useEffect(() => {
+    if (!user) {
+      setStarterModal(true);
+    } else setStarterModal(false);
+  }, [user]);
 
   return (
     <Page className="pa16">

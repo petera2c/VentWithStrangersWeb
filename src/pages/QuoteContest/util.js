@@ -73,7 +73,7 @@ export const getHasUserLikedQuote = async (quoteID, setHasLiked, userID) => {
     doc(db, "quote_likes", quoteID + "|||" + userID)
   );
 
-  if (!quoteHasLikedDoc.exists) return;
+  if (!quoteHasLikedDoc.exists()) return;
   let value = quoteHasLikedDoc.data();
   if (value) value = value.liked;
 

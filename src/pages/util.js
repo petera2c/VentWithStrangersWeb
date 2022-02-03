@@ -11,11 +11,11 @@ import {
   where,
 } from "firebase/firestore";
 import {
+  onDisconnect,
   onValue,
   ref,
   serverTimestamp,
   set,
-  onDisconnect,
 } from "firebase/database";
 import { db, db2 } from "../config/db_init";
 import moment from "moment-timezone";
@@ -48,7 +48,7 @@ export const getIsUserSubscribed = async (setUserSubscription, userID) => {
     doc(db, "user_subscription", userID)
   );
 
-  if (userSubscriptionDoc.exists && userSubscriptionDoc.data())
+  if (userSubscriptionDoc.exists() && userSubscriptionDoc.data())
     setUserSubscription(userSubscriptionDoc.data());
 };
 
@@ -105,19 +105,19 @@ export const setIsUserOnlineToDatabase = (uid) => {
   if (!uid) return;
 
   const connectedRef = ref(db2, ".info/connected");
+  const userStatusDatabaseRef = ref(db2, "status/" + uid);
+  const diconnectObject = {
+    last_online: serverTimestamp(),
+    state: "offline",
+  };
 
   onValue(connectedRef, (snap) => {
-    const userStatusDatabaseRef = ref(db2, "status/" + uid);
-
     if (snap.val() === true)
       set(userStatusDatabaseRef, {
         last_online: serverTimestamp(),
         state: "online",
       });
-    else
-      set(userStatusDatabaseRef, {
-        last_online: serverTimestamp(),
-        state: "offline",
-      });
+    else set(userStatusDatabaseRef, diconnectObject);
   });
+  onDisconnect(userStatusDatabaseRef).set(diconnectObject);
 };

@@ -192,7 +192,6 @@ const signPeopleOut = () => {
 };
 
 const userDelete = async (user) => {
-  console.log(user);
   let counter = 0;
   const batch = admin.firestore().batch();
 

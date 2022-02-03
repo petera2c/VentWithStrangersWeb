@@ -185,7 +185,7 @@ export const getConversations = async (
       doc(db, "conversations", activeConversation)
     );
 
-    if (conversationDoc.exists)
+    if (conversationDoc.exists())
       newConversations.push({
         id: conversationDoc.id,
         doc: conversationDoc,

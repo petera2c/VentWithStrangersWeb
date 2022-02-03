@@ -118,7 +118,7 @@ export const getUser = async (callback, userID) => {
 
   const authorDoc = await getDoc(doc(db, "users_info", userID));
 
-  callback(authorDoc.exists ? { ...authorDoc.data(), id: authorDoc.id } : {});
+  callback(authorDoc.exists() ? { ...authorDoc.data(), id: authorDoc.id } : {});
 };
 
 export const updateUser = async (
