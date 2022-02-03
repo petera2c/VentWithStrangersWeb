@@ -58,12 +58,10 @@ const getMetaInformation = async (url, callback) => {
     url.length - 1
   );
   const slashID = url.substring(url.lastIndexOf("/") + 1, url.length);
-  const ventID = url
-    .substring(1, url.length)
-    .substring(
-      url.substring(1, url.length).indexOf("/") + 1,
-      url.substring(1, url.length).lastIndexOf("/")
-    );
+
+  const test = url.substring(1, url.length);
+  let ventID = url.match(/(?<=\/vent\/\s*).*?(?=\s*\/)/gs);
+  if (ventID) ventID = ventID[0];
 
   if (url.substring(0, 5) === "/vent" && ventID) {
     const ventDoc = await admin
