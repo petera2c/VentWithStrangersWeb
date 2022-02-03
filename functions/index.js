@@ -32,9 +32,9 @@ const { createProxy, createSitemap } = require("./helpers/sitemap");
 const { subscribeToPlan } = require("./helpers/subscribe");
 const {
   checkForBirthdays,
-  newUserSetup2,
+  newUserSetup,
   signPeopleOut,
-  userDelete2,
+  userDelete,
   userRewardsListener,
   userWasInvited,
 } = require("./helpers/user");
@@ -53,8 +53,8 @@ const {
 
 process.setMaxListeners(0);
 
-exports.newUserSetup2 = functions.auth.user().onCreate(newUserSetup2);
-exports.userDelete2 = functions.auth.user().onDelete(userDelete2);
+exports.newUserSetup = functions.auth.user().onCreate(newUserSetup);
+exports.userDelete = functions.auth.user().onDelete(userDelete);
 exports.userWasInvited = functions.firestore
   .document("/invited_users/{secondUID}")
   .onCreate(userWasInvited);
