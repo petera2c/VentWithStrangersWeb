@@ -20,11 +20,7 @@ function OnlineUsers() {
   const { totalOnlineUsers } = useContext(OnlineUsersContext);
 
   useEffect(() => {
-    getOnlineUsers(
-      isMounted,
-      setOnlineUsers,
-      totalOnlineUsers < userLoadCount ? totalOnlineUsers : userLoadCount
-    );
+    getOnlineUsers(isMounted, setOnlineUsers, userLoadCount);
   }, [isMounted, setOnlineUsers, totalOnlineUsers, userLoadCount]);
 
   return (
@@ -42,7 +38,7 @@ function OnlineUsers() {
           );
         })}
       </Container>
-      {totalOnlineUsers > userLoadCount && (
+      {totalOnlineUsers > onlineUsers.length && (
         <Button
           onClick={() =>
             setUserLoadCount(
