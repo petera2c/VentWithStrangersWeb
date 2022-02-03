@@ -22,11 +22,7 @@ function SubscribeColumn({ slot, uniqueShareLink = true }) {
       <Container className="container ad column pl16">
         <Container className="sticky top-0 column x-fill gap16">
           {uniqueShareLink && <UniqueShareLink user={user} />}
-          <MakeAd
-            className=""
-            slot={slot}
-            userSubscription={userSubscription}
-          />
+          {false && <MakeAd slot={slot} userSubscription={userSubscription} />}
         </Container>
       </Container>
     );
