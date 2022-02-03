@@ -1,7 +1,6 @@
 import React from "react";
-import loadable from "@loadable/component";
 
-const Container = loadable(() => import("../../containers/Container"));
+import Container from "../../containers/Container";
 
 function ConfirmAlertModal({ close, message, submit, title }) {
   return (

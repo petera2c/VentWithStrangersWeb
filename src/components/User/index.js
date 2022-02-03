@@ -192,7 +192,7 @@ function UserComponent({
             )}
             {lastOnline && (
               <p className="x-fill lh-1">
-                Last Seen: moment(lastOnline).fromNow()}
+                Last Seen: {moment(lastOnline).fromNow()}}
               </p>
             )}
           </Container>
