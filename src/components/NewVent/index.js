@@ -60,6 +60,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
   const [postingDisableFunction, setPostingDisableFunction] = useState();
 
   useEffect(() => {
+    let interval;
     setIsMobileOrTablet(getIsMobileOrTablet());
 
     tagsIndex
@@ -94,7 +95,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
         setPostingDisableFunction(temp);
 
         if (res) {
-          setInterval(
+          interval = setInterval(
             () =>
               countdown(
                 isMounted,
@@ -118,6 +119,9 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
 
       setPostingDisableFunction(temp);
     }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
   }, [isMounted, user, userBasicInfo, ventID]);
 
   return (
