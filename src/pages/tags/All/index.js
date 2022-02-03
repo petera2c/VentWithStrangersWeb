@@ -14,8 +14,8 @@ function AllTags() {
   const [tags, setTags] = useState([]);
 
   useEffect(() => {
-    getTags(isMounted, setTags, tags);
-  }, []);
+    getTags(isMounted, setTags);
+  }, [isMounted, setTags, tags]);
 
   return (
     <Page className="br-grey-2 pt32 px16 pb16">

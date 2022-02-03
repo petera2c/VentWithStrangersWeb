@@ -65,7 +65,7 @@ function QuoteContestPage() {
       () => countdown(isMounted, timeLeftMoment, setContestTimeLeft),
       1000
     );
-  }, []);
+  }, [isMounted, user]);
 
   return (
     <Page className="pa16">
@@ -223,7 +223,7 @@ function Quote({
         user.uid
       );
     }
-  }, []);
+  }, [isMounted, quote.id, quote.userID, user]);
 
   if (isContentBlocked) return <div />;
 

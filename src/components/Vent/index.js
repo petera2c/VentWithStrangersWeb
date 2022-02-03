@@ -126,9 +126,9 @@ function Vent({
       if (isMounted()) setVent(newVent);
     };
 
-    if (!vent) {
+    if (!ventInit) {
       getVent(ventSetUp, ventID);
-    } else ventSetUp(vent);
+    } else ventSetUp(ventInit);
 
     if (!searchPreviewMode && displayCommentField)
       newCommentListenerUnsubscribe = newVentCommentListener(
@@ -141,8 +141,8 @@ function Vent({
 
     if (!searchPreviewMode && !previewMode) {
       getVentComments(
-        activeSort,
-        comments,
+        "First",
+        undefined,
         isMounted,
         setCanLoadMoreComments,
         setComments,
@@ -163,7 +163,17 @@ function Vent({
     return () => {
       if (newCommentListenerUnsubscribe) newCommentListenerUnsubscribe();
     };
-  }, [isMounted, user, ventID]);
+  }, [
+    displayCommentField,
+    isMounted,
+    previewMode,
+    searchPreviewMode,
+    setTitle,
+    user,
+    userBasicInfo,
+    ventInit,
+    ventID,
+  ]);
 
   if ((!vent || (vent && !vent.server_timestamp)) && isOnSingleVentPage)
     return (
@@ -577,11 +587,6 @@ function Vent({
 }
 
 function Tag({ tag }) {
-  const [viewTag, setViewTag] = useState();
-
-  useEffect(() => {
-    setViewTag(viewTagFunction(tag));
-  });
   return (
     <Link
       className="button-4 fs-16"
@@ -589,7 +594,7 @@ function Tag({ tag }) {
       onClick={(e) => e.stopPropagation()}
       to={"/tags/" + tag}
     >
-      {viewTag}
+      {viewTagFunction(tag)}
     </Link>
   );
 }

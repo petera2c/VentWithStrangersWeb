@@ -16,8 +16,8 @@ function IndividualTag() {
   const [vents, setVents] = useState([]);
 
   useEffect(() => {
-    getTagVents(isMounted, setVents, tagID, vents);
-  }, []);
+    getTagVents(isMounted, setVents, tagID);
+  }, [isMounted, setVents, tagID]);
 
   return (
     <Page

@@ -38,7 +38,7 @@ function Page({
     });
 
     window.scrollTo(0, 0);
-  }, [pathname]);
+  }, [pathname, search]);
 
   return (
     <Container
