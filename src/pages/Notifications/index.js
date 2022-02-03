@@ -1,17 +1,16 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import loadable from "@loadable/component";
+
+import Container from "../../components/containers/Container";
+import NotificationList from "../../components/NotificationList";
+import Page from "../../components/containers/Page";
 
 import { UserContext } from "../../context";
 
-import { useIsMounted } from "../../util";
-
-const Container = loadable(() =>
-  import("../../components/containers/Container")
-);
-const NotificationList = loadable(() =>
-  import("../../components/NotificationList")
-);
-const Page = loadable(() => import("../../components/containers/Page"));
+import {
+  getNotifications,
+  readNotifications,
+} from "../../components/Header/util";
+import { getIsMobileOrTablet, useIsMounted } from "../../util";
 
 function NotificationsPage() {
   const isMounted = useIsMounted();
@@ -21,22 +20,18 @@ function NotificationsPage() {
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
-    import("../../util").then((functions) => {
-      setIsMobileOrTablet(functions.getIsMobileOrTablet());
-    });
+    setIsMobileOrTablet(getIsMobileOrTablet());
 
     let newNotificationsListenerUnsubscribe;
 
-    import("../../components/Header/util").then((functions) => {
-      newNotificationsListenerUnsubscribe = functions.getNotifications(
-        isMounted,
-        notifications,
-        () => {},
-        setNotifications,
-        user
-      );
-      functions.readNotifications(notifications);
-    });
+    newNotificationsListenerUnsubscribe = getNotifications(
+      isMounted,
+      notifications,
+      () => {},
+      setNotifications,
+      user
+    );
+    readNotifications(notifications);
 
     return () => {
       if (newNotificationsListenerUnsubscribe)

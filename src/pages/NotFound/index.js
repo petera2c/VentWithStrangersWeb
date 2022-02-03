@@ -1,7 +1,6 @@
 import React from "react";
-import loadable from "@loadable/component";
 
-const Page = loadable(() => import("../../components/containers/Page"));
+import Page from "../../components/containers/Page";
 
 function NotFoundPage() {
   return (

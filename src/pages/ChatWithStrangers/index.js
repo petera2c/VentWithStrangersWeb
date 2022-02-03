@@ -29,7 +29,6 @@ function ChatWithStrangersPage() {
         <Container className="column flex-fill full-center gap32">
           <Container className="container medium column align-center">
             <h1 className="tac lh-1">Chat With Strangers</h1>
-            <p>hello world</p>
           </Container>
           <Container
             className="container medium column button-6 bg-white border-all2 br8"

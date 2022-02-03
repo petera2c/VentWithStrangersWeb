@@ -1,18 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import loadable from "@loadable/component";
+
+import Container from "../../components/containers/Container";
+import NewVentComponent from "../../components/NewVent";
+import Page from "../../components/containers/Page";
+import StarterModal from "../../components/modals/Starter";
+import SubscribeColumn from "../../components/SubscribeColumn";
 
 import { UserContext } from "../../context";
-
-const Container = loadable(() =>
-  import("../../components/containers/Container")
-);
-const NewVentComponent = loadable(() => import("../../components/NewVent"));
-const Page = loadable(() => import("../../components/containers/Page"));
-const StarterModal = loadable(() => import("../../components/modals/Starter"));
-const SubscribeColumn = loadable(() =>
-  import("../../components/SubscribeColumn")
-);
 
 function NewVentPage() {
   const location = useLocation();

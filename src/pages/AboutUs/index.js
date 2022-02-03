@@ -1,20 +1,15 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import loadable from "@loadable/component";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons/faInstagram";
 import { faFacebook } from "@fortawesome/free-brands-svg-icons/faFacebook";
 import { faLinkedin } from "@fortawesome/free-brands-svg-icons/faLinkedin";
 
-const Container = loadable(() =>
-  import("../../components/containers/Container")
-);
-const KarmaBadge = loadable(() => import("../../components/views/KarmaBadge"));
-const Page = loadable(() => import("../../components/containers/Page"));
-const SubscribeColumn = loadable(() =>
-  import("../../components/SubscribeColumn")
-);
+import Container from "../../components/containers/Container";
+import KarmaBadge from "../../components/views/KarmaBadge";
+import Page from "../../components/containers/Page";
+import SubscribeColumn from "../../components/SubscribeColumn";
 
 function AboutUsPage() {
   const [activeBadge, setActiveBadge] = useState(0);

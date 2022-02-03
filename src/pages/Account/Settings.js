@@ -2,19 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import { doc } from "firebase/firestore";
 import { db } from "../../config/db_init";
 import { useDocument } from "react-firebase-hooks/firestore";
-import loadable from "@loadable/component";
 import { message } from "antd";
 
 import { UserContext } from "../../context";
 
-const Container = loadable(() =>
-  import("../../components/containers/Container")
-);
-const LoadingHeart = loadable(() => import("../../components/views/loaders/Heart"));
-const Page = loadable(() => import("../../components/containers/Page"));
-const SubscribeColumn = loadable(() =>
-  import("../../components/SubscribeColumn")
-);
+import Container from "../../components/containers/Container";
+import LoadingHeart from "../../components/views/loaders/Heart";
+import Page from "../../components/containers/Page";
+import SubscribeColumn from "../../components/SubscribeColumn";
 
 function SettingsSection() {
   const { user } = useContext(UserContext);

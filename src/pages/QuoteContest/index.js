@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import TextArea from "react-textarea-autosize";
 import moment from "moment-timezone";
@@ -21,6 +21,7 @@ import {
   capitolizeFirstChar,
   countdown,
   formatSeconds,
+  getIsMobileOrTablet,
   getUserBasicInfo,
   hasUserBlockedUser,
   useIsMounted,
@@ -50,9 +51,7 @@ function QuoteContestPage() {
   const [starterModal, setStarterModal] = useState();
 
   useEffect(() => {
-    import("../../util").then((functions) => {
-      setIsMobileOrTablet(functions.getIsMobileOrTablet());
-    });
+    setIsMobileOrTablet(getIsMobileOrTablet());
 
     if (user) getCanUserCreateQuote(isMounted, setCanUserCreateQuote, user.uid);
     getQuotes(isMounted, undefined, setCanLoadMoreQuotes, setQuotes);
@@ -66,8 +65,6 @@ function QuoteContestPage() {
       () => countdown(isMounted, timeLeftMoment, setContestTimeLeft),
       1000
     );
-
-    
   }, []);
 
   return (
@@ -219,7 +216,6 @@ function Quote({
         user.uid
       );
     }
-    
   }, []);
 
   if (isContentBlocked) return <div />;

@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import loadable from "@loadable/component";
 import { Button, Space } from "antd";
 
-import { handleVerifyEmail } from "./util";
+import Page from "../../../components/containers/Page";
 
-const Page = loadable(() => import("../../../components/containers/Page"));
+import { handleVerifyEmail } from "./util";
 
 function VerifiedEmail() {
   const [verifiedSuccessfully, setVerifiedSuccessly] = useState(false);

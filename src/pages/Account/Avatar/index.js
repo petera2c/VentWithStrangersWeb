@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import loadable from "@loadable/component";
 import Avatar from "avataaars";
 
 import { faCut } from "@fortawesome/pro-duotone-svg-icons/faCut";
@@ -11,6 +10,10 @@ import { faPencil } from "@fortawesome/pro-duotone-svg-icons/faPencil";
 import { faSunglasses } from "@fortawesome/pro-duotone-svg-icons/faSunglasses";
 import { faUserTie } from "@fortawesome/pro-duotone-svg-icons/faUserTie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import Container from "../../../components/containers/Container";
+import Page from "../../../components/containers/Page";
+import SubscribeColumn from "../../../components/SubscribeColumn";
 
 import { UserContext } from "../../../context";
 
@@ -28,14 +31,6 @@ import {
   skinArray,
   topArray,
 } from "./util";
-
-const Container = loadable(() =>
-  import("../../../components/containers/Container")
-);
-const Page = loadable(() => import("../../../components/containers/Page"));
-const SubscribeColumn = loadable(() =>
-  import("../../../components/SubscribeColumn")
-);
 
 function AvatarSection() {
   const { setUserBasicInfo, user } = useContext(UserContext);

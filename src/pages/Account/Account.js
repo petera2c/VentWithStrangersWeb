@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import loadable from "@loadable/component";
+import React, { useContext, useEffect, useState } from "react";
 import moment from "moment-timezone";
 import TextArea from "react-textarea-autosize";
 import { Button, DatePicker, message, Modal } from "antd";
@@ -25,13 +24,9 @@ import {
 import { calculateKarma, useIsMounted } from "../../util";
 import { deleteAccountAndAllData, getUser, updateUser } from "./util";
 
-const Container = loadable(() =>
-  import("../../components/containers/Container")
-);
-const Page = loadable(() => import("../../components/containers/Page"));
-const SubscribeColumn = loadable(() =>
-  import("../../components/SubscribeColumn")
-);
+import Container from "../../components/containers/Container";
+import Page from "../../components/containers/Page";
+import SubscribeColumn from "../../components/SubscribeColumn";
 
 function AccountSection() {
   const isMounted = useIsMounted();
@@ -78,8 +73,6 @@ function AccountSection() {
       if (isMounted()) setAccountInfo(userInfo);
       if (userInfo && isMounted()) setUserInfo(userInfo);
     }, user.uid);
-
-    
   }, [isMounted, user]);
 
   return (

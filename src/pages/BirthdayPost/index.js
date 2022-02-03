@@ -1,21 +1,16 @@
 import React, { useContext, useState } from "react";
 import { useLocation } from "react-router-dom";
-import loadable from "@loadable/component";
 
 import { faBirthdayCake } from "@fortawesome/pro-duotone-svg-icons/faBirthdayCake";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { UserContext } from "../../context";
+import Container from "../../components/containers/Container";
+import NewVentComponent from "../../components/NewVent";
+import Page from "../../components/containers/Page";
+import StarterModal from "../../components/modals/Starter";
+import SubscribeColumn from "../../components/SubscribeColumn";
 
-const Container = loadable(() =>
-  import("../../components/containers/Container")
-);
-const NewVentComponent = loadable(() => import("../../components/NewVent"));
-const Page = loadable(() => import("../../components/containers/Page"));
-const StarterModal = loadable(() => import("../../components/modals/Starter"));
-const SubscribeColumn = loadable(() =>
-  import("../../components/SubscribeColumn")
-);
+import { UserContext } from "../../context";
 
 function NewVentPage() {
   const location = useLocation();
