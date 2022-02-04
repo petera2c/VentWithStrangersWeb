@@ -59,7 +59,7 @@ function QuoteDisplay({ quote }) {
     let width = quote.value.length * 6;
 
     if (width < 100) width = 100;
-    if (width > 800) width = 800;
+    if (width > 600) width = 600;
 
     if (isMounted()) setWidth(width);
   }, [isMounted, quote, setUserBasicInfo]);
@@ -67,7 +67,7 @@ function QuoteDisplay({ quote }) {
   return (
     <Container
       className="column bg-white shadow-2 br8 gap8 pa16"
-      style={{ width: getIsMobileOrTablet() ? width + "px" : "100%" }}
+      style={{ width: !getIsMobileOrTablet() ? width + "px" : "100%" }}
     >
       <p className="italic primary fs-20 tac">
         {capitolizeFirstChar(quote.value)}
@@ -76,7 +76,7 @@ function QuoteDisplay({ quote }) {
         - {capitolizeFirstChar(userBasicInfo.displayName)}
       </Link>
       <p className="tar">
-        {dayjs(quote.server_timestamp).format("MMMM DD YYYY")}
+        {dayjs(quote.server_timestamp).format("MMMM DD, YYYY")}
       </p>
     </Container>
   );
