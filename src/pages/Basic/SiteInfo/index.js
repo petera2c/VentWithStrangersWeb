@@ -6,10 +6,10 @@ import { faInstagram } from "@fortawesome/free-brands-svg-icons/faInstagram";
 import { faFacebook } from "@fortawesome/free-brands-svg-icons/faFacebook";
 import { faLinkedin } from "@fortawesome/free-brands-svg-icons/faLinkedin";
 
-import Container from "../../components/containers/Container";
-import KarmaBadge from "../../components/views/KarmaBadge";
-import Page from "../../components/containers/Page";
-import SubscribeColumn from "../../components/SubscribeColumn";
+import Container from "../../../components/containers/Container";
+import KarmaBadge from "../../../components/views/KarmaBadge";
+import Page from "../../../components/containers/Page";
+import SubscribeColumn from "../../../components/SubscribeColumn";
 
 function AboutUsPage() {
   const [activeBadge, setActiveBadge] = useState(0);

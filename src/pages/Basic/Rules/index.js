@@ -1,9 +1,9 @@
 import React from "react";
 import { Space } from "antd";
 
-import Container from "../../components/containers/Container";
-import Page from "../../components/containers/Page";
-import SubscribeColumn from "../../components/SubscribeColumn";
+import Container from "../../../components/containers/Container";
+import Page from "../../../components/containers/Page";
+import SubscribeColumn from "../../../components/SubscribeColumn";
 
 function RulesPage() {
   return (

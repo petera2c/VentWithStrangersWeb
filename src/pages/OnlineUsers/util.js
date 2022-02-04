@@ -1,9 +1,15 @@
-import { get, orderByChild, query, ref } from "firebase/database";
+import { get, limitToLast, orderByChild, query, ref } from "firebase/database";
 import { db2 } from "../../config/db_init";
 
 export const getOnlineUsers = (isMounted, callback, fetchUsersCount) => {
   if (fetchUsersCount > 0)
-    get(query(ref(db2, "status"), orderByChild("state"))).then((snapshot) => {
+    get(
+      query(
+        ref(db2, "status"),
+        orderByChild("index"),
+        limitToLast(fetchUsersCount)
+      )
+    ).then((snapshot) => {
       let counter = 0;
       let usersArray = [];
 
@@ -24,6 +30,6 @@ export const getOnlineUsers = (isMounted, callback, fetchUsersCount) => {
         if (a.lastOnline > b.lastOnline || !b.lastOnline) return -1;
         return 0;
       });
-      if (isMounted()) callback(usersArray.splice(0, fetchUsersCount));
+      if (isMounted()) callback(usersArray);
     });
 };

@@ -107,7 +107,7 @@ function Header() {
       );
       newNotificationsListenerUnsubscribe = getNotifications(
         isMounted,
-        notifications,
+        [],
         setNotificationCounter,
         setNotifications,
         user
@@ -134,7 +134,10 @@ function Header() {
     };
   }, [
     isMounted,
+    isUserInQueueRef,
+    navigate,
     pathname,
+    setIsUserInQueue,
     setTotalOnlineUsers,
     unreadConversationsCount,
     user,

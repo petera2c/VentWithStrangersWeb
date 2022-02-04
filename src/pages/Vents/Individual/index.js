@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-import { getMeta } from "./util";
+import Container from "../../../components/containers/Container";
+import Page from "../../../components/containers/Page";
+import SubscribeColumn from "../../../components/SubscribeColumn";
+import Vent from "../../../components/Vent";
 
-import Container from "../../components/containers/Container";
-import Page from "../../components/containers/Page";
-import SubscribeColumn from "../../components/SubscribeColumn";
-import Vent from "../../components/Vent";
+import { getIsMobileOrTablet } from "../../../util";
+import { getMeta } from "./util";
 
 const getVentIdFromURL = (pathname) => {
   if (pathname) {
@@ -41,9 +42,7 @@ function VentPage() {
   if (ventFromMeta && ventFromMeta.id !== ventID) ventFromMeta = null;
 
   useEffect(() => {
-    import("../../util").then((functions) => {
-      setIsMobileOrTablet(functions.getIsMobileOrTablet());
-    });
+    setIsMobileOrTablet(getIsMobileOrTablet());
   }, []);
 
   return (

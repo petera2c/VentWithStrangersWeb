@@ -2,10 +2,10 @@ import React, { useContext, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Button, Space } from "antd";
 
-import Page from "../../components/containers/Page";
+import Page from "../../../components/containers/Page";
 
-import { UserContext } from "../../context";
-import { getIsUserSubscribed } from "../util";
+import { UserContext } from "../../../context";
+import { getIsUserSubscribed } from "../../util";
 
 function SubscriptionSuccessPage() {
   const isMounted = useRef(false);

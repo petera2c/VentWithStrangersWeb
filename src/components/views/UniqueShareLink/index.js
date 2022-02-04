@@ -3,16 +3,18 @@ import { Button, message } from "antd";
 
 import Container from "../../containers/Container";
 
-import { getSecondUID } from "./util";
+import { useIsMounted } from "../../../util";
+import { createShareLink, getSecondUID } from "./util";
 
 function UniqueShareLink({ user }) {
+  const isMounted = useIsMounted();
   const [secondUID, setSecondUID] = useState("");
 
   useEffect(() => {
     if (user) {
-      getSecondUID(setSecondUID, user.uid);
+      getSecondUID(isMounted, setSecondUID, user.uid);
     }
-  }, [user]);
+  }, [isMounted, user]);
 
   return (
     <Container className="x-fill align-start gap8">
@@ -25,11 +27,7 @@ function UniqueShareLink({ user }) {
         </p>
         <Button
           onClick={() => {
-            import("./util").then((functions) => {
-              navigator.clipboard.writeText(
-                functions.createShareLink(secondUID)
-              );
-            });
+            navigator.clipboard.writeText(createShareLink(secondUID));
             message.success("Copied Successfully :)");
           }}
           size="large"

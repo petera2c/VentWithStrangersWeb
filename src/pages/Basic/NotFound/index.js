@@ -1,6 +1,6 @@
 import React from "react";
 
-import Page from "../../components/containers/Page";
+import Page from "../../../components/containers/Page";
 
 function NotFoundPage() {
   return (

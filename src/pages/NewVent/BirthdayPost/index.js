@@ -4,13 +4,13 @@ import { useLocation } from "react-router-dom";
 import { faBirthdayCake } from "@fortawesome/pro-duotone-svg-icons/faBirthdayCake";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Container from "../../components/containers/Container";
-import NewVentComponent from "../../components/NewVent";
-import Page from "../../components/containers/Page";
-import StarterModal from "../../components/modals/Starter";
-import SubscribeColumn from "../../components/SubscribeColumn";
+import Container from "../../../components/containers/Container";
+import NewVentComponent from "../../../components/NewVent";
+import Page from "../../../components/containers/Page";
+import StarterModal from "../../../components/modals/Starter";
+import SubscribeColumn from "../../../components/SubscribeColumn";
 
-import { UserContext } from "../../context";
+import { UserContext } from "../../../context";
 
 function NewVentPage() {
   const location = useLocation();
