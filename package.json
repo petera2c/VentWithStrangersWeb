@@ -68,6 +68,8 @@
   },
   "devDependencies": {
     "@craco/craco": "^6.4.3",
+    "customize-cra": "^1.0.0",
+    "react-app-rewired": "^2.1.11",
     "webpack-bundle-analyzer": "^4.5.0"
   }
 }

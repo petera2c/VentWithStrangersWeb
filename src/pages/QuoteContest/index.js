@@ -60,9 +60,6 @@ function QuoteContestPage() {
     timeLeftDayjs = timeLeftDayjs.set("minute", 0);
     timeLeftDayjs = timeLeftDayjs.set("hour", 0);
     timeLeftDayjs = timeLeftDayjs.set("hour", 0);
-    //  .set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
-
-    console.log(timeLeftDayjs.format("YYYY MM DD HH mm ss"));
 
     countdown(isMounted, timeLeftDayjs, setContestTimeLeft);
     let interval = setInterval(
