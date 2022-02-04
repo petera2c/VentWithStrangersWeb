@@ -16,7 +16,7 @@ export const getOnlineUsers = (isMounted, callback, fetchUsersCount) => {
       snapshot.forEach((data) => {
         if (data.val().state === "online") {
           counter++;
-          usersArray.push({
+          usersArray.unshift({
             lastOnline: data.val().last_online,
             userID: data.key,
           });
