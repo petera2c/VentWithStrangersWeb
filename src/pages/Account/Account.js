@@ -1,30 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import TextArea from "react-textarea-autosize";
-import { Button, DatePicker, message, Modal } from "antd";
-
-/*
-import DatePicker from "./test.tsx";
-<DatePicker
-  value={
-    birthDate
-      ? dayjs(birthDate.format("YYYY/MM/DD"), "YYYY/MM/DD")
-      : null
-  }
-  format="YYYY/MM/DD"
-  onChange={(dateString) => {
-    if (!dateString) return setBirthDate(null);
-    const date = new dayjs(dateString);
-
-    const diffInYears = new dayjs().diff(date) / 31536000000;
-    if (diffInYears > 11) setBirthDate(date);
-    else
-      message.error(
-        "You are too young to use this application :'("
-      );
-  }}
-  size="large"
-/>*/
+import { Button, message, Modal } from "antd";
+import DatePicker from "./DatePicker";
 
 import { faBirthdayCake } from "@fortawesome/pro-duotone-svg-icons/faBirthdayCake";
 import { faEye } from "@fortawesome/pro-solid-svg-icons/faEye";

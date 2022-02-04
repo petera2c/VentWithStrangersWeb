@@ -27,9 +27,14 @@ function QuoteWinnersPage() {
     <Page className="gap32 py32 px8">
       <Container className="column gap16">
         <h1 className="tac lh-1">{thisMonthYearFormatted} Feel Good Quotes</h1>
-        <h4 className="grey-11 tac lh-1">
-          Some of our favourite contest winners :) All quotes are original!
-        </h4>
+        <Container className="column gap8">
+          <h2 className="fs-22 grey-11 tac lh-1">
+            Some of our past contest winners :)
+          </h2>
+          <h2 className="fs-18 grey-11 tac lh-1">
+            (All feel good quotes are original!)
+          </h2>
+        </Container>
       </Container>
 
       <Container className="justify-center x-fill wrap gap16">
