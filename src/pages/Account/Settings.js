@@ -4,12 +4,13 @@ import { db } from "../../config/db_init";
 import { useDocument } from "react-firebase-hooks/firestore";
 import { message } from "antd";
 
-import { UserContext } from "../../context";
-
 import Container from "../../components/containers/Container";
 import LoadingHeart from "../../components/views/loaders/Heart";
 import Page from "../../components/containers/Page";
 import SubscribeColumn from "../../components/SubscribeColumn";
+
+import { UserContext } from "../../context";
+import { getIsMobileOrTablet } from "../../util";
 
 function SettingsSection() {
   const { user } = useContext(UserContext);
@@ -27,9 +28,7 @@ function SettingsSection() {
   };
 
   useEffect(() => {
-    import("../../util").then((functions) => {
-      setIsMobileOrTablet(functions.getIsMobileOrTablet());
-    });
+    setIsMobileOrTablet(getIsMobileOrTablet());
   }, []);
 
   if (!settingsSnapshot || !settingsSnapshot.data())

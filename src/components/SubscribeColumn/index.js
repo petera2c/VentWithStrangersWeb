@@ -5,19 +5,12 @@ import MakeAd from "../MakeAd";
 import UniqueShareLink from "../views/UniqueShareLink";
 
 import { UserContext } from "../../context";
-
 import { getIsMobileOrTablet } from "../../util";
 
 function SubscribeColumn({ slot, uniqueShareLink = true }) {
   const { user } = useContext(UserContext);
 
-  const [isMobileOrTablet, setIsMobileOrTablet] = useState();
-
-  useEffect(() => {
-    setIsMobileOrTablet(getIsMobileOrTablet());
-  }, []);
-
-  if (!isMobileOrTablet)
+  if (!getIsMobileOrTablet())
     return (
       <Container className="container ad column pl16">
         <Container className="sticky top-0 column x-fill gap16">
