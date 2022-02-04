@@ -10,7 +10,11 @@ import StarterModal from "../../components/modals/Starter";
 
 import { UserContext } from "../../context";
 
-import { useIsMounted, userSignUpProgress } from "../../util";
+import {
+  getIsMobileOrTablet,
+  useIsMounted,
+  userSignUpProgress,
+} from "../../util";
 import { getConversations, mostRecentConversationListener } from "./util";
 
 function Conversations() {
@@ -185,11 +189,8 @@ function Conversations() {
 }
 
 let temp;
-/*
-!import("../../util").then((functions) => {
-  return functions.getIsMobileOrTablet();
-})*/
-if (true) temp = Conversations;
+
+if (getIsMobileOrTablet()) temp = Conversations;
 else temp = MobileIndex;
 
 export default temp;
