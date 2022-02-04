@@ -140,8 +140,6 @@ function RoutesComp() {
     };
   }, [isMounted, user]);
 
-  console.log(window.screen.width);
-  console.log(!window.screen.width < 940);
   return (
     <UserContext.Provider
       value={{

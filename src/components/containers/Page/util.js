@@ -50,6 +50,7 @@ export const getMetaData = (page, search) => {
     keywords = "feel good quotes";
     title = "Feel Good Quote Contest";
   } else if (page === "/recent") {
+    description = "View most recent vents on Vent With Strangers";
     title = "Recent Vents";
   } else if (page === "/rewards") {
     description =
@@ -76,6 +77,7 @@ export const getMetaData = (page, search) => {
     keywords = "anxiety,bullying,depression,family,school";
     title = "View Vents Based on Anxiety, Bullying, Depression and More";
   } else if (page === "/trending") {
+    description = "View trending vents on Vent With Strangers";
     title = "Trending Vents";
   } else if (page === "/vent-to-strangers") {
     description =

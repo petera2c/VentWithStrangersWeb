@@ -148,6 +148,7 @@ const getMetaInformation = async (url, callback) => {
     keywords = "feel good quotes";
     title = "Feel Good Quotes";
   } else if (url === "/recent") {
+    description = "View most recent vents on Vent With Strangers";
     title = "Recent Vents";
   } else if (url === "/feel-good-quotes-month") {
     description =
@@ -174,6 +175,7 @@ const getMetaInformation = async (url, callback) => {
     keywords = "vent with strangers, chat anonymously, chat online";
     title = "Vent With Strangers Rules Info";
   } else if (url === "/trending") {
+    description = "View trending vents on Vent With Strangers";
     title = "Trending Vents";
   } else if (url === "/vent-to-strangers") {
     description =

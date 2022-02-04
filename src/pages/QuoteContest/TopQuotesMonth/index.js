@@ -7,6 +7,7 @@ import Page from "../../../components/containers/Page";
 
 import {
   capitolizeFirstChar,
+  getIsMobileOrTablet,
   getUserBasicInfo,
   useIsMounted,
 } from "../../../util";
@@ -24,7 +25,7 @@ function QuoteWinnersPage() {
   }, [isMounted, setQuotes]);
 
   return (
-    <Page className="gap32 py32 px8">
+    <Page className="gap32 py32 px16">
       <Container className="column gap16">
         <h1 className="tac lh-1">{thisMonthYearFormatted} Feel Good Quotes</h1>
         <Container className="column gap8">
@@ -66,7 +67,7 @@ function QuoteDisplay({ quote }) {
   return (
     <Container
       className="column bg-white shadow-2 br8 gap8 pa16"
-      style={{ width: width + "px" }}
+      style={{ width: getIsMobileOrTablet() ? width + "px" : "100%" }}
     >
       <p className="italic primary fs-20 tac">
         {capitolizeFirstChar(quote.value)}

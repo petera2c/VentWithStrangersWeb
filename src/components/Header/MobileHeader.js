@@ -16,6 +16,8 @@ import { faConciergeBell } from "@fortawesome/pro-duotone-svg-icons/faConciergeB
 import { faInfo } from "@fortawesome/pro-duotone-svg-icons/faInfo";
 import { faQuoteLeft } from "@fortawesome/pro-duotone-svg-icons/faQuoteLeft";
 import { faSearch } from "@fortawesome/pro-duotone-svg-icons/faSearch";
+import { faSignOut } from "@fortawesome/pro-duotone-svg-icons/faSignOut";
+import { faSmileBeam } from "@fortawesome/pro-duotone-svg-icons/faSmileBeam";
 import { faStarShooting } from "@fortawesome/pro-duotone-svg-icons/faStarShooting";
 import { faUser } from "@fortawesome/pro-duotone-svg-icons/faUser";
 import { faUserAstronaut } from "@fortawesome/pro-duotone-svg-icons/faUserAstronaut";
@@ -23,9 +25,15 @@ import { faUserFriends } from "@fortawesome/pro-duotone-svg-icons/faUserFriends"
 import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import Container from "../containers/Container";
+import HandleOutsideClick from "../containers/HandleOutsideClick";
+import DisplayName from "../views/DisplayName";
+import StarterModal from "../modals/Starter";
+
 import { UserContext, OnlineUsersContext } from "../../context";
 
 import {
+  chatQueueEmptyListener,
   getTotalOnlineUsers,
   isPageActive,
   signOut2,
@@ -40,10 +48,6 @@ import {
   readNotifications,
   resetUnreadConversationCount,
 } from "./util";
-
-import Container from "../containers/Container";
-import DisplayName from "../views/DisplayName";
-import StarterModal from "../modals/Starter";
 
 function Header() {
   const isMounted = useIsMounted();
@@ -61,6 +65,7 @@ function Header() {
   const [mobileHeaderActive, setMobileHeaderActive] = useState(false);
   const [notificationCounter, setNotificationCounter] = useState(0);
   const [notifications, setNotifications] = useState([]);
+  const [queueLength, setQueueLength] = useState();
   const [showNotificationDropdown, setShowNotificationDropdown] = useState(
     false
   );
@@ -74,11 +79,17 @@ function Header() {
   );
 
   useEffect(() => {
+    let chatQueueListenerUnsubscribe;
     let conversationsUnsubscribe;
     let isUserInQueueUnsubscribe;
     let newConversationsListenerUnsubscribe;
     let newNotificationsListenerUnsubscribe;
     let onlineUsersUnsubscribe;
+
+    chatQueueListenerUnsubscribe = chatQueueEmptyListener(
+      isMounted,
+      setQueueLength
+    );
 
     onlineUsersUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) => {
       if (isMounted()) setTotalOnlineUsers(totalOnlineUsers);
@@ -125,6 +136,7 @@ function Header() {
 
     return () => {
       cleanup();
+      if (chatQueueListenerUnsubscribe) chatQueueListenerUnsubscribe();
       if (isUserInQueueUnsubscribe) isUserInQueueUnsubscribe();
       if (newNotificationsListenerUnsubscribe)
         newNotificationsListenerUnsubscribe();
@@ -144,8 +156,12 @@ function Header() {
   ]);
 
   return (
-    <Container
+    <HandleOutsideClick
       className="sticky top-0 relative column x-fill full-center bg-white border-top large active shadow-2"
+      close={() => {
+        setAccountSectionActive(false);
+        setMobileHeaderActive(false);
+      }}
       style={{ zIndex: 10 }}
     >
       <Container className="x-fill align-center justify-between border-bottom py8 px16">
@@ -242,21 +258,18 @@ function Header() {
                   displayName={user.displayName}
                   isLink={false}
                   noBadgeOnClick
+                  noTooltip
                   userBasicInfo={userBasicInfo}
                 />
                 <FontAwesomeIcon icon={faChevronDown} />
               </Space>
               {accountSectionActive && (
-                <Space align="center" direction="vertical" size="middle">
-                  <p
-                    className="tac fs-14"
-                    onClick={() => {
-                      signOut2(user.uid);
-                    }}
-                    type="link"
-                  >
-                    Sign Out
-                  </p>
+                <Space
+                  align="center"
+                  className="pt16"
+                  direction="vertical"
+                  size="middle"
+                >
                   <Link
                     className={
                       "flex full-center button-3 " +
@@ -299,12 +312,45 @@ function Header() {
                     <FontAwesomeIcon className="mx8" icon={faCog} />
                     <p className="ic">Settings</p>
                   </Link>
+                  <p
+                    className="tac fs-14"
+                    onClick={() => {
+                      signOut2(user.uid);
+                    }}
+                    type="link"
+                  >
+                    <FontAwesomeIcon className="mx8" icon={faSignOut} />
+                    Sign Out
+                  </p>
                 </Space>
               )}
             </Container>
           )}
 
           <Space align="center" direction="vertical" size="middle">
+            <Link
+              className={
+                "flex full-center button-3 " +
+                isPageActive("/people-online", pathname)
+              }
+              to="/people-online"
+            >
+              <FontAwesomeIcon className="mr8" icon={faUserFriends} />
+              <p className="ic">
+                {totalOnlineUsers}{" "}
+                {totalOnlineUsers === 1 ? "Person" : "People"} Online
+              </p>
+            </Link>
+            <Link
+              className={
+                "flex full-center button-3 " +
+                isPageActive("/vent-to-strangers", pathname)
+              }
+              to="/vent-to-strangers"
+            >
+              <FontAwesomeIcon className="mr8" icon={faConciergeBell} />
+              <p className="ic">Post a Vent</p>
+            </Link>
             <Link
               className={
                 "flex full-center button-3 " +
@@ -341,6 +387,30 @@ function Header() {
                 </p>
               )}
             </Link>
+
+            <Link
+              className={
+                "button-3 flex full-center relative " +
+                isPageActive("/chat-with-strangers", pathname)
+              }
+              to="/chat-with-strangers"
+            >
+              <FontAwesomeIcon className="mr8" icon={faComments} />
+              <p className="ic">
+                {"Chat With Strangers" +
+                  (queueLength === -1 ? "" : ` (${queueLength})`)}
+              </p>
+            </Link>
+            <Link
+              className={
+                "flex full-center button-3 " +
+                isPageActive("/rewards", pathname)
+              }
+              to="/rewards"
+            >
+              <FontAwesomeIcon className="mr8" icon={faStarShooting} />
+              <p className="ic">Rewards</p>
+            </Link>
             <Link
               className={
                 "button-3 flex full-center relative " +
@@ -351,6 +421,17 @@ function Header() {
               <FontAwesomeIcon className="mr8" icon={faQuoteLeft} />
               <p className="ic">Daily Quote Contest</p>
             </Link>
+            <Link
+              className={
+                "button-3 flex full-center relative " +
+                isPageActive("/feel-good-quotes-month", pathname)
+              }
+              to="/feel-good-quotes-month"
+            >
+              <FontAwesomeIcon className="mr8" icon={faSmileBeam} />
+              <p className="ic">Feel Good Quotes</p>
+            </Link>
+
             <Link
               className={
                 "flex full-center button-3 " +
@@ -370,39 +451,6 @@ function Header() {
             >
               <FontAwesomeIcon className="mr8" icon={faUsers} />
               <p className="ic">Make Friends</p>
-            </Link>
-            <Link
-              className={
-                "flex full-center button-3 " +
-                isPageActive("/vent-to-strangers", pathname)
-              }
-              to="/vent-to-strangers"
-            >
-              <FontAwesomeIcon className="mr8" icon={faConciergeBell} />
-              <p className="ic">Post a Vent</p>
-            </Link>
-            <Link
-              className={
-                "flex full-center button-3 " +
-                isPageActive("/rewards", pathname)
-              }
-              to="/rewards"
-            >
-              <FontAwesomeIcon className="mr8" icon={faStarShooting} />
-              <p className="ic">Rewards</p>
-            </Link>
-            <Link
-              className={
-                "flex full-center button-3 " +
-                isPageActive("/people-online", pathname)
-              }
-              to="/people-online"
-            >
-              <FontAwesomeIcon className="mr8" icon={faUserFriends} />
-              <p className="ic">
-                {totalOnlineUsers}{" "}
-                {totalOnlineUsers === 1 ? "Person" : "People"} Online
-              </p>
             </Link>
           </Space>
           {!user && (
@@ -453,7 +501,7 @@ function Header() {
           setActiveModal={setStarterModal}
         />
       )}
-    </Container>
+    </HandleOutsideClick>
   );
 }
 
