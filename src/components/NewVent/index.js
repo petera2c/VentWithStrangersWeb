@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import loadable from "@loadable/component";
 import TextArea from "react-textarea-autosize";
 import algoliasearch from "algoliasearch";
 import { message, Space, Tooltip } from "antd";
@@ -9,7 +10,6 @@ import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Container from "../containers/Container";
-import Emoji from "../Emoji";
 import HandleOutsideClick from "../containers/HandleOutsideClick";
 import MakeAvatar from "../views/MakeAvatar";
 import StarterModal from "../modals/Starter";
@@ -31,6 +31,8 @@ import {
   selectEncouragingMessage,
 } from "./util";
 import { checks } from "./util";
+
+const Emoji = loadable(() => import("../Emoji"));
 
 const searchClient = algoliasearch(
   "N7KIA5G22X",
@@ -56,6 +58,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
   const [userVentTimeOutFormatted, setUserVentTimeOutFormatted] = useState("");
   const [ventTags, setVentTags] = useState([]);
 
+  const [hasStartedToWriteVent, setHasStartedToWriteVent] = useState(false);
   const [placeholderText, setPlaceholderText] = useState("");
   const [postingDisableFunction, setPostingDisableFunction] = useState();
 
@@ -172,7 +175,10 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
 
               setDescription(event.target.value);
             }}
-            onClick={() => setIsMinified(false)}
+            onClick={() => {
+              setIsMinified(false);
+              setHasStartedToWriteVent(true);
+            }}
             placeholder={
               isBirthdayPost
                 ? "Have the best birthday ever!"
@@ -183,7 +189,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
             minRows={isMinified ? 1 : 3}
             value={description}
           />
-          {!isMobileOrTablet && (
+          {!isMobileOrTablet && hasStartedToWriteVent && (
             <Emoji
               handleChange={(emoji) => {
                 if (postingDisableFunction) return postingDisableFunction();

@@ -140,6 +140,8 @@ function RoutesComp() {
     };
   }, [isMounted, user]);
 
+  console.log(window.screen.width);
+  console.log(!window.screen.width < 940);
   return (
     <UserContext.Provider
       value={{
@@ -158,11 +160,11 @@ function RoutesComp() {
       >
         <Router>
           <Container className="screen-container column">
-            {!window.screen.width < 940 && <Header />}
+            {!(window.screen.width < 940) && <Header />}
             {window.screen.width < 940 && <MobileHeader />}
 
             <Container className="flex-fill ov-hidden">
-              {!window.screen.width < 940 && <Sidebar />}
+              {!(window.screen.width < 940) && <Sidebar />}
 
               {!loading && (
                 <Suspense

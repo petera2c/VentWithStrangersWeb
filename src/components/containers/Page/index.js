@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ReactGA from "react-ga";
 import { Helmet } from "react-helmet";
-import loadable from "@loadable/component";
 
-const Container = loadable(() => import("../Container"));
+import Container from "../Container";
 
 function Page({
   children,
