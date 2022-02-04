@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { Progress, Space, Tooltip } from "antd";
 
 import { UserContext } from "../../context";
@@ -14,6 +15,8 @@ import {
 
 import Container from "../../components/containers/Container";
 import Page from "../../components/containers/Page";
+
+dayjs.extend(relativeTime);
 
 function RewardsPage() {
   const isMounted = useIsMounted();

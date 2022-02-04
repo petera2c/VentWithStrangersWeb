@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
 import { MentionsInput, Mention } from "react-mentions";
 import { Button, Dropdown, message } from "antd";
 
@@ -45,6 +47,7 @@ import {
   startConversation,
   ventHasLiked,
 } from "./util";
+dayjs.extend(relativeTime);
 
 const SmartLink = ({ children, className, disablePostOnClick, to }) => {
   if (disablePostOnClick || !to) {

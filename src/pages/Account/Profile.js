@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Button, Space } from "antd";
 
@@ -46,6 +47,8 @@ import {
   userSignUpProgress,
 } from "../../util";
 import { getUser, getUsersComments, getUsersVents } from "./util";
+
+dayjs.extend(relativeTime);
 
 function ProfileSection() {
   const isMounted = useIsMounted();

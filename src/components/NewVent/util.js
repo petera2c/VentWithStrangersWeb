@@ -13,11 +13,14 @@ import {
 } from "firebase/firestore";
 
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import { db } from "../../config/db_init";
 
 import { message } from "antd";
 
 import { calculateKarma, userSignUpProgress } from "../../util";
+
+dayjs.extend(utc);
 
 export const checks = (
   isUserKarmaSufficient,

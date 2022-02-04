@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { useNavigate } from "react-router-dom";
 
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
@@ -20,6 +21,8 @@ import {
   conversationListener,
   readConversation,
 } from "./util";
+
+dayjs.extend(relativeTime);
 
 function ConversationOption({
   conversation,

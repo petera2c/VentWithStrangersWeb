@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { Space } from "antd";
 
 import { faBaby } from "@fortawesome/pro-solid-svg-icons/faBaby";
@@ -32,6 +33,8 @@ import {
   useIsMounted,
   userSignUpProgress,
 } from "../../util";
+
+dayjs.extend(relativeTime);
 
 function UserComponent({
   additionalUserInfo,

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { MentionsInput, Mention } from "react-mentions";
 import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 
 import { faClock } from "@fortawesome/pro-regular-svg-icons/faClock";
 import { faHeart } from "@fortawesome/pro-regular-svg-icons/faHeart";
@@ -30,6 +31,7 @@ import {
   reportComment,
   swapTags,
 } from "./util";
+dayjs.extend(relativeTime);
 
 function Comment({
   arrayLength,
