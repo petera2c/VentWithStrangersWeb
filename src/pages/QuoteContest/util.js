@@ -16,9 +16,12 @@ import {
 } from "firebase/firestore";
 import { db } from "../../config/db_init";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import { message } from "antd";
 
 import { getEndAtValueTimestamp } from "../../util";
+
+dayjs.extend(utc);
 
 export const deleteQuote = async (
   quoteID,
