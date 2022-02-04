@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import TextArea from "react-textarea-autosize";
-import { Button, DatePicker, message, Modal } from "antd";
+import { Button, message, Modal } from "antd";
+
+import DatePicker from "./test.tsx";
 
 import { faBirthdayCake } from "@fortawesome/pro-duotone-svg-icons/faBirthdayCake";
 import { faEye } from "@fortawesome/pro-solid-svg-icons/faEye";
@@ -213,7 +215,7 @@ function AccountSection() {
                         ? dayjs(birthDate.format("YYYY/MM/DD"), "YYYY/MM/DD")
                         : null
                     }
-                    format={"YYYY/MM/DD"}
+                    format="YYYY/MM/DD"
                     onChange={(dateString) => {
                       if (!dateString) return setBirthDate(null);
                       const date = new dayjs(dateString);

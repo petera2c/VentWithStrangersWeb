@@ -19,6 +19,7 @@
     "@stripe/stripe-js": "^1.22.0",
     "algoliasearch": "^4.12.0",
     "antd": "^4.18.3",
+    "antd-dayjs-webpack-plugin": "^1.0.6",
     "avataaars": "^2.0.0",
     "axios": "^0.24.0",
     "dayjs": "^1.10.7",

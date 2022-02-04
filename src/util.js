@@ -69,7 +69,7 @@ export const combineObjectWithID = (id, object) => {
 
 export const countdown = (
   isMounted,
-  momentTimeout,
+  dayjsTimeout,
   setTimeout,
   setTimeOutFormatted
 ) => {
@@ -79,7 +79,7 @@ export const countdown = (
         setTimeOutFormatted(formatSeconds(oldUserVentTimeOut));
       }
       if (oldUserVentTimeOut) return oldUserVentTimeOut - 1;
-      else return Math.round(new dayjs(momentTimeout).diff(new dayjs()) / 1000);
+      else return Math.round(new dayjs(dayjsTimeout).diff(new dayjs()) / 1000);
     });
   }
 };

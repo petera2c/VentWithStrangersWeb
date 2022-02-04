@@ -55,14 +55,18 @@ function QuoteContestPage() {
 
     if (user) getCanUserCreateQuote(isMounted, setCanUserCreateQuote, user.uid);
     getQuotes(isMounted, undefined, setCanLoadMoreQuotes, setQuotes);
-    const timeLeftMoment = new dayjs()
-      .utcOffset(0)
-      .add(1, "day")
-      .set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
+    let timeLeftDayjs = new dayjs().utcOffset(0).add(1, "day");
+    timeLeftDayjs = timeLeftDayjs.set("hour", 0);
+    timeLeftDayjs = timeLeftDayjs.set("minute", 0);
+    timeLeftDayjs = timeLeftDayjs.set("hour", 0);
+    timeLeftDayjs = timeLeftDayjs.set("hour", 0);
+    //  .set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
 
-    countdown(isMounted, timeLeftMoment, setContestTimeLeft);
+    console.log(timeLeftDayjs.format("YYYY MM DD HH mm ss"));
+
+    countdown(isMounted, timeLeftDayjs, setContestTimeLeft);
     let interval = setInterval(
-      () => countdown(isMounted, timeLeftMoment, setContestTimeLeft),
+      () => countdown(isMounted, timeLeftDayjs, setContestTimeLeft),
       1000
     );
 

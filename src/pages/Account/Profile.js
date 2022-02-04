@@ -188,7 +188,7 @@ function ProfileSection() {
                     <h6>Created Account</h6>
                     <p>
                       {new dayjs(userBasicInfo.server_timestamp).format(
-                        "MMMM Do YYYY"
+                        "MMMM D YYYY"
                       )}
                     </p>
                   </Container>
