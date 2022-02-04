@@ -190,7 +190,7 @@ function Conversations() {
 
 let temp;
 
-if (getIsMobileOrTablet()) temp = Conversations;
+if (!getIsMobileOrTablet()) temp = Conversations;
 else temp = MobileIndex;
 
 export default temp;

@@ -54,14 +54,6 @@ function MobileConversations() {
             setCanLoadMore(false);
 
           setConversations(newConversations);
-
-          if (
-            !activeConversation &&
-            newConversations &&
-            newConversations.length !== 0 &&
-            newConversations[0].id
-          )
-            setActiveConversation(newConversations[0].id);
         },
         user.uid
       );
@@ -70,7 +62,7 @@ function MobileConversations() {
     return () => {
       if (newMessageListenerUnsubscribe) newMessageListenerUnsubscribe();
     };
-  }, [activeConversation, isMounted, user]);
+  }, [isMounted, user]);
 
   return (
     <Page className="bg-grey-2">
