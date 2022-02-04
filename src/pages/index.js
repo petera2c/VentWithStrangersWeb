@@ -58,7 +58,6 @@ const VentsPage = React.lazy(() => import("./Vents"));
 function RoutesComp() {
   const isMounted = useRef(false);
 
-  const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
   const [isUsersBirthday, setIsUsersBirthday] = useState(false);
   const [newReward, setNewReward] = useState();
   const [totalOnlineUsers, setTotalOnlineUsers] = useState();
@@ -111,10 +110,6 @@ function RoutesComp() {
     isMounted.current = true;
 
     let newRewardListenerUnsubscribe;
-    import("../util").then((functions) => {
-      if (isMounted.current)
-        setIsMobileOrTablet(functions.getIsMobileOrTablet());
-    });
 
     if (user) {
       import("./util").then((functions) => {
@@ -163,11 +158,11 @@ function RoutesComp() {
       >
         <Router>
           <Container className="screen-container column">
-            {!isMobileOrTablet && <Header />}
-            {isMobileOrTablet && <MobileHeader />}
+            {!window.screen.width < 940 && <Header />}
+            {window.screen.width < 940 && <MobileHeader />}
 
             <Container className="flex-fill ov-hidden">
-              {!isMobileOrTablet && <Sidebar />}
+              {!window.screen.width < 940 && <Sidebar />}
 
               {!loading && (
                 <Suspense
