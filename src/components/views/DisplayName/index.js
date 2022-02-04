@@ -28,7 +28,7 @@ function DisplayName({
 
   if (isLink)
     return (
-      <Container className="align-center flex-fill ov-hidden">
+      <Container className="align-center flex-fill ov-hidden gap4">
         <Link
           className="flex clickable align-center ov-hidden"
           onClick={(e) => {
