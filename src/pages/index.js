@@ -37,8 +37,12 @@ const ChatWithStrangersPage = React.lazy(() => import("./ChatWithStrangers"));
 const ConversationsPage = React.lazy(() => import("./Conversations"));
 const MakeFriendsPage = React.lazy(() => import("./MakeFriends"));
 const OnlineUsersPage = React.lazy(() => import("./OnlineUsers"));
-const QuoteContestPage = React.lazy(() => import("./QuoteContest"));
 const RewardsPage = React.lazy(() => import("./Rewards"));
+
+const QuoteContestPage = React.lazy(() => import("./QuoteContest"));
+const TopQuotesMonthPage = React.lazy(() =>
+  import("./QuoteContest/TopQuotesMonth")
+);
 
 const TagsIndividualPage = React.lazy(() => import("./tags/Individual"));
 const TagsPage = React.lazy(() => import("./tags/All"));
@@ -195,6 +199,10 @@ function RoutesComp() {
                       element={<ChatWithStrangersPage />}
                     />
                     <Route path="chat" element={<ConversationsPage />} />
+                    <Route
+                      path="feel-good-quotes-month"
+                      element={<TopQuotesMonthPage />}
+                    />
                     <Route path="make-friends" element={<MakeFriendsPage />} />
                     <Route
                       path="notifications"
@@ -225,7 +233,6 @@ function RoutesComp() {
                       path="tags/:tagID"
                       element={<TagsIndividualPage />}
                     />
-
                     <Route path="trending" element={<VentsPage />} />
                     <Route path="vent-to-strangers" element={<NewVentPage />} />
                     <Route

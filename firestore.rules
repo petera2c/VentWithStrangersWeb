@@ -78,6 +78,10 @@ service cloud.firestore {
         allow read: if true;
         allow write: if false;
       }
+      match /is_featured {
+        allow read: if true;
+        allow write: if false;
+      }
       match /like_counter {
         allow read: if true;
         allow write: if false;

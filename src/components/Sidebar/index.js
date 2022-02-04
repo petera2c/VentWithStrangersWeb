@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { off } from "firebase/database";
 import { Space } from "antd";
 
+import { faSmileBeam } from "@fortawesome/pro-duotone-svg-icons/faSmileBeam";
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
 import { faInfo } from "@fortawesome/pro-duotone-svg-icons/faInfo";
 import { faPrayingHands } from "@fortawesome/pro-duotone-svg-icons/faPrayingHands";
@@ -13,7 +14,6 @@ import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Container from "../containers/Container";
-import MakeAd from "../MakeAd";
 import MakeAvatar from "../views/MakeAvatar";
 
 import { OnlineUsersContext } from "../../context";
@@ -106,12 +106,17 @@ function Sidebar() {
         text="VWS Info"
       />
       <SideBarLink
+        icon={faSmileBeam}
+        link="/feel-good-quotes-month"
+        pathname={pathname}
+        text="Feel Good Quotes"
+      />
+      <SideBarLink
         icon={faUsers}
         link="/make-friends"
         pathname={pathname}
         text="Make Friends"
       />
-      <MakeAd className="mt16" slot="4732645487" />
     </Space>
   );
 }

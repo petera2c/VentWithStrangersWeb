@@ -25,11 +25,6 @@ export const getOnlineUsers = (isMounted, callback, fetchUsersCount) => {
 
       console.log(counter);
 
-      usersArray.sort((a, b) => {
-        if (a.lastOnline < b.lastOnline || !a.lastOnline) return 1;
-        if (a.lastOnline > b.lastOnline || !b.lastOnline) return -1;
-        return 0;
-      });
       if (isMounted()) callback(usersArray);
     });
 };

@@ -1,4 +1,5 @@
 const admin = require("firebase-admin");
+const moment = require("moment-timezone");
 
 const calculateKarma = (usereBasicInfo) => {
   return usereBasicInfo.karma ? usereBasicInfo.karma : 0;
@@ -148,6 +149,11 @@ const getMetaInformation = async (url, callback) => {
     title = "Feel Good Quotes";
   } else if (url === "/recent") {
     title = "Recent Vents";
+  } else if (url === "/feel-good-quotes-month") {
+    description =
+      "Our favourite quotes from contest winners on Vent With Strangers! We hope these quotes inspire you and make your day just a little bit better :)";
+    keywords = "feel good quotes, happy quotes, inspirational quotes";
+    title = moment().format("MMMM YYYY") + " Feel Good Quotes";
   } else if (url === "/rewards") {
     description =
       "Earning rewards is lots of fun on Vent With Strangers. View this page to know how far away your milestones are! :)";

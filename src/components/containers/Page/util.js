@@ -1,3 +1,5 @@
+import moment from "moment-timezone";
+
 export const getMetaData = (page, search) => {
   let description = "";
   let keywords = "";
@@ -37,6 +39,11 @@ export const getMetaData = (page, search) => {
     title = "Profile";
   } else if (page === "/privacy-policy") {
     title = "Privacy Policy";
+  } else if (page === "/feel-good-quotes-month") {
+    description =
+      "Our favourite quotes from contest winners on Vent With Strangers! We hope these quotes inspire you and make your day just a little bit better :)";
+    keywords = "feel good quotes, happy quotes, inspirational quotes";
+    title = moment().format("MMMM YYYY") + " Feel Good Quotes";
   } else if (page === "/quote-contest") {
     description =
       "View geel good quotes. We have a daily contest to see who can create the best feel good quote. View past winners and all quotes.";

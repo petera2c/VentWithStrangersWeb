@@ -141,6 +141,20 @@
       ]
     },
     {
+      "collectionGroup": "quotes",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "is_featured",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "server_timestamp",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "rewards",
       "queryScope": "COLLECTION",
       "fields": [
