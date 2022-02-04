@@ -6,7 +6,7 @@ import { off } from "firebase/database";
 import { Button, message, Space } from "antd";
 
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
-import { faBars } from "@fortawesome/pro-duotone-svg-icons/faBars";
+import { faBars } from "@fortawesome/pro-solid-svg-icons/faBars";
 import { faBell } from "@fortawesome/pro-duotone-svg-icons/faBell";
 import { faChartNetwork } from "@fortawesome/pro-duotone-svg-icons/faChartNetwork";
 import { faChevronDown } from "@fortawesome/pro-duotone-svg-icons/faChevronDown";

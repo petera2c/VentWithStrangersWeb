@@ -153,12 +153,13 @@ const signPeopleOut = () => {
     .database()
     .ref("total_online_users")
     .on("value", (doc) => {
-      if (doc.val())
+      const totalOnlineUser = doc.val();
+      if (totalOnlineUser)
         admin
           .database()
           .ref("status")
           .orderByChild("state")
-          .limitToLast(doc.val())
+          .limitToLast(totalOnlineUser)
           .once("value", (snapshot) => {
             let numberOfUsersOnline = 0;
 

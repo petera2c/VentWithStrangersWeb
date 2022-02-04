@@ -228,6 +228,16 @@ const updateTotalUsersOnline = (change, context) => {
       .ref("status/" + context.params.userID)
       .update({ last_online: admin.database.ServerValue.TIMESTAMP });
   }
+  if (
+    changeAfter.val() &&
+    changeAfter.val().state === "online" &&
+    changeAfter.val().last_online
+  ) {
+    admin
+      .database()
+      .ref("status/" + context.params.userID)
+      .update({ index: "online" + changeAfter.val().last_online });
+  }
 
   if (!changeAfter.val() && !changeBefore.val()) {
     // Do nothing, should never happen
