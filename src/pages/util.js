@@ -98,7 +98,6 @@ export const setUserOnlineStatus = async (status, uid) => {
     });
   else
     await set(ref(db2, "status/" + uid), {
-      index: undefined,
       last_online: serverTimestamp(),
       state: status,
     });
@@ -112,7 +111,6 @@ export const setIsUserOnlineToDatabase = (uid) => {
   const connectedRef = ref(db2, ".info/connected");
   const userStatusDatabaseRef = ref(db2, "status/" + uid);
   const diconnectObject = {
-    index: undefined,
     last_online: serverTimestamp(),
     state: "offline",
   };

@@ -243,6 +243,15 @@ const updateTotalUsersOnline = (change, context) => {
       .database()
       .ref("status/" + context.params.userID)
       .update({ index: "online" + changeAfter.val().last_online });
+  } else if (
+    changeAfter.val() &&
+    changeAfter.val().state === "offline" &&
+    changeAfter.val().index
+  ) {
+    admin
+      .database()
+      .ref("status/" + context.params.userID + "/index")
+      .remove();
   }
 
   if (!changeAfter.val() && !changeBefore.val()) {
