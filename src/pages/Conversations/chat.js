@@ -76,7 +76,7 @@ function Chat({
     getMessages(
       conversation.id,
       isMounted,
-      messages,
+      [],
       scrollToBottom,
       setCanLoadMore,
       setMessages
@@ -93,7 +93,7 @@ function Chat({
     return () => {
       if (messageListenerUnsubscribe) messageListenerUnsubscribe();
     };
-  }, [conversation.id]);
+  }, [conversation.id, isMounted]);
 
   let conversationPartnerID;
   if (conversation.members && conversation.members.length === 2)

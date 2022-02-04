@@ -12,7 +12,7 @@ import {
   where,
 } from "firebase/firestore";
 
-import moment from "moment-timezone";
+import dayjs from "dayjs";
 import { db } from "../../config/db_init";
 
 import { message } from "antd";
@@ -52,7 +52,7 @@ export const checks = (
 };
 
 export const getQuote = async (isMounted, setQuote) => {
-  const yesterdaysFormattedDate = new moment(Timestamp.now().toMillis())
+  const yesterdaysFormattedDate = new dayjs(Timestamp.now().toMillis())
     .utcOffset(0)
     .subtract(1, "days")
     .format("MM-DD-YYYY");
@@ -89,10 +89,10 @@ export const getUserVentTimeOut = async (callback, userID) => {
   const userVentTimeOutDoc = await getDoc(doc(db, "user_vent_timeout", userID));
 
   let timeOutDate;
-  const currentDate = new moment();
+  const currentDate = new dayjs();
 
   if (userVentTimeOutDoc.exists()) {
-    timeOutDate = new moment(userVentTimeOutDoc.data().value);
+    timeOutDate = new dayjs(userVentTimeOutDoc.data().value);
   }
 
   if (timeOutDate && currentDate.diff(timeOutDate) < 0) callback(timeOutDate);

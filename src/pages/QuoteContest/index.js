@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import TextArea from "react-textarea-autosize";
-import moment from "moment-timezone";
+import dayjs from "dayjs";
 import { Button, message } from "antd";
 
 import { faChevronCircleUp } from "@fortawesome/pro-solid-svg-icons/faChevronCircleUp";
@@ -55,9 +55,9 @@ function QuoteContestPage() {
 
     if (user) getCanUserCreateQuote(isMounted, setCanUserCreateQuote, user.uid);
     getQuotes(isMounted, undefined, setCanLoadMoreQuotes, setQuotes);
-    const timeLeftMoment = new moment()
+    const timeLeftMoment = new dayjs()
       .utcOffset(0)
-      .add(1, "days")
+      .add(1, "day")
       .set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
 
     countdown(isMounted, timeLeftMoment, setContestTimeLeft);

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import moment from "moment-timezone";
+import dayjs from "dayjs";
 import { Space } from "antd";
 
 import { faBaby } from "@fortawesome/pro-solid-svg-icons/faBaby";
@@ -50,9 +50,7 @@ function UserComponent({
   const [starterModal, setStarterModal] = useState(false);
 
   const [karmaPoints, setKarmaPoints] = useState(0);
-  const [capitolizedDisplayName, setCapitolizedDisplayName] = useState(
-    displayName
-  );
+
   useEffect(() => {
     getUserBasicInfo((newUserInfo) => {
       if (isMounted) {
@@ -60,8 +58,6 @@ function UserComponent({
         setKarmaPoints(calculateKarma(newUserInfo));
       }
     }, userID);
-
-    setCapitolizedDisplayName(capitolizeFirstChar(displayName));
 
     return () => {};
   }, [isMounted, userID]);
@@ -96,12 +92,12 @@ function UserComponent({
         {(userInfo.birth_date || userInfo.gender || userInfo.pronouns) && (
           <Container className="gap8">
             {Boolean(
-              new moment().year() - new moment(userInfo.birth_date).year()
+              new dayjs().year() - new dayjs(userInfo.birth_date).year()
             ) && (
               <Container className="column">
                 <h6 className="fw-400">Age</h6>
                 <h6 className="grey-1 fw-400">
-                  {new moment().year() - new moment(userInfo.birth_date).year()}
+                  {new dayjs().year() - new dayjs(userInfo.birth_date).year()}
                 </h6>
               </Container>
             )}
@@ -185,12 +181,14 @@ function UserComponent({
                 }}
               >
                 <FontAwesomeIcon className="mr8" icon={faComments} />
-                <p className="ic ellipsis">Message {capitolizedDisplayName}</p>
+                <p className="ic ellipsis">
+                  Message {capitolizeFirstChar(displayName)}
+                </p>
               </button>
             )}
             {lastOnline && (
               <p className="x-fill lh-1">
-                Last Seen: {moment(lastOnline).fromNow()}
+                Last Seen: {dayjs(lastOnline).fromNow()}
               </p>
             )}
           </Container>

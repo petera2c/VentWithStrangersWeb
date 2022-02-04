@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import moment from "moment-timezone";
+import dayjs from "dayjs";
 
 import Container from "../../../components/containers/Container";
 import Page from "../../../components/containers/Page";
@@ -19,7 +19,7 @@ function QuoteWinnersPage() {
   const [thisMonthYearFormatted, setThisMonthYearFormatted] = useState();
 
   useEffect(() => {
-    if (isMounted()) setThisMonthYearFormatted(moment().format("MMMM YYYY"));
+    if (isMounted()) setThisMonthYearFormatted(dayjs().format("MMMM YYYY"));
     getQuotes(isMounted, setQuotes);
   }, [isMounted, setQuotes]);
 
@@ -69,6 +69,9 @@ function QuoteDisplay({ quote }) {
       <Link className="button-8 fs-20 tac" to={"/profile?" + quote.userID}>
         - {capitolizeFirstChar(userBasicInfo.displayName)}
       </Link>
+      <p className="tar">
+        {dayjs(quote.server_timestamp).format("MMMM DD YYYY")}
+      </p>
     </Container>
   );
 }

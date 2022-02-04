@@ -12,7 +12,7 @@ import { onValue, ref } from "firebase/database";
 import { getAuth, sendEmailVerification, signOut } from "firebase/auth";
 import { db, db2 } from "./config/db_init";
 import reactStringReplace from "react-string-replace";
-import moment from "moment-timezone";
+import dayjs from "dayjs";
 import { message, Modal } from "antd";
 
 export const blockUser = async (userID, userIDToBlock) => {
@@ -79,8 +79,7 @@ export const countdown = (
         setTimeOutFormatted(formatSeconds(oldUserVentTimeOut));
       }
       if (oldUserVentTimeOut) return oldUserVentTimeOut - 1;
-      else
-        return Math.round(new moment(momentTimeout).diff(new moment()) / 1000);
+      else return Math.round(new dayjs(momentTimeout).diff(new dayjs()) / 1000);
     });
   }
 };
@@ -229,7 +228,7 @@ export const isUserAccountNew = (userBasicInfo) => {
   if (!userBasicInfo) return false;
 
   const seconds = Math.round(
-    moment().diff(moment(userBasicInfo.server_timestamp)) / 1000
+    dayjs().diff(dayjs(userBasicInfo.server_timestamp)) / 1000
   );
 
   const hours = Math.floor(seconds / 3600);

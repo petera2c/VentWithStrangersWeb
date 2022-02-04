@@ -23,7 +23,7 @@ function BirthdayModal({ close }) {
     }, 2000);
 
     return () => {};
-  }, []);
+  }, [isMounted]);
 
   return (
     <Container

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import moment from "moment-timezone";
+import dayjs from "dayjs";
 import TextArea from "react-textarea-autosize";
 import { Button, DatePicker, message, Modal } from "antd";
 
@@ -54,7 +54,7 @@ function AccountSection() {
 
   const setAccountInfo = (userInfo) => {
     if (userInfo.bio) setBio(userInfo.bio);
-    if (userInfo.birth_date) setBirthDate(new moment(userInfo.birth_date));
+    if (userInfo.birth_date) setBirthDate(new dayjs(userInfo.birth_date));
     if (userInfo.education !== undefined) setEducation(userInfo.education);
     if (userInfo.gender) setGender(userInfo.gender);
     if (userInfo.kids !== undefined) setKids(userInfo.kids);
@@ -210,15 +210,15 @@ function AccountSection() {
                   <DatePicker
                     value={
                       birthDate
-                        ? moment(birthDate.format("YYYY/MM/DD"), "YYYY/MM/DD")
+                        ? dayjs(birthDate.format("YYYY/MM/DD"), "YYYY/MM/DD")
                         : null
                     }
                     format={"YYYY/MM/DD"}
                     onChange={(dateString) => {
                       if (!dateString) return setBirthDate(null);
-                      const date = new moment(dateString);
+                      const date = new dayjs(dateString);
 
-                      const diffInYears = new moment().diff(date) / 31536000000;
+                      const diffInYears = new dayjs().diff(date) / 31536000000;
                       if (diffInYears > 11) setBirthDate(date);
                       else
                         message.error(

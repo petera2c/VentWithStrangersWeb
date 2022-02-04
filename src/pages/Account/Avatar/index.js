@@ -17,7 +17,7 @@ import SubscribeColumn from "../../../components/SubscribeColumn";
 
 import { UserContext } from "../../../context";
 
-import { getUserBasicInfo } from "../../../util";
+import { getUserBasicInfo, useIsMounted } from "../../../util";
 import {
   accessoriesArray,
   clothesArray,
@@ -33,6 +33,7 @@ import {
 } from "./util";
 
 function AvatarSection() {
+  const isMounted = useIsMounted();
   const { setUserBasicInfo, user } = useContext(UserContext);
 
   const [activeSection, setActiveSection] = useState(0);
@@ -51,9 +52,10 @@ function AvatarSection() {
 
   useEffect(() => {
     getUserBasicInfo((userInfo) => {
-      if (userInfo && userInfo.avatar) setAvatar(userInfo.avatar);
+      if (userInfo && userInfo.avatar && isMounted())
+        setAvatar(userInfo.avatar);
     }, user.uid);
-  }, []);
+  }, [isMounted, setAvatar, user]);
 
   return (
     <Page className="pa16">

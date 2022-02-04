@@ -17,7 +17,7 @@ function LoginModal({ setActiveModal }) {
 
   useEffect(() => {
     setIsMobileOrTablet(getIsMobileOrTablet());
-  });
+  }, [setIsMobileOrTablet]);
 
   return (
     <Container className="modal-container">

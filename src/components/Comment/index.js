@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { MentionsInput, Mention } from "react-mentions";
-import moment from "moment-timezone";
+import dayjs from "dayjs";
 
 import { faClock } from "@fortawesome/pro-regular-svg-icons/faClock";
 import { faHeart } from "@fortawesome/pro-regular-svg-icons/faHeart";
@@ -226,7 +226,7 @@ function Comment({
         <Container className="align-center">
           <FontAwesomeIcon className="clickable grey-5 mr8" icon={faClock} />
           <p className="grey-5 fs-16">
-            {moment(comment.server_timestamp).fromNow()}
+            {dayjs(comment.server_timestamp).fromNow()}
           </p>
         </Container>
       </Container>

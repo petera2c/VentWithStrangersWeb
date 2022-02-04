@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { UserContext } from "../../context";
@@ -43,7 +43,7 @@ function MobileConversations() {
     if (user) {
       getConversations(
         activeConversation,
-        conversations,
+        [],
         isMounted,
         setActiveConversation,
         (newConversations) => {
@@ -58,7 +58,8 @@ function MobileConversations() {
           if (
             !activeConversation &&
             newConversations &&
-            newConversations.length !== 0
+            newConversations.length !== 0 &&
+            newConversations[0].id
           )
             setActiveConversation(newConversations[0].id);
         },
@@ -69,7 +70,7 @@ function MobileConversations() {
     return () => {
       if (newMessageListenerUnsubscribe) newMessageListenerUnsubscribe();
     };
-  }, []);
+  }, [activeConversation, isMounted, user]);
 
   return (
     <Page className="bg-grey-2">

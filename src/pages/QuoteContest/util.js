@@ -15,7 +15,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../../config/db_init";
-import moment from "moment-timezone";
+import dayjs from "dayjs";
 import { message } from "antd";
 
 import { getEndAtValueTimestamp } from "../../util";
@@ -46,7 +46,7 @@ export const getCanUserCreateQuote = async (
   setCanUserCreateQuote,
   userID
 ) => {
-  const todaysFormattedDate = new moment(Timestamp.now().toMillis())
+  const todaysFormattedDate = new dayjs(Timestamp.now().toMillis())
     .utcOffset(0)
     .format("MM-DD-YYYY");
 
@@ -87,7 +87,7 @@ export const getQuotes = async (
   setQuotes
 ) => {
   let startAt = getEndAtValueTimestamp(quotes);
-  const todaysFormattedDate = new moment().utcOffset(0).format("MM-DD-YYYY");
+  const todaysFormattedDate = new dayjs().utcOffset(0).format("MM-DD-YYYY");
 
   const quotesSnapshot = await getDocs(
     query(

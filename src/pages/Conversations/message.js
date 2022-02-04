@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import moment from "moment-timezone";
+import dayjs from "dayjs";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle } from "@fortawesome/pro-solid-svg-icons/faExclamationTriangle";
@@ -52,7 +52,7 @@ function Message({ conversationID, message, setMessages, userID }) {
                 "fs-12 " + (message.userID === userID ? "white" : "grey-1")
               }
             >
-              {moment(message.server_timestamp).format("h:mm A")}
+              {dayjs(message.server_timestamp).format("h:mm A")}
             </p>
           </Container>
           {messageOptions && (

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import moment from "moment-timezone";
+import dayjs from "dayjs";
 import { Progress, Space, Tooltip } from "antd";
 
 import { UserContext } from "../../context";
@@ -128,7 +128,7 @@ function RewardsPage() {
               >
                 <h6>{obj.title}</h6>
                 <p className="blue">+ {obj.karma_gained} Karma Points</p>
-                <p>{moment(obj.server_timestamp).fromNow()}</p>
+                <p>{dayjs(obj.server_timestamp).fromNow()}</p>
               </Container>
             ))}
           </Container>

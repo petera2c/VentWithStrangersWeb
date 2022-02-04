@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import moment from "moment-timezone";
+import dayjs from "dayjs";
 import { MentionsInput, Mention } from "react-mentions";
 import { Button, Dropdown, message } from "antd";
 
@@ -282,7 +282,7 @@ function Vent({
             <Container className="x-fill align-center justify-end">
               <FontAwesomeIcon className="grey-5 mr8" icon={faClock} />
               <p className="grey-5 fs-16">
-                {moment(vent.server_timestamp).fromNow()}
+                {dayjs(vent.server_timestamp).fromNow()}
               </p>
             </Container>
           </SmartLink>

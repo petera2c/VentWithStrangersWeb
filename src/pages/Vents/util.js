@@ -8,7 +8,7 @@ import {
   startAfter,
 } from "firebase/firestore";
 import { db } from "../../config/db_init";
-import moment from "moment-timezone";
+import dayjs from "dayjs";
 import { getEndAtValueTimestamp } from "../../util";
 
 export const getMetaInformation = (pathname) => {
@@ -52,8 +52,9 @@ export const getVents = async (
       )
     );
   } else {
-    let startDate = moment();
-    startDate.subtract(3, "days");
+    let startDate = dayjs();
+    startDate.subtract(3, "day");
+
     snapshot = await getDocs(
       query(
         collection(db, "vents"),

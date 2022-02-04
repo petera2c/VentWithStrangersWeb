@@ -18,7 +18,7 @@ import {
   set,
 } from "firebase/database";
 import { db, db2 } from "../config/db_init";
-import moment from "moment-timezone";
+import dayjs from "dayjs";
 
 export const getIsUsersBirthday = async (
   isMounted,
@@ -30,10 +30,10 @@ export const getIsUsersBirthday = async (
   if (
     userInfoDoc.data() &&
     userInfoDoc.data().birth_date &&
-    new moment(userInfoDoc.data().birth_date).format("MMDD") ===
-      new moment().format("MMDD") &&
+    new dayjs(userInfoDoc.data().birth_date).format("MMDD") ===
+      new dayjs().format("MMDD") &&
     (!userInfoDoc.data().last_birthday ||
-      new moment().diff(new moment(userInfoDoc.data().last_birthday), "days") >=
+      new dayjs().diff(new dayjs(userInfoDoc.data().last_birthday), "day") >=
         365)
   ) {
     if (isMounted.current) setIsUsersBirthday(true);

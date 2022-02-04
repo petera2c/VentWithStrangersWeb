@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import moment from "moment-timezone";
+import dayjs from "dayjs";
 import Container from "../containers/Container";
 
 function NotificationList({ notifications }) {
@@ -19,7 +19,7 @@ function NotificationList({ notifications }) {
           >
             <h6>{notification.message}</h6>
             <p className="grey-1 ic">
-              {moment(notification.server_timestamp).fromNow()}
+              {dayjs(notification.server_timestamp).fromNow()}
             </p>
           </Link>
         );

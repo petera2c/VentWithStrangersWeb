@@ -41,7 +41,7 @@ function Conversations() {
 
       getConversations(
         activeConversation,
-        conversations,
+        [],
         isMounted,
         setActiveConversation,
         (newConversations) => {
@@ -54,7 +54,8 @@ function Conversations() {
           if (
             !activeConversation &&
             newConversations &&
-            newConversations.length !== 0
+            newConversations.length !== 0 &&
+            newConversations[0].id
           )
             setActiveConversation(newConversations[0].id);
         },
@@ -65,7 +66,7 @@ function Conversations() {
     return () => {
       if (newMessageListenerUnsubscribe) newMessageListenerUnsubscribe();
     };
-  }, [isMounted, user]);
+  }, [activeConversation, isMounted, user]);
 
   return (
     <Page className="bg-grey-2 ov-hidden">

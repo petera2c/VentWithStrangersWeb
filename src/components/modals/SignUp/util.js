@@ -5,7 +5,7 @@ import {
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../../config/db_init";
-import moment from "moment-timezone";
+import dayjs from "dayjs";
 import { message } from "antd";
 import Cookies from "universal-cookie";
 
@@ -62,9 +62,7 @@ export const signUp = (
         });
 
         await setDoc(doc(db, "users_display_name", res.user.uid), {
-          server_timestamp: new moment(
-            res.user.metadata.creationTime
-          ).valueOf(),
+          server_timestamp: new dayjs(res.user.metadata.creationTime).valueOf(),
           displayName,
         });
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import moment from "moment-timezone";
+import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
@@ -119,7 +119,7 @@ function ConversationOption({
           </p>
         )}
         {conversation.last_updated && (
-          <p>{new moment(conversation.last_updated).fromNow()}</p>
+          <p>{dayjs(conversation.last_updated).fromNow()}</p>
         )}
       </Container>
       <div

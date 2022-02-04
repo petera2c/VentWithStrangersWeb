@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import moment from "moment-timezone";
+import dayjs from "dayjs";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Button, Space } from "antd";
 
@@ -147,20 +147,19 @@ function ProfileSection() {
                 </Container>
 
                 {(Boolean(
-                  new moment().year() - new moment(userInfo.birth_date).year()
+                  new dayjs().year() - new dayjs(userInfo.birth_date).year()
                 ) ||
                   userInfo.gender ||
                   userInfo.pronouns) && (
                   <Container>
                     {Boolean(
-                      new moment().year() -
-                        new moment(userInfo.birth_date).year()
+                      new dayjs().year() - new dayjs(userInfo.birth_date).year()
                     ) && (
                       <Container className="column">
                         <h6>Age</h6>
                         <p>
-                          {new moment().diff(
-                            new moment(userInfo.birth_date),
+                          {new dayjs().diff(
+                            new dayjs(userInfo.birth_date),
                             "years"
                           )}
                         </p>
@@ -185,7 +184,7 @@ function ProfileSection() {
                   <Container className="column">
                     <h6>Created Account</h6>
                     <p>
-                      {new moment(userBasicInfo.server_timestamp).format(
+                      {new dayjs(userBasicInfo.server_timestamp).format(
                         "MMMM Do YYYY"
                       )}
                     </p>
@@ -323,7 +322,7 @@ function ProfileSection() {
                 )}
               {isUserOnline && isUserOnline.last_online && (
                 <Space align="center">
-                  <p>Last Seen: {moment(isUserOnline.last_online).fromNow()}</p>
+                  <p>Last Seen: {dayjs(isUserOnline.last_online).fromNow()}</p>
                 </Space>
               )}
             </Container>

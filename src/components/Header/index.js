@@ -83,7 +83,7 @@ function Header() {
       );
       newNotificationsListenerUnsubscribe = getNotifications(
         isMounted,
-        notifications,
+        [],
         setNotificationCounter,
         setNotifications,
         user
@@ -107,7 +107,7 @@ function Header() {
       if (newNotificationsListenerUnsubscribe)
         newNotificationsListenerUnsubscribe();
     };
-  }, [isMounted, pathname, user]);
+  }, [isMounted, isUserInQueueRef, navigate, pathname, setIsUserInQueue, user]);
 
   return (
     <Container className="column x-fill">

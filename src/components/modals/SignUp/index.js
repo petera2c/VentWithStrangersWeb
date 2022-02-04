@@ -18,7 +18,7 @@ function SignUpModal({ setActiveModal }) {
 
   useEffect(() => {
     setIsMobileOrTablet(getIsMobileOrTablet());
-  });
+  }, [setIsMobileOrTablet]);
 
   return (
     <Container className="modal-container full-center">
