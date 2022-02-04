@@ -57,7 +57,7 @@ function Sidebar() {
 
   return (
     <Space
-      className="container ad column ov-auto bg-white border-top pt8 px16 pb16"
+      className="container small column ov-auto bg-white border-top pt8 px16 pb16"
       direction="vertical"
     >
       <SideBarLink
@@ -143,7 +143,7 @@ function SideBarLink({
         <Container className="blue x-fill full-center">
           <FontAwesomeIcon icon={icon} style={{ fontSize: "1.25rem" }} />
         </Container>
-        <h5 className="ic">{text}</h5>
+        <h5 className="ellipsis ic">{text}</h5>
         {firstOnlineUsers && (
           <Container className="flex-fill align-end">
             {firstOnlineUsers.map((userBasicInfo, index) => (

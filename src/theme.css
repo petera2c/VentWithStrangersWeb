@@ -245,13 +245,13 @@
   width: 20vw;
 }
 .container.ad {
-  min-width: 316px;
-  width: 316px;
-  max-width: 316px;
+  min-width: 320px;
+  width: 320px;
+  max-width: 320px;
 }
 .container.small {
-  min-width: 280px;
-  width: 25vw;
+  min-width: 320px;
+  width: 20vw;
   max-width: 500px;
 }
 .container.medium {
