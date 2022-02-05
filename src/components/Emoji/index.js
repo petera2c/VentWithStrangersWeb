@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import loadable from "@loadable/component";
+import { Picker } from "emoji-mart";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSmileBeam } from "@fortawesome/pro-regular-svg-icons/faSmileBeam";
 
 import HandleOutsideClick from "../containers/HandleOutsideClick";
 
-const { Picker } = loadable(() => import("emoji-mart"));
+//const { Picker } = loadable(() => import("emoji-mart"));
 
 function Emoji({ handleChange, top }) {
   const [displayEmojiDropdown, setDisplayEmojiDropdown] = useState(false);
