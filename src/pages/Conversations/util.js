@@ -67,9 +67,11 @@ export const deleteMessage = async (conversationID, messageID, setMessages) => {
 
 export const getConversationBasicData = async (
   conversation,
+  isMounted,
   setConversationsBasicDatas,
   userID
 ) => {
+  let isUserOnlineSubscribe;
   let conversationFriendUserID;
   for (let index in conversation.members) {
     if (conversation.members[index] !== userID)
@@ -82,16 +84,19 @@ export const getConversationBasicData = async (
   );
 
   if (userBasicInfo.data() && userBasicInfo.data().displayName) {
-    getIsUserOnline((isUserOnline) => {
-      setConversationsBasicDatas((currentUsersBasicInfo) => {
-        currentUsersBasicInfo[conversation.id] = {
-          ...userBasicInfo.data(),
-          isUserOnline: isUserOnline.state,
-        };
-        return { ...currentUsersBasicInfo };
-      });
+    isUserOnlineSubscribe = getIsUserOnline((isUserOnline) => {
+      if (isMounted())
+        setConversationsBasicDatas((currentUsersBasicInfo) => {
+          currentUsersBasicInfo[conversation.id] = {
+            ...userBasicInfo.data(),
+            isUserOnline: isUserOnline.state,
+          };
+          return { ...currentUsersBasicInfo };
+        });
     }, conversationFriendUserID);
   }
+
+  return isUserOnlineSubscribe;
 };
 
 export const messageListener = (
@@ -314,28 +319,33 @@ export const setConversationIsTyping = async (conversationID, userID) => {
   });
 };
 
-export const conversationListener = (currentConversation, setConversations) => {
+export const conversationListener = (
+  currentConversation,
+  isMounted,
+  setConversations
+) => {
   const unsubscribe = onSnapshot(
     doc(db, "conversations", currentConversation.id),
     (doc) => {
       const updatedConversation = { id: doc.id, ...doc.data() };
 
-      setConversations((oldConversations) => {
-        const indexOfUpdatedConversation = oldConversations.findIndex(
-          (conversation) => conversation.id === updatedConversation.id
-        );
+      if (isMounted)
+        setConversations((oldConversations) => {
+          const indexOfUpdatedConversation = oldConversations.findIndex(
+            (conversation) => conversation.id === updatedConversation.id
+          );
 
-        for (let index in updatedConversation) {
-          oldConversations[indexOfUpdatedConversation][index] =
-            updatedConversation[index];
-        }
+          for (let index in updatedConversation) {
+            oldConversations[indexOfUpdatedConversation][index] =
+              updatedConversation[index];
+          }
 
-        oldConversations.sort((a, b) =>
-          a.last_updated < b.last_updated ? 1 : -1
-        );
+          oldConversations.sort((a, b) =>
+            a.last_updated < b.last_updated ? 1 : -1
+          );
 
-        return [...oldConversations];
-      });
+          return [...oldConversations];
+        });
     }
   );
 

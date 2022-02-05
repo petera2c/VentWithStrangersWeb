@@ -16,7 +16,6 @@ import StarterModal from "../modals/Starter";
 import { UserContext } from "../../context";
 
 import {
-  getIsUserOnline,
   getUserBasicInfo,
   hasUserBlockedUser,
   useIsMounted,
@@ -49,7 +48,6 @@ function Comment({
   const [editingComment, setEditingComment] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
   const [isContentBlocked, setIsContentBlocked] = useState(user ? true : false);
-  const [isUserOnline, setIsUserOnline] = useState(false);
   const [starterModal, setStarterModal] = useState(false);
   const [userBasicInfo, setUserBasicInfo] = useState({});
 
@@ -75,10 +73,6 @@ function Comment({
       if (isMounted()) setUserBasicInfo(newBasicUserInfo);
     }, comment.userID);
 
-    /*  getIsUserOnline((isUserOnline) => {
-      if (isMounted()) setIsUserOnline(isUserOnline.state);
-    }, comment.userID);*/
-
     return () => {};
   }, [commentID, comment.text, comment.userID, isMounted, user]);
 
@@ -97,7 +91,6 @@ function Comment({
       <Container className="justify-between py16">
         <DisplayName
           displayName={userBasicInfo.displayName}
-          isUserOnline={isUserOnline}
           userBasicInfo={userBasicInfo}
           userID={comment.userID}
         />

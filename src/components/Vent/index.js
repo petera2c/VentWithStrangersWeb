@@ -24,7 +24,6 @@ import { UserContext } from "../../context";
 import {
   blockUser,
   capitolizeFirstChar,
-  getIsUserOnline,
   getUserBasicInfo,
   hasUserBlockedUser,
   isUserAccountNew,
@@ -86,7 +85,6 @@ function Vent({
   const [commentString, setCommentString] = useState("");
   const [hasLiked, setHasLiked] = useState(false);
   const [isContentBlocked, setIsContentBlocked] = useState(user ? true : false);
-  const [isUserOnline, setIsUserOnline] = useState(false);
   const [starterModal, setStarterModal] = useState(false);
   const [vent, setVent] = useState(ventInit);
 
@@ -106,10 +104,6 @@ function Vent({
 
       if (setTitle && newVent && newVent.title && isMounted())
         setTitle(newVent.title);
-
-      /*  getIsUserOnline((isUserOnline) => {
-        if (isMounted()) setIsUserOnline(isUserOnline.state);
-      }, newVent.userID);*/
 
       getUserBasicInfo((author) => {
         if (isMounted()) setAuthor(author);
@@ -217,7 +211,6 @@ function Vent({
                     {capitolizeFirstChar(author.displayName)}
                   </h3>
                 </Link>
-                {isUserOnline && <div className="online-dot" />}
                 <KarmaBadge userBasicInfo={author} />
               </Container>
               {vent.is_birthday_post && (

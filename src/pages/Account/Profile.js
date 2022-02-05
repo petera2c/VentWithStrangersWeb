@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { off } from "firebase/database";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -82,13 +83,14 @@ function ProfileSection() {
   };
 
   useEffect(() => {
+    let isUserOnlineSubscribe;
     setIsMobileOrTablet(getIsMobileOrTablet());
 
     setVents([]);
     setComments([]);
 
     if (search) {
-      getIsUserOnline((isUserOnline) => {
+      isUserOnlineSubscribe = getIsUserOnline((isUserOnline) => {
         if (isMounted()) setIsUserOnline(isUserOnline);
       }, search);
       getUserBasicInfo((userBasicInfo) => {
@@ -107,6 +109,10 @@ function ProfileSection() {
       setComments,
       []
     );
+
+    return () => {
+      if (isUserOnlineSubscribe) off(isUserOnlineSubscribe);
+    };
   }, [isMounted, navigate, search]);
 
   return (

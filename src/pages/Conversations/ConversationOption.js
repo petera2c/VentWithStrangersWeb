@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { off } from "firebase/database";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import loadable from "@loadable/component";
@@ -14,7 +15,7 @@ import Container from "../../components/containers/Container";
 import HandleOutsideClick from "../../components/containers/HandleOutsideClick";
 import KarmaBadge from "../../components/views/KarmaBadge";
 
-import { blockUser, capitolizeFirstChar } from "../../util";
+import { blockUser, capitolizeFirstChar, useIsMounted } from "../../util";
 import {
   deleteConversation,
   getConversationBasicData,
@@ -36,6 +37,7 @@ function ConversationOption({
   setConversations,
   userID,
 }) {
+  const isMounted = useIsMounted();
   const navigate = useNavigate();
   const [blockModal, setBlockModal] = useState(false);
   const [conversationOptions, setConversationOptions] = useState(false);
@@ -49,18 +51,26 @@ function ConversationOption({
 
   useEffect(() => {
     let conversationUpdatedListenerUnsubscribe;
-
+    let isUserOnlineSubscribe;
     conversationUpdatedListenerUnsubscribe = conversationListener(
       conversation,
+      isMounted,
       setConversations
     );
 
-    getConversationBasicData(conversation, setConversationsBasicDatas, userID);
+    isUserOnlineSubscribe = getConversationBasicData(
+      conversation,
+      isMounted,
+      setConversationsBasicDatas,
+      userID
+    );
 
     if (isActive && (!hasSeen || conversation.go_to_inbox))
       readConversation(conversation, userID);
 
     return () => {
+      if (isUserOnlineSubscribe) off(isUserOnlineSubscribe);
+
       if (conversationUpdatedListenerUnsubscribe)
         conversationUpdatedListenerUnsubscribe();
     };
@@ -68,6 +78,7 @@ function ConversationOption({
     conversation,
     hasSeen,
     isActive,
+    isMounted,
     setConversations,
     setConversationsBasicDatas,
     userID,
