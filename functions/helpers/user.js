@@ -49,15 +49,6 @@ const createMilestone = async (reward, title, userID) => {
     title,
     userID,
   });
-
-  /*
-  createNotification(
-    true,
-    true,
-    createRewardsLink(),
-    title + " +" + reward + " Karma Points",
-    userID
-  );*/
 };
 
 const checkIfCanCreateMilestone = async (

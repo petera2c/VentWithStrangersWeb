@@ -93,6 +93,7 @@ export const newRewardListener = (
 export const setUserOnlineStatus = async (status, uid) => {
   if (status === "online")
     await set(ref(db2, "status/" + uid), {
+      index: new dayjs().valueOf(),
       last_online: serverTimestamp(),
       state: status,
     });
@@ -118,6 +119,7 @@ export const setIsUserOnlineToDatabase = (uid) => {
   onValue(connectedRef, (snap) => {
     if (snap.val() === true)
       set(userStatusDatabaseRef, {
+        index: new dayjs().valueOf(),
         last_online: serverTimestamp(),
         state: "online",
       });
