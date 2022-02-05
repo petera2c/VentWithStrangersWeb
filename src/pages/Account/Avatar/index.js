@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import Avatar from "avataaars";
+import loadable from "@loadable/component";
 
 import { faCut } from "@fortawesome/pro-duotone-svg-icons/faCut";
 import { faEye } from "@fortawesome/pro-duotone-svg-icons/faEye";
@@ -31,6 +31,8 @@ import {
   skinArray,
   topArray,
 } from "./util";
+
+const Avatar = loadable(() => import("avataaars"));
 
 function AvatarSection() {
   const isMounted = useIsMounted();

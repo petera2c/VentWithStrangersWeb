@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Avatar from "avataaars";
+import loadable from "@loadable/component";
 
 import { capitolizeFirstChar } from "../../../util";
+
+const Avatar = loadable(() => import("avataaars"));
 
 function MakeAvatar({ className, displayName, size, userBasicInfo }) {
   const [capitolizedDisplayName, setCapitolizedDisplayName] = useState("");
