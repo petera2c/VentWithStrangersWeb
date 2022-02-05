@@ -51,15 +51,16 @@ function Conversations() {
         (newConversations) => {
           if (!isMounted()) return;
 
-          if (newConversations.length < 5) setCanLoadMore(false);
+          if (newConversations.length < 5 && isMounted()) setCanLoadMore(false);
 
-          setConversations(newConversations);
+          if (isMounted()) setConversations(newConversations);
 
           if (
             !activeConversation &&
             newConversations &&
             newConversations.length !== 0 &&
-            newConversations[0].id
+            newConversations[0].id &&
+            isMounted()
           )
             setActiveConversation(newConversations[0].id);
         },
@@ -112,14 +113,14 @@ function Conversations() {
                   (newConversations, subtraction) => {
                     if (
                       newConversations.length < 5 - subtraction ||
-                      newConversations.length === 0
+                      (newConversations.length === 0 && isMounted())
                     )
                       setCanLoadMore(false);
-
-                    setConversations((oldConversations) => [
-                      ...oldConversations,
-                      ...newConversations,
-                    ]);
+                    if (isMounted())
+                      setConversations((oldConversations) => [
+                        ...oldConversations,
+                        ...newConversations,
+                      ]);
                   },
                   user.uid
                 );

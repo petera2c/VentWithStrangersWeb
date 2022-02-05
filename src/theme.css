@@ -1375,6 +1375,7 @@ h1 {
   margin: 0;
   padding: 0;
 
+  color: var(--primary-font-color);
   font-size: var(--thirty-two-font-size);
   font-weight: 900;
 }

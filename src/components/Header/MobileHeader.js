@@ -229,6 +229,7 @@ function Header() {
             onChange={(e) => {
               setVentSearchString(e.target.value);
               navigate("/search?" + e.target.value);
+              setMobileHeaderActive(false);
             }}
             placeholder="Search"
             type="text"
@@ -243,7 +244,7 @@ function Header() {
           direction="vertical"
           onClick={() => setMobileHeaderActive(false)}
           size="large"
-          style={{ maxHeight: "350px" }}
+          style={{ maxHeight: "70vh" }}
         >
           {user && (
             <Container className="align-center column">

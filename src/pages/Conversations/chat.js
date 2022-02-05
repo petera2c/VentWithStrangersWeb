@@ -30,7 +30,6 @@ function Chat({
   const textInput = useRef(null);
 
   const [isMobileOrTablet, setIsMobileOrTablet] = useState();
-  const [value, setValue] = useState(0); // integer state
 
   const checkIsUserTyping = (isTyping) => {
     if (typingTimer2) clearTimeout(typingTimer2);
@@ -38,9 +37,6 @@ function Chat({
       for (let memberID in isTyping) {
         if (memberID !== userID) {
           if (Timestamp.now().toMillis() - isTyping[memberID] < 4000) {
-            typingTimer2 = setTimeout(() => {
-              setValue((value) => value + 1);
-            }, 4000);
             return true;
           } else return false;
         }

@@ -7,7 +7,6 @@ import Page from "../../../components/containers/Page";
 
 import {
   capitolizeFirstChar,
-  getIsMobileOrTablet,
   getUserBasicInfo,
   useIsMounted,
 } from "../../../util";
@@ -25,14 +24,14 @@ function QuoteWinnersPage() {
   }, [isMounted, setQuotes]);
 
   return (
-    <Page className="gap32 py32 px16">
-      <Container className="column gap16">
+    <Page className="align-center gap16 pa32">
+      <Container className="column bg-white br8 gap16 pa32">
         <h1 className="tac lh-1">{thisMonthYearFormatted} Feel Good Quotes</h1>
-        <Container className="column gap8">
-          <h2 className="fs-22 grey-11 tac lh-1">
+        <Container className="column">
+          <h2 className="fs-22 grey-1 tac">
             Some of our past contest winners :)
           </h2>
-          <h2 className="fs-18 grey-11 tac lh-1">
+          <h2 className="fs-18 grey-1 tac">
             (All feel good quotes are original!)
           </h2>
         </Container>
@@ -50,25 +49,15 @@ function QuoteWinnersPage() {
 function QuoteDisplay({ quote }) {
   const isMounted = useIsMounted();
   const [userBasicInfo, setUserBasicInfo] = useState({});
-  const [width, setWidth] = useState(200);
+
   useEffect(() => {
     getUserBasicInfo((userBasicInfo) => {
       if (isMounted()) setUserBasicInfo(userBasicInfo);
     }, quote.userID);
-
-    let width = quote.value.length * 6;
-
-    if (width < 100) width = 100;
-    if (width > 600) width = 600;
-
-    if (isMounted()) setWidth(width);
   }, [isMounted, quote, setUserBasicInfo]);
 
   return (
-    <Container
-      className="column bg-white shadow-2 br8 gap8 pa16"
-      style={{ width: !getIsMobileOrTablet() ? width + "px" : "100%" }}
-    >
+    <Container className="column x-fill bg-white br8 gap8 pa16">
       <p className="italic primary fs-20 tac">
         {capitolizeFirstChar(quote.value)}
       </p>

@@ -49,11 +49,11 @@ function MobileConversations() {
         (newConversations) => {
           if (
             newConversations.length % 5 !== 0 ||
-            newConversations.length === 0
+            (newConversations.length === 0 && isMounted())
           )
             setCanLoadMore(false);
 
-          setConversations(newConversations);
+          if (isMounted()) setConversations(newConversations);
         },
         user.uid
       );
@@ -62,7 +62,7 @@ function MobileConversations() {
     return () => {
       if (newMessageListenerUnsubscribe) newMessageListenerUnsubscribe();
     };
-  }, [isMounted, user]);
+  }, [activeConversation, isMounted, user]);
 
   return (
     <Page className="bg-grey-2">
@@ -104,14 +104,15 @@ function MobileConversations() {
                 (newConversations) => {
                   if (
                     newConversations.length % 5 !== 0 ||
-                    newConversations.length === 0
+                    (newConversations.length === 0 && isMounted())
                   )
                     setCanLoadMore(false);
 
-                  setConversations((oldConversations) => [
-                    ...oldConversations,
-                    ...newConversations,
-                  ]);
+                  if (isMounted())
+                    setConversations((oldConversations) => [
+                      ...oldConversations,
+                      ...newConversations,
+                    ]);
                 },
                 user.uid
               );
