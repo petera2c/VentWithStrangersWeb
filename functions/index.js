@@ -131,7 +131,7 @@ exports.cronDecreaseUserVentCounter = functions.pubsub
   .schedule("0 12 * * *")
   .onRun(async () => decreaseUserVentCounter());
 exports.cronNotifyQuoteContestWinner = functions.pubsub
-  .schedule("0 19 * * *")
+  .schedule("2 16 * * *")
   .onRun(async () => notifyQuoteContestWinner());
 exports.cronSignPeopleOut = functions.pubsub
   .schedule("0 * * * *")

@@ -239,7 +239,8 @@ const updateTotalUsersOnline = (change, context) => {
   if (
     changeAfter.val() &&
     changeAfter.val().state === "online" &&
-    changeAfter.val().last_online
+    changeAfter.val().last_online &&
+    !changeAfter.val().index
   ) {
     admin
       .database()
