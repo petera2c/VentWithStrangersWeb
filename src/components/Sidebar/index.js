@@ -59,13 +59,13 @@ function Sidebar() {
     };
     intervalFunction();
     const interval = setInterval(intervalFunction, 30000);
-*/
     totalUsersOnlineUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) => {
       if (isMounted()) {
         setTotalOnlineUsers(totalOnlineUsers);
         getUserAvatars(isMounted, setFirstOnlineUsers);
       }
     });
+    */
 
     return () => {
       //if (interval) clearInterval(interval);
