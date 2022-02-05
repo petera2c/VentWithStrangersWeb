@@ -77,6 +77,35 @@ function RoutesComp() {
     }
   });
 
+  const handleOnIdle = (event) => {
+    if (user && user.uid)
+      import("./util").then((functions) => {
+        functions.setUserOnlineStatus("offline", user.uid);
+      });
+  };
+
+  const handleOnActive = (event) => {
+    if (user && user.uid)
+      import("./util").then((functions) => {
+        functions.setUserOnlineStatus("online", user.uid);
+      });
+  };
+
+  const handleOnAction = (event) => {
+    if (user && user.uid)
+      import("./util").then((functions) => {
+        functions.setUserOnlineStatus("online", user.uid);
+      });
+  };
+
+  useIdleTimer({
+    timeout: 1000 * 60 * 480,
+    onIdle: handleOnIdle,
+    onActive: handleOnActive,
+    onAction: handleOnAction,
+    debounce: 5000,
+  });
+
   useEffect(() => {
     isMounted.current = true;
 
@@ -104,6 +133,10 @@ function RoutesComp() {
     return () => {
       isMounted.current = false;
       if (newRewardListenerUnsubscribe) newRewardListenerUnsubscribe();
+      if (user)
+        import("./util").then((functions) => {
+          functions.setUserOnlineStatus("offline", user.uid);
+        });
     };
   }, [isMounted, user]);
 

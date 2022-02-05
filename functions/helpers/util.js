@@ -260,11 +260,10 @@ const updateTotalUsersOnline = (change, context) => {
     changeAfter.val() &&
     changeAfter.val().state === "online"
   ) {
-    /*
     admin
       .database()
       .ref("status/" + context.params.userID)
-      .update({ index: "online" + changeAfter.val().last_online });*/
+      .update({ index: "online" + changeAfter.val().last_online });
   }
 
   if (!changeAfter.val() && !changeBefore.val()) {
