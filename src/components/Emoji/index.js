@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import loadable from "@loadable/component";
+//import loadable from "@loadable/component";
 import { Picker } from "emoji-mart";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
