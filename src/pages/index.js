@@ -76,7 +76,7 @@ function RoutesComp() {
       setLoading(false);
     }
   });
-
+  /*
   const handleOnIdle = (event) => {
     if (user && user.uid)
       import("./util").then((functions) => {
@@ -105,7 +105,7 @@ function RoutesComp() {
     onAction: handleOnAction,
     debounce: 5000,
   });
-
+*/
   useEffect(() => {
     isMounted.current = true;
 
@@ -120,7 +120,7 @@ function RoutesComp() {
         );
         functions.getIsUsersBirthday(isMounted, setIsUsersBirthday, user.uid);
         functions.getIsUserSubscribed(isMounted, setUserSubscription, user.uid);
-        functions.setIsUserOnlineToDatabase(user.uid);
+        //  functions.setIsUserOnlineToDatabase(user.uid);
       });
 
       import("../util").then((functions) => {
@@ -133,10 +133,10 @@ function RoutesComp() {
     return () => {
       isMounted.current = false;
       if (newRewardListenerUnsubscribe) newRewardListenerUnsubscribe();
-      if (user)
+      /*if (user)
         import("./util").then((functions) => {
           functions.setUserOnlineStatus("offline", user.uid);
-        });
+        });*/
     };
   }, [isMounted, user]);
 
