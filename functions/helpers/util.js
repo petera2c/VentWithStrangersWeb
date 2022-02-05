@@ -243,12 +243,13 @@ const updateTotalUsersOnline = (change, context) => {
     changeAfter.val().last_online &&
     changeAfter.val().state === "online"
   ) {
-    const indexLastOnline = "";
+    let indexLastOnline = "";
 
-    if (changeAfter.val().index)
-      changeAfter.val().index.substring(6, changeAfter.val().index.length);
-
-    console.log(indexLastOnline);
+    if (changeAfter.val().index) {
+      indexLastOnline = changeAfter
+        .val()
+        .index.substring(6, changeAfter.val().index.length);
+    }
 
     if (indexLastOnline != changeAfter.val().last_online)
       isIndexAndLastOnlineDifferent = true;
@@ -259,7 +260,6 @@ const updateTotalUsersOnline = (change, context) => {
     changeAfter.val() &&
     changeAfter.val().state === "online"
   ) {
-    console.log("updating");
     admin
       .database()
       .ref("status/" + context.params.userID)
