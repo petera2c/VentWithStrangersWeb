@@ -107,9 +107,9 @@ function Vent({
       if (setTitle && newVent && newVent.title && isMounted())
         setTitle(newVent.title);
 
-      getIsUserOnline((isUserOnline) => {
+      /*  getIsUserOnline((isUserOnline) => {
         if (isMounted()) setIsUserOnline(isUserOnline.state);
-      }, newVent.userID);
+      }, newVent.userID);*/
 
       getUserBasicInfo((author) => {
         if (isMounted()) setAuthor(author);

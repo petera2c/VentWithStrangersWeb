@@ -74,9 +74,10 @@ function Comment({
     getUserBasicInfo((newBasicUserInfo) => {
       if (isMounted()) setUserBasicInfo(newBasicUserInfo);
     }, comment.userID);
-    getIsUserOnline((isUserOnline) => {
+
+    /*  getIsUserOnline((isUserOnline) => {
       if (isMounted()) setIsUserOnline(isUserOnline.state);
-    }, comment.userID);
+    }, comment.userID);*/
 
     return () => {};
   }, [commentID, comment.text, comment.userID, isMounted, user]);

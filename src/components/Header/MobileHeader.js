@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useState from "react-usestateref";
 import { sendEmailVerification } from "firebase/auth";
-import { off } from "firebase/database";
 import { Button, message, Space } from "antd";
 
 import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
@@ -84,16 +83,20 @@ function Header() {
     let isUserInQueueUnsubscribe;
     let newConversationsListenerUnsubscribe;
     let newNotificationsListenerUnsubscribe;
-    let onlineUsersUnsubscribe;
 
     chatQueueListenerUnsubscribe = chatQueueEmptyListener(
       isMounted,
       setQueueLength
     );
 
-    onlineUsersUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) => {
-      if (isMounted()) setTotalOnlineUsers(totalOnlineUsers);
-    });
+    const interval = setInterval(() => {
+      if (isMounted()) {
+        getTotalOnlineUsers((totalOnlineUsers) => {
+          if (isMounted()) setTotalOnlineUsers(totalOnlineUsers);
+        });
+      }
+    }, 30000);
+
     if (user) {
       if (pathname === "/chat")
         resetUnreadConversationCount(
@@ -136,13 +139,13 @@ function Header() {
 
     return () => {
       cleanup();
+      if (interval) clearInterval(interval);
       if (chatQueueListenerUnsubscribe) chatQueueListenerUnsubscribe();
       if (isUserInQueueUnsubscribe) isUserInQueueUnsubscribe();
       if (newNotificationsListenerUnsubscribe)
         newNotificationsListenerUnsubscribe();
       if (newConversationsListenerUnsubscribe)
         newConversationsListenerUnsubscribe();
-      if (onlineUsersUnsubscribe) off(onlineUsersUnsubscribe);
     };
   }, [
     isMounted,

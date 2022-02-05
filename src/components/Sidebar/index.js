@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { off } from "firebase/database";
 import loadable from "@loadable/component";
 import { Space } from "antd";
 
@@ -39,7 +38,6 @@ function Sidebar() {
   const [queueLength, setQueueLength] = useState();
 
   useEffect(() => {
-    let onlineUsersUnsubscribe;
     let chatQueueListenerUnsubscribe;
 
     chatQueueListenerUnsubscribe = chatQueueEmptyListener(
@@ -47,13 +45,19 @@ function Sidebar() {
       setQueueLength
     );
 
-    onlineUsersUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) => {
-      getUserAvatars(isMounted, setFirstOnlineUsers);
-      if (isMounted()) setTotalOnlineUsers(totalOnlineUsers);
-    });
+    const interval = setInterval(() => {
+      if (isMounted()) {
+        getTotalOnlineUsers((totalOnlineUsers) => {
+          if (isMounted()) {
+            getUserAvatars(isMounted, setFirstOnlineUsers);
+            setTotalOnlineUsers(totalOnlineUsers);
+          }
+        });
+      }
+    }, 30000);
 
     return () => {
-      if (onlineUsersUnsubscribe) off(onlineUsersUnsubscribe);
+      if (interval) clearInterval(interval);
       if (chatQueueListenerUnsubscribe) chatQueueListenerUnsubscribe();
     };
   }, [isMounted, setTotalOnlineUsers]);

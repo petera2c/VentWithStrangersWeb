@@ -8,7 +8,7 @@ import {
   query,
   setDoc,
 } from "firebase/firestore";
-import { onValue, ref } from "firebase/database";
+import { get, onValue, ref } from "firebase/database";
 import { getAuth, sendEmailVerification, signOut } from "firebase/auth";
 import { db, db2 } from "./config/db_init";
 import reactStringReplace from "react-string-replace";
@@ -177,13 +177,10 @@ export const getIsUserOnline = (setIsUserOnline, userID) => {
 };
 
 export const getTotalOnlineUsers = (callback) => {
-  const dbRef = ref(db2, "total_online_users");
-
-  onValue(dbRef, (doc) => {
+  get(ref(db2, "total_online_users")).then((doc) => {
+    console.log(doc);
     callback(doc.val());
   });
-
-  return dbRef;
 };
 
 export const getUserBasicInfo = async (callback, userID) => {
