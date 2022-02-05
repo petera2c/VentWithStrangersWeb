@@ -236,25 +236,34 @@ const updateTotalUsersOnline = (change, context) => {
       .ref("status/" + context.params.userID)
       .update({ last_online: admin.database.ServerValue.TIMESTAMP });
   }
+
+  let isIndexAndLastOnlineDifferent = false;
   if (
     changeAfter.val() &&
-    changeAfter.val().state === "online" &&
     changeAfter.val().last_online &&
-    !changeAfter.val().index
+    changeAfter.val().state === "online"
   ) {
+    const indexLastOnline = "";
+
+    if (changeAfter.val().index)
+      changeAfter.val().index.substring(6, changeAfter.val().index.length);
+
+    console.log(indexLastOnline);
+
+    if (indexLastOnline != changeAfter.val().last_online)
+      isIndexAndLastOnlineDifferent = true;
+  }
+
+  if (
+    isIndexAndLastOnlineDifferent &&
+    changeAfter.val() &&
+    changeAfter.val().state === "online"
+  ) {
+    console.log("updating");
     admin
       .database()
       .ref("status/" + context.params.userID)
       .update({ index: "online" + changeAfter.val().last_online });
-  } else if (
-    changeAfter.val() &&
-    changeAfter.val().state === "offline" &&
-    changeAfter.val().index
-  ) {
-    admin
-      .database()
-      .ref("status/" + context.params.userID + "/index")
-      .remove();
   }
 
   if (!changeAfter.val() && !changeBefore.val()) {
