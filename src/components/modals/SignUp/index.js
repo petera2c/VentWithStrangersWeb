@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
@@ -6,12 +6,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/pro-solid-svg-icons/faEye";
 
 import Container from "../../containers/Container";
+
+import { UserContext } from "../../../context";
 import { getIsMobileOrTablet } from "../../../util";
 import { signUp } from "./util";
 
 function SignUpModal({ setActiveModal }) {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
+
+  const { setUserBasicInfo } = useContext(UserContext);
 
   const [canSeePassword, setCanSeePassword] = useState(false);
   const [isMobileOrTablet, setIsMobileOrTablet] = useState();
@@ -36,7 +40,7 @@ function SignUpModal({ setActiveModal }) {
           <form
             className="x-fill column"
             onSubmit={handleSubmit((data) => {
-              signUp(data, navigate, setActiveModal);
+              signUp(data, navigate, setActiveModal, setUserBasicInfo);
             })}
           >
             <Container className="x-fill column px32 py16">

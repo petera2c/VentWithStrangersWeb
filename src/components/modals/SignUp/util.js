@@ -16,7 +16,8 @@ const cookies = new Cookies();
 export const signUp = (
   { email, displayName, password, passwordConfirm },
   navigate,
-  setActiveModal
+  setActiveModal,
+  setUserBasicInfo
 ) => {
   if (displayNameErrors(displayName)) return;
 
@@ -28,7 +29,10 @@ export const signUp = (
   createUserWithEmailAndPassword(getAuth(), email, password)
     .then(async (res) => {
       if (res.user) {
-        sendEmailVerification(res.user);
+        await setDoc(doc(db, "users_display_name", res.user.uid), {
+          server_timestamp: new dayjs(res.user.metadata.creationTime).valueOf(),
+          displayName,
+        });
 
         if (referral)
           await setDoc(doc(db, "invited_users", res.user.uid), {
@@ -61,7 +65,9 @@ export const signUp = (
           offensive_content: true,
         });
 
-        await setDoc(doc(db, "users_display_name", res.user.uid), {
+        sendEmailVerification(res.user);
+
+        setUserBasicInfo({
           server_timestamp: new dayjs(res.user.metadata.creationTime).valueOf(),
           displayName,
         });
