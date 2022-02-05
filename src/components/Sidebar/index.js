@@ -45,7 +45,7 @@ function Sidebar() {
       setQueueLength
     );
 
-    const interval = setInterval(() => {
+    const intervalFunction = () => {
       if (isMounted()) {
         getTotalOnlineUsers((totalOnlineUsers) => {
           if (isMounted()) {
@@ -54,7 +54,9 @@ function Sidebar() {
           }
         });
       }
-    }, 30000);
+    };
+    intervalFunction();
+    const interval = setInterval(intervalFunction, 30000);
 
     return () => {
       if (interval) clearInterval(interval);

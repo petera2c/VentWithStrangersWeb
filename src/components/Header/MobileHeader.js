@@ -89,13 +89,15 @@ function Header() {
       setQueueLength
     );
 
-    const interval = setInterval(() => {
+    const intervalFunction = () => {
       if (isMounted()) {
         getTotalOnlineUsers((totalOnlineUsers) => {
           if (isMounted()) setTotalOnlineUsers(totalOnlineUsers);
         });
       }
-    }, 30000);
+    };
+    intervalFunction();
+    const interval = setInterval(intervalFunction, 30000);
 
     if (user) {
       if (pathname === "/chat")
