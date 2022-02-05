@@ -250,13 +250,9 @@ const updateTotalUsersOnline = (change, context) => {
         .val()
         .index.substring(6, changeAfter.val().index.length);
     }
-    //console.log(indexLastOnline);
-    //console.log(changeAfter.val().last_online);
 
     if (indexLastOnline != changeAfter.val().last_online)
       isIndexAndLastOnlineDifferent = true;
-
-    //console.log(isIndexAndLastOnlineDifferent);
   }
 
   if (
