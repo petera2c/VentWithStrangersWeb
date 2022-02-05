@@ -47,7 +47,6 @@ function IndividualTag() {
                 ventID={vent.id}
                 ventIndex={index}
                 ventInit={{ ...vent, id: vent.id }}
-                searchPreviewMode={true}
               />
             ))}
           </Container>
