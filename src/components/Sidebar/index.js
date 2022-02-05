@@ -46,8 +46,8 @@ function Sidebar() {
       isMounted,
       setQueueLength
     );
+    getUserAvatars(isMounted, setFirstOnlineUsers);
     onlineUsersUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) => {
-      getUserAvatars(isMounted, setFirstOnlineUsers, totalOnlineUsers);
       if (isMounted()) setTotalOnlineUsers(totalOnlineUsers);
     });
 

@@ -1,19 +1,11 @@
 import { doc, getDoc } from "firebase/firestore";
-import { get, limitToLast, orderByChild, ref } from "firebase/database";
+import { get, limitToLast, orderByChild, query, ref } from "firebase/database";
 
 import { db, db2 } from "../../config/db_init";
 
-export const getUserAvatars = (
-  isMounted,
-  setFirstOnlineUsers,
-  totalOnlineUsers
-) => {
-  if (totalOnlineUsers > 0)
-    get(
-      ref(db2, "status"),
-      orderByChild("state"),
-      limitToLast(totalOnlineUsers)
-    ).then(async (snapshot) => {
+export const getUserAvatars = (isMounted, setFirstOnlineUsers) => {
+  get(query(ref(db2, "status"), orderByChild("index"), limitToLast(3))).then(
+    async (snapshot) => {
       let usersOnline = [];
 
       snapshot.forEach((data) => {
@@ -25,30 +17,21 @@ export const getUserAvatars = (
         }
       });
 
-      usersOnline.sort((a, b) => {
-        if (a.lastOnline < b.lastOnline || !a.lastOnline) return 1;
-        if (a.lastOnline > b.lastOnline || !b.lastOnline) return -1;
-        return 0;
-      });
-
       const onlineUsersAvatars = [];
 
-      for (
-        let i = 0;
-        i < (usersOnline.length >= 3 ? 3 : usersOnline.length);
-        i++
-      ) {
+      for (let i in usersOnline) {
         const userBasicInfoDoc = await getDoc(
           doc(db, "users_display_name", usersOnline[i].userID)
         );
 
         if (userBasicInfoDoc.data())
-          onlineUsersAvatars.push({
+          onlineUsersAvatars.unshift({
             id: userBasicInfoDoc.id,
             ...userBasicInfoDoc.data(),
           });
       }
 
       if (isMounted()) setFirstOnlineUsers(onlineUsersAvatars);
-    });
+    }
+  );
 };
