@@ -233,10 +233,11 @@ const updateTotalUsersOnline = (change, context) => {
   if (
     changeAfter.val() &&
     changeAfter.val().index &&
-    changeAfter.val().index > moment().valueOf()
+    changeAfter.val().index > moment().valueOf() + 5000
   ) {
     admin.firestore().collection("admin_notifications").add({
       it_happended: "fuck",
+      something: changeAfter.val().index,
     });
   }
 
