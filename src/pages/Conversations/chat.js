@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Timestamp } from "firebase/firestore";
 import { Link } from "react-router-dom";
+import loadable from "@loadable/component";
 import { Button } from "antd";
 
 import Container from "../../components/containers/Container";
-import Emoji from "../../components/Emoji";
 import KarmaBadge from "../../components/views/KarmaBadge";
 import MakeAvatar from "../../components/views/MakeAvatar";
 import Message from "./message";
@@ -16,6 +16,8 @@ import {
   sendMessage,
   setConversationIsTyping,
 } from "./util";
+
+const Emoji = loadable(() => import("../../components/Emoji"));
 
 let typingTimer;
 let typingTimer2;
