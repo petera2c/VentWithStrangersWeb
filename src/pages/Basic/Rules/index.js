@@ -18,19 +18,23 @@ function RulesPage() {
 
           <ol>
             <Space direction="vertical" size="large">
+              <h4 className="tac">
+                Failing to follow any of these rules will cause you to be
+                permanently banned without warning.
+              </h4>
+              <li>
+                Don't be creepy. No sexual usernames, do not ask for anyone's
+                social media/email/phone number.
+              </li>
+              <li>
+                No harassment, bullying, or attacking of people through vents,
+                comments, or direct messages.
+              </li>
+              <li>No racist, sexist, prejudice or discriminatory content..</li>
               <li>
                 Supportive comments only. We encourage everyone to comment on
                 vents, but all comments must be supportive even if you disagree
                 with the content of the vent.
-              </li>
-              <li>
-                People who create racist, sexist, prejudice or discriminatory
-                content will be permanently banned without warning.
-              </li>
-              <li>
-                Any form of harassment, bullying, or attacking of people through
-                vents, comments, or direct messages will cause you to be
-                permanently banned without warning.
               </li>
               <li>
                 To protect from predators, we do not allow advertising of any
