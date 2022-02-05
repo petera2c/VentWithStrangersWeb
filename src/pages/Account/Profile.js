@@ -90,9 +90,10 @@ function ProfileSection() {
     setComments([]);
 
     if (search) {
+      /*
       isUserOnlineSubscribe = getIsUserOnline((isUserOnline) => {
         if (isMounted()) setIsUserOnline(isUserOnline);
-      }, search);
+      }, search);*/
       getUserBasicInfo((userBasicInfo) => {
         if (isMounted()) setUserBasicInfo(userBasicInfo);
       }, search);

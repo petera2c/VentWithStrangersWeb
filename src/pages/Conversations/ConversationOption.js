@@ -15,10 +15,15 @@ import Container from "../../components/containers/Container";
 import HandleOutsideClick from "../../components/containers/HandleOutsideClick";
 import KarmaBadge from "../../components/views/KarmaBadge";
 
-import { blockUser, capitolizeFirstChar, useIsMounted } from "../../util";
+import {
+  blockUser,
+  capitolizeFirstChar,
+  getIsUserOnline,
+  getUserBasicInfo,
+  useIsMounted,
+} from "../../util";
 import {
   deleteConversation,
-  getConversationBasicData,
   conversationListener,
   readConversation,
 } from "./util";
@@ -29,7 +34,6 @@ dayjs.extend(relativeTime);
 
 function ConversationOption({
   conversation,
-  conversationPartnerData,
   isActive,
   isLastItem,
   setActiveConversation,
@@ -47,31 +51,33 @@ function ConversationOption({
   const [handleOutsideClickCalled, setHandleOutsideClickCalled] = useState(
     false
   );
+  const [userBasicInfo, setUserBasicInfo] = useState();
   const hasSeen = conversation[userID];
 
   useEffect(() => {
     let conversationUpdatedListenerUnsubscribe;
-    let isUserOnlineSubscribe;
     conversationUpdatedListenerUnsubscribe = conversationListener(
       conversation,
       isMounted,
       setConversations
     );
 
-    isUserOnlineSubscribe = getConversationBasicData(
-      conversation,
-      isMounted,
-      setConversationsBasicDatas,
-      userID
-    );
+    let conversationFriendUserID;
+
+    for (let index in conversation.members) {
+      if (conversation.members[index] !== userID)
+        conversationFriendUserID = conversation.members[index];
+    }
+    if (!conversationFriendUserID) return;
+
+    getUserBasicInfo((newBasicUserInfo) => {
+      if (isMounted()) setUserBasicInfo(newBasicUserInfo);
+    }, conversationFriendUserID);
 
     if (isActive && (!hasSeen || conversation.go_to_inbox))
       readConversation(conversation, userID);
-    console.log(isUserOnlineSubscribe);
 
     return () => {
-      //if (isUserOnlineSubscribe) off(isUserOnlineSubscribe);
-
       if (conversationUpdatedListenerUnsubscribe)
         conversationUpdatedListenerUnsubscribe();
     };
@@ -100,26 +106,18 @@ function ConversationOption({
     >
       <Container className="flex-fill column ov-hidden">
         <Container className="align-center flex-fill mr16">
-          {conversationPartnerData && (
+          {userBasicInfo && (
             <MakeAvatar
-              displayName={conversationPartnerData.displayName}
-              userBasicInfo={conversationPartnerData}
+              displayName={userBasicInfo.displayName}
+              userBasicInfo={userBasicInfo}
             />
           )}
 
-          <Container className="flex-fill align-center ov-hidden">
-            <h6 className={"ellipsis mr8 " + (hasSeen ? "grey-1" : "primary")}>
-              {conversationPartnerData
-                ? capitolizeFirstChar(conversationPartnerData.displayName)
-                : "Anonymous"}
-            </h6>
-            {conversationPartnerData &&
-              conversationPartnerData.isUserOnline && (
-                <div className="online-dot mr8" />
-              )}
-          </Container>
-          {conversationPartnerData && (
-            <KarmaBadge noOnClick userBasicInfo={conversationPartnerData} />
+          {userBasicInfo && (
+            <Test hasSeen={hasSeen} userBasicInfo={userBasicInfo} />
+          )}
+          {userBasicInfo && (
+            <KarmaBadge noOnClick userBasicInfo={userBasicInfo} />
           )}
         </Container>
         {conversation.last_message && (
@@ -216,6 +214,39 @@ function ConversationOption({
           title="Block User"
         />
       )}
+    </Container>
+  );
+}
+
+function Test({ hasSeen, userBasicInfo }) {
+  const isMounted = useIsMounted();
+  const [isUserOnline, setIsUserOnline] = useState(false);
+
+  useEffect(() => {
+    let isUserOnlineSubscribe;
+
+    /*
+    isUserOnlineSubscribe = getIsUserOnline((isUserOnlineObj) => {
+      if (isUserOnlineObj && isUserOnlineObj.state && isMounted()) {
+        if (isUserOnlineObj.state === "online") setIsUserOnline(true);
+        else setIsUserOnline(false);
+      }
+    }, userBasicInfo.id);
+
+*/
+    return () => {
+      if (isUserOnlineSubscribe) off(isUserOnlineSubscribe);
+    };
+  }, []);
+
+  return (
+    <Container className="flex-fill align-center ov-hidden">
+      <h6 className={"ellipsis mr8 " + (hasSeen ? "grey-1" : "primary")}>
+        {userBasicInfo
+          ? capitolizeFirstChar(userBasicInfo.displayName)
+          : "Anonymous"}
+      </h6>
+      {isUserOnline && <div className="online-dot mr8" />}
     </Container>
   );
 }

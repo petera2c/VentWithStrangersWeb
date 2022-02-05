@@ -44,7 +44,7 @@ function Sidebar() {
       isMounted,
       setQueueLength
     );
-
+    /*
     const intervalFunction = () => {
       if (isMounted()) {
         getTotalOnlineUsers((totalOnlineUsers) => {
@@ -57,9 +57,9 @@ function Sidebar() {
     };
     intervalFunction();
     const interval = setInterval(intervalFunction, 30000);
-
+*/
     return () => {
-      if (interval) clearInterval(interval);
+      //  if (interval) clearInterval(interval);
       if (chatQueueListenerUnsubscribe) chatQueueListenerUnsubscribe();
     };
   }, [isMounted, setTotalOnlineUsers]);
@@ -69,27 +69,20 @@ function Sidebar() {
       className="container small column ov-auto bg-white border-top pt8 px16 pb16"
       direction="vertical"
     >
-      <SideBarLink
-        icon={faUserFriends}
-        link="/people-online"
-        pathname={pathname}
-        firstOnlineUsers={firstOnlineUsers}
-        text={
-          (totalOnlineUsers ? totalOnlineUsers : "0") +
-          (totalOnlineUsers === 1 ? " Person" : " People") +
-          " Online"
-        }
-        totalOnlineUsers={totalOnlineUsers}
-      />
-      <SideBarLink
-        icon={faComments}
-        link="/chat-with-strangers"
-        pathname={pathname}
-        text={
-          "Chat With Strangers" +
-          (queueLength === -1 ? "" : ` (${queueLength})`)
-        }
-      />
+      {false && (
+        <SideBarLink
+          icon={faUserFriends}
+          link="/people-online"
+          pathname={pathname}
+          firstOnlineUsers={firstOnlineUsers}
+          text={
+            (totalOnlineUsers ? totalOnlineUsers : "0") +
+            (totalOnlineUsers === 1 ? " Person" : " People") +
+            " Online"
+          }
+          totalOnlineUsers={totalOnlineUsers}
+        />
+      )}
       <SideBarLink
         icon={faQuoteLeft}
         link="/quote-contest"
@@ -101,6 +94,15 @@ function Sidebar() {
         link="/rewards"
         pathname={pathname}
         text="Rewards"
+      />
+      <SideBarLink
+        icon={faComments}
+        link="/chat-with-strangers"
+        pathname={pathname}
+        text={
+          "Chat With Strangers" +
+          (queueLength === -1 ? "" : ` (${queueLength})`)
+        }
       />
       <SideBarLink
         icon={faPrayingHands}

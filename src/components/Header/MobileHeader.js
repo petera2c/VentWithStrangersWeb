@@ -88,7 +88,7 @@ function Header() {
       isMounted,
       setQueueLength
     );
-
+    /*
     const intervalFunction = () => {
       if (isMounted()) {
         getTotalOnlineUsers((totalOnlineUsers) => {
@@ -98,6 +98,7 @@ function Header() {
     };
     intervalFunction();
     const interval = setInterval(intervalFunction, 30000);
+    */
 
     if (user) {
       if (pathname === "/chat")
@@ -141,7 +142,7 @@ function Header() {
 
     return () => {
       cleanup();
-      if (interval) clearInterval(interval);
+      //  if (interval) clearInterval(interval);
       if (chatQueueListenerUnsubscribe) chatQueueListenerUnsubscribe();
       if (isUserInQueueUnsubscribe) isUserInQueueUnsubscribe();
       if (newNotificationsListenerUnsubscribe)
@@ -334,19 +335,21 @@ function Header() {
           )}
 
           <Space align="center" direction="vertical" size="middle">
-            <Link
-              className={
-                "flex full-center button-3 " +
-                isPageActive("/people-online", pathname)
-              }
-              to="/people-online"
-            >
-              <FontAwesomeIcon className="mr8" icon={faUserFriends} />
-              <p className="ic">
-                {totalOnlineUsers}{" "}
-                {totalOnlineUsers === 1 ? "Person" : "People"} Online
-              </p>
-            </Link>
+            {false && (
+              <Link
+                className={
+                  "flex full-center button-3 " +
+                  isPageActive("/people-online", pathname)
+                }
+                to="/people-online"
+              >
+                <FontAwesomeIcon className="mr8" icon={faUserFriends} />
+                <p className="ic">
+                  {totalOnlineUsers}{" "}
+                  {totalOnlineUsers === 1 ? "Person" : "People"} Online
+                </p>
+              </Link>
+            )}
             <Link
               className={
                 "flex full-center button-3 " +

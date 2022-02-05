@@ -20,7 +20,7 @@ function OnlineUsers() {
   const { totalOnlineUsers } = useContext(OnlineUsersContext);
 
   useEffect(() => {
-    getOnlineUsers(isMounted, setOnlineUsers, userLoadCount);
+    //  getOnlineUsers(isMounted, setOnlineUsers, userLoadCount);
   }, [isMounted, setOnlineUsers, totalOnlineUsers, userLoadCount]);
 
   return (

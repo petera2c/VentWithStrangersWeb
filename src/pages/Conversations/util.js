@@ -23,7 +23,6 @@ import { message } from "antd";
 import {
   getEndAtValueTimestamp,
   getEndAtValueTimestampFirst,
-  getIsUserOnline,
 } from "../../util";
 
 export const deleteConversation = async (
@@ -63,40 +62,6 @@ export const deleteMessage = async (conversationID, messageID, setMessages) => {
     return [...messages];
   });
   message.success("Message deleted!");
-};
-
-export const getConversationBasicData = async (
-  conversation,
-  isMounted,
-  setConversationsBasicDatas,
-  userID
-) => {
-  let isUserOnlineSubscribe;
-  let conversationFriendUserID;
-  for (let index in conversation.members) {
-    if (conversation.members[index] !== userID)
-      conversationFriendUserID = conversation.members[index];
-  }
-  if (!conversationFriendUserID) return;
-
-  const userBasicInfo = await getDoc(
-    doc(db, "users_display_name", conversationFriendUserID)
-  );
-
-  if (userBasicInfo.data() && userBasicInfo.data().displayName) {
-    isUserOnlineSubscribe = getIsUserOnline((isUserOnline) => {
-      if (isMounted())
-        setConversationsBasicDatas((currentUsersBasicInfo) => {
-          currentUsersBasicInfo[conversation.id] = {
-            ...userBasicInfo.data(),
-            isUserOnline: isUserOnline.state,
-          };
-          return { ...currentUsersBasicInfo };
-        });
-    }, conversationFriendUserID);
-  }
-
-  return isUserOnlineSubscribe;
 };
 
 export const messageListener = (
