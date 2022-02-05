@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { off } from "firebase/database";
 import loadable from "@loadable/component";
 import { Space } from "antd";
 
@@ -39,28 +40,37 @@ function Sidebar() {
 
   useEffect(() => {
     let chatQueueListenerUnsubscribe;
+    let totalUsersOnlineUnsubscribe;
 
     chatQueueListenerUnsubscribe = chatQueueEmptyListener(
       isMounted,
       setQueueLength
     );
-    const intervalFunction = () => {
+    /*const intervalFunction = () => {
       if (isMounted()) {
-        /*  getTotalOnlineUsers((totalOnlineUsers) => {
+     getTotalOnlineUsers((totalOnlineUsers) => {
           if (isMounted()) {
             console.log("starting interval");
             setTotalOnlineUsers(totalOnlineUsers);
             getUserAvatars(isMounted, setFirstOnlineUsers);
           }
-        });*/
+        });
       }
     };
     intervalFunction();
     const interval = setInterval(intervalFunction, 30000);
+*/
+    totalUsersOnlineUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) => {
+      if (isMounted()) {
+        setTotalOnlineUsers(totalOnlineUsers);
+        getUserAvatars(isMounted, setFirstOnlineUsers);
+      }
+    });
 
     return () => {
-      if (interval) clearInterval(interval);
+      //if (interval) clearInterval(interval);
       if (chatQueueListenerUnsubscribe) chatQueueListenerUnsubscribe();
+      if (totalUsersOnlineUnsubscribe) off(totalUsersOnlineUnsubscribe);
     };
   }, [isMounted, setTotalOnlineUsers]);
 
