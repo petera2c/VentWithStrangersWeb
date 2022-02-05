@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import loadable from "@loadable/component";
 import { Space } from "antd";
 
 import { faBaby } from "@fortawesome/pro-solid-svg-icons/faBaby";
@@ -15,7 +16,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Container from "../containers/Container";
 import DisplayName from "../views/DisplayName";
 import StarterModal from "../modals/Starter";
-import MakeAvatar from "../views/MakeAvatar";
 
 import { UserContext } from "../../context";
 
@@ -33,6 +33,8 @@ import {
   useIsMounted,
   userSignUpProgress,
 } from "../../util";
+
+const MakeAvatar = loadable(() => import("../views/MakeAvatar"));
 
 dayjs.extend(relativeTime);
 

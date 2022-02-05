@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import loadable from "@loadable/component";
 
 import Container from "../../containers/Container";
 import KarmaBadge from "../../views/KarmaBadge";
-import MakeAvatar from "../../views/MakeAvatar";
 
 import { capitolizeFirstChar } from "../../../util";
+
+const MakeAvatar = loadable(() => import("../../views/MakeAvatar"));
 
 function DisplayName({
   big,

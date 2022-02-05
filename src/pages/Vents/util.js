@@ -109,12 +109,12 @@ export const newVentListener = (
         ) {
           if (isMounted())
             setWaitingVents((vents) => [
+              ...vents,
               {
                 doc: querySnapshot.docs[0],
                 id: querySnapshot.docs[0].id,
                 ...querySnapshot.docs[0].data(),
               },
-              ...vents,
             ]);
         }
       }

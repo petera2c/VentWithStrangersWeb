@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import InfiniteScroll from "react-infinite-scroll-component";
+import loadable from "@loadable/component";
 import { Button, Space } from "antd";
 
 import { faBaby } from "@fortawesome/pro-solid-svg-icons/faBaby";
@@ -21,7 +22,6 @@ import Container from "../../components/containers/Container";
 import HandleOutsideClick from "../../components/containers/HandleOutsideClick";
 import KarmaBadge from "../../components/views/KarmaBadge";
 import LoadingHeart from "../../components/views/loaders/Heart";
-import MakeAvatar from "../../components/views/MakeAvatar";
 import Page from "../../components/containers/Page";
 import StarterModal from "../../components/modals/Starter";
 import SubscribeColumn from "../../components/SubscribeColumn";
@@ -47,6 +47,8 @@ import {
   userSignUpProgress,
 } from "../../util";
 import { getUser, getUsersComments, getUsersVents } from "./util";
+
+const MakeAvatar = loadable(() => import("../../components/views/MakeAvatar"));
 
 dayjs.extend(relativeTime);
 

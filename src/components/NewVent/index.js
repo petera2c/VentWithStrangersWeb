@@ -11,7 +11,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Container from "../containers/Container";
 import HandleOutsideClick from "../containers/HandleOutsideClick";
-import MakeAvatar from "../views/MakeAvatar";
 import StarterModal from "../modals/Starter";
 
 import { UserContext } from "../../context";
@@ -33,6 +32,7 @@ import {
 import { checks } from "./util";
 
 const Emoji = loadable(() => import("../Emoji"));
+const MakeAvatar = loadable(() => import("../views/MakeAvatar"));
 
 const searchClient = algoliasearch(
   "N7KIA5G22X",

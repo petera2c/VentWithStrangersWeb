@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { off } from "firebase/database";
+import loadable from "@loadable/component";
 import { Space } from "antd";
 
 import { faSmileBeam } from "@fortawesome/pro-duotone-svg-icons/faSmileBeam";
@@ -14,7 +15,6 @@ import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Container from "../containers/Container";
-import MakeAvatar from "../views/MakeAvatar";
 
 import { OnlineUsersContext } from "../../context";
 import {
@@ -24,6 +24,8 @@ import {
   useIsMounted,
 } from "../../util";
 import { getUserAvatars } from "./util";
+
+const MakeAvatar = loadable(() => import("../views/MakeAvatar"));
 
 function Sidebar() {
   const isMounted = useIsMounted();

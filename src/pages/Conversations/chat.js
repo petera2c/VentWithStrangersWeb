@@ -6,7 +6,6 @@ import { Button } from "antd";
 
 import Container from "../../components/containers/Container";
 import KarmaBadge from "../../components/views/KarmaBadge";
-import MakeAvatar from "../../components/views/MakeAvatar";
 import Message from "./message";
 
 import { capitolizeFirstChar, useIsMounted } from "../../util";
@@ -18,6 +17,7 @@ import {
 } from "./util";
 
 const Emoji = loadable(() => import("../../components/Emoji"));
+const MakeAvatar = loadable(() => import("../../components/views/MakeAvatar"));
 
 let typingTimer;
 let typingTimer2;

@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import loadable from "@loadable/component";
 
 import { MentionsInput, Mention } from "react-mentions";
 import { Button, Dropdown, message } from "antd";
@@ -16,7 +17,6 @@ import Container from "../containers/Container";
 import ConfirmAlertModal from "../modals/ConfirmAlert";
 import KarmaBadge from "../views/KarmaBadge";
 import LoadingHeart from "../views/loaders/Heart";
-import MakeAvatar from "../views/MakeAvatar";
 import Options from "../Options";
 import StarterModal from "../modals/Starter";
 
@@ -47,6 +47,9 @@ import {
   startConversation,
   ventHasLiked,
 } from "./util";
+
+const MakeAvatar = loadable(() => import("../views/MakeAvatar"));
+
 dayjs.extend(relativeTime);
 
 const SmartLink = ({ children, className, disablePostOnClick, to }) => {

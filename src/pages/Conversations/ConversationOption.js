@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { useNavigate } from "react-router-dom";
+import loadable from "@loadable/component";
 
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 import { faTrash } from "@fortawesome/pro-solid-svg-icons/faTrash";
@@ -12,7 +13,6 @@ import ConfirmAlertModal from "../../components/modals/ConfirmAlert";
 import Container from "../../components/containers/Container";
 import HandleOutsideClick from "../../components/containers/HandleOutsideClick";
 import KarmaBadge from "../../components/views/KarmaBadge";
-import MakeAvatar from "../../components/views/MakeAvatar";
 
 import { blockUser, capitolizeFirstChar } from "../../util";
 import {
@@ -21,6 +21,8 @@ import {
   conversationListener,
   readConversation,
 } from "./util";
+
+const MakeAvatar = loadable(() => import("../../components/views/MakeAvatar"));
 
 dayjs.extend(relativeTime);
 
