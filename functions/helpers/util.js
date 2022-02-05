@@ -230,42 +230,15 @@ const updateTotalUsersOnline = (change, context) => {
   const changeAfter = change.after;
   const changeBefore = change.before;
 
-  /*
-  if (changeAfter.val() && !changeAfter.val().last_online) {
-    admin
-      .database()
-      .ref("status/" + context.params.userID)
-      .update({ last_online: admin.database.ServerValue.TIMESTAMP });
-  }
-
-  let isIndexAndLastOnlineDifferent = false;
   if (
     changeAfter.val() &&
-    changeAfter.val().last_online &&
-    changeAfter.val().state === "online"
+    changeAfter.val().index &&
+    changeAfter.val().index > moment().valueOf()
   ) {
-    let indexLastOnline = "";
-
-    if (changeAfter.val().index) {
-      indexLastOnline = changeAfter
-        .val()
-        .index.substring(6, changeAfter.val().index.length);
-    }
-
-    if (indexLastOnline != changeAfter.val().last_online)
-      isIndexAndLastOnlineDifferent = true;
+    admin.firestore().collection("admin_notifications").add({
+      it_happended: "fuck",
+    });
   }
-
-  if (
-    isIndexAndLastOnlineDifferent &&
-    changeAfter.val() &&
-    changeAfter.val().state === "online"
-  ) {
-    admin
-      .database()
-      .ref("status/" + context.params.userID)
-      .update({ index: "online" + changeAfter.val().last_online });
-  }*/
 
   if (!changeAfter.val() && !changeBefore.val()) {
     // Do nothing, should never happen
