@@ -59,7 +59,7 @@ function QuoteDisplay({ quote }) {
   return (
     <Container className="column x-fill bg-white br8 gap8 pa16">
       <p className="italic primary fs-20 tac">
-        {capitolizeFirstChar(quote.value)}
+        "{capitolizeFirstChar(quote.value)}"
       </p>
       <Link className="button-8 fs-20 tac" to={"/profile?" + quote.userID}>
         - {capitolizeFirstChar(userBasicInfo.displayName)}
