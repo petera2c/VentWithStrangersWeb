@@ -67,9 +67,10 @@ function ConversationOption({
 
     if (isActive && (!hasSeen || conversation.go_to_inbox))
       readConversation(conversation, userID);
+    console.log(isUserOnlineSubscribe);
 
     return () => {
-      if (isUserOnlineSubscribe) off(isUserOnlineSubscribe);
+      //if (isUserOnlineSubscribe) off(isUserOnlineSubscribe);
 
       if (conversationUpdatedListenerUnsubscribe)
         conversationUpdatedListenerUnsubscribe();
