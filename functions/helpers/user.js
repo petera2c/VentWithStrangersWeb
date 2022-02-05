@@ -162,6 +162,15 @@ const signPeopleOut = () => {
                   1000 /
                   3600
               );
+
+              if (!data.val().index && data.val().state === "online") {
+                admin
+                  .database()
+                  .ref("status/" + data.key)
+                  .update({
+                    index: admin.database.ServerValue.TIMESTAMP,
+                  });
+              }
               if (!data.val().last_online) {
                 admin
                   .database()
@@ -175,7 +184,8 @@ const signPeopleOut = () => {
                 admin
                   .database()
                   .ref("status/" + data.key)
-                  .update({
+                  .set({
+                    last_online: admin.database.ServerValue.TIMESTAMP,
                     state: "offline",
                   });
               }
