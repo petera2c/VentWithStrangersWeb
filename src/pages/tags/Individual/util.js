@@ -19,7 +19,7 @@ export const getTagVents = async (isMounted, setVents, tagID, vents) => {
     query(
       collection(db, "vents"),
       where("new_tags", "array-contains", tagID),
-      orderBy("like_counter", "desc"),
+      orderBy("server_timestamp", "desc"),
       startAfter(startAt),
       limit(10)
     )
