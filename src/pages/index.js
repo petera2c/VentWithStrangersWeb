@@ -6,8 +6,9 @@ import { useIdleTimer } from "react-idle-timer";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { OnlineUsersContext, UserContext } from "../context";
 
+import Container from "../components/containers/Container";
+
 const BirthdayModal = loadable(() => import("../components/modals/Birthday"));
-const Container = loadable(() => import("../components/containers/Container"));
 const Header = loadable(() => import("../components/Header"));
 const LoadingHeart = loadable(() =>
   import("../components/views/loaders/Heart")
@@ -68,34 +69,33 @@ function RoutesComp() {
 
   onAuthStateChanged(getAuth(), (user) => {
     if (!isMounted.current) return;
+    setLoading(false);
 
-    if (user) {
-      setUser(user);
-      setLoading(false);
-    } else {
-      setLoading(false);
-    }
+    if (user) setUser(user);
   });
-  /*
+
   const handleOnIdle = (event) => {
-    if (user && user.uid)
+    if (user && user.uid) {
       import("./util").then((functions) => {
         functions.setUserOnlineStatus("offline", user.uid);
       });
+    }
   };
 
   const handleOnActive = (event) => {
-    if (user && user.uid)
+    if (user && user.uid) {
       import("./util").then((functions) => {
         functions.setUserOnlineStatus("online", user.uid);
       });
+    }
   };
 
   const handleOnAction = (event) => {
-    if (user && user.uid)
+    if (user && user.uid) {
       import("./util").then((functions) => {
         functions.setUserOnlineStatus("online", user.uid);
       });
+    }
   };
 
   useIdleTimer({
@@ -105,12 +105,11 @@ function RoutesComp() {
     onAction: handleOnAction,
     debounce: 5000,
   });
-*/
+
   useEffect(() => {
     isMounted.current = true;
 
     let newRewardListenerUnsubscribe;
-
     if (user) {
       import("./util").then((functions) => {
         newRewardListenerUnsubscribe = functions.newRewardListener(
@@ -120,7 +119,7 @@ function RoutesComp() {
         );
         functions.getIsUsersBirthday(isMounted, setIsUsersBirthday, user.uid);
         functions.getIsUserSubscribed(isMounted, setUserSubscription, user.uid);
-        //  functions.setIsUserOnlineToDatabase(user.uid);
+        functions.setIsUserOnlineToDatabase(user.uid);
       });
 
       import("../util").then((functions) => {
@@ -133,10 +132,6 @@ function RoutesComp() {
     return () => {
       isMounted.current = false;
       if (newRewardListenerUnsubscribe) newRewardListenerUnsubscribe();
-      /*if (user)
-        import("./util").then((functions) => {
-          functions.setUserOnlineStatus("offline", user.uid);
-        });*/
     };
   }, [isMounted, user]);
 

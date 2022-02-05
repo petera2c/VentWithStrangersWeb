@@ -5,7 +5,7 @@
       "$uid": {
         ".write": "$uid === auth.uid"
       },
-      ".indexOn": ["index", "last_online", "state"]
+      ".indexOn": ["index", "state"]
     },
     "total_online_users": {
       ".read": true,

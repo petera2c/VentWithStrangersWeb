@@ -5,7 +5,7 @@ import { getAuth, connectAuthEmulator } from "firebase/auth";
 const db = getFirestore();
 const db2 = getDatabase();
 
-//window.location.hostname !== "localhost"
+//window.location.hostname === "localhost"
 if (false) {
   connectFirestoreEmulator(db, "localhost", 8080);
   connectDatabaseEmulator(db2, "localhost", 9000);
