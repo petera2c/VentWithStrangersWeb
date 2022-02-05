@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { MentionsInput, Mention } from "react-mentions";
+import { off } from "firebase/database";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
@@ -16,6 +17,7 @@ import StarterModal from "../modals/Starter";
 import { UserContext } from "../../context";
 
 import {
+  getIsUserOnline,
   getUserBasicInfo,
   hasUserBlockedUser,
   useIsMounted,
@@ -48,10 +50,13 @@ function Comment({
   const [editingComment, setEditingComment] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
   const [isContentBlocked, setIsContentBlocked] = useState(user ? true : false);
+  const [isUserOnline, setIsUserOnline] = useState(false);
   const [starterModal, setStarterModal] = useState(false);
   const [userBasicInfo, setUserBasicInfo] = useState({});
 
   useEffect(() => {
+    let isUserOnlineSubscribe;
+
     if (user)
       getCommentHasLiked(
         commentID,
@@ -73,7 +78,13 @@ function Comment({
       if (isMounted()) setUserBasicInfo(newBasicUserInfo);
     }, comment.userID);
 
-    return () => {};
+    isUserOnlineSubscribe = getIsUserOnline((isUserOnline) => {
+      if (isMounted()) setIsUserOnline(isUserOnline.state);
+    }, comment.userID);
+
+    return () => {
+      if (isUserOnlineSubscribe) off(isUserOnlineSubscribe);
+    };
   }, [commentID, comment.text, comment.userID, isMounted, user]);
 
   if (isContentBlocked) return <div />;
@@ -91,6 +102,7 @@ function Comment({
       <Container className="justify-between py16">
         <DisplayName
           displayName={userBasicInfo.displayName}
+          isUserOnline={isUserOnline}
           userBasicInfo={userBasicInfo}
           userID={comment.userID}
         />

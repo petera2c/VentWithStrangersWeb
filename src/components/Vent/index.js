@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { off } from "firebase/database";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import loadable from "@loadable/component";
@@ -24,6 +25,7 @@ import { UserContext } from "../../context";
 import {
   blockUser,
   capitolizeFirstChar,
+  getIsUserOnline,
   getUserBasicInfo,
   hasUserBlockedUser,
   isUserAccountNew,
@@ -74,7 +76,9 @@ function Vent({
   ventInit,
 }) {
   const isMounted = useIsMounted();
+  const navigate = useNavigate();
   const textInput = useRef(null);
+
   const { user, userBasicInfo } = useContext(UserContext);
 
   const [activeSort, setActiveSort] = useState("First");
@@ -85,10 +89,9 @@ function Vent({
   const [commentString, setCommentString] = useState("");
   const [hasLiked, setHasLiked] = useState(false);
   const [isContentBlocked, setIsContentBlocked] = useState(user ? true : false);
+  const [isUserOnline, setIsUserOnline] = useState(false);
   const [starterModal, setStarterModal] = useState(false);
   const [vent, setVent] = useState(ventInit);
-
-  const navigate = useNavigate();
 
   const [isUserAccountNewLocal, setIsUserAccountNewLocal] = useState();
   const [signUpProgressFunction, setSignUpProgressFunction] = useState();
@@ -96,9 +99,14 @@ function Vent({
   const [ventPreview, setVentPreview] = useState("");
 
   useEffect(() => {
+    let isUserOnlineSubscribe;
     let newCommentListenerUnsubscribe;
 
     const ventSetUp = (newVent) => {
+      isUserOnlineSubscribe = getIsUserOnline((isUserOnline) => {
+        if (isMounted()) setIsUserOnline(isUserOnline.state);
+      }, newVent.userID);
+
       setPartialLink(getVentPartialLink(newVent));
       setVentPreview(getVentDescription(previewMode, newVent));
 
@@ -161,6 +169,7 @@ function Vent({
       );
 
     return () => {
+      if (isUserOnlineSubscribe) off(isUserOnlineSubscribe);
       if (newCommentListenerUnsubscribe) newCommentListenerUnsubscribe();
     };
   }, [
@@ -211,6 +220,7 @@ function Vent({
                     {capitolizeFirstChar(author.displayName)}
                   </h3>
                 </Link>
+                {isUserOnline && <div className="online-dot" />}
                 <KarmaBadge userBasicInfo={author} />
               </Container>
               {vent.is_birthday_post && (

@@ -44,22 +44,22 @@ function Sidebar() {
       isMounted,
       setQueueLength
     );
-    /*
     const intervalFunction = () => {
       if (isMounted()) {
-        getTotalOnlineUsers((totalOnlineUsers) => {
+        /*  getTotalOnlineUsers((totalOnlineUsers) => {
           if (isMounted()) {
-            getUserAvatars(isMounted, setFirstOnlineUsers);
+            console.log("starting interval");
             setTotalOnlineUsers(totalOnlineUsers);
+            getUserAvatars(isMounted, setFirstOnlineUsers);
           }
-        });
+        });*/
       }
     };
     intervalFunction();
     const interval = setInterval(intervalFunction, 30000);
-*/
+
     return () => {
-      //  if (interval) clearInterval(interval);
+      if (interval) clearInterval(interval);
       if (chatQueueListenerUnsubscribe) chatQueueListenerUnsubscribe();
     };
   }, [isMounted, setTotalOnlineUsers]);
