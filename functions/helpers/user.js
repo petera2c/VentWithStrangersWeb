@@ -149,8 +149,8 @@ const signPeopleOut = () => {
         admin
           .database()
           .ref("status")
-          .orderByChild("state")
           .limitToLast(totalOnlineUser)
+          .orderByChild("state")
           .once("value", (snapshot) => {
             let numberOfUsersOnline = 0;
 
