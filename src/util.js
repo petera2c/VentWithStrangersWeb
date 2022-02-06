@@ -177,13 +177,13 @@ export const getIsUserOnline = (setIsUserOnline, userID) => {
 };
 
 export const getTotalOnlineUsers = (callback) => {
-  const unsubscribe = onValue(ref(db2, "total_online_users"), (doc) => {
+  const unsubscribe = get(ref(db2, "total_online_users")).then((doc) => {
     console.log(doc);
     callback(doc.val());
   });
 
-  return unsubscribe;
   return;
+  return unsubscribe;
 };
 
 export const getUserBasicInfo = async (callback, userID) => {
