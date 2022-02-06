@@ -230,7 +230,6 @@ const updateTotalUsersOnline = (change, context) => {
   const changeAfter = change.after;
   const changeBefore = change.before;
 
-  /*
   if (
     changeAfter.val() &&
     changeAfter.val().state &&
@@ -248,13 +247,11 @@ const updateTotalUsersOnline = (change, context) => {
     changeAfter.val().index &&
     changeAfter.val().index > new moment().valueOf() + 5000
   ) {
-    admin.firestore().collection("admin_notifications").add({
-      it_happended: "fuck",
-      index: changeAfter.val().index,
-      server_timestamp: new moment().valueOf(),
-    });
+    admin
+      .database()
+      .ref("status/" + context.params.userID)
+      .update({ index: admin.database.ServerValue.TIMESTAMP });
   }
-  */
 
   if (!changeAfter.val() && !changeBefore.val()) {
     // Do nothing, should never happen

@@ -7,10 +7,6 @@
       },
       ".indexOn": ["index", "state"]
     },
-    "total_online_users": {
-      ".read": true,
-      ".write": false
-    },
     "total_online_users2": {
       ".read": true,
       ".write": false
