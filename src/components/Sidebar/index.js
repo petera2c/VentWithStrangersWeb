@@ -63,18 +63,20 @@ function Sidebar() {
       className="container small column ov-auto bg-white border-top pt8 px16 pb16"
       direction="vertical"
     >
-      <SideBarLink
-        icon={faUserFriends}
-        link="/people-online"
-        pathname={pathname}
-        firstOnlineUsers={firstOnlineUsers}
-        text={
-          (totalOnlineUsers ? totalOnlineUsers : "0") +
-          (totalOnlineUsers === 1 ? " Person" : " People") +
-          " Online"
-        }
-        totalOnlineUsers={totalOnlineUsers}
-      />
+      {false && (
+        <SideBarLink
+          icon={faUserFriends}
+          link="/people-online"
+          pathname={pathname}
+          firstOnlineUsers={firstOnlineUsers}
+          text={
+            (totalOnlineUsers ? totalOnlineUsers : "0") +
+            (totalOnlineUsers === 1 ? " Person" : " People") +
+            " Online"
+          }
+          totalOnlineUsers={totalOnlineUsers}
+        />
+      )}
       <SideBarLink
         icon={faQuoteLeft}
         link="/quote-contest"
