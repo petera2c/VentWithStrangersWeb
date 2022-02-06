@@ -45,7 +45,7 @@ function OnlineUsers() {
         {onlineUsers.map(({ lastOnline, userID }, index) => {
           return (
             <UserComp
-              isOnline
+              isUserOnline
               key={index}
               lastOnline={lastOnline}
               showMessageUser

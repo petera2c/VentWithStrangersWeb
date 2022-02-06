@@ -97,6 +97,12 @@ function Sidebar() {
         text="Rewards"
       />
       <SideBarLink
+        icon={faSmileBeam}
+        link="/feel-good-quotes-month"
+        pathname={pathname}
+        text="Feel Good Quotes"
+      />
+      <SideBarLink
         icon={faPrayingHands}
         link="/rules"
         pathname={pathname}
@@ -107,12 +113,6 @@ function Sidebar() {
         link="/site-info"
         pathname={pathname}
         text="VWS Info"
-      />
-      <SideBarLink
-        icon={faSmileBeam}
-        link="/feel-good-quotes-month"
-        pathname={pathname}
-        text="Feel Good Quotes"
       />
       <SideBarLink
         icon={faUsers}

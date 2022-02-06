@@ -41,7 +41,7 @@ dayjs.extend(relativeTime);
 function UserComponent({
   additionalUserInfo,
   displayName,
-  isOnline,
+  isUserOnline,
   lastOnline,
   showAdditionaluserInformation,
   showMessageUser,
@@ -87,7 +87,7 @@ function UserComponent({
               big
               displayName={userInfo.displayName}
               isLink={false}
-              isUserOnline
+              isUserOnline={isUserOnline}
               noAvatar
               userBasicInfo={userInfo}
             />
