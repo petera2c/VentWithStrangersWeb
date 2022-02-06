@@ -143,7 +143,7 @@ const signPeopleOut = () => {
   admin
     .database()
     .ref("total_online_users")
-    .on("value", (doc) => {
+    .once("value", (doc) => {
       const totalOnlineUser = doc.val();
       if (totalOnlineUser)
         admin
