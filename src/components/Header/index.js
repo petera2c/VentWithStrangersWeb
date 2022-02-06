@@ -311,7 +311,7 @@ function Header() {
               rel="noreferrer"
               target="_blank"
             >
-              Please give us feedback on our site!
+              Please give us feedback on our site please :)
             </a>
             <FontAwesomeIcon
               className="button-9"
