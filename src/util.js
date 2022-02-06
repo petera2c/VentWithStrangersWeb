@@ -8,7 +8,14 @@ import {
   query,
   setDoc,
 } from "firebase/firestore";
-import { get, onValue, ref } from "firebase/database";
+import {
+  get,
+  limitToLast,
+  onValue,
+  orderByChild,
+  query as query2,
+  ref,
+} from "firebase/database";
 import { getAuth, sendEmailVerification, signOut } from "firebase/auth";
 import { db, db2 } from "./config/db_init";
 import reactStringReplace from "react-string-replace";
@@ -177,13 +184,11 @@ export const getIsUserOnline = (setIsUserOnline, userID) => {
 };
 
 export const getTotalOnlineUsers = (callback) => {
-  const unsubscribe = get(ref(db2, "total_online_users")).then((doc) => {
-    console.log(doc);
+  get(ref(db2, "total_online_users")).then((doc) => {
     callback(doc.val());
   });
 
   return;
-  return unsubscribe;
 };
 
 export const getUserBasicInfo = async (callback, userID) => {
@@ -192,6 +197,39 @@ export const getUserBasicInfo = async (callback, userID) => {
   const authorDoc = await getDoc(doc(db, "users_display_name", userID));
 
   callback(authorDoc.exists() ? { ...authorDoc.data(), id: authorDoc.id } : {});
+};
+
+export const getUserAvatars = (isMounted, setFirstOnlineUsers) => {
+  get(query2(ref(db2, "status"), orderByChild("index"), limitToLast(3))).then(
+    async (snapshot) => {
+      let usersOnline = [];
+
+      snapshot.forEach((data) => {
+        if (data.val().state === "online") {
+          usersOnline.push({
+            lastOnline: data.val().last_online,
+            userID: data.key,
+          });
+        }
+      });
+
+      const onlineUsersAvatars = [];
+
+      for (let i in usersOnline) {
+        const userBasicInfoDoc = await getDoc(
+          doc(db, "users_display_name", usersOnline[i].userID)
+        );
+
+        if (userBasicInfoDoc.data())
+          onlineUsersAvatars.unshift({
+            id: userBasicInfoDoc.id,
+            ...userBasicInfoDoc.data(),
+          });
+      }
+
+      if (isMounted()) setFirstOnlineUsers(onlineUsersAvatars);
+    }
+  );
 };
 
 export const hasUserBlockedUser = async (

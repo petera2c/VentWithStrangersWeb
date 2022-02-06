@@ -6,7 +6,7 @@ import Page from "../../components/containers/Page";
 import UserComp from "../../components/User";
 
 import { OnlineUsersContext } from "../../context";
-import { useIsMounted } from "../../util";
+import { getTotalOnlineUsers, getUserAvatars, useIsMounted } from "../../util";
 import { getOnlineUsers } from "./util";
 
 const FETCH_USER_INIT_COUNT = 6;
@@ -17,11 +17,27 @@ function OnlineUsers() {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [userLoadCount, setUserLoadCount] = useState(FETCH_USER_INIT_COUNT);
 
-  const { totalOnlineUsers } = useContext(OnlineUsersContext);
+  const {
+    totalOnlineUsers,
+    setFirstOnlineUsers,
+    setTotalOnlineUsers,
+  } = useContext(OnlineUsersContext);
 
   useEffect(() => {
-    //getOnlineUsers(isMounted, setOnlineUsers, userLoadCount);
-  }, [isMounted, setOnlineUsers, totalOnlineUsers, userLoadCount]);
+    getTotalOnlineUsers((totalOnlineUsers) => {
+      if (isMounted()) {
+        getOnlineUsers(isMounted, setOnlineUsers, userLoadCount);
+        setTotalOnlineUsers(totalOnlineUsers);
+        getUserAvatars(isMounted, setFirstOnlineUsers);
+      }
+    });
+  }, [
+    isMounted,
+    setFirstOnlineUsers,
+    setOnlineUsers,
+    setTotalOnlineUsers,
+    userLoadCount,
+  ]);
 
   return (
     <Page className="column align-center bg-grey-2 gap16 pa16">

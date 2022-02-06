@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { off } from "firebase/database";
 import loadable from "@loadable/component";
 import { Space } from "antd";
 
@@ -20,10 +19,10 @@ import { OnlineUsersContext } from "../../context";
 import {
   chatQueueEmptyListener,
   getTotalOnlineUsers,
+  getUserAvatars,
   isPageActive,
   useIsMounted,
 } from "../../util";
-import { getUserAvatars } from "./util";
 
 const MakeAvatar = loadable(() => import("../views/MakeAvatar"));
 
@@ -31,70 +30,51 @@ function Sidebar() {
   const isMounted = useIsMounted();
   const { pathname } = useLocation();
 
-  const { totalOnlineUsers, setTotalOnlineUsers } = useContext(
-    OnlineUsersContext
-  );
+  const {
+    firstOnlineUsers,
+    totalOnlineUsers,
+    setFirstOnlineUsers,
+    setTotalOnlineUsers,
+  } = useContext(OnlineUsersContext);
 
-  const [firstOnlineUsers, setFirstOnlineUsers] = useState();
   const [queueLength, setQueueLength] = useState();
 
   useEffect(() => {
     let chatQueueListenerUnsubscribe;
-    let totalUsersOnlineUnsubscribe;
 
     chatQueueListenerUnsubscribe = chatQueueEmptyListener(
       isMounted,
       setQueueLength
     );
-    /*const intervalFunction = () => {
-      if (isMounted()) {
-     getTotalOnlineUsers((totalOnlineUsers) => {
-          if (isMounted()) {
-            console.log("starting interval");
-            setTotalOnlineUsers(totalOnlineUsers);
-            getUserAvatars(isMounted, setFirstOnlineUsers);
-          }
-        });
-      }
-    };
-    intervalFunction();
-    const interval = setInterval(intervalFunction, 30000);
 
-    console.log(totalUsersOnlineUnsubscribe);
-    */
-
-    totalUsersOnlineUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) => {
+    getTotalOnlineUsers((totalOnlineUsers) => {
       if (isMounted()) {
         setTotalOnlineUsers(totalOnlineUsers);
-        //getUserAvatars(isMounted, setFirstOnlineUsers);
+        getUserAvatars(isMounted, setFirstOnlineUsers);
       }
     });
     return () => {
-      //if (interval) clearInterval(interval);
       if (chatQueueListenerUnsubscribe) chatQueueListenerUnsubscribe();
-      if (totalUsersOnlineUnsubscribe) off(totalUsersOnlineUnsubscribe);
     };
-  }, [isMounted, setTotalOnlineUsers]);
+  }, [isMounted, setFirstOnlineUsers, setTotalOnlineUsers]);
 
   return (
     <Space
       className="container small column ov-auto bg-white border-top pt8 px16 pb16"
       direction="vertical"
     >
-      {false && (
-        <SideBarLink
-          icon={faUserFriends}
-          link="/people-online"
-          pathname={pathname}
-          firstOnlineUsers={firstOnlineUsers}
-          text={
-            (totalOnlineUsers ? totalOnlineUsers : "0") +
-            (totalOnlineUsers === 1 ? " Person" : " People") +
-            " Online"
-          }
-          totalOnlineUsers={totalOnlineUsers}
-        />
-      )}
+      <SideBarLink
+        icon={faUserFriends}
+        link="/people-online"
+        pathname={pathname}
+        firstOnlineUsers={firstOnlineUsers}
+        text={
+          (totalOnlineUsers ? totalOnlineUsers : "0") +
+          (totalOnlineUsers === 1 ? " Person" : " People") +
+          " Online"
+        }
+        totalOnlineUsers={totalOnlineUsers}
+      />
       <SideBarLink
         icon={faQuoteLeft}
         link="/quote-contest"

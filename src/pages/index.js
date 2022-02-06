@@ -59,6 +59,7 @@ const VentsPage = React.lazy(() => import("./Vents"));
 function RoutesComp() {
   const isMounted = useRef(false);
 
+  const [firstOnlineUsers, setFirstOnlineUsers] = useState([]);
   const [isUsersBirthday, setIsUsersBirthday] = useState(false);
   const [newReward, setNewReward] = useState();
   const [totalOnlineUsers, setTotalOnlineUsers] = useState();
@@ -147,6 +148,8 @@ function RoutesComp() {
     >
       <OnlineUsersContext.Provider
         value={{
+          firstOnlineUsers,
+          setFirstOnlineUsers,
           setTotalOnlineUsers,
           totalOnlineUsers,
         }}
