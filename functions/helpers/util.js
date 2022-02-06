@@ -182,7 +182,7 @@ const getMetaInformation = async (url, callback) => {
       "You are not alone. If you are feeling down, anonymously post your issue here. There is an entire community of people that want to help you.";
     keywords = "vent to strangers,vent to someone,chat with strangers";
     title = "Vent To Strangers";
-  } else if (url.substring(0, 5) === "/tags" && !slashID) {
+  } else if (url.substring(0, 5) === "/tags" && slashID === "tags") {
     description =
       "Read vents on any of our tags. Vent With Strangers is a safe place where people can talk about their problems and receive positive constructive feedback.";
     keywords = "anxiety,bullying,depression,family,school";
