@@ -232,6 +232,18 @@ const updateTotalUsersOnline = (change, context) => {
 
   if (
     changeAfter.val() &&
+    changeAfter.val().state &&
+    changeAfter.val().state === "online" &&
+    !changeAfter.val().index
+  ) {
+    admin
+      .database()
+      .ref("status/" + context.params.userID)
+      .update({ index: admin.database.ServerValue.TIMESTAMP });
+  }
+
+  if (
+    changeAfter.val() &&
     changeAfter.val().index &&
     changeAfter.val().index > moment().valueOf() + 5000
   ) {
