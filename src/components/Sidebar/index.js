@@ -59,15 +59,16 @@ function Sidebar() {
     };
     intervalFunction();
     const interval = setInterval(intervalFunction, 30000);
+
+    console.log(totalUsersOnlineUnsubscribe);
+    */
+
     totalUsersOnlineUnsubscribe = getTotalOnlineUsers((totalOnlineUsers) => {
       if (isMounted()) {
         setTotalOnlineUsers(totalOnlineUsers);
         //getUserAvatars(isMounted, setFirstOnlineUsers);
       }
     });
-    console.log(totalUsersOnlineUnsubscribe);
-    */
-
     return () => {
       //if (interval) clearInterval(interval);
       if (chatQueueListenerUnsubscribe) chatQueueListenerUnsubscribe();
