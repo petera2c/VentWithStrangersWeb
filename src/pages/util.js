@@ -10,7 +10,13 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { onValue, ref, serverTimestamp, set } from "firebase/database";
+import {
+  onDisconnect,
+  onValue,
+  ref,
+  serverTimestamp,
+  set,
+} from "firebase/database";
 import { db, db2 } from "../config/db_init";
 import dayjs from "dayjs";
 
@@ -85,6 +91,7 @@ export const newRewardListener = (
 };
 
 export const setUserOnlineStatus = async (status, uid) => {
+  return;
   if (status === "online")
     await set(ref(db2, "status/" + uid), {
       index: new dayjs().valueOf(),
@@ -105,10 +112,6 @@ export const setIsUserOnlineToDatabase = (uid) => {
 
   const connectedRef = ref(db2, ".info/connected");
   const userStatusDatabaseRef = ref(db2, "status/" + uid);
-  /*const diconnectObject = {
-    last_online: serverTimestamp(),
-    state: "offline",
-  };*/
 
   onValue(connectedRef, (snap) => {
     if (snap.val() === true) {
@@ -117,8 +120,18 @@ export const setIsUserOnlineToDatabase = (uid) => {
         last_online: serverTimestamp(),
         state: "online",
       });
+    } else {
+      /*  set(userStatusDatabaseRef, {
+        last_online: serverTimestamp(),
+        state: "offline",
+      });*/
     }
   });
-
-  //onDisconnect(userStatusDatabaseRef).set(diconnectObject);
 };
+
+/*
+set(userStatusDatabaseRef, {
+  last_online: serverTimestamp(),
+  state: "offline",
+});
+*/

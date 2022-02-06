@@ -213,6 +213,7 @@ const getInvalidDisplayNameCharacters = (displayName) => {
 };
 
 const updateTotalUsersOnline = (change, context) => {
+  return;
   const setToDatabase = (state) => {
     if (state === "online") {
       admin

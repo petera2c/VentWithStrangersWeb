@@ -7,12 +7,10 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { OnlineUsersContext, UserContext } from "../context";
 
 import Container from "../components/containers/Container";
+import LoadingHeart from "../components/views/loaders/Heart";
 
 const BirthdayModal = loadable(() => import("../components/modals/Birthday"));
 const Header = loadable(() => import("../components/Header"));
-const LoadingHeart = loadable(() =>
-  import("../components/views/loaders/Heart")
-);
 const MobileHeader = loadable(() =>
   import("../components/Header/MobileHeader")
 );
@@ -132,10 +130,7 @@ function RoutesComp() {
 
     return () => {
       isMounted.current = false;
-      if (user && user.uid)
-        import("./util").then((functions) => {
-          functions.setUserOnlineStatus("offline", user.uid);
-        });
+
       if (newRewardListenerUnsubscribe) newRewardListenerUnsubscribe();
     };
   }, [isMounted, user]);
