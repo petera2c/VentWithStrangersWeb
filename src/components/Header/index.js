@@ -13,6 +13,7 @@ import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
 import { faConciergeBell } from "@fortawesome/pro-duotone-svg-icons/faConciergeBell";
 import { faSearch } from "@fortawesome/pro-solid-svg-icons/faSearch";
 import { faSignOut } from "@fortawesome/pro-duotone-svg-icons/faSignOut";
+import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
 import { faUser } from "@fortawesome/pro-duotone-svg-icons/faUser";
 import { faUserAstronaut } from "@fortawesome/pro-duotone-svg-icons/faUserAstronaut";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -46,6 +47,7 @@ function Header() {
   const [isUserInQueue, setIsUserInQueue, isUserInQueueRef] = useState();
   const [notificationCounter, setNotificationCounter] = useState(0);
   const [notifications, setNotifications] = useState([]);
+  const [showFeedbackContainer, setShowFeedbackContainer] = useState(true);
   const [unreadConversationsCount, setUnreadConversationsCount] = useState();
 
   const [ventSearchString, setVentSearchString] = useState(
@@ -301,7 +303,23 @@ function Header() {
             )}
           </Container>
         </Container>
-
+        {showFeedbackContainer && (
+          <Container className="full-center border-top gap8 pa8">
+            <a
+              className="fs-22 button-4 tac"
+              href="https://forms.gle/fQ5xyZL52HZTEp2C7"
+              rel="noreferrer"
+              target="_blank"
+            >
+              Please give us feedback on our site!
+            </a>
+            <FontAwesomeIcon
+              className="button-9"
+              icon={faTimes}
+              onClick={() => setShowFeedbackContainer(false)}
+            />
+          </Container>
+        )}
         <StarterModal
           activeModal={activeModal}
           setActiveModal={setActiveModal}

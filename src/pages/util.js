@@ -10,13 +10,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import {
-  onDisconnect,
-  onValue,
-  ref,
-  serverTimestamp,
-  set,
-} from "firebase/database";
+import { onValue, ref, serverTimestamp, set } from "firebase/database";
 import { db, db2 } from "../config/db_init";
 import dayjs from "dayjs";
 
@@ -111,10 +105,10 @@ export const setIsUserOnlineToDatabase = (uid) => {
 
   const connectedRef = ref(db2, ".info/connected");
   const userStatusDatabaseRef = ref(db2, "status/" + uid);
-  const diconnectObject = {
+  /*const diconnectObject = {
     last_online: serverTimestamp(),
     state: "offline",
-  };
+  };*/
 
   onValue(connectedRef, (snap) => {
     if (snap.val() === true) {
