@@ -213,7 +213,6 @@ const getInvalidDisplayNameCharacters = (displayName) => {
 };
 
 const updateTotalUsersOnline = (change, context) => {
-  return;
   const setToDatabase = (state) => {
     if (state === "online") {
       admin
@@ -231,6 +230,7 @@ const updateTotalUsersOnline = (change, context) => {
   const changeAfter = change.after;
   const changeBefore = change.before;
 
+  /*
   if (
     changeAfter.val() &&
     changeAfter.val().state &&
@@ -254,6 +254,7 @@ const updateTotalUsersOnline = (change, context) => {
       server_timestamp: new moment().valueOf(),
     });
   }
+  */
 
   if (!changeAfter.val() && !changeBefore.val()) {
     // Do nothing, should never happen
