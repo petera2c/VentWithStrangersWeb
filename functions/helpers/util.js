@@ -247,26 +247,18 @@ const updateTotalUsersOnline = (change, context) => {
     // New doc
     // console.log("new doc");
 
-    if (changeAfter.val().state === "online" && changeAfter.val().index)
+    if (changeAfter.val().state === "online")
       setToDatabase(changeAfter.val().state);
   } else if (!changeAfter.val()) {
     // Doc deleted
     // console.log("doc deleted");
 
-    if (
-      changeBefore.val().state === "offline" ||
-      (changeBefore.val().state === "online" && changeAfter.val().index)
-    )
-      setToDatabase(changeBefore.val().state === "online" ? "offline" : "");
+    setToDatabase(changeBefore.val().state === "online" ? "offline" : "");
   } else {
     // Doc updated
     // console.log("doc updated");
 
-    if (
-      changeBefore.val().state !== changeAfter.val().state &&
-      (changeBefore.val().state === "offline" ||
-        (changeBefore.val().state === "online" && changeAfter.val().index))
-    ) {
+    if (changeBefore.val().state !== changeAfter.val().state) {
       // console.log("updated with different values");
       setToDatabase(changeAfter.val().state);
     }
