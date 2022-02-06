@@ -161,13 +161,13 @@ export const newVentCommentListener = (
           if (isMounted()) {
             if (querySnapshot.docs[0].data().userID === userID)
               setComments((oldComments) => [
+                ...oldComments,
                 {
                   ...querySnapshot.docs[0].data(),
                   id: querySnapshot.docs[0].id,
                   doc: querySnapshot.docs[0],
                   useToPaginate: false,
                 },
-                ...oldComments,
               ]);
             else setCanLoadMoreComments(true);
           }
