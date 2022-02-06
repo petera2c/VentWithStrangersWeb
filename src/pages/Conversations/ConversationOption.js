@@ -56,12 +56,14 @@ function ConversationOption({
   const [userBasicInfo, setUserBasicInfo] = useState();
   const hasSeen = conversation[userID];
 
+  const [
+    conversationUpdatedListenerUnsubscribe,
+    setConversationUpdatedListenerUnsubscribe,
+  ] = useState();
+
   useEffect(() => {
-    let conversationUpdatedListenerUnsubscribe;
-    conversationUpdatedListenerUnsubscribe = conversationListener(
-      conversation,
-      isMounted,
-      setConversations
+    setConversationUpdatedListenerUnsubscribe(
+      conversationListener(conversation, isMounted, setConversations)
     );
 
     let conversationFriendUserID;
@@ -196,14 +198,16 @@ function ConversationOption({
         <ConfirmAlertModal
           close={() => setDeleteConversationConfirm(false)}
           message="Deleting this conversation will be permanent. Are you sure you would like to delete this conversation?"
-          submit={() =>
+          submit={() => {
+            if (conversationUpdatedListenerUnsubscribe)
+              conversationUpdatedListenerUnsubscribe();
             deleteConversation(
               conversation.id,
               navigate,
               setConversations,
               userID
-            )
-          }
+            );
+          }}
           title="Delete Conversation"
         />
       )}

@@ -25,6 +25,39 @@ import {
   getEndAtValueTimestampFirst,
 } from "../../util";
 
+export const conversationListener = (
+  currentConversation,
+  isMounted,
+  setConversations
+) => {
+  const unsubscribe = onSnapshot(
+    doc(db, "conversations", currentConversation.id),
+    (doc) => {
+      const updatedConversation = { id: doc.id, ...doc.data() };
+
+      if (isMounted)
+        setConversations((oldConversations) => {
+          const indexOfUpdatedConversation = oldConversations.findIndex(
+            (conversation) => conversation.id === updatedConversation.id
+          );
+
+          for (let index in updatedConversation) {
+            oldConversations[indexOfUpdatedConversation][index] =
+              updatedConversation[index];
+          }
+
+          oldConversations.sort((a, b) =>
+            a.last_updated < b.last_updated ? 1 : -1
+          );
+
+          return [...oldConversations];
+        });
+    }
+  );
+
+  return unsubscribe;
+};
+
 export const deleteConversation = async (
   conversationID,
   navigate,
@@ -282,37 +315,4 @@ export const setConversationIsTyping = async (conversationID, userID) => {
       [userID]: Timestamp.now().toMillis(),
     },
   });
-};
-
-export const conversationListener = (
-  currentConversation,
-  isMounted,
-  setConversations
-) => {
-  const unsubscribe = onSnapshot(
-    doc(db, "conversations", currentConversation.id),
-    (doc) => {
-      const updatedConversation = { id: doc.id, ...doc.data() };
-
-      if (isMounted)
-        setConversations((oldConversations) => {
-          const indexOfUpdatedConversation = oldConversations.findIndex(
-            (conversation) => conversation.id === updatedConversation.id
-          );
-
-          for (let index in updatedConversation) {
-            oldConversations[indexOfUpdatedConversation][index] =
-              updatedConversation[index];
-          }
-
-          oldConversations.sort((a, b) =>
-            a.last_updated < b.last_updated ? 1 : -1
-          );
-
-          return [...oldConversations];
-        });
-    }
-  );
-
-  return unsubscribe;
 };
