@@ -11,6 +11,7 @@ import Message from "./message";
 import { capitolizeFirstChar, useIsMounted } from "../../util";
 import {
   getMessages,
+  isFriendTyping,
   messageListener,
   sendMessage,
   setConversationIsTyping,
@@ -33,19 +34,6 @@ function Chat({
 
   const [isMobileOrTablet, setIsMobileOrTablet] = useState();
 
-  const checkIsUserTyping = (isTyping) => {
-    if (typingTimer2) clearTimeout(typingTimer2);
-    if (isTyping) {
-      for (let memberID in isTyping) {
-        if (memberID !== userID) {
-          if (Timestamp.now().toMillis() - isTyping[memberID] < 4000) {
-            return true;
-          } else return false;
-        }
-      }
-    }
-  };
-
   const dummyRef = useRef();
   const scrollToBottom = () => {
     if (dummyRef.current)
@@ -61,7 +49,9 @@ function Chat({
   const [conversationID, setConversationID] = useState();
   const [messages, setMessages] = useState([]);
   const [messageString, setMessageString] = useState("");
-  const [isUserCurrentlyTyping, setIsUserCurrentlyTyping] = useState(false);
+  const [allowToSetIsUserTypingToDB, setAllowToSetIsUserTypingToDB] = useState(
+    true
+  );
 
   useEffect(() => {
     let messageListenerUnsubscribe;
@@ -99,9 +89,7 @@ function Chat({
       return memberID !== userID;
     });
 
-  const isFriendTyping = checkIsUserTyping(conversation.isTyping);
-
-  if (isFriendTyping) setTimeout(scrollToBottom, 400);
+  if (isFriendTyping()) setTimeout(scrollToBottom, 400);
 
   return (
     <Container className="column flex-fill x-fill full-center ov-hidden br4">
@@ -173,7 +161,7 @@ function Chat({
       <Container
         className="ease-in-out x-fill"
         style={{
-          maxHeight: isFriendTyping ? "56px" : "0",
+          maxHeight: isFriendTyping() ? "56px" : "0",
         }}
       >
         <Container className="bg-none ov-hidden full-center">
@@ -201,19 +189,23 @@ function Chat({
               if (event.target.value === "\n") return;
               setMessageString(event.target.value);
 
-              if (isUserCurrentlyTyping) {
-                if (typingTimer) clearTimeout(typingTimer);
-                typingTimer = setTimeout(() => {
-                  setIsUserCurrentlyTyping(false);
-                }, 2000);
+              if (!allowToSetIsUserTypingToDB) {
+                if (!typingTimer) {
+                  typingTimer = setTimeout(() => {
+                    setAllowToSetIsUserTypingToDB(true);
+
+                    if (typingTimer) typingTimer = undefined;
+                  }, 500);
+                }
               } else {
-                setIsUserCurrentlyTyping(true);
                 setConversationIsTyping(conversationID, userID);
+                setAllowToSetIsUserTypingToDB(false);
               }
             }}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 if (!messageString) return;
+                setAllowToSetIsUserTypingToDB(true);
                 sendMessage(conversation.id, messageString, userID);
                 setMessageString("");
               }
@@ -236,6 +228,7 @@ function Chat({
             }
             onClick={() => {
               if (!messageString) return;
+              setAllowToSetIsUserTypingToDB(true);
               sendMessage(conversation.id, messageString, userID);
               setMessageString("");
             }}

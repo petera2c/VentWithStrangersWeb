@@ -118,7 +118,7 @@ exports.ventDeleteListener = functions.firestore
   .onDelete(ventDeleteListener);
 
 exports.onlineStatusListener = functions.database
-  .ref("/status/{userID}")
+  .ref("/status/{userID}/state")
   .onWrite(updateTotalUsersOnline);
 
 exports.cronBirthdayNotification = functions.pubsub

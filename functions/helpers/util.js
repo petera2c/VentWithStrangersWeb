@@ -227,10 +227,12 @@ const updateTotalUsersOnline = (change, context) => {
     }
   };
 
+  console.log(change.after.val());
+
   const changeAfter = change.after;
   const changeBefore = change.before;
 
-  if (
+  /*  if (
     changeAfter.val() &&
     changeAfter.val().state &&
     changeAfter.val().state === "online" &&
@@ -251,7 +253,7 @@ const updateTotalUsersOnline = (change, context) => {
       .database()
       .ref("status/" + context.params.userID)
       .update({ index: admin.database.ServerValue.TIMESTAMP });
-  }
+  }*/
 
   if (!changeAfter.val() && !changeBefore.val()) {
     // Do nothing, should never happen
@@ -259,20 +261,19 @@ const updateTotalUsersOnline = (change, context) => {
     // New doc
     // console.log("new doc");
 
-    if (changeAfter.val().state === "online")
-      setToDatabase(changeAfter.val().state);
+    if (changeAfter.val() === "online") setToDatabase(changeAfter.val());
   } else if (!changeAfter.val()) {
     // Doc deleted
     // console.log("doc deleted");
 
-    setToDatabase(changeBefore.val().state === "online" ? "offline" : "");
+    setToDatabase(changeBefore.val() === "online" ? "offline" : "");
   } else {
     // Doc updated
     // console.log("doc updated");
 
-    if (changeBefore.val().state !== changeAfter.val().state) {
+    if (changeBefore.val() !== changeAfter.val()) {
       // console.log("updated with different values");
-      setToDatabase(changeAfter.val().state);
+      setToDatabase(changeAfter.val());
     }
   }
   return 10;

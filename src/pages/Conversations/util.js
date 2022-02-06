@@ -97,6 +97,10 @@ export const deleteMessage = async (conversationID, messageID, setMessages) => {
   message.success("Message deleted!");
 };
 
+export const isFriendTyping = () => {
+  return true;
+};
+
 export const messageListener = (
   conversationID,
   isMounted,
