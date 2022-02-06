@@ -6,10 +6,11 @@ export const getOnlineUsers = (isMounted, callback, fetchUsersCount) => {
     get(
       query(
         ref(db2, "status"),
-        orderByChild("index"),
-        limitToLast(fetchUsersCount)
+        limitToLast(fetchUsersCount),
+        orderByChild("index")
       )
     ).then((snapshot) => {
+      console.log(snapshot.val());
       let counter = 0;
       let usersArray = [];
 
