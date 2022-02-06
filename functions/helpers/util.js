@@ -218,12 +218,12 @@ const updateTotalUsersOnline = (change, context) => {
       admin
         .database()
         .ref("total_online_users2")
-        .set({ test: admin.database.ServerValue.increment(1) });
+        .set(admin.database.ServerValue.increment(1));
     } else if (state === "offline") {
       admin
         .database()
         .ref("total_online_users2")
-        .set({ test: admin.database.ServerValue.increment(-1) });
+        .set(admin.database.ServerValue.increment(-1));
     }
   };
 
