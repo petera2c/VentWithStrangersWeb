@@ -29,7 +29,7 @@ function Conversations() {
   );
   const [canLoadMore, setCanLoadMore] = useState(true);
   const [conversations, setConversations] = useState([]);
-  const [userBasicInfo, setUserBasicInfo] = useState({});
+  const [activeUserBasicInfo, setActiveUserBasicInfo] = useState({});
   const [starterModal, setStarterModal] = useState(!user);
 
   useEffect(() => {
@@ -87,12 +87,13 @@ function Conversations() {
           {conversations.map((conversation, index) => {
             return (
               <ConversationOption
+                activeUserBasicInfo={activeUserBasicInfo}
                 conversation={conversation}
                 isActive={conversation.id === activeConversation}
                 isLastItem={index === conversations.length - 1}
                 key={conversation.id}
                 setActiveConversation={setActiveConversation}
-                setUserBasicInfo={setUserBasicInfo}
+                setActiveUserBasicInfo={setActiveUserBasicInfo}
                 setConversations={setConversations}
                 userID={user.uid}
               />
@@ -168,7 +169,7 @@ function Conversations() {
               conversation={conversations.find(
                 (conversation) => conversation.id === activeConversation
               )}
-              conversationPartnerData={userBasicInfo}
+              conversationPartnerData={activeUserBasicInfo}
               userID={user.uid}
             />
           )}

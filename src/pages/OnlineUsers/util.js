@@ -17,7 +17,7 @@ export const getOnlineUsers = (isMounted, callback, fetchUsersCount) => {
         if (data.val().state === "online") {
           counter++;
           usersArray.unshift({
-            lastOnline: data.val().last_online,
+            lastOnline: data.val().index,
             userID: data.key,
           });
         }

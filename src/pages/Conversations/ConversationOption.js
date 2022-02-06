@@ -33,12 +33,14 @@ const MakeAvatar = loadable(() => import("../../components/views/MakeAvatar"));
 dayjs.extend(relativeTime);
 
 function ConversationOption({
+  activeUserBasicInfo,
   conversation,
   isActive,
   isLastItem,
   setActiveConversation,
-  setConversationsBasicDatas,
+  setActiveUserBasicInfo,
   setConversations,
+  setConversationsBasicDatas,
   userID,
 }) {
   const isMounted = useIsMounted();
@@ -72,6 +74,8 @@ function ConversationOption({
 
     getUserBasicInfo((newBasicUserInfo) => {
       if (isMounted()) setUserBasicInfo(newBasicUserInfo);
+
+      if (isMounted() && isActive) setActiveUserBasicInfo(newBasicUserInfo);
     }, conversationFriendUserID);
 
     if (isActive && (!hasSeen || conversation.go_to_inbox))
@@ -86,6 +90,7 @@ function ConversationOption({
     hasSeen,
     isActive,
     isMounted,
+    setActiveUserBasicInfo,
     setConversations,
     setConversationsBasicDatas,
     userID,
@@ -100,6 +105,7 @@ function ConversationOption({
         (isActive ? "bg-grey-2" : "")
       }
       onClick={() => {
+        setActiveUserBasicInfo(userBasicInfo);
         setActiveConversation(conversation.id);
         navigate("/chat?" + conversation.id);
       }}
