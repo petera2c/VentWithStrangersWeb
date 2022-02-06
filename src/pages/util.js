@@ -126,5 +126,5 @@ export const setIsUserOnlineToDatabase = (uid) => {
     }
   });
 
-  onDisconnect(userStatusDatabaseRef).set(diconnectObject);
+  //onDisconnect(userStatusDatabaseRef).set(diconnectObject);
 };

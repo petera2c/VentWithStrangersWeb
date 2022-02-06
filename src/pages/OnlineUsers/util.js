@@ -10,7 +10,6 @@ export const getOnlineUsers = (isMounted, callback, fetchUsersCount) => {
         orderByChild("index")
       )
     ).then((snapshot) => {
-      console.log(snapshot.val());
       let counter = 0;
       let usersArray = [];
 
