@@ -215,11 +215,13 @@ const getInvalidDisplayNameCharacters = (displayName) => {
 const updateTotalUsersOnline = (change, context) => {
   const setToDatabase = (state) => {
     if (state === "online") {
+      return;
       admin
         .database()
         .ref("total_online_users")
         .set(admin.database.ServerValue.increment(1));
     } else if (state === "offline") {
+      return;
       admin
         .database()
         .ref("total_online_users")
