@@ -9,7 +9,7 @@ export const getMetaData = (page, search) => {
     description =
       "Vent online with strangers. VWS is a site where you can make friends and get help on your specific situation all for free. Our site is 100% anonymous.";
     keywords =
-      "vent to someone,vent app,I need to vent,anonymous chat,talk to strangers, chat rooms, chat with strangers";
+      "muttr,vent online,vent to someone,vent app,I need to vent,anonymous chat,talk to strangers, chat rooms, chat with strangers";
     title = "Vent and Chat Anonymously With Strangers";
   } else if (page === "/account") {
     title = "Account";
@@ -19,7 +19,7 @@ export const getMetaData = (page, search) => {
     description =
       "Chat anonymously with great strangers. Our site is free of bullies, bots and perverts. Everything is 100% free and no credit card is required.";
     keywords =
-      "anonymously chat,random chat,vent chat,chat rooms,chat with strangers";
+      "vent with someone,anonymously chat,random chat,vent chat,chat rooms,chat with strangers";
     title = "Chat With Strangers";
   } else if (page === "/chat") {
     description = "Your inbox.";

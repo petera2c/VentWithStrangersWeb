@@ -34,6 +34,7 @@ import { UserContext, OnlineUsersContext } from "../../context";
 import {
   chatQueueEmptyListener,
   getTotalOnlineUsers,
+  getUserAvatars,
   isPageActive,
   signOut2,
   useIsMounted,
@@ -54,9 +55,11 @@ function Header() {
   const navigate = useNavigate();
   const { pathname, search } = location;
 
-  const { totalOnlineUsers, setTotalOnlineUsers } = useContext(
-    OnlineUsersContext
-  );
+  const {
+    setFirstOnlineUsers,
+    setTotalOnlineUsers,
+    totalOnlineUsers,
+  } = useContext(OnlineUsersContext);
   const { user, userBasicInfo } = useContext(UserContext);
 
   const [accountSectionActive, setAccountSectionActive] = useState(false);
@@ -88,17 +91,12 @@ function Header() {
       isMounted,
       setQueueLength
     );
-    /*
-    const intervalFunction = () => {
+    getTotalOnlineUsers((totalOnlineUsers) => {
       if (isMounted()) {
-        getTotalOnlineUsers((totalOnlineUsers) => {
-          if (isMounted()) setTotalOnlineUsers(totalOnlineUsers);
-        });
+        setTotalOnlineUsers(totalOnlineUsers);
+        getUserAvatars(isMounted, setFirstOnlineUsers);
       }
-    };
-    intervalFunction();
-    const interval = setInterval(intervalFunction, 30000);
-    */
+    });
 
     if (user) {
       if (pathname === "/chat")
@@ -142,7 +140,6 @@ function Header() {
 
     return () => {
       cleanup();
-      //  if (interval) clearInterval(interval);
       if (chatQueueListenerUnsubscribe) chatQueueListenerUnsubscribe();
       if (isUserInQueueUnsubscribe) isUserInQueueUnsubscribe();
       if (newNotificationsListenerUnsubscribe)
@@ -155,6 +152,7 @@ function Header() {
     isUserInQueueRef,
     navigate,
     pathname,
+    setFirstOnlineUsers,
     setIsUserInQueue,
     setTotalOnlineUsers,
     unreadConversationsCount,
@@ -335,21 +333,19 @@ function Header() {
           )}
 
           <Space align="center" direction="vertical" size="middle">
-            {false && (
-              <Link
-                className={
-                  "flex full-center button-3 " +
-                  isPageActive("/people-online", pathname)
-                }
-                to="/people-online"
-              >
-                <FontAwesomeIcon className="mr8" icon={faUserFriends} />
-                <p className="ic">
-                  {totalOnlineUsers}{" "}
-                  {totalOnlineUsers === 1 ? "Person" : "People"} Online
-                </p>
-              </Link>
-            )}
+            <Link
+              className={
+                "flex full-center button-3 " +
+                isPageActive("/people-online", pathname)
+              }
+              to="/people-online"
+            >
+              <FontAwesomeIcon className="mr8" icon={faUserFriends} />
+              <p className="ic">
+                {totalOnlineUsers}{" "}
+                {totalOnlineUsers === 1 ? "Person" : "People"} Online
+              </p>
+            </Link>
             <Link
               className={
                 "flex full-center button-3 " +

@@ -110,7 +110,7 @@ const getMetaInformation = async (url, callback) => {
     description =
       "Vent online with strangers. VWS is a site where you can make friends and get help on your specific situation all for free. Our site is 100% anonymous.";
     keywords =
-      "vent online,vent to someone,vent app,I need to vent,anonymous chat,talk to strangers, chat rooms, chat with strangers";
+      "muttr,vent online,vent to someone,vent app,I need to vent,anonymous chat,talk to strangers, chat rooms, chat with strangers";
     title = "Vent and Chat Anonymously With Strangers";
   } else if (url === "/account") {
     title = "Account";
@@ -122,7 +122,7 @@ const getMetaInformation = async (url, callback) => {
     description =
       "Chat anonymously with great strangers. Our site is free of bullies, bots and perverts. Everything is 100% free and no credit card is required.";
     keywords =
-      "anonymously chat,random chat,vent chat,chat rooms,chat with strangers";
+      "vent with someone,anonymously chat,random chat,vent chat,chat rooms,chat with strangers";
     title = "Chat With Strangers";
   } else if (url === "/chat") {
     description = "Your inbox.";
@@ -247,7 +247,7 @@ const updateTotalUsersOnline = (change, context) => {
     // New doc
     // console.log("new doc");
 
-    if (changeAfter.val().state === "online")
+    if (changeAfter.val().state === "online" && changeAfter.val().index)
       setToDatabase(changeAfter.val().state);
   } else if (!changeAfter.val()) {
     // Doc deleted
@@ -258,7 +258,10 @@ const updateTotalUsersOnline = (change, context) => {
     // Doc updated
     // console.log("doc updated");
 
-    if (changeBefore.val().state !== changeAfter.val().state) {
+    if (
+      changeBefore.val().state !== changeAfter.val().state &&
+      changeAfter.val().index
+    ) {
       // console.log("updated with different values");
       setToDatabase(changeAfter.val().state);
     }

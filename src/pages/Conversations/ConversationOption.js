@@ -114,7 +114,10 @@ function ConversationOption({
           )}
 
           {userBasicInfo && (
-            <Test hasSeen={hasSeen} userBasicInfo={userBasicInfo} />
+            <DisplayOnlineAndName
+              hasSeen={hasSeen}
+              userBasicInfo={userBasicInfo}
+            />
           )}
           {userBasicInfo && (
             <KarmaBadge noOnClick userBasicInfo={userBasicInfo} />
@@ -218,14 +221,13 @@ function ConversationOption({
   );
 }
 
-function Test({ hasSeen, userBasicInfo }) {
+function DisplayOnlineAndName({ hasSeen, userBasicInfo }) {
   const isMounted = useIsMounted();
   const [isUserOnline, setIsUserOnline] = useState(false);
 
   useEffect(() => {
     let isUserOnlineSubscribe;
 
-    /*
     isUserOnlineSubscribe = getIsUserOnline((isUserOnlineObj) => {
       if (isUserOnlineObj && isUserOnlineObj.state && isMounted()) {
         if (isUserOnlineObj.state === "online") setIsUserOnline(true);
@@ -233,11 +235,10 @@ function Test({ hasSeen, userBasicInfo }) {
       }
     }, userBasicInfo.id);
 
-*/
     return () => {
       if (isUserOnlineSubscribe) off(isUserOnlineSubscribe);
     };
-  }, []);
+  }, [isMounted, userBasicInfo]);
 
   return (
     <Container className="flex-fill align-center ov-hidden">
