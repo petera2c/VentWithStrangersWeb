@@ -200,7 +200,7 @@ export const getUserBasicInfo = async (callback, userID) => {
 };
 
 export const getUserAvatars = (isMounted, setFirstOnlineUsers) => {
-  get(query2(ref(db2, "status"), orderByChild("index"), limitToLast(3))).then(
+  get(query2(ref(db2, "status"), limitToLast(3), orderByChild("index"))).then(
     async (snapshot) => {
       let usersOnline = [];
 
