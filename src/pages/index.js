@@ -132,6 +132,10 @@ function RoutesComp() {
 
     return () => {
       isMounted.current = false;
+      if (user && user.uid)
+        import("./util").then((functions) => {
+          functions.setUserOnlineStatus("offline", user.uid);
+        });
       if (newRewardListenerUnsubscribe) newRewardListenerUnsubscribe();
     };
   }, [isMounted, user]);

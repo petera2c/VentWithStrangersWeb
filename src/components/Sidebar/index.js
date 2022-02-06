@@ -82,12 +82,6 @@ function Sidebar() {
         text="Daily Quote Contest"
       />
       <SideBarLink
-        icon={faStarShooting}
-        link="/rewards"
-        pathname={pathname}
-        text="Rewards"
-      />
-      <SideBarLink
         icon={faComments}
         link="/chat-with-strangers"
         pathname={pathname}
@@ -95,6 +89,12 @@ function Sidebar() {
           "Chat With Strangers" +
           (queueLength === -1 ? "" : ` (${queueLength})`)
         }
+      />
+      <SideBarLink
+        icon={faStarShooting}
+        link="/rewards"
+        pathname={pathname}
+        text="Rewards"
       />
       <SideBarLink
         icon={faPrayingHands}
