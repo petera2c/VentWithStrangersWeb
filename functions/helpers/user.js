@@ -140,7 +140,6 @@ const newUserSetup = async (user) => {
 };
 
 const signPeopleOut = () => {
-  return;
   admin
     .database()
     .ref("total_online_users")

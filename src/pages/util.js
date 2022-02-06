@@ -120,18 +120,10 @@ export const setIsUserOnlineToDatabase = (uid) => {
         last_online: serverTimestamp(),
         state: "online",
       });
-    } else {
-      /*  set(userStatusDatabaseRef, {
+      onDisconnect(userStatusDatabaseRef).set({
         last_online: serverTimestamp(),
         state: "offline",
-      });*/
+      });
     }
   });
 };
-
-/*
-set(userStatusDatabaseRef, {
-  last_online: serverTimestamp(),
-  state: "offline",
-});
-*/
