@@ -218,14 +218,14 @@ const updateTotalUsersOnline = (change, context) => {
       return;
       admin
         .database()
-        .ref("total_online_users")
-        .set(admin.database.ServerValue.increment(1));
+        .ref("total_online_users2")
+        .set({ test: admin.database.ServerValue.increment(1) });
     } else if (state === "offline") {
       return;
       admin
         .database()
-        .ref("total_online_users")
-        .set(admin.database.ServerValue.increment(-1));
+        .ref("total_online_users2")
+        .set({ test: admin.database.ServerValue.increment(-1) });
     }
   };
 
