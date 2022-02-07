@@ -153,8 +153,7 @@ function Chat({
         {!messages ||
           ((messages && messages.length) === 0 && (
             <h4 className="tac">
-              The activeConversation has been started but no messages have been
-              sent!
+              The conversation has been started but no messages have been sent!
             </h4>
           ))}
 

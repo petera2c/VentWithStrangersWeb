@@ -63,6 +63,7 @@ export const conversationListener = (
 export const deleteConversation = async (
   conversationID,
   navigate,
+  setActiveConversation,
   setConversations,
   userID
 ) => {
@@ -79,6 +80,7 @@ export const deleteConversation = async (
     members: arrayRemove(userID),
   });
 
+  setActiveConversation(false);
   navigate("/chat");
 
   message.success("Conversation deleted!");

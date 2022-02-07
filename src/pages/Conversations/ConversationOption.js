@@ -195,6 +195,7 @@ function ConversationOption({
             deleteConversation(
               conversation.id,
               navigate,
+              setActiveConversation,
               setConversations,
               userID
             );
