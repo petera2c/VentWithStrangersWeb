@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { off } from "firebase/database";
 import dayjs from "dayjs";
@@ -40,17 +40,18 @@ function ConversationOption({
   setActiveConversation,
   setActiveUserBasicInfo,
   setConversations,
-  setConversationsBasicDatas,
   userID,
 }) {
   const isMounted = useIsMounted();
   const navigate = useNavigate();
+
+  const conversationUpdatedListenerUnsubscribe = useRef(false);
+
   const [blockModal, setBlockModal] = useState(false);
   const [conversationOptions, setConversationOptions] = useState(false);
   const [deleteConversationConfirm, setDeleteConversationConfirm] = useState(
     false
   );
-  const [deletedConversation, setDeletedConversation] = useState(false);
   const [handleOutsideClickCalled, setHandleOutsideClickCalled] = useState(
     false
   );
@@ -58,14 +59,11 @@ function ConversationOption({
   const hasSeen = conversation[userID];
 
   useEffect(() => {
-    let conversationUpdatedListenerUnsubscribe;
-
-    if (!deletedConversation)
-      conversationUpdatedListenerUnsubscribe = conversationListener(
-        conversation,
-        isMounted,
-        setConversations
-      );
+    conversationUpdatedListenerUnsubscribe.current = conversationListener(
+      conversation,
+      isMounted,
+      setConversations
+    );
 
     let conversationFriendUserID;
 
@@ -85,18 +83,18 @@ function ConversationOption({
       readConversation(conversation, userID);
 
     return () => {
-      if (conversationUpdatedListenerUnsubscribe)
-        conversationUpdatedListenerUnsubscribe();
+      if (conversationUpdatedListenerUnsubscribe.current) {
+        conversationUpdatedListenerUnsubscribe.current();
+        conversationUpdatedListenerUnsubscribe.current = false;
+      }
     };
   }, [
     conversation,
-    deletedConversation,
     hasSeen,
     isActive,
     isMounted,
     setActiveUserBasicInfo,
     setConversations,
-    setConversationsBasicDatas,
     userID,
   ]);
 
@@ -201,7 +199,19 @@ function ConversationOption({
           close={() => setDeleteConversationConfirm(false)}
           message="Deleting this conversation will be permanent. Are you sure you would like to delete this conversation?"
           submit={() => {
-            setDeletedConversation(true);
+            if (conversationUpdatedListenerUnsubscribe.current) {
+              conversationUpdatedListenerUnsubscribe.current();
+              conversationUpdatedListenerUnsubscribe.current = false;
+            }
+            setConversations((currentConversations) => {
+              currentConversations.splice(
+                currentConversations.findIndex(
+                  (conversation2) => conversation2.id === conversation.id
+                ),
+                1
+              );
+              return [...currentConversations];
+            });
 
             deleteConversation(
               conversation.id,

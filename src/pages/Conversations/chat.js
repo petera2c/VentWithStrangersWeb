@@ -99,7 +99,7 @@ function Chat({
 
       if (messageListenerUnsubscribe) messageListenerUnsubscribe();
     };
-  }, [conversation, isMounted]);
+  }, [conversation, isMounted, userID]);
 
   let conversationPartnerID;
   if (conversation.members && conversation.members.length === 2)

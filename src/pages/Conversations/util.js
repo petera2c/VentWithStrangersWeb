@@ -113,12 +113,10 @@ export const isUserTypingListener = (
   scrollToBottom,
   setShowPartnerIsTyping
 ) => {
-  console.log("starting to listen");
   const dbRef = ref(db2, conversationID + "/" + partnerID);
 
   onValue(dbRef, (snapshot) => {
     if (isMounted()) {
-      console.log(snapshot.val());
       if (isTimestampWithinSeconds(snapshot.val())) {
         setShowPartnerIsTyping(true);
         setTimeout(scrollToBottom, 400);
