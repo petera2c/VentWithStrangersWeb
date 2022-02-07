@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { off } from "firebase/database";
 import loadable from "@loadable/component";
 import { Button } from "antd";
@@ -37,6 +37,7 @@ function Chat({
   userID,
 }) {
   const isMounted = useIsMounted();
+  const navigate = useNavigate();
 
   const dummyRef = useRef();
   const textInput = useRef(null);
@@ -137,7 +138,14 @@ function Chat({
           </Link>
         )}
         {isMobileOrTablet && (
-          <Button onClick={() => setActiveConversation(false)}>Go Back</Button>
+          <Button
+            onClick={() => {
+              setActiveConversation(false);
+              navigate("/chat");
+            }}
+          >
+            Go Back
+          </Button>
         )}
       </Container>
 

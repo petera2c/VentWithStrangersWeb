@@ -50,6 +50,7 @@ function Conversations() {
           setInitialConversationsAndActiveConversation(
             isMounted,
             newConversations,
+            true,
             setActiveConversation,
             setCanLoadMore,
             setConversations
@@ -67,9 +68,11 @@ function Conversations() {
     <Page className="bg-grey-2 ov-hidden">
       <Container className="flex-fill x-fill gap4 ov-hidden pa4">
         <Container className="container small column ov-auto bg-white br4 pa8">
-          <Button className="mb8" size="large" type="primary">
-            New Group
-          </Button>
+          {false && (
+            <Button className="mb8" size="large" type="primary">
+              New Group
+            </Button>
+          )}
           {conversations.length === 0 && (
             <Link className="" to="/people-online">
               <h6 className="button-1 grey-1 tac">
@@ -103,17 +106,15 @@ function Conversations() {
                 getConversations(
                   conversations,
                   isMounted,
-                  (newConversations, subtraction) => {
-                    if (
-                      newConversations.length < 5 - subtraction ||
-                      (newConversations.length === 0 && isMounted())
-                    )
-                      setCanLoadMore(false);
-                    if (isMounted())
+                  (newConversations) => {
+                    if (isMounted()) {
+                      if (newConversations.length < 5) setCanLoadMore(false);
+
                       setConversations((oldConversations) => [
                         ...oldConversations,
                         ...newConversations,
                       ]);
+                    }
                   },
                   user.uid
                 );

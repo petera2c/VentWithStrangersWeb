@@ -201,14 +201,8 @@ export const getConversations = async (
     )
   );
 
-  let isActiveConversationInNewConversations = 0;
   let newConversations = [];
   conversationsQuerySnapshot.docs.forEach((item, i) => {
-    if (conversations.find((conversation) => conversation.id === item.id)) {
-      isActiveConversationInNewConversations++;
-      return;
-    }
-
     newConversations.push({
       id: item.id,
       ...item.data(),
@@ -216,8 +210,7 @@ export const getConversations = async (
     });
   });
 
-  if (isMounted())
-    setConversations(newConversations, isActiveConversationInNewConversations);
+  if (isMounted()) setConversations(newConversations);
 };
 
 export const getMessages = async (
@@ -342,6 +335,7 @@ export const setConversationIsTyping = (
 export const setInitialConversationsAndActiveConversation = async (
   isMounted,
   newConversations,
+  openFirstChat,
   setActiveConversation,
   setCanLoadMore,
   setConversations
@@ -371,7 +365,7 @@ export const setInitialConversationsAndActiveConversation = async (
         });
       else setActiveConversation(false);
     }
-  } else if (newConversations.length > 0) {
+  } else if (openFirstChat && newConversations.length > 0) {
     setActiveConversation(newConversations[0]);
   } else setActiveConversation(false);
 

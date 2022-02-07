@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { UserContext } from "../../context";
 
@@ -13,49 +13,46 @@ import Chat from "./chat";
 
 import { useIsMounted, userSignUpProgress } from "../../util";
 
-import { getConversations, mostRecentConversationListener } from "./util";
+import {
+  getConversations,
+  mostRecentConversationListener,
+  setInitialConversationsAndActiveConversation,
+} from "./util";
 
 function MobileConversations() {
   const isMounted = useIsMounted();
+  //const location = useLocation();
+  //const { search } = location;
   const { user } = useContext(UserContext);
 
-  const [conversations, setConversations] = useState([]);
-
-  const location = useLocation();
-  const { search } = location;
-  const [activeConversation, setActiveConversation] = useState(
-    search ? search.substring(1) : ""
-  );
-  const [activeUserBasicInfo, setActiveUserBasicInfo] = useState({});
+  const [activeConversation, setActiveConversation] = useState();
+  const [activeUserBasicInfo, setActiveUserBasicInfo] = useState();
   const [canLoadMore, setCanLoadMore] = useState(true);
+  const [conversations, setConversations] = useState([]);
   const [starterModal, setStarterModal] = useState(!user);
 
   useEffect(() => {
     let newMessageListenerUnsubscribe;
 
-    if (user)
+    if (user) {
       newMessageListenerUnsubscribe = mostRecentConversationListener(
         isMounted,
         setConversations,
         user.uid
       );
 
-    if (user) {
-      console.log("here");
       getConversations(
-        activeConversation,
         [],
         isMounted,
-        setActiveConversation,
-        (newConversations) => {
-          if (
-            newConversations.length % 5 !== 0 ||
-            (newConversations.length === 0 && isMounted())
-          )
-            setCanLoadMore(false);
-
-          if (isMounted()) setConversations(newConversations);
-        },
+        (newConversations) =>
+          setInitialConversationsAndActiveConversation(
+            isMounted,
+            newConversations,
+            false,
+            setActiveConversation,
+            setCanLoadMore,
+            setConversations
+          ),
         user.uid
       );
     }
@@ -63,7 +60,7 @@ function MobileConversations() {
     return () => {
       if (newMessageListenerUnsubscribe) newMessageListenerUnsubscribe();
     };
-  }, [activeConversation, isMounted, user]);
+  }, [isMounted, user]);
 
   return (
     <Page className="bg-grey-2">
@@ -83,8 +80,11 @@ function MobileConversations() {
             <ConversationOption
               activeUserBasicInfo={activeUserBasicInfo}
               conversation={conversation}
-              isActive={conversation.id === activeConversation}
-              isLastItem={index === conversations.length - 1}
+              isActive={
+                activeConversation
+                  ? conversation.id === activeConversation.id
+                  : false
+              }
               key={conversation.id}
               setActiveConversation={setActiveConversation}
               setActiveUserBasicInfo={setActiveUserBasicInfo}
@@ -98,22 +98,17 @@ function MobileConversations() {
             className="button-2 pa8 my8 br4"
             onClick={() => {
               getConversations(
-                activeConversation,
                 conversations,
                 isMounted,
-                setActiveConversation,
                 (newConversations) => {
-                  if (
-                    newConversations.length % 5 !== 0 ||
-                    (newConversations.length === 0 && isMounted())
-                  )
-                    setCanLoadMore(false);
+                  if (isMounted()) {
+                    if (newConversations.length < 5) setCanLoadMore(false);
 
-                  if (isMounted())
                     setConversations((oldConversations) => [
                       ...oldConversations,
                       ...newConversations,
                     ]);
+                  }
                 },
                 user.uid
               );
@@ -125,38 +120,47 @@ function MobileConversations() {
       </Container>
       {activeConversation && (
         <Container className="container mobile-full column ov-hidden flex-fill bg-white">
-          {!conversations.find(
-            (conversation) => conversation.id === activeConversation
-          ) &&
-            activeConversation && (
-              <h1 className="x-fill tac py32">
-                Can not find this conversation!
-              </h1>
-            )}
-          {!conversations.find(
-            (conversation) => conversation.id === activeConversation
-          ) &&
-            !activeConversation && (
-              <h4
-                className="button-1 grey-1 tac pa32"
-                onClick={() => setStarterModal(true)}
-              >
-                Check your messages from friends on Vent With Strangers,
-                <span className="blue"> get started here!</span>
+          {!activeConversation && user && user.emailVerified && (
+            <Link className="grey-1 tac pa32" to="/people-online">
+              <h4 className="tac">
+                Check your messages from friends on Vent With Strangers,{" "}
               </h4>
-            )}
-          {conversations.find(
-            (conversation) => conversation.id === activeConversation
-          ) && (
-            <Chat
-              conversation={conversations.find(
-                (conversation) => conversation.id === activeConversation
-              )}
-              conversationPartnerData={activeUserBasicInfo}
-              setActiveConversation={setActiveConversation}
-              userID={user.uid}
-            />
+              <h1 className="blue">See Who is Online :)</h1>
+            </Link>
           )}
+          {(!user || (user && !user.emailVerified)) && (
+            <h4
+              className="button-1 grey-1 tac pa32"
+              onClick={() => {
+                if (!user) setStarterModal(true);
+                else {
+                  userSignUpProgress(user);
+                }
+              }}
+            >
+              Check your messages from friends on Vent With Strangers,
+              <span className="blue">
+                {user ? " verify your email!" : " get started here!"}
+              </span>
+            </h4>
+          )}
+          {user &&
+            user.emailVerified &&
+            activeConversation &&
+            activeConversation.id && (
+              <Chat
+                activeConversation={activeConversation}
+                activeUserBasicInfo={activeUserBasicInfo}
+                isChatInConversationsArray={Boolean(
+                  conversations.find(
+                    (conversation) => conversation.id === activeConversation.id
+                  )
+                )}
+                setActiveConversation={setActiveConversation}
+                setActiveUserBasicInfo={setActiveUserBasicInfo}
+                userID={user.uid}
+              />
+            )}
         </Container>
       )}
       {starterModal && (
