@@ -43,6 +43,7 @@ export const conversationListener = (
           );
 
           for (let index in updatedConversation) {
+            if (!oldConversations[indexOfUpdatedConversation]) continue;
             oldConversations[indexOfUpdatedConversation][index] =
               updatedConversation[index];
           }
@@ -183,10 +184,8 @@ export const messageListener = (
 };
 
 export const getConversations = async (
-  activeConversation,
   conversations,
   isMounted,
-  setActiveConversation,
   setConversations,
   userID
 ) => {
@@ -214,31 +213,8 @@ export const getConversations = async (
       id: item.id,
       ...item.data(),
       doc: conversationsQuerySnapshot.docs[i],
-      useToPaginate: true,
     });
   });
-
-  if (
-    activeConversation &&
-    !conversations.find(
-      (conversation) => conversation.id === activeConversation
-    ) &&
-    !newConversations.find(
-      (conversation) => conversation.id === activeConversation
-    )
-  ) {
-    const conversationDoc = await getDoc(
-      doc(db, "conversations", activeConversation)
-    );
-
-    if (conversationDoc.exists())
-      newConversations.push({
-        id: conversationDoc.id,
-        doc: conversationDoc,
-        ...conversationDoc.data(),
-        useToPaginate: false,
-      });
-  }
 
   if (isMounted())
     setConversations(newConversations, isActiveConversationInNewConversations);

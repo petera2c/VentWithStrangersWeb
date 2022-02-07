@@ -45,21 +45,18 @@ function ConversationOption({
   const isMounted = useIsMounted();
   const navigate = useNavigate();
 
-  const conversationUpdatedListenerUnsubscribe = useRef(false);
+  const unsubFromConversationUpdates = useRef(false);
 
   const [blockModal, setBlockModal] = useState(false);
   const [conversationOptions, setConversationOptions] = useState(false);
   const [deleteConversationConfirm, setDeleteConversationConfirm] = useState(
     false
   );
-  const [handleOutsideClickCalled, setHandleOutsideClickCalled] = useState(
-    false
-  );
   const [userBasicInfo, setUserBasicInfo] = useState();
   const hasSeen = conversation[userID];
 
   useEffect(() => {
-    conversationUpdatedListenerUnsubscribe.current = conversationListener(
+    unsubFromConversationUpdates.current = conversationListener(
       conversation,
       isMounted,
       setConversations
@@ -83,10 +80,8 @@ function ConversationOption({
       readConversation(conversation, userID);
 
     return () => {
-      if (conversationUpdatedListenerUnsubscribe.current) {
-        conversationUpdatedListenerUnsubscribe.current();
-        conversationUpdatedListenerUnsubscribe.current = false;
-      }
+      if (unsubFromConversationUpdates.current)
+        unsubFromConversationUpdates.current();
     };
   }, [
     conversation,
@@ -152,8 +147,7 @@ function ConversationOption({
         className="clickable px8"
         onClick={(e) => {
           e.stopPropagation();
-          if (!handleOutsideClickCalled)
-            setConversationOptions(!conversationOptions);
+          setConversationOptions(!conversationOptions);
         }}
       >
         <FontAwesomeIcon className="grey-9" icon={faEllipsisV} />
@@ -162,17 +156,14 @@ function ConversationOption({
         <div className="absolute top-100 pt4" style={{ zIndex: 1, right: "0" }}>
           <HandleOutsideClick
             close={() => {
-              if (!conversationOptions) {
-                setConversationOptions(false);
-                setHandleOutsideClickCalled(true);
-                setTimeout(() => setHandleOutsideClickCalled(false), 50);
-              }
+              setConversationOptions(false);
             }}
           >
             <Container className="column x-fill bg-white border-all px16 py8 br8">
               <Container
                 className="button-9 clickable align-center"
                 onClick={(e) => {
+                  e.stopPropagation();
                   setDeleteConversationConfirm(true);
                   setConversationOptions(false);
                 }}
@@ -199,19 +190,8 @@ function ConversationOption({
           close={() => setDeleteConversationConfirm(false)}
           message="Deleting this conversation will be permanent. Are you sure you would like to delete this conversation?"
           submit={() => {
-            if (conversationUpdatedListenerUnsubscribe.current) {
-              conversationUpdatedListenerUnsubscribe.current();
-              conversationUpdatedListenerUnsubscribe.current = false;
-            }
-            setConversations((currentConversations) => {
-              currentConversations.splice(
-                currentConversations.findIndex(
-                  (conversation2) => conversation2.id === conversation.id
-                ),
-                1
-              );
-              return [...currentConversations];
-            });
+            if (unsubFromConversationUpdates.current)
+              unsubFromConversationUpdates.current();
 
             deleteConversation(
               conversation.id,

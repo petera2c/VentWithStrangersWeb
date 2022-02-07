@@ -72,24 +72,28 @@ function MakeAvatar({ className, displayName, size, userBasicInfo }) {
   } else {
     if (size === "large")
       return (
-        <h1
-          className={"avatar semi-large bg-blue white " + className}
+        <p
+          className={"avatar semi-large bold bg-blue white " + className}
           style={{ fontSize: "48px" }}
         >
           {capitolizedDisplayName}
-        </h1>
+        </p>
       );
     else if (size === "small")
       return (
-        <h6 className={"avatar very-small bg-blue white mr8 " + className}>
+        <p
+          className={
+            "avatar very-small fs-20 bold bg-blue white mr8 " + className
+          }
+        >
           {capitolizedDisplayName}
-        </h6>
+        </p>
       );
     else
       return (
-        <h6 className={"avatar small bg-blue white mr8 " + className}>
+        <p className={"avatar small fs-20 bold bg-blue white mr8 " + className}>
           {capitolizedDisplayName}
-        </h6>
+        </p>
       );
   }
 }

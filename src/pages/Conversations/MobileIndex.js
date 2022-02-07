@@ -26,7 +26,7 @@ function MobileConversations() {
   const [activeConversation, setActiveConversation] = useState(
     search ? search.substring(1) : ""
   );
-  const [conversationsBasicDatas, setConversationsBasicDatas] = useState({});
+  const [activeUserBasicInfo, setActiveUserBasicInfo] = useState({});
   const [canLoadMore, setCanLoadMore] = useState(true);
   const [starterModal, setStarterModal] = useState(!user);
 
@@ -41,6 +41,7 @@ function MobileConversations() {
       );
 
     if (user) {
+      console.log("here");
       getConversations(
         activeConversation,
         [],
@@ -80,13 +81,13 @@ function MobileConversations() {
         {conversations.map((conversation, index) => {
           return (
             <ConversationOption
+              activeUserBasicInfo={activeUserBasicInfo}
               conversation={conversation}
-              conversationPartnerData={conversationsBasicDatas[conversation.id]}
               isActive={conversation.id === activeConversation}
               isLastItem={index === conversations.length - 1}
               key={conversation.id}
               setActiveConversation={setActiveConversation}
-              setConversationsBasicDatas={setConversationsBasicDatas}
+              setActiveUserBasicInfo={setActiveUserBasicInfo}
               setConversations={setConversations}
               userID={user.uid}
             />
@@ -151,9 +152,7 @@ function MobileConversations() {
               conversation={conversations.find(
                 (conversation) => conversation.id === activeConversation
               )}
-              conversationPartnerData={
-                conversationsBasicDatas[activeConversation]
-              }
+              conversationPartnerData={activeUserBasicInfo}
               setActiveConversation={setActiveConversation}
               userID={user.uid}
             />

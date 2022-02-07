@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { Button } from "antd";
 
 import Chat from "./chat";
 import Container from "../../components/containers/Container";
@@ -27,9 +28,9 @@ function Conversations() {
   const [activeConversation, setActiveConversation] = useState(
     search ? search.substring(1) : ""
   );
+  const [activeUserBasicInfo, setActiveUserBasicInfo] = useState({});
   const [canLoadMore, setCanLoadMore] = useState(true);
   const [conversations, setConversations] = useState([]);
-  const [activeUserBasicInfo, setActiveUserBasicInfo] = useState({});
   const [starterModal, setStarterModal] = useState(!user);
 
   useEffect(() => {
@@ -44,25 +45,14 @@ function Conversations() {
       );
 
       getConversations(
-        activeConversation,
         [],
         isMounted,
-        setActiveConversation,
         (newConversations) => {
           if (!isMounted()) return;
 
           if (newConversations.length < 5 && isMounted()) setCanLoadMore(false);
 
           if (isMounted()) setConversations(newConversations);
-
-          if (
-            !activeConversation &&
-            newConversations &&
-            newConversations.length !== 0 &&
-            newConversations[0].id &&
-            isMounted()
-          )
-            setActiveConversation(newConversations[0].id);
         },
         user.uid
       );
@@ -71,12 +61,15 @@ function Conversations() {
     return () => {
       if (newMessageListenerUnsubscribe) newMessageListenerUnsubscribe();
     };
-  }, [activeConversation, isMounted, user]);
+  }, [isMounted, user]);
 
   return (
     <Page className="bg-grey-2 ov-hidden">
       <Container className="flex-fill x-fill gap4 ov-hidden pa4">
-        <Container className="container small column ov-auto bg-white pa8 br4">
+        <Container className="container small column ov-auto bg-white br4 pa8">
+          <Button className="mb8" size="large" type="primary">
+            New Group
+          </Button>
           {conversations.length === 0 && (
             <Link className="" to="/people-online">
               <h6 className="button-1 grey-1 tac">
@@ -84,6 +77,7 @@ function Conversations() {
               </h6>
             </Link>
           )}
+
           {conversations.map((conversation, index) => {
             return (
               <ConversationOption
@@ -104,10 +98,8 @@ function Conversations() {
               className="button-2 pa8 my8 br4"
               onClick={() => {
                 getConversations(
-                  activeConversation,
                   conversations,
                   isMounted,
-                  setActiveConversation,
                   (newConversations, subtraction) => {
                     if (
                       newConversations.length < 5 - subtraction ||
@@ -166,10 +158,9 @@ function Conversations() {
             (conversation) => conversation.id === activeConversation
           ) && (
             <Chat
-              conversation={conversations.find(
-                (conversation) => conversation.id === activeConversation
-              )}
+              activeConversationID={activeConversation}
               conversationPartnerData={activeUserBasicInfo}
+              setActiveConversationID={setActiveConversation}
               userID={user.uid}
             />
           )}

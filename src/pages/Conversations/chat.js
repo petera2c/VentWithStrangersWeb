@@ -28,9 +28,9 @@ const MakeAvatar = loadable(() => import("../../components/views/MakeAvatar"));
 let typingTimer;
 
 function Chat({
-  conversation,
+  activeConversationID,
   conversationPartnerData = {},
-  setActiveConversation,
+  setActiveConversationID,
   userID,
 }) {
   const isMounted = useIsMounted();
@@ -38,6 +38,8 @@ function Chat({
   const dummyRef = useRef();
   const textInput = useRef(null);
   const isUserTypingTimeout = useRef();
+
+  const [conversation, setConversation] = useState();
 
   const scrollToBottom = () => {
     if (dummyRef.current)
@@ -53,7 +55,6 @@ function Chat({
     true
   );
   const [canLoadMore, setCanLoadMore] = useState(true);
-  const [conversationID, setConversationID] = useState();
   const [isMobileOrTablet, setIsMobileOrTablet] = useState();
   const [messages, setMessages] = useState([]);
   const [messageString, setMessageString] = useState("");
@@ -66,9 +67,13 @@ function Chat({
     setIsMobileOrTablet(getIsMobileOrTablet());
     setCanLoadMore(true);
 
-    if (conversation.members && conversation.members.length <= 2) {
+    if (
+      conversation &&
+      conversation.members &&
+      conversation.members.length <= 2
+    ) {
       isUserTypingUnsubscribe = isUserTypingListener(
-        conversation.id,
+        activeConversationID,
         isMounted,
         isUserTypingTimeout,
         getConversationPartnerUserID(conversation.members, userID),
@@ -78,7 +83,7 @@ function Chat({
     }
 
     getMessages(
-      conversation.id,
+      activeConversationID,
       isMounted,
       [],
       scrollToBottom,
@@ -87,22 +92,21 @@ function Chat({
     );
 
     messageListenerUnsubscribe = messageListener(
-      conversation.id,
+      activeConversationID,
       isMounted,
       scrollToBottom,
       setMessages
     );
-    if (isMounted) setConversationID(conversation.id);
 
     return () => {
       if (isUserTypingUnsubscribe) off(isUserTypingUnsubscribe);
 
       if (messageListenerUnsubscribe) messageListenerUnsubscribe();
     };
-  }, [conversation, isMounted, userID]);
+  }, [activeConversationID, isMounted, userID]);
 
   let conversationPartnerID;
-  if (conversation.members && conversation.members.length === 2)
+  if (conversation && conversation.members && conversation.members.length === 2)
     conversationPartnerID = conversation.members.find((memberID) => {
       return memberID !== userID;
     });
@@ -116,9 +120,6 @@ function Chat({
               <h5 className="button-1 mr8">
                 {capitolizeFirstChar(conversationPartnerData.displayName)}
               </h5>
-              {conversationPartnerData.isUserOnline && (
-                <div className="online-dot mr8" />
-              )}
             </Container>
             {!conversationPartnerID && (
               <h5 className="button-1 mr8">
@@ -129,7 +130,9 @@ function Chat({
           </Link>
         )}
         {isMobileOrTablet && (
-          <Button onClick={() => setActiveConversation(false)}>Go Back</Button>
+          <Button onClick={() => setActiveConversationID(false)}>
+            Go Back
+          </Button>
         )}
       </Container>
 
@@ -149,7 +152,7 @@ function Chat({
               className="button-2 pa8 mb8 br4"
               onClick={() =>
                 getMessages(
-                  conversation.id,
+                  activeConversationID,
                   isMounted,
                   messages,
                   scrollToBottom,
@@ -164,7 +167,7 @@ function Chat({
           )}
           {messages.map((message, index) => (
             <Message
-              conversationID={conversation.id}
+              conversationID={activeConversationID}
               key={index}
               message={message}
               setMessages={setMessages}
@@ -214,16 +217,20 @@ function Chat({
                   }, 500);
                 }
               } else {
-                setConversationIsTyping(conversationID, undefined, userID);
+                setConversationIsTyping(
+                  activeConversationID,
+                  undefined,
+                  userID
+                );
                 setAllowToSetIsUserTypingToDB(false);
               }
             }}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 if (!messageString) return;
-                setConversationIsTyping(conversationID, true, userID);
+                setConversationIsTyping(activeConversationID, true, userID);
                 setAllowToSetIsUserTypingToDB(true);
-                sendMessage(conversation.id, messageString, userID);
+                sendMessage(activeConversationID, messageString, userID);
                 setMessageString("");
               }
             }}
@@ -245,7 +252,7 @@ function Chat({
             }
             onClick={() => {
               if (!messageString) return;
-              setConversationIsTyping(conversationID, true, userID);
+              setConversationIsTyping(activeConversationID, true, userID);
               setAllowToSetIsUserTypingToDB(true);
               sendMessage(conversation.id, messageString, userID);
               setMessageString("");

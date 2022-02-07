@@ -31,9 +31,6 @@ function QuoteWinnersPage() {
           <h2 className="fs-22 grey-1 tac">
             Some of our past contest winners :)
           </h2>
-          <h2 className="fs-18 grey-1 tac">
-            (All feel good quotes are original!)
-          </h2>
         </Container>
       </Container>
 
