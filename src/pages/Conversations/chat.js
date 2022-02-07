@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Timestamp } from "firebase/firestore";
 import { Link } from "react-router-dom";
+import { off } from "firebase/database";
 import loadable from "@loadable/component";
 import { Button } from "antd";
 
@@ -8,10 +8,15 @@ import Container from "../../components/containers/Container";
 import KarmaBadge from "../../components/views/KarmaBadge";
 import Message from "./message";
 
-import { capitolizeFirstChar, useIsMounted } from "../../util";
 import {
+  capitolizeFirstChar,
+  getIsMobileOrTablet,
+  useIsMounted,
+} from "../../util";
+import {
+  getConversationPartnerUserID,
   getMessages,
-  isFriendTyping,
+  isUserTypingListener,
   messageListener,
   sendMessage,
   setConversationIsTyping,
@@ -21,7 +26,6 @@ const Emoji = loadable(() => import("../../components/Emoji"));
 const MakeAvatar = loadable(() => import("../../components/views/MakeAvatar"));
 
 let typingTimer;
-let typingTimer2;
 
 function Chat({
   conversation,
@@ -30,11 +34,11 @@ function Chat({
   userID,
 }) {
   const isMounted = useIsMounted();
-  const textInput = useRef(null);
-
-  const [isMobileOrTablet, setIsMobileOrTablet] = useState();
 
   const dummyRef = useRef();
+  const textInput = useRef(null);
+  const isUserTypingTimeout = useRef();
+
   const scrollToBottom = () => {
     if (dummyRef.current)
       dummyRef.current.scrollIntoView({
@@ -45,21 +49,33 @@ function Chat({
       });
   };
 
-  const [canLoadMore, setCanLoadMore] = useState(true);
-  const [conversationID, setConversationID] = useState();
-  const [messages, setMessages] = useState([]);
-  const [messageString, setMessageString] = useState("");
   const [allowToSetIsUserTypingToDB, setAllowToSetIsUserTypingToDB] = useState(
     true
   );
+  const [canLoadMore, setCanLoadMore] = useState(true);
+  const [conversationID, setConversationID] = useState();
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState();
+  const [messages, setMessages] = useState([]);
+  const [messageString, setMessageString] = useState("");
+  const [showPartnerIsTyping, setShowPartnerIsTyping] = useState(false);
 
   useEffect(() => {
     let messageListenerUnsubscribe;
-    import("../../util").then((functions) => {
-      setIsMobileOrTablet(functions.getIsMobileOrTablet());
-    });
+    let isUserTypingUnsubscribe;
 
+    setIsMobileOrTablet(getIsMobileOrTablet());
     setCanLoadMore(true);
+
+    if (conversation.members && conversation.members.length <= 2) {
+      isUserTypingUnsubscribe = isUserTypingListener(
+        conversation.id,
+        isMounted,
+        isUserTypingTimeout,
+        getConversationPartnerUserID(conversation.members, userID),
+        scrollToBottom,
+        setShowPartnerIsTyping
+      );
+    }
 
     getMessages(
       conversation.id,
@@ -79,17 +95,17 @@ function Chat({
     if (isMounted) setConversationID(conversation.id);
 
     return () => {
+      if (isUserTypingUnsubscribe) off(isUserTypingUnsubscribe);
+
       if (messageListenerUnsubscribe) messageListenerUnsubscribe();
     };
-  }, [conversation.id, isMounted]);
+  }, [conversation, isMounted]);
 
   let conversationPartnerID;
   if (conversation.members && conversation.members.length === 2)
     conversationPartnerID = conversation.members.find((memberID) => {
       return memberID !== userID;
     });
-
-  if (isFriendTyping()) setTimeout(scrollToBottom, 400);
 
   return (
     <Container className="column flex-fill x-fill full-center ov-hidden br4">
@@ -161,7 +177,7 @@ function Chat({
       <Container
         className="ease-in-out x-fill"
         style={{
-          maxHeight: isFriendTyping() ? "56px" : "0",
+          maxHeight: showPartnerIsTyping ? "56px" : "0",
         }}
       >
         <Container className="bg-none ov-hidden full-center">
@@ -198,13 +214,14 @@ function Chat({
                   }, 500);
                 }
               } else {
-                setConversationIsTyping(conversationID, userID);
+                setConversationIsTyping(conversationID, undefined, userID);
                 setAllowToSetIsUserTypingToDB(false);
               }
             }}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 if (!messageString) return;
+                setConversationIsTyping(conversationID, true, userID);
                 setAllowToSetIsUserTypingToDB(true);
                 sendMessage(conversation.id, messageString, userID);
                 setMessageString("");
@@ -228,6 +245,7 @@ function Chat({
             }
             onClick={() => {
               if (!messageString) return;
+              setConversationIsTyping(conversationID, true, userID);
               setAllowToSetIsUserTypingToDB(true);
               sendMessage(conversation.id, messageString, userID);
               setMessageString("");

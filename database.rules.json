@@ -10,6 +10,12 @@
     "total_online_users2": {
       ".read": true,
       ".write": false
+    },
+    "$conversationID": {
+      ".read": true,
+      "$uid": {
+        ".write": "$uid === auth.uid"
+      }
     }
   }
 }

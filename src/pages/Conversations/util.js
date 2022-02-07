@@ -16,7 +16,8 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { db } from "../../config/db_init";
+import { onValue, ref, serverTimestamp, update } from "firebase/database";
+import { db, db2 } from "../../config/db_init";
 
 import { message } from "antd";
 
@@ -97,8 +98,48 @@ export const deleteMessage = async (conversationID, messageID, setMessages) => {
   message.success("Message deleted!");
 };
 
-export const isFriendTyping = () => {
-  return true;
+export const getConversationPartnerUserID = (members, userID) => {
+  for (let index in members) {
+    if (members[index] !== userID) return members[index];
+  }
+  return false;
+};
+
+export const isUserTypingListener = (
+  conversationID,
+  isMounted,
+  isUserTypingTimeout,
+  partnerID,
+  scrollToBottom,
+  setShowPartnerIsTyping
+) => {
+  console.log("starting to listen");
+  const dbRef = ref(db2, conversationID + "/" + partnerID);
+
+  onValue(dbRef, (snapshot) => {
+    if (isMounted()) {
+      console.log(snapshot.val());
+      if (isTimestampWithinSeconds(snapshot.val())) {
+        setShowPartnerIsTyping(true);
+        setTimeout(scrollToBottom, 400);
+
+        if (isUserTypingTimeout.current) {
+          clearTimeout(isUserTypingTimeout.current);
+        }
+        isUserTypingTimeout.current = setTimeout(() => {
+          setShowPartnerIsTyping(false);
+        }, 3000);
+      } else {
+        setShowPartnerIsTyping(false);
+      }
+    }
+  });
+
+  return dbRef;
+};
+
+export const isTimestampWithinSeconds = (timestamp) => {
+  return Timestamp.now().toMillis() - timestamp < 4000;
 };
 
 export const messageListener = (
@@ -313,10 +354,13 @@ export const sendMessage = async (conversationID, message, userID) => {
   );
 };
 
-export const setConversationIsTyping = async (conversationID, userID) => {
-  await updateDoc(doc(db, "conversations", conversationID), {
-    isTyping: {
-      [userID]: Timestamp.now().toMillis(),
-    },
-  });
+export const setConversationIsTyping = (
+  conversationID,
+  finishedTyping,
+  userID
+) => {
+  if (conversationID && userID)
+    update(ref(db2, conversationID), {
+      [userID]: finishedTyping ? false : serverTimestamp(),
+    });
 };
