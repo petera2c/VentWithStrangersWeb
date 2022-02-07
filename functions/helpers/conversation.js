@@ -150,6 +150,8 @@ const conversationUpdateListener = async (change, context) => {
         .collection("conversations")
         .doc(conversationID)
         .delete();
+
+      await admin.database().ref(conversationID).remove();
     } else if (
       !arraysEqual(conversationBefore.members, conversationAfter.members)
     ) {
@@ -159,7 +161,11 @@ const conversationUpdateListener = async (change, context) => {
       );
 
       for (let index in membersDifference) {
-        const snapshot = await admin
+        await admin
+          .database()
+          .ref(conversationID + "/" + membersDifference[index])
+          .remove();
+        await admin
           .firestore()
           .collection("conversation_extra_data")
           .doc(conversationID)
