@@ -36,7 +36,6 @@ function ConversationOption({
   activeUserBasicInfo,
   conversation,
   isActive,
-  isLastItem,
   setActiveConversation,
   setActiveUserBasicInfo,
   setConversations,
@@ -103,7 +102,7 @@ function ConversationOption({
       }
       onClick={() => {
         setActiveUserBasicInfo(userBasicInfo);
-        setActiveConversation(conversation.id);
+        setActiveConversation(conversation);
         navigate("/chat?" + conversation.id);
       }}
     >

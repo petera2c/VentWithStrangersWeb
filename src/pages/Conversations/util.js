@@ -338,3 +338,42 @@ export const setConversationIsTyping = (
       [userID]: finishedTyping ? false : serverTimestamp(),
     });
 };
+
+export const setInitialConversationsAndActiveConversation = async (
+  isMounted,
+  newConversations,
+  setActiveConversation,
+  setCanLoadMore,
+  setConversations
+) => {
+  if (!isMounted()) return;
+
+  const search = window.location.search;
+
+  if (newConversations.length < 5 && isMounted()) setCanLoadMore(false);
+
+  if (search) {
+    const foundConversation = newConversations.find(
+      (conversation) => conversation.id === search.substring(1)
+    );
+
+    if (foundConversation) setActiveConversation(foundConversation);
+    else {
+      const conversationDoc = await getDoc(
+        doc(db, "conversations", search.substring(1))
+      );
+
+      if (conversationDoc.exists())
+        setActiveConversation({
+          id: conversationDoc.id,
+          doc: conversationDoc,
+          ...conversationDoc.data(),
+        });
+      else setActiveConversation(false);
+    }
+  } else if (newConversations.length > 0) {
+    setActiveConversation(newConversations[0]);
+  } else setActiveConversation(false);
+
+  if (isMounted()) setConversations(newConversations);
+};

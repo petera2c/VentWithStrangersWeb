@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "antd";
 
 import Chat from "./chat";
@@ -16,19 +16,18 @@ import {
   useIsMounted,
   userSignUpProgress,
 } from "../../util";
-import { getConversations, mostRecentConversationListener } from "./util";
+import {
+  getConversations,
+  mostRecentConversationListener,
+  setInitialConversationsAndActiveConversation,
+} from "./util";
 
 function Conversations() {
   const isMounted = useIsMounted();
   const { user } = useContext(UserContext);
 
-  const location = useLocation();
-  const { search } = location;
-
-  const [activeConversation, setActiveConversation] = useState(
-    search ? search.substring(1) : ""
-  );
-  const [activeUserBasicInfo, setActiveUserBasicInfo] = useState({});
+  const [activeConversation, setActiveConversation] = useState();
+  const [activeUserBasicInfo, setActiveUserBasicInfo] = useState();
   const [canLoadMore, setCanLoadMore] = useState(true);
   const [conversations, setConversations] = useState([]);
   const [starterModal, setStarterModal] = useState(!user);
@@ -47,13 +46,14 @@ function Conversations() {
       getConversations(
         [],
         isMounted,
-        (newConversations) => {
-          if (!isMounted()) return;
-
-          if (newConversations.length < 5 && isMounted()) setCanLoadMore(false);
-
-          if (isMounted()) setConversations(newConversations);
-        },
+        (newConversations) =>
+          setInitialConversationsAndActiveConversation(
+            isMounted,
+            newConversations,
+            setActiveConversation,
+            setCanLoadMore,
+            setConversations
+          ),
         user.uid
       );
     }
@@ -83,8 +83,11 @@ function Conversations() {
               <ConversationOption
                 activeUserBasicInfo={activeUserBasicInfo}
                 conversation={conversation}
-                isActive={conversation.id === activeConversation}
-                isLastItem={index === conversations.length - 1}
+                isActive={
+                  activeConversation
+                    ? conversation.id === activeConversation.id
+                    : false
+                }
                 key={conversation.id}
                 setActiveConversation={setActiveConversation}
                 setActiveUserBasicInfo={setActiveUserBasicInfo}
@@ -122,14 +125,6 @@ function Conversations() {
         </Container>
 
         <Container className="column flex-fill ov-hidden bg-white br4">
-          {!conversations.find(
-            (conversation) => conversation.id === activeConversation
-          ) &&
-            activeConversation && (
-              <h1 className="x-fill tac py32">
-                Can not find this conversation!
-              </h1>
-            )}
           {!activeConversation && user && user.emailVerified && (
             <Link className="grey-1 tac pa32" to="/people-online">
               <h4 className="tac">
@@ -154,16 +149,23 @@ function Conversations() {
               </span>
             </h4>
           )}
-          {conversations.find(
-            (conversation) => conversation.id === activeConversation
-          ) && (
-            <Chat
-              activeConversationID={activeConversation}
-              conversationPartnerData={activeUserBasicInfo}
-              setActiveConversationID={setActiveConversation}
-              userID={user.uid}
-            />
-          )}
+          {user &&
+            user.emailVerified &&
+            activeConversation &&
+            activeConversation.id && (
+              <Chat
+                activeConversation={activeConversation}
+                activeUserBasicInfo={activeUserBasicInfo}
+                isChatInConversationsArray={Boolean(
+                  conversations.find(
+                    (conversation) => conversation.id === activeConversation.id
+                  )
+                )}
+                setActiveConversation={setActiveConversation}
+                setActiveUserBasicInfo={setActiveUserBasicInfo}
+                userID={user.uid}
+              />
+            )}
         </Container>
       </Container>
       {starterModal && (

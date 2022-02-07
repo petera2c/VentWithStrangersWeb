@@ -11,6 +11,7 @@ import Message from "./message";
 import {
   capitolizeFirstChar,
   getIsMobileOrTablet,
+  getUserBasicInfo,
   useIsMounted,
 } from "../../util";
 import {
@@ -28,9 +29,11 @@ const MakeAvatar = loadable(() => import("../../components/views/MakeAvatar"));
 let typingTimer;
 
 function Chat({
-  activeConversationID,
-  conversationPartnerData = {},
-  setActiveConversationID,
+  activeConversation,
+  activeUserBasicInfo,
+  isChatInConversationsArray,
+  setActiveConversation,
+  setActiveUserBasicInfo,
   userID,
 }) {
   const isMounted = useIsMounted();
@@ -38,8 +41,6 @@ function Chat({
   const dummyRef = useRef();
   const textInput = useRef(null);
   const isUserTypingTimeout = useRef();
-
-  const [conversation, setConversation] = useState();
 
   const scrollToBottom = () => {
     if (dummyRef.current)
@@ -68,22 +69,28 @@ function Chat({
     setCanLoadMore(true);
 
     if (
-      conversation &&
-      conversation.members &&
-      conversation.members.length <= 2
+      activeConversation &&
+      activeConversation.members &&
+      activeConversation.members.length <= 2
     ) {
       isUserTypingUnsubscribe = isUserTypingListener(
-        activeConversationID,
+        activeConversation.id,
         isMounted,
         isUserTypingTimeout,
-        getConversationPartnerUserID(conversation.members, userID),
+        getConversationPartnerUserID(activeConversation.members, userID),
         scrollToBottom,
         setShowPartnerIsTyping
       );
+
+      if (!isChatInConversationsArray) {
+        getUserBasicInfo((newBasicUserInfo) => {
+          if (isMounted()) setActiveUserBasicInfo(newBasicUserInfo);
+        }, getConversationPartnerUserID(activeConversation.members, userID));
+      }
     }
 
     getMessages(
-      activeConversationID,
+      activeConversation.id,
       isMounted,
       [],
       scrollToBottom,
@@ -92,7 +99,7 @@ function Chat({
     );
 
     messageListenerUnsubscribe = messageListener(
-      activeConversationID,
+      activeConversation.id,
       isMounted,
       scrollToBottom,
       setMessages
@@ -103,36 +110,34 @@ function Chat({
 
       if (messageListenerUnsubscribe) messageListenerUnsubscribe();
     };
-  }, [activeConversationID, isMounted, userID]);
-
-  let conversationPartnerID;
-  if (conversation && conversation.members && conversation.members.length === 2)
-    conversationPartnerID = conversation.members.find((memberID) => {
-      return memberID !== userID;
-    });
+  }, [
+    activeConversation,
+    isChatInConversationsArray,
+    isMounted,
+    setActiveUserBasicInfo,
+    userID,
+  ]);
 
   return (
     <Container className="column flex-fill x-fill full-center ov-hidden br4">
       <Container className="justify-between x-fill border-bottom pa16">
-        {conversationPartnerID && (
-          <Link className="flex" to={"/profile?" + conversationPartnerID}>
+        {activeUserBasicInfo && (
+          <Link className="flex" to={"/profile?" + activeUserBasicInfo.id}>
             <Container className="full-center">
               <h5 className="button-1 mr8">
-                {capitolizeFirstChar(conversationPartnerData.displayName)}
+                {capitolizeFirstChar(activeUserBasicInfo.displayName)}
               </h5>
             </Container>
-            {!conversationPartnerID && (
+            {!activeUserBasicInfo && (
               <h5 className="button-1 mr8">
-                {capitolizeFirstChar(conversationPartnerData.displayName)}
+                {capitolizeFirstChar(activeUserBasicInfo.displayName)}
               </h5>
             )}
-            <KarmaBadge noOnClick userBasicInfo={conversationPartnerData} />
+            <KarmaBadge noOnClick userBasicInfo={activeUserBasicInfo} />
           </Link>
         )}
         {isMobileOrTablet && (
-          <Button onClick={() => setActiveConversationID(false)}>
-            Go Back
-          </Button>
+          <Button onClick={() => setActiveConversation(false)}>Go Back</Button>
         )}
       </Container>
 
@@ -140,7 +145,8 @@ function Chat({
         {!messages ||
           ((messages && messages.length) === 0 && (
             <h4 className="tac">
-              The conversation has been started but no messages have been sent!
+              The activeConversation has been started but no messages have been
+              sent!
             </h4>
           ))}
 
@@ -152,7 +158,7 @@ function Chat({
               className="button-2 pa8 mb8 br4"
               onClick={() =>
                 getMessages(
-                  activeConversationID,
+                  activeConversation.id,
                   isMounted,
                   messages,
                   scrollToBottom,
@@ -167,7 +173,7 @@ function Chat({
           )}
           {messages.map((message, index) => (
             <Message
-              conversationID={activeConversationID}
+              activeConversationID={activeConversation.id}
               key={index}
               message={message}
               setMessages={setMessages}
@@ -185,10 +191,12 @@ function Chat({
       >
         <Container className="bg-none ov-hidden full-center">
           <Container className="align-end pl16">
-            <MakeAvatar
-              displayName={conversationPartnerData.displayName}
-              userBasicInfo={conversationPartnerData}
-            />
+            {activeUserBasicInfo && (
+              <MakeAvatar
+                displayName={activeUserBasicInfo.displayName}
+                userBasicInfo={activeUserBasicInfo}
+              />
+            )}
             <h4>...</h4>
           </Container>
         </Container>
@@ -218,7 +226,7 @@ function Chat({
                 }
               } else {
                 setConversationIsTyping(
-                  activeConversationID,
+                  activeConversation.id,
                   undefined,
                   userID
                 );
@@ -228,9 +236,9 @@ function Chat({
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 if (!messageString) return;
-                setConversationIsTyping(activeConversationID, true, userID);
+                setConversationIsTyping(activeConversation.id, true, userID);
                 setAllowToSetIsUserTypingToDB(true);
-                sendMessage(activeConversationID, messageString, userID);
+                sendMessage(activeConversation.id, messageString, userID);
                 setMessageString("");
               }
             }}
@@ -252,9 +260,9 @@ function Chat({
             }
             onClick={() => {
               if (!messageString) return;
-              setConversationIsTyping(activeConversationID, true, userID);
+              setConversationIsTyping(activeConversation.id, true, userID);
               setAllowToSetIsUserTypingToDB(true);
-              sendMessage(conversation.id, messageString, userID);
+              sendMessage(activeConversation.id, messageString, userID);
               setMessageString("");
             }}
           >
