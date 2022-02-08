@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { Button } from "antd";
 
 import Container from "../../../components/containers/Container";
 import Page from "../../../components/containers/Page";
@@ -13,10 +14,11 @@ function IndividualTag() {
   const { tagID } = useParams();
   const isMounted = useIsMounted();
 
+  const [canLoadMoreVents, setCanLoadMoreVents] = useState(true);
   const [vents, setVents] = useState([]);
 
   useEffect(() => {
-    getTagVents(isMounted, setVents, tagID);
+    getTagVents(isMounted, setCanLoadMoreVents, setVents, tagID);
   }, [isMounted, setVents, tagID]);
 
   return (
@@ -50,6 +52,23 @@ function IndividualTag() {
               />
             ))}
           </Container>
+          {canLoadMoreVents && (
+            <Button
+              onClick={() => {
+                getTagVents(
+                  isMounted,
+                  setCanLoadMoreVents,
+                  setVents,
+                  tagID,
+                  vents
+                );
+              }}
+              size="large"
+              type="primary"
+            >
+              Load More Vents
+            </Button>
+          )}
         </Container>
         <SubscribeColumn slot="3444073995" />
       </Container>

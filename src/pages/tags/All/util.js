@@ -18,7 +18,7 @@ export const getTags = async (isMounted, setTags, tags) => {
       collection(db, "vent_tags"),
       orderBy("display"),
       startAfter(startAt),
-      limit(10)
+      limit(20)
     )
   );
 

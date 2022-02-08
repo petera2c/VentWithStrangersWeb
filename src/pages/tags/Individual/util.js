@@ -12,7 +12,13 @@ import { db } from "../../../config/db_init";
 
 import { getEndAtValueTimestamp } from "../../../util";
 
-export const getTagVents = async (isMounted, setVents, tagID, vents) => {
+export const getTagVents = async (
+  isMounted,
+  setCanLoadMoreVents,
+  setVents,
+  tagID,
+  vents
+) => {
   let startAt = getEndAtValueTimestamp(vents);
 
   const ventsSnapshot = await getDocs(
@@ -35,6 +41,10 @@ export const getTagVents = async (isMounted, setVents, tagID, vents) => {
       doc: ventsSnapshot.docs[index],
       ...ventsSnapshot.docs[index].data(),
     });
+  }
+
+  if (newVents.length < 10) {
+    setCanLoadMoreVents(false);
   }
 
   if (vents)
