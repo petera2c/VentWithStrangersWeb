@@ -65,7 +65,7 @@ function MobileConversations() {
   return (
     <Page className="bg-blue-2">
       <Container
-        className="flex-fill column ov-auto bg-white pa8 mt16 mx8 br4"
+        className="flex-fill column ov-auto bg-white pa8 br4"
         style={{ display: activeConversation ? "none" : "flex" }}
       >
         {conversations.length === 0 && (
