@@ -21,10 +21,12 @@ function AllTags() {
     <Page className="br-grey-2 pt32 px16 pb16">
       <Container>
         <Container className="column flex-fill gap16">
-          <h1 className="tac lh-1">All Tag Categories</h1>
-          <p className="tac">
-            Click on a category to find problems just like yours
-          </p>
+          <Container className="column bg-white br8 gap16 pa32">
+            <h1 className="tac lh-1">All Tag Categories</h1>
+            <p className="tac">
+              Click on a category to find problems just like yours
+            </p>
+          </Container>
           <Container className="full-center wrap gap16">
             {tags.map((tag, index) => (
               <Tag key={tag.id} tag={tag} />

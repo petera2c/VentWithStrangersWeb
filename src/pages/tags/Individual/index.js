@@ -34,12 +34,14 @@ function IndividualTag() {
     >
       <Container>
         <Container className="column flex-fill gap16">
-          <h1 className="tac">{`Trending Vents About ${viewTagFunction(
-            tagID
-          )}`}</h1>
-          <Link className="button-1 fs-22 tac" to="/tags">
-            View All Tags
-          </Link>
+          <Container className="column bg-white br8 gap16 pa32">
+            <h1 className="tac">{`Trending Vents About ${viewTagFunction(
+              tagID
+            )}`}</h1>
+            <Link className="button-1 fs-22 tac" to="/tags">
+              View All Tags
+            </Link>
+          </Container>
           <Container className="column gap8">
             {vents.map((vent, index) => (
               <Vent
