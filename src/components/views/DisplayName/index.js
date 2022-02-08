@@ -47,7 +47,7 @@ function DisplayName({
               <h5 className="button-1 ellipsis fw-400 grey-11">
                 {capitolizedDisplayName}
               </h5>
-              {isUserOnline && <div className="online-dot" />}
+              {isUserOnline === "online" && <div className="online-dot" />}
             </Container>
           )}
         </Link>

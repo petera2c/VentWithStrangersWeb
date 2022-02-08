@@ -220,7 +220,7 @@ function Vent({
                     {capitolizeFirstChar(author.displayName)}
                   </h3>
                 </Link>
-                {isUserOnline && <div className="online-dot" />}
+                {isUserOnline === "online" && <div className="online-dot" />}
                 <KarmaBadge userBasicInfo={author} />
               </Container>
               {vent.is_birthday_post && (
