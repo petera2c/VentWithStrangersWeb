@@ -91,8 +91,21 @@ function RoutesComp() {
 
   const handleOnAction = (event) => {
     if (user && user.uid) {
-      import("./util").then((functions) => {
-        functions.setUserOnlineStatus("online", user.uid);
+      import("./util").then(async (functions) => {
+        await functions.setUserOnlineStatus("online", user.uid);
+        import("../util").then(async (functions) => {
+          functions.getTotalOnlineUsers((totalOnlineUsers) => {
+            if (isMounted.current) {
+              setTotalOnlineUsers(totalOnlineUsers);
+              functions.getUserAvatars(
+                () => isMounted.current,
+                (firstOnlineUsers) => {
+                  if (isMounted.current) setFirstOnlineUsers(firstOnlineUsers);
+                }
+              );
+            }
+          });
+        });
       });
     }
   };
@@ -102,7 +115,7 @@ function RoutesComp() {
     onIdle: handleOnIdle,
     onActive: handleOnActive,
     onAction: handleOnAction,
-    debounce: 5000,
+    throttle: 4000,
   });
 
   useEffect(() => {
