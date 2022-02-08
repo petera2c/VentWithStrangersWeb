@@ -134,7 +134,7 @@ function AboutUsPage() {
                   comment
                 </li>
                 <li>
-                  <span className="green">+2</span> For an upvote on your vent
+                  <span className="green">+4</span> For an upvote on your vent
                 </li>
                 <li>
                   However, the best way to earn karma is through{" "}

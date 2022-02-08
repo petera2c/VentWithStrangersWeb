@@ -243,7 +243,7 @@ const newVentLikeListener = async (change, context) => {
       created_vent_supports_counter: admin.firestore.FieldValue.increment(1),
     });
 
-  // Give +2 to the user that received the upvote
+  // Give +4 to the user that received the upvote
   if (vent.userID)
     await admin
       .firestore()
@@ -251,7 +251,7 @@ const newVentLikeListener = async (change, context) => {
       .doc(vent.userID)
       .set(
         {
-          karma: admin.firestore.FieldValue.increment(2),
+          karma: admin.firestore.FieldValue.increment(4),
         },
         { merge: true }
       );
@@ -268,11 +268,11 @@ const newVentLikeListener = async (change, context) => {
       userSettingsDoc.data().email_vent_like === true
         ? {
             html: vent_like,
-            subject: "Someone has supported your vent! +2 Karma Points",
+            subject: "Someone has supported your vent! +4 Karma Points",
           }
         : undefined,
       createVentLink(vent),
-      "Someone has supported your vent! +2 Karma Points",
+      "Someone has supported your vent! +4 Karma Points",
       vent.userID
     );
 };
