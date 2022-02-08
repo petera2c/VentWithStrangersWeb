@@ -293,7 +293,11 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
                 onClick={() => {
                   if (postingDisableFunction) return postingDisableFunction();
 
-                  if (description && checkVentTitle(title)) {
+                  if (!description) {
+                    return message.info("You need to enter a description :)");
+                  } else if (!checkVentTitle(title)) {
+                    return;
+                  } else {
                     setTagText("");
                     setSaving(true);
 
@@ -321,7 +325,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
                         user
                       );
                     });
-                  } else message.error("One or more fields is missing :'(");
+                  }
                 }}
               >
                 Submit

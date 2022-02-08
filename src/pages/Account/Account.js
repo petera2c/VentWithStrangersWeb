@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import TextArea from "react-textarea-autosize";
-import { Button, message, Modal } from "antd";
+import { Button, message } from "antd";
 import DatePicker from "./DatePicker";
 
 import { faBirthdayCake } from "@fortawesome/pro-duotone-svg-icons/faBirthdayCake";
@@ -12,6 +12,11 @@ import { faPaperPlane } from "@fortawesome/pro-light-svg-icons/faPaperPlane";
 import { faTransgenderAlt } from "@fortawesome/pro-solid-svg-icons/faTransgenderAlt";
 import { faVenusMars } from "@fortawesome/pro-solid-svg-icons/faVenusMars";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import Container from "../../components/containers/Container";
+import DeleteAccountModal from "../../components/modals/DeleteAccount";
+import Page from "../../components/containers/Page";
+import SubscribeColumn from "../../components/SubscribeColumn";
 
 import { UserContext } from "../../context";
 
@@ -25,10 +30,6 @@ import {
 import { calculateKarma, useIsMounted } from "../../util";
 import { deleteAccountAndAllData, getUser, updateUser } from "./util";
 
-import Container from "../../components/containers/Container";
-import Page from "../../components/containers/Page";
-import SubscribeColumn from "../../components/SubscribeColumn";
-
 function AccountSection() {
   const isMounted = useIsMounted();
   const { user, userBasicInfo, setUserBasicInfo } = useContext(UserContext);
@@ -38,8 +39,9 @@ function AccountSection() {
   const [canSeePassword, setCanSeePassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [deleteAccountModal, setDeleteAccountModal] = useState(false);
-  const [deletingAccount, setDeletingAccount] = useState(false);
-  const [displayName, setDisplayName] = useState(user.displayName);
+  const [displayName, setDisplayName] = useState(
+    userBasicInfo.displayName ? userBasicInfo.displayName : ""
+  );
   const [email, setEmail] = useState(user.email);
   const [gender, setGender] = useState("");
   const [isMobileOrTablet, setIsMobileOrTablet] = useState();
@@ -471,23 +473,14 @@ function AccountSection() {
         </Container>
         <SubscribeColumn slot="1200594581" />
       </Container>
-      <Modal
-        cancelText="Cancel"
-        visible={deleteAccountModal}
-        okText="Yes, continue."
-        onCancel={() => setDeleteAccountModal(false)}
-        onOk={() => {
-          setDeletingAccount(true);
-          deleteAccountAndAllData(user.uid);
-        }}
-        title="Delete Account"
-      >
-        <p>
-          {deletingAccount
-            ? "We are deleting all account data. Please do not refresh this page."
-            : "This will permanently delete every single item we have related your account. None of this information will be recoverable. Are you sure you want to proceed?"}
-        </p>
-      </Modal>
+      {deleteAccountModal && (
+        <DeleteAccountModal
+          close={() => setDeleteAccountModal(false)}
+          submit={() => {
+            deleteAccountAndAllData(user.uid);
+          }}
+        />
+      )}
     </Page>
   );
 }
