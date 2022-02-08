@@ -177,7 +177,7 @@ const conversationUpdateListener = async (change, context) => {
           });
       }
     }
-  } else if (conversationAfter) {
+  } else if (conversationAfter && !conversationAfter.is_group) {
     const conversationSnapshot = await admin
       .firestore()
       .collection("conversations")

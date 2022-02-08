@@ -71,7 +71,7 @@ function Conversations() {
     <Page className="bg-blue-2 ov-hidden">
       <Container className="flex-fill x-fill gap4 ov-hidden pa4">
         <Container className="container small column ov-auto bg-white br4 pa8">
-          {false && user && user.emailVerified && (
+          {user && user.emailVerified && (
             <Button
               className="mb8"
               onClick={() => {

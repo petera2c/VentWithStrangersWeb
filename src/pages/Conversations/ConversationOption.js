@@ -256,7 +256,7 @@ function DisplayOnlineAndName({ chatName, hasSeen, userBasicInfo }) {
     return () => {
       if (isUserOnlineSubscribe) off(isUserOnlineSubscribe);
     };
-  }, [isMounted, userBasicInfo]);
+  }, [chatName, isMounted, userBasicInfo]);
 
   return (
     <Container className="flex-fill align-center ov-hidden">

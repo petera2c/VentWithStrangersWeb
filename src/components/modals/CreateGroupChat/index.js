@@ -29,7 +29,11 @@ function GroupChatCreateModal({ close, groupChatEditting }) {
   const navigate = useNavigate();
   const { userBasicInfo } = useContext(UserContext);
 
-  const [chatNameString, setChatNameString] = useState("");
+  const [chatNameString, setChatNameString] = useState(
+    groupChatEditting && groupChatEditting.chat_name
+      ? groupChatEditting.chat_name
+      : ""
+  );
   const [existingUsers, setExistingUsers] = useState([]);
   const [users, setUsers] = useState(groupChatEditting ? [] : [userBasicInfo]);
   const [hits, setHits] = useState([]);
@@ -204,7 +208,7 @@ function GroupChatCreateModal({ close, groupChatEditting }) {
               close();
             }}
           >
-            Create
+            Save
           </button>
         </Container>
       </Container>

@@ -35,14 +35,9 @@ service cloud.firestore {
     match /conversations/{conversationID} {
       allow read: if request.auth.uid in resource.data.members;
       allow write: if request.auth.uid in request.resource.data.members && (!(get(/databases/$(database)/documents/users_display_name/$(request.auth.uid)).data.keys().hasAny(['karma'])) || get(/databases/$(database)/documents/users_display_name/$(request.auth.uid)).data.karma > -50);
-      allow update: if request.auth.uid in resource.data.members && (!(get(/databases/$(database)/documents/users_display_name/$(request.auth.uid)).data.keys().hasAny(['karma'])) || get(/databases/$(database)/documents/users_display_name/$(request.auth.uid)).data.karma > -50);
+      allow update: if request.auth.uid in resource.data.members && (!(get(/databases/$(database)/documents/users_display_name/$(request.auth.uid)).data.keys().hasAny(['karma'])) || get(/databases/$(database)/documents/users_display_name/$(request.auth.uid)).data.karma > -50) &&  (!request.resource.data.diff(resource.data).affectedKeys()
+        .hasAny(['is_group', 'server_timestamp']));
       allow delete: if false;
-
-      match /is_group {
-        allow create: if request.auth.uid in request.resource.data.members;
-        allow update, delete: if false;
-        allow read: if true;
-      }
     }
     match /conversation_extra_data/{conversationID} {
       match /messages/{messagesID} {
