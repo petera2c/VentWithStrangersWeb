@@ -41,7 +41,7 @@ function Page({
 
   return (
     <Container
-      className={"column flex-fill ov-auto bg-grey-2 " + className}
+      className={"column flex-fill ov-auto bg-blue-light " + className}
       id={id}
       style={style}
     >

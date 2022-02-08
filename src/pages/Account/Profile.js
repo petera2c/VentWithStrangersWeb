@@ -369,7 +369,7 @@ function ProfileSection() {
               dataLength={vents.length}
               endMessage={
                 vents.length !== 0 ? (
-                  <p className="tac mt16">
+                  <p className="primary tac mt16">
                     <b>Yay! You have seen it all</b>
                   </p>
                 ) : (

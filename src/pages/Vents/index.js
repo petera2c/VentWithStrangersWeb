@@ -62,7 +62,7 @@ function VentsPage() {
             <InfiniteScroll
               dataLength={vents.length}
               endMessage={
-                <p className="tac">
+                <p className="primary tac mt16">
                   <b>Yay! You have seen it all</b>
                 </p>
               }

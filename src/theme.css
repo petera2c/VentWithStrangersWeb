@@ -19,7 +19,7 @@
   --red-color: #f44336;
   --orange-color: #ff570a;
 
-  --light-blue-color: #ebf5fe;
+  --light-blue-color: #b6ddfc;
 
   --light-blue-theme-color: #cffdff;
   --light-green-theme-color: #92ff4f;
@@ -344,8 +344,8 @@
 .bg-blue {
   background-color: var(--main-color);
 }
-.bg-grey-2 {
-  background-color: #e7f4fe;
+.bg-blue-light {
+  background-color: var(--light-blue-color);
 }
 .bg-grey-4 {
   background-color: var(--grey-color-4);

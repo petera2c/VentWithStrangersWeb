@@ -4,7 +4,7 @@ import Page from "../../../components/containers/Page";
 
 function PrivacyPage() {
   return (
-    <Page className="column bg-grey-2">
+    <Page className="column bg-blue-light">
       <h1>Privacy Policy for Vent With Strangers</h1>
       <p>
         At Vent With Strangers, accessible from www.ventwithstrangers.com, one

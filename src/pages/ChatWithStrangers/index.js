@@ -27,7 +27,7 @@ function ChatWithStrangersPage() {
     <Page className="pa16">
       <Container className="">
         <Container className="column flex-fill full-center gap32">
-          <Container className="container medium column align-center">
+          <Container className="container medium column align-center bg-white br8 pa32">
             <h1 className="tac">Chat With Strangers</h1>
             <p className="tac">
               This button will only connect you with someone you have no current
@@ -58,7 +58,7 @@ function ChatWithStrangersPage() {
                 icon={faHandsHelping}
                 size="2x"
               />
-              <h4 className="grey-11 fw-300 tac">Start Chatting</h4>
+              <h2 className="ic tac">Start Chatting</h2>
             </Container>
           </Container>
         </Container>

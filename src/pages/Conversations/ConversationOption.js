@@ -98,7 +98,7 @@ function ConversationOption({
     <Container
       className={
         "x-fill relative align-center justify-between clickable pa8 br4 " +
-        (isActive ? "bg-grey-2" : "")
+        (isActive ? "bg-blue-light" : "")
       }
       onClick={() => {
         setActiveUserBasicInfo(userBasicInfo);

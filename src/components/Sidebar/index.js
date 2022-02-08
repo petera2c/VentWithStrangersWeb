@@ -169,7 +169,7 @@ function SideBarLink({
             {totalOnlineUsers - firstOnlineUsers.length > 0 && (
               <Container className="relative avatar very-small">
                 <Container
-                  className="absolute avatar very-small bg-grey-2"
+                  className="absolute avatar very-small bg-blue-light"
                   style={{ left: `-${firstOnlineUsers.length * 24}px`, top: 0 }}
                 >
                   <div className="avatar small blue">

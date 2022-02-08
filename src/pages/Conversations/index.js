@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "antd";
+import { Button, Modal } from "antd";
 
 import Chat from "./chat";
 import Container from "../../components/containers/Container";
@@ -30,6 +30,7 @@ function Conversations() {
   const [activeUserBasicInfo, setActiveUserBasicInfo] = useState();
   const [canLoadMore, setCanLoadMore] = useState(true);
   const [conversations, setConversations] = useState([]);
+  const [isCreateGroupModalVisible, setIsCreateGroupModalVisible] = useState();
   const [starterModal, setStarterModal] = useState(!user);
 
   useEffect(() => {
@@ -65,14 +66,17 @@ function Conversations() {
   }, [isMounted, user]);
 
   return (
-    <Page className="bg-grey-2 ov-hidden">
+    <Page className="bg-blue-light ov-hidden">
       <Container className="flex-fill x-fill gap4 ov-hidden pa4">
         <Container className="container small column ov-auto bg-white br4 pa8">
-          {false && (
-            <Button className="mb8" size="large" type="primary">
-              New Group
-            </Button>
-          )}
+          <Button
+            className="mb8"
+            onClick={() => setIsCreateGroupModalVisible(true)}
+            size="large"
+            type="primary"
+          >
+            New Group
+          </Button>
           {conversations.length === 0 && (
             <Link className="" to="/people-online">
               <h6 className="button-1 grey-1 tac">
@@ -175,10 +179,21 @@ function Conversations() {
           setActiveModal={setStarterModal}
         />
       )}
+      <Modal
+        title="Create Group Chat"
+        visible={isCreateGroupModalVisible}
+        onOk={() => {}}
+        onCancel={() => setIsCreateGroupModalVisible(false)}
+      >
+        <SomeComponent />
+      </Modal>
     </Page>
   );
 }
 
+function SomeComponent() {
+  return <div>hello world</div>;
+}
 let temp;
 
 if (!getIsMobileOrTablet()) temp = Conversations;
