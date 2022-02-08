@@ -13,7 +13,7 @@ import KarmaBadge from "../../views/KarmaBadge";
 import { UserContext } from "../../../context";
 
 import { getUserBasicInfo, useIsMounted } from "../../../util";
-import { createGroup } from "./util";
+import { saveGroup } from "./util";
 const MakeAvatar = loadable(() => import("../../views/MakeAvatar"));
 
 const searchClient = algoliasearch(
@@ -24,13 +24,30 @@ const searchClient = algoliasearch(
 const usersIndex = searchClient.initIndex("users");
 const GROUP_MAX = 5;
 
-function ConfirmAlertModal({ close }) {
+function GroupChatCreateModal({ close, groupChatEditting }) {
+  const isMounted = useIsMounted();
   const navigate = useNavigate();
   const { userBasicInfo } = useContext(UserContext);
 
-  const [users, setUsers] = useState([userBasicInfo]);
+  const [chatNameString, setChatNameString] = useState("");
+  const [existingUsers, setExistingUsers] = useState([]);
+  const [users, setUsers] = useState(groupChatEditting ? [] : [userBasicInfo]);
   const [hits, setHits] = useState([]);
-  const [userText, setUserText] = useState("");
+  const [userSearchString, setUserSearchString] = useState("");
+
+  useEffect(() => {
+    if (groupChatEditting && groupChatEditting.members) {
+      for (let index in groupChatEditting.members) {
+        getUserBasicInfo((userBasicInfo) => {
+          if (isMounted())
+            setExistingUsers((existingUsers) => {
+              existingUsers.push(userBasicInfo);
+              return [...existingUsers];
+            });
+        }, groupChatEditting.members[index]);
+      }
+    }
+  }, [groupChatEditting, isMounted]);
 
   return (
     <Container className="modal-container full-center normal-cursor">
@@ -42,7 +59,15 @@ function ConfirmAlertModal({ close }) {
           <input
             className="fs-22 br4 pa8"
             onChange={(e) => {
-              setUserText(e.target.value);
+              setChatNameString(e.target.value);
+            }}
+            placeholder="Chat Name"
+            value={chatNameString}
+          />
+          <input
+            className="fs-22 br4 pa8"
+            onChange={(e) => {
+              setUserSearchString(e.target.value);
               usersIndex
                 .search(e.target.value, {
                   hitsPerPage: 5,
@@ -52,14 +77,17 @@ function ConfirmAlertModal({ close }) {
                 });
             }}
             placeholder="Search for people to add :)"
-            value={userText}
+            value={userSearchString}
           />
           {hits.length > 0 && (
             <Container className="column gap16">
-              <h4 className="underline">Searched Users</h4>
+              <h4>Searched People</h4>
               <Container className="wrap gap8">
                 {hits.map((hit, index) => {
-                  if (users.find((user) => user.id === hit.objectID)) {
+                  if (
+                    users.find((user) => user.id === hit.objectID) ||
+                    existingUsers.find((user) => user.id === hit.objectID)
+                  ) {
                     return (
                       <div
                         key={hit.objectID + "s"}
@@ -69,6 +97,7 @@ function ConfirmAlertModal({ close }) {
                   } else
                     return (
                       <HitDisplay
+                        existingUsers={existingUsers}
                         hit={hit}
                         key={hit.objectID}
                         setUsers={setUsers}
@@ -78,13 +107,45 @@ function ConfirmAlertModal({ close }) {
               </Container>
             </Container>
           )}
-          {users.length > 0 && (
+          {(existingUsers.length > 0 || users.length > 0) && (
             <Container className="column gap16">
-              <h4>Selected Users</h4>
+              <h4>Selected People</h4>
               <Container
                 className="align-start wrap gap8"
                 style={{ maxHeight: "100px" }}
               >
+                {existingUsers.map((user) => {
+                  return (
+                    <button
+                      className="button-2 br4 gap8 pa8"
+                      key={user.id}
+                      onClick={() => {
+                        return message.error(
+                          "This person is already in the chat. You can not kick them out now."
+                        );
+                      }}
+                    >
+                      <Container>
+                        <MakeAvatar
+                          displayName={user.displayName}
+                          size="small"
+                          userBasicInfo={user}
+                        />
+                        <Container className="full-center flex-fill ov-hidden ic gap4">
+                          <h5 className="ic ellipsis fw-400 grey-11">
+                            {user.displayName}
+                          </h5>
+                        </Container>
+                      </Container>
+                      <KarmaBadge
+                        noOnClick={true}
+                        noTooltip={true}
+                        userBasicInfo={user}
+                      />
+                      <FontAwesomeIcon icon={faTimes} />
+                    </button>
+                  );
+                })}
                 {users.map((user) => {
                   return (
                     <button
@@ -139,7 +200,7 @@ function ConfirmAlertModal({ close }) {
           <button
             className="button-2 py8 px32 mx4 br4"
             onClick={() => {
-              createGroup(navigate, users);
+              saveGroup(chatNameString, groupChatEditting, navigate, users);
               close();
             }}
           >
@@ -152,7 +213,7 @@ function ConfirmAlertModal({ close }) {
   );
 }
 
-function HitDisplay({ hit, setUsers }) {
+function HitDisplay({ existingUsers, hit, setUsers }) {
   const isMounted = useIsMounted();
   const [userBasicInfo, setUserBasicInfo] = useState();
 
@@ -167,7 +228,7 @@ function HitDisplay({ hit, setUsers }) {
       className="button-8 align-center gap8"
       onClick={() => {
         setUsers((users) => {
-          if (users.length >= GROUP_MAX) {
+          if (existingUsers.length + users.length >= GROUP_MAX) {
             message.info(`Groups can have a max of ${GROUP_MAX} people!`);
             return users;
           }
@@ -199,4 +260,4 @@ function HitDisplay({ hit, setUsers }) {
   );
 }
 
-export default ConfirmAlertModal;
+export default GroupChatCreateModal;

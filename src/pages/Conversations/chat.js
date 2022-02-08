@@ -122,20 +122,17 @@ function Chat({
   return (
     <Container className="column flex-fill x-fill full-center ov-hidden br4">
       <Container className="justify-between x-fill border-bottom pa16">
-        {activeUserBasicInfo && (
+        {!activeConversation.chat_name && activeUserBasicInfo && (
           <Link className="flex" to={"/profile?" + activeUserBasicInfo.id}>
-            <Container className="full-center">
-              <h5 className="button-1 mr8">
-                {capitolizeFirstChar(activeUserBasicInfo.displayName)}
-              </h5>
-            </Container>
-            {!activeUserBasicInfo && (
-              <h5 className="button-1 mr8">
-                {capitolizeFirstChar(activeUserBasicInfo.displayName)}
-              </h5>
-            )}
+            <h5 className="button-1 mr8">
+              {capitolizeFirstChar(activeUserBasicInfo.displayName)}
+            </h5>
+
             <KarmaBadge noOnClick userBasicInfo={activeUserBasicInfo} />
           </Link>
+        )}
+        {activeConversation.chat_name && (
+          <h5 className="button-1 mr8">{activeConversation.chat_name}</h5>
         )}
         {isMobileOrTablet && (
           <Button

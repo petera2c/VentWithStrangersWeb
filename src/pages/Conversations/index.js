@@ -5,10 +5,10 @@ import { Button } from "antd";
 import Chat from "./chat";
 import Container from "../../components/containers/Container";
 import ConversationOption from "./ConversationOption";
+import CreateGroupChatModal from "../../components/modals/CreateGroupChat";
 import MobileIndex from "./MobileIndex";
 import Page from "../../components/containers/Page";
 import StarterModal from "../../components/modals/Starter";
-import CreateGroupChatModal from "../../components/modals/CreateGroupChat";
 
 import { UserContext } from "../../context";
 
@@ -31,6 +31,7 @@ function Conversations() {
   const [activeUserBasicInfo, setActiveUserBasicInfo] = useState();
   const [canLoadMore, setCanLoadMore] = useState(true);
   const [conversations, setConversations] = useState([]);
+  const [groupChatEditting, setGroupChatEditting] = useState();
   const [isCreateGroupModalVisible, setIsCreateGroupModalVisible] = useState();
   const [starterModal, setStarterModal] = useState(!user);
 
@@ -73,7 +74,10 @@ function Conversations() {
           {false && user && user.emailVerified && (
             <Button
               className="mb8"
-              onClick={() => setIsCreateGroupModalVisible(true)}
+              onClick={() => {
+                setGroupChatEditting(false);
+                setIsCreateGroupModalVisible(true);
+              }}
               size="large"
               type="primary"
             >
@@ -102,6 +106,8 @@ function Conversations() {
                 setActiveConversation={setActiveConversation}
                 setActiveUserBasicInfo={setActiveUserBasicInfo}
                 setConversations={setConversations}
+                setGroupChatEditting={setGroupChatEditting}
+                setIsCreateGroupModalVisible={setIsCreateGroupModalVisible}
                 userID={user.uid}
               />
             );
@@ -184,6 +190,7 @@ function Conversations() {
       )}
       {isCreateGroupModalVisible && (
         <CreateGroupChatModal
+          groupChatEditting={groupChatEditting}
           close={() => setIsCreateGroupModalVisible(false)}
         />
       )}

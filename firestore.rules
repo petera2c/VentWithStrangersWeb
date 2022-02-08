@@ -51,6 +51,11 @@ service cloud.firestore {
         allow update: if request.auth.uid == resource.data.userID
           && request.auth.uid == request.resource.data.userID;
         allow delete: if request.auth.uid == resource.data.userID;
+
+        match /is_chat_update {
+          allow read: if true;
+          allow write: if false;
+        }
       }
     }
 

@@ -4,7 +4,9 @@ import { off } from "firebase/database";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import loadable from "@loadable/component";
+import { Dropdown } from "antd";
 
+import { faEdit } from "@fortawesome/pro-duotone-svg-icons/faEdit";
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 import { faTrash } from "@fortawesome/pro-solid-svg-icons/faTrash";
 import { faUserLock } from "@fortawesome/pro-solid-svg-icons/faUserLock";
@@ -12,7 +14,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import ConfirmAlertModal from "../../components/modals/ConfirmAlert";
 import Container from "../../components/containers/Container";
-import HandleOutsideClick from "../../components/containers/HandleOutsideClick";
 import KarmaBadge from "../../components/views/KarmaBadge";
 
 import {
@@ -39,6 +40,8 @@ function ConversationOption({
   setActiveConversation,
   setActiveUserBasicInfo,
   setConversations,
+  setGroupChatEditting,
+  setIsCreateGroupModalVisible,
   userID,
 }) {
   const isMounted = useIsMounted();
@@ -69,11 +72,12 @@ function ConversationOption({
     }
     if (!conversationFriendUserID) return;
 
-    getUserBasicInfo((newBasicUserInfo) => {
-      if (isMounted()) setUserBasicInfo(newBasicUserInfo);
+    if (!conversation.chat_name)
+      getUserBasicInfo((newBasicUserInfo) => {
+        if (isMounted()) setUserBasicInfo(newBasicUserInfo);
 
-      if (isMounted() && isActive) setActiveUserBasicInfo(newBasicUserInfo);
-    }, conversationFriendUserID);
+        if (isMounted() && isActive) setActiveUserBasicInfo(newBasicUserInfo);
+      }, conversationFriendUserID);
 
     if (isActive && (!hasSeen || conversation.go_to_inbox))
       readConversation(conversation, userID);
@@ -108,20 +112,21 @@ function ConversationOption({
     >
       <Container className="flex-fill column ov-hidden">
         <Container className="align-center flex-fill mr16">
-          {userBasicInfo && (
+          {!conversation.chat_name && userBasicInfo && (
             <MakeAvatar
               displayName={userBasicInfo.displayName}
               userBasicInfo={userBasicInfo}
             />
           )}
 
-          {userBasicInfo && (
+          {(conversation.chat_name || userBasicInfo) && (
             <DisplayOnlineAndName
+              chatName={conversation.chat_name}
               hasSeen={hasSeen}
               userBasicInfo={userBasicInfo}
             />
           )}
-          {userBasicInfo && (
+          {!conversation.chat_name && userBasicInfo && (
             <KarmaBadge noOnClick userBasicInfo={userBasicInfo} />
           )}
         </Container>
@@ -142,48 +147,58 @@ function ConversationOption({
           <p>{dayjs(conversation.last_updated).fromNow()}</p>
         )}
       </Container>
-      <div
-        className="clickable px8"
-        onClick={(e) => {
-          e.stopPropagation();
-          setConversationOptions(!conversationOptions);
-        }}
-      >
-        <FontAwesomeIcon className="grey-9" icon={faEllipsisV} />
-      </div>
-      {conversationOptions && (
-        <div className="absolute top-100 pt4" style={{ zIndex: 1, right: "0" }}>
-          <HandleOutsideClick
-            close={() => {
-              setConversationOptions(false);
-            }}
-          >
-            <Container className="column x-fill bg-white border-all px16 py8 br8">
-              <Container
-                className="button-9 clickable align-center"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setDeleteConversationConfirm(true);
-                  setConversationOptions(false);
-                }}
-              >
-                <p className="flex-fill ic">Delete Conversation</p>
-                <FontAwesomeIcon className="ml8" icon={faTrash} />
-              </Container>
+
+      <Dropdown
+        overlay={
+          <Container className="column x-fill bg-white border-all px16 py8 br8">
+            {conversation.is_group && (
               <Container
                 className="button-8 clickable align-center"
                 onClick={(e) => {
-                  e.stopPropagation();
-                  setBlockModal(!blockModal);
+                  setConversationOptions(false);
+                  setGroupChatEditting(conversation);
+                  setIsCreateGroupModalVisible(true);
                 }}
               >
-                <p className="fw-400 flex-fill">Block User</p>
-                <FontAwesomeIcon className="ml8" icon={faUserLock} />
+                <p className="flex-fill ic">Edit Chat</p>
+                <FontAwesomeIcon className="ml8" icon={faEdit} />
               </Container>
+            )}
+            <Container
+              className="button-9 clickable align-center"
+              onClick={(e) => {
+                setConversationOptions(false);
+                setDeleteConversationConfirm(true);
+              }}
+            >
+              <p className="flex-fill ic">Delete Chat</p>
+              <FontAwesomeIcon className="ml8" icon={faTrash} />
             </Container>
-          </HandleOutsideClick>
+            <Container
+              className="button-8 clickable align-center"
+              onClick={(e) => {
+                setConversationOptions(false);
+                setBlockModal(!blockModal);
+              }}
+            >
+              <p className="ic fw-400 flex-fill">Block User</p>
+              <FontAwesomeIcon className="ml8" icon={faUserLock} />
+            </Container>
+          </Container>
+        }
+        placement="bottomRight"
+        trigger={["click"]}
+        visible={conversationOptions}
+      >
+        <div
+          className="clickable px8"
+          onClick={(e) => {
+            setConversationOptions(!conversationOptions);
+          }}
+        >
+          <FontAwesomeIcon className="grey-9" icon={faEllipsisV} />
         </div>
-      )}
+      </Dropdown>
       {deleteConversationConfirm && (
         <ConfirmAlertModal
           close={() => setDeleteConversationConfirm(false)}
@@ -223,19 +238,20 @@ function ConversationOption({
   );
 }
 
-function DisplayOnlineAndName({ hasSeen, userBasicInfo }) {
+function DisplayOnlineAndName({ chatName, hasSeen, userBasicInfo }) {
   const isMounted = useIsMounted();
   const [isUserOnline, setIsUserOnline] = useState(false);
 
   useEffect(() => {
     let isUserOnlineSubscribe;
 
-    isUserOnlineSubscribe = getIsUserOnline((isUserOnlineObj) => {
-      if (isUserOnlineObj && isUserOnlineObj.state && isMounted()) {
-        if (isUserOnlineObj.state === "online") setIsUserOnline(true);
-        else setIsUserOnline(false);
-      }
-    }, userBasicInfo.id);
+    if (!chatName)
+      isUserOnlineSubscribe = getIsUserOnline((isUserOnlineObj) => {
+        if (isUserOnlineObj && isUserOnlineObj.state && isMounted()) {
+          if (isUserOnlineObj.state === "online") setIsUserOnline(true);
+          else setIsUserOnline(false);
+        }
+      }, userBasicInfo.id);
 
     return () => {
       if (isUserOnlineSubscribe) off(isUserOnlineSubscribe);
@@ -245,11 +261,13 @@ function DisplayOnlineAndName({ hasSeen, userBasicInfo }) {
   return (
     <Container className="flex-fill align-center ov-hidden">
       <h6 className={"ellipsis mr8 " + (hasSeen ? "grey-1" : "primary")}>
-        {userBasicInfo
+        {chatName
+          ? chatName
+          : userBasicInfo
           ? capitolizeFirstChar(userBasicInfo.displayName)
           : "Anonymous"}
       </h6>
-      {isUserOnline && <div className="online-dot mr8" />}
+      {!chatName && isUserOnline && <div className="online-dot mr8" />}
     </Container>
   );
 }

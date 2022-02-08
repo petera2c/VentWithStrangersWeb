@@ -1,31 +1,49 @@
-import { addDoc, collection, Timestamp } from "firebase/firestore";
+import {
+  addDoc,
+  arrayUnion,
+  collection,
+  doc,
+  Timestamp,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../../../config/db_init";
 
-import { userSignUpProgress } from "../../../util";
-
-export const createGroup = async (navigate, user, users) => {
-  const userInteractionIssues = userSignUpProgress(user);
-  if (userInteractionIssues) return false;
-
-  const sortedMemberIDs = users
-    .map((user) => user.objectID)
-    .push(user.uid)
-    .sort();
-
-  console.log(sortedMemberIDs);
+export const saveGroup = async (
+  chatNameString,
+  groupChatEditting,
+  navigate,
+  users
+) => {
+  const sortedMemberIDs = users.map((user) => user.id).sort();
 
   let tempHasSeenObject = {};
   for (let index in sortedMemberIDs) {
     tempHasSeenObject[sortedMemberIDs[index]] = false;
   }
 
-  const conversationDocNew = await addDoc(collection(db, "conversations"), {
-    is_group: true,
-    last_updated: Timestamp.now().toMillis(),
-    members: sortedMemberIDs,
-    server_timestamp: Timestamp.now().toMillis(),
-    ...tempHasSeenObject,
-  });
+  let conversationDoc;
 
-  navigate("/chat?" + conversationDocNew.id);
+  if (groupChatEditting) {
+    await updateDoc(doc(db, "conversations", groupChatEditting.id), {
+      chat_name: chatNameString,
+      last_updated: Timestamp.now().toMillis(),
+      ...tempHasSeenObject,
+    });
+    for (let index in sortedMemberIDs) {
+      await updateDoc(doc(db, "conversations", groupChatEditting.id), {
+        members: arrayUnion(sortedMemberIDs[index]),
+      });
+    }
+  } else {
+    conversationDoc = await addDoc(collection(db, "conversations"), {
+      chat_name: chatNameString,
+      is_group: true,
+      last_updated: Timestamp.now().toMillis(),
+      members: sortedMemberIDs,
+      server_timestamp: Timestamp.now().toMillis(),
+      ...tempHasSeenObject,
+    });
+  }
+
+  if (!groupChatEditting) navigate("/chat?" + conversationDoc.id);
 };
