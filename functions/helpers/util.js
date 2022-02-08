@@ -227,8 +227,6 @@ const updateTotalUsersOnline = (change, context) => {
     }
   };
 
-  console.log(change.after.val());
-
   const changeAfter = change.after;
   const changeBefore = change.before;
 

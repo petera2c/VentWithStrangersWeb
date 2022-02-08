@@ -102,9 +102,10 @@ export const deleteMessage = async (conversationID, messageID, setMessages) => {
 };
 
 export const getConversationPartnerUserID = (members, userID) => {
-  for (let index in members) {
-    if (members[index] !== userID) return members[index];
-  }
+  if (members && members.length === 2)
+    for (let index in members) {
+      if (members[index] !== userID) return members[index];
+    }
   return false;
 };
 
@@ -114,27 +115,67 @@ export const isUserTypingListener = (
   isUserTypingTimeout,
   partnerID,
   scrollToBottom,
-  setShowPartnerIsTyping
+  setNumberOfUsersTyping,
+  setShowPartnerIsTyping,
+  userID
 ) => {
-  const dbRef = ref(db2, conversationID + "/" + partnerID);
+  let dbRef;
+  if (partnerID) {
+    dbRef = ref(db2, conversationID + "/" + partnerID);
 
-  onValue(dbRef, (snapshot) => {
-    if (isMounted()) {
-      if (isTimestampWithinSeconds(snapshot.val())) {
-        setShowPartnerIsTyping(true);
-        setTimeout(scrollToBottom, 400);
+    onValue(dbRef, (snapshot) => {
+      if (isMounted()) {
+        if (isTimestampWithinSeconds(snapshot.val())) {
+          setShowPartnerIsTyping(true);
+          setTimeout(scrollToBottom, 400);
 
-        if (isUserTypingTimeout.current) {
-          clearTimeout(isUserTypingTimeout.current);
-        }
-        isUserTypingTimeout.current = setTimeout(() => {
+          if (isUserTypingTimeout.current) {
+            clearTimeout(isUserTypingTimeout.current);
+          }
+          isUserTypingTimeout.current = setTimeout(() => {
+            setShowPartnerIsTyping(false);
+          }, 3000);
+        } else {
           setShowPartnerIsTyping(false);
-        }, 3000);
-      } else {
-        setShowPartnerIsTyping(false);
+        }
       }
-    }
-  });
+    });
+  } else {
+    dbRef = ref(db2, conversationID);
+
+    onValue(dbRef, (snapshot) => {
+      if (isMounted()) {
+        const test = snapshot.val();
+        for (let index in test) {
+          if (index === userID) continue;
+          if (isTimestampWithinSeconds(test[index])) {
+            setNumberOfUsersTyping((currentArray) => {
+              if (currentArray.findIndex((userID) => userID === index) !== -1)
+                return currentArray;
+              else {
+                currentArray.push(index);
+                return [...currentArray];
+              }
+            });
+            setTimeout(scrollToBottom, 400);
+
+            if (isUserTypingTimeout.current) {
+              clearTimeout(isUserTypingTimeout.current);
+            }
+            isUserTypingTimeout.current = setTimeout(() => {
+              setNumberOfUsersTyping((currentArray) => {
+                currentArray.splice(
+                  currentArray.findIndex((userID) => userID === index),
+                  1
+                );
+                return [...currentArray];
+              });
+            }, 3000);
+          }
+        }
+      }
+    });
+  }
 
   return dbRef;
 };

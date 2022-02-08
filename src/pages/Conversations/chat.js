@@ -61,6 +61,7 @@ function Chat({
   const [messages, setMessages] = useState([]);
   const [messageString, setMessageString] = useState("");
   const [showPartnerIsTyping, setShowPartnerIsTyping] = useState(false);
+  const [arrayOfUsersTyping, setArrayOfUsersTyping] = useState([]);
 
   useEffect(() => {
     let messageListenerUnsubscribe;
@@ -72,7 +73,7 @@ function Chat({
     if (
       activeConversation &&
       activeConversation.members &&
-      activeConversation.members.length <= 2
+      activeConversation.members.length >= 2
     ) {
       isUserTypingUnsubscribe = isUserTypingListener(
         activeConversation.id,
@@ -80,7 +81,9 @@ function Chat({
         isUserTypingTimeout,
         getConversationPartnerUserID(activeConversation.members, userID),
         scrollToBottom,
-        setShowPartnerIsTyping
+        setArrayOfUsersTyping,
+        setShowPartnerIsTyping,
+        userID
       );
 
       if (!isChatInConversationsArray) {
@@ -202,6 +205,22 @@ function Chat({
               />
             )}
             <h4>...</h4>
+          </Container>
+        </Container>
+      </Container>
+      <Container
+        className="ease-in-out x-fill"
+        style={{
+          maxHeight: arrayOfUsersTyping.length > 0 ? "56px" : "0",
+        }}
+      >
+        <Container className="bg-none ov-hidden full-center">
+          <Container className="align-end pl16">
+            <p className="">
+              {arrayOfUsersTyping.length}
+              {arrayOfUsersTyping.length === 1 ? " person is " : " people are "}
+              typing...
+            </p>
           </Container>
         </Container>
       </Container>
