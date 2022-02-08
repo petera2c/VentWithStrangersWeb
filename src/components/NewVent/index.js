@@ -24,6 +24,7 @@ import {
   viewTagFunction,
 } from "../../util";
 import {
+  checkVentTitle,
   getQuote,
   getUserVentTimeOut,
   getVent,
@@ -207,6 +208,12 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
               onChange={(e) => {
                 if (postingDisableFunction) return postingDisableFunction();
 
+                if (e.target.value.length > 100) {
+                  return message.info(
+                    "Vent titles can't have more than 100 characters :("
+                  );
+                }
+
                 setTitle(e.target.value);
                 setSaving(false);
               }}
@@ -214,6 +221,12 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
               type="text"
               value={title}
             />
+            {title.length >= 15 && (
+              <p className={title.length > 100 ? "red" : ""}>
+                {title.length}/100
+              </p>
+            )}
+            {title.length < 15 && <p>{15 - title.length} More to go...</p>}
           </Space>
         )}
         {!isMinified && (
@@ -280,7 +293,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
                 onClick={() => {
                   if (postingDisableFunction) return postingDisableFunction();
 
-                  if (description && title) {
+                  if (description && checkVentTitle(title)) {
                     setTagText("");
                     setSaving(true);
 

@@ -54,6 +54,21 @@ export const checks = (
   return false;
 };
 
+export const checkVentTitle = (title) => {
+  if (title.length > 100) {
+    message.info("Title is too long! :(");
+    return false;
+  } else if (title.length < 15) {
+    message.info("Your title is too short! :(");
+    return false;
+  } else if (!title.trim()) {
+    message.info("Your title needs more than just white space :(");
+    return false;
+  }
+
+  return true;
+};
+
 export const getQuote = async (isMounted, setQuote) => {
   const yesterdaysFormattedDate = new dayjs(Timestamp.now().toMillis())
     .utcOffset(0)
