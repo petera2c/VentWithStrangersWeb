@@ -112,10 +112,14 @@ function ConversationOption({
     >
       <Container className="flex-fill column ov-hidden">
         <Container className="align-center flex-fill mr16">
-          {!conversation.chat_name && userBasicInfo && (
+          {(userBasicInfo || conversation.chat_name) && (
             <MakeAvatar
-              displayName={userBasicInfo.displayName}
-              userBasicInfo={userBasicInfo}
+              displayName={
+                conversation.chat_name
+                  ? conversation.chat_name
+                  : userBasicInfo.displayName
+              }
+              userBasicInfo={conversation.chat_name ? {} : userBasicInfo}
             />
           )}
 
