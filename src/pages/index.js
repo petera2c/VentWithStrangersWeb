@@ -115,7 +115,7 @@ function RoutesComp() {
     onIdle: handleOnIdle,
     onActive: handleOnActive,
     onAction: handleOnAction,
-    throttle: 4000,
+    throttle: 10000,
   });
 
   useEffect(() => {
