@@ -22,7 +22,7 @@ function VerifiedEmail() {
   }, [navigate, search]);
 
   return (
-    <Page className="column bg-blue-light" description="" title="Email Verified">
+    <Page className="column bg-blue-2" description="" title="Email Verified">
       <Space align="center" className="py32" direction="vertical">
         <Space
           align="center"

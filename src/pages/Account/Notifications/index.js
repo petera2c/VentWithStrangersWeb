@@ -41,7 +41,7 @@ function NotificationsPage() {
 
   return (
     <Page
-      className="justify-start align-center bg-blue-light"
+      className="justify-start align-center bg-blue-2"
       description=""
       keywords=""
       title="Notifications"

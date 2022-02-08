@@ -48,7 +48,7 @@ const CheckoutForm = () => {
   };
 
   return (
-    <form className="x-fill bg-blue-light pa16 br8" onSubmit={handleSubmit}>
+    <form className="x-fill bg-blue-2 pa16 br8" onSubmit={handleSubmit}>
       <CardElement />
       <Container className="x-fill justify-end">
         <Button
@@ -72,7 +72,7 @@ const stripePromise = loadStripe(
 
 const App = () => (
   <Page
-    className="align-center bg-blue-light"
+    className="align-center bg-blue-2"
     description="Help Support Vent With Strangers"
     title="Subscribe"
   >

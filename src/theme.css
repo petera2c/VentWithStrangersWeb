@@ -19,7 +19,8 @@
   --red-color: #f44336;
   --orange-color: #ff570a;
 
-  --light-blue-color: #b6ddfc;
+  --blue-color-1: #e7f3fe;
+  --blue-color-2: #b6ddfc;
 
   --light-blue-theme-color: #cffdff;
   --light-green-theme-color: #92ff4f;
@@ -344,8 +345,11 @@
 .bg-blue {
   background-color: var(--main-color);
 }
-.bg-blue-light {
-  background-color: var(--light-blue-color);
+.bg-blue-1 {
+  background-color: var(--blue-color-1);
+}
+.bg-blue-2 {
+  background-color: var(--blue-color-2);
 }
 .bg-grey-4 {
   background-color: var(--grey-color-4);
@@ -554,7 +558,8 @@
 .modal {
   position: fixed;
   z-index: 1;
-  max-height: 100vh;
+  max-height: 80vh;
+  overflow: hidden;
 }
 
 .grid-1 {

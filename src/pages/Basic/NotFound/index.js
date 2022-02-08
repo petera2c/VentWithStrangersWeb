@@ -7,7 +7,7 @@ import Page from "../../../components/containers/Page";
 function NotFoundPage() {
   return (
     <Page
-      className="align-center bg-blue-light gap32 pt64"
+      className="align-center bg-blue-2 gap32 pt64"
       description="Page not found."
       keywords=""
       title="Not Found"

@@ -40,7 +40,7 @@ function OnlineUsers() {
   ]);
 
   return (
-    <Page className="column align-center bg-blue-light gap16 pa16">
+    <Page className="column align-center bg-blue-2 gap16 pa16">
       <Container className="justify-center wrap  gap16">
         {onlineUsers.map(({ lastOnline, userID }, index) => {
           return (

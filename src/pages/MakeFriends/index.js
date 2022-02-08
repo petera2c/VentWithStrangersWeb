@@ -34,7 +34,7 @@ function MakeFriendsPage() {
   }, [user]);
 
   return (
-    <Page className="bg-blue-light align-center pa16">
+    <Page className="bg-blue-2 align-center pa16">
       {!user && (
         <Container
           className={

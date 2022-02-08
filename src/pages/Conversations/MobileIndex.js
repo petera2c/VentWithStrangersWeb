@@ -63,7 +63,7 @@ function MobileConversations() {
   }, [isMounted, user]);
 
   return (
-    <Page className="bg-blue-light">
+    <Page className="bg-blue-2">
       <Container
         className="flex-fill column ov-auto bg-white pa8 mt16 mx8 br4"
         style={{ display: activeConversation ? "none" : "flex" }}

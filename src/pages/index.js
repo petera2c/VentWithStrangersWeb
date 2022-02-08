@@ -164,7 +164,7 @@ function RoutesComp() {
               {!loading && (
                 <Suspense
                   fallback={
-                    <Container className="flex-fill justify-center bg-blue-light">
+                    <Container className="flex-fill justify-center bg-blue-2">
                       <LoadingHeart />
                     </Container>
                   }

@@ -21,7 +21,7 @@ function SubscriptionSuccessPage() {
   }, [setUserSubscription, user]);
 
   return (
-    <Page className="bg-blue-light align-center" title="Success">
+    <Page className="bg-blue-2 align-center" title="Success">
       <Space className="column container large full-center bg-white pa32 ma32 br8">
         <h1>Subscription Successful!</h1>
         <p>We are so thankful that you joined a paid plan :)</p>

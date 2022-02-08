@@ -54,7 +54,7 @@ function SearchPage() {
   }, [search, isUsers]);
 
   return (
-    <Page className="align-center bg-blue-light" title={search ? search : "Search"}>
+    <Page className="align-center bg-blue-2" title={search ? search : "Search"}>
       <Container className="gap16">
         <button
           className={
