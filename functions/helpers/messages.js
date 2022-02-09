@@ -3,6 +3,9 @@ const { sendMobilePushNotifications } = require("./notification");
 
 const messagesListener = async (messageDoc, context) => {
   const { conversationID, messageID } = context.params;
+
+  if (messageDoc.data().is_notice) return;
+
   const conversationDoc = await admin
     .firestore()
     .collection("conversations")
