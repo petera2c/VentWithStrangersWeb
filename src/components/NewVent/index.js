@@ -41,6 +41,9 @@ const searchClient = algoliasearch(
 );
 const tagsIndex = searchClient.initIndex("vent_tags");
 
+const TITLE_LENGTH_MINIMUM = 15;
+const TITLE_LENGTH_MAXIMUM = 100;
+
 function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
   const isMounted = useIsMounted();
   const navigate = useNavigate();
@@ -208,9 +211,11 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
               onChange={(e) => {
                 if (postingDisableFunction) return postingDisableFunction();
 
-                if (e.target.value.length > 100) {
+                if (e.target.value.length > TITLE_LENGTH_MAXIMUM) {
                   return message.info(
-                    "Vent titles can't have more than 100 characters :("
+                    "Vent titles can't have more than " +
+                      TITLE_LENGTH_MAXIMUM +
+                      " characters :("
                   );
                 }
 
@@ -221,12 +226,14 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
               type="text"
               value={title}
             />
-            {title.length >= 15 && (
-              <p className={title.length > 100 ? "red" : ""}>
-                {title.length}/100
+            {title.length >= TITLE_LENGTH_MINIMUM && (
+              <p className={title.length > TITLE_LENGTH_MAXIMUM ? "red" : ""}>
+                {title.length}/{TITLE_LENGTH_MAXIMUM}
               </p>
             )}
-            {title.length < 15 && <p>{15 - title.length} More to go...</p>}
+            {title.length < TITLE_LENGTH_MINIMUM && (
+              <p>{TITLE_LENGTH_MINIMUM - title.length} More to go...</p>
+            )}
           </Space>
         )}
         {!isMinified && (

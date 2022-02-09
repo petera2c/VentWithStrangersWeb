@@ -22,6 +22,9 @@ import { calculateKarma, userSignUpProgress } from "../../util";
 
 dayjs.extend(utc);
 
+const TITLE_LENGTH_MINIMUM = 15;
+const TITLE_LENGTH_MAXIMUM = 100;
+
 export const checks = (
   isUserKarmaSufficient,
   setStarterModal,
@@ -55,10 +58,10 @@ export const checks = (
 };
 
 export const checkVentTitle = (title) => {
-  if (title.length > 100) {
+  if (title.length > TITLE_LENGTH_MAXIMUM) {
     message.info("Title is too long! :(");
     return false;
-  } else if (title.length < 15) {
+  } else if (title.length < TITLE_LENGTH_MINIMUM) {
     message.info("Your title is too short! :(");
     return false;
   } else if (!title.trim()) {
