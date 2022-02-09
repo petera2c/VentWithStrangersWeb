@@ -6,7 +6,6 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import loadable from "@loadable/component";
 import { Dropdown, message } from "antd";
 
-import { faEdit } from "@fortawesome/pro-duotone-svg-icons/faEdit";
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 import { faTrash } from "@fortawesome/pro-solid-svg-icons/faTrash";
 import { faUserLock } from "@fortawesome/pro-solid-svg-icons/faUserLock";
@@ -205,19 +204,7 @@ function ConversationOption({
                 icon={isMuted ? faVolume : faVolumeSlash}
               />
             </Container>
-            {conversation.is_group && (
-              <Container
-                className="button-8 clickable align-center"
-                onClick={(e) => {
-                  setConversationOptions(false);
-                  setGroupChatEditting(conversation);
-                  setIsCreateGroupModalVisible(true);
-                }}
-              >
-                <p className="flex-fill ic">Edit Chat</p>
-                <FontAwesomeIcon className="ml8" icon={faEdit} />
-              </Container>
-            )}
+
             <Container
               className="button-9 clickable align-center"
               onClick={(e) => {

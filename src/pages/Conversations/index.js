@@ -177,6 +177,8 @@ function Conversations() {
                 )}
                 setActiveConversation={setActiveConversation}
                 setActiveChatUserBasicInfos={setActiveChatUserBasicInfos}
+                setGroupChatEditting={setGroupChatEditting}
+                setIsCreateGroupModalVisible={setIsCreateGroupModalVisible}
                 userID={user.uid}
               />
             )}

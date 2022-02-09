@@ -29,11 +29,13 @@ const MakeAvatar = loadable(() => import("../../components/views/MakeAvatar"));
 let typingTimer;
 
 function Chat({
-  activeConversation,
   activeChatUserBasicInfos,
+  activeConversation,
   isChatInConversationsArray,
-  setActiveConversation,
   setActiveChatUserBasicInfos,
+  setActiveConversation,
+  setGroupChatEditting,
+  setIsCreateGroupModalVisible,
   userID,
 }) {
   const isMounted = useIsMounted();
@@ -56,12 +58,12 @@ function Chat({
   const [allowToSetIsUserTypingToDB, setAllowToSetIsUserTypingToDB] = useState(
     true
   );
+  const [arrayOfUsersTyping, setArrayOfUsersTyping] = useState([]);
   const [canLoadMore, setCanLoadMore] = useState(true);
   const [isMobileOrTablet, setIsMobileOrTablet] = useState();
   const [messages, setMessages] = useState([]);
   const [messageString, setMessageString] = useState("");
   const [showPartnerIsTyping, setShowPartnerIsTyping] = useState(false);
-  const [arrayOfUsersTyping, setArrayOfUsersTyping] = useState([]);
 
   useEffect(() => {
     let messageListenerUnsubscribe;
@@ -157,7 +159,7 @@ function Chat({
               ))}
           </Container>
 
-          {!activeConversation.chat_name &&
+          {!activeConversation.is_group &&
             activeChatUserBasicInfos &&
             activeChatUserBasicInfos[0] && (
               <Link
@@ -174,9 +176,13 @@ function Chat({
                 />
               </Link>
             )}
-          {activeConversation.chat_name && (
+          {activeConversation.is_group && (
             <h5
               className="button-1"
+              onClick={() => {
+                setGroupChatEditting(activeConversation);
+                setIsCreateGroupModalVisible(true);
+              }}
               style={{
                 transform:
                   activeChatUserBasicInfos &&
@@ -268,10 +274,10 @@ function Chat({
       >
         <Container className="bg-none ov-hidden full-center">
           <Container className="align-end pl16">
-            {activeChatUserBasicInfos && (
+            {activeChatUserBasicInfos && activeChatUserBasicInfos[0] && (
               <MakeAvatar
-                displayName={activeChatUserBasicInfos.displayName}
-                userBasicInfo={activeChatUserBasicInfos}
+                displayName={activeChatUserBasicInfos[0].displayName}
+                userBasicInfo={activeChatUserBasicInfos[0]}
               />
             )}
             <h4>...</h4>
