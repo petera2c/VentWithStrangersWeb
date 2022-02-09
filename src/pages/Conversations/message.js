@@ -11,7 +11,7 @@ import Container from "../../components/containers/Container";
 import { urlify } from "../../util";
 import { deleteMessage } from "./util";
 
-function Message({ conversationID, message, setMessages, userID }) {
+function Message({ activeConversationID, message, setMessages, userID }) {
   const [deleteMessageConfirm, setDeleteMessageConfirm] = useState(false);
   const [messageOptions, setMessageOptions] = useState(false);
   const [reportModal, setReportModal] = useState(false);
@@ -93,7 +93,9 @@ function Message({ conversationID, message, setMessages, userID }) {
         <ConfirmAlertModal
           close={() => setDeleteMessageConfirm(false)}
           message="Are you sure you would like to delete this message?"
-          submit={() => deleteMessage(conversationID, message.id, setMessages)}
+          submit={() =>
+            deleteMessage(activeConversationID, message.id, setMessages)
+          }
           title="Delete Message"
         />
       )}
