@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { doc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../config/db_init";
 import { useDocument } from "react-firebase-hooks/firestore";
 import { message } from "antd";
@@ -23,7 +23,7 @@ function SettingsSection() {
   });
 
   const handleChange = async (name, checked, notify = true) => {
-    await settingsRef.update({ [name]: checked });
+    await updateDoc(settingsRef, { [name]: checked });
     if (notify) message.success("Setting updated!");
   };
 
