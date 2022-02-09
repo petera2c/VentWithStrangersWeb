@@ -12,22 +12,16 @@ export const saveGroup = async (
   chatNameString,
   groupChatEditting,
   navigate,
+  userID,
   users
 ) => {
   const sortedMemberIDs = users.map((user) => user.id).sort();
-
-  let tempHasSeenObject = {};
-  for (let index in sortedMemberIDs) {
-    tempHasSeenObject[sortedMemberIDs[index]] = false;
-  }
 
   let conversationDoc;
 
   if (groupChatEditting) {
     await updateDoc(doc(db, "conversations", groupChatEditting.id), {
       chat_name: chatNameString,
-      last_updated: Timestamp.now().toMillis(),
-      ...tempHasSeenObject,
     });
     for (let index in sortedMemberIDs) {
       await updateDoc(doc(db, "conversations", groupChatEditting.id), {
@@ -35,8 +29,14 @@ export const saveGroup = async (
       });
     }
   } else {
+    let tempHasSeenObject = {};
+    for (let index in sortedMemberIDs) {
+      tempHasSeenObject[sortedMemberIDs[index]] = false;
+    }
+
     conversationDoc = await addDoc(collection(db, "conversations"), {
       chat_name: chatNameString,
+      group_owner: userID,
       is_group: true,
       last_updated: Timestamp.now().toMillis(),
       members: sortedMemberIDs,

@@ -111,11 +111,11 @@ function RoutesComp() {
   };
 
   useIdleTimer({
-    timeout: 1000 * 60 * 480,
-    onIdle: handleOnIdle,
-    onActive: handleOnActive,
     onAction: handleOnAction,
+    onActive: handleOnActive,
+    onIdle: handleOnIdle,
     throttle: 10000,
+    timeout: 1000 * 60 * 480,
   });
 
   useEffect(() => {

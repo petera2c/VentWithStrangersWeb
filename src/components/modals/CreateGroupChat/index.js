@@ -204,7 +204,13 @@ function GroupChatCreateModal({ close, groupChatEditting }) {
           <button
             className="button-2 py8 px32 mx4 br4"
             onClick={() => {
-              saveGroup(chatNameString, groupChatEditting, navigate, users);
+              saveGroup(
+                chatNameString,
+                groupChatEditting,
+                navigate,
+                userBasicInfo.id,
+                users
+              );
               close();
             }}
           >

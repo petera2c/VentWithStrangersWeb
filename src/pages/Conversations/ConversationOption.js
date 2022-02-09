@@ -225,7 +225,7 @@ function ConversationOption({
                 setDeleteConversationConfirm(true);
               }}
             >
-              <p className="flex-fill ic">Delete Chat</p>
+              <p className="flex-fill ic">Leave Chat</p>
               <FontAwesomeIcon className="ml8" icon={faTrash} />
             </Container>
             <Container
