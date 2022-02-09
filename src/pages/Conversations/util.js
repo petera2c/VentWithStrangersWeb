@@ -418,17 +418,21 @@ export const setInitialConversationsAndActiveConversation = async (
 
     if (foundConversation) setActiveConversation(foundConversation);
     else {
-      const conversationDoc = await getDoc(
-        doc(db, "conversations", search.substring(1))
-      );
+      try {
+        const conversationDoc = await getDoc(
+          doc(db, "conversations", search.substring(1))
+        );
 
-      if (conversationDoc.exists())
-        setActiveConversation({
-          id: conversationDoc.id,
-          doc: conversationDoc,
-          ...conversationDoc.data(),
-        });
-      else setActiveConversation(false);
+        if (conversationDoc.exists())
+          setActiveConversation({
+            id: conversationDoc.id,
+            doc: conversationDoc,
+            ...conversationDoc.data(),
+          });
+        else setActiveConversation(false);
+      } catch (e) {
+        console.log(e);
+      }
     }
   } else if (openFirstChat && newConversations.length > 0) {
     setActiveConversation(newConversations[0]);
