@@ -353,7 +353,11 @@ export const startConversation = async (navigate, user, ventUserID) => {
     navigate("/chat?" + conversationID);
   };
 
-  if (!conversationQuerySnapshot.empty) {
+  if (
+    conversationQuerySnapshot.docs &&
+    conversationQuerySnapshot.docs.length > 0 &&
+    !conversationQuerySnapshot.docs[0].is_group
+  ) {
     conversationQuerySnapshot.forEach((conversationDoc, i) => {
       goToPage(conversationDoc.id);
     });

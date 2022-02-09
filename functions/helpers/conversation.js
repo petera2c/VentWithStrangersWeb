@@ -33,11 +33,13 @@ const chatQueueListener = async (change, context) => {
       .firestore()
       .collection("conversations")
       .where("members", "==", sortedMemberIDs)
+      .where("is_group", "==", false)
       .get();
 
     if (
       conversationQuerySnapshot.docs &&
-      conversationQuerySnapshot.docs.length > 0
+      conversationQuerySnapshot.docs.length > 0 &&
+      !conversationQuerySnapshot.docs[0].is_group
     )
       return;
 
