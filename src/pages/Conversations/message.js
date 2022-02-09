@@ -47,9 +47,9 @@ function Message({
         style={{ maxWidth: "80%" }}
       >
         <Container className="column px16 py8">
-          {shouldShowDisplayName && displayName && (
-            <p className="orange">{displayName}</p>
-          )}
+          {message.userID !== userID &&
+            shouldShowDisplayName &&
+            displayName && <p className="orange">{displayName}</p>}
           <div className="flex-fill description ">
             {urlify(message.body).map((obj, index) => {
               return (

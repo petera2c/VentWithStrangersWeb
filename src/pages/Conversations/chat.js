@@ -69,6 +69,7 @@ function Chat({
 
     setIsMobileOrTablet(getIsMobileOrTablet());
     setCanLoadMore(true);
+    setShowPartnerIsTyping(false);
 
     if (
       activeConversation &&
@@ -232,26 +233,30 @@ function Chat({
               Load More Messages
             </button>
           )}
-          {messages.map((message, index) => (
-            <Message
-              activeConversationID={activeConversation.id}
-              activeChatUserBasicInfos={activeChatUserBasicInfos}
-              key={index}
-              message={message}
-              setMessages={setMessages}
-              shouldShowDisplayName={
-                activeChatUserBasicInfos &&
-                activeChatUserBasicInfos.length > 1 &&
-                messages[index + 1] &&
-                messages[index + 1].userID === message.userID &&
-                !(
-                  messages[index - 1] &&
-                  messages[index - 1].userID === message.userID
-                )
-              }
-              userID={userID}
-            />
-          ))}
+          {messages.map((message, index) => {
+            let test = false;
+
+            if (activeChatUserBasicInfos && activeChatUserBasicInfos.length > 1)
+              test = true;
+
+            if (
+              messages[index - 1] &&
+              messages[index - 1].userID === message.userID
+            )
+              test = false;
+
+            return (
+              <Message
+                activeConversationID={activeConversation.id}
+                activeChatUserBasicInfos={activeChatUserBasicInfos}
+                key={index}
+                message={message}
+                setMessages={setMessages}
+                shouldShowDisplayName={test}
+                userID={userID}
+              />
+            );
+          })}
           <div ref={dummyRef} />
         </Container>
       </Container>
