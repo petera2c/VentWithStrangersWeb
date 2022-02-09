@@ -46,7 +46,7 @@ function Message({
         }
         style={{ maxWidth: "80%" }}
       >
-        <Container className="column px16 py8">
+        <Container className="column flex-fill px16 py8">
           {message.userID !== userID &&
             shouldShowDisplayName &&
             displayName && <p className="orange">{displayName}</p>}
