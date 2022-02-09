@@ -16,6 +16,14 @@
       "$uid": {
         ".write": "$uid === auth.uid"
       }
+    },
+    "muted": {
+      "$conversationID": {
+        "$uid": {
+          ".read": "$uid === auth.uid",
+          ".write": "$uid === auth.uid"
+        }
+      }
     }
   }
 }

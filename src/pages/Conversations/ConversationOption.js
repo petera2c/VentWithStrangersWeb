@@ -4,12 +4,14 @@ import { off } from "firebase/database";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import loadable from "@loadable/component";
-import { Dropdown } from "antd";
+import { Dropdown, message } from "antd";
 
 import { faEdit } from "@fortawesome/pro-duotone-svg-icons/faEdit";
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 import { faTrash } from "@fortawesome/pro-solid-svg-icons/faTrash";
 import { faUserLock } from "@fortawesome/pro-solid-svg-icons/faUserLock";
+import { faVolume } from "@fortawesome/pro-solid-svg-icons/faVolume";
+import { faVolumeSlash } from "@fortawesome/pro-solid-svg-icons/faVolumeSlash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import ConfirmAlertModal from "../../components/modals/ConfirmAlert";
@@ -24,8 +26,10 @@ import {
   useIsMounted,
 } from "../../util";
 import {
-  deleteConversation,
   conversationListener,
+  deleteConversation,
+  getIsChatMuted,
+  muteChat,
   readConversation,
 } from "./util";
 
@@ -54,6 +58,7 @@ function ConversationOption({
   const [deleteConversationConfirm, setDeleteConversationConfirm] = useState(
     false
   );
+  const [isMuted, setIsMuted] = useState();
   const [userBasicInfo, setUserBasicInfo] = useState();
   const hasSeen = conversation[userID];
 
@@ -81,6 +86,8 @@ function ConversationOption({
 
     if (isActive && (!hasSeen || conversation.go_to_inbox))
       readConversation(conversation, userID);
+
+    getIsChatMuted(conversation.id, isMounted, setIsMuted, userID);
 
     return () => {
       if (unsubFromConversationUpdates.current)
@@ -155,6 +162,25 @@ function ConversationOption({
       <Dropdown
         overlay={
           <Container className="column x-fill bg-white border-all px16 py8 br8">
+            <Container
+              className="button-8 clickable align-center"
+              onClick={(e) => {
+                setConversationOptions(false);
+                setIsMuted(!isMuted);
+                muteChat(conversation.id, userID, !isMuted);
+                message.success(
+                  "Chat is " + (isMuted ? "unmuted" : "muted") + " :)"
+                );
+              }}
+            >
+              <p className="flex-fill ic">
+                {isMuted ? "Unmute " : "Mute "}Chat
+              </p>
+              <FontAwesomeIcon
+                className="ml8"
+                icon={isMuted ? faVolume : faVolumeSlash}
+              />
+            </Container>
             {conversation.is_group && (
               <Container
                 className="button-8 clickable align-center"

@@ -16,7 +16,14 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { onValue, ref, serverTimestamp, update } from "firebase/database";
+import {
+  get,
+  onValue,
+  ref,
+  serverTimestamp,
+  set,
+  update,
+} from "firebase/database";
 import { db, db2 } from "../../config/db_init";
 
 import { message } from "antd";
@@ -107,6 +114,17 @@ export const getConversationPartnerUserID = (members, userID) => {
       if (members[index] !== userID) return members[index];
     }
   return false;
+};
+
+export const getIsChatMuted = (
+  conversationID,
+  isMounted,
+  setIsMuted,
+  userID
+) => {
+  get(ref(db2, "muted/" + conversationID + "/" + userID)).then((doc) => {
+    if (isMounted()) setIsMuted(doc.val());
+  });
 };
 
 export const isUserTypingListener = (
@@ -344,6 +362,10 @@ export const mostRecentConversationListener = (
   );
 
   return unsubscribe;
+};
+
+export const muteChat = async (conversationID, userID, value) => {
+  set(ref(db2, "muted/" + conversationID + "/" + userID), value);
 };
 
 export const readConversation = async (conversation, userID) => {

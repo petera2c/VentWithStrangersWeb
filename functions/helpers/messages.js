@@ -1,7 +1,7 @@
 const admin = require("firebase-admin");
 const { sendMobilePushNotifications } = require("./notification");
 
-const messagesListener = async (doc, context) => {
+const messagesListener = async (messageDoc, context) => {
   const { conversationID, messageID } = context.params;
   const conversationDoc = await admin
     .firestore()
@@ -14,28 +14,33 @@ const messagesListener = async (doc, context) => {
   }
 
   let conversation = conversationDoc.data();
-  for (let index in conversation) {
-    if (typeof conversation[index] === "boolean") {
-      conversation[index] = false;
-      if (doc.data().userID !== index) {
-        await admin
-          .firestore()
-          .collection("unread_conversations_count")
-          .doc(index)
-          .set({ count: admin.firestore.FieldValue.increment(1) });
-        admin
-          .database()
-          .ref("status/" + index)
-          .once("value", (doc) => {
-            if (!doc.val() || (doc.val() && doc.val().state !== "online"))
-              sendMobilePushNotifications("You have a new message!", index);
-          });
-      }
+  for (let index in conversation.members) {
+    if (messageDoc.data().userID !== conversation.members[index]) {
+      const isMutedSnapshot = await admin
+        .database()
+        .ref("muted/" + conversationDoc.id + "/" + conversation.members[index])
+        .once("value");
+
+      if (isMutedSnapshot.val()) continue;
+
+      conversation[conversation.members[index]] = false;
+      await admin
+        .firestore()
+        .collection("unread_conversations_count")
+        .doc(index)
+        .set({ count: admin.firestore.FieldValue.increment(1) });
+      admin
+        .database()
+        .ref("status/" + index)
+        .once("value", (doc) => {
+          if (!doc.val() || (doc.val() && doc.val().state !== "online"))
+            sendMobilePushNotifications("You have a new message!", index);
+        });
     }
   }
 
   conversation.last_updated = admin.firestore.Timestamp.now().toMillis();
-  conversation.last_message = doc.data().body;
+  conversation.last_message = messageDoc.data().body;
 
   await admin
     .firestore()
