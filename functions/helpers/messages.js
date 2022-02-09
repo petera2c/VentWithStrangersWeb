@@ -27,14 +27,17 @@ const messagesListener = async (messageDoc, context) => {
       await admin
         .firestore()
         .collection("unread_conversations_count")
-        .doc(index)
+        .doc(conversation.members[index])
         .set({ count: admin.firestore.FieldValue.increment(1) });
       admin
         .database()
-        .ref("status/" + index)
+        .ref("status/" + conversation.members[index])
         .once("value", (doc) => {
           if (!doc.val() || (doc.val() && doc.val().state !== "online"))
-            sendMobilePushNotifications("You have a new message!", index);
+            sendMobilePushNotifications(
+              "You have a new message!",
+              conversation.members[index]
+            );
         });
     }
   }
