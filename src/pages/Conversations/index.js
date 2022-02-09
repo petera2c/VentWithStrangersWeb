@@ -192,8 +192,8 @@ function Conversations() {
       )}
       {isCreateGroupModalVisible && (
         <CreateGroupChatModal
-          groupChatEditting={groupChatEditting}
           close={() => setIsCreateGroupModalVisible(false)}
+          groupChatEditting={groupChatEditting}
         />
       )}
     </Page>

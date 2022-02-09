@@ -53,7 +53,6 @@ function ConversationOption({
   const unsubFromConversationUpdates = useRef(false);
 
   const [blockModal, setBlockModal] = useState(false);
-  const [conversationOptions, setConversationOptions] = useState(false);
   const [deleteConversationConfirm, setDeleteConversationConfirm] = useState(
     false
   );
@@ -125,7 +124,7 @@ function ConversationOption({
       }}
     >
       <Container className="flex-fill column ov-hidden">
-        <Container className="align-center flex-fill mr16">
+        <Container className="align-center flex-fill gap4 mr16">
           <Container className="align-end">
             {userBasicInfoArray.map((userBasicInfo, index) => (
               <Container
@@ -188,7 +187,6 @@ function ConversationOption({
             <Container
               className="button-8 clickable align-center"
               onClick={(e) => {
-                setConversationOptions(false);
                 setIsMuted(!isMuted);
                 muteChat(conversation.id, userID, !isMuted);
                 message.success(
@@ -208,7 +206,6 @@ function ConversationOption({
             <Container
               className="button-9 clickable align-center"
               onClick={(e) => {
-                setConversationOptions(false);
                 setDeleteConversationConfirm(true);
               }}
             >
@@ -218,7 +215,6 @@ function ConversationOption({
             <Container
               className="button-8 clickable align-center"
               onClick={(e) => {
-                setConversationOptions(false);
                 setBlockModal(!blockModal);
               }}
             >
@@ -229,14 +225,8 @@ function ConversationOption({
         }
         placement="bottomRight"
         trigger={["click"]}
-        visible={conversationOptions}
       >
-        <div
-          className="clickable px8"
-          onClick={(e) => {
-            setConversationOptions(!conversationOptions);
-          }}
-        >
+        <div className="clickable px8">
           <FontAwesomeIcon className="grey-9" icon={faEllipsisV} />
         </div>
       </Dropdown>

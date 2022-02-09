@@ -205,12 +205,12 @@ function Vent({
               if (!disablePostOnClick) navigate(partialLink);
             }}
           >
-            <Container className="flex x-fill align-center">
+            <Container className="flex x-fill align-center gap4">
               <MakeAvatar
                 displayName={author.displayName}
                 userBasicInfo={author}
               />
-              <Container className="flex-fill align-center ov-hidden gap8">
+              <Container className="flex-fill align-center ov-hidden gap4">
                 <Link
                   className="ov-hidden"
                   onClick={(e) => e.stopPropagation()}

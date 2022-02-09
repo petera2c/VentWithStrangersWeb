@@ -174,6 +174,7 @@ const conversationUpdateListener = async (change, context) => {
           .collection("messages")
           .add({
             body: "User has left chat.",
+            is_notice: true,
             server_timestamp: admin.firestore.Timestamp.now().toMillis(),
             user_left_chat: true,
           });

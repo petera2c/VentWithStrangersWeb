@@ -35,7 +35,7 @@ function MakeAvatar({ className, displayName, size, userBasicInfo }) {
       );
     else if (size === "small")
       return (
-        <div className={"avatar small mr8 " + className}>
+        <div className={"avatar small " + className}>
           <Avatar
             avatarStyle={"Circle"}
             topType={userBasicInfo.avatar.topType}
@@ -53,7 +53,7 @@ function MakeAvatar({ className, displayName, size, userBasicInfo }) {
       );
     else
       return (
-        <div className={"avatar mr8 " + className}>
+        <div className={"avatar " + className}>
           <Avatar
             avatarStyle={"Circle"}
             topType={userBasicInfo.avatar.topType}
@@ -82,16 +82,14 @@ function MakeAvatar({ className, displayName, size, userBasicInfo }) {
     else if (size === "small")
       return (
         <p
-          className={
-            "avatar very-small fs-20 bold bg-blue white mr8 " + className
-          }
+          className={"avatar very-small fs-20 bold bg-blue white " + className}
         >
           {capitolizedDisplayName}
         </p>
       );
     else
       return (
-        <p className={"avatar small fs-20 bold bg-blue white mr8 " + className}>
+        <p className={"avatar small fs-20 bold bg-blue white " + className}>
           {capitolizedDisplayName}
         </p>
       );

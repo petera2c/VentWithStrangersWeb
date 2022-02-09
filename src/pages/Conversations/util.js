@@ -90,7 +90,7 @@ export const deleteConversation = async (
   setActiveConversation(false);
   navigate("/chat");
 
-  message.success("Conversation deleted!");
+  message.success("Success :)!");
 };
 
 export const deleteMessage = async (conversationID, messageID, setMessages) => {

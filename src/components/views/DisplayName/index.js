@@ -32,7 +32,7 @@ function DisplayName({
     return (
       <Container className="align-center flex-fill ov-hidden gap4">
         <Link
-          className="flex clickable align-center ov-hidden"
+          className="flex clickable align-center ov-hidden gap4"
           onClick={(e) => {
             e.stopPropagation();
           }}

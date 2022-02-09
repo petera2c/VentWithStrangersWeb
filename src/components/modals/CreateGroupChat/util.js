@@ -1,6 +1,5 @@
 import {
   addDoc,
-  arrayUnion,
   collection,
   doc,
   Timestamp,
@@ -10,24 +9,24 @@ import { db } from "../../../config/db_init";
 
 export const saveGroup = async (
   chatNameString,
+  existingUsers,
   groupChatEditting,
   navigate,
   userID,
   users
 ) => {
-  const sortedMemberIDs = users.map((user) => user.id).sort();
+  const sortedMemberIDs = [
+    ...users.map((user) => user.id),
+    ...existingUsers.map((user) => user.id),
+  ].sort();
 
   let conversationDoc;
 
   if (groupChatEditting) {
     await updateDoc(doc(db, "conversations", groupChatEditting.id), {
       chat_name: chatNameString,
+      members: sortedMemberIDs,
     });
-    for (let index in sortedMemberIDs) {
-      await updateDoc(doc(db, "conversations", groupChatEditting.id), {
-        members: arrayUnion(sortedMemberIDs[index]),
-      });
-    }
   } else {
     let tempHasSeenObject = {};
     for (let index in sortedMemberIDs) {

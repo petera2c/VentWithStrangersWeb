@@ -141,7 +141,7 @@ function Chat({
   return (
     <Container className="column flex-fill x-fill full-center ov-hidden br4">
       <Container className="justify-between x-fill border-bottom pa16">
-        <Container className="align-center">
+        <Container className="align-center gap4">
           <Container className="align-end">
             {activeChatUserBasicInfos &&
               activeChatUserBasicInfos.map((userBasicInfo, index) => (
