@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,34 +11,61 @@ import Container from "../../components/containers/Container";
 import { urlify } from "../../util";
 import { deleteMessage } from "./util";
 
-function Message({ activeConversationID, message, setMessages, userID }) {
+function Message({
+  activeChatUserBasicInfos,
+  activeConversationID,
+  message,
+  setMessages,
+  shouldShowDisplayName,
+  userID,
+}) {
   const [deleteMessageConfirm, setDeleteMessageConfirm] = useState(false);
+  const [displayName, setDisplayName] = useState("");
   const [messageOptions, setMessageOptions] = useState(false);
   const [reportModal, setReportModal] = useState(false);
+
+  useEffect(() => {
+    if (
+      activeChatUserBasicInfos &&
+      activeChatUserBasicInfos.find(
+        (userBasicInfo) => userBasicInfo.id === message.userID
+      )
+    )
+      setDisplayName(
+        activeChatUserBasicInfos.find(
+          (userBasicInfo) => userBasicInfo.id === message.userID
+        ).displayName
+      );
+  }, [activeChatUserBasicInfos, message]);
 
   return (
     <Container className="x-fill">
       <Container
         className={
-          "mb8 br4 " + (message.userID === userID ? "bg-blue" : "bg-grey-10")
+          "br4 " + (message.userID === userID ? "bg-blue" : "bg-grey-10")
         }
         style={{ maxWidth: "80%" }}
       >
-        <div className="flex-fill description px16 py8">
-          {urlify(message.body).map((obj, index) => {
-            return (
-              <p
-                className={
-                  "description " +
-                  (message.userID === userID ? "white" : "grey-1")
-                }
-                key={index}
-              >
-                {obj}
-              </p>
-            );
-          })}
-        </div>
+        <Container className="column px16 py8">
+          {shouldShowDisplayName && displayName && (
+            <p className="orange">{displayName}</p>
+          )}
+          <div className="flex-fill description ">
+            {urlify(message.body).map((obj, index) => {
+              return (
+                <p
+                  className={
+                    "description " +
+                    (message.userID === userID ? "white" : "grey-1")
+                  }
+                  key={index}
+                >
+                  {obj}
+                </p>
+              );
+            })}
+          </div>
+        </Container>
         <Container className="relative br4">
           <Container
             className="clickable align-end pr2"

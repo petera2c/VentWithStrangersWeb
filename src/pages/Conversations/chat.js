@@ -30,10 +30,10 @@ let typingTimer;
 
 function Chat({
   activeConversation,
-  activeUserBasicInfo,
+  activeChatUserBasicInfos,
   isChatInConversationsArray,
   setActiveConversation,
-  setActiveUserBasicInfo,
+  setActiveChatUserBasicInfos,
   userID,
 }) {
   const isMounted = useIsMounted();
@@ -86,11 +86,24 @@ function Chat({
         userID
       );
 
-      if (!isChatInConversationsArray) {
-        getUserBasicInfo((newBasicUserInfo) => {
-          if (isMounted()) setActiveUserBasicInfo(newBasicUserInfo);
-        }, getConversationPartnerUserID(activeConversation.members, userID));
+      let chatMemberIDArray = [];
+
+      for (let index in activeConversation.members) {
+        if (activeConversation.members[index] !== userID)
+          chatMemberIDArray.push(activeConversation.members[index]);
       }
+      const getAllMemberData = async (chatMemberIDArray) => {
+        let tempArray = [];
+        for (let index in chatMemberIDArray) {
+          await getUserBasicInfo((newBasicUserInfo) => {
+            tempArray.push(newBasicUserInfo);
+          }, chatMemberIDArray[index]);
+        }
+        if (isMounted()) {
+          setActiveChatUserBasicInfos(tempArray);
+        }
+      };
+      getAllMemberData(chatMemberIDArray);
     }
 
     getMessages(
@@ -118,25 +131,64 @@ function Chat({
     activeConversation,
     isChatInConversationsArray,
     isMounted,
-    setActiveUserBasicInfo,
+    setActiveChatUserBasicInfos,
     userID,
   ]);
 
   return (
     <Container className="column flex-fill x-fill full-center ov-hidden br4">
       <Container className="justify-between x-fill border-bottom pa16">
-        {!activeConversation.chat_name && activeUserBasicInfo && (
-          <Link className="flex" to={"/profile?" + activeUserBasicInfo.id}>
-            <h5 className="button-1 mr8">
-              {capitolizeFirstChar(activeUserBasicInfo.displayName)}
-            </h5>
+        <Container className="align-center">
+          <Container className="align-end">
+            {activeChatUserBasicInfos &&
+              activeChatUserBasicInfos.map((userBasicInfo, index) => (
+                <Container
+                  className="relative"
+                  key={userBasicInfo.id}
+                  style={{ transform: "translateX(" + index * -32 + "px)" }}
+                >
+                  <MakeAvatar
+                    displayName={userBasicInfo.displayName}
+                    userBasicInfo={userBasicInfo}
+                    size="small"
+                  />
+                </Container>
+              ))}
+          </Container>
 
-            <KarmaBadge noOnClick userBasicInfo={activeUserBasicInfo} />
-          </Link>
-        )}
-        {activeConversation.chat_name && (
-          <h5 className="button-1 mr8">{activeConversation.chat_name}</h5>
-        )}
+          {!activeConversation.chat_name &&
+            activeChatUserBasicInfos &&
+            activeChatUserBasicInfos[0] && (
+              <Link
+                className="flex"
+                to={"/profile?" + activeChatUserBasicInfos[0].id}
+              >
+                <h5 className="button-1 mr8">
+                  {capitolizeFirstChar(activeChatUserBasicInfos[0].displayName)}
+                </h5>
+
+                <KarmaBadge
+                  noOnClick
+                  userBasicInfo={activeChatUserBasicInfos[0]}
+                />
+              </Link>
+            )}
+          {activeConversation.chat_name && (
+            <h5
+              className="button-1"
+              style={{
+                transform:
+                  activeChatUserBasicInfos &&
+                  activeChatUserBasicInfos.length > 1
+                    ? "translateX(-32px)"
+                    : "",
+              }}
+            >
+              {activeConversation.chat_name}
+            </h5>
+          )}
+        </Container>
+
         {isMobileOrTablet && (
           <Button
             onClick={() => {
@@ -158,7 +210,9 @@ function Chat({
           ))}
 
         <Container
-          className={"column flex-fill ov-auto " + (canLoadMore ? "" : "pt8")}
+          className={
+            "column flex-fill ov-auto gap8 " + (canLoadMore ? "" : "pt8")
+          }
         >
           {canLoadMore && (
             <button
@@ -181,9 +235,20 @@ function Chat({
           {messages.map((message, index) => (
             <Message
               activeConversationID={activeConversation.id}
+              activeChatUserBasicInfos={activeChatUserBasicInfos}
               key={index}
               message={message}
               setMessages={setMessages}
+              shouldShowDisplayName={
+                activeChatUserBasicInfos &&
+                activeChatUserBasicInfos.length > 1 &&
+                messages[index + 1] &&
+                messages[index + 1].userID === message.userID &&
+                !(
+                  messages[index - 1] &&
+                  messages[index - 1].userID === message.userID
+                )
+              }
               userID={userID}
             />
           ))}
@@ -198,10 +263,10 @@ function Chat({
       >
         <Container className="bg-none ov-hidden full-center">
           <Container className="align-end pl16">
-            {activeUserBasicInfo && (
+            {activeChatUserBasicInfos && (
               <MakeAvatar
-                displayName={activeUserBasicInfo.displayName}
-                userBasicInfo={activeUserBasicInfo}
+                displayName={activeChatUserBasicInfos.displayName}
+                userBasicInfo={activeChatUserBasicInfos}
               />
             )}
             <h4>...</h4>

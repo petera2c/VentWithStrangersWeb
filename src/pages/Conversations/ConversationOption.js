@@ -38,11 +38,11 @@ const MakeAvatar = loadable(() => import("../../components/views/MakeAvatar"));
 dayjs.extend(relativeTime);
 
 function ConversationOption({
-  activeUserBasicInfo,
+  activeChatUserBasicInfos,
   conversation,
   isActive,
   setActiveConversation,
-  setActiveUserBasicInfo,
+  setActiveChatUserBasicInfos,
   setConversations,
   setGroupChatEditting,
   setIsCreateGroupModalVisible,
@@ -59,7 +59,7 @@ function ConversationOption({
     false
   );
   const [isMuted, setIsMuted] = useState();
-  const [userBasicInfo, setUserBasicInfo] = useState();
+  const [userBasicInfoArray, setUserBasicInfoArray] = useState([]);
   const hasSeen = conversation[userID];
 
   useEffect(() => {
@@ -69,20 +69,28 @@ function ConversationOption({
       setConversations
     );
 
-    let conversationFriendUserID;
+    let chatMemberIDArray = [];
 
     for (let index in conversation.members) {
       if (conversation.members[index] !== userID)
-        conversationFriendUserID = conversation.members[index];
+        chatMemberIDArray.push(conversation.members[index]);
     }
-    if (!conversationFriendUserID) return;
+    if (chatMemberIDArray.length === 0) return;
 
-    if (!conversation.chat_name)
-      getUserBasicInfo((newBasicUserInfo) => {
-        if (isMounted()) setUserBasicInfo(newBasicUserInfo);
+    const getAllMemberData = async (chatMemberIDArray) => {
+      let tempArray = [];
+      for (let index in chatMemberIDArray) {
+        await getUserBasicInfo((newBasicUserInfo) => {
+          tempArray.push(newBasicUserInfo);
+        }, chatMemberIDArray[index]);
+      }
+      if (isMounted()) {
+        setUserBasicInfoArray(tempArray);
 
-        if (isMounted() && isActive) setActiveUserBasicInfo(newBasicUserInfo);
-      }, conversationFriendUserID);
+        if (isActive) setActiveChatUserBasicInfos(tempArray);
+      }
+    };
+    getAllMemberData(chatMemberIDArray);
 
     if (isActive && (!hasSeen || conversation.go_to_inbox))
       readConversation(conversation, userID);
@@ -98,7 +106,7 @@ function ConversationOption({
     hasSeen,
     isActive,
     isMounted,
-    setActiveUserBasicInfo,
+    setActiveChatUserBasicInfos,
     setConversations,
     userID,
   ]);
@@ -112,33 +120,49 @@ function ConversationOption({
         (isActive ? "bg-blue-1" : "")
       }
       onClick={() => {
-        setActiveUserBasicInfo(userBasicInfo);
+        setActiveChatUserBasicInfos(userBasicInfoArray);
         setActiveConversation(conversation);
         navigate("/chat?" + conversation.id);
       }}
     >
       <Container className="flex-fill column ov-hidden">
         <Container className="align-center flex-fill mr16">
-          {(userBasicInfo || conversation.chat_name) && (
-            <MakeAvatar
-              displayName={
-                conversation.chat_name
-                  ? conversation.chat_name
-                  : userBasicInfo.displayName
-              }
-              userBasicInfo={conversation.chat_name ? {} : userBasicInfo}
-            />
-          )}
+          <Container className="align-end">
+            {userBasicInfoArray.map((userBasicInfo, index) => (
+              <Container
+                className="relative"
+                key={userBasicInfo.id}
+                style={{ transform: "translateX(" + index * -32 + "px)" }}
+              >
+                <MakeAvatar
+                  displayName={userBasicInfo.displayName}
+                  userBasicInfo={userBasicInfo}
+                  size="small"
+                />
+              </Container>
+            ))}
+          </Container>
 
-          {(conversation.chat_name || userBasicInfo) && (
+          {(conversation.chat_name || userBasicInfoArray) && (
             <DisplayOnlineAndName
               chatName={conversation.chat_name}
               hasSeen={hasSeen}
-              userBasicInfo={userBasicInfo}
+              style={{
+                transform:
+                  userBasicInfoArray.length > 1 ? "translateX(-32px)" : "",
+              }}
+              userBasicInfo={
+                userBasicInfoArray.length > 0 ? userBasicInfoArray[0] : {}
+              }
             />
           )}
-          {!conversation.chat_name && userBasicInfo && (
-            <KarmaBadge noOnClick userBasicInfo={userBasicInfo} />
+          {!conversation.chat_name && userBasicInfoArray.length === 1 && (
+            <KarmaBadge
+              noOnClick
+              userBasicInfo={
+                userBasicInfoArray.length > 0 ? userBasicInfoArray[0] : {}
+              }
+            />
           )}
         </Container>
         {conversation.last_message && (
@@ -268,7 +292,7 @@ function ConversationOption({
   );
 }
 
-function DisplayOnlineAndName({ chatName, hasSeen, userBasicInfo }) {
+function DisplayOnlineAndName({ chatName, hasSeen, style, userBasicInfo }) {
   const isMounted = useIsMounted();
   const [isUserOnline, setIsUserOnline] = useState(false);
 
@@ -289,7 +313,7 @@ function DisplayOnlineAndName({ chatName, hasSeen, userBasicInfo }) {
   }, [chatName, isMounted, userBasicInfo]);
 
   return (
-    <Container className="flex-fill align-center ov-hidden">
+    <Container className="flex-fill align-center ov-hidden" style={style}>
       <h6 className={"ellipsis mr8 " + (hasSeen ? "grey-1" : "primary")}>
         {chatName
           ? chatName

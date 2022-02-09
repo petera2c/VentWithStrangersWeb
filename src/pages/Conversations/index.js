@@ -28,7 +28,7 @@ function Conversations() {
   const { user } = useContext(UserContext);
 
   const [activeConversation, setActiveConversation] = useState();
-  const [activeUserBasicInfo, setActiveUserBasicInfo] = useState();
+  const [activeChatUserBasicInfos, setActiveChatUserBasicInfos] = useState();
   const [canLoadMore, setCanLoadMore] = useState(true);
   const [conversations, setConversations] = useState([]);
   const [groupChatEditting, setGroupChatEditting] = useState();
@@ -95,7 +95,7 @@ function Conversations() {
           {conversations.map((conversation, index) => {
             return (
               <ConversationOption
-                activeUserBasicInfo={activeUserBasicInfo}
+                activeChatUserBasicInfos={activeChatUserBasicInfos}
                 conversation={conversation}
                 isActive={
                   activeConversation
@@ -104,7 +104,7 @@ function Conversations() {
                 }
                 key={conversation.id}
                 setActiveConversation={setActiveConversation}
-                setActiveUserBasicInfo={setActiveUserBasicInfo}
+                setActiveChatUserBasicInfos={setActiveChatUserBasicInfos}
                 setConversations={setConversations}
                 setGroupChatEditting={setGroupChatEditting}
                 setIsCreateGroupModalVisible={setIsCreateGroupModalVisible}
@@ -169,14 +169,14 @@ function Conversations() {
             activeConversation.id && (
               <Chat
                 activeConversation={activeConversation}
-                activeUserBasicInfo={activeUserBasicInfo}
+                activeChatUserBasicInfos={activeChatUserBasicInfos}
                 isChatInConversationsArray={Boolean(
                   conversations.find(
                     (conversation) => conversation.id === activeConversation.id
                   )
                 )}
                 setActiveConversation={setActiveConversation}
-                setActiveUserBasicInfo={setActiveUserBasicInfo}
+                setActiveChatUserBasicInfos={setActiveChatUserBasicInfos}
                 userID={user.uid}
               />
             )}
