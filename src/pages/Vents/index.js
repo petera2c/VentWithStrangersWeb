@@ -71,7 +71,9 @@ function VentsPage() {
                 <h1
                   className={
                     "button-3 primary fs-22 tac " +
-                    (pathname === "/trending" ? "active" : "")
+                    (pathname === "/" || pathname === "/trending"
+                      ? "active"
+                      : "")
                   }
                 >
                   Trending Today
