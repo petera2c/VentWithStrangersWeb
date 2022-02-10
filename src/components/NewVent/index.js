@@ -163,7 +163,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
             <h1 className="tac">{userVentTimeOutFormatted}</h1>
           </Space>
         )}
-        <Container className="align-center">
+        <Container className="align-center gap8">
           {(!isMobileOrTablet || (isMobileOrTablet && isMinified)) && (
             <Link to="/avatar">
               <MakeAvatar

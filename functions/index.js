@@ -126,7 +126,32 @@ exports.cronBirthdayNotification = functions.pubsub
   .onRun(async () => checkForBirthdays());
 exports.cronDecreaseTrendingScore = functions.pubsub
   .schedule("0 * * * *")
-  .onRun(async () => decreaseTrendingScore());
+  .onRun(async () =>
+    decreaseTrendingScore("trending_score", (trendingScore) => {
+      Math.round(trendingScore * 0.05) + 1;
+    })
+  );
+exports.cronDecreaseTrendingScore = functions.pubsub
+  .schedule("0 * * * *")
+  .onRun(async () =>
+    decreaseTrendingScore("trending_score_day", (trendingScore) => {
+      return Math.round(trendingScore * 0.1) + 1;
+    })
+  );
+exports.cronDecreaseTrendingScore = functions.pubsub
+  .schedule("0 * * * *")
+  .onRun(async () =>
+    decreaseTrendingScore("trending_score_week", (trendingScore) => {
+      return Math.round(trendingScore * 0.02) + 1;
+    })
+  );
+exports.cronDecreaseTrendingScore = functions.pubsub
+  .schedule("0 * * * *")
+  .onRun(async () =>
+    decreaseTrendingScore("trending_score_month", (trendingScore) => {
+      return Math.round(trendingScore * 0.01) + 1;
+    })
+  );
 exports.cronDecreaseUserVentCounter = functions.pubsub
   .schedule("0 12 * * *")
   .onRun(async () => decreaseUserVentCounter());

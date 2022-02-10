@@ -4,13 +4,16 @@ const { createNotification } = require("./notification");
 const {
   calculateKarma,
   calculateKarmaUserCanStrip,
+  canUpdateTrendingScore,
   createVentLink,
 } = require("./util");
 
 const vent_new = require("./email_templates/vent_new");
 const vent_like = require("./email_templates/vent_like");
 
-const VENT_LIKE_TRENDING_SCORE_INCREMENT = 24;
+const VENT_LIKE_TRENDING_SCORE_DAY_INCREMENT = 100;
+const VENT_LIKE_TRENDING_SCORE_WEEK_INCREMENT = 40;
+const VENT_LIKE_TRENDING_SCORE_MONTH_INCREMENT = 20;
 
 const decreaseUserVentCounter = async () => {
   const usersSnapshot = await admin
@@ -30,25 +33,25 @@ const decreaseUserVentCounter = async () => {
   }
 };
 
-const decreaseTrendingScore = async () => {
+const decreaseTrendingScore = async (trendingOption, incrementFunction) => {
   const trendingSnapshot = await admin
     .firestore()
     .collection("/vents/")
-    .orderBy("trending_score", "desc")
+    .orderBy(trendingOption, "desc")
     .get();
 
   for (let index in trendingSnapshot.docs) {
     const trendingVentDoc = trendingSnapshot.docs[index];
     const trendingVentDocData = trendingVentDoc.data();
-    const increment = Math.round(trendingVentDocData.trending_score * 0.05) + 1;
+    const increment = incrementFunction(trendingVentDocData[trendingOption]);
 
-    if (trendingVentDoc.data().trending_score > 0)
+    if (trendingVentDoc.data()[trendingOption] > 0)
       await admin
         .firestore()
         .collection("vents")
         .doc(trendingVentDoc.id)
         .update({
-          trending_score: admin.firestore.FieldValue.increment(-increment),
+          [trendingOption]: admin.firestore.FieldValue.increment(-increment),
         });
     else
       await admin
@@ -202,21 +205,6 @@ const newVentLikeListener = async (change, context) => {
     return;
   }
 
-  await admin
-    .firestore()
-    .collection("vents")
-    .doc(ventIDuserIDArray[0])
-    .update({
-      like_counter: admin.firestore.FieldValue.increment(increment),
-      trending_score: admin.firestore.FieldValue.increment(
-        hasLiked
-          ? VENT_LIKE_TRENDING_SCORE_INCREMENT
-          : -VENT_LIKE_TRENDING_SCORE_INCREMENT
-      ),
-    });
-
-  if (change.before.data()) return;
-
   const ventDoc = await admin
     .firestore()
     .collection("vents")
@@ -224,6 +212,34 @@ const newVentLikeListener = async (change, context) => {
     .get();
 
   const vent = { id: ventDoc.id, ...ventDoc.data() };
+
+  await admin
+    .firestore()
+    .collection("vents")
+    .doc(ventIDuserIDArray[0])
+    .update({
+      like_counter: admin.firestore.FieldValue.increment(increment),
+      trending_score_day: canUpdateTrendingScore("day", vent.server_timestamp)
+        ? admin.firestore.FieldValue.increment(
+            hasLiked ? VENT_LIKE_TRENDING_SCORE_DAY_INCREMENT : 0
+          )
+        : 0,
+      trending_score_week: canUpdateTrendingScore("week", vent.server_timestamp)
+        ? admin.firestore.FieldValue.increment(
+            hasLiked ? VENT_LIKE_TRENDING_SCORE_WEEK_INCREMENT : 0
+          )
+        : 0,
+      trending_score_month: canUpdateTrendingScore(
+        "month",
+        vent.server_timestamp
+      )
+        ? admin.firestore.FieldValue.increment(
+            hasLiked ? VENT_LIKE_TRENDING_SCORE_MONTH_INCREMENT : -0
+          )
+        : 0,
+    });
+
+  if (change.before.data()) return;
 
   // If user liked their own vent do not notify or give karma
   if (vent.userID == ventIDuserIDArray[1]) return;

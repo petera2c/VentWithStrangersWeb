@@ -1,12 +1,18 @@
 const admin = require("firebase-admin");
 const { createNotification } = require("./notification");
-const { calculateKarmaUserCanStrip, createVentLink } = require("./util");
+const {
+  calculateKarmaUserCanStrip,
+  canUpdateTrendingScore,
+  createVentLink,
+} = require("./util");
 
 const comment_like = require("./email_templates/comment_like");
 const comment_on_vent = require("./email_templates/comment_on_vent");
 const comment_tagged = require("./email_templates/comment_tagged");
 
-const COMMENT_TRENDING_SCORE_INCREMENT = 4;
+const COMMENT_TRENDING_SCORE_DAY_INCREMENT = 10;
+const COMMENT_TRENDING_SCORE_WEEK_INCREMENT = 4;
+const COMMENT_TRENDING_SCORE_MONTH_INCREMENT = 2;
 
 const commentDeleteListener = async (doc, context) => {
   const commentID = doc.id;
@@ -26,17 +32,23 @@ const commentDeleteListener = async (doc, context) => {
         .delete();
     }
 
-  if (doc.data() && doc.data().ventID)
-    admin
+  if (doc.data() && doc.data().ventID) {
+    const ventDoc = admin
       .firestore()
       .collection("vents")
       .doc(doc.data().ventID)
-      .update({
-        comment_counter: admin.firestore.FieldValue.increment(-1),
-        trending_score: admin.firestore.FieldValue.increment(
-          -COMMENT_TRENDING_SCORE_INCREMENT
-        ),
-      });
+      .get();
+
+    if (ventDoc.data() && ventDoc.data().server_timestamp) {
+      admin
+        .firestore()
+        .collection("vents")
+        .doc(doc.data().ventID)
+        .update({
+          comment_counter: admin.firestore.FieldValue.increment(-1),
+        });
+    }
+  }
 };
 
 const commentLikeListener = async (change, context) => {
@@ -262,8 +274,14 @@ const newCommentListener = async (doc, context) => {
     .doc(doc.data().ventID)
     .update({
       comment_counter: admin.firestore.FieldValue.increment(1),
-      trending_score: admin.firestore.FieldValue.increment(
-        COMMENT_TRENDING_SCORE_INCREMENT
+      trending_score_day: admin.firestore.FieldValue.increment(
+        COMMENT_TRENDING_SCORE_DAY_INCREMENT
+      ),
+      trending_score_week: admin.firestore.FieldValue.increment(
+        COMMENT_TRENDING_SCORE_WEEK_INCREMENT
+      ),
+      trending_score_month: admin.firestore.FieldValue.increment(
+        COMMENT_TRENDING_SCORE_MONTH_INCREMENT
       ),
     });
 };

@@ -58,6 +58,35 @@ function VentsPage() {
             <h1 className="primary fs-26">{metaTitle + " Vents"}</h1>
           </Container>
 
+          {false && pathname === "/trending" && (
+            <Container className="x-fill full-center bg-white br8 gap16 pa16">
+              <h1
+                className={
+                  "button-3 primary fs-22 tac " +
+                  (pathname === "/trending" ? "active" : "")
+                }
+              >
+                Trending Today
+              </h1>
+              <h1
+                className={
+                  "button-3 primary fs-22 tac " +
+                  (pathname === "/trending/this-week" ? "active" : "")
+                }
+              >
+                Trending This Week
+              </h1>
+              <h1
+                className={
+                  "button-3 primary fs-22 tac " +
+                  (pathname === "/trending/this-month" ? "active" : "")
+                }
+              >
+                Trending This Month
+              </h1>
+            </Container>
+          )}
+
           {vents && (
             <InfiniteScroll
               dataLength={vents.length}

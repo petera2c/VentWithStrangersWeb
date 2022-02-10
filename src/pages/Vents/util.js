@@ -8,7 +8,6 @@ import {
   startAfter,
 } from "firebase/firestore";
 import { db } from "../../config/db_init";
-import dayjs from "dayjs";
 import { getEndAtValueTimestamp } from "../../util";
 
 export const getMetaInformation = (pathname) => {
@@ -52,8 +51,11 @@ export const getVents = async (
       )
     );
   } else {
-    let startDate = dayjs();
-    startDate.subtract(3, "day");
+    let trending_option = "trending_score_day";
+    if (pathname === "/trending/this-week")
+      trending_option = "trending_score_week";
+    if (pathname === "/trending/this-month")
+      trending_option = "trending_score_month";
 
     snapshot = await getDocs(
       query(

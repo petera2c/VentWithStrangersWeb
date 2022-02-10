@@ -173,13 +173,9 @@ service cloud.firestore {
 
     match /vents/{ventID} {
       allow read: if true;
-      allow write: if request.auth.uid == request.resource.data.userID && (!(get(/databases/$(database)/documents/users_display_name/$(request.auth.uid)).data.keys().hasAny(['karma'])) || get(/databases/$(database)/documents/users_display_name/$(request.auth.uid)).data.karma > -50);
+      allow create: if request.auth.uid == request.resource.data.userID && (!(get(/databases/$(database)/documents/users_display_name/$(request.auth.uid)).data.keys().hasAny(['karma'])) || get(/databases/$(database)/documents/users_display_name/$(request.auth.uid)).data.karma > -50);
+      allow update: if request.auth.uid == request.resource.data.userID && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['trending_score_day','trending_score_week', 'trending_score_month'])
       allow delete: if request.auth.uid == resource.data.userID;
-
-      match /trending_score {
-        allow read: if true;
-        allow write: if false;
-      }
     }
     match /vent_likes/{ventIDUserID} {
       allow read, write: if request.auth.uid == resource.data.userID || request.auth.uid == ventIDUserID.split('\\|\\|\\|')[1];

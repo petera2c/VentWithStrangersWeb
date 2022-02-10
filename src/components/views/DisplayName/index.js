@@ -63,7 +63,7 @@ function DisplayName({
   else
     return (
       <Container className="align-center flex-fill ov-hidden">
-        <Container className="flex-fill align-center ov-hidden">
+        <Container className="flex-fill align-center ov-hidden gap4">
           {!noAvatar && (
             <MakeAvatar
               displayName={userBasicInfo.displayName}

@@ -17,6 +17,23 @@ const calculateKarmaUserCanStrip = (usereBasicInfo) => {
   else if (usereBasicInfo.karma > 0) return 5;
 };
 
+const canUpdateTrendingScore = (option, serverTimestamp) => {
+  let daysPastMoment = new moment(serverTimestamp);
+
+  const days = Math.floor(
+    new moment().diff(new moment(daysPastMoment)) / 1000 / 3600 / 24
+  );
+
+  if (option === "day") {
+    if (days > 1) return false;
+  } else if (option === "week") {
+    if (days > 7) return false;
+  } else if (option === "month") {
+    if (days > 30) return false;
+  }
+  return true;
+};
+
 const capitolizeFirstChar = (string) => {
   if (string) return string.charAt(0).toUpperCase() + string.slice(1);
   else return;
@@ -280,6 +297,7 @@ const updateTotalUsersOnline = (change, context) => {
 module.exports = {
   calculateKarma,
   calculateKarmaUserCanStrip,
+  canUpdateTrendingScore,
   combineObjectWithID,
   createBirthdayLink,
   createRewardsLink,
