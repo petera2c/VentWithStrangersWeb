@@ -22,6 +22,7 @@ import { UserContext } from "../../context";
 import { isPageActive, useIsMounted, signOut2 } from "../../util";
 import {
   conversationsListener,
+  newNotificationsListener,
   getNotifications,
   getUnreadConversations,
   isUserInQueueListener,
@@ -70,6 +71,15 @@ function Header() {
           user.uid
         );
 
+      getNotifications(
+        isMounted,
+        [],
+        undefined,
+        setNotificationCounter,
+        setNotifications,
+        user
+      );
+
       conversationsUnsubscribe = conversationsListener(navigate, user.uid);
       isUserInQueueUnsubscribe = isUserInQueueListener(
         isMounted,
@@ -83,9 +93,8 @@ function Header() {
         setUnreadConversationsCount,
         user.uid
       );
-      newNotificationsListenerUnsubscribe = getNotifications(
+      newNotificationsListenerUnsubscribe = newNotificationsListener(
         isMounted,
-        [],
         setNotificationCounter,
         setNotifications,
         user
@@ -267,17 +276,28 @@ function Header() {
                 <Dropdown
                   overlay={
                     <Container
-                      className="container small bg-white shadow-2 ov-auto br8"
+                      className="column container small bg-white shadow-2 ov-auto br8"
                       style={{
                         maxHeight: "300px",
                       }}
                     >
                       <NotificationList notifications={notifications} />
+                      <Container className="pa16">
+                        <Link className="x-fill" to="/notifications">
+                          <Button
+                            className="x-fill"
+                            size="large"
+                            type="primary"
+                          >
+                            View All
+                          </Button>
+                        </Link>
+                      </Container>
                     </Container>
                   }
                   onVisibleChange={(isVisible) => {
                     import("./util").then((functions) => {
-                      readNotifications(notifications);
+                      readNotifications(notifications, setNotificationCounter);
                     });
                   }}
                   trigger={["click"]}

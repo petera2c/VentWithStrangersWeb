@@ -2,17 +2,18 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDocs,
   limit,
-  limitToLast,
   onSnapshot,
   orderBy,
   query,
   setDoc,
+  startAfter,
   updateDoc,
   where,
 } from "firebase/firestore";
 import { db } from "../../config/db_init";
-import { soundNotify } from "../../util";
+import { getEndAtValueTimestamp, soundNotify } from "../../util";
 
 export const conversationsListener = (navigate, userID) => {
   const unsubscribe = onSnapshot(
@@ -33,46 +34,86 @@ export const conversationsListener = (navigate, userID) => {
   return unsubscribe;
 };
 
-export const getNotifications = (
+export const getNotifications = async (
   isMounted,
   notifications,
+  setCanShowLoadMore,
+  setNotificationCounter,
+  setNotifications,
+  user
+) => {
+  let startAt = getEndAtValueTimestamp(notifications);
+
+  const snapshot = await getDocs(
+    query(
+      collection(db, "notifications"),
+      where("userID", "==", user.uid),
+      orderBy("server_timestamp", "desc"),
+      startAfter(startAt),
+      limit(10)
+    )
+  );
+  if (!isMounted) return;
+
+  let newNotifications = [];
+
+  let notificationCounter = 0;
+  for (let index in snapshot.docs) {
+    if (!snapshot.docs[index].data().hasSeen) notificationCounter++;
+
+    newNotifications.push({
+      id: snapshot.docs[index].id,
+      ...snapshot.docs[index].data(),
+      doc: snapshot.docs[index],
+    });
+  }
+  if (setNotificationCounter) setNotificationCounter(notificationCounter);
+
+  if (newNotifications.length < 10 && setCanShowLoadMore)
+    setCanShowLoadMore(false);
+
+  setNotifications((oldNotifications) => {
+    if (oldNotifications && oldNotifications.length > 0)
+      return [...oldNotifications, ...newNotifications];
+    else return newNotifications;
+  });
+};
+
+export const newNotificationsListener = (
+  isMounted,
   setNotificationCounter,
   setNotifications,
   user,
-  firstLoad = true
+  first = true
 ) => {
   const unsubscribe = onSnapshot(
     query(
       collection(db, "notifications"),
-      orderBy("server_timestamp"),
       where("userID", "==", user.uid),
-      limitToLast(10)
+      orderBy("server_timestamp", "desc"),
+      limit(1)
     ),
     (snapshot) => {
-      if (snapshot.docs) {
-        if (isMounted()) {
-          const newNotifications = snapshot.docs
-            .map((item, i) => {
-              return { id: item.id, ...item.data(), doc: item };
-            })
-            .reverse();
-
-          let counter1 = 0;
-          for (let index in notifications)
-            if (!notifications[index].hasSeen) counter1++;
-
-          let counter2 = 0;
-          for (let index in newNotifications)
-            if (!newNotifications[index].hasSeen) counter2++;
-          if (counter2 > counter1 && !firstLoad) soundNotify();
-
-          setNotificationCounter(counter2 + counter1);
-          setNotifications(newNotifications);
+      if (first) {
+        first = false;
+      } else if (snapshot.docs && snapshot.docs[0] && isMounted()) {
+        if (!snapshot.docs[0].data().hasSeen) {
+          setNotificationCounter((oldAmount) => {
+            oldAmount++;
+            return oldAmount;
+          });
+          soundNotify();
         }
-      } else {
-        if (isMounted()) setNotifications([]);
+
+        setNotifications((oldNotifications) => [
+          {
+            id: snapshot.docs[0].id,
+            ...snapshot.docs[0].data(),
+            doc: snapshot.docs[0],
+          },
+          ...oldNotifications,
+        ]);
       }
-      firstLoad = false;
     }
   );
   return unsubscribe;
@@ -142,7 +183,7 @@ export const leaveQueue = async (userID) => {
   await deleteDoc(doc(db, "chat_queue", userID));
 };
 
-export const readNotifications = (notifications) => {
+export const readNotifications = (notifications, setNotificationCounter) => {
   for (let index in notifications) {
     const notification = notifications[index];
     if (!notification.hasSeen) {
@@ -151,6 +192,7 @@ export const readNotifications = (notifications) => {
       });
     }
   }
+  if (setNotificationCounter) setNotificationCounter(0);
 };
 
 export const resetUnreadConversationCount = (

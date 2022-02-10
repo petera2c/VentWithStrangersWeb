@@ -13,10 +13,7 @@ function NotificationList({ notifications }) {
       {notifications.map((notification, index) => {
         return (
           <Link
-            className={
-              "column grey-1 pa16 " +
-              (index !== notifications.length - 1 ? "border-bottom" : "")
-            }
+            className="column border-bottom grey-1 pa16"
             key={index}
             to={notification.link}
           >

@@ -41,7 +41,7 @@ import {
 } from "../../util";
 import {
   conversationsListener,
-  getNotifications,
+  newNotificationsListener,
   getUnreadConversations,
   isUserInQueueListener,
   leaveQueue,
@@ -120,9 +120,8 @@ function Header() {
         setUnreadConversationsCount,
         user.uid
       );
-      newNotificationsListenerUnsubscribe = getNotifications(
+      newNotificationsListenerUnsubscribe = newNotificationsListener(
         isMounted,
-        [],
         setNotificationCounter,
         setNotifications,
         user
