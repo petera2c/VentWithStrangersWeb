@@ -62,7 +62,8 @@ function VentsPage() {
               <h1 className="primary fs-26">{metaTitle + " Vents"}</h1>
             </Container>
           )}
-          {(pathname === "/trending" ||
+          {(pathname === "/" ||
+            pathname === "/trending" ||
             pathname === "/trending/this-week" ||
             pathname === "/trending/this-month") && (
             <Container className="x-fill full-center bg-white br8 gap16 pa16">
