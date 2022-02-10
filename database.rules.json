@@ -1,8 +1,8 @@
 {
   "rules": {
     "status": {
+      ".read": true,
       "$uid": {
-        ".read": true,
         ".write": "$uid === auth.uid"
       },
       ".indexOn": ["index", "state"]

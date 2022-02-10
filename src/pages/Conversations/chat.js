@@ -148,7 +148,7 @@ function Chat({
                 <Container
                   className="relative"
                   key={userBasicInfo.id}
-                  style={{ transform: "translateX(" + index * -32 + "px)" }}
+                  style={{ transform: "translateX(" + index * -28 + "px)" }}
                 >
                   <MakeAvatar
                     displayName={userBasicInfo.displayName}
@@ -187,7 +187,7 @@ function Chat({
                 transform:
                   activeChatUserBasicInfos &&
                   activeChatUserBasicInfos.length > 1
-                    ? "translateX(-32px)"
+                    ? "translateX(-28px)"
                     : "",
               }}
             >

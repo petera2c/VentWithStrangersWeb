@@ -130,7 +130,7 @@ function ConversationOption({
               <Container
                 className="relative"
                 key={userBasicInfo.id}
-                style={{ transform: "translateX(" + index * -32 + "px)" }}
+                style={{ transform: "translateX(" + index * -28 + "px)" }}
               >
                 <MakeAvatar
                   displayName={userBasicInfo.displayName}
