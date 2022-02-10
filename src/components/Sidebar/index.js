@@ -151,34 +151,27 @@ function SideBarLink({
           <Container className="flex-fill align-end">
             {firstOnlineUsers.map((userBasicInfo, index) => (
               <Container
-                className="relative avatar small"
+                className="avatar small align-end"
                 key={userBasicInfo.id}
+                style={{
+                  transform: `translateX(-${index * 28}px)`,
+                }}
               >
-                <Container
-                  style={{
-                    transform: `translateX(-${index * 28}px)`,
-                  }}
-                >
-                  <MakeAvatar
-                    displayName={userBasicInfo.displayName}
-                    userBasicInfo={userBasicInfo}
-                    size="small"
-                  />
-                </Container>
+                <MakeAvatar
+                  displayName={userBasicInfo.displayName}
+                  userBasicInfo={userBasicInfo}
+                  size="small"
+                />
               </Container>
             ))}
             {totalOnlineUsers - firstOnlineUsers.length > 0 && (
-              <Container className="relative avatar very-small">
-                <Container
-                  className="avatar very-small bg-blue-2"
-                  style={{
-                    transform: `translateX(-${firstOnlineUsers.length * 28}px)`,
-                  }}
-                >
-                  <div className="avatar small blue">
-                    +{totalOnlineUsers - firstOnlineUsers.length}
-                  </div>
-                </Container>
+              <Container
+                className="avatar very-small blue bg-blue-2"
+                style={{
+                  transform: `translateX(-${firstOnlineUsers.length * 28}px)`,
+                }}
+              >
+                +{totalOnlineUsers - firstOnlineUsers.length}
               </Container>
             )}
           </Container>
