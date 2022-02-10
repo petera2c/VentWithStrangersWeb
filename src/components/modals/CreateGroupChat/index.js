@@ -293,7 +293,6 @@ function DisplayExistingUser({
 
     isUserOnlineSubscribe = getIsUserOnline((isUserOnlineObj) => {
       if (isUserOnlineObj && isUserOnlineObj.state && isMounted()) {
-        console.log(isUserOnlineObj);
         if (isUserOnlineObj.state === "online") setIsUserOnline(true);
         else setIsUserOnline(false);
       }
@@ -302,7 +301,7 @@ function DisplayExistingUser({
     return () => {
       if (isUserOnlineSubscribe) off(isUserOnlineSubscribe);
     };
-  }, [isMounted, userBasicInfo]);
+  }, [isMounted, user]);
 
   return (
     <Container className="align-center br4 gap8">

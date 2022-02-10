@@ -11,8 +11,8 @@ const comment_on_vent = require("./email_templates/comment_on_vent");
 const comment_tagged = require("./email_templates/comment_tagged");
 
 const COMMENT_TRENDING_SCORE_DAY_INCREMENT = 10;
-const COMMENT_TRENDING_SCORE_WEEK_INCREMENT = 4;
-const COMMENT_TRENDING_SCORE_MONTH_INCREMENT = 2;
+const COMMENT_TRENDING_SCORE_WEEK_INCREMENT = 10;
+const COMMENT_TRENDING_SCORE_MONTH_INCREMENT = 10;
 
 const commentDeleteListener = async (doc, context) => {
   const commentID = doc.id;

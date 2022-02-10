@@ -12,8 +12,8 @@ const vent_new = require("./email_templates/vent_new");
 const vent_like = require("./email_templates/vent_like");
 
 const VENT_LIKE_TRENDING_SCORE_DAY_INCREMENT = 100;
-const VENT_LIKE_TRENDING_SCORE_WEEK_INCREMENT = 40;
-const VENT_LIKE_TRENDING_SCORE_MONTH_INCREMENT = 20;
+const VENT_LIKE_TRENDING_SCORE_WEEK_INCREMENT = 100;
+const VENT_LIKE_TRENDING_SCORE_MONTH_INCREMENT = 100;
 
 const decreaseUserVentCounter = async () => {
   const usersSnapshot = await admin
