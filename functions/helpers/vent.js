@@ -219,31 +219,39 @@ const newVentLikeListener = async (change, context) => {
 
   const vent = { id: ventDoc.id, ...ventDoc.data() };
 
+  let tempObject = {
+    like_counter: admin.firestore.FieldValue.increment(increment),
+  };
+  if (
+    canUpdateTrendingScore("day", ventDoc.data().server_timestamp) &&
+    hasLiked &&
+    !change.before.data()
+  )
+    tempObject.trending_score_day = admin.firestore.FieldValue.increment(
+      VENT_LIKE_TRENDING_SCORE_DAY_INCREMENT
+    );
+  if (
+    canUpdateTrendingScore("week", ventDoc.data().server_timestamp) &&
+    hasLiked &&
+    !change.before.data()
+  )
+    tempObject.trending_score_week = admin.firestore.FieldValue.increment(
+      VENT_LIKE_TRENDING_SCORE_WEEK_INCREMENT
+    );
+  if (
+    canUpdateTrendingScore("month", ventDoc.data().server_timestamp) &&
+    hasLiked &&
+    !change.before.data()
+  )
+    tempObject.trending_score_month = admin.firestore.FieldValue.increment(
+      VENT_LIKE_TRENDING_SCORE_MONTH_INCREMENT
+    );
+
   await admin
     .firestore()
     .collection("vents")
     .doc(ventIDuserIDArray[0])
-    .update({
-      like_counter: admin.firestore.FieldValue.increment(increment),
-      trending_score_day: canUpdateTrendingScore("day", vent.server_timestamp)
-        ? admin.firestore.FieldValue.increment(
-            hasLiked ? VENT_LIKE_TRENDING_SCORE_DAY_INCREMENT : 0
-          )
-        : 0,
-      trending_score_week: canUpdateTrendingScore("week", vent.server_timestamp)
-        ? admin.firestore.FieldValue.increment(
-            hasLiked ? VENT_LIKE_TRENDING_SCORE_WEEK_INCREMENT : 0
-          )
-        : 0,
-      trending_score_month: canUpdateTrendingScore(
-        "month",
-        vent.server_timestamp
-      )
-        ? admin.firestore.FieldValue.increment(
-            hasLiked ? VENT_LIKE_TRENDING_SCORE_MONTH_INCREMENT : -0
-          )
-        : 0,
-    });
+    .update(tempObject);
 
   if (change.before.data()) return;
 
