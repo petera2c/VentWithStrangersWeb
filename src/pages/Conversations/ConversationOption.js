@@ -125,12 +125,17 @@ function ConversationOption({
     >
       <Container className="flex-fill column ov-hidden">
         <Container className="align-center flex-fill gap4 mr16">
-          <Container className="align-end">
+          <Container
+            className="align-end"
+            style={{ width: userBasicInfoArray.length * 20 + 32 + "px" }}
+          >
             {userBasicInfoArray.map((userBasicInfo, index) => (
               <Container
                 className="relative"
                 key={userBasicInfo.id}
-                style={{ transform: "translateX(" + index * -28 + "px)" }}
+                style={{
+                  width: "20px",
+                }}
               >
                 <MakeAvatar
                   displayName={userBasicInfo.displayName}
@@ -145,10 +150,6 @@ function ConversationOption({
             <DisplayOnlineAndName
               chatName={conversation.chat_name}
               hasSeen={hasSeen}
-              style={{
-                transform:
-                  userBasicInfoArray.length > 1 ? "translateX(-32px)" : "",
-              }}
               userBasicInfo={
                 userBasicInfoArray.length > 0 ? userBasicInfoArray[0] : {}
               }
@@ -290,15 +291,15 @@ function DisplayOnlineAndName({ chatName, hasSeen, style, userBasicInfo }) {
   }, [chatName, isMounted, userBasicInfo]);
 
   return (
-    <Container className="flex-fill align-center ov-hidden" style={style}>
-      <h6 className={"ellipsis mr8 " + (hasSeen ? "grey-1" : "primary")}>
+    <Container className="flex-fill align-center ov-hidden gap8" style={style}>
+      <h6 className={"ellipsis " + (hasSeen ? "grey-1" : "primary")}>
         {chatName
           ? chatName
           : userBasicInfo
           ? capitolizeFirstChar(userBasicInfo.displayName)
           : "Anonymous"}
       </h6>
-      {!chatName && isUserOnline && <div className="online-dot mr8" />}
+      {!chatName && isUserOnline && <div className="online-dot" />}
     </Container>
   );
 }

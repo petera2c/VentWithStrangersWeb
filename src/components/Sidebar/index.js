@@ -155,8 +155,9 @@ function SideBarLink({
                 key={userBasicInfo.id}
               >
                 <Container
-                  className="absolute"
-                  style={{ left: `-${index * 24}px` }}
+                  style={{
+                    transform: `translateX(-${index * 28}px)`,
+                  }}
                 >
                   <MakeAvatar
                     displayName={userBasicInfo.displayName}
@@ -169,8 +170,12 @@ function SideBarLink({
             {totalOnlineUsers - firstOnlineUsers.length > 0 && (
               <Container className="relative avatar very-small">
                 <Container
-                  className="absolute avatar very-small bg-blue-2"
-                  style={{ left: `-${firstOnlineUsers.length * 24}px`, top: 0 }}
+                  className="avatar very-small bg-blue-2"
+                  style={{
+                    transform: `translateX(-${
+                      firstOnlineUsers.length - 1 * 28
+                    }px)`,
+                  }}
                 >
                   <div className="avatar small blue">
                     +{totalOnlineUsers - firstOnlineUsers.length}

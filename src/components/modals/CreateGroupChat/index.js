@@ -112,7 +112,7 @@ function GroupChatCreateModal({ close, groupChatEditting }) {
                       setHits(hits);
                     });
                 }}
-                placeholder="Search for people to add :)"
+                placeholder="Search for people to add by name or their ID"
                 value={userSearchString}
               />
               {hits.length > 0 && (

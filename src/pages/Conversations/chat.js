@@ -187,7 +187,9 @@ function Chat({
                 transform:
                   activeChatUserBasicInfos &&
                   activeChatUserBasicInfos.length > 1
-                    ? "translateX(-28px)"
+                    ? "translateX(-" +
+                      (activeChatUserBasicInfos.length - 1) * 28 +
+                      "px)"
                     : "",
               }}
             >
