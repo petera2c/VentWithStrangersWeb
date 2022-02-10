@@ -203,16 +203,6 @@ function ConversationOption({
                 icon={isMuted ? faVolume : faVolumeSlash}
               />
             </Container>
-
-            <Container
-              className="button-9 clickable align-center"
-              onClick={(e) => {
-                setDeleteConversationConfirm(true);
-              }}
-            >
-              <p className="flex-fill ic">Leave Chat</p>
-              <FontAwesomeIcon className="ml8" icon={faTrash} />
-            </Container>
             <Container
               className="button-8 clickable align-center"
               onClick={(e) => {
@@ -221,6 +211,15 @@ function ConversationOption({
             >
               <p className="ic fw-400 flex-fill">Block User</p>
               <FontAwesomeIcon className="ml8" icon={faUserLock} />
+            </Container>
+            <Container
+              className="button-9 clickable align-center"
+              onClick={(e) => {
+                setDeleteConversationConfirm(true);
+              }}
+            >
+              <p className="flex-fill ic">Leave Chat</p>
+              <FontAwesomeIcon className="ml8" icon={faTrash} />
             </Container>
           </Container>
         }

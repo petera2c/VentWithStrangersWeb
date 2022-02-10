@@ -57,46 +57,47 @@ function VentsPage() {
       <Container className="flex-fill x-fill">
         <Container className="column flex-fill gap16">
           <NewVentComponent miniVersion />
-          <Container className="x-fill">
-            <h1 className="primary fs-26">{metaTitle + " Vents"}</h1>
-          </Container>
-          {false &&
-            (pathname === "/trending" ||
-              pathname === "/trending/this-week" ||
-              pathname === "/trending/this-month") && (
-              <Container className="x-fill full-center bg-white br8 gap16 pa16">
-                <Link to="/trending">
-                  <h1
-                    className={
-                      "button-3 primary fs-22 tac " +
-                      (pathname === "/trending" ? "active" : "")
-                    }
-                  >
-                    Trending Today
-                  </h1>
-                </Link>
-                <Link to="/trending/this-week">
-                  <h1
-                    className={
-                      "button-3 primary fs-22 tac " +
-                      (pathname === "/trending/this-week" ? "active" : "")
-                    }
-                  >
-                    Trending This Week
-                  </h1>
-                </Link>
-                <Link to="/trending/this-month">
-                  <h1
-                    className={
-                      "button-3 primary fs-22 tac " +
-                      (pathname === "/trending/this-month" ? "active" : "")
-                    }
-                  >
-                    Trending This Month
-                  </h1>
-                </Link>
-              </Container>
-            )}
+          {pathname === "/recent" && (
+            <Container className="x-fill">
+              <h1 className="primary fs-26">{metaTitle + " Vents"}</h1>
+            </Container>
+          )}
+          {(pathname === "/trending" ||
+            pathname === "/trending/this-week" ||
+            pathname === "/trending/this-month") && (
+            <Container className="x-fill full-center bg-white br8 gap16 pa16">
+              <Link to="/trending">
+                <h1
+                  className={
+                    "button-3 primary fs-22 tac " +
+                    (pathname === "/trending" ? "active" : "")
+                  }
+                >
+                  Trending Today
+                </h1>
+              </Link>
+              <Link to="/trending/this-week">
+                <h1
+                  className={
+                    "button-3 primary fs-22 tac " +
+                    (pathname === "/trending/this-week" ? "active" : "")
+                  }
+                >
+                  Trending This Week
+                </h1>
+              </Link>
+              <Link to="/trending/this-month">
+                <h1
+                  className={
+                    "button-3 primary fs-22 tac " +
+                    (pathname === "/trending/this-month" ? "active" : "")
+                  }
+                >
+                  Trending This Month
+                </h1>
+              </Link>
+            </Container>
+          )}
 
           {vents && (
             <InfiniteScroll

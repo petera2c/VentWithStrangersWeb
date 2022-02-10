@@ -153,7 +153,7 @@ function CounterDisplay({ counter = 0, size, tooltip, title }) {
         </Tooltip>
       </Space>
       <Progress
-        percent={Math.round((counter / getNextMilestone(counter, size)) * 100)}
+        percent={Math.floor((counter / getNextMilestone(counter, size)) * 100)}
         strokeColor="#2096f2"
       />
       <Tooltip

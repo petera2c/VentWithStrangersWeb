@@ -151,6 +151,15 @@ function AboutUsPage() {
           </Container>
 
           <Container className="column gap8">
+            <h4>If you have any issues please email us at</h4>
+            <p>
+              <a className="blue" href="mailto:ventwithstrangers@gmail.com">
+                ventwithstrangers@gmail.com
+              </a>
+            </p>
+          </Container>
+
+          <Container className="column gap8">
             <h4>Where Else Can You Access VWS?</h4>
             <ul className="pl64">
               <li>

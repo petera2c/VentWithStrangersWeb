@@ -28,9 +28,7 @@ function QuoteWinnersPage() {
       <Container className="column bg-white br8 gap16 pa32">
         <h1 className="tac lh-1">{thisMonthYearFormatted} Feel Good Quotes</h1>
         <Container className="column">
-          <h2 className="fs-22 grey-1 tac">
-            Some of our past contest winners :)
-          </h2>
+          <h2 className="fs-22 grey-1 tac">Some of our favourites :)</h2>
         </Container>
       </Container>
 

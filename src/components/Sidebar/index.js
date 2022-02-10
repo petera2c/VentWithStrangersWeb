@@ -172,9 +172,7 @@ function SideBarLink({
                 <Container
                   className="avatar very-small bg-blue-2"
                   style={{
-                    transform: `translateX(-${
-                      firstOnlineUsers.length - 1 * 28
-                    }px)`,
+                    transform: `translateX(-${firstOnlineUsers.length * 28}px)`,
                   }}
                 >
                   <div className="avatar small blue">
