@@ -343,14 +343,14 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
         {isMinified && quote && (
           <Container className="flex-fill full-center">
             <Container className="column flex-fill align-center">
-              <p
+              <h1
                 className={
-                  "italic tac " +
+                  "fs-18 no-bold grey-1 italic tac " +
                   (getIsMobileOrTablet() ? "flex-fill" : "container medium")
                 }
               >
                 {quote.value}
-              </p>
+              </h1>
               <Link to={"/profile?" + quote.userID}>
                 <p className="blue tac lh-1">
                   - {capitolizeFirstChar(quote.displayName)}
