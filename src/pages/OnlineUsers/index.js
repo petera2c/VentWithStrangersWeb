@@ -14,19 +14,23 @@ const FETCH_USER_INIT_COUNT = 6;
 function OnlineUsers() {
   const isMounted = useIsMounted();
 
+  const [canLoadMoreUsers, setCanLoadMoreUsers] = useState(true);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [userLoadCount, setUserLoadCount] = useState(FETCH_USER_INIT_COUNT);
 
-  const {
-    totalOnlineUsers,
-    setFirstOnlineUsers,
-    setTotalOnlineUsers,
-  } = useContext(OnlineUsersContext);
+  const { setFirstOnlineUsers, setTotalOnlineUsers } = useContext(
+    OnlineUsersContext
+  );
 
   useEffect(() => {
     getTotalOnlineUsers((totalOnlineUsers) => {
       if (isMounted()) {
-        getOnlineUsers(isMounted, setOnlineUsers, userLoadCount);
+        getOnlineUsers(
+          isMounted,
+          setCanLoadMoreUsers,
+          setOnlineUsers,
+          userLoadCount
+        );
         setTotalOnlineUsers(totalOnlineUsers);
         getUserAvatars(isMounted, setFirstOnlineUsers);
       }
@@ -54,7 +58,7 @@ function OnlineUsers() {
           );
         })}
       </Container>
-      {totalOnlineUsers > onlineUsers.length && (
+      {canLoadMoreUsers && (
         <Button
           onClick={() =>
             setUserLoadCount(
