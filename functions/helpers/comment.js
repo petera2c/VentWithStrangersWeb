@@ -258,22 +258,47 @@ const newCommentListener = async (doc, context) => {
       .set(comment, { merge: true });
   }
 
-  await admin
-    .firestore()
-    .collection("vents")
-    .doc(doc.data().ventID)
-    .update({
-      comment_counter: admin.firestore.FieldValue.increment(1),
-      trending_score_day: admin.firestore.FieldValue.increment(
-        COMMENT_TRENDING_SCORE_DAY_INCREMENT
-      ),
-      trending_score_week: admin.firestore.FieldValue.increment(
-        COMMENT_TRENDING_SCORE_WEEK_INCREMENT
-      ),
-      trending_score_month: admin.firestore.FieldValue.increment(
-        COMMENT_TRENDING_SCORE_MONTH_INCREMENT
-      ),
-    });
+  if (doc.data() && doc.data().ventID) {
+    const ventDoc = admin
+      .firestore()
+      .collection("vents")
+      .doc(doc.data().ventID)
+      .get();
+
+    if (ventDoc.data() && ventDoc.data().server_timestamp) {
+      await admin
+        .firestore()
+        .collection("vents")
+        .doc(doc.data().ventID)
+        .update({
+          comment_counter: admin.firestore.FieldValue.increment(1),
+          trending_score_day: canUpdateTrendingScore(
+            "day",
+            vent.server_timestamp
+          )
+            ? admin.firestore.FieldValue.increment(
+                COMMENT_TRENDING_SCORE_DAY_INCREMENT
+              )
+            : 0,
+          trending_score_week: canUpdateTrendingScore(
+            "week",
+            vent.server_timestamp
+          )
+            ? admin.firestore.FieldValue.increment(
+                COMMENT_TRENDING_SCORE_WEEK_INCREMENT
+              )
+            : 0,
+          trending_score_month: canUpdateTrendingScore(
+            "month",
+            vent.server_timestamp
+          )
+            ? admin.firestore.FieldValue.increment(
+                COMMENT_TRENDING_SCORE_MONTH_INCREMENT
+              )
+            : 0,
+        });
+    }
+  }
 };
 
 const newCommentReportListener = async (doc, context) => {

@@ -59,7 +59,7 @@ const decreaseTrendingScore = async (trendingOption, incrementFunction) => {
         .collection("vents")
         .doc(trendingVentDoc.id)
         .update({
-          trending_score: admin.firestore.FieldValue.delete(),
+          [trendingOption]: admin.firestore.FieldValue.delete(),
         });
   }
 };
