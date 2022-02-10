@@ -344,8 +344,7 @@ export const startConversation = async (navigate, user, ventUserID) => {
   const conversationQuerySnapshot = await getDocs(
     query(
       collection(db, "conversations"),
-      where("members", "==", sortedMemberIDs),
-      limit(1)
+      where("members", "==", sortedMemberIDs)
     )
   );
 
@@ -353,14 +352,14 @@ export const startConversation = async (navigate, user, ventUserID) => {
     navigate("/chat?" + conversationID);
   };
 
-  if (
-    conversationQuerySnapshot.docs &&
-    conversationQuerySnapshot.docs.length > 0 &&
-    !conversationQuerySnapshot.docs[0].is_group
-  ) {
-    conversationQuerySnapshot.forEach((conversationDoc, i) => {
-      goToPage(conversationDoc.id);
-    });
+  let found;
+  for (let index in conversationQuerySnapshot.docs) {
+    if (!conversationQuerySnapshot.docs[index].data().is_group)
+      found = conversationQuerySnapshot.docs[index].id;
+  }
+
+  if (found) {
+    goToPage(found);
   } else {
     let tempHasSeenObject = {};
     for (let index in sortedMemberIDs) {
