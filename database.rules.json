@@ -1,8 +1,8 @@
 {
   "rules": {
     "status": {
-      ".read": true,
       "$uid": {
+        ".read": true,
         ".write": "$uid === auth.uid"
       },
       ".indexOn": ["index", "state"]
@@ -12,8 +12,8 @@
       ".write": false
     },
     "$conversationID": {
-      ".read": true,
       "$uid": {
+        ".read": true,
         ".write": "$uid === auth.uid"
       }
     },
