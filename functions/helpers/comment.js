@@ -32,23 +32,13 @@ const commentDeleteListener = async (doc, context) => {
         .delete();
     }
 
-  if (doc.data() && doc.data().ventID) {
-    const ventDoc = admin
-      .firestore()
-      .collection("vents")
-      .doc(doc.data().ventID)
-      .get();
-
-    if (ventDoc.data() && ventDoc.data().server_timestamp) {
-      admin
-        .firestore()
-        .collection("vents")
-        .doc(doc.data().ventID)
-        .update({
-          comment_counter: admin.firestore.FieldValue.increment(-1),
-        });
-    }
-  }
+  admin
+    .firestore()
+    .collection("vents")
+    .doc(doc.data().ventID)
+    .update({
+      comment_counter: admin.firestore.FieldValue.increment(-1),
+    });
 };
 
 const commentLikeListener = async (change, context) => {
