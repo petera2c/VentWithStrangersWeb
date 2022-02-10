@@ -293,10 +293,11 @@ function DisplayExistingUser({
 
     isUserOnlineSubscribe = getIsUserOnline((isUserOnlineObj) => {
       if (isUserOnlineObj && isUserOnlineObj.state && isMounted()) {
+        console.log(isUserOnlineObj);
         if (isUserOnlineObj.state === "online") setIsUserOnline(true);
         else setIsUserOnline(false);
       }
-    }, userBasicInfo.id);
+    }, user.id);
 
     return () => {
       if (isUserOnlineSubscribe) off(isUserOnlineSubscribe);

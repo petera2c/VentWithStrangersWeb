@@ -141,7 +141,17 @@ function Chat({
   return (
     <Container className="column flex-fill x-fill full-center ov-hidden br4">
       <Container className="justify-between x-fill border-bottom pa16">
-        <Container className="align-center gap4">
+        <Container
+          className={
+            "align-center gap4 " +
+            (activeConversation.is_group ? "clickable" : "")
+          }
+          onClick={() => {
+            if (!activeConversation.is_group) return;
+            setGroupChatEditting(activeConversation);
+            setIsCreateGroupModalVisible(true);
+          }}
+        >
           <Container className="align-end">
             {activeChatUserBasicInfos &&
               activeChatUserBasicInfos.map((userBasicInfo, index) => (
@@ -179,10 +189,6 @@ function Chat({
           {activeConversation.is_group && (
             <h5
               className="button-1"
-              onClick={() => {
-                setGroupChatEditting(activeConversation);
-                setIsCreateGroupModalVisible(true);
-              }}
               style={{
                 transform:
                   activeChatUserBasicInfos &&
