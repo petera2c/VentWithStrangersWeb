@@ -259,7 +259,7 @@ const newCommentListener = async (doc, context) => {
   }
 
   if (doc.data() && doc.data().ventID) {
-    const ventDoc = admin
+    const ventDoc = await admin
       .firestore()
       .collection("vents")
       .doc(doc.data().ventID)
@@ -274,7 +274,7 @@ const newCommentListener = async (doc, context) => {
           comment_counter: admin.firestore.FieldValue.increment(1),
           trending_score_day: canUpdateTrendingScore(
             "day",
-            vent.server_timestamp
+            ventDoc.data().server_timestamp
           )
             ? admin.firestore.FieldValue.increment(
                 COMMENT_TRENDING_SCORE_DAY_INCREMENT
@@ -282,7 +282,7 @@ const newCommentListener = async (doc, context) => {
             : 0,
           trending_score_week: canUpdateTrendingScore(
             "week",
-            vent.server_timestamp
+            ventDoc.data().server_timestamp
           )
             ? admin.firestore.FieldValue.increment(
                 COMMENT_TRENDING_SCORE_WEEK_INCREMENT
@@ -290,7 +290,7 @@ const newCommentListener = async (doc, context) => {
             : 0,
           trending_score_month: canUpdateTrendingScore(
             "month",
-            vent.server_timestamp
+            ventDoc.data().server_timestamp
           )
             ? admin.firestore.FieldValue.increment(
                 COMMENT_TRENDING_SCORE_MONTH_INCREMENT
