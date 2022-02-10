@@ -239,6 +239,8 @@ function RoutesComp() {
                       element={<TagsIndividualPage />}
                     />
                     <Route path="trending" element={<VentsPage />} />
+                    <Route path="trending/this-week" element={<VentsPage />} />
+                    <Route path="trending/this-month" element={<VentsPage />} />
                     <Route path="vent-to-strangers" element={<NewVentPage />} />
                     <Route
                       path="vent-to-strangers/:id"

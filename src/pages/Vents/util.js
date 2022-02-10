@@ -60,7 +60,7 @@ export const getVents = async (
     snapshot = await getDocs(
       query(
         collection(db, "vents"),
-        orderBy("trending_score", "desc"),
+        orderBy(trending_option, "desc"),
         startAfter(startAt),
         limit(10)
       )

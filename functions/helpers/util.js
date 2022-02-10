@@ -192,8 +192,14 @@ const getMetaInformation = async (url, callback) => {
     keywords = "vent with strangers, chat anonymously, chat online";
     title = "Vent With Strangers Rules Info";
   } else if (url === "/trending") {
-    description = "View trending vents on Vent With Strangers";
-    title = "Trending Vents";
+    description = "Daily trending vents on Vent With Strangers";
+    title = "Daily Trending Vents";
+  } else if (url === "/trending/this-week") {
+    description = "Weekly trending vents on Vent With Strangers";
+    title = "Weekly Trending Vents";
+  } else if (url === "/trending/this-month") {
+    description = "Monthly trending vents on Vent With Strangers";
+    title = "Monthly Trending Vents";
   } else if (url === "/vent-to-strangers") {
     description =
       "You are not alone. If you are feeling down, anonymously post your issue here. There is an entire community of people that want to help you.";

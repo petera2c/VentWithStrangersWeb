@@ -77,8 +77,14 @@ export const getMetaData = (page, search) => {
     keywords = "anxiety,bullying,depression,family,school";
     title = "View Vents Based on Anxiety, Bullying, Depression and More";
   } else if (page === "/trending") {
-    description = "View trending vents on Vent With Strangers";
-    title = "Trending Vents";
+    description = "Daily trending vents on Vent With Strangers";
+    title = "Daily Trending Vents";
+  } else if (page === "/trending/this-week") {
+    description = "Weekly trending vents on Vent With Strangers";
+    title = "Weekly Trending Vents";
+  } else if (page === "/trending/this-month") {
+    description = "Monthly trending vents on Vent With Strangers";
+    title = "Monthly Trending Vents";
   } else if (page === "/vent-to-strangers") {
     description =
       "You are not alone. If you are feeling down, anonymously post your issue here. There is an entire community of people that want to help you.";
