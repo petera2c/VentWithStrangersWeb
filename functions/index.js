@@ -135,7 +135,7 @@ exports.cronDecreaseTrendingScore = functions.pubsub
   .schedule("0 * * * *")
   .onRun(async () =>
     decreaseTrendingScore("trending_score_day", (trendingScore) => {
-      return Math.round(trendingScore * 0.1) + 1;
+      return Math.round(trendingScore * 0.1) + 2;
     })
   );
 exports.cronDecreaseTrendingScore = functions.pubsub
@@ -149,7 +149,7 @@ exports.cronDecreaseTrendingScore = functions.pubsub
   .schedule("0 * * * *")
   .onRun(async () =>
     decreaseTrendingScore("trending_score_month", (trendingScore) => {
-      return Math.round(trendingScore * 0.01) + 1;
+      return Math.round(trendingScore * 0.005) + 1;
     })
   );
 exports.cronDecreaseUserVentCounter = functions.pubsub

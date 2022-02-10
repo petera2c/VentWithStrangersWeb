@@ -68,7 +68,7 @@ function VentsPage() {
             pathname === "/trending/this-month") && (
             <Container className="x-fill full-center bg-white br8 gap16 pa16">
               <Link to="/trending">
-                <h1
+                <h2
                   className={
                     "button-3 primary fs-22 tac " +
                     (pathname === "/" || pathname === "/trending"
@@ -77,27 +77,27 @@ function VentsPage() {
                   }
                 >
                   Trending Today
-                </h1>
+                </h2>
               </Link>
               <Link to="/trending/this-week">
-                <h1
+                <h2
                   className={
                     "button-3 primary fs-22 tac " +
                     (pathname === "/trending/this-week" ? "active" : "")
                   }
                 >
                   Trending This Week
-                </h1>
+                </h2>
               </Link>
               <Link to="/trending/this-month">
-                <h1
+                <h2
                   className={
                     "button-3 primary fs-22 tac " +
                     (pathname === "/trending/this-month" ? "active" : "")
                   }
                 >
                   Trending This Month
-                </h1>
+                </h2>
               </Link>
             </Container>
           )}

@@ -45,7 +45,13 @@ const decreaseTrendingScore = async (trendingOption, incrementFunction) => {
     const trendingVentDocData = trendingVentDoc.data();
     const increment = incrementFunction(trendingVentDocData[trendingOption]);
 
-    if (trendingVentDoc.data()[trendingOption] > 0)
+    if (
+      trendingVentDocData[trendingOption] > 0 &&
+      canUpdateTrendingScore(
+        trendingOption,
+        trendingVentDocData.server_timestamp
+      )
+    )
       await admin
         .firestore()
         .collection("vents")
