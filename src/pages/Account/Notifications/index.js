@@ -73,6 +73,7 @@ function NotificationsPage() {
                 isMounted,
                 notifications,
                 setCanShowLoadMore,
+                undefined,
                 setNotifications,
                 user
               )
