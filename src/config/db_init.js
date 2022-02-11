@@ -6,7 +6,7 @@ const db = getFirestore();
 const db2 = getDatabase();
 
 //window.location.hostname === "localhost"
-if (false) {
+if (window.location.hostname === "localhost") {
   connectFirestoreEmulator(db, "localhost", 8080);
   connectDatabaseEmulator(db2, "localhost", 9000);
   const auth = getAuth();

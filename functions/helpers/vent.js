@@ -83,6 +83,23 @@ const newVentListener = async (doc, context) => {
       .update({ new_tags: vent.new_tags });
   }
 
+  if (vent && vent.id && vent.server_timestamp && vent.userID) {
+    const snapshot = await admin
+      .database()
+      .ref("followers/" + vent.userID)
+      .once("value");
+
+    for (let index in snapshot.val()) {
+      await admin
+        .database()
+        .ref("feed/" + index + "/" + vent.id)
+        .set({
+          server_timestamp: vent.server_timestamp,
+          userID: vent.userID,
+        });
+    }
+  }
+
   for (let index in vent.new_tags) {
     try {
       await admin

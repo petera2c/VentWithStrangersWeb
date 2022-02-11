@@ -10,12 +10,10 @@ import {
 import {
   endAt,
   get,
-  limitToFirst,
   limitToLast,
   orderByChild,
   query as query2,
   ref,
-  startAfter as startAfter2,
 } from "firebase/database";
 import { db, db2 } from "../../config/db_init";
 import { getEndAtValueTimestamp } from "../../util";

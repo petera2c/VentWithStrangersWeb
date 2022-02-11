@@ -13,11 +13,10 @@ const updateFeedAndFollowers = async (change, context) => {
       .collection("vents")
       .where("userID", "==", followingUserID)
       .orderBy("server_timestamp", "desc")
-      .limit(10)
+      .limit(5)
       .get();
 
     for (let index in snapshot.docs) {
-      //
       await admin
         .database()
         .ref("feed/" + userID + "/" + snapshot.docs[index].id)
