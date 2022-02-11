@@ -41,7 +41,7 @@ const searchClient = algoliasearch(
 );
 const tagsIndex = searchClient.initIndex("vent_tags");
 
-const TITLE_LENGTH_MINIMUM = 15;
+const TITLE_LENGTH_MINIMUM = 0;
 const TITLE_LENGTH_MAXIMUM = 100;
 
 function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
@@ -230,9 +230,6 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
               <p className={title.length > TITLE_LENGTH_MAXIMUM ? "red" : ""}>
                 {title.length}/{TITLE_LENGTH_MAXIMUM}
               </p>
-            )}
-            {title.length < TITLE_LENGTH_MINIMUM && (
-              <p>{TITLE_LENGTH_MINIMUM - title.length} More to go...</p>
             )}
           </Space>
         )}

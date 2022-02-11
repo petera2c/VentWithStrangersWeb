@@ -138,7 +138,7 @@ function Header() {
 
           <Container className="flex-fill full-center wrap gap32">
             <Container className="wrap gap16">
-              {false && user && (
+              {user && (
                 <Link
                   className={
                     "full-center flex button-3 gap8 py4 " +

@@ -22,7 +22,7 @@ import { calculateKarma, userSignUpProgress } from "../../util";
 
 dayjs.extend(utc);
 
-const TITLE_LENGTH_MINIMUM = 15;
+const TITLE_LENGTH_MINIMUM = 0;
 const TITLE_LENGTH_MAXIMUM = 100;
 
 export const checks = (

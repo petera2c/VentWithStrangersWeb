@@ -8,11 +8,14 @@ import {
   startAfter,
 } from "firebase/firestore";
 import {
+  endAt,
   get,
+  limitToFirst,
   limitToLast,
   orderByChild,
   query as query2,
   ref,
+  startAfter as startAfter2,
 } from "firebase/database";
 import { db, db2 } from "../../config/db_init";
 import { getEndAtValueTimestamp } from "../../util";
@@ -50,13 +53,26 @@ export const getVents = async (
       )
     );
   } else if (pathname === "/my-feed" && user) {
-    snapshotRTDB = await get(
-      query2(
-        ref(db2, "feed/" + user.uid),
-        limitToLast(10),
-        orderByChild("server_timestamp")
-      )
-    );
+    if (vents && vents.length > 0) {
+      snapshotRTDB = await get(
+        query2(
+          ref(db2, "feed/" + user.uid),
+          endAt(
+            vents[vents.length - 1].server_timestamp,
+            vents[vents.length - 1].id
+          ),
+          limitToLast(5),
+          orderByChild("server_timestamp")
+        )
+      );
+    } else
+      snapshotRTDB = await get(
+        query2(
+          ref(db2, "feed/" + user.uid),
+          limitToLast(5),
+          orderByChild("server_timestamp")
+        )
+      );
   } else {
     let trending_option = "trending_score_day";
     if (pathname === "/trending/this-week")
@@ -92,19 +108,26 @@ export const getVents = async (
       return setVents(newVents);
     }
   } else if (snapshotRTDB && snapshotRTDB.val()) {
-    const data = snapshotRTDB.val();
-    let ventIDs = [];
+    let newVents = [];
 
-    for (let index in data) {
-      ventIDs.push(index);
-      console.log(data[index].server_timestamp);
-    }
+    snapshotRTDB.forEach((data) => {
+      newVents.unshift({
+        id: data.key,
+        server_timestamp: data.val().server_timestamp,
+      });
+    });
 
-    console.log(ventIDs.length);
     if (isMounted()) {
-      if (ventIDs.length < 10) setCanLoadMore(false);
+      if (newVents.length < 10) setCanLoadMore(false);
 
-      setVents(ventIDs);
+      if (vents) {
+        return setVents((oldVents) => {
+          if (oldVents) return [...oldVents, ...newVents];
+          else return newVents;
+        });
+      } else {
+        return setVents(newVents);
+      }
     }
   } else return setCanLoadMore(false);
 };

@@ -54,7 +54,7 @@ function VentsPage() {
     return () => {
       if (newVentListenerUnsubscribe) return newVentListenerUnsubscribe();
     };
-  }, [isMounted, pathname, search, setCanLoadMore]);
+  }, [isMounted, pathname, search, setCanLoadMore, user]);
 
   return (
     <Page className="pa16" id="scrollable-div">
@@ -150,14 +150,11 @@ function VentsPage() {
                 {vents &&
                   vents.map((vent, index) => {
                     return (
-                      <Container
-                        className="column x-fill gap8"
-                        key={pathname == "/my-feed" ? vent : vent.id}
-                      >
+                      <Container className="column x-fill gap8" key={vent.id}>
                         <Vent
                           previewMode={true}
-                          ventID={pathname == "/my-feed" ? vent : vent.id}
-                          ventInit={pathname == "/my-feed" ? undefined : vent}
+                          ventID={vent.id}
+                          ventInit={pathname === "/my-feed" ? undefined : vent}
                         />
                         {index % 3 === 0 && (
                           <MakeAd
