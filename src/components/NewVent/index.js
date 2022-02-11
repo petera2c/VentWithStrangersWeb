@@ -276,7 +276,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
         )}
         {!isMinified && tags && tags.length > 0 && (
           <Container className="column gap8">
-            <h5>Slected Tags</h5>
+            <h5>Selected Tags</h5>
             <Container className="x-fill wrap gap8">
               {tags.map((tag, index) => (
                 <SelectedTag

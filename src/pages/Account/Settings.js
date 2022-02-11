@@ -2,7 +2,10 @@ import React, { useContext, useEffect, useState } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../config/db_init";
 import { useDocument } from "react-firebase-hooks/firestore";
-import { message } from "antd";
+import { Button, message } from "antd";
+
+import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Container from "../../components/containers/Container";
 import LoadingHeart from "../../components/views/loaders/Heart";
@@ -10,11 +13,19 @@ import Page from "../../components/containers/Page";
 import SubscribeColumn from "../../components/SubscribeColumn";
 
 import { UserContext } from "../../context";
-import { getIsMobileOrTablet } from "../../util";
+import {
+  getIsMobileOrTablet,
+  getUserBasicInfo,
+  useIsMounted,
+} from "../../util";
+import { getBlockedUsers, unblockUser } from "./util";
 
 function SettingsSection() {
   const { user } = useContext(UserContext);
+  const isMounted = useIsMounted();
 
+  const [blockedUsers, setBlockedUsers] = useState([]);
+  const [canLoadMore, setCanLoadMore] = useState(false);
   const [isMobileOrTablet, setIsMobileOrTablet] = useState();
 
   const settingsRef = doc(db, "users_settings", user.uid);
@@ -28,8 +39,8 @@ function SettingsSection() {
   };
 
   useEffect(() => {
-    setIsMobileOrTablet(getIsMobileOrTablet());
-  }, []);
+    if (isMounted()) setIsMobileOrTablet(getIsMobileOrTablet());
+  }, [isMounted]);
 
   if (!settingsSnapshot || !settingsSnapshot.data())
     return (
@@ -46,9 +57,9 @@ function SettingsSection() {
   return (
     <Page className="pa16">
       <Container>
-        <Container className="column flex-fill bg-white pa16 mb2 br8">
+        <Container className="column flex-fill bg-white br8 gap16 mb2 pa16">
           <Container className="column">
-            <h6 className="blue bold mb16">Master Notifications</h6>
+            <h6 className="blue bold">Master Notifications</h6>
             <Setting
               description="Recieve a notification I post a new vent"
               handleChange={handleChange}
@@ -101,7 +112,7 @@ function SettingsSection() {
           </Container>
 
           <Container className="column pl32">
-            <h6 className="blue bold mb16">Email Notifications</h6>
+            <h6 className="blue bold">Email Notifications</h6>
             <Setting
               description="Email me when I post a new vent"
               handleChange={handleChange}
@@ -153,7 +164,7 @@ function SettingsSection() {
           </Container>
 
           <Container className="column pl32">
-            <h6 className="blue bold mb16">Mobile Push Notifications</h6>
+            <h6 className="blue bold">Mobile Push Notifications</h6>
             <Setting
               description="Send a notification to my phone when I post a new vent"
               handleChange={handleChange}
@@ -197,32 +208,83 @@ function SettingsSection() {
               settingsSnapshot={settingsSnapshot}
             />
           </Container>
-          <h6 className="blue bold mb16">Privacy and Content Preferences</h6>
-          <Container
-            className="clickable align-center mb16"
-            onClick={() =>
-              handleChange(
-                "offensive_content",
-                !settingsSnapshot.data().offensive_content
-              )
-            }
-          >
-            <input
-              className="mr8"
-              checked={settingsSnapshot.data().offensive_content}
-              onChange={() => {}}
-              style={{ minWidth: "13px" }}
-              type="checkbox"
-            />
-            <p>View sensitive/offensive content</p>
+          <h6 className="blue bold">Privacy and Content Preferences</h6>
+
+          <Container className="column align-start gap16">
+            <button
+              className="button-4"
+              onClick={() => {
+                if (blockedUsers && blockedUsers.length > 0) {
+                  setBlockedUsers([]);
+                  setCanLoadMore(false);
+                } else
+                  getBlockedUsers(
+                    [],
+                    isMounted,
+                    setBlockedUsers,
+                    setCanLoadMore,
+                    user.uid
+                  );
+              }}
+            >
+              Blocked Users
+            </button>
+
+            {blockedUsers.map((blockedUserID, index) => (
+              <UserDisplay
+                blockedUserID={blockedUserID}
+                key={blockedUserID}
+                setBlockedUsers={setBlockedUsers}
+                userID={user.uid}
+              />
+            ))}
+            {canLoadMore && (
+              <Button
+                onClick={() => {
+                  getBlockedUsers(
+                    blockedUsers,
+                    isMounted,
+                    setBlockedUsers,
+                    setCanLoadMore,
+                    user.uid
+                  );
+                }}
+                size="large"
+                type="primary"
+              >
+                Load More
+              </Button>
+            )}
           </Container>
-          <p className="mb16">
+
+          <p className="">
             Your private information will never be shared with anyone. Ever.
           </p>
         </Container>
         <SubscribeColumn slot="1120703532" />
       </Container>
     </Page>
+  );
+}
+
+function UserDisplay({ blockedUserID, setBlockedUsers, userID }) {
+  const isMounted = useIsMounted();
+  const [userBasicInfo, setUserBasicInfo] = useState({});
+
+  useEffect(() => {
+    getUserBasicInfo((userBasicInfo) => {
+      if (isMounted()) setUserBasicInfo(userBasicInfo);
+    }, blockedUserID);
+  }, [blockedUserID, isMounted]);
+
+  return (
+    <button
+      className="button-2 fs-18 br4 gap8 pa8"
+      onClick={() => unblockUser(blockedUserID, setBlockedUsers, userID)}
+    >
+      {userBasicInfo.displayName}
+      <FontAwesomeIcon icon={faTimes} />
+    </button>
   );
 }
 
@@ -242,7 +304,7 @@ function Setting({
 
   return (
     <Container
-      className="clickable align-center mb16"
+      className="clickable align-center"
       onClick={() => {
         if (setAll) {
           handleChange(master, !settingsSnapshot.data()[master]);
@@ -258,7 +320,8 @@ function Setting({
         style={{ minWidth: "13px" }}
         type="checkbox"
       />
-      <p>{description}</p>
+
+      <p className="">{description}</p>
     </Container>
   );
 }

@@ -12,17 +12,32 @@ import {
   where,
 } from "firebase/firestore";
 import {
+  get,
+  limitToFirst,
+  orderByKey,
+  ref,
+  query as query2,
+  set,
+  startAfter as startAfter2,
+} from "firebase/database";
+import {
   getAuth,
   sendEmailVerification,
   updateEmail,
   updateProfile,
 } from "firebase/auth";
 
-import { db } from "../../config/db_init";
+import { db, db2 } from "../../config/db_init";
 
 import { message } from "antd";
 
 import { displayNameErrors, getEndAtValueTimestamp } from "../../util";
+
+const deleteAccountField = async (field, userID) => {
+  await updateDoc(doc(db, "users_info", userID), {
+    [field]: deleteField(),
+  });
+};
 
 export const deleteAccountAndAllData = async (userID) => {
   await getAuth().currentUser.delete();
@@ -30,44 +45,59 @@ export const deleteAccountAndAllData = async (userID) => {
   window.location.reload();
 };
 
-export const getUsersVents = async (
+export const getBlockedUsers = async (
+  blockedUsers,
   isMounted,
-  search,
-  setCanLoadMoreVents,
-  setVents,
-  vents
+  setBlockedUsers,
+  setCanLoadMore,
+  userID
 ) => {
-  let startAt = getEndAtValueTimestamp(vents);
-
-  const snapshot = await getDocs(
-    query(
-      collection(db, "vents"),
-      where("userID", "==", search),
-      orderBy("server_timestamp", "desc"),
-      startAfter(startAt),
-      limit(10)
+  const snapshot = await get(
+    query2(
+      ref(db2, "block_check_new/" + userID),
+      orderByKey(),
+      startAfter2(
+        blockedUsers && blockedUsers.length > 0
+          ? blockedUsers[blockedUsers.length - 1]
+          : ""
+      ),
+      limitToFirst(10)
     )
   );
 
   if (!isMounted()) return;
 
-  if (snapshot.docs && snapshot.docs.length > 0) {
-    let newVents = snapshot.docs.map((doc, index) => ({
-      ...doc.data(),
-      id: doc.id,
-      doc,
-    }));
+  let newBlockedUsers = [];
 
-    if (newVents.length < 10) setCanLoadMoreVents(false);
-    if (vents) {
-      return setVents((oldVents) => {
-        if (oldVents) return [...oldVents, ...newVents];
-        else return newVents;
+  for (let index in snapshot.val()) {
+    if (index === 0 && blockedUsers && blockedUsers.length > 0) continue;
+    newBlockedUsers.push(index);
+  }
+
+  if (newBlockedUsers.length > 0) {
+    if (newBlockedUsers.length < 10) setCanLoadMore(false);
+    else setCanLoadMore(true);
+
+    if (blockedUsers && blockedUsers.length > 0) {
+      return setBlockedUsers((oldBlockedUsers) => {
+        if (oldBlockedUsers) return [...oldBlockedUsers, ...newBlockedUsers];
+        else return newBlockedUsers;
       });
     } else {
-      return setVents(newVents);
+      return setBlockedUsers(newBlockedUsers);
     }
-  } else return setCanLoadMoreVents(false);
+  } else setCanLoadMore(false);
+};
+
+export const getUser = async (callback, userID) => {
+  if (!userID) {
+    message.error("Reload the page please. An unexpected error has occurred.");
+    return {};
+  }
+
+  const authorDoc = await getDoc(doc(db, "users_info", userID));
+
+  callback(authorDoc.exists() ? { ...authorDoc.data(), id: authorDoc.id } : {});
 };
 
 export const getUsersComments = async (
@@ -110,15 +140,59 @@ export const getUsersComments = async (
   } else return setCanLoadMoreComments(false);
 };
 
-export const getUser = async (callback, userID) => {
-  if (!userID) {
-    message.error("Reload the page please. An unexpected error has occurred.");
-    return {};
-  }
+export const getUsersVents = async (
+  isMounted,
+  search,
+  setCanLoadMoreVents,
+  setVents,
+  vents
+) => {
+  let startAt = getEndAtValueTimestamp(vents);
 
-  const authorDoc = await getDoc(doc(db, "users_info", userID));
+  const snapshot = await getDocs(
+    query(
+      collection(db, "vents"),
+      where("userID", "==", search),
+      orderBy("server_timestamp", "desc"),
+      startAfter(startAt),
+      limit(10)
+    )
+  );
 
-  callback(authorDoc.exists() ? { ...authorDoc.data(), id: authorDoc.id } : {});
+  if (!isMounted()) return;
+
+  if (snapshot.docs && snapshot.docs.length > 0) {
+    let newVents = snapshot.docs.map((doc, index) => ({
+      ...doc.data(),
+      id: doc.id,
+      doc,
+    }));
+
+    if (newVents.length < 10) setCanLoadMoreVents(false);
+    if (vents) {
+      return setVents((oldVents) => {
+        if (oldVents) return [...oldVents, ...newVents];
+        else return newVents;
+      });
+    } else {
+      return setVents(newVents);
+    }
+  } else return setCanLoadMoreVents(false);
+};
+
+export const unblockUser = async (blockedUserID, setBlockedUsers, userID) => {
+  await set(ref(db2, "block_check_new/" + userID + "/" + blockedUserID), null);
+
+  setBlockedUsers((blockedUsers) => {
+    blockedUsers.splice(
+      blockedUsers.findIndex(
+        (blockedUserID2) => blockedUserID2 === blockedUserID
+      ),
+      1
+    );
+    return [...blockedUsers];
+  });
+  message.success("User has been unblocked :)");
 };
 
 export const updateUser = async (
@@ -247,12 +321,6 @@ export const updateUser = async (
     } else message.error("Passwords are not the same!");
 
   if (!changesFound) message.info("No changes!");
-};
-
-const deleteAccountField = async (field, userID) => {
-  await updateDoc(doc(db, "users_info", userID), {
-    [field]: deleteField(),
-  });
 };
 
 const whatInformationHasChanged = (

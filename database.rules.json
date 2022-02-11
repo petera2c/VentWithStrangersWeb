@@ -24,6 +24,14 @@
           ".write": "$uid === auth.uid"
         }
       }
+    },
+    "block_check_new": {
+      "$uid": {
+        "$uid2": {
+          ".read": "$uid === auth.uid || $uid2 === auth.uid",
+          ".write": "$uid === auth.uid"
+        }
+      }
     }
   }
 }

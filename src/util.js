@@ -6,7 +6,6 @@ import {
   limit,
   onSnapshot,
   query,
-  setDoc,
 } from "firebase/firestore";
 import {
   get,
@@ -15,6 +14,7 @@ import {
   orderByChild,
   query as query2,
   ref,
+  set,
 } from "firebase/database";
 import { getAuth, sendEmailVerification, signOut } from "firebase/auth";
 import { db, db2 } from "./config/db_init";
@@ -23,13 +23,8 @@ import dayjs from "dayjs";
 import { message, Modal } from "antd";
 
 export const blockUser = async (userID, userIDToBlock) => {
-  const sortedUserArray = [userID, userIDToBlock].sort();
-  await setDoc(
-    doc(db, "block_check", sortedUserArray[0] + "|||" + sortedUserArray[1]),
-    {
-      [userID]: true,
-    }
-  );
+  await set(ref(db2, "block_check_new/" + userID + "/" + userIDToBlock), true);
+
   message.success("User has been blocked");
   window.location.reload();
 };
@@ -240,15 +235,16 @@ export const hasUserBlockedUser = async (
   userID2,
   callback
 ) => {
-  const sortedUserArray = [userID, userID2].sort();
-
-  const blockCheck = await getDoc(
-    doc(db, "block_check", sortedUserArray[0] + "|||" + sortedUserArray[1])
+  const block1 = await get(
+    ref(db2, "block_check_new/" + userID + "/" + userID2)
+  );
+  const block2 = await get(
+    ref(db2, "block_check_new/" + userID2 + "/" + userID)
   );
 
   if (!isMounted()) return;
 
-  if (blockCheck.exists()) return callback(true);
+  if (block1.val() || block2.val()) return callback(true);
   else return callback(false);
 };
 

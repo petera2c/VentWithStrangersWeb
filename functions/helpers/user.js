@@ -508,6 +508,11 @@ const userDelete = async (user) => {
     .database()
     .ref("status/" + user.uid)
     .remove();
+
+  await admin
+    .database()
+    .ref("block_check_new/" + user.uid)
+    .remove();
 };
 
 const userRewardsListener = async (change, context) => {

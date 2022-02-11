@@ -1,7 +1,6 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    //return exists(/databases/$(database)/documents/block_check/$(userID+"|||"+userID2));
 
     match /admin_notifications/{adminNotificationID} {
       allow read: if true;
