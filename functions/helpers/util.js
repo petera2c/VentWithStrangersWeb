@@ -22,14 +22,16 @@ const canUpdateTrendingScore = (option, serverTimestamp) => {
     new moment().diff(new moment(serverTimestamp)) / 1000 / 3600 / 24
   );
 
-  if (option === "day") {
-    if (days >= 1) return false;
-  } else if (option === "week") {
-    if (days >= 7) return false;
-  } else if (option === "month") {
-    if (days >= 30) return false;
-  }
-  return true;
+  if ((option === "day" || option === "trending_score_day") && days >= 1)
+    return false;
+  else if ((option === "week" || option === "trending_score_week") && days >= 7)
+    return false;
+  else if (
+    (option === "month" || option === "trending_score_month") &&
+    days >= 30
+  )
+    return false;
+  else return true;
 };
 
 const capitolizeFirstChar = (string) => {

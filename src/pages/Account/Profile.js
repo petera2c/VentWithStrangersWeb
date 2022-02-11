@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import InfiniteScroll from "react-infinite-scroll-component";
 import loadable from "@loadable/component";
-import { Button, Space } from "antd";
+import { Button, Dropdown, Space } from "antd";
 
 import { faBaby } from "@fortawesome/pro-solid-svg-icons/faBaby";
 import { faComments } from "@fortawesome/pro-solid-svg-icons/faComments";
@@ -20,7 +20,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Comment from "../../components/Comment";
 import ConfirmAlertModal from "../../components/modals/ConfirmAlert";
 import Container from "../../components/containers/Container";
-import HandleOutsideClick from "../../components/containers/HandleOutsideClick";
 import KarmaBadge from "../../components/views/KarmaBadge";
 import LoadingHeart from "../../components/views/loaders/Heart";
 import Page from "../../components/containers/Page";
@@ -56,6 +55,7 @@ dayjs.extend(relativeTime);
 function ProfileSection() {
   const isMounted = useIsMounted();
   const { user } = useContext(UserContext);
+
   const navigate = useNavigate();
   const location = useLocation();
   let { search } = location;
@@ -65,7 +65,6 @@ function ProfileSection() {
   const [canLoadMoreVents, setCanLoadMoreVents] = useState(true);
   const [isMobileOrTablet, setIsMobileOrTablet] = useState();
   const [isUserOnline, setIsUserOnline] = useState(false);
-  const [postOptions, setPostOptions] = useState(false);
   const [postsSection, setPostsSection] = useState(true);
   const [starterModal, setStarterModal] = useState(false);
   const [userBasicInfo, setUserBasicInfo] = useState({});
@@ -252,89 +251,72 @@ function ProfileSection() {
                 search &&
                 (user ? search !== user.uid : true) && (
                   <Container className="align-center justify-between">
-                    {userBasicInfo.displayName &&
-                      search &&
-                      (user ? search !== user.uid : true) && (
-                        <Container
-                          className="button-2 wrap px16 py8 mr16 br8"
-                          onClick={() => {
-                            const userInteractionIssues = userSignUpProgress(
-                              user
-                            );
+                    <Container
+                      className="button-2 wrap px16 py8 br8"
+                      onClick={() => {
+                        const userInteractionIssues = userSignUpProgress(user);
 
-                            if (userInteractionIssues) {
-                              if (userInteractionIssues === "NSI")
-                                setStarterModal(true);
-                              return;
-                            }
+                        if (userInteractionIssues) {
+                          if (userInteractionIssues === "NSI")
+                            setStarterModal(true);
+                          return;
+                        }
 
-                            startConversation(navigate, user, search);
-                          }}
-                        >
-                          <FontAwesomeIcon className="mr8" icon={faComments} />
-                          <p className="ic ellipsis">
-                            Message{" "}
-                            {capitolizeFirstChar(userBasicInfo.displayName)}
-                          </p>
-                        </Container>
-                      )}
-                    {userBasicInfo.displayName &&
-                      search &&
-                      user &&
-                      search !== user.uid && (
-                        <div className="relative">
-                          <HandleOutsideClick
-                            close={() => setPostOptions(false)}
-                          >
-                            <FontAwesomeIcon
-                              className="clickable grey-9"
-                              icon={faEllipsisV}
-                              onClick={(e) => {
-                                e.preventDefault();
+                        startConversation(navigate, user, search);
+                      }}
+                    >
+                      <FontAwesomeIcon className="mr8" icon={faComments} />
+                      <p className="ic ellipsis">
+                        Message {capitolizeFirstChar(userBasicInfo.displayName)}
+                      </p>
+                    </Container>
 
-                                setPostOptions(!postOptions);
-                              }}
-                              style={{ width: 20 }}
-                            />
-                            {postOptions && (
-                              <div
-                                className="absolute flex right-0"
-                                style={{
-                                  bottom: "calc(100% + 8px)",
-                                  whiteSpace: "nowrap",
-                                  zIndex: 1,
-                                }}
-                              >
-                                <Container className="column x-fill bg-white border-all px16 py8 br8">
-                                  {userBasicInfo.displayName &&
-                                    search &&
-                                    search !== user.uid && (
-                                      <Container
-                                        className="button-8 clickable align-center"
-                                        onClick={(e) => {
-                                          e.preventDefault();
-                                          setBlockModal(!blockModal);
-                                        }}
-                                      >
-                                        <p className=" flex-fill">Block User</p>
-                                        <FontAwesomeIcon
-                                          className="ml8"
-                                          icon={faUserLock}
-                                        />
-                                      </Container>
-                                    )}
-                                </Container>
-                              </div>
-                            )}
-                          </HandleOutsideClick>
-                        </div>
-                      )}
+                    {false && (
+                      <Container className="button-2 wrap px16 py8 br8">
+                        <p className="ic ellipsis">
+                          Follow{" "}
+                          {capitolizeFirstChar(userBasicInfo.displayName)}
+                        </p>
+                      </Container>
+                    )}
                   </Container>
                 )}
               {isUserOnline && isUserOnline.last_online && (
-                <Space align="center">
+                <Container className="x-fill align-center justify-between">
                   <p>Last Seen: {dayjs(isUserOnline.last_online).fromNow()}</p>
-                </Space>
+                  {userBasicInfo.displayName &&
+                    search &&
+                    user &&
+                    search !== user.uid && (
+                      <Dropdown
+                        overlay={
+                          <Container className="column x-fill bg-white border-all px16 py8 br8">
+                            <Container
+                              className="button-8 clickable align-center"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                setBlockModal(!blockModal);
+                              }}
+                            >
+                              <p className=" flex-fill">Block User</p>
+                              <FontAwesomeIcon
+                                className="ml8"
+                                icon={faUserLock}
+                              />
+                            </Container>
+                          </Container>
+                        }
+                        placement="bottomRight"
+                        trigger={["click"]}
+                      >
+                        <FontAwesomeIcon
+                          className="clickable grey-9"
+                          icon={faEllipsisV}
+                          style={{ width: "50px" }}
+                        />
+                      </Dropdown>
+                    )}
+                </Container>
               )}
             </Container>
           )}

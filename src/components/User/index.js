@@ -187,7 +187,7 @@ function UserComponent({
               >
                 <FontAwesomeIcon className="mr8" icon={faComments} />
                 <p className="ic ellipsis">
-                  Message {capitolizeFirstChar(displayName)}
+                  Message {capitolizeFirstChar(userInfo.displayName)}
                 </p>
               </button>
             )}
