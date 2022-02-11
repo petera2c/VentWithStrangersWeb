@@ -154,7 +154,7 @@ function VentsPage() {
                         <Vent
                           previewMode={true}
                           ventID={vent.id}
-                          ventInit={pathname === "/my-feed" ? undefined : vent}
+                          ventInit={vent.title ? vent : undefined}
                         />
                         {index % 3 === 0 && (
                           <MakeAd
