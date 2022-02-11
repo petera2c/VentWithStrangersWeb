@@ -139,7 +139,7 @@ export const isUserTypingListener = (
 ) => {
   let dbRef;
   if (partnerID) {
-    dbRef = ref(db2, conversationID + "/" + partnerID);
+    dbRef = ref(db2, "is_typing/" + conversationID + "/" + partnerID);
 
     onValue(dbRef, (snapshot) => {
       if (isMounted()) {
@@ -392,7 +392,7 @@ export const setConversationIsTyping = (
   userID
 ) => {
   if (conversationID && userID)
-    update(ref(db2, conversationID), {
+    update(ref(db2, "is_typing/" + conversationID), {
       [userID]: finishedTyping ? false : serverTimestamp(),
     });
 };
