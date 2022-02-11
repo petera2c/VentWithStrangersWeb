@@ -149,7 +149,14 @@ const conversationUpdateListener = async (change, context) => {
         .doc(conversationID)
         .delete();
 
-      await admin.database().ref(conversationID).remove();
+      await admin
+        .database()
+        .ref("is_typing/" + conversationID)
+        .remove();
+      await admin
+        .database()
+        .ref("muted/" + conversationID)
+        .remove();
     } else if (
       !arraysEqual(conversationBefore.members, conversationAfter.members)
     ) {
@@ -161,7 +168,11 @@ const conversationUpdateListener = async (change, context) => {
       for (let index in membersDifference) {
         await admin
           .database()
-          .ref(conversationID + "/" + membersDifference[index])
+          .ref("is_typing/" + conversationID + "/" + membersDifference[index])
+          .remove();
+        await admin
+          .database()
+          .ref("muted/" + conversationID + "/" + membersDifference[index])
           .remove();
         await admin
           .firestore()

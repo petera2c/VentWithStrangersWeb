@@ -146,7 +146,7 @@ exports.cronDecreaseTrendingScoreWeek = functions.pubsub
   .schedule("0 * * * *")
   .onRun(async () =>
     decreaseTrendingScore("trending_score_week", (trendingScore) => {
-      return Math.round(trendingScore * 0.02) + 1;
+      return Math.round(trendingScore * 0.01) + 1;
     })
   );
 exports.cronDecreaseTrendingScoreMonth = functions.pubsub
