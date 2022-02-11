@@ -11,6 +11,7 @@ import { faChevronDown } from "@fortawesome/pro-solid-svg-icons/faChevronDown";
 import { faCog } from "@fortawesome/pro-duotone-svg-icons/faCog";
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
 import { faConciergeBell } from "@fortawesome/pro-duotone-svg-icons/faConciergeBell";
+import { faHouse } from "@fortawesome/pro-duotone-svg-icons/faHouse";
 import { faSearch } from "@fortawesome/pro-solid-svg-icons/faSearch";
 import { faSignOut } from "@fortawesome/pro-duotone-svg-icons/faSignOut";
 import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
@@ -136,43 +137,57 @@ function Header() {
           </Container>
 
           <Container className="flex-fill full-center wrap gap32">
-            <Link
-              className={
-                "full-center flex button-3 gap4 py4 " +
-                isPageActive("/trending", pathname.substring(0, 9)) +
-                isPageActive("/", pathname)
-              }
-              to="/trending"
-            >
-              <FontAwesomeIcon icon={faAnalytics} />
-              <p className="ic">Trending</p>
-            </Link>
-            <Link
-              className={
-                "full-center flex button-3 gap4 py4 " +
-                isPageActive("/recent", pathname.substring(0, 7))
-              }
-              to="/recent"
-            >
-              <FontAwesomeIcon icon={faConciergeBell} />
-              <p className="ic">Recent</p>
-            </Link>
-            <Link
-              className={
-                "full-center flex button-3 gap4 py4 " +
-                isPageActive("/chat", pathname.substring(0, 14))
-              }
-              to="/chat"
-            >
-              <FontAwesomeIcon icon={faComments} />
-              <p className="ic">Inbox</p>
-
-              {Boolean(unreadConversationsCount) && (
-                <p className="fs-14 bg-red white round ml4 pa4 br4">
-                  {unreadConversationsCount}
-                </p>
+            <Container className="wrap gap16">
+              {false && user && (
+                <Link
+                  className={
+                    "full-center flex button-3 gap8 py4 " +
+                    isPageActive("/my-feed", pathname.substring(0, 8))
+                  }
+                  to="/my-feed"
+                >
+                  <FontAwesomeIcon icon={faHouse} />
+                  <p className="ic">My Feed</p>
+                </Link>
               )}
-            </Link>
+              <Link
+                className={
+                  "full-center flex button-3 gap8 py4 " +
+                  isPageActive("/trending", pathname.substring(0, 9)) +
+                  isPageActive("/", pathname)
+                }
+                to="/trending"
+              >
+                <FontAwesomeIcon icon={faAnalytics} />
+                <p className="ic">Trending</p>
+              </Link>
+              <Link
+                className={
+                  "full-center flex button-3 gap8 py4 " +
+                  isPageActive("/recent", pathname.substring(0, 7))
+                }
+                to="/recent"
+              >
+                <FontAwesomeIcon icon={faConciergeBell} />
+                <p className="ic">Recent</p>
+              </Link>
+              <Link
+                className={
+                  "full-center flex button-3 gap8 py4 " +
+                  isPageActive("/chat", pathname.substring(0, 14))
+                }
+                to="/chat"
+              >
+                <FontAwesomeIcon icon={faComments} />
+                <p className="ic">Inbox</p>
+
+                {Boolean(unreadConversationsCount) && (
+                  <p className="fs-14 bg-red white round ml4 pa4 br4">
+                    {unreadConversationsCount}
+                  </p>
+                )}
+              </Link>
+            </Container>
             <Container className="full-center bg-grey-4 py4 px8 br4">
               <FontAwesomeIcon className="grey-5 mr8" icon={faSearch} />
               <input

@@ -58,7 +58,6 @@ const updateFeedAndFollowers = async (change, context) => {
       .ref("followers/" + followingUserID + "/" + userID)
       .set(true);
     decreaseTotalCounter(1);
-    console.log("here");
     addVentsToFeed(followingUserID, userID);
   } else {
     admin

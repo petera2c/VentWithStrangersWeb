@@ -297,33 +297,35 @@ function ProfileSection() {
                     <Dropdown
                       overlay={
                         <Container className="column x-fill bg-white border-all px16 py8 br8">
-                          <Container
-                            className="button-8 clickable align-center"
-                            onClick={() => {
-                              const userInteractionIssues = userSignUpProgress(
-                                user
-                              );
+                          {false && (
+                            <Container
+                              className="button-8 clickable align-center"
+                              onClick={() => {
+                                const userInteractionIssues = userSignUpProgress(
+                                  user
+                                );
 
-                              if (userInteractionIssues) {
-                                if (userInteractionIssues === "NSI")
-                                  setStarterModal(true);
-                                return;
-                              }
+                                if (userInteractionIssues) {
+                                  if (userInteractionIssues === "NSI")
+                                    setStarterModal(true);
+                                  return;
+                                }
 
-                              followOrUnfollowUser(
-                                isMounted,
-                                !isFollowing,
-                                setIsFollowing,
-                                user.uid,
-                                userBasicInfo.id
-                              );
-                            }}
-                          >
-                            <p className="ic ellipsis">
-                              {isFollowing ? "Unfollow" : "Follow"}{" "}
-                              {capitolizeFirstChar(userBasicInfo.displayName)}
-                            </p>
-                          </Container>
+                                followOrUnfollowUser(
+                                  isMounted,
+                                  !isFollowing,
+                                  setIsFollowing,
+                                  user.uid,
+                                  userBasicInfo.id
+                                );
+                              }}
+                            >
+                              <p className="ic ellipsis">
+                                {isFollowing ? "Unfollow" : "Follow"}{" "}
+                                {capitolizeFirstChar(userBasicInfo.displayName)}
+                              </p>
+                            </Container>
+                          )}
                           <Container
                             className="button-8 clickable align-center"
                             onClick={(e) => {

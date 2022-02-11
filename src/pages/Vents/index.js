@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Cookies from "universal-cookie";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -12,6 +12,8 @@ import Page from "../../components/containers/Page";
 import SubscribeColumn from "../../components/SubscribeColumn";
 import Vent from "../../components/Vent";
 
+import { UserContext } from "../../context";
+
 import { useIsMounted } from "../../util";
 import { getMetaInformation, getVents, newVentListener } from "./util";
 
@@ -19,6 +21,8 @@ const cookies = new Cookies();
 
 function VentsPage() {
   const isMounted = useIsMounted();
+
+  const { user } = useContext(UserContext);
 
   const [vents, setVents] = useState([]);
   const [waitingVents, setWaitingVents] = useState([]);
@@ -40,7 +44,7 @@ function VentsPage() {
     setVents([]);
     setCanLoadMore(true);
 
-    getVents(isMounted, pathname, setCanLoadMore, setVents, null);
+    getVents(isMounted, pathname, setCanLoadMore, setVents, user, null);
     newVentListenerUnsubscribe = newVentListener(
       isMounted,
       pathname,
@@ -57,9 +61,10 @@ function VentsPage() {
       <Container className="flex-fill x-fill">
         <Container className="column flex-fill gap16">
           <NewVentComponent miniVersion />
-          {pathname === "/recent" && (
+
+          {(pathname === "/my-feed" || pathname === "/recent") && (
             <Container className="x-fill">
-              <h1 className="primary fs-26">{metaTitle + " Vents"}</h1>
+              <h1 className="primary fs-26">{metaTitle}</h1>
             </Container>
           )}
           {(pathname === "/" ||
@@ -117,7 +122,14 @@ function VentsPage() {
                 </Container>
               }
               next={() =>
-                getVents(isMounted, pathname, setCanLoadMore, setVents, vents)
+                getVents(
+                  isMounted,
+                  pathname,
+                  setCanLoadMore,
+                  setVents,
+                  user,
+                  vents
+                )
               }
               scrollableTarget="scrollable-div"
             >
@@ -138,16 +150,14 @@ function VentsPage() {
                 {vents &&
                   vents.map((vent, index) => {
                     return (
-                      <Space
-                        className="x-fill"
-                        direction="vertical"
-                        size="middle"
-                        key={vent.id}
+                      <Container
+                        className="column x-fill gap8"
+                        key={pathname == "/my-feed" ? vent : vent.id}
                       >
                         <Vent
                           previewMode={true}
-                          ventID={vent.id}
-                          ventInit={vent}
+                          ventID={pathname == "/my-feed" ? vent : vent.id}
+                          ventInit={pathname == "/my-feed" ? undefined : vent}
                         />
                         {index % 3 === 0 && (
                           <MakeAd
@@ -156,7 +166,7 @@ function VentsPage() {
                             slot="1835301248"
                           />
                         )}
-                      </Space>
+                      </Container>
                     );
                   })}
               </Space>

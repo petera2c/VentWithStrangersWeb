@@ -7,28 +7,25 @@ import {
   query,
   startAfter,
 } from "firebase/firestore";
-import { db } from "../../config/db_init";
+import {
+  get,
+  limitToLast,
+  orderByChild,
+  query as query2,
+  ref,
+} from "firebase/database";
+import { db, db2 } from "../../config/db_init";
 import { getEndAtValueTimestamp } from "../../util";
 
 export const getMetaInformation = (pathname) => {
   let metaTitle = "";
-  let metaDescription =
-    "People care. Vent and chat anonymously to be apart of a community committed to making the world a better place.";
-
   if (pathname === "/recent") {
-    metaTitle = "Recent";
-    metaDescription =
-      "The latest vents and issues people have posted. Post, comment, and/or like anonymously.";
-  } else if (pathname === "/trending") {
-    metaTitle = "Trending";
-    metaDescription =
-      "View trending vents. Post, comment, and/or like anonymously.";
-  } else {
-    metaTitle = "Trending";
-    metaDescription =
-      "View trending vents. Post, comment, and/or like anonymously.";
+    metaTitle = "Recent Vents";
+  } else if (pathname === "/my-feed") {
+    metaTitle = "My Feed";
   }
-  return { metaDescription, metaTitle };
+
+  return { metaTitle };
 };
 
 export const getVents = async (
@@ -36,11 +33,13 @@ export const getVents = async (
   pathname,
   setCanLoadMore,
   setVents,
+  user,
   vents
 ) => {
   let startAt = getEndAtValueTimestamp(vents);
 
   let snapshot;
+  let snapshotRTDB;
   if (pathname === "/recent") {
     snapshot = await getDocs(
       query(
@@ -48,6 +47,14 @@ export const getVents = async (
         orderBy("server_timestamp", "desc"),
         startAfter(startAt),
         limit(10)
+      )
+    );
+  } else if (pathname === "/my-feed" && user) {
+    snapshotRTDB = await get(
+      query2(
+        ref(db2, "feed/" + user.uid),
+        limitToLast(10),
+        orderByChild("server_timestamp")
       )
     );
   } else {
@@ -68,7 +75,7 @@ export const getVents = async (
   }
   if (!isMounted()) return;
 
-  if (snapshot.docs && snapshot.docs.length > 0) {
+  if (snapshot && snapshot.docs && snapshot.docs.length > 0) {
     let newVents = snapshot.docs.map((doc, index) => ({
       doc,
       id: doc.id,
@@ -83,6 +90,21 @@ export const getVents = async (
       });
     } else {
       return setVents(newVents);
+    }
+  } else if (snapshotRTDB && snapshotRTDB.val()) {
+    const data = snapshotRTDB.val();
+    let ventIDs = [];
+
+    for (let index in data) {
+      ventIDs.push(index);
+      console.log(data[index].server_timestamp);
+    }
+
+    console.log(ventIDs.length);
+    if (isMounted()) {
+      if (ventIDs.length < 10) setCanLoadMore(false);
+
+      setVents(ventIDs);
     }
   } else return setCanLoadMore(false);
 };

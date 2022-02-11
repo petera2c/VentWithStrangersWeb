@@ -209,6 +209,7 @@ function RoutesComp() {
                       element={<TopQuotesMonthPage />}
                     />
                     <Route path="make-friends" element={<MakeFriendsPage />} />
+                    <Route path="my-feed" element={<VentsPage />} />
                     <Route
                       path="notifications"
                       element={<NotificationsPage />}
