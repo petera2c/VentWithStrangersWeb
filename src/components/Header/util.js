@@ -96,14 +96,16 @@ export const newNotificationsListener = (
     (snapshot) => {
       if (first) {
         first = false;
-      } else if (snapshot.docs && snapshot.docs[0] && isMounted()) {
-        if (!snapshot.docs[0].data().hasSeen) {
-          setNotificationCounter((oldAmount) => {
-            oldAmount++;
-            return oldAmount;
-          });
-          soundNotify();
-        }
+      } else if (
+        snapshot.docs &&
+        snapshot.docs[0] &&
+        !snapshot.docs[0].data().hasSeen &&
+        isMounted()
+      ) {
+        setNotificationCounter((oldAmount) => {
+          oldAmount++;
+          return oldAmount;
+        });
 
         setNotifications((oldNotifications) => [
           {
@@ -113,6 +115,8 @@ export const newNotificationsListener = (
           },
           ...oldNotifications,
         ]);
+
+        soundNotify();
       }
     }
   );

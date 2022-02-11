@@ -103,6 +103,8 @@ function Header() {
     }
 
     const cleanup = () => {
+      if (newNotificationsListenerUnsubscribe)
+        newNotificationsListenerUnsubscribe();
       if (conversationsUnsubscribe) conversationsUnsubscribe();
       if (user && isUserInQueueRef.current) leaveQueue(user.uid);
 

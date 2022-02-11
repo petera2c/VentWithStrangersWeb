@@ -55,7 +55,7 @@ function AboutUsPage() {
             <h4 className="tac">With Great Power Comes Great Responsibility</h4>
             <Container className="column gap8">
               <p className="tac">Click on a badge to learn more :)</p>
-              <Container className="x-fill full-center gap16">
+              <Container className="x-fill full-center wrap gap16">
                 <KarmaBadge
                   onClick={() => setActiveBadge(0)}
                   userBasicInfo={{ karma: 50 }}
