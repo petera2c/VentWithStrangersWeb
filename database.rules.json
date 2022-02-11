@@ -1,15 +1,38 @@
 {
   "rules": {
-    "status": {
-      ".read": true,
+    "block_check_new": {
       "$uid": {
-        ".write": "$uid === auth.uid"
-      },
-      ".indexOn": ["index", "state"]
+        ".read": "$uid === auth.uid",
+        ".write": "$uid === auth.uid",
+
+        "$uid2": {
+          ".read": "$uid === auth.uid || $uid2 === auth.uid",
+          ".write": "$uid === auth.uid"
+        }
+      }
     },
-    "total_online_users2": {
-      ".read": true,
+    "feed": {
+      "$uid": {
+        ".read": true,
+        ".write": false,
+        ".indexOn": ["server_timestamp", "userID"]
+      }
+    },
+    "following": {
+      "$uid": {
+        ".read": "$uid === auth.uid",
+        ".write": "$uid === auth.uid"
+      }
+    },
+    "followers": {
+      ".read": false,
       ".write": false
+    },
+    "following_total": {
+      "$uid": {
+        ".read": "$uid === auth.uid",
+        ".write": false
+      }
     },
     "is_typing": {
       "$conversationID": {
@@ -27,16 +50,16 @@
         }
       }
     },
-    "block_check_new": {
+    "status": {
+      ".read": true,
       "$uid": {
-        ".read": "$uid === auth.uid",
-        ".write": "$uid === auth.uid",
-
-        "$uid2": {
-          ".read": "$uid === auth.uid || $uid2 === auth.uid",
-          ".write": "$uid === auth.uid"
-        }
-      }
+        ".write": "$uid === auth.uid"
+      },
+      ".indexOn": ["index", "state"]
+    },
+    "total_online_users2": {
+      ".read": true,
+      ".write": false
     }
   }
 }

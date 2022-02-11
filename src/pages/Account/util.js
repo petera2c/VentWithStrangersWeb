@@ -45,6 +45,24 @@ export const deleteAccountAndAllData = async (userID) => {
   window.location.reload();
 };
 
+export const followOrUnfollowUser = async (
+  isMounted,
+  option,
+  setIsFollowing,
+  userID,
+  userIDToFollow
+) => {
+  await set(
+    ref(db2, "following/" + userID + "/" + userIDToFollow),
+    option ? option : null
+  );
+
+  if (isMounted()) setIsFollowing(option);
+  message.success(
+    option ? "Followed Successfully :)" : "Unfollowed Successfully :)"
+  );
+};
+
 export const getBlockedUsers = async (
   blockedUsers,
   isMounted,
@@ -87,6 +105,20 @@ export const getBlockedUsers = async (
       return setBlockedUsers(newBlockedUsers);
     }
   } else setCanLoadMore(false);
+};
+
+export const getIsFollowing = async (
+  isMounted,
+  setIsFollowing,
+  userID,
+  userIDToFollow
+) => {
+  const isFollowingDoc = await get(
+    ref(db2, "following/" + userID + "/" + userIDToFollow),
+    true
+  );
+
+  if (isMounted()) setIsFollowing(isFollowingDoc.val());
 };
 
 export const getUser = async (callback, userID) => {

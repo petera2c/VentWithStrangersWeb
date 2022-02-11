@@ -20,6 +20,7 @@ const {
   chatQueueListener,
   conversationUpdateListener,
 } = require("./helpers/conversation");
+const { updateFeedAndFollowers } = require("./helpers/feed");
 const { messagesListener } = require("./helpers/messages");
 const {
   newQuoteListener,
@@ -80,12 +81,12 @@ exports.newCommentReportListener = functions.firestore
   .document("/comment_reports/{commentIDUserID}")
   .onCreate(newCommentReportListener);
 
-exports.messagesListener = functions.firestore
-  .document("/conversation_extra_data/{conversationID}/messages/{messageID}")
-  .onCreate(messagesListener);
 exports.conversationUpdateListener = functions.firestore
   .document("/conversations/{conversationID}")
   .onWrite(conversationUpdateListener);
+exports.messagesListener = functions.firestore
+  .document("/conversation_extra_data/{conversationID}/messages/{messageID}")
+  .onCreate(messagesListener);
 
 exports.newQuoteListener = functions.firestore
   .document("/quotes/{quoteID}")
@@ -120,6 +121,9 @@ exports.ventDeleteListener = functions.firestore
 exports.onlineStatusListener = functions.database
   .ref("/status/{userID}/state")
   .onWrite(updateTotalUsersOnline);
+exports.followingListener = functions.database
+  .ref("/following/{userID}/{followingUserID}")
+  .onWrite(updateFeedAndFollowers);
 
 exports.cronBirthdayNotification = functions.pubsub
   .schedule("0 4 * * *")
@@ -146,10 +150,10 @@ exports.cronDecreaseTrendingScoreWeek = functions.pubsub
     })
   );
 exports.cronDecreaseTrendingScoreMonth = functions.pubsub
-  .schedule("0 * * * *")
+  .schedule("0 8 * * *")
   .onRun(async () =>
     decreaseTrendingScore("trending_score_month", (trendingScore) => {
-      return Math.round(trendingScore * 0.005) + 1;
+      return Math.round(trendingScore * 0.05) + 1;
     })
   );
 exports.cronDecreaseUserVentCounter = functions.pubsub

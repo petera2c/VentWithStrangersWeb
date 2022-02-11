@@ -46,7 +46,13 @@ import {
   useIsMounted,
   userSignUpProgress,
 } from "../../util";
-import { getUser, getUsersComments, getUsersVents } from "./util";
+import {
+  followOrUnfollowUser,
+  getIsFollowing,
+  getUser,
+  getUsersComments,
+  getUsersVents,
+} from "./util";
 
 const MakeAvatar = loadable(() => import("../../components/views/MakeAvatar"));
 
@@ -63,6 +69,7 @@ function ProfileSection() {
   const [blockModal, setBlockModal] = useState(false);
   const [canLoadMoreComments, setCanLoadMoreComments] = useState(true);
   const [canLoadMoreVents, setCanLoadMoreVents] = useState(true);
+  const [isFollowing, setIsFollowing] = useState();
   const [isMobileOrTablet, setIsMobileOrTablet] = useState();
   const [isUserOnline, setIsUserOnline] = useState(false);
   const [postsSection, setPostsSection] = useState(true);
@@ -97,6 +104,8 @@ function ProfileSection() {
       }, search);
       getUser((userInfo) => {
         if (isMounted()) setUserInfo(userInfo);
+
+        if (user) getIsFollowing(isMounted, setIsFollowing, user.uid, search);
       }, search);
     } else navigate("/");
 
@@ -112,7 +121,7 @@ function ProfileSection() {
     return () => {
       if (isUserOnlineSubscribe) off(isUserOnlineSubscribe);
     };
-  }, [isMounted, navigate, search]);
+  }, [isMounted, navigate, search, user]);
 
   return (
     <Page
@@ -270,54 +279,77 @@ function ProfileSection() {
                         Message {capitolizeFirstChar(userBasicInfo.displayName)}
                       </p>
                     </Container>
-
-                    {false && (
-                      <Container className="button-2 wrap px16 py8 br8">
-                        <p className="ic ellipsis">
-                          Follow{" "}
-                          {capitolizeFirstChar(userBasicInfo.displayName)}
-                        </p>
-                      </Container>
-                    )}
                   </Container>
                 )}
-              {isUserOnline && isUserOnline.last_online && (
-                <Container className="x-fill align-center justify-between">
-                  <p>Last Seen: {dayjs(isUserOnline.last_online).fromNow()}</p>
-                  {userBasicInfo.displayName &&
-                    search &&
-                    user &&
-                    search !== user.uid && (
-                      <Dropdown
-                        overlay={
-                          <Container className="column x-fill bg-white border-all px16 py8 br8">
-                            <Container
-                              className="button-8 clickable align-center"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                setBlockModal(!blockModal);
-                              }}
-                            >
-                              <p className=" flex-fill">Block User</p>
-                              <FontAwesomeIcon
-                                className="ml8"
-                                icon={faUserLock}
-                              />
-                            </Container>
-                          </Container>
-                        }
-                        placement="bottomRight"
-                        trigger={["click"]}
-                      >
-                        <FontAwesomeIcon
-                          className="clickable grey-9"
-                          icon={faEllipsisV}
-                          style={{ width: "50px" }}
-                        />
-                      </Dropdown>
-                    )}
+
+              <Container className="x-fill align-center justify-between">
+                <Container>
+                  {isUserOnline && isUserOnline.last_online && (
+                    <p>
+                      Last Seen: {dayjs(isUserOnline.last_online).fromNow()}
+                    </p>
+                  )}
                 </Container>
-              )}
+                {userBasicInfo.displayName &&
+                  search &&
+                  user &&
+                  search !== user.uid && (
+                    <Dropdown
+                      overlay={
+                        <Container className="column x-fill bg-white border-all px16 py8 br8">
+                          <Container
+                            className="button-8 clickable align-center"
+                            onClick={() => {
+                              const userInteractionIssues = userSignUpProgress(
+                                user
+                              );
+
+                              if (userInteractionIssues) {
+                                if (userInteractionIssues === "NSI")
+                                  setStarterModal(true);
+                                return;
+                              }
+
+                              followOrUnfollowUser(
+                                isMounted,
+                                !isFollowing,
+                                setIsFollowing,
+                                user.uid,
+                                userBasicInfo.id
+                              );
+                            }}
+                          >
+                            <p className="ic ellipsis">
+                              {isFollowing ? "Unfollow" : "Follow"}{" "}
+                              {capitolizeFirstChar(userBasicInfo.displayName)}
+                            </p>
+                          </Container>
+                          <Container
+                            className="button-8 clickable align-center"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setBlockModal(!blockModal);
+                            }}
+                          >
+                            <p className=" flex-fill">Block Person</p>
+                            <FontAwesomeIcon
+                              className="ml8"
+                              icon={faUserLock}
+                            />
+                          </Container>
+                        </Container>
+                      }
+                      placement="bottomRight"
+                      trigger={["click"]}
+                    >
+                      <FontAwesomeIcon
+                        className="clickable grey-9"
+                        icon={faEllipsisV}
+                        style={{ width: "50px" }}
+                      />
+                    </Dropdown>
+                  )}
+              </Container>
             </Container>
           )}
 
