@@ -18,16 +18,16 @@ const calculateKarmaUserCanStrip = (usereBasicInfo) => {
 };
 
 const canUpdateTrendingScore = (option, serverTimestamp) => {
-  let daysPastMoment = new moment(serverTimestamp);
-
-  const days = Math.floor(new moment().diff(daysPastMoment) / 1000 / 3600 / 24);
+  const days = Math.floor(
+    new moment().diff(new moment(serverTimestamp)) / 1000 / 3600 / 24
+  );
 
   if (option === "day") {
-    if (days > 1) return false;
+    if (days >= 1) return false;
   } else if (option === "week") {
-    if (days > 7) return false;
+    if (days >= 7) return false;
   } else if (option === "month") {
-    if (days > 30) return false;
+    if (days >= 30) return false;
   }
   return true;
 };
