@@ -131,21 +131,21 @@ exports.cronDecreaseTrendingScore = functions.pubsub
       Math.round(trendingScore * 0.05) + 1;
     })
   );
-exports.cronDecreaseTrendingScore = functions.pubsub
+exports.cronDecreaseTrendingScoreDay = functions.pubsub
   .schedule("0 * * * *")
   .onRun(async () =>
     decreaseTrendingScore("trending_score_day", (trendingScore) => {
       return Math.round(trendingScore * 0.1) + 2;
     })
   );
-exports.cronDecreaseTrendingScore = functions.pubsub
+exports.cronDecreaseTrendingScoreWeek = functions.pubsub
   .schedule("0 * * * *")
   .onRun(async () =>
     decreaseTrendingScore("trending_score_week", (trendingScore) => {
       return Math.round(trendingScore * 0.02) + 1;
     })
   );
-exports.cronDecreaseTrendingScore = functions.pubsub
+exports.cronDecreaseTrendingScoreMonth = functions.pubsub
   .schedule("0 * * * *")
   .onRun(async () =>
     decreaseTrendingScore("trending_score_month", (trendingScore) => {
