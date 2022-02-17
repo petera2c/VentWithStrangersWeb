@@ -152,7 +152,7 @@ function ProfileSection() {
               </Container>
 
               <Container className="wrap gap16">
-                <Container className="column" direction="vertical">
+                <Container className="column">
                   <Container className="align-center gap8">
                     {isUserOnline && isUserOnline.state === "online" && (
                       <div className="online-dot" />

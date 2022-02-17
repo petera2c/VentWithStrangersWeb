@@ -83,7 +83,6 @@ function Vent({
 
   const [activeSort, setActiveSort] = useState("First");
   const [author, setAuthor] = useState({});
-  const [blockModal, setBlockModal] = useState(false);
   const [canLoadMoreComments, setCanLoadMoreComments] = useState(false);
   const [comments, setComments] = useState([]);
   const [commentString, setCommentString] = useState("");
@@ -580,16 +579,6 @@ function Vent({
         </Container>
       )}
 
-      {blockModal && (
-        <ConfirmAlertModal
-          close={() => setBlockModal(false)}
-          message="Blocking this user will remove you from all conversations with this user and you will no longer see any of their vents or comments. Are you sure you would like to block this user?"
-          submit={() => {
-            blockUser(user.uid, vent.userID);
-          }}
-          title="Block User"
-        />
-      )}
       {starterModal && (
         <StarterModal
           activeModal={starterModal}

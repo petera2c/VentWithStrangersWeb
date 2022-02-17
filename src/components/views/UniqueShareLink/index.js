@@ -19,11 +19,11 @@ function UniqueShareLink({ user }) {
   return (
     <Container className="x-fill align-start gap8">
       <Container className="column align-center bg-white br8 gap8 pa16">
-        <h4 className="tac">Gain 50 karma points!</h4>
+        <h4 className="tac">Gain 100 karma points!</h4>
         <p className="tac">
           Share our site! No one will know your profile or username from your
-          unique link. Upon a user signing up from your link you will receive 50
-          karma points :)
+          unique link. Upon a user signing up from your link you will receive
+          100 karma points :)
         </p>
         <Button
           onClick={() => {

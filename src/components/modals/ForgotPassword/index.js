@@ -5,6 +5,8 @@ import Container from "../../containers/Container";
 
 import { getIsMobileOrTablet } from "../../../util";
 
+import { sendPasswordReset } from "./util";
+
 function ForgotPasswordModal({ setActiveModal }) {
   const { register, handleSubmit } = useForm();
 
@@ -42,9 +44,7 @@ function ForgotPasswordModal({ setActiveModal }) {
           <form
             className="x-fill column"
             onSubmit={handleSubmit((data) => {
-              import("./util").then((functions) => {
-                functions.sendPasswordReset(data);
-              });
+              sendPasswordReset(data);
             })}
           >
             <Container className="x-fill column px32 py16">

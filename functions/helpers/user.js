@@ -683,11 +683,11 @@ const userWasInvited = async (doc, context) => {
       userSettingsDoc.data().email_link_sign_up === true
         ? {
             html: link_sign_up,
-            subject: "Someone signed up from your link! +50 Karma",
+            subject: "Someone signed up from your link! +100 Karma",
           }
         : undefined,
       "",
-      "Someone signed up from your link! +50 Karma",
+      "Someone signed up from your link! +100 Karma",
       userIDThatInvited
     );
   return;

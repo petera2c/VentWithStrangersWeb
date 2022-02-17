@@ -4,7 +4,7 @@ import LoginModal from "../Login";
 import SignUpModal from "../SignUp";
 import ForgotPasswordModal from "../ForgotPassword";
 
-function Header({ activeModal = "", setActiveModal }) {
+function StarterModal({ activeModal = "", setActiveModal }) {
   const [localActiveModal, setLocalActiveModal] = useState(activeModal);
 
   useEffect(() => {
@@ -32,4 +32,4 @@ function Header({ activeModal = "", setActiveModal }) {
   );
 }
 
-export default Header;
+export default StarterModal;

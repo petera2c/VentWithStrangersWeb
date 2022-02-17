@@ -73,7 +73,12 @@ export const getNotifications = async (
     setCanShowLoadMore(false);
 
   setNotifications((oldNotifications) => {
-    if (oldNotifications && oldNotifications.length > 0)
+    if (
+      oldNotifications &&
+      oldNotifications.length > 0 &&
+      notifications &&
+      notifications.length > 0
+    )
       return [...oldNotifications, ...newNotifications];
     else return newNotifications;
   });
