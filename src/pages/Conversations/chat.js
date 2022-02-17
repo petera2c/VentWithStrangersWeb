@@ -248,16 +248,16 @@ function Chat({
             </button>
           )}
           {messages.map((message, index) => {
-            let test = false;
+            let shouldShowDisplayName = false;
 
             if (activeChatUserBasicInfos && activeChatUserBasicInfos.length > 1)
-              test = true;
+              shouldShowDisplayName = true;
 
             if (
               messages[index - 1] &&
               messages[index - 1].userID === message.userID
             )
-              test = false;
+              shouldShowDisplayName = false;
 
             return (
               <Message
@@ -266,7 +266,7 @@ function Chat({
                 key={index}
                 message={message}
                 setMessages={setMessages}
-                shouldShowDisplayName={test}
+                shouldShowDisplayName={shouldShowDisplayName}
                 userID={userID}
               />
             );

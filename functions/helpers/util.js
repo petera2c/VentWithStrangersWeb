@@ -77,7 +77,6 @@ const getMetaInformation = async (url, callback) => {
   );
   const slashID = url.substring(url.lastIndexOf("/") + 1, url.length);
 
-  const test = url.substring(1, url.length);
   let ventID = url.match(/(?<=\/vent\/\s*).*?(?=\s*\/)/gs);
   if (ventID) ventID = ventID[0];
 
