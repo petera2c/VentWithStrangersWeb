@@ -7,6 +7,7 @@ import {
   limit,
   orderBy,
   query,
+  setDoc,
   startAfter,
   updateDoc,
   where,
@@ -278,20 +279,24 @@ export const updateUser = async (
     if (politics === undefined) deleteAccountField("politics", user.uid);
     if (religion === undefined) deleteAccountField("religion", user.uid);
 
-    updateDoc(doc(db, "users_info", user.uid), {
-      bio,
-      birth_date: birthDate ? birthDate.valueOf() : null,
-      gender,
-      pronouns,
-      ...whatInformationHasChanged(
-        education,
-        kids,
-        partying,
-        politics,
-        religion,
-        userInfo
-      ),
-    });
+    setDoc(
+      doc(db, "users_info", user.uid),
+      {
+        bio,
+        birth_date: birthDate ? birthDate.valueOf() : null,
+        gender,
+        pronouns,
+        ...whatInformationHasChanged(
+          education,
+          kids,
+          partying,
+          politics,
+          religion,
+          userInfo
+        ),
+      },
+      { merge: true }
+    );
 
     message.success("Your account information has been changed");
   }

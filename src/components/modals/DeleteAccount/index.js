@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 
 import Container from "../../containers/Container";
 
-function GroupChatCreateModal({ close, submit }) {
+function DeleteAccountModal({ close, submit }) {
   const textInput = useRef(null);
 
   const [inputString, setInputString] = useState("");
@@ -18,7 +18,7 @@ function GroupChatCreateModal({ close, submit }) {
           <p className="tac">
             {isDeleting
               ? "Loading..."
-              : "This will permanently delete every single item we have related your account. None of this information will be recoverable. Are you sure you want to proceed?"}
+              : "This will permanently delete every single item we have related to your account. None of this information will be recoverable. Are you sure you want to proceed?"}
           </p>
           {!isDeleting && (
             <input
@@ -26,7 +26,7 @@ function GroupChatCreateModal({ close, submit }) {
               onChange={(e) => {
                 setInputString(e.target.value);
               }}
-              placeholder={`Type  "delete permanently" to continue`}
+              placeholder={`Type "delete permanently" to continue`}
               ref={textInput}
               value={inputString}
             />
@@ -64,4 +64,4 @@ function GroupChatCreateModal({ close, submit }) {
   );
 }
 
-export default GroupChatCreateModal;
+export default DeleteAccountModal;

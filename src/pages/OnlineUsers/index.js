@@ -68,7 +68,7 @@ function OnlineUsers() {
           size="large"
           type="primary"
         >
-          Load More Users
+          Load More People
         </Button>
       )}
     </Page>
