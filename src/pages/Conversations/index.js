@@ -27,8 +27,8 @@ function Conversations() {
   const isMounted = useIsMounted();
   const { user } = useContext(UserContext);
 
-  const [activeConversation, setActiveConversation] = useState();
   const [activeChatUserBasicInfos, setActiveChatUserBasicInfos] = useState();
+  const [activeConversation, setActiveConversation] = useState();
   const [canLoadMore, setCanLoadMore] = useState(true);
   const [conversations, setConversations] = useState([]);
   const [groupChatEditting, setGroupChatEditting] = useState();
@@ -103,10 +103,9 @@ function Conversations() {
                     : false
                 }
                 key={conversation.id}
-                setActiveConversation={setActiveConversation}
                 setActiveChatUserBasicInfos={setActiveChatUserBasicInfos}
+                setActiveConversation={setActiveConversation}
                 setConversations={setConversations}
-                setGroupChatEditting={setGroupChatEditting}
                 setIsCreateGroupModalVisible={setIsCreateGroupModalVisible}
                 userID={user.uid}
               />

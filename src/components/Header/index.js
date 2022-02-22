@@ -139,40 +139,21 @@ function Header() {
           </Container>
 
           <Container className="flex-fill full-center wrap gap32">
-            <Container className="wrap gap16">
-              {user && (
-                <Link
-                  className={
-                    "full-center flex button-3 gap8 py4 " +
-                    isPageActive("/my-feed", pathname.substring(0, 8))
-                  }
-                  to="/my-feed"
-                >
-                  <FontAwesomeIcon icon={faHouse} />
-                  <p className="ic">My Feed</p>
-                </Link>
-              )}
+            <Container className="wrap gap32">
               <Link
                 className={
                   "full-center flex button-3 gap8 py4 " +
-                  isPageActive("/trending", pathname.substring(0, 9)) +
-                  isPageActive("/", pathname)
+                  isPageActive("/", pathname) +
+                  isPageActive("/my-feed", pathname.substring(0, 8)) +
+                  isPageActive("/recent", pathname.substring(0, 7)) +
+                  isPageActive("/trending", pathname.substring(0, 9))
                 }
-                to="/trending"
+                to="/"
               >
-                <FontAwesomeIcon icon={faAnalytics} />
-                <p className="ic">Trending</p>
+                <FontAwesomeIcon icon={faHouse} />
+                <p className="ic">Home</p>
               </Link>
-              <Link
-                className={
-                  "full-center flex button-3 gap8 py4 " +
-                  isPageActive("/recent", pathname.substring(0, 7))
-                }
-                to="/recent"
-              >
-                <FontAwesomeIcon icon={faConciergeBell} />
-                <p className="ic">Recent</p>
-              </Link>
+
               <Link
                 className={
                   "full-center flex button-3 gap8 py4 " +

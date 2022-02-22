@@ -43,8 +43,6 @@ function ConversationOption({
   setActiveConversation,
   setActiveChatUserBasicInfos,
   setConversations,
-  setGroupChatEditting,
-  setIsCreateGroupModalVisible,
   userID,
 }) {
   const isMounted = useIsMounted();

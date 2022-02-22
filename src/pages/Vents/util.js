@@ -18,30 +18,19 @@ import {
 import { db, db2 } from "../../config/db_init";
 import { getEndAtValueTimestamp } from "../../util";
 
-export const getMetaInformation = (pathname) => {
-  let metaTitle = "";
-  if (pathname === "/recent") {
-    metaTitle = "Recent Vents";
-  } else if (pathname === "/my-feed") {
-    metaTitle = "My Feed";
-  }
-
-  return { metaTitle };
-};
-
 export const getVents = async (
   isMounted,
-  pathname,
   setCanLoadMore,
   setVents,
   user,
-  vents
+  vents,
+  whatPage
 ) => {
   let startAt = getEndAtValueTimestamp(vents);
 
   let snapshot;
   let snapshotRTDB;
-  if (pathname === "/recent") {
+  if (whatPage === "recent") {
     snapshot = await getDocs(
       query(
         collection(db, "vents"),
@@ -50,7 +39,7 @@ export const getVents = async (
         limit(10)
       )
     );
-  } else if (pathname === "/my-feed" && user) {
+  } else if (whatPage === "my-feed" && user) {
     if (vents && vents.length > 0) {
       snapshotRTDB = await get(
         query2(
@@ -59,7 +48,7 @@ export const getVents = async (
             vents[vents.length - 1].server_timestamp,
             vents[vents.length - 1].id
           ),
-          limitToLast(5),
+          limitToLast(10),
           orderByChild("server_timestamp")
         )
       );
@@ -67,15 +56,15 @@ export const getVents = async (
       snapshotRTDB = await get(
         query2(
           ref(db2, "feed/" + user.uid),
-          limitToLast(5),
+          limitToLast(10),
           orderByChild("server_timestamp")
         )
       );
   } else {
     let trending_option = "trending_score_day";
-    if (pathname === "/trending/this-week")
+    if (whatPage === "trending/this-week")
       trending_option = "trending_score_week";
-    if (pathname === "/trending/this-month")
+    if (whatPage === "trending/this-month")
       trending_option = "trending_score_month";
 
     snapshot = await getDocs(
@@ -96,7 +85,7 @@ export const getVents = async (
       ...doc.data(),
     }));
 
-    if (newVents.length < 10) setCanLoadMore(false);
+    if (newVents.length < 9) setCanLoadMore(false);
     if (vents) {
       return setVents((oldVents) => {
         if (oldVents) return [...oldVents, ...newVents];
@@ -115,6 +104,10 @@ export const getVents = async (
       });
     });
 
+    if (vents && vents.length > 0) {
+      newVents.shift();
+    }
+
     if (isMounted()) {
       if (newVents.length < 10) setCanLoadMore(false);
 
@@ -130,13 +123,29 @@ export const getVents = async (
   } else return setCanLoadMore(false);
 };
 
+export const getWhatPage = (pathname, user) => {
+  if (pathname === "/") {
+    if (user) return "my-feed";
+    else return "recent";
+  } else if (pathname === "/my-feed") return "my-feed";
+  else if (pathname === "/recent") return "recent";
+  else if (
+    pathname === "/trending" ||
+    pathname === "/trending/this-week" ||
+    pathname === "/trending/this-month"
+  )
+    return "trending";
+
+  return "";
+};
+
 export const newVentListener = (
   isMounted,
-  pathname,
   setWaitingVents,
+  whatPage,
   first = true
 ) => {
-  if (pathname !== "/recent") return;
+  if (whatPage !== "recent") return;
 
   const unsubscribe = onSnapshot(
     query(
@@ -148,10 +157,7 @@ export const newVentListener = (
       if (first) {
         first = false;
       } else if (querySnapshot.docs && querySnapshot.docs[0]) {
-        if (
-          querySnapshot.docChanges()[0].type === "added" ||
-          querySnapshot.docChanges()[0].type === "removed"
-        ) {
+        if (querySnapshot.docChanges()[0].type === "added") {
           if (isMounted())
             setWaitingVents((vents) => [
               ...vents,

@@ -41,6 +41,8 @@ function GroupChatCreateModal({ close, groupChatEditting }) {
   const [userSearchString, setUserSearchString] = useState("");
 
   useEffect(() => {
+    setExistingUsers([]);
+
     if (groupChatEditting && groupChatEditting.members) {
       for (let index in groupChatEditting.members) {
         getUserBasicInfo((userBasicInfo) => {
@@ -117,7 +119,7 @@ function GroupChatCreateModal({ close, groupChatEditting }) {
               />
               {hits.length > 0 && (
                 <Container className="column gap16">
-                  <h4>Searched For People</h4>
+                  <h4>Search Results</h4>
                   <Container className="wrap gap8">
                     {hits.map((hit, index) => {
                       if (

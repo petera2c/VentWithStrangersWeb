@@ -8,8 +8,8 @@ function StarterModal({ activeModal = "", setActiveModal }) {
   const [localActiveModal, setLocalActiveModal] = useState(activeModal);
 
   useEffect(() => {
-    setLocalActiveModal(activeModal);
-  }, [activeModal]);
+    if (activeModal !== localActiveModal) setLocalActiveModal(activeModal);
+  }, [activeModal, localActiveModal]);
 
   return (
     <div style={{ zIndex: 10 }}>

@@ -10,12 +10,6 @@ import {
 import { db } from "../../config/db_init";
 import { message } from "antd";
 
-export const getComment = async (commentID, setComment, ventID) => {
-  const commentDoc = await getDoc(doc(db, "comments", commentID));
-  const comment = commentDoc.data();
-
-  if (comment) setComment({ id: commentDoc.id, ...comment });
-};
 export const deleteComment = async (commentID, setComments) => {
   await deleteDoc(doc(db, "comments", commentID));
 

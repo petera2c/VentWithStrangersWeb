@@ -15,24 +15,27 @@ import Vent from "../../components/Vent";
 import { UserContext } from "../../context";
 
 import { useIsMounted } from "../../util";
-import { getMetaInformation, getVents, newVentListener } from "./util";
+import { getVents, getWhatPage, newVentListener } from "./util";
 
 const cookies = new Cookies();
 
 function VentsPage() {
   const isMounted = useIsMounted();
+  const location = useLocation();
 
   const { user } = useContext(UserContext);
 
   const [vents, setVents] = useState([]);
   const [waitingVents, setWaitingVents] = useState([]);
-  const location = useLocation();
   const { pathname, search } = location;
   const [canLoadMore, setCanLoadMore] = useState(true);
 
-  const { metaTitle } = getMetaInformation(pathname);
+  const [whatPage, setWhatPage] = useState();
 
   useEffect(() => {
+    const whatPage = getWhatPage(pathname, user);
+    setWhatPage(whatPage);
+
     if (search) {
       const referral = /referral=([^&]+)/.exec(search)[1];
       if (referral) cookies.set("referral", referral);
@@ -44,11 +47,11 @@ function VentsPage() {
     setVents([]);
     setCanLoadMore(true);
 
-    getVents(isMounted, pathname, setCanLoadMore, setVents, user, null);
+    getVents(isMounted, setCanLoadMore, setVents, user, null, whatPage);
     newVentListenerUnsubscribe = newVentListener(
       isMounted,
-      pathname,
-      setWaitingVents
+      setWaitingVents,
+      whatPage
     );
 
     return () => {
@@ -56,21 +59,49 @@ function VentsPage() {
     };
   }, [isMounted, pathname, search, setCanLoadMore, user]);
 
+  console.log(whatPage);
+
   return (
     <Page className="pa16" id="scrollable-div">
       <Container className="flex-fill x-fill">
         <Container className="column flex-fill gap16">
           <NewVentComponent miniVersion />
 
-          {(pathname === "/my-feed" || pathname === "/recent") && (
-            <Container className="x-fill">
-              <h1 className="primary fs-26">{metaTitle}</h1>
-            </Container>
-          )}
-          {(pathname === "/" ||
-            pathname === "/trending" ||
-            pathname === "/trending/this-week" ||
-            pathname === "/trending/this-month") && (
+          <Container className="x-fill full-center bg-white br8 gap16 pa16">
+            {user && (
+              <Link className="flex-fill" to="/">
+                <h2
+                  className={
+                    "button-3 primary fs-22 tac " +
+                    (whatPage === "my-feed" ? "active" : "")
+                  }
+                >
+                  My Feed
+                </h2>
+              </Link>
+            )}
+            <Link className="flex-fill" to="/recent">
+              <h2
+                className={
+                  "button-3 primary fs-22 tac " +
+                  (whatPage === "recent" ? "active" : "")
+                }
+              >
+                Recent
+              </h2>
+            </Link>
+            <Link className="flex-fill" to="/trending">
+              <h2
+                className={
+                  "button-3 primary fs-22 tac " +
+                  (whatPage === "trending" ? "active" : "")
+                }
+              >
+                Trending
+              </h2>
+            </Link>
+          </Container>
+          {whatPage === "trending" && (
             <Container className="x-fill full-center bg-white br8 gap16 pa16">
               <Link to="/trending">
                 <h2

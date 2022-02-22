@@ -57,7 +57,7 @@ function Comment({
   useEffect(() => {
     let isUserOnlineSubscribe;
 
-    if (user)
+    if (user) {
       getCommentHasLiked(
         commentID,
         isMounted,
@@ -66,14 +66,14 @@ function Comment({
         },
         user.uid
       );
-
-    if (user)
       hasUserBlockedUser(
         isMounted,
         user.uid,
         comment.userID,
         setIsContentBlocked
       );
+    }
+
     getUserBasicInfo((newBasicUserInfo) => {
       if (isMounted()) setUserBasicInfo(newBasicUserInfo);
     }, comment.userID);
