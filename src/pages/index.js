@@ -68,8 +68,7 @@ function RoutesComp() {
 
   onAuthStateChanged(getAuth(), (user) => {
     if (!isMounted.current) return;
-    setLoading(false);
-
+    if (loading) setLoading(false);
     if (user) setUser(user);
   });
 

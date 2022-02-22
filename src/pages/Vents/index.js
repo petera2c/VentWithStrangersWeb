@@ -59,8 +59,6 @@ function VentsPage() {
     };
   }, [isMounted, pathname, search, setCanLoadMore, user]);
 
-  console.log(whatPage);
-
   return (
     <Page className="pa16" id="scrollable-div">
       <Container className="flex-fill x-fill">

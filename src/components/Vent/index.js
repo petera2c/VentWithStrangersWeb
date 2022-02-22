@@ -15,7 +15,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Comment from "../Comment";
 import Container from "../containers/Container";
-import ConfirmAlertModal from "../modals/ConfirmAlert";
 import KarmaBadge from "../views/KarmaBadge";
 import LoadingHeart from "../views/loaders/Heart";
 import Options from "../Options";
@@ -23,7 +22,6 @@ import StarterModal from "../modals/Starter";
 
 import { UserContext } from "../../context";
 import {
-  blockUser,
   capitolizeFirstChar,
   getIsUserOnline,
   getUserBasicInfo,

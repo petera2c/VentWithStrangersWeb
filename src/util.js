@@ -317,6 +317,7 @@ export const userSignUpProgress = (user, noAlert) => {
     return "NSI";
   } else if (!user.emailVerified) {
     if (!noAlert) {
+      user.reload();
       sendEmailVerification(user)
         .then(() => {
           Modal.info({
@@ -340,7 +341,8 @@ export const userSignUpProgressFunction = (setStarterModal, user) => {
   if (!user) {
     return () => () => setStarterModal(true);
   } else if (!user.emailVerified) {
-    return () => () =>
+    return () => () => {
+      user.reload();
       sendEmailVerification(user)
         .then(() => {
           return Modal.info({
@@ -355,6 +357,7 @@ export const userSignUpProgressFunction = (setStarterModal, user) => {
             content: err,
           });
         });
+    };
   } else return false;
 };
 

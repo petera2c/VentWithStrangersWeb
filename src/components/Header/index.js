@@ -4,13 +4,11 @@ import useState from "react-usestateref";
 import { sendEmailVerification } from "firebase/auth";
 import { Button, Dropdown, message } from "antd";
 
-import { faAnalytics } from "@fortawesome/pro-duotone-svg-icons/faAnalytics";
 import { faBell } from "@fortawesome/pro-duotone-svg-icons/faBell";
 import { faChartNetwork } from "@fortawesome/pro-solid-svg-icons/faChartNetwork";
 import { faChevronDown } from "@fortawesome/pro-solid-svg-icons/faChevronDown";
 import { faCog } from "@fortawesome/pro-duotone-svg-icons/faCog";
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
-import { faConciergeBell } from "@fortawesome/pro-duotone-svg-icons/faConciergeBell";
 import { faHouse } from "@fortawesome/pro-duotone-svg-icons/faHouse";
 import { faSearch } from "@fortawesome/pro-solid-svg-icons/faSearch";
 import { faSignOut } from "@fortawesome/pro-duotone-svg-icons/faSignOut";

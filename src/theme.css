@@ -1333,7 +1333,7 @@ body {
 .button-6:hover,
 .button-6:hover h3 {
   border-color: var(--main-color);
-  color: var(--main-color) !important;
+  color: var(--main-color);
 }
 .button-7 {
   cursor: pointer;
@@ -1354,6 +1354,7 @@ body {
   color: var(--grey-color-1);
 }
 .button-9:hover {
+  border-color: var(--red-color);
   color: var(--red-color);
 }
 
