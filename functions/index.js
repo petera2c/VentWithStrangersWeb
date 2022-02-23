@@ -45,7 +45,6 @@ const {
 } = require("./helpers/util");
 const {
   decreaseTrendingScore,
-  decreaseUserVentCounter,
   newVentLikeListener,
   newVentListener,
   newVentReportListener,
@@ -156,9 +155,6 @@ exports.cronDecreaseTrendingScoreMonth = functions.pubsub
       return Math.round(trendingScore * 0.05) + 1;
     })
   );
-exports.cronDecreaseUserVentCounter = functions.pubsub
-  .schedule("0 12 * * *")
-  .onRun(async () => decreaseUserVentCounter());
 exports.cronNotifyQuoteContestWinner = functions.pubsub
   .schedule("2 16 * * *")
   .onRun(async () => notifyQuoteContestWinner());

@@ -458,12 +458,6 @@ const userDelete = async (user) => {
 
   counter++;
   if (counter === 500) await batch.commit();
-  batch.delete(
-    admin.firestore().collection("user_day_limit_vents").doc(user.uid)
-  );
-
-  counter++;
-  if (counter === 500) await batch.commit();
   batch.delete(admin.firestore().collection("user_expo_tokens").doc(user.uid));
 
   counter++;
