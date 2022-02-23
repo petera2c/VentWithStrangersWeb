@@ -26,7 +26,6 @@ export const blockUser = async (userID, userIDToBlock) => {
   await set(ref(db2, "block_check_new/" + userID + "/" + userIDToBlock), true);
 
   message.success("User has been blocked");
-  window.location.reload();
 };
 
 export const calculateKarma = (usereBasicInfo) => {
@@ -274,13 +273,15 @@ export const isUserAccountNew = (userBasicInfo) => {
 };
 
 export const signOut2 = (userID) => {
-  import("./pages/util").then(async (functions) => {
-    await functions.setUserOnlineStatus("offline", userID);
+  setTimeout(() => {
+    import("./pages/util").then(async (functions) => {
+      await functions.setUserOnlineStatus("offline", userID);
 
-    signOut(getAuth()).then(() => {
-      window.location.reload();
+      signOut(getAuth()).then(() => {
+        message.success("Sign out successful :)");
+      });
     });
-  });
+  }, 200);
 };
 
 export const soundNotify = (sound = "bing") => {

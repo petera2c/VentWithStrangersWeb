@@ -513,6 +513,7 @@ function Header() {
           <button
             className="button-2 no-bold py8 px16 my16 br8"
             onClick={() => {
+              user.reload();
               sendEmailVerification(user)
                 .then(() => {
                   message.success("Verification email sent! :)");

@@ -69,7 +69,13 @@ function RoutesComp() {
   onAuthStateChanged(getAuth(), (user) => {
     if (!isMounted.current) return;
     if (loading) setLoading(false);
+
     if (user) setUser(user);
+    else {
+      setUser();
+      setUserSubscription();
+      if (userBasicInfo.displayName) setUserBasicInfo({});
+    }
   });
 
   const handleOnIdle = () => {

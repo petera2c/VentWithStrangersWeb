@@ -43,7 +43,7 @@ const deleteAccountField = async (field, userID) => {
 export const deleteAccountAndAllData = async () => {
   await getAuth().currentUser.delete();
 
-  window.location.reload();
+  message.success("Your account is deleted");
 };
 
 export const followOrUnfollowUser = async (
@@ -331,6 +331,7 @@ export const updateUser = async (
     changesFound = true;
     updateEmail(user, email)
       .then(() => {
+        user.reload();
         sendEmailVerification(user)
           .then(() => {
             message.success("Verification email sent! :)");

@@ -11,7 +11,6 @@ export const handleVerifyEmail = (
       setVerifiedSuccess(true);
       setTimeout(() => {
         navigate("/");
-        window.location.reload();
       }, 2000);
     })
     .catch((error) => {
