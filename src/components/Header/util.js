@@ -48,7 +48,7 @@ export const getMobileOperatingSystem = () => {
 
   // iOS detection from: http://stackoverflow.com/a/9039885/177710
   if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-    return "iOS";
+    return "ios";
   }
 
   return "unknown";
