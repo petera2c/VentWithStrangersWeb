@@ -477,7 +477,9 @@ function ProfileSection() {
         <ConfirmAlertModal
           close={() => setBlockModal(false)}
           message="Blocking this user will remove you from all conversations with this user and you will no longer see any of their vents or comments. Are you sure you would like to block this user?"
-          submit={() => blockUser(user.uid, search)}
+          submit={() => {
+            blockUser(user.uid, search);
+          }}
           title="Block User"
         />
       )}

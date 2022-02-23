@@ -92,24 +92,25 @@ function Conversations() {
             </Link>
           )}
 
-          {conversations.map((conversation) => {
-            return (
-              <ConversationOption
-                conversation={conversation}
-                isActive={
-                  activeConversation
-                    ? conversation.id === activeConversation.id
-                    : false
-                }
-                key={conversation.id}
-                setActiveChatUserBasicInfos={setActiveChatUserBasicInfos}
-                setActiveConversation={setActiveConversation}
-                setConversations={setConversations}
-                setIsCreateGroupModalVisible={setIsCreateGroupModalVisible}
-                userID={user.uid}
-              />
-            );
-          })}
+          {user &&
+            conversations.map((conversation) => {
+              return (
+                <ConversationOption
+                  conversation={conversation}
+                  isActive={
+                    activeConversation
+                      ? conversation.id === activeConversation.id
+                      : false
+                  }
+                  key={conversation.id}
+                  setActiveChatUserBasicInfos={setActiveChatUserBasicInfos}
+                  setActiveConversation={setActiveConversation}
+                  setConversations={setConversations}
+                  setIsCreateGroupModalVisible={setIsCreateGroupModalVisible}
+                  userID={user.uid}
+                />
+              );
+            })}
           {!userSignUpProgress(user, true) && canLoadMore && (
             <button
               className="button-2 pa8 my8 br4"

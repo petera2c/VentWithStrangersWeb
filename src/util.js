@@ -25,7 +25,7 @@ import { message, Modal } from "antd";
 export const blockUser = async (userID, userIDToBlock) => {
   await set(ref(db2, "block_check_new/" + userID + "/" + userIDToBlock), true);
 
-  message.success("User has been blocked");
+  return message.success("User has been blocked");
 };
 
 export const calculateKarma = (usereBasicInfo) => {
