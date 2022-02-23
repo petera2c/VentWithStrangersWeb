@@ -70,7 +70,7 @@ function Header() {
   const [notificationCounter, setNotificationCounter] = useState(0);
   const [notifications, setNotifications] = useState([]);
   const [queueLength, setQueueLength] = useState();
-  const [showMobileAppDownload, setShowMobileAppDownload] = useState(true);
+  const [showMobileAppDownload, setShowMobileAppDownload] = useState(false);
   const [showNotificationDropdown, setShowNotificationDropdown] = useState(
     false
   );
@@ -229,8 +229,10 @@ function Header() {
             href={
               getMobileOperatingSystem() === "ios"
                 ? "https://apps.apple.com/us/app/vent-with-strangers/id1509120090"
-                : "https://play.google.com/store/apps/details?id=com.commontech.ventwithstrangers&hl=en"
+                : "https://play.google.com/store/apps/details?id=com.commontech.ventwithstrangers"
             }
+            rel="noreferrer"
+            target="_blank"
           >
             <h4 className="tac">
               Download the <span className="blue">Mobile App</span> and give us

@@ -62,10 +62,8 @@ export const getVents = async (
       );
   } else {
     let trending_option = "trending_score_day";
-    if (whatPage === "trending/this-week")
-      trending_option = "trending_score_week";
-    if (whatPage === "trending/this-month")
-      trending_option = "trending_score_month";
+    if (whatPage === "trending-week") trending_option = "trending_score_week";
+    if (whatPage === "trending-month") trending_option = "trending_score_month";
 
     snapshot = await getDocs(
       query(
@@ -79,7 +77,7 @@ export const getVents = async (
   if (!isMounted()) return;
 
   if (snapshot && snapshot.docs && snapshot.docs.length > 0) {
-    let newVents = snapshot.docs.map((doc, index) => ({
+    let newVents = snapshot.docs.map((doc) => ({
       doc,
       id: doc.id,
       ...doc.data(),
@@ -129,12 +127,8 @@ export const getWhatPage = (pathname, user) => {
     else return "recent";
   } else if (pathname === "/my-feed") return "my-feed";
   else if (pathname === "/recent") return "recent";
-  else if (
-    pathname === "/trending" ||
-    pathname === "/trending/this-week" ||
-    pathname === "/trending/this-month"
-  )
-    return "trending";
+  else if (pathname === "/trending") return "trending-week";
+  else if (pathname === "/trending/this-week") return "trending-month";
 
   return "";
 };

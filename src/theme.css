@@ -1106,7 +1106,7 @@ body {
   fill: var(--orange-color) !important;
 }
 .primary {
-  color: var(--primary-font-color);
+  color: var(--primary-font-color) !important;
 }
 .grey-1 {
   color: var(--grey-color-1);

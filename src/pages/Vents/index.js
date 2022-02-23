@@ -70,7 +70,7 @@ function VentsPage() {
               <Link className="flex-fill" to="/">
                 <h2
                   className={
-                    "button-3 primary fs-22 tac " +
+                    "button-3 fs-22 tac " +
                     (whatPage === "my-feed" ? "active" : "")
                   }
                 >
@@ -81,7 +81,7 @@ function VentsPage() {
             <Link className="flex-fill" to="/recent">
               <h2
                 className={
-                  "button-3 primary fs-22 tac " +
+                  "button-3 fs-22 tac " +
                   (whatPage === "recent" ? "active" : "")
                 }
               >
@@ -91,23 +91,27 @@ function VentsPage() {
             <Link className="flex-fill" to="/trending">
               <h2
                 className={
-                  "button-3 primary fs-22 tac " +
-                  (whatPage === "trending" ? "active" : "")
+                  "button-3 fs-22 tac " +
+                  (whatPage === "trending" ||
+                  whatPage === "trending-week" ||
+                  whatPage === "trending-month"
+                    ? "active"
+                    : "")
                 }
               >
                 Trending
               </h2>
             </Link>
           </Container>
-          {whatPage === "trending" && (
+          {(whatPage === "trending" ||
+            whatPage === "trending-week" ||
+            whatPage === "trending-month") && (
             <Container className="x-fill full-center bg-white br8 gap16 pa16">
               <Link to="/trending">
                 <h2
                   className={
-                    "button-3 primary fs-22 tac " +
-                    (pathname === "/" || pathname === "/trending"
-                      ? "active"
-                      : "")
+                    "button-3 fs-22 tac " +
+                    (whatPage === "trending" ? "active" : "")
                   }
                 >
                   Trending Today
@@ -116,8 +120,8 @@ function VentsPage() {
               <Link to="/trending/this-week">
                 <h2
                   className={
-                    "button-3 primary fs-22 tac " +
-                    (pathname === "/trending/this-week" ? "active" : "")
+                    "button-3 fs-22 tac " +
+                    (whatPage === "trending-week" ? "active" : "")
                   }
                 >
                   Trending This Week
@@ -126,8 +130,8 @@ function VentsPage() {
               <Link to="/trending/this-month">
                 <h2
                   className={
-                    "button-3 primary fs-22 tac " +
-                    (pathname === "/trending/this-month" ? "active" : "")
+                    "button-3 fs-22 tac " +
+                    (whatPage === "trending-month" ? "active" : "")
                   }
                 >
                   Trending This Month
