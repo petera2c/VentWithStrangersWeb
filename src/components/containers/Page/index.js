@@ -47,7 +47,7 @@ function Page({
     >
       <Helmet defer={false}>
         <meta charSet="utf-8" />
-        {(title || title2) && <title>{title ? title : title2}</title>}}
+        {(title || title2) && <title>{title ? title : title2}</title>}
         {(title || title2) && (
           <meta content={title ? title : title2} name="title" />
         )}

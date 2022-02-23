@@ -28,7 +28,7 @@ function AllTags() {
             </p>
           </Container>
           <Container className="full-center wrap gap16">
-            {tags.map((tag, index) => (
+            {tags.map((tag) => (
               <Tag key={tag.id} tag={tag} />
             ))}
           </Container>

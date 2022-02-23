@@ -52,7 +52,7 @@ const decreaseTrendingScore = async (trendingOption, incrementFunction) => {
   }
 };
 
-const newVentListener = async (doc, context) => {
+const newVentListener = async (doc) => {
   const vent = { id: doc.id, ...doc.data() };
 
   if (vent.new_tags && vent.new_tags.length >= 3) {
@@ -306,7 +306,7 @@ const newVentLikeListener = async (change, context) => {
     );
 };
 
-const newVentReportListener = async (doc, context) => {
+const newVentReportListener = async (doc) => {
   const ventID = doc.id.split("|||")[0];
   const userID = doc.id.split("|||")[1];
 
@@ -347,7 +347,7 @@ const newVentReportListener = async (doc, context) => {
   });
 };
 
-const ventDeleteListener = async (doc, context) => {
+const ventDeleteListener = async (doc) => {
   const ventID = doc.id;
 
   const commentsOfVentSnapshot = await admin

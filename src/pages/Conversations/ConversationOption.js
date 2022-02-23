@@ -37,7 +37,6 @@ const MakeAvatar = loadable(() => import("../../components/views/MakeAvatar"));
 dayjs.extend(relativeTime);
 
 function ConversationOption({
-  activeChatUserBasicInfos,
   conversation,
   isActive,
   setActiveConversation,
@@ -127,7 +126,7 @@ function ConversationOption({
             className="align-end"
             style={{ width: userBasicInfoArray.length * 20 + 32 + "px" }}
           >
-            {userBasicInfoArray.map((userBasicInfo, index) => (
+            {userBasicInfoArray.map((userBasicInfo) => (
               <Container
                 className="relative"
                 key={userBasicInfo.id}
@@ -185,7 +184,7 @@ function ConversationOption({
           <Container className="column x-fill bg-white border-all px16 py8 br8">
             <Container
               className="button-8 clickable align-center"
-              onClick={(e) => {
+              onClick={() => {
                 setIsMuted(!isMuted);
                 muteChat(conversation.id, userID, !isMuted);
                 message.success(
@@ -203,7 +202,7 @@ function ConversationOption({
             </Container>
             <Container
               className="button-8 clickable align-center"
-              onClick={(e) => {
+              onClick={() => {
                 setBlockModal(!blockModal);
               }}
             >
@@ -212,7 +211,7 @@ function ConversationOption({
             </Container>
             <Container
               className="button-9 clickable align-center"
-              onClick={(e) => {
+              onClick={() => {
                 setDeleteConversationConfirm(true);
               }}
             >

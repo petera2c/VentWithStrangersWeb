@@ -1,11 +1,20 @@
 module.exports = {
-  root: true,
   env: {
-    es6: false,
+    browser: true,
     node: true,
+    es2021: true,
   },
-  extends: ["eslint:recommended", "google"],
+  extends: ["eslint:recommended", "plugin:react/recommended"],
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
+    },
+    ecmaVersion: "latest",
+    sourceType: "module",
+  },
+  plugins: ["react"],
   rules: {
-    quotes: ["error", "double"],
+    "react/prop-types": "off",
+    "react/no-unescaped-entities": 0,
   },
 };

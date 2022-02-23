@@ -7,7 +7,7 @@ export const handleVerifyEmail = (
   setVerifiedSuccess
 ) => {
   applyActionCode(getAuth(), oobCode)
-    .then((resp) => {
+    .then(() => {
       setVerifiedSuccess(true);
       setTimeout(() => {
         navigate("/");

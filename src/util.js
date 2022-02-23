@@ -290,7 +290,7 @@ export const soundNotify = (sound = "bing") => {
 };
 
 export const urlify = (text) =>
-  reactStringReplace(text, /(https?:\/\/[^\s]+)/g, (match, i) => (
+  reactStringReplace(text, /(https?:\/\/[^\s]+)/g, (match) => (
     <a
       className="button-1 no-bold no-hover"
       href={match}

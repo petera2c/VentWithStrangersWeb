@@ -40,7 +40,7 @@ const deleteAccountField = async (field, userID) => {
   });
 };
 
-export const deleteAccountAndAllData = async (userID) => {
+export const deleteAccountAndAllData = async () => {
   await getAuth().currentUser.delete();
 
   window.location.reload();
@@ -155,7 +155,7 @@ export const getUsersComments = async (
   if (!isMounted()) return;
 
   if (snapshot.docs && snapshot.docs.length > 0) {
-    let newComments = snapshot.docs.map((doc, index) => ({
+    let newComments = snapshot.docs.map((doc) => ({
       ...doc.data(),
       id: doc.id,
       doc,
@@ -195,7 +195,7 @@ export const getUsersVents = async (
   if (!isMounted()) return;
 
   if (snapshot.docs && snapshot.docs.length > 0) {
-    let newVents = snapshot.docs.map((doc, index) => ({
+    let newVents = snapshot.docs.map((doc) => ({
       ...doc.data(),
       id: doc.id,
       doc,

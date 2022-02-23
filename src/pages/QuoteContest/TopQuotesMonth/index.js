@@ -33,7 +33,7 @@ function QuoteWinnersPage() {
       </Container>
 
       <Container className="justify-center x-fill wrap gap16">
-        {quotes.map((quote, index) => (
+        {quotes.map((quote) => (
           <QuoteDisplay key={quote.id} quote={quote} />
         ))}
       </Container>

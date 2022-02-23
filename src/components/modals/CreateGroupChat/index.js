@@ -121,7 +121,7 @@ function GroupChatCreateModal({ close, groupChatEditting }) {
                 <Container className="column gap16">
                   <h4>Search Results</h4>
                   <Container className="wrap gap8">
-                    {hits.map((hit, index) => {
+                    {hits.map((hit) => {
                       if (
                         users.find((user) => user.id === hit.objectID) ||
                         existingUsers.find((user) => user.id === hit.objectID)

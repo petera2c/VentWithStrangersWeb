@@ -1,5 +1,3 @@
-const admin = require("firebase-admin");
-
 const moment = require("moment-timezone");
 const s3Proxy = require("s3-proxy");
 const AWS = require("aws-sdk");
@@ -55,7 +53,7 @@ const createSitemap = async () => {
     Body: siteMapString,
   };
 
-  s3.putObject(params, (err, data) => {
+  s3.putObject(params, (err) => {
     if (err) console.log(err);
   });
 

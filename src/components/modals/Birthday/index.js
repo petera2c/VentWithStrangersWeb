@@ -28,7 +28,7 @@ function BirthdayModal({ close }) {
   return (
     <Container
       className="modal-container full-center"
-      onClick={(e) => {
+      onClick={() => {
         if (canClose) close();
       }}
     >

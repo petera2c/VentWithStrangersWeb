@@ -450,7 +450,6 @@ function Vent({
                         commentIndex={index}
                         comment2={comment}
                         setComments={setComments}
-                        ventUserID={vent.userID}
                         key={comment.id}
                       />
                     );
@@ -531,13 +530,7 @@ function Vent({
                         );
                       }}
                       markup="@[__display__](__id__)"
-                      renderSuggestion={(
-                        entry,
-                        search,
-                        highlightedDisplay,
-                        index,
-                        focused
-                      ) => {
+                      renderSuggestion={(entry) => {
                         return (
                           <Container className="flex-fill align-center pa8 gap8">
                             <MakeAvatar

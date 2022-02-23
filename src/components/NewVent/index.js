@@ -258,7 +258,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
             />
             {ventTags && ventTags.length > 0 && (
               <Container className="wrap gap8">
-                {ventTags.map((tagHit, index) => (
+                {ventTags.map((tagHit) => (
                   <Tag
                     key={tagHit.objectID}
                     postingDisableFunction={postingDisableFunction}

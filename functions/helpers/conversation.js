@@ -92,7 +92,7 @@ const startConversation = async (partnerID, userID) => {
   };
 
   if (!conversationQuerySnapshot.empty) {
-    conversationQuerySnapshot.forEach(async (conversationDoc, i) => {
+    conversationQuerySnapshot.forEach(async (conversationDoc) => {
       return await goToPage(conversationDoc.id);
     });
   } else {

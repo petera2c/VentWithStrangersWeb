@@ -4,7 +4,7 @@ const moment = require("moment-timezone");
 const { calculateKarmaUserCanStrip } = require("./util");
 const { createNotification } = require("./notification");
 
-const newQuoteListener = async (doc, context) => {
+const newQuoteListener = async (doc) => {
   const quote = { id: doc.id, ...doc.data() };
 
   const todaysFormattedDate = new moment(
@@ -37,7 +37,7 @@ const newQuoteListener = async (doc, context) => {
   }
 };
 
-const newQuoteReportListener = async (doc, context) => {
+const newQuoteReportListener = async (doc) => {
   const quoteID = doc.id.split("|||")[0];
   const userID = doc.id.split("|||")[1];
 
@@ -144,7 +144,7 @@ const notifyQuoteContestWinner = async () => {
   }
 };
 
-const quoteDeleteListener = async (doc, context) => {
+const quoteDeleteListener = async (doc) => {
   const quoteLikesSnapshot = await admin
     .firestore()
     .collection("quote_likes")

@@ -40,7 +40,6 @@ function Comment({
   commentID,
   commentIndex,
   setComments,
-  ventUserID,
 }) {
   const isMounted = useIsMounted();
   const { user } = useContext(UserContext);
@@ -122,7 +121,7 @@ function Comment({
                     }
                   : false
               }
-              deleteFunction={(commentID) => {
+              deleteFunction={() => {
                 deleteComment(comment.id, setComments);
               }}
               editFunction={() => {
@@ -160,13 +159,7 @@ function Comment({
                   );
                 }}
                 markup="@{{[[[__id__]]]||[[[__display__]]]}}"
-                renderSuggestion={(
-                  entry,
-                  search,
-                  highlightedDisplay,
-                  index,
-                  focused
-                ) => {
+                renderSuggestion={(entry) => {
                   return (
                     <Container className="button-7 column pa16" key={entry.id}>
                       <h6>{entry.display}</h6>

@@ -9,7 +9,7 @@ import Page from "../../components/containers/Page";
 import User from "../../components/User";
 import Vent from "../../components/Vent";
 
-import { capitolizeFirstChar } from "../../util";
+import { capitolizeFirstChar, getIsMobileOrTablet } from "../../util";
 
 const searchClient = algoliasearch(
   "N7KIA5G22X",
@@ -30,9 +30,7 @@ function SearchPage() {
   const [vents, setVents] = useState([]);
 
   useEffect(() => {
-    import("../../util").then((functions) => {
-      setIsMobileOrTablet(functions.getIsMobileOrTablet());
-    });
+    setIsMobileOrTablet(getIsMobileOrTablet());
 
     if (isUsers) {
       usersIndex
@@ -83,7 +81,7 @@ function SearchPage() {
           }
         >
           {users &&
-            users.map((user, index) => {
+            users.map((user) => {
               const displayName = user.displayName
                 ? capitolizeFirstChar(user.displayName)
                 : "Anonymous";

@@ -2,7 +2,7 @@ const admin = require("firebase-admin");
 const { sendMobilePushNotifications } = require("./notification");
 
 const messagesListener = async (messageDoc, context) => {
-  const { conversationID, messageID } = context.params;
+  const { conversationID } = context.params;
 
   if (messageDoc.data().is_notice) return;
 

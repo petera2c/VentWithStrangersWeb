@@ -14,7 +14,7 @@ const COMMENT_TRENDING_SCORE_DAY_INCREMENT = 10;
 const COMMENT_TRENDING_SCORE_WEEK_INCREMENT = 10;
 const COMMENT_TRENDING_SCORE_MONTH_INCREMENT = 10;
 
-const commentDeleteListener = async (doc, context) => {
+const commentDeleteListener = async (doc) => {
   const commentID = doc.id;
 
   const commentLikesSnapshot = await admin
@@ -137,7 +137,7 @@ const commentLikeListener = async (change, context) => {
   }
 };
 
-const createNewCommentNotification = async (doc, context) => {
+const createNewCommentNotification = async (doc) => {
   const ventDoc = await admin
     .firestore()
     .collection("vents")
@@ -172,17 +172,16 @@ const createNewCommentNotification = async (doc, context) => {
   }
 };
 
-const createNotificationsToAnyTaggedUsers = async (doc, context) => {
+const createNotificationsToAnyTaggedUsers = async (doc) => {
   const commentText = doc.data().text;
 
   if (!commentText) return;
   const regexFull = /@\[[\x21-\x5A|\x61-\x7A|\x5f]+\]\([\x21-\x5A|\x61-\x7A]+\)/gi;
   const regexFindID = /\([\x21-\x5A|\x61-\x7A]+\)/gi;
-  const tags = commentText.match(regexFull) || [];
 
   let listOfTaggedIDs = [];
 
-  commentText.replace(regexFull, (possibleTag, index) => {
+  commentText.replace(regexFull, (possibleTag) => {
     const displayNameArray = possibleTag.match(regexFindID);
 
     if (displayNameArray && displayNameArray[0]) {
@@ -291,7 +290,7 @@ const newCommentListener = async (doc, context) => {
   }
 };
 
-const newCommentReportListener = async (doc, context) => {
+const newCommentReportListener = async (doc) => {
   const commentID = doc.id.split("|||")[0];
   const userID = doc.id.split("|||")[1];
 

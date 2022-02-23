@@ -230,7 +230,7 @@ function SettingsSection() {
               Blocked Users
             </button>
 
-            {blockedUsers.map((blockedUserID, index) => (
+            {blockedUsers.map((blockedUserID) => (
               <UserDisplay
                 blockedUserID={blockedUserID}
                 key={blockedUserID}

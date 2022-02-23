@@ -1,7 +1,7 @@
 const admin = require("firebase-admin");
 const moment = require("moment-timezone");
 const { createNotification } = require("./notification");
-const { createBirthdayLink, createRewardsLink } = require("./util");
+const { createBirthdayLink } = require("./util");
 
 const link_sign_up = require("./email_templates/link_sign_up");
 
@@ -152,10 +152,10 @@ const signPeopleOut = () => {
           .limitToLast(totalOnlineUser)
           .orderByChild("state")
           .once("value", (snapshot) => {
-            let numberOfUsersOnline = 0;
+            //let numberOfUsersOnline = 0;
 
             snapshot.forEach((data) => {
-              if (data.val().status === "online") numberOfUsersOnline++;
+              //if (data.val().status === "online") numberOfUsersOnline++;
 
               const hoursInactive = Math.floor(
                 new moment().diff(new moment(data.val().last_online)) /
@@ -625,7 +625,7 @@ const userRewardsListener = async (change, context) => {
   }
 };
 
-const userWasInvited = async (doc, context) => {
+const userWasInvited = async (doc) => {
   // Check we have all information that we need
   if (!doc.exists) return;
 

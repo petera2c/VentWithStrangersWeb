@@ -27,7 +27,7 @@ import {
   politicalBeliefsList,
   religiousBeliefsList,
 } from "../../PersonalOptions";
-import { calculateKarma, useIsMounted } from "../../util";
+import { calculateKarma, getIsMobileOrTablet, useIsMounted } from "../../util";
 import { deleteAccountAndAllData, getUser, updateUser } from "./util";
 
 function AccountSection() {
@@ -68,9 +68,7 @@ function AccountSection() {
   };
 
   useEffect(() => {
-    import("../../util").then((functions) => {
-      setIsMobileOrTablet(functions.getIsMobileOrTablet());
-    });
+    setIsMobileOrTablet(getIsMobileOrTablet());
 
     getUser((userInfo) => {
       if (isMounted()) setAccountInfo(userInfo);
@@ -421,7 +419,7 @@ function AccountSection() {
           <Container className="full-center bg-white pa16 br8">
             <Button
               className="flex full-center cancel py8 px32 mx4 br4"
-              onClick={(e) => {
+              onClick={() => {
                 setDisplayName(user.displayName);
                 setEmail(user.email);
                 setNewPassword("");
@@ -477,7 +475,7 @@ function AccountSection() {
         <DeleteAccountModal
           close={() => setDeleteAccountModal(false)}
           submit={() => {
-            deleteAccountAndAllData(user.uid);
+            deleteAccountAndAllData();
           }}
         />
       )}

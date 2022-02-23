@@ -5,16 +5,17 @@ const calculateKarma = (usereBasicInfo) => {
   return usereBasicInfo.karma ? usereBasicInfo.karma : 0;
 };
 
-const calculateKarmaUserCanStrip = (usereBasicInfo) => {
+const calculateKarmaUserCanStrip = () => {
   return 30;
+  /*
   if (!usereBasicInfo) return 5;
-
   if (usereBasicInfo.karma > 1000) return 200;
   else if (usereBasicInfo.karma > 500) return 100;
   else if (usereBasicInfo.karma > 250) return 50;
   else if (usereBasicInfo.karma > 100) return 20;
   else if (usereBasicInfo.karma > 50) return 10;
   else if (usereBasicInfo.karma > 0) return 5;
+  */
 };
 
 const canUpdateTrendingScore = (option, serverTimestamp) => {
@@ -222,19 +223,7 @@ const getMetaInformation = async (url, callback) => {
   );
 };
 
-const getInvalidDisplayNameCharacters = (displayName) => {
-  const invalidCharactersArray = displayName.split(
-    /[\x30-\x39|\x41-\x5A|\x61-\x7a|\x5F]+/gi
-  );
-  let invalidCharacters = "";
-
-  for (let index in invalidCharactersArray) {
-    invalidCharacters += invalidCharactersArray[index];
-  }
-  return invalidCharacters;
-};
-
-const updateTotalUsersOnline = (change, context) => {
+const updateTotalUsersOnline = (change) => {
   const setToDatabase = (state) => {
     if (state === "online") {
       admin

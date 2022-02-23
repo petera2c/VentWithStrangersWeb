@@ -75,10 +75,9 @@ function MobileConversations() {
             </h1>
           </Link>
         )}
-        {conversations.map((conversation, index) => {
+        {conversations.map((conversation) => {
           return (
             <ConversationOption
-              activeChatUserBasicInfos={activeChatUserBasicInfos}
               conversation={conversation}
               isActive={
                 activeConversation

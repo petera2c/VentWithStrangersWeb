@@ -246,9 +246,7 @@ function Header() {
                       <AccountLink
                         icon={faSignOut}
                         onClick={() => {
-                          import("../../util").then((functions) =>
-                            signOut2(user.uid)
-                          );
+                          signOut2(user.uid);
                         }}
                         pathname={pathname}
                         text="Sign Out"
@@ -292,10 +290,8 @@ function Header() {
                       </Container>
                     </Container>
                   }
-                  onVisibleChange={(isVisible) => {
-                    import("./util").then((functions) => {
-                      readNotifications(notifications, setNotificationCounter);
-                    });
+                  onVisibleChange={() => {
+                    readNotifications(notifications, setNotificationCounter);
                   }}
                   trigger={["click"]}
                 >

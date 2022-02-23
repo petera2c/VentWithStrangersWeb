@@ -92,7 +92,7 @@ const subscribeToPlan = async (req, res) => {
           success: false,
         });
     })
-    .catch((error) => {
+    .catch(() => {
       res.send({
         message: "Can not find your account :(",
         success: false,

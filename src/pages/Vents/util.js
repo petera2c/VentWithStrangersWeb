@@ -127,8 +127,9 @@ export const getWhatPage = (pathname, user) => {
     else return "recent";
   } else if (pathname === "/my-feed") return "my-feed";
   else if (pathname === "/recent") return "recent";
-  else if (pathname === "/trending") return "trending-week";
-  else if (pathname === "/trending/this-week") return "trending-month";
+  else if (pathname === "/trending") return "trending";
+  else if (pathname === "/trending/this-week") return "trending-week";
+  else if (pathname === "/trending/this-month") return "trending-month";
 
   return "";
 };

@@ -3,7 +3,6 @@ const admin = require("firebase-admin");
 const updateFeedAndFollowers = async (change, context) => {
   const { followingUserID, userID } = context.params;
   const changeAfter = change.after.val();
-  const changeBefore = change.before.val();
 
   if (changeAfter === "total") return;
 

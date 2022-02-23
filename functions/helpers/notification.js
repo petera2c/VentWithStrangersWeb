@@ -62,7 +62,7 @@ const createNotification = async (
 };
 
 const sendMobilePushNotifications = async (message, userID) => {
-  userExpoTokensDoc = await admin
+  let userExpoTokensDoc = await admin
     .firestore()
     .collection("user_expo_tokens")
     .doc(userID)
@@ -70,7 +70,7 @@ const sendMobilePushNotifications = async (message, userID) => {
 
   if (userExpoTokensDoc.data())
     for (let index in userExpoTokensDoc.data().tokens) {
-      const response = await fetch("https://exp.host/--/api/v2/push/send", {
+      await fetch("https://exp.host/--/api/v2/push/send", {
         method: "POST",
         headers: {
           Accept: "application/json",

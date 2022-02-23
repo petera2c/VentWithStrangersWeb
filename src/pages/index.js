@@ -72,7 +72,7 @@ function RoutesComp() {
     if (user) setUser(user);
   });
 
-  const handleOnIdle = (event) => {
+  const handleOnIdle = () => {
     if (user && user.uid) {
       import("./util").then((functions) => {
         functions.setUserOnlineStatus("offline", user.uid);
@@ -80,7 +80,7 @@ function RoutesComp() {
     }
   };
 
-  const handleOnActive = (event) => {
+  const handleOnActive = () => {
     if (user && user.uid) {
       import("./util").then((functions) => {
         functions.setUserOnlineStatus("online", user.uid);
@@ -88,7 +88,7 @@ function RoutesComp() {
     }
   };
 
-  const handleOnAction = (event) => {
+  const handleOnAction = () => {
     if (user && user.uid) {
       import("./util").then(async (functions) => {
         await functions.setUserOnlineStatus("online", user.uid);

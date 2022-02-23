@@ -14,7 +14,7 @@ export const getQuotes = async (isMounted, setQuotes) => {
 
   if (isMounted())
     setQuotes(
-      snapshot.docs.map((doc, index) => {
+      snapshot.docs.map((doc) => {
         return { id: doc.id, doc, ...doc.data() };
       })
     );
