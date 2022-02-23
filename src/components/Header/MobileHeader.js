@@ -70,7 +70,7 @@ function Header() {
   const [notificationCounter, setNotificationCounter] = useState(0);
   const [notifications, setNotifications] = useState([]);
   const [queueLength, setQueueLength] = useState();
-  const [showMobileAppDownload, setShowMobileAppDownload] = useState(false);
+  const [showMobileAppDownload, setShowMobileAppDownload] = useState(true);
   const [showNotificationDropdown, setShowNotificationDropdown] = useState(
     false
   );

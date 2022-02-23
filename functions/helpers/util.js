@@ -49,10 +49,6 @@ const createBirthdayLink = () => {
   return "/birthday-post";
 };
 
-const createRewardsLink = () => {
-  return "/rewards";
-};
-
 const createVentLink = (vent) => {
   return (
     "/vent/" +
@@ -294,7 +290,6 @@ module.exports = {
   canUpdateTrendingScore,
   combineObjectWithID,
   createBirthdayLink,
-  createRewardsLink,
   createVentLink,
   getMetaInformation,
   updateTotalUsersOnline,
