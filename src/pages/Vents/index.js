@@ -153,11 +153,11 @@ function VentsPage() {
               next={() =>
                 getVents(
                   isMounted,
-                  pathname,
                   setCanLoadMore,
                   setVents,
                   user,
-                  vents
+                  vents,
+                  whatPage
                 )
               }
               scrollableTarget="scrollable-div"
