@@ -22,6 +22,7 @@ import { isPageActive, useIsMounted, signOut2 } from "../../util";
 import {
   conversationsListener,
   newNotificationsListener,
+  getMobileOperatingSystem,
   getNotifications,
   getUnreadConversations,
   isUserInQueueListener,
@@ -48,6 +49,7 @@ function Header() {
   const [notificationCounter, setNotificationCounter] = useState(0);
   const [notifications, setNotifications] = useState([]);
   const [showFeedbackContainer, setShowFeedbackContainer] = useState(true);
+  const [showMobileAppDownload, setShowMobileAppDownload] = useState(true);
   const [unreadConversationsCount, setUnreadConversationsCount] = useState();
 
   const [ventSearchString, setVentSearchString] = useState(
@@ -319,6 +321,28 @@ function Header() {
             )}
           </Container>
         </Container>
+        {showMobileAppDownload && (
+          <Container className="full-center border-top gap8 pa8">
+            <a
+              className="button-4"
+              href={
+                getMobileOperatingSystem() === "ios"
+                  ? "https://apps.apple.com/us/app/vent-with-strangers/id1509120090"
+                  : "https://play.google.com/store/apps/details?id=com.commontech.ventwithstrangers&hl=en"
+              }
+            >
+              <h4 className="tac">
+                Download the <span className="blue">Mobile App</span> and give
+                us a 5 star rating pretty please 🥺🥺🥺
+              </h4>
+            </a>
+            <FontAwesomeIcon
+              className="button-9"
+              icon={faTimes}
+              onClick={() => setShowMobileAppDownload(false)}
+            />
+          </Container>
+        )}
         {showFeedbackContainer && (
           <Container className="full-center border-top gap8 pa8">
             <a

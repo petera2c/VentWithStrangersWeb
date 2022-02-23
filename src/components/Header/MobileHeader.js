@@ -18,6 +18,7 @@ import { faSearch } from "@fortawesome/pro-duotone-svg-icons/faSearch";
 import { faSignOut } from "@fortawesome/pro-duotone-svg-icons/faSignOut";
 import { faSmileBeam } from "@fortawesome/pro-duotone-svg-icons/faSmileBeam";
 import { faStarShooting } from "@fortawesome/pro-duotone-svg-icons/faStarShooting";
+import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
 import { faUser } from "@fortawesome/pro-duotone-svg-icons/faUser";
 import { faUserAstronaut } from "@fortawesome/pro-duotone-svg-icons/faUserAstronaut";
 import { faUserFriends } from "@fortawesome/pro-duotone-svg-icons/faUserFriends";
@@ -42,6 +43,7 @@ import {
 import {
   conversationsListener,
   newNotificationsListener,
+  getMobileOperatingSystem,
   getUnreadConversations,
   isUserInQueueListener,
   leaveQueue,
@@ -68,6 +70,7 @@ function Header() {
   const [notificationCounter, setNotificationCounter] = useState(0);
   const [notifications, setNotifications] = useState([]);
   const [queueLength, setQueueLength] = useState();
+  const [showMobileAppDownload, setShowMobileAppDownload] = useState(true);
   const [showNotificationDropdown, setShowNotificationDropdown] = useState(
     false
   );
@@ -219,6 +222,28 @@ function Header() {
           </Container>
         </Container>
       </Container>
+      {showMobileAppDownload && (
+        <Container className="full-center border-top gap8 pa8">
+          <a
+            className="button-4"
+            href={
+              getMobileOperatingSystem() === "ios"
+                ? "https://apps.apple.com/us/app/vent-with-strangers/id1509120090"
+                : "https://play.google.com/store/apps/details?id=com.commontech.ventwithstrangers&hl=en"
+            }
+          >
+            <h4 className="tac">
+              Download the <span className="blue">Mobile App</span> and give us
+              a 5 star rating pretty please 🥺🥺🥺
+            </h4>
+          </a>
+          <FontAwesomeIcon
+            className="button-9"
+            icon={faTimes}
+            onClick={() => setShowMobileAppDownload(false)}
+          />
+        </Container>
+      )}
       {(mobileHeaderActive || pathname.substring(0, 7) === "/search") && (
         <Space align="center" className="bg-grey-4 py4 px8 my8 br4">
           <FontAwesomeIcon
