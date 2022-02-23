@@ -321,7 +321,7 @@ function Header() {
             <Container className="full-center gap8">
               <p className="fs-22 tac primary">
                 Download the Mobile App and give us a 5 star rating pretty
-                please 🥺🥺🥺
+                please 🙏🙌🙏
               </p>
               <a
                 className="button-4 fs-22 bold primary border-bottom"

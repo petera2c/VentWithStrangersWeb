@@ -236,7 +236,7 @@ function Header() {
           >
             <h4 className="tac">
               Download the <span className="blue">Mobile App</span> and give us
-              a 5 star rating pretty please 🥺🥺🥺
+              a 5 star rating pretty please 🙏🙌🙏
             </h4>
           </a>
           <FontAwesomeIcon

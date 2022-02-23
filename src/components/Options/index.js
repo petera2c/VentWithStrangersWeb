@@ -112,7 +112,7 @@ function OptionsComponent({
         <ConfirmAlertModal
           close={() => setBlockModal(false)}
           message="Blocking this user will remove you from all conversations with this user and you will no longer see any of their content. Are you sure you would like to block this user?"
-          submit={async () => {
+          submit={() => {
             if (canUserInteractFunction) return canUserInteractFunction();
 
             blockUser(userID, objectUserID);
