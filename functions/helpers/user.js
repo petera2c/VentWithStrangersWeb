@@ -480,10 +480,6 @@ const userDelete = async (user) => {
 
   counter++;
   if (counter === 500) await batch.commit();
-  batch.delete(admin.firestore().collection("users").doc(user.uid));
-
-  counter++;
-  if (counter === 500) await batch.commit();
   batch.delete(
     admin.firestore().collection("users_display_name").doc(user.uid)
   );
