@@ -284,11 +284,17 @@ function ProfileSection() {
 
               <Container className="x-fill align-center justify-between">
                 <Container>
-                  {isUserOnline && isUserOnline.last_online && (
-                    <p>
-                      Last Seen: {dayjs(isUserOnline.last_online).fromNow()}
-                    </p>
-                  )}
+                  {isUserOnline &&
+                    (isUserOnline.index || isUserOnline.last_online) && (
+                      <p>
+                        Last Seen:{" "}
+                        {dayjs(
+                          isUserOnline.last_online
+                            ? isUserOnline.last_online
+                            : isUserOnline.index
+                        ).fromNow()}
+                      </p>
+                    )}
                 </Container>
                 {userBasicInfo.displayName &&
                   search &&

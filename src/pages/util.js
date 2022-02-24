@@ -94,7 +94,6 @@ export const setUserOnlineStatus = async (status, uid) => {
   if (status === "online")
     await set(ref(db2, "status/" + uid), {
       index: new dayjs().valueOf(),
-      last_online: serverTimestamp(),
       state: status,
     });
   else
@@ -116,7 +115,6 @@ export const setIsUserOnlineToDatabase = (uid) => {
     if (snap.val() === true) {
       set(userStatusDatabaseRef, {
         index: new dayjs().valueOf(),
-        last_online: serverTimestamp(),
         state: "online",
       });
       onDisconnect(userStatusDatabaseRef).set({

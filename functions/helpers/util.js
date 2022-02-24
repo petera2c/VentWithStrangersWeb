@@ -219,7 +219,7 @@ const getMetaInformation = async (url, callback) => {
   );
 };
 
-const updateTotalUsersOnline = (change) => {
+const updateTotalUsersOnline = (change, context) => {
   const setToDatabase = (state) => {
     if (state === "online") {
       admin
@@ -237,18 +237,6 @@ const updateTotalUsersOnline = (change) => {
   const changeAfter = change.after;
   const changeBefore = change.before;
 
-  /*  if (
-    changeAfter.val() &&
-    changeAfter.val().state &&
-    changeAfter.val().state === "online" &&
-    !changeAfter.val().index
-  ) {
-    admin
-      .database()
-      .ref("status/" + context.params.userID)
-      .update({ index: admin.database.ServerValue.TIMESTAMP });
-  }
-
   if (
     changeAfter.val() &&
     changeAfter.val().index &&
@@ -258,7 +246,18 @@ const updateTotalUsersOnline = (change) => {
       .database()
       .ref("status/" + context.params.userID)
       .update({ index: admin.database.ServerValue.TIMESTAMP });
-  }*/
+  }
+
+  if (
+    changeAfter.val() &&
+    changeAfter.val().last_changed &&
+    changeAfter.val().last_changed > new moment().valueOf() + 5000
+  ) {
+    admin
+      .database()
+      .ref("status/" + context.params.userID)
+      .update({ last_changed: admin.database.ServerValue.TIMESTAMP });
+  }
 
   if (!changeAfter.val() && !changeBefore.val()) {
     // Do nothing, should never happen
