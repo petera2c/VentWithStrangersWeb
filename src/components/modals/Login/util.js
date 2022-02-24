@@ -1,7 +1,7 @@
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 export const login = ({ email, password }, setActiveModal) => {
-  signInWithEmailAndPassword(getAuth(), email, password)
+  signInWithEmailAndPassword(getAuth(), email.replace(/ /g, ""), password)
     .then(() => {
       setActiveModal();
     })

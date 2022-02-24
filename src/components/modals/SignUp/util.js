@@ -26,7 +26,7 @@ export const signUp = (
 
   const referral = cookies.get("referral");
 
-  createUserWithEmailAndPassword(getAuth(), email, password)
+  createUserWithEmailAndPassword(getAuth(), email.replace(/ /g, ""), password)
     .then(async (res) => {
       if (res.user) {
         await setDoc(doc(db, "users_display_name", res.user.uid), {

@@ -47,7 +47,7 @@ function Header() {
   const [isUserInQueue, setIsUserInQueue, isUserInQueueRef] = useState();
   const [notificationCounter, setNotificationCounter] = useState(0);
   const [notifications, setNotifications] = useState([]);
-  const [showFeedbackContainer, setShowFeedbackContainer] = useState(true);
+  const [showFeedbackContainer, setShowFeedbackContainer] = useState(false);
   const [showMobileAppDownload, setShowMobileAppDownload] = useState(true);
   const [unreadConversationsCount, setUnreadConversationsCount] = useState();
 
