@@ -125,7 +125,7 @@ function Sidebar() {
         <Container className="blue x-fill full-center">
           <FontAwesomeIcon icon={faHeart} style={{ fontSize: "1.25rem" }} />
         </Container>
-        <h5 className="ellipsis ic">Feedback Please (New)</h5>
+        <h5 className="ellipsis ic">Give Feedback (New)</h5>
       </a>
 
       <SideBarLink

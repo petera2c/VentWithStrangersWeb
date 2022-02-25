@@ -26,7 +26,7 @@ const updateFeedAndFollowers = async (change, context) => {
     }
   };
 
-  const decreaseTotalCounter = (increment) => {
+  const incrementTotalCounter = (increment) => {
     admin
       .database()
       .ref("following_total/" + userID)
@@ -55,14 +55,14 @@ const updateFeedAndFollowers = async (change, context) => {
       .database()
       .ref("followers/" + followingUserID + "/" + userID)
       .set(true);
-    decreaseTotalCounter(1);
+    incrementTotalCounter(1);
     addVentsToFeed(followingUserID, userID);
   } else {
     admin
       .database()
       .ref("followers/" + followingUserID + "/" + userID)
       .set(null);
-    decreaseTotalCounter(-1);
+    incrementTotalCounter(-1);
     removeVentsFromFeed(followingUserID, userID);
   }
 };
