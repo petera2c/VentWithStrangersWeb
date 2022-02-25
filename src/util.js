@@ -173,7 +173,7 @@ export const getIsUserOnline = (setIsUserOnline, userID) => {
       setIsUserOnline(snapshot.val());
     else if (snapshot.val() && snapshot.val().state === "offline") {
       setIsUserOnline(snapshot.val());
-    } else setIsUserOnline({ state: false });
+    }
   });
 
   return dbRef;
