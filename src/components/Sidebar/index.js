@@ -3,11 +3,12 @@ import { Link, useLocation } from "react-router-dom";
 import loadable from "@loadable/component";
 import { Space } from "antd";
 
-import { faSmileBeam } from "@fortawesome/pro-duotone-svg-icons/faSmileBeam";
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
+import { faHeart } from "@fortawesome/pro-regular-svg-icons/faHeart";
 import { faInfo } from "@fortawesome/pro-duotone-svg-icons/faInfo";
 import { faPrayingHands } from "@fortawesome/pro-duotone-svg-icons/faPrayingHands";
 import { faQuoteLeft } from "@fortawesome/pro-duotone-svg-icons/faQuoteLeft";
+import { faSmileBeam } from "@fortawesome/pro-duotone-svg-icons/faSmileBeam";
 import { faStarShooting } from "@fortawesome/pro-duotone-svg-icons/faStarShooting";
 import { faUserFriends } from "@fortawesome/pro-duotone-svg-icons/faUserFriends";
 import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
@@ -114,6 +115,19 @@ function Sidebar() {
         pathname={pathname}
         text="VWS Info"
       />
+
+      <a
+        className="grid-1 align-center button-4 clickable py8 "
+        href="https://forms.gle/fQ5xyZL52HZTEp2C7"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <Container className="blue x-fill full-center">
+          <FontAwesomeIcon icon={faHeart} style={{ fontSize: "1.25rem" }} />
+        </Container>
+        <h5 className="ellipsis ic">Give Us Feedback Please</h5>
+      </a>
+
       <SideBarLink
         icon={faUsers}
         link="/make-friends"
