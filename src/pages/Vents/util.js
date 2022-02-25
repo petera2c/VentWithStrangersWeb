@@ -150,20 +150,15 @@ export const newVentListener = (
       if (first) {
         first = false;
       } else if (querySnapshot.docs && querySnapshot.docs[0]) {
-        if (
-          querySnapshot.docChanges()[0].type === "added" ||
-          querySnapshot.docChanges()[0].type === "removed"
-        ) {
-          if (isMounted())
-            setWaitingVents((vents) => [
-              ...vents,
-              {
-                doc: querySnapshot.docs[0],
-                id: querySnapshot.docs[0].id,
-                ...querySnapshot.docs[0].data(),
-              },
-            ]);
-        }
+        if (isMounted())
+          setWaitingVents((vents) => [
+            ...vents,
+            {
+              doc: querySnapshot.docs[0],
+              id: querySnapshot.docs[0].id,
+              ...querySnapshot.docs[0].data(),
+            },
+          ]);
       }
     }
   );
