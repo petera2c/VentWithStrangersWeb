@@ -8,7 +8,8 @@ import loadable from "@loadable/component";
 import { Button, Dropdown, Space } from "antd";
 
 import { faBaby } from "@fortawesome/pro-solid-svg-icons/faBaby";
-import { faComments } from "@fortawesome/pro-solid-svg-icons/faComments";
+import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
+import { faComet } from "@fortawesome/pro-solid-svg-icons/faComet";
 import { faEllipsisV } from "@fortawesome/pro-solid-svg-icons/faEllipsisV";
 import { faGlassCheers } from "@fortawesome/pro-solid-svg-icons/faGlassCheers";
 import { faLandmark } from "@fortawesome/pro-solid-svg-icons/faLandmark";
@@ -299,6 +300,11 @@ function ProfileSection() {
                         );
                       }}
                     >
+                      <FontAwesomeIcon
+                        className="mr8"
+                        icon={faComet}
+                        size="2x"
+                      />
                       <p className="ic ellipsis">
                         {isFollowing ? "Unfollow" : "Follow"}{" "}
                         {capitolizeFirstChar(userBasicInfo.displayName)}

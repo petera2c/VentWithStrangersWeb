@@ -6,7 +6,7 @@ import loadable from "@loadable/component";
 import { Space } from "antd";
 
 import { faBaby } from "@fortawesome/pro-solid-svg-icons/faBaby";
-import { faComments } from "@fortawesome/pro-solid-svg-icons/faComments";
+import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
 import { faGlassCheers } from "@fortawesome/pro-solid-svg-icons/faGlassCheers";
 import { faLandmark } from "@fortawesome/pro-solid-svg-icons/faLandmark";
 import { faPray } from "@fortawesome/pro-solid-svg-icons/faPray";
