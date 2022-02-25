@@ -33,7 +33,7 @@ function VentsPage() {
   const [whatPage, setWhatPage] = useState();
 
   useEffect(() => {
-    const whatPage = getWhatPage(pathname, user);
+    const whatPage = getWhatPage(pathname);
     setWhatPage(whatPage);
 
     if (search) {
@@ -66,18 +66,6 @@ function VentsPage() {
           <NewVentComponent miniVersion />
 
           <Container className="x-fill full-center bg-white br8 gap16 pa16">
-            {user && (
-              <Link className="flex-fill" to="/">
-                <h2
-                  className={
-                    "button-3 fs-22 tac " +
-                    (whatPage === "my-feed" ? "active" : "")
-                  }
-                >
-                  My Feed
-                </h2>
-              </Link>
-            )}
             <Link className="flex-fill" to="/recent">
               <h2
                 className={
@@ -88,6 +76,20 @@ function VentsPage() {
                 Recent
               </h2>
             </Link>
+
+            {user && (
+              <Link className="flex-fill" to="/my-feed">
+                <h2
+                  className={
+                    "button-3 fs-22 tac " +
+                    (whatPage === "my-feed" ? "active" : "")
+                  }
+                >
+                  My Feed
+                </h2>
+              </Link>
+            )}
+
             <Link className="flex-fill" to="/trending">
               <h2
                 className={

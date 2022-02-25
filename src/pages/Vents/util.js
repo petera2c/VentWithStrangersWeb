@@ -121,11 +121,9 @@ export const getVents = async (
   } else return setCanLoadMore(false);
 };
 
-export const getWhatPage = (pathname, user) => {
-  if (pathname === "/") {
-    if (user) return "my-feed";
-    else return "recent";
-  } else if (pathname === "/my-feed") return "my-feed";
+export const getWhatPage = (pathname) => {
+  if (pathname === "/") return "recent";
+  else if (pathname === "/my-feed") return "my-feed";
   else if (pathname === "/recent") return "recent";
   else if (pathname === "/trending") return "trending";
   else if (pathname === "/trending/this-week") return "trending-week";

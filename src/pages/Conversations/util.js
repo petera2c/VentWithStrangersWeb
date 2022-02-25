@@ -145,7 +145,7 @@ export const isUserTypingListener = (
       if (isMounted()) {
         if (isTimestampWithinSeconds(snapshot.val())) {
           setShowPartnerIsTyping(true);
-          setTimeout(scrollToBottom, 400);
+          setTimeout(scrollToBottom, 800);
 
           if (isUserTypingTimeout.current) {
             clearTimeout(isUserTypingTimeout.current);

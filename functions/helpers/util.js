@@ -125,6 +125,8 @@ const getMetaInformation = async (url, callback) => {
     keywords =
       "muttr,vent online,vent to someone,vent app,I need to vent,anonymous chat,talk to strangers, chat rooms, chat with strangers";
     title = "Vent and Chat Anonymously With Strangers";
+  } else if (url === "/my-feed") {
+    title = "My Awesome Feed";
   } else if (url === "/account") {
     title = "Account";
   } else if (url === "/avatar") {
