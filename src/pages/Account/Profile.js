@@ -355,6 +355,7 @@ function ProfileSection() {
                       <FontAwesomeIcon
                         className="clickable grey-9"
                         icon={faEllipsisV}
+                        size="2x"
                         style={{ width: "50px" }}
                       />
                     </Dropdown>

@@ -93,7 +93,7 @@ export const newRewardListener = (
 export const setUserOnlineStatus = async (status, uid) => {
   if (status === "online")
     await set(ref(db2, "status/" + uid), {
-      index: new dayjs().valueOf(),
+      index: serverTimestamp(),
       state: status,
     });
   else
