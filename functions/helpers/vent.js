@@ -163,14 +163,6 @@ const newVentListener = async (doc) => {
       .set({
         value: new moment().add(minutesTillNextVent, "minutes").format(),
       });
-
-    await admin
-      .firestore()
-      .collection("user_day_limit_vents")
-      .doc(vent.userID)
-      .set({
-        vent_counter: 2,
-      });
   }
 
   const userSettingsDoc = await admin

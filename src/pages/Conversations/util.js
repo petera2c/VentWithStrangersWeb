@@ -219,18 +219,23 @@ export const messageListener = (
       if (first) {
         first = false;
       } else if (querySnapshot.docs && querySnapshot.docs[0]) {
-        if (isMounted())
-          setMessages((oldMessages) => [
-            ...oldMessages,
-            {
-              id: querySnapshot.docs[0].id,
-              ...querySnapshot.docs[0].data(),
-              doc: querySnapshot.docs[0],
-            },
-          ]);
-        setTimeout(() => {
-          scrollToBottom();
-        }, 200);
+        if (
+          querySnapshot.docChanges()[0].type === "added" ||
+          querySnapshot.docChanges()[0].type === "removed"
+        ) {
+          if (isMounted())
+            setMessages((oldMessages) => [
+              ...oldMessages,
+              {
+                id: querySnapshot.docs[0].id,
+                ...querySnapshot.docs[0].data(),
+                doc: querySnapshot.docs[0],
+              },
+            ]);
+          setTimeout(() => {
+            scrollToBottom();
+          }, 200);
+        }
       }
     }
   );
