@@ -134,9 +134,18 @@ const newUserSetup = async (user) => {
   });
 
   await admin
+    .database()
+    .ref("has_been_sent_checkup_email/" + user.uid)
+    .set(false);
+
+  await admin
     .firestore()
     .collection("invite_uid")
     .add({ primary_uid: user.uid });
+};
+
+const sendCheckUpEmail = () => {
+  //
 };
 
 const signPeopleOut = () => {
@@ -686,6 +695,7 @@ const userWasInvited = async (doc) => {
 module.exports = {
   checkForBirthdays,
   newUserSetup,
+  sendCheckUpEmail,
   signPeopleOut,
   userDelete,
   userRewardsListener,

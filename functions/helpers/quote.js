@@ -237,7 +237,7 @@ const quoteLikeListener = async (change, context) => {
       userSettingsDoc.data().mobile_quote_like === true,
       false,
       "/quote-contest",
-      "Someone has supported your quote! +2 Karma Points",
+      "Someone has supported your quote! +4 Karma Points",
       quote.userID
     );
 };

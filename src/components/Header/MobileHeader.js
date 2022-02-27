@@ -235,8 +235,7 @@ function Header() {
             target="_blank"
           >
             <h4 className="tac">
-              Download the <span className="blue">Mobile App</span> and give us
-              a 5 star rating pretty please 🙏🙌🙏
+              Download the <span className="blue">Mobile App</span>
             </h4>
           </a>
           <FontAwesomeIcon

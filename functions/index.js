@@ -34,6 +34,7 @@ const { subscribeToPlan } = require("./helpers/subscribe");
 const {
   checkForBirthdays,
   newUserSetup,
+  //sendCheckUpEmail,
   signPeopleOut,
   userDelete,
   userRewardsListener,
@@ -52,6 +53,8 @@ const {
 } = require("./helpers/vent");
 
 process.setMaxListeners(0);
+
+//sendCheckUpEmail();
 
 exports.newUserSetup = functions.auth.user().onCreate(newUserSetup);
 exports.userDelete = functions.auth.user().onDelete(userDelete);
