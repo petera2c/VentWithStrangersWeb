@@ -34,6 +34,13 @@
         ".write": false
       }
     },
+    "has_been_sent_checkup_email": {
+      "$uid": {
+        ".read": true,
+        ".write": false
+      },
+      ".indexOn": ".value"
+    },
     "is_typing": {
       "$conversationID": {
         "$uid": {

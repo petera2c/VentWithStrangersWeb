@@ -22,10 +22,12 @@ const createNotification = async (
     userID,
   });
 
+  /*
   if (
     emailNotificationInformation &&
     process.env.FUNCTIONS_EMULATOR !== "true"
   ) {
+
     admin
       .auth()
       .getUser(userID)
@@ -49,7 +51,7 @@ const createNotification = async (
             });
         }
       });
-  }
+  }*/
 
   if (canPushMobileNotification)
     admin

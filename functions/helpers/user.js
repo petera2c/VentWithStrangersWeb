@@ -5,6 +5,11 @@ const { createBirthdayLink } = require("./util");
 
 const link_sign_up = require("./email_templates/link_sign_up");
 
+const sgMail = require("@sendgrid/mail");
+
+const { sendGridApiKey } = require("../config/keys");
+sgMail.setApiKey(sendGridApiKey);
+
 const checkForBirthdays = async () => {
   console.log("starting birthday checker");
   const usersInfoSnapshot = await admin
@@ -144,8 +149,58 @@ const newUserSetup = async (user) => {
     .add({ primary_uid: user.uid });
 };
 
-const sendCheckUpEmail = () => {
-  //
+const sendCheckUpEmail = (nextPageToken) => {
+  let counter = 0;
+
+  admin
+    .auth()
+    .listUsers(250, nextPageToken)
+    .then((listUsersResult) => {
+      listUsersResult.users.forEach(async (userRecord) => {
+        const days = Math.floor(
+          new moment().diff(new moment(userRecord.metadata.lastSignInTime)) /
+            1000 /
+            3600 /
+            24
+        );
+
+        const hasBeenSentCheckupEmail = await admin
+          .database()
+          .ref("has_been_sent_checkup_email/" + userRecord.uid)
+          .once("value");
+
+        if (days > 30 && !hasBeenSentCheckupEmail.val()) {
+          const msg = {
+            from: "ventwithstrangers@gmail.com",
+            subject: "Hello :)",
+            text:
+              "Hi there, My name is Common and I am the cofounder of Vent With Strangers. I am trying to make the app the best that it can be. Could you let me know why you stopped using it? Feel free to respond directly to this email :)",
+            to: userRecord.email,
+          };
+          await sgMail
+            .send(msg)
+            .then(async () => {
+              counter++;
+              await admin
+                .database()
+                .ref("has_been_sent_checkup_email/" + userRecord.uid)
+                .set(true);
+            })
+            .catch(({ response }) => {
+              console.log(response.body.errors);
+            });
+        } else {
+          console.log("not sending");
+        }
+      });
+      if (listUsersResult.pageToken) {
+        // List next batch of users.
+        if (counter < 200) sendCheckUpEmail(listUsersResult.pageToken);
+      }
+    })
+    .catch((error) => {
+      console.log("Error listing users:", error);
+    });
 };
 
 const signPeopleOut = () => {

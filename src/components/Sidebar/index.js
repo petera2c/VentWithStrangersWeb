@@ -11,7 +11,6 @@ import { faQuoteLeft } from "@fortawesome/pro-duotone-svg-icons/faQuoteLeft";
 import { faSmileBeam } from "@fortawesome/pro-duotone-svg-icons/faSmileBeam";
 import { faStarShooting } from "@fortawesome/pro-duotone-svg-icons/faStarShooting";
 import { faUserFriends } from "@fortawesome/pro-duotone-svg-icons/faUserFriends";
-import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Container from "../containers/Container";
@@ -127,13 +126,6 @@ function Sidebar() {
         </Container>
         <h5 className="ellipsis ic">Give Feedback</h5>
       </a>
-
-      <SideBarLink
-        icon={faUsers}
-        link="/make-friends"
-        pathname={pathname}
-        text="Make Friends"
-      />
     </Space>
   );
 }

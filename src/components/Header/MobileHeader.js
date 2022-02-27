@@ -22,7 +22,6 @@ import { faTimes } from "@fortawesome/pro-solid-svg-icons/faTimes";
 import { faUser } from "@fortawesome/pro-duotone-svg-icons/faUser";
 import { faUserAstronaut } from "@fortawesome/pro-duotone-svg-icons/faUserAstronaut";
 import { faUserFriends } from "@fortawesome/pro-duotone-svg-icons/faUserFriends";
-import { faUsers } from "@fortawesome/pro-duotone-svg-icons/faUsers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Container from "../containers/Container";
@@ -471,16 +470,6 @@ function Header() {
             >
               <FontAwesomeIcon className="mr8" icon={faInfo} />
               <p className="ic">Site Info</p>
-            </Link>
-            <Link
-              className={
-                "flex full-center button-3 " +
-                isPageActive("/make-friends", pathname)
-              }
-              to="/make-friends"
-            >
-              <FontAwesomeIcon className="mr8" icon={faUsers} />
-              <p className="ic">Make Friends</p>
             </Link>
           </Space>
           {!user && (

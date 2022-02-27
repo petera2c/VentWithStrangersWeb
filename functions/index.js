@@ -34,7 +34,7 @@ const { subscribeToPlan } = require("./helpers/subscribe");
 const {
   checkForBirthdays,
   newUserSetup,
-  //sendCheckUpEmail,
+  sendCheckUpEmail,
   signPeopleOut,
   userDelete,
   userRewardsListener,
@@ -53,8 +53,6 @@ const {
 } = require("./helpers/vent");
 
 process.setMaxListeners(0);
-
-//sendCheckUpEmail();
 
 exports.newUserSetup = functions.auth.user().onCreate(newUserSetup);
 exports.userDelete = functions.auth.user().onDelete(userDelete);
@@ -127,6 +125,9 @@ exports.followingListener = functions.database
   .ref("/following/{userID}/{followingUserID}")
   .onWrite(updateFeedAndFollowers);
 
+exports.cronBirthdayNotification = functions.pubsub
+  .schedule("0 4 * * *")
+  .onRun(sendCheckUpEmail);
 exports.cronBirthdayNotification = functions.pubsub
   .schedule("0 4 * * *")
   .onRun(async () => checkForBirthdays());
