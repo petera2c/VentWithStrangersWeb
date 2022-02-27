@@ -223,7 +223,8 @@ export const messageListener = (
           querySnapshot.docChanges()[0].type === "added" ||
           querySnapshot.docChanges()[0].type === "removed"
         ) {
-          if (isMounted())
+          if (isMounted()) {
+            console.log(querySnapshot.docs[0].data().body);
             setMessages((oldMessages) => [
               ...oldMessages,
               {
@@ -232,6 +233,7 @@ export const messageListener = (
                 doc: querySnapshot.docs[0],
               },
             ]);
+          }
           setTimeout(() => {
             scrollToBottom();
           }, 200);

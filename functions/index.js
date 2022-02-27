@@ -127,10 +127,10 @@ exports.followingListener = functions.database
 
 exports.cronBirthdayNotification = functions.pubsub
   .schedule("0 4 * * *")
-  .onRun(sendCheckUpEmail);
-exports.cronBirthdayNotification = functions.pubsub
-  .schedule("0 4 * * *")
   .onRun(async () => checkForBirthdays());
+exports.cronCheckUpEmail = functions.pubsub
+  .schedule("0 16 * * *")
+  .onRun(sendCheckUpEmail);
 exports.cronDecreaseTrendingScore = functions.pubsub
   .schedule("0 * * * *")
   .onRun(async () =>

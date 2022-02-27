@@ -154,7 +154,7 @@ const sendCheckUpEmail = (nextPageToken) => {
 
   admin
     .auth()
-    .listUsers(250, nextPageToken)
+    .listUsers(50, nextPageToken)
     .then((listUsersResult) => {
       listUsersResult.users.forEach(async (userRecord) => {
         const days = Math.floor(
@@ -195,7 +195,7 @@ const sendCheckUpEmail = (nextPageToken) => {
       });
       if (listUsersResult.pageToken) {
         // List next batch of users.
-        if (counter < 200) sendCheckUpEmail(listUsersResult.pageToken);
+        if (counter < 100) sendCheckUpEmail(listUsersResult.pageToken);
       }
     })
     .catch((error) => {

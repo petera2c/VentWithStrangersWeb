@@ -36,7 +36,7 @@
     },
     "has_been_sent_checkup_email": {
       "$uid": {
-        ".read": true,
+        ".read": false,
         ".write": false
       },
       ".indexOn": ".value"
