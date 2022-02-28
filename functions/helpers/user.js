@@ -174,7 +174,7 @@ const sendCheckUpEmail = (nextPageToken) => {
             from: "ventwithstrangers@gmail.com",
             subject: "Hello :)",
             text:
-              "Hi there, My name is Common and I am the cofounder of Vent With Strangers. I am trying to make the app the best that it can be. Could you let me know why you stopped using it? Feel free to respond directly to this email :)",
+              "Hi there, My name is Peter and I am the cofounder of Vent With Strangers. I am trying to make the app the best that it can be. Could you let me know why you stopped using it? Feel free to respond directly to this email :)",
             to: userRecord.email,
           };
           await sgMail

@@ -4,6 +4,7 @@ import loadable from "@loadable/component";
 import { Space } from "antd";
 
 import { faComments } from "@fortawesome/pro-duotone-svg-icons/faComments";
+import { faGamepadModern } from "@fortawesome/pro-duotone-svg-icons/faGamepadModern";
 import { faHeart } from "@fortawesome/pro-regular-svg-icons/faHeart";
 import { faInfo } from "@fortawesome/pro-duotone-svg-icons/faInfo";
 import { faPrayingHands } from "@fortawesome/pro-duotone-svg-icons/faPrayingHands";
@@ -89,6 +90,12 @@ function Sidebar() {
           "Chat With Strangers" +
           (queueLength === -1 ? "" : ` (${queueLength})`)
         }
+      />
+      <SideBarLink
+        icon={faGamepadModern}
+        link="/game"
+        pathname={pathname}
+        text="Play Game"
       />
       <SideBarLink
         icon={faStarShooting}

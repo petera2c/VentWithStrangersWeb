@@ -54,6 +54,8 @@ const SubSuccessPage = React.lazy(() => import("./Subscribe/Success"));
 const IndividualVentPage = React.lazy(() => import("./Vents/Individual"));
 const VentsPage = React.lazy(() => import("./Vents"));
 
+const GamePage = React.lazy(() => import("./Game"));
+
 function RoutesComp() {
   const isMounted = useRef(false);
 
@@ -261,6 +263,7 @@ function RoutesComp() {
                       path="verified-email"
                       element={<VerifiedEmailPage />}
                     />
+                    <Route path="game" element={<GamePage />} />
                   </Routes>
                 </Suspense>
               )}
