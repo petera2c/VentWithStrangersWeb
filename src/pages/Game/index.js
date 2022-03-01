@@ -2,6 +2,8 @@ import React, { useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 
+import Page from "../../components/containers/Page";
+
 function Box() {
   const mesh = useRef();
   useFrame(() => (mesh.current.rotation.x += 0.01));
@@ -25,8 +27,8 @@ function Plane() {
 
 function App() {
   return (
-    <div
-      className="flex column x-fill br2"
+    <Page
+      className="br2"
       style={{
         backgroundColor: "#171a1c",
       }}
@@ -49,7 +51,7 @@ function App() {
           <span className="blue">here</span>
         </h1>
       </a>
-    </div>
+    </Page>
   );
 }
 
