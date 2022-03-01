@@ -8,20 +8,25 @@ function Box() {
 
   return (
     <mesh ref={mesh}>
-      <boxGeometry />
-      <meshStandardMaterial color="#2096f2" />
+      <boxBufferGeometry />
+      <meshLambertMaterial attach="material" color="#2096f2" />
     </mesh>
   );
 }
 
 function App() {
   return (
-    <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
+    <div
+      className="flex column x-fill br2"
+      style={{
+        backgroundColor: "#171a1c",
+      }}
+    >
       <Canvas>
         <OrbitControls />
         <Stars />
-        <ambientLight />
-        <pointLight position={[10, 10, 10]} />
+        <ambientLight intensity={0.5} />
+        <pointLight position={[10, 15, 10]} angle={0.3} />
         <Box position={[10, 10, 10]} />
       </Canvas>
       <a
@@ -29,7 +34,7 @@ function App() {
         rel="noreferrer"
         target="_blank"
       >
-        <h1 className="tac">
+        <h1 className="white tac">
           If you have any ideas on what this game should do, please let us know{" "}
           <span className="blue">here</span>
         </h1>
