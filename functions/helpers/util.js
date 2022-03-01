@@ -127,6 +127,8 @@ const getMetaInformation = async (url, callback) => {
     title = "Vent and Chat Anonymously With Strangers";
   } else if (url === "/my-feed") {
     title = "My Awesome Feed";
+  } else if (url === "/game") {
+    title = "VWS Game";
   } else if (url === "/account") {
     title = "Account";
   } else if (url === "/avatar") {

@@ -11,6 +11,8 @@ export const getMetaData = (page, search) => {
     keywords =
       "muttr,vent online,vent to someone,vent app,I need to vent,anonymous chat,talk to strangers, chat rooms, chat with strangers";
     title = "Vent and Chat Anonymously With Strangers";
+  } else if (page === "/game") {
+    title = "VWS Game";
   } else if (page === "/my-feed") {
     title = "My Awesome Feed";
   } else if (page === "/account") {
