@@ -60,10 +60,6 @@ exports.userWasInvited = functions.firestore
   .document("/invited_users/{secondUID}")
   .onCreate(userWasInvited);
 
-exports.blockUserListener = functions.firestore
-  .document("/block_check/{userID1userID2}")
-  .onWrite(blockUserListener);
-
 exports.chatQueueListener = functions.firestore
   .document("/chat_queue/{userID}")
   .onWrite(chatQueueListener);

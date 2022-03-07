@@ -7,13 +7,6 @@ service cloud.firestore {
       allow write: if false;
     }
 
-    match /block_check/{userIDuserID2} {
-      allow read: if  request.auth.uid == userIDuserID2.split('\\|\\|\\|')[0] || request.auth.uid == userIDuserID2.split('\\|\\|\\|')[1];
-      allow write: if request.resource.data.keys().hasOnly([request.auth.uid]);
-      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly([request.auth.uid]);
-      allow delete: if false;
-    }
-
     match /chat_queue/{uid} {
       allow read: if true;
       allow write: if request.auth.uid == uid;

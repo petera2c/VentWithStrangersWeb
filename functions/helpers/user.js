@@ -262,22 +262,6 @@ const userDelete = async (user) => {
   let counter = 0;
   const batch = admin.firestore().batch();
 
-  const blockedUserSnapshot = await admin
-    .firestore()
-    .collection("block_check")
-    .where(user.uid, "==", true)
-    .get();
-  for (let index in blockedUserSnapshot.docs) {
-    counter++;
-    if (counter === 500) await batch.commit();
-    const ref = admin
-      .firestore()
-      .collection("block_check")
-      .doc(blockedUserSnapshot.docs[index].id);
-
-    batch.delete(ref);
-  }
-
   const chatQueueSnapshot = await admin
     .firestore()
     .collection("chat_queue")
