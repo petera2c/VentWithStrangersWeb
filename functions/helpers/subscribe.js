@@ -1,10 +1,11 @@
-const admin = require("firebase-admin");
+//const admin = require("firebase-admin");
 
-const { stripeSecretKey, stripePlanID } = require("../config/keys");
-const stripe = require("stripe")(stripeSecretKey);
+//const { stripeSecretKey, stripePlanID } = require("../config/keys");
+//const stripe = require("stripe")(stripeSecretKey);
 
-const subscribeToPlan = async (req, res) => {
-  const { email, payment_method } = req.body;
+const subscribeToPlan = async () => {
+  //req, res
+  /*const { email, payment_method } = req.body;
 
   // Get user using email
   admin
@@ -97,7 +98,7 @@ const subscribeToPlan = async (req, res) => {
         message: "Can not find your account :(",
         success: false,
       });
-    });
+    });*/
 };
 
 module.exports = { subscribeToPlan };

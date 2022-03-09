@@ -8,3 +8,5 @@ pubsub-debug.log
 firebase-debug.log
 sendgrid.env
 google_key.json
+
+config/localKeys.js

@@ -27,6 +27,8 @@ functions/ui-debug.log
 functions/firestore-debug.log
 functions/pubsub-debug.log
 functions/firebase-debug.log
+functions/config/localKeys.js
+
 database-debug.log
 firestore-debug.log
 pubsub-debug.log

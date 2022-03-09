@@ -9,7 +9,6 @@ const app = express();
 const fs = require("fs");
 const path = require("path");
 
-const { blockUserListener } = require("./helpers/block");
 const {
   commentLikeListener,
   newCommentListener,

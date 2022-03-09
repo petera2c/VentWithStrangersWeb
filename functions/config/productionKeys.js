@@ -1,9 +1,11 @@
+const functions = require("firebase-functions");
+
 module.exports = {
-  amazonAccessKeyID: "AKIAIT66XUOZQOGRDBLQ",
-  amazonSecretAccessKey: "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",
-  amazonBucket: "ventwithstrangers",
-  stripePlanID: "price_1KHfJRGjCcf2qEJgNsPxQgl2",
-  stripeSecretKey: "sk_live_cMaM3AZPpZ389xzAhdo0nFQA",
-  sendGridApiKey:
-    "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",
+  amazonAccessKeyID: functions.config().secret.amazon_access_key_id,
+  amazonSecretAccessKey: functions.config().secret.amazon_secret_access_key,
+  amazonBucket: functions.config().secret.amazon_bucket,
+  sendGridApiKey: functions.config().secret.sendgrid_api_key,
 };
+
+// firebase functions:config:set secret.sendgrid_api_key="THE API KEY"
+// functions.config().secret.API_KEY
