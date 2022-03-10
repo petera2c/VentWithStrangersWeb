@@ -10,13 +10,13 @@ import User from "../../components/User";
 import Vent from "../../components/Vent";
 
 import { capitolizeFirstChar, getIsMobileOrTablet } from "../../util";
+import { searchVents } from "./util";
 
 const searchClient = algoliasearch(
   "N7KIA5G22X",
   "a2fa8c0a85b2020696d2da1780d7dfdb"
 );
 const usersIndex = searchClient.initIndex("users");
-const ventsIndex = searchClient.initIndex("vents");
 
 function SearchPage() {
   const location = useLocation();
@@ -41,13 +41,7 @@ function SearchPage() {
           setUsers(hits);
         });
     } else {
-      ventsIndex
-        .search(search, {
-          hitsPerPage: 5,
-        })
-        .then(({ hits }) => {
-          setVents(hits);
-        });
+      searchVents(search, setVents);
     }
   }, [search, isUsers]);
 
