@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import loadable from "@loadable/component";
 import TextArea from "react-textarea-autosize";
-import algoliasearch from "algoliasearch";
 import { message, Space, Tooltip } from "antd";
 
 import { faQuestionCircle } from "@fortawesome/pro-duotone-svg-icons/faQuestionCircle";
@@ -26,6 +25,7 @@ import {
 import {
   checkVentTitle,
   getQuote,
+  getTags,
   getUserVentTimeOut,
   getVent,
   selectEncouragingMessage,
@@ -34,12 +34,6 @@ import { checks } from "./util";
 
 const Emoji = loadable(() => import("../Emoji"));
 const MakeAvatar = loadable(() => import("../views/MakeAvatar"));
-
-const searchClient = algoliasearch(
-  "N7KIA5G22X",
-  "a2fa8c0a85b2020696d2da1780d7dfdb"
-);
-const tagsIndex = searchClient.initIndex("vent_tags");
 
 const TITLE_LENGTH_MINIMUM = 0;
 const TITLE_LENGTH_MAXIMUM = 100;
@@ -61,6 +55,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
   const [userVentTimeOut, setUserVentTimeOut] = useState(false);
   const [userVentTimeOutFormatted, setUserVentTimeOutFormatted] = useState("");
   const [ventTags, setVentTags] = useState([]);
+  const [searchedVentTags, setSearchedVentTags] = useState([]);
 
   const [hasStartedToWriteVent, setHasStartedToWriteVent] = useState(false);
   const [placeholderText, setPlaceholderText] = useState("");
@@ -74,20 +69,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
       setIsMobileOrTablet(getIsMobileOrTablet());
     }
 
-    tagsIndex
-      .search("", {
-        hitsPerPage: 10,
-      })
-      .then(({ hits }) => {
-        if (isMounted())
-          setVentTags(
-            hits.sort((a, b) => {
-              if (a.display < b.display) return -1;
-              if (a.display > b.display) return 1;
-              return 0;
-            })
-          );
-      });
+    getTags(setSearchedVentTags, setVentTags);
 
     if (ventID) getVent(isMounted, setDescription, setTags, setTitle, ventID);
 
@@ -242,13 +224,9 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
               onChange={(e) => {
                 if (postingDisableFunction) return postingDisableFunction();
 
-                tagsIndex
-                  .search(e.target.value, {
-                    hitsPerPage: 10,
-                  })
-                  .then(({ hits }) => {
-                    setVentTags(hits);
-                  });
+                setSearchedVentTags(
+                  searchStringInArray(e.target.value, ventTags)
+                );
 
                 setTagText(e.target.value);
               }}
@@ -256,11 +234,11 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
               type="text"
               value={tagText}
             />
-            {ventTags && ventTags.length > 0 && (
+            {searchedVentTags && searchedVentTags.length > 0 && (
               <Container className="wrap gap8">
-                {ventTags.map((tagHit) => (
+                {searchedVentTags.map((tagHit) => (
                   <Tag
-                    key={tagHit.objectID}
+                    key={tagHit.id}
                     postingDisableFunction={postingDisableFunction}
                     setTags={setTags}
                     tagHit={tagHit}
@@ -279,7 +257,7 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
                 <SelectedTag
                   postingDisableFunction={postingDisableFunction}
                   index={index}
-                  key={tag.objectID}
+                  key={tag.id}
                   setTags={setTags}
                   tag={tag}
                   tags={tags}
@@ -386,6 +364,33 @@ function NewVentComponent({ isBirthdayPost, miniVersion, ventID }) {
   );
 }
 
+function searchStringInArray(str, strArray) {
+  let temp = [];
+  for (var j = 0; j < strArray.length; j++) {
+    if (strArray[j].id.match(str)) temp.push(strArray[j]);
+  }
+  return temp;
+}
+
+function SelectedTag({ index, postingDisableFunction, setTags, tag, tags }) {
+  return (
+    <Container
+      className="button-2 br4 gap8 pa8"
+      onClick={() => {
+        if (postingDisableFunction) return postingDisableFunction();
+
+        let temp = [...tags];
+        temp.splice(index, 1);
+        setTags(temp);
+      }}
+    >
+      <p className="ic flex-fill">{viewTagFunction(tag.id)}</p>
+
+      <FontAwesomeIcon icon={faTimes} />
+    </Container>
+  );
+}
+
 function Tag({ postingDisableFunction, setTags, tagHit, tags }) {
   return (
     <button
@@ -401,27 +406,8 @@ function Tag({ postingDisableFunction, setTags, tagHit, tags }) {
         });
       }}
     >
-      {viewTagFunction(tagHit.objectID)}
+      {viewTagFunction(tagHit.id)}
     </button>
-  );
-}
-
-function SelectedTag({ index, postingDisableFunction, setTags, tag, tags }) {
-  return (
-    <Container
-      className="button-2 br4 gap8 pa8"
-      onClick={() => {
-        if (postingDisableFunction) return postingDisableFunction();
-
-        let temp = [...tags];
-        temp.splice(index, 1);
-        setTags(temp);
-      }}
-    >
-      <p className="ic flex-fill">{viewTagFunction(tag.objectID)}</p>
-
-      <FontAwesomeIcon icon={faTimes} />
-    </Container>
   );
 }
 

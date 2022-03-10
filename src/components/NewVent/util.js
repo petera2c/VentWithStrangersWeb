@@ -106,6 +106,21 @@ export const getQuote = async (isMounted, setQuote) => {
   }
 };
 
+export const getTags = async (setSearchedVentTags, setVentTags) => {
+  const snapshot = await getDocs(query(collection(db, "vent_tags")));
+
+  const tags = [];
+
+  for (let index in snapshot.docs) {
+    const temp = snapshot.docs[index];
+
+    tags.push({ ...temp.data(), id: temp.id });
+  }
+
+  setSearchedVentTags(tags);
+  setVentTags(tags);
+};
+
 export const getUserVentTimeOut = async (callback, userID) => {
   const userVentTimeOutDoc = await getDoc(doc(db, "user_vent_timeout", userID));
 
