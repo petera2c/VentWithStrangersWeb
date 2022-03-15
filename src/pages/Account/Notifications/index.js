@@ -36,7 +36,7 @@ function NotificationsPage() {
     );
     newNotificationsListenerUnsubscribe = newNotificationsListener(
       isMounted,
-      () => {},
+      undefined,
       setNotifications,
       user
     );

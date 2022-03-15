@@ -127,10 +127,11 @@ export const newNotificationsListener = (
         !snapshot.docs[0].data().hasSeen &&
         isMounted()
       ) {
-        setNotificationCounter((oldAmount) => {
-          oldAmount++;
-          return oldAmount;
-        });
+        if (setNotificationCounter)
+          setNotificationCounter((oldAmount) => {
+            oldAmount++;
+            return oldAmount;
+          });
 
         setNotifications((oldNotifications) => [
           {

@@ -80,10 +80,7 @@ function AccountSection() {
     <Page className="pa16">
       <Container>
         <Container className="flex-fill column">
-          <form
-            className="flex-fill column bg-white pa16 mb2 br8"
-            onSubmit={() => {}}
-          >
+          <form className="flex-fill column bg-white pa16 mb2 br8">
             <h6 className="blue bold mb16">Personal Information</h6>
             <Container className="wrap">
               <Container

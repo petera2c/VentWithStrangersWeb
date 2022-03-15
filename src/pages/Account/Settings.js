@@ -316,7 +316,6 @@ function Setting({
       <input
         className="mr8"
         checked={settingsSnapshot.data()[main]}
-        onChange={() => {}}
         style={{ minWidth: "13px" }}
         type="checkbox"
       />

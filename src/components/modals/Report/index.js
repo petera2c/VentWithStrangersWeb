@@ -64,7 +64,6 @@ class ReportModal extends Component {
               <input
                 className="mr8"
                 checked={violence}
-                onChange={() => {}}
                 style={{ minWidth: "13px" }}
                 type="checkbox"
               />
@@ -82,7 +81,6 @@ class ReportModal extends Component {
               <input
                 className="mr8"
                 checked={abuse}
-                onChange={() => {}}
                 style={{ minWidth: "13px" }}
                 type="checkbox"
               />
@@ -100,7 +98,6 @@ class ReportModal extends Component {
               <input
                 className="mr8"
                 checked={privateInformation}
-                onChange={() => {}}
                 style={{ minWidth: "13px" }}
                 type="checkbox"
               />
@@ -118,7 +115,6 @@ class ReportModal extends Component {
               <input
                 className="mr8"
                 checked={illegal}
-                onChange={() => {}}
                 style={{ minWidth: "13px" }}
                 type="checkbox"
               />
@@ -136,7 +132,6 @@ class ReportModal extends Component {
               <input
                 className="mr8"
                 checked={malicious}
-                onChange={() => {}}
                 style={{ minWidth: "13px" }}
                 type="checkbox"
               />
