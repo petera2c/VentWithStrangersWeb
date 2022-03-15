@@ -21,8 +21,6 @@ function BirthdayModal({ close }) {
     setTimeout(() => {
       if (isMounted()) setCanClose(true);
     }, 2000);
-
-    return () => {};
   }, [isMounted]);
 
   return (

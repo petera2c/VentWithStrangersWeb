@@ -63,8 +63,6 @@ function UserComponent({
         setKarmaPoints(calculateKarma(newUserInfo));
       }
     }, userID);
-
-    return () => {};
   }, [isMounted, userID]);
 
   return (
