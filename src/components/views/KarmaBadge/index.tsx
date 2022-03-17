@@ -8,18 +8,70 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Container from "../../containers/Container";
 
-function KarmaBadge({ noOnClick, onClick, noTooltip, userBasicInfo }) {
+/*{
+    "displayName": "Noelle",
+    "server_timestamp": 1643218764000,
+    "karma": 2571,
+    "avatar": {
+        "mouthType": "Twinkle",
+        "eyeType": "Wink",
+        "skinColor": "Pale",
+        "hairColor": "BrownDark",
+        "clotheType": "CollarSweater",
+        "topType": "LongHairStraightStrand",
+        "eyebrowType": "Default",
+        "accessoriesType": "Round"
+    },
+    "id": "kpJGYvVMx0YLEpX7OY0FbnkI3FE3"
+}*/
+interface Avatar {
+  mouthType: string;
+  eyeType: string;
+  skinColor: string;
+  hairColor: string;
+  clotheType: string;
+  topType: string;
+  eyebrowType: string;
+  accessoriesType: string;
+}
+
+interface User {
+  avatar: Avatar;
+  displayName: string;
+  id: string;
+  is_admin?: boolean;
+  karma: number;
+  server_timestamp: number;
+}
+
+interface Props {
+  noOnClick: boolean;
+  onClick: () => void;
+  noTooltip: boolean;
+  userBasicInfo: User | boolean;
+}
+
+const KarmaBadge: React.FC<Props> = ({
+  noOnClick,
+  onClick,
+  noTooltip,
+  userBasicInfo,
+}) => {
   const navigate = useNavigate();
 
   const [karma, setKarma] = useState(0);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   useEffect(() => {
     import("../../../util").then((functions) => {
       setKarma(functions.calculateKarma(userBasicInfo));
     });
-    setIsAdmin(userBasicInfo ? userBasicInfo.is_admin : false);
-  }, [userBasicInfo, userBasicInfo.is_admin]);
+    setIsAdmin(
+      typeof userBasicInfo === "object"
+        ? Boolean(userBasicInfo.is_admin)
+        : false
+    );
+  }, [userBasicInfo]);
 
   if (isAdmin)
     return (
@@ -30,7 +82,7 @@ function KarmaBadge({ noOnClick, onClick, noTooltip, userBasicInfo }) {
         <span>
           <Container
             className="clickable"
-            onClick={(e) => {
+            onClick={(e: any) => {
               if (noOnClick) return;
               e.stopPropagation();
               e.preventDefault();
@@ -84,12 +136,12 @@ function KarmaBadge({ noOnClick, onClick, noTooltip, userBasicInfo }) {
         <span>
           <Container
             className="clickable"
-            onClick={(e) => {
+            onClick={(e: any) => {
               if (noOnClick) return;
               e.stopPropagation();
               e.preventDefault();
 
-              if (onClick) onClick();
+              if (typeof onClick === "function") onClick();
               else {
                 navigate("/site-info");
               }
@@ -101,6 +153,6 @@ function KarmaBadge({ noOnClick, onClick, noTooltip, userBasicInfo }) {
       </Tooltip>
     );
   else return <div></div>;
-}
+};
 
 export default KarmaBadge;

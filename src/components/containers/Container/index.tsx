@@ -1,6 +1,17 @@
 import React from "react";
 
-function Container({
+interface Props {
+  children: any;
+  className?: string;
+  forwardedRef2?: any;
+  id?: string;
+  onClick?: any;
+  onScroll?: any;
+  style?: any;
+  testMode?: boolean;
+}
+
+const Container: React.FC<Props> = ({
   children,
   className,
   forwardedRef2,
@@ -9,7 +20,7 @@ function Container({
   onScroll,
   style,
   testMode,
-}) {
+}) => {
   if (testMode) className += " test-mode";
 
   return (
@@ -24,6 +35,6 @@ function Container({
       {children}
     </div>
   );
-}
+};
 
 export default Container;
