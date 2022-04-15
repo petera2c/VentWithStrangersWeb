@@ -17,6 +17,7 @@ const MobileHeader = loadable(() =>
 const NewRewardModal = loadable(() => import("../components/modals/NewReward"));
 const Sidebar = loadable(() => import("../components/Sidebar"));
 
+const CoFounderPage = React.lazy(() => import("./co-founder"));
 const NotFoundPage = React.lazy(() => import("./Basic/NotFound"));
 const PrivacyPolicyPage = React.lazy(() => import("./Basic/PrivacyPolicy"));
 const RulesPage = React.lazy(() => import("./Basic/Rules"));
@@ -190,6 +191,7 @@ function RoutesComp() {
                   }
                 >
                   <Routes>
+                    <Route path="co-founder" element={<CoFounderPage />} />
                     {!user && <Route path="account" element={<SignUpPage />} />}
                     {user && <Route path="account" element={<AccountPage />} />}
                     {!user && <Route path="avatar" element={<SignUpPage />} />}

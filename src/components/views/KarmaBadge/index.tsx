@@ -82,7 +82,7 @@ const KarmaBadge: React.FC<Props> = ({
         <span>
           <Container
             className="clickable"
-            onClick={(e: any) => {
+            onClick={(e: React.ChangeEvent<HTMLInputElement>) => {
               if (noOnClick) return;
               e.stopPropagation();
               e.preventDefault();
@@ -136,7 +136,7 @@ const KarmaBadge: React.FC<Props> = ({
         <span>
           <Container
             className="clickable"
-            onClick={(e: any) => {
+            onClick={(e: React.ChangeEvent<HTMLInputElement>) => {
               if (noOnClick) return;
               e.stopPropagation();
               e.preventDefault();
