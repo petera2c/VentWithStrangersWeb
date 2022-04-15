@@ -8,9 +8,9 @@ function CoFounderPage() {
   return (
     <Page
       className="align-center bg-blue-2 gap32 pt64"
-      description="Page not found."
+      description="Peter Young"
       keywords=""
-      title="Not Found"
+      title="Peter Young"
     >
       <h1 className="tac lh-1">Co founder Peter Young</h1>
       <a href="https://angel.co/u/peter-young2">View my angel list profile</a>
