@@ -7,6 +7,7 @@ import Container from "../containers/Container";
 
 function MakeAd({ banner, className, layoutKey, slot }) {
   const { userSubscription } = useContext(UserContext);
+  console.log("here");
 
   if (banner) {
     if (!userSubscription && process.env.NODE_ENV === "production")
