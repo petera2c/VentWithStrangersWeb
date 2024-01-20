@@ -22,7 +22,8 @@
     "node-fetch": "^2.6.1",
     "s3-proxy": "^1.2.1",
     "sendgrid": "^5.2.3",
-    "stripe": "^8.197.0"
+    "stripe": "^8.197.0",
+    "typescript": "^5.3.3"
   },
   "devDependencies": {
     "eslint": "^7.6.0",

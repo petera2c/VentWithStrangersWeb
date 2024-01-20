@@ -1,7 +1,8 @@
 module.exports = {
   env: {
-    node: true,
+    browser: true,
     es2021: true,
+    node: true,
   },
   extends: [
     "eslint:recommended",
@@ -13,34 +14,16 @@ module.exports = {
     ecmaFeatures: {
       jsx: true,
     },
-    ecmaVersion: "latest",
+    ecmaVersion: 12,
     sourceType: "module",
   },
   plugins: ["react", "@typescript-eslint"],
   rules: {
-    "react/prop-types": "off",
-    "react/no-unescaped-entities": 0,
+    // Add your project-specific rules here
   },
-};
-
-/*module.exports = {
-  env: {
-    browser: true,
-    node: true,
-    es2021: true,
-  },
-  extends: ["eslint:recommended", "plugin:react/recommended"],
-  parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
+  settings: {
+    react: {
+      version: "detect",
     },
-    ecmaVersion: "latest",
-    sourceType: "module",
-  },
-  plugins: ["react"],
-  rules: {
-    "react/prop-types": "off",
-    "react/no-unescaped-entities": 0,
   },
 };
-*/
