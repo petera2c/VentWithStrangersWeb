@@ -1,12 +1,10 @@
-const admin = require("firebase-admin");
-
-const updateFeedAndFollowers = async (change, context) => {
+const updateFeedAndFollowers = async (change: any, context: any) => {
   const { followingUserID, userID } = context.params;
   const changeAfter = change.after.val();
 
   if (changeAfter === "total") return;
 
-  const addVentsToFeed = async (followingUserID, userID) => {
+  const addVentsToFeed = async (followingUserID: any, userID: any) => {
     const snapshot = await admin
       .firestore()
       .collection("vents")
@@ -26,14 +24,14 @@ const updateFeedAndFollowers = async (change, context) => {
     }
   };
 
-  const incrementTotalCounter = (increment) => {
+  const incrementTotalCounter = (increment: any) => {
     admin
       .database()
       .ref("following_total/" + userID)
       .set(admin.database.ServerValue.increment(increment));
   };
 
-  const removeVentsFromFeed = async (unfollowingUserID, userID) => {
+  const removeVentsFromFeed = async (unfollowingUserID: any, userID: any) => {
     const snapshot = await admin
       .database()
       .ref("feed/" + userID)

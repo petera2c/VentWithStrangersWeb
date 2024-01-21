@@ -1,12 +1,12 @@
 import { render } from "react-dom";
+import AppRoutes from "./pages/Routes";
 
-import Routes from "./pages/";
 import "./config/firebase_init";
+import "./config/db_init";
 
-import "antd/dist/antd.min.css";
-import "emoji-mart/css/emoji-mart.css";
 import "./theme.css";
+import { getApps } from "firebase/app";
 
 const rootElement = document.getElementById("root");
 
-render(<Routes />, rootElement);
+render(<AppRoutes />, rootElement);

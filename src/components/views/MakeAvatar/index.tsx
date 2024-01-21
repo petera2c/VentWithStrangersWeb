@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from "react";
-import loadable from "@loadable/component";
+import { useEffect, useState } from "react";
 
 import { capitolizeFirstChar } from "../../../util";
-
-const Avatar = loadable(() => import("avataaars"));
 
 function MakeAvatar({ className, displayName, size, userBasicInfo }) {
   const [capitolizedDisplayName, setCapitolizedDisplayName] = useState("");
@@ -18,7 +15,7 @@ function MakeAvatar({ className, displayName, size, userBasicInfo }) {
     if (size === "large")
       return (
         <div className={"avatar large " + className}>
-          <Avatar
+          {/* <Avatar
             avatarStyle={"Circle"}
             topType={userBasicInfo.avatar.topType}
             accessoriesType={userBasicInfo.avatar.accessoriesType}
@@ -30,13 +27,13 @@ function MakeAvatar({ className, displayName, size, userBasicInfo }) {
             mouthType={userBasicInfo.avatar.mouthType}
             skinColor={userBasicInfo.avatar.skinColor}
             style={{ height: "100%" }}
-          />
+          /> */}
         </div>
       );
     else if (size === "small")
       return (
         <div className={"avatar small " + className}>
-          <Avatar
+          {/* <Avatar
             avatarStyle={"Circle"}
             topType={userBasicInfo.avatar.topType}
             accessoriesType={userBasicInfo.avatar.accessoriesType}
@@ -48,13 +45,13 @@ function MakeAvatar({ className, displayName, size, userBasicInfo }) {
             mouthType={userBasicInfo.avatar.mouthType}
             skinColor={userBasicInfo.avatar.skinColor}
             style={{ height: "100%" }}
-          />
+          /> */}
         </div>
       );
     else
       return (
         <div className={"avatar " + className}>
-          <Avatar
+          {/* <Avatar
             avatarStyle={"Circle"}
             topType={userBasicInfo.avatar.topType}
             accessoriesType={userBasicInfo.avatar.accessoriesType}
@@ -66,7 +63,7 @@ function MakeAvatar({ className, displayName, size, userBasicInfo }) {
             mouthType={userBasicInfo.avatar.mouthType}
             skinColor={userBasicInfo.avatar.skinColor}
             style={{ height: "100%" }}
-          />
+          /> */}
         </div>
       );
   } else {

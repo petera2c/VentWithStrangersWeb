@@ -1,10 +1,3 @@
-const admin = require("firebase-admin");
-const moment = require("moment-timezone");
-const { createNotification } = require("./notification");
-const { createBirthdayLink } = require("./util");
-
-const link_sign_up = require("./email_templates/link_sign_up");
-
 const sgMail = require("@sendgrid/mail");
 
 const { sendGridApiKey } = require("../config/keys");
@@ -36,7 +29,7 @@ const checkForBirthdays = async () => {
   }
 };
 
-const createMilestone = async (reward, title, userID) => {
+const createMilestone = async (reward: any, title: any, userID: any) => {
   await admin
     .firestore()
     .collection("users_display_name")
@@ -57,11 +50,11 @@ const createMilestone = async (reward, title, userID) => {
 };
 
 const checkIfCanCreateMilestone = async (
-  counter,
-  size,
-  title,
-  secondTitle,
-  userID
+  counter: any,
+  size: any,
+  title: any,
+  secondTitle: any,
+  userID: any
 ) => {
   let reward;
   let first;
@@ -124,7 +117,7 @@ const checkIfCanCreateMilestone = async (
   }
 };
 
-const newUserSetup = async (user) => {
+const newUserSetup = async (user: any) => {
   await admin.firestore().collection("user_rewards").doc(user.uid).set({
     created_comment_supports_counter: 0,
     created_comments_counter: 0,
@@ -149,14 +142,14 @@ const newUserSetup = async (user) => {
     .add({ primary_uid: user.uid });
 };
 
-const sendCheckUpEmail = (nextPageToken) => {
+const sendCheckUpEmail = (nextPageToken: any) => {
   let counter = 0;
 
   admin
     .auth()
     .listUsers(50, nextPageToken)
-    .then((listUsersResult) => {
-      listUsersResult.users.forEach(async (userRecord) => {
+    .then((listUsersResult: any) => {
+      listUsersResult.users.forEach(async (userRecord: any) => {
         const days = Math.floor(
           new moment().diff(new moment(userRecord.metadata.lastSignInTime)) /
             1000 /
@@ -173,8 +166,7 @@ const sendCheckUpEmail = (nextPageToken) => {
           const msg = {
             from: "ventwithstrangers@gmail.com",
             subject: "Hello :)",
-            text:
-              "Hi there, My name is Peter and I am the cofounder of Vent With Strangers. I am trying to make the app the best that it can be. Could you let me know why you stopped using it? Feel free to respond directly to this email :)",
+            text: "Hi there, My name is Peter and I am the cofounder of Vent With Strangers. I am trying to make the app the best that it can be. Could you let me know why you stopped using it? Feel free to respond directly to this email :)",
             to: userRecord.email,
           };
           await sgMail
@@ -186,7 +178,7 @@ const sendCheckUpEmail = (nextPageToken) => {
                 .ref("has_been_sent_checkup_email/" + userRecord.uid)
                 .set(true);
             })
-            .catch(({ response }) => {
+            .catch(({ response }: any) => {
               console.log(response.body.errors);
             });
         } else {
@@ -198,7 +190,7 @@ const sendCheckUpEmail = (nextPageToken) => {
         if (counter < 100) sendCheckUpEmail(listUsersResult.pageToken);
       }
     })
-    .catch((error) => {
+    .catch((error: any) => {
       console.log("Error listing users:", error);
     });
 };
@@ -207,7 +199,7 @@ const signPeopleOut = () => {
   admin
     .database()
     .ref("total_online_users2")
-    .once("value", (doc) => {
+    .once("value", (doc: any) => {
       const totalOnlineUser = doc.val();
       if (totalOnlineUser)
         admin
@@ -215,10 +207,10 @@ const signPeopleOut = () => {
           .ref("status")
           .limitToLast(totalOnlineUser)
           .orderByChild("state")
-          .once("value", (snapshot) => {
+          .once("value", (snapshot: any) => {
             //let numberOfUsersOnline = 0;
 
-            snapshot.forEach((data) => {
+            snapshot.forEach((data: any) => {
               //if (data.val().status === "online") numberOfUsersOnline++;
 
               const hoursInactive = Math.floor(
@@ -258,7 +250,7 @@ const signPeopleOut = () => {
     });
 };
 
-const userDelete = async (user) => {
+const userDelete = async (user: any) => {
   let counter = 0;
   const batch = admin.firestore().batch();
 
@@ -553,7 +545,7 @@ const userDelete = async (user) => {
     .remove();
 };
 
-const userRewardsListener = async (change, context) => {
+const userRewardsListener = async (change: any, context: any) => {
   const { userID } = context.params;
   const afterUserRewards = { id: change.after.id, ...change.after.data() };
   const beforeUserRewards = { id: change.before.id, ...change.before.data() };
@@ -566,7 +558,7 @@ const userRewardsListener = async (change, context) => {
       checkIfCanCreateMilestone(
         afterUserRewards.quote_contests_won_counter,
         "tiny",
-        (number) => "You have won " + number + " quote contests!",
+        (number: any) => "You have won " + number + " quote contests!",
         "You have won your first quote contest! You are amazing!!!",
         userID
       );
@@ -577,7 +569,7 @@ const userRewardsListener = async (change, context) => {
       checkIfCanCreateMilestone(
         afterUserRewards.created_comment_supports_counter,
         "medium",
-        (number) => "You have supported " + number + " comments!",
+        (number: any) => "You have supported " + number + " comments!",
         undefined,
         userID
       );
@@ -588,7 +580,7 @@ const userRewardsListener = async (change, context) => {
       checkIfCanCreateMilestone(
         afterUserRewards.created_comments_counter,
         "small",
-        (number) => "You have created " + number + " comments!",
+        (number: any) => "You have created " + number + " comments!",
         "You have created your first comment!!!",
         userID
       );
@@ -599,7 +591,7 @@ const userRewardsListener = async (change, context) => {
       checkIfCanCreateMilestone(
         afterUserRewards.created_vent_supports_counter,
         "medium",
-        (number) => "You have supported " + number + " vents!",
+        (number: any) => "You have supported " + number + " vents!",
         undefined,
         userID
       );
@@ -610,7 +602,7 @@ const userRewardsListener = async (change, context) => {
       checkIfCanCreateMilestone(
         afterUserRewards.created_vents_counter,
         "small",
-        (number) => "You have created " + number + " vents!",
+        (number: any) => "You have created " + number + " vents!",
         "You have created your first vent!!!",
         userID
       );
@@ -621,7 +613,7 @@ const userRewardsListener = async (change, context) => {
       checkIfCanCreateMilestone(
         afterUserRewards.received_comment_supports_counter,
         "medium",
-        (number) => "Your comments have received " + number + " supports!",
+        (number: any) => "Your comments have received " + number + " supports!",
         undefined,
         userID
       );
@@ -632,7 +624,7 @@ const userRewardsListener = async (change, context) => {
       checkIfCanCreateMilestone(
         afterUserRewards.received_vent_supports_counter,
         "medium",
-        (number) => "Your vents have received " + number + " supports!",
+        (number: any) => "Your vents have received " + number + " supports!",
         undefined,
         userID
       );
@@ -643,7 +635,7 @@ const userRewardsListener = async (change, context) => {
       checkIfCanCreateMilestone(
         afterUserRewards.created_quotes_counter,
         "small",
-        (number) => "You have created " + number + " quotes!",
+        (number: any) => "You have created " + number + " quotes!",
         "You have created your first quote!",
         userID
       );
@@ -655,7 +647,7 @@ const userRewardsListener = async (change, context) => {
       checkIfCanCreateMilestone(
         afterUserRewards.received_quote_supports_counter,
         "medium",
-        (number) => "Your quotes have received " + number + " supports!",
+        (number: any) => "Your quotes have received " + number + " supports!",
         undefined,
         userID
       );
@@ -666,14 +658,14 @@ const userRewardsListener = async (change, context) => {
       checkIfCanCreateMilestone(
         afterUserRewards.created_quote_supports_counter,
         "medium",
-        (number) => "You have supported " + number + " quotes!",
+        (number: any) => "You have supported " + number + " quotes!",
         undefined,
         userID
       );
   }
 };
 
-const userWasInvited = async (doc) => {
+const userWasInvited = async (doc: any) => {
   // Check we have all information that we need
   if (!doc.exists) return;
 

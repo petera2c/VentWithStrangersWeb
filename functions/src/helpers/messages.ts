@@ -1,7 +1,7 @@
-const admin = require("firebase-admin");
-const { sendMobilePushNotifications } = require("./notification");
-
-const messagesListener = async (messageDoc, context) => {
+const messagesListener = async (
+  messageDoc: any,
+  context: any
+): Promise<any> => {
   const { conversationID } = context.params;
 
   if (messageDoc.data().is_notice) return;
@@ -35,7 +35,7 @@ const messagesListener = async (messageDoc, context) => {
       admin
         .database()
         .ref("status/" + conversation.members[index])
-        .once("value", (doc) => {
+        .once("value", (doc: any) => {
           if (!doc.val() || (doc.val() && doc.val().state !== "online"))
             sendMobilePushNotifications(
               "You have a new message!",

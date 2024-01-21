@@ -76,7 +76,7 @@ export const findPossibleUsersToTag = async (
     let users;
 
     if (snapshot && snapshot.docs && snapshot.docs.length > 0)
-      users = snapshot.docs.map((doc) => ({
+      users = snapshot.docs.map((doc: any) => ({
         ...doc.data(),
         id: doc.id,
         doc,
@@ -223,7 +223,7 @@ export const getVentComments = async (
 
   if (snapshot.docs && snapshot.docs.length > 0) {
     let newComments = [];
-    snapshot.docs.forEach((doc) => {
+    snapshot.docs.forEach((doc: any) => {
       if (comments && comments.find((comment) => comment.id === doc.id)) return;
       else
         newComments.push({

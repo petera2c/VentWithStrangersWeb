@@ -13,7 +13,7 @@ export const searchVents = async (search, setVents) => {
   let vents;
 
   if (snapshot && snapshot.docs && snapshot.docs.length > 0)
-    vents = snapshot.docs.map((doc) => ({
+    vents = snapshot.docs.map((doc: any) => ({
       ...doc.data(),
       id: doc.id,
     }));

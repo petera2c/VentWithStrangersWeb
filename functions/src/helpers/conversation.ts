@@ -1,6 +1,4 @@
-const admin = require("firebase-admin");
-
-function arraysEqual(a, b) {
+function arraysEqual(a: any, b: any) {
   if (a === b) return true;
   if (a == null || b == null) return false;
   if (a.length !== b.length) return false;
@@ -11,7 +9,7 @@ function arraysEqual(a, b) {
   return true;
 }
 
-const chatQueueListener = async (change, context) => {
+const chatQueueListener = async (change: any, context: any) => {
   const { userID } = context.params;
   const doc = change.after.data();
 
@@ -46,9 +44,9 @@ const chatQueueListener = async (change, context) => {
 
     return admin
       .firestore()
-      .runTransaction((transaction) => {
+      .runTransaction((transaction: any) => {
         // This code may get re-run multiple times if there are conflicts.
-        return transaction.get(partnerDocRef).then(async (partnerDoc) => {
+        return transaction.get(partnerDocRef).then(async (partnerDoc: any) => {
           if (!partnerDoc.exists) {
             throw "Document does not exist!";
           }
@@ -67,13 +65,13 @@ const chatQueueListener = async (change, context) => {
       .then(() => {
         console.log("Transaction successfully committed!");
       })
-      .catch((error) => {
+      .catch((error: any) => {
         console.log("Transaction failed: ", error);
       });
   }
 };
 
-const startConversation = async (partnerID, userID) => {
+const startConversation = async (partnerID: any, userID: any) => {
   const sortedMemberIDs = [userID, partnerID].sort();
   const conversationQuerySnapshot = await admin
     .firestore()
@@ -81,7 +79,7 @@ const startConversation = async (partnerID, userID) => {
     .where("members", "==", sortedMemberIDs)
     .get();
 
-  const goToPage = async (conversationID) => {
+  const goToPage = async (conversationID: any) => {
     await admin.firestore().collection("conversations").doc(conversationID).set(
       {
         go_to_inbox: true,
@@ -92,11 +90,11 @@ const startConversation = async (partnerID, userID) => {
   };
 
   if (!conversationQuerySnapshot.empty) {
-    conversationQuerySnapshot.forEach(async (conversationDoc) => {
+    conversationQuerySnapshot.forEach(async (conversationDoc: any) => {
       return await goToPage(conversationDoc.id);
     });
   } else {
-    let tempHasSeenObject = {};
+    let tempHasSeenObject: any = {};
     for (let index in sortedMemberIDs) {
       tempHasSeenObject[sortedMemberIDs[index]] = false;
     }
@@ -114,7 +112,7 @@ const startConversation = async (partnerID, userID) => {
   }
 };
 
-const conversationUpdateListener = async (change, context) => {
+const conversationUpdateListener = async (change: any, context: any) => {
   const { conversationID } = context.params;
 
   const conversationBefore = change.before.data();
@@ -162,7 +160,7 @@ const conversationUpdateListener = async (change, context) => {
     ) {
       // If user has deleted conversation code
       let membersDifference = conversationBefore.members.filter(
-        (x) => !conversationAfter.members.includes(x)
+        (x: any) => !conversationAfter.members.includes(x)
       );
 
       for (let index in membersDifference) {

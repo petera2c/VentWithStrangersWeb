@@ -1,4 +1,3 @@
-const moment = require("moment-timezone");
 const s3Proxy = require("s3-proxy");
 const AWS = require("aws-sdk");
 
@@ -13,7 +12,7 @@ const s3 = new AWS.S3({
   secretAccessKey: amazonSecretAccessKey,
 });
 
-const createProxy = (req, res, next) => {
+const createProxy = (req: any, res: any, next: any) => {
   s3Proxy({
     bucket: amazonBucket,
     accessKeyId: amazonAccessKeyID,
@@ -53,7 +52,7 @@ const createSitemap = async () => {
     Body: siteMapString,
   };
 
-  s3.putObject(params, (err) => {
+  s3.putObject(params, (err: any) => {
     if (err) console.log(err);
   });
 
@@ -70,7 +69,7 @@ const createSitemap = async () => {
     Body: siteMapIndexString,
   };
 
-  s3.putObject(params2, (err, data) => {
+  s3.putObject(params2, (err: any, data: any) => {
     console.log(data);
     if (err) console.log(err);
   });

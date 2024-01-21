@@ -40,7 +40,7 @@ export const conversationListener = (
 ) => {
   const unsubscribe = onSnapshot(
     doc(db, "conversations", currentConversation.id),
-    (doc) => {
+    (doc: any) => {
       const updatedConversation = { id: doc.id, ...doc.data() };
 
       if (isMounted)
@@ -122,7 +122,7 @@ export const getIsChatMuted = (
   setIsMuted,
   userID
 ) => {
-  get(ref(db2, "muted/" + conversationID + "/" + userID)).then((doc) => {
+  get(ref(db2, "muted/" + conversationID + "/" + userID)).then((doc: any) => {
     if (isMounted()) setIsMuted(doc.val());
   });
 };
@@ -300,7 +300,7 @@ export const getMessages = async (
 
   if (snapshot.docs && snapshot.docs.length > 0) {
     let newMessages = [];
-    snapshot.docs.forEach((doc) => {
+    snapshot.docs.forEach((doc: any) => {
       newMessages.unshift({ id: doc.id, doc, ...doc.data() });
     });
 

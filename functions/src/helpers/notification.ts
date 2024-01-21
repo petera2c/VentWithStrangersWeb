@@ -1,16 +1,11 @@
-const admin = require("firebase-admin");
-const fetch = require("node-fetch");
-const sgMail = require("@sendgrid/mail");
-
-const { sendGridApiKey } = require("../config/keys");
 sgMail.setApiKey(sendGridApiKey);
 
 const createNotification = async (
-  canPushMobileNotification,
-  emailNotificationInformation,
-  link,
-  message,
-  userID
+  canPushMobileNotification: any,
+  emailNotificationInformation: any,
+  link: any,
+  message: any,
+  userID: any
 ) => {
   if (!userID) return;
 
@@ -57,13 +52,13 @@ const createNotification = async (
     admin
       .database()
       .ref("status/" + userID)
-      .once("value", (doc) => {
+      .once("value", (doc: any) => {
         if (doc.val().state !== "online")
           sendMobilePushNotifications(message, userID);
       });
 };
 
-const sendMobilePushNotifications = async (message, userID) => {
+const sendMobilePushNotifications = async (message: any, userID: any) => {
   let userExpoTokensDoc = await admin
     .firestore()
     .collection("user_expo_tokens")

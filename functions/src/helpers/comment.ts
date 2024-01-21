@@ -1,20 +1,8 @@
-const admin = require("firebase-admin");
-const { createNotification } = require("./notification");
-const {
-  calculateKarmaUserCanStrip,
-  canUpdateTrendingScore,
-  createVentLink,
-} = require("./util");
-
-const comment_like = require("./email_templates/comment_like");
-const comment_on_vent = require("./email_templates/comment_on_vent");
-const comment_tagged = require("./email_templates/comment_tagged");
-
 const COMMENT_TRENDING_SCORE_DAY_INCREMENT = 10;
 const COMMENT_TRENDING_SCORE_WEEK_INCREMENT = 10;
 const COMMENT_TRENDING_SCORE_MONTH_INCREMENT = 10;
 
-const commentDeleteListener = async (doc) => {
+const commentDeleteListener = async (doc: any) => {
   const commentID = doc.id;
 
   const commentLikesSnapshot = await admin
@@ -41,7 +29,7 @@ const commentDeleteListener = async (doc) => {
     });
 };
 
-const commentLikeListener = async (change, context) => {
+const commentLikeListener = async (change: any, context: any) => {
   const { commentIDUserID } = context.params;
   const commentIDuserIDArray = commentIDUserID.split("|||");
 
@@ -83,9 +71,8 @@ const commentLikeListener = async (change, context) => {
     .collection("user_rewards")
     .doc(comment.userID)
     .update({
-      received_comment_supports_counter: admin.firestore.FieldValue.increment(
-        1
-      ),
+      received_comment_supports_counter:
+        admin.firestore.FieldValue.increment(1),
     });
   await admin
     .firestore()
@@ -137,7 +124,7 @@ const commentLikeListener = async (change, context) => {
   }
 };
 
-const createNewCommentNotification = async (doc) => {
+const createNewCommentNotification = async (doc: any) => {
   const ventDoc = await admin
     .firestore()
     .collection("vents")
@@ -172,16 +159,17 @@ const createNewCommentNotification = async (doc) => {
   }
 };
 
-const createNotificationsToAnyTaggedUsers = async (doc) => {
+const createNotificationsToAnyTaggedUsers = async (doc: any): Promise<any> => {
   const commentText = doc.data().text;
 
   if (!commentText) return;
-  const regexFull = /@\[[\x21-\x5A|\x61-\x7A|\x5f]+\]\([\x21-\x5A|\x61-\x7A]+\)/gi;
+  const regexFull =
+    /@\[[\x21-\x5A|\x61-\x7A|\x5f]+\]\([\x21-\x5A|\x61-\x7A]+\)/gi;
   const regexFindID = /\([\x21-\x5A|\x61-\x7A]+\)/gi;
 
-  let listOfTaggedIDs = [];
+  let listOfTaggedIDs: any = [];
 
-  commentText.replace(regexFull, (possibleTag) => {
+  commentText.replace(regexFull, (possibleTag: any) => {
     const displayNameArray = possibleTag.match(regexFindID);
 
     if (displayNameArray && displayNameArray[0]) {
@@ -233,9 +221,9 @@ const createNotificationsToAnyTaggedUsers = async (doc) => {
   }
 };
 
-const newCommentListener = async (doc, context) => {
-  createNotificationsToAnyTaggedUsers(doc, context);
-  createNewCommentNotification(doc, context);
+const newCommentListener = async (doc: any, context: any) => {
+  createNotificationsToAnyTaggedUsers(doc);
+  createNewCommentNotification(doc);
 
   let comment = { ...doc.data() };
 
@@ -265,7 +253,7 @@ const newCommentListener = async (doc, context) => {
       .get();
 
     if (ventDoc.data() && ventDoc.data().server_timestamp) {
-      let tempObject = {
+      let tempObject: any = {
         comment_counter: admin.firestore.FieldValue.increment(1),
       };
       if (canUpdateTrendingScore("day", ventDoc.data().server_timestamp))
@@ -290,7 +278,7 @@ const newCommentListener = async (doc, context) => {
   }
 };
 
-const newCommentReportListener = async (doc) => {
+const newCommentReportListener = async (doc: any) => {
   const commentID = doc.id.split("|||")[0];
   const userID = doc.id.split("|||")[1];
 
@@ -308,14 +296,13 @@ const newCommentReportListener = async (doc) => {
     .doc(commentID)
     .get();
 
-  const usereBasicInfoDoc = await admin
-    .firestore()
-    .collection("users_display_name")
-    .doc(userID)
-    .get();
-  const karmaUserCanStrip = calculateKarmaUserCanStrip(
-    usereBasicInfoDoc.data()
-  );
+  // const usereBasicInfoDoc = await admin
+  //   .firestore()
+  //   .collection("users_display_name")
+  //   .doc(userID)
+  //   .get();
+  const karmaUserCanStrip = calculateKarmaUserCanStrip();
+  //usereBasicInfoDoc.data()
 
   await admin
     .firestore()

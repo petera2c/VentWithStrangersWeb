@@ -77,7 +77,7 @@ export const getVents = async (
   if (!isMounted()) return;
 
   if (snapshot && snapshot.docs && snapshot.docs.length > 0) {
-    let newVents = snapshot.docs.map((doc) => ({
+    let newVents = snapshot.docs.map((doc: any) => ({
       doc,
       id: doc.id,
       ...doc.data(),

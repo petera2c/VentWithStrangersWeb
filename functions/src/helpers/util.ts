@@ -1,7 +1,4 @@
-const admin = require("firebase-admin");
-const moment = require("moment-timezone");
-
-const calculateKarma = (usereBasicInfo) => {
+const calculateKarma = (usereBasicInfo: any) => {
   return usereBasicInfo.karma ? usereBasicInfo.karma : 0;
 };
 
@@ -18,7 +15,7 @@ const calculateKarmaUserCanStrip = () => {
   */
 };
 
-const canUpdateTrendingScore = (option, serverTimestamp) => {
+const canUpdateTrendingScore = (option: any, serverTimestamp: any) => {
   const days = Math.floor(
     new moment().diff(new moment(serverTimestamp)) / 1000 / 3600 / 24
   );
@@ -35,12 +32,12 @@ const canUpdateTrendingScore = (option, serverTimestamp) => {
   else return true;
 };
 
-const capitolizeFirstChar = (string) => {
+const capitolizeFirstChar = (string: any) => {
   if (string) return string.charAt(0).toUpperCase() + string.slice(1);
   else return;
 };
 
-const combineObjectWithID = (id, object) => {
+const combineObjectWithID = (id: any, object: any) => {
   object.id = id;
   return object;
 };
@@ -49,7 +46,7 @@ const createBirthdayLink = () => {
   return "/birthday-post";
 };
 
-const createVentLink = (vent) => {
+const createVentLink = (vent: any) => {
   return (
     "/vent/" +
     vent.id +
@@ -61,7 +58,7 @@ const createVentLink = (vent) => {
   );
 };
 
-const getMetaInformation = async (url, callback) => {
+const getMetaInformation = async (url: any, callback: any) => {
   let description = "";
   let keywords = "";
   let title = "";
@@ -223,8 +220,8 @@ const getMetaInformation = async (url, callback) => {
   );
 };
 
-const updateTotalUsersOnline = (change) => {
-  const setToDatabase = (state) => {
+const updateTotalUsersOnline = (change: any) => {
+  const setToDatabase = (state: any) => {
     if (state === "online") {
       admin
         .database()

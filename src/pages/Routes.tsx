@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useIdleTimer } from "react-idle-timer";
 
@@ -13,8 +13,9 @@ import SignUpPage from "./SignUp";
 import NotFoundPage from "./Basic/NotFound";
 import VentsPage from "./Vents";
 import ChatWithStrangersPage from "./ChatWithStrangers";
+import { setUserOnlineStatus } from "./util";
 
-function RoutesComp() {
+function AppRoutes() {
   const isMounted = useRef(false);
 
   const [firstOnlineUsers, setFirstOnlineUsers] = useState([]);
@@ -56,20 +57,18 @@ function RoutesComp() {
 
   const handleOnAction = () => {
     if (user && user.uid) {
-      import("./util").then(async (functions) => {
-        await functions.setUserOnlineStatus("online", user.uid);
-        import("../util").then(async (functions) => {
-          functions.getTotalOnlineUsers((totalOnlineUsers: any) => {
-            if (isMounted.current) {
-              setTotalOnlineUsers(totalOnlineUsers);
-              functions.getUserAvatars(
-                () => isMounted.current,
-                (firstOnlineUsers: any) => {
-                  if (isMounted.current) setFirstOnlineUsers(firstOnlineUsers);
-                }
-              );
-            }
-          });
+      setUserOnlineStatus("online", user.uid);
+      import("../util").then(async (functions) => {
+        functions.getTotalOnlineUsers((totalOnlineUsers: any) => {
+          if (isMounted.current) {
+            setTotalOnlineUsers(totalOnlineUsers);
+            functions.getUserAvatars(
+              () => isMounted.current,
+              (firstOnlineUsers: any) => {
+                if (isMounted.current) setFirstOnlineUsers(firstOnlineUsers);
+              }
+            );
+          }
         });
       });
     }
@@ -242,4 +241,4 @@ function RoutesComp() {
   );
 }
 
-export default RoutesComp;
+export default AppRoutes;

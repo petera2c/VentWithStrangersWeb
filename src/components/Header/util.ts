@@ -159,7 +159,7 @@ export const getUnreadConversations = (
 ) => {
   const unsubscribe = onSnapshot(
     doc(db, "unread_conversations_count", userID),
-    (doc) => {
+    (doc: any) => {
       if (doc.data() && doc.data().count) {
         if (!first && !isOnSearchPage) soundNotify();
         if (pathname === "/chat" && doc.data().count > 0) {
@@ -200,7 +200,7 @@ export const howCompleteIsUserProfile = (
 };
 
 export const isUserInQueueListener = (isMounted, setIsUserInQueue, userID) => {
-  const unsubscribe = onSnapshot(doc(db, "chat_queue", userID), (doc) => {
+  const unsubscribe = onSnapshot(doc(db, "chat_queue", userID), (doc: any) => {
     if (doc.data() && doc.data().userID === userID && isMounted())
       setIsUserInQueue(true);
     else if (isMounted()) setIsUserInQueue(false);

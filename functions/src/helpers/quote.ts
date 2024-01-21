@@ -1,10 +1,4 @@
-const admin = require("firebase-admin");
-const moment = require("moment-timezone");
-
-const { calculateKarmaUserCanStrip } = require("./util");
-const { createNotification } = require("./notification");
-
-const newQuoteListener = async (doc) => {
+const newQuoteListener = async (doc: any) => {
   const quote = { id: doc.id, ...doc.data() };
 
   const todaysFormattedDate = new moment(
@@ -37,7 +31,7 @@ const newQuoteListener = async (doc) => {
   }
 };
 
-const newQuoteReportListener = async (doc) => {
+const newQuoteReportListener = async (doc: any) => {
   const quoteID = doc.id.split("|||")[0];
   const userID = doc.id.split("|||")[1];
 
@@ -55,14 +49,13 @@ const newQuoteReportListener = async (doc) => {
     .doc(quoteID)
     .get();
 
-  const usereBasicInfoDoc = await admin
-    .firestore()
-    .collection("users_display_name")
-    .doc(userID)
-    .get();
-  const karmaUserCanStrip = calculateKarmaUserCanStrip(
-    usereBasicInfoDoc.data()
-  );
+  // const usereBasicInfoDoc = await admin
+  //   .firestore()
+  //   .collection("users_display_name")
+  //   .doc(userID)
+  //   .get();
+  const karmaUserCanStrip = calculateKarmaUserCanStrip();
+  // usereBasicInfoDoc.data()
 
   await admin
     .firestore()
@@ -144,7 +137,7 @@ const notifyQuoteContestWinner = async () => {
   }
 };
 
-const quoteDeleteListener = async (doc) => {
+const quoteDeleteListener = async (doc: any) => {
   const quoteLikesSnapshot = await admin
     .firestore()
     .collection("quote_likes")
@@ -161,7 +154,7 @@ const quoteDeleteListener = async (doc) => {
     }
 };
 
-const quoteLikeListener = async (change, context) => {
+const quoteLikeListener = async (change: any, context: any) => {
   const { quoteIDuserID } = context.params;
   const quoteIDuserIDArray = quoteIDuserID.split("|||");
 

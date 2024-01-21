@@ -1,21 +1,14 @@
 const admin = require("firebase-admin");
 const moment = require("moment-timezone");
-const { createNotification } = require("./notification");
-const {
-  calculateKarma,
-  calculateKarmaUserCanStrip,
-  canUpdateTrendingScore,
-  createVentLink,
-} = require("./util");
-
-const vent_new = require("./email_templates/vent_new");
-const vent_like = require("./email_templates/vent_like");
 
 const VENT_LIKE_TRENDING_SCORE_DAY_INCREMENT = 100;
 const VENT_LIKE_TRENDING_SCORE_WEEK_INCREMENT = 100;
 const VENT_LIKE_TRENDING_SCORE_MONTH_INCREMENT = 100;
 
-const decreaseTrendingScore = async (trendingOption, incrementFunction) => {
+const decreaseTrendingScore = async (
+  trendingOption: any,
+  incrementFunction: any
+) => {
   const trendingSnapshot = await admin
     .firestore()
     .collection("/vents/")
@@ -52,7 +45,7 @@ const decreaseTrendingScore = async (trendingOption, incrementFunction) => {
   }
 };
 
-const newVentListener = async (doc) => {
+const newVentListener = async (doc: any) => {
   const vent = { id: doc.id, ...doc.data() };
 
   if (vent.new_tags && vent.new_tags.length >= 3) {
@@ -186,7 +179,7 @@ const newVentListener = async (doc) => {
     );
 };
 
-const newVentLikeListener = async (change, context) => {
+const newVentLikeListener = async (change: any, context: any) => {
   const { ventIDuserID } = context.params;
   const ventIDuserIDArray = ventIDuserID.split("|||");
 
@@ -210,7 +203,7 @@ const newVentLikeListener = async (change, context) => {
 
   const vent = { id: ventDoc.id, ...ventDoc.data() };
 
-  let tempObject = {
+  let tempObject: any = {
     like_counter: admin.firestore.FieldValue.increment(increment),
   };
   if (
@@ -298,7 +291,7 @@ const newVentLikeListener = async (change, context) => {
     );
 };
 
-const newVentReportListener = async (doc) => {
+const newVentReportListener = async (doc: any) => {
   const ventID = doc.id.split("|||")[0];
   const userID = doc.id.split("|||")[1];
 
@@ -312,14 +305,13 @@ const newVentReportListener = async (doc) => {
 
   const ventDoc = await admin.firestore().collection("vents").doc(ventID).get();
 
-  const usereBasicInfoDoc = await admin
-    .firestore()
-    .collection("users_display_name")
-    .doc(userID)
-    .get();
-  const karmaUserCanStrip = calculateKarmaUserCanStrip(
-    usereBasicInfoDoc.data()
-  );
+  // const usereBasicInfoDoc = await admin
+  //   .firestore()
+  //   .collection("users_display_name")
+  //   .doc(userID)
+  //   .get();
+  const karmaUserCanStrip = calculateKarmaUserCanStrip();
+  //  usereBasicInfoDoc.data()
 
   await admin
     .firestore()
@@ -339,7 +331,7 @@ const newVentReportListener = async (doc) => {
   });
 };
 
-const ventDeleteListener = async (doc) => {
+const ventDeleteListener = async (doc: any) => {
   const ventID = doc.id;
 
   const commentsOfVentSnapshot = await admin

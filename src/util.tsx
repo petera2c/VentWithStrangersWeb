@@ -176,7 +176,7 @@ export const getIsUserOnline = (setIsUserOnline: any, userID: any) => {
 };
 
 export const getTotalOnlineUsers = (callback: any) => {
-  get(ref(db2, "total_online_users2")).then((doc) => {
+  get(ref(db2, "total_online_users2")).then((doc: any) => {
     callback(doc.val());
   });
 

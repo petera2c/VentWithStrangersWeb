@@ -1,6 +1,4 @@
-const admin = require("firebase-admin");
-
-const blockUserListener = async (change) => {
+const blockUserListener = async (change: any) => {
   const blockBefore = change.before.data();
   const blockAfter = change.after.data();
 

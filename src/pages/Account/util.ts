@@ -155,7 +155,7 @@ export const getUsersComments = async (
   if (!isMounted()) return;
 
   if (snapshot.docs && snapshot.docs.length > 0) {
-    let newComments = snapshot.docs.map((doc) => ({
+    let newComments = snapshot.docs.map((doc: any) => ({
       ...doc.data(),
       id: doc.id,
       doc,
@@ -195,7 +195,7 @@ export const getUsersVents = async (
   if (!isMounted()) return;
 
   if (snapshot.docs && snapshot.docs.length > 0) {
-    let newVents = snapshot.docs.map((doc) => ({
+    let newVents = snapshot.docs.map((doc: any) => ({
       ...doc.data(),
       id: doc.id,
       doc,
