@@ -1,5 +1,3 @@
-import React from "react";
-
 import Container from "../../containers/Container";
 
 function ConfirmAlertModal({ close, message, submit, title }) {

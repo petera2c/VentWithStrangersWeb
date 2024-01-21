@@ -1,5 +1,5 @@
 import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../../../config/db_init";
+import { db } from "../../../config/firebase_init";
 import { message } from "antd";
 
 export const getActiveSection = (activeSection) => {

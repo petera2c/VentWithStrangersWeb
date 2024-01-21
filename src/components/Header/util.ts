@@ -12,7 +12,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { db } from "../../config/db_init";
+import { db } from "../../config/firebase_init";
 import { getEndAtValueTimestamp, soundNotify } from "../../util";
 
 export const conversationsListener = (navigate, userID) => {

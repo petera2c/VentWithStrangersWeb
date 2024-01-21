@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { off } from "firebase/database";
 import dayjs from "dayjs";
@@ -30,7 +30,7 @@ import {
   getIsChatMuted,
   muteChat,
   readConversation,
-} from "./util";
+} from "./conversationUtils";
 
 const MakeAvatar = loadable(() => import("../../components/views/MakeAvatar"));
 

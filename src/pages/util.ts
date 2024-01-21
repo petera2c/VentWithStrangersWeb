@@ -17,7 +17,7 @@ import {
   serverTimestamp,
   set,
 } from "firebase/database";
-import { db, db2 } from "../config/db_init";
+import { db, db2 } from "../config/firebase_init";
 import dayjs from "dayjs";
 
 export const getIsUsersBirthday = async (

@@ -14,7 +14,7 @@ import {
 
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
-import { db } from "../../config/db_init";
+import { db } from "../../config/firebase_init";
 
 import { message } from "antd";
 

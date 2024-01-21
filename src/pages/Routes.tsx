@@ -9,11 +9,37 @@ import Container from "../components/containers/Container";
 import LoadingHeart from "../components/views/loaders/Heart";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
-import SignUpPage from "./SignUp";
-import NotFoundPage from "./Basic/NotFound";
-import VentsPage from "./Vents";
-import ChatWithStrangersPage from "./ChatWithStrangers";
+import SignUpPage from "./SignUpPage";
+import NotFoundPage from "./Basic/NotFoundPage";
+import VentsPage from "./Vents/VentsPage";
+import ChatWithStrangersPage from "./ChatWithStrangers/ChatWithStrangersPage";
 import { setUserOnlineStatus } from "./util";
+import AccountPage from "./Account/AccountPage";
+import SettingsPage from "./Account/SettingsPage";
+import AvatarPage from "./Account/Avatar/AvatarPage";
+import BirthdayPostPage from "./NewVent/BirthdayPostPage";
+import ConversationsPageMobile from "./Conversations/ConversationsPageMobile";
+import TopQuotesMonthPage from "./QuoteContest/TopQuotesMonth/TopQuotesMonthPage";
+import NotificationsPage from "./Account/NotificationsPage";
+import OnlineUsersPage from "./OnlineUsers/OnlineUsersPage";
+import PrivacyPolicyPage from "./Basic/PrivacyPolicyPage";
+import ProfilePage from "./Account/ProfilePage";
+import QuoteContestPage from "./QuoteContest/QuoteContestPage";
+import RewardsPage from "./Rewards/RewardsPage";
+import RulesPage from "./Basic/RulesPage";
+import SearchPage from "./Search/SearchPage";
+import SiteInfoPage from "./Basic/SiteInfoPage";
+import SubscribePage from "./Subscribe/SubscribePage";
+import SubscriptionSuccessPage from "./Subscribe/SubscriptionsSuccessPage";
+import AllTagsPage from "./tags/All/AllTagsPage";
+import IndividualTagPage from "./tags/Individual/IndividualTagPage";
+import NewVentPage from "./NewVent/NewVentPage";
+import IndividualVentPage from "./Vents/Individual/IndividualVentPage";
+import VerifiedEmailPage from "./Basic/VerifiedEmail/VerifiedEmailPage";
+import NewRewardModal from "../components/modals/NewReward";
+import BirthdayModal from "../components/modals/Birthday";
+import MobileHeader from "../components/Header/MobileHeader";
+import { getTotalOnlineUsers, getUserAvatars } from "../util";
 
 function AppRoutes() {
   const isMounted = useRef(false);
@@ -58,17 +84,10 @@ function AppRoutes() {
   const handleOnAction = () => {
     if (user && user.uid) {
       setUserOnlineStatus("online", user.uid);
-      import("../util").then(async (functions) => {
-        functions.getTotalOnlineUsers((totalOnlineUsers: any) => {
-          if (isMounted.current) {
-            setTotalOnlineUsers(totalOnlineUsers);
-            functions.getUserAvatars(
-              () => isMounted.current,
-              (firstOnlineUsers: any) => {
-                if (isMounted.current) setFirstOnlineUsers(firstOnlineUsers);
-              }
-            );
-          }
+      getTotalOnlineUsers((totalOnlineUsers: any) => {
+        setTotalOnlineUsers(totalOnlineUsers);
+        getUserAvatars((firstOnlineUsers: any) => {
+          setFirstOnlineUsers(firstOnlineUsers);
         });
       });
     }
@@ -167,12 +186,11 @@ function AppRoutes() {
                       path="chat-with-strangers"
                       element={<ChatWithStrangersPage />}
                     />
-                    <Route path="chat" element={<ConversationsPage />} />
+                    <Route path="chat" element={<ConversationsPageMobile />} />
                     <Route
                       path="feel-good-quotes-month"
                       element={<TopQuotesMonthPage />}
                     />
-                    <Route path="make-friends" element={<MakeFriendsPage />} />
                     <Route path="my-feed" element={<VentsPage />} />
                     <Route
                       path="notifications"
@@ -196,13 +214,10 @@ function AppRoutes() {
                     <Route path="subscribe" element={<SubscribePage />} />
                     <Route
                       path="subscription-successful"
-                      element={<SubSuccessPage />}
+                      element={<SubscriptionSuccessPage />}
                     />
-                    <Route path="tags" element={<TagsPage />} />
-                    <Route
-                      path="tags/:tagID"
-                      element={<TagsIndividualPage />}
-                    />
+                    <Route path="tags" element={<AllTagsPage />} />
+                    <Route path="tags/:tagID" element={<IndividualTagPage />} />
                     <Route path="trending" element={<VentsPage />} />
                     <Route path="trending/this-week" element={<VentsPage />} />
                     <Route path="trending/this-month" element={<VentsPage />} />
@@ -220,7 +235,6 @@ function AppRoutes() {
                       path="verified-email"
                       element={<VerifiedEmailPage />}
                     />
-                    <Route path="game" element={<GamePage />} />
                   </Routes>
                 </Suspense>
               )}

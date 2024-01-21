@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useState from "react-usestateref";
 import { sendEmailVerification } from "firebase/auth";
@@ -50,7 +50,7 @@ import {
   resetUnreadConversationCount,
 } from "./util";
 
-function Header() {
+function MobileHeader() {
   const isMounted = useIsMounted();
   const location = useLocation();
   const navigate = useNavigate();
@@ -521,4 +521,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default MobileHeader;

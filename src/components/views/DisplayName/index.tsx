@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import loadable from "@loadable/component";
 
@@ -20,9 +20,8 @@ function DisplayName({
   userBasicInfo,
   userID,
 }) {
-  const [capitolizedDisplayName, setCapitolizedDisplayName] = useState(
-    "Anonymous"
-  );
+  const [capitolizedDisplayName, setCapitolizedDisplayName] =
+    useState("Anonymous");
 
   useEffect(() => {
     setCapitolizedDisplayName(capitolizeFirstChar(displayName));

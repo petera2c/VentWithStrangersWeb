@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,7 +9,7 @@ import ConfirmAlertModal from "../../components/modals/ConfirmAlert";
 import Container from "../../components/containers/Container";
 
 import { urlify } from "../../util";
-import { deleteMessage } from "./util";
+import { deleteMessage } from "./conversationUtils";
 
 function Message({
   activeChatUserBasicInfos,

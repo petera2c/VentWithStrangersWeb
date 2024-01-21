@@ -1,5 +1,3 @@
-import React from "react";
-
 function LoadingHeart() {
   return (
     <div className="loader-heart-container">

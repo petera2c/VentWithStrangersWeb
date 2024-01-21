@@ -4,7 +4,7 @@ import {
   sendEmailVerification,
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-import { db } from "../../../config/db_init";
+import { db } from "../../../config/firebase_init";
 import dayjs from "dayjs";
 import { message } from "antd";
 import Cookies from "universal-cookie";

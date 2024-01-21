@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, message } from "antd";
 
 import Container from "../../containers/Container";

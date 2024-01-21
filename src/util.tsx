@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import {
   collection,
   doc,
@@ -17,7 +17,7 @@ import {
   set,
 } from "firebase/database";
 import { getAuth, sendEmailVerification, signOut } from "firebase/auth";
-import { db, db2 } from "./config/db_init";
+import { db, db2 } from "./config/firebase_init";
 import reactStringReplace from "react-string-replace";
 import dayjs from "dayjs";
 import { message, Modal } from "antd";

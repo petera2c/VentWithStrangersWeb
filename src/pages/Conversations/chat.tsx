@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { off } from "firebase/database";
 import loadable from "@loadable/component";
@@ -6,7 +6,7 @@ import { Button } from "antd";
 
 import Container from "../../components/containers/Container";
 import KarmaBadge from "../../components/views/KarmaBadge";
-import Message from "./message";
+import Message from "./Message";
 
 import {
   capitolizeFirstChar,
@@ -20,7 +20,7 @@ import {
   messageListener,
   sendMessage,
   setConversationIsTyping,
-} from "./util";
+} from "./conversationUtils";
 
 const Emoji = loadable(() => import("../../components/Emoji"));
 const MakeAvatar = loadable(() => import("../../components/views/MakeAvatar"));

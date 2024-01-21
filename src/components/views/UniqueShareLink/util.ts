@@ -1,5 +1,5 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { db } from "../../../config/db_init";
+import { db } from "../../../config/firebase_init";
 
 export const createShareLink = (secondUID) => {
   let link = "https://www.ventwithstrangers.com?referral=" + secondUID;

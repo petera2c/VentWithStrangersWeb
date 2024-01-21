@@ -14,7 +14,7 @@ import {
   Timestamp,
   where,
 } from "firebase/firestore";
-import { db } from "../../config/db_init";
+import { db } from "../../config/firebase_init";
 import { message } from "antd";
 
 import {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Picker } from "emoji-mart";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

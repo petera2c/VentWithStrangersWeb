@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import AdSense from "react-adsense";
 
 import { UserContext } from "../../context";

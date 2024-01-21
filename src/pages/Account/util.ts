@@ -28,7 +28,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 
-import { db, db2 } from "../../config/db_init";
+import { db, db2 } from "../../config/firebase_init";
 
 import { message } from "antd";
 
